@@ -74,9 +74,18 @@
 - Shows gatherer cost and current/cap count below the Train button
 - Lodge still required for trappers (Lv3) and rangers (Lv5) and higher caps
 
-### Phase 6: Draconia City Map (PENDING)
-- Ward-based building layout
-- New buildings: Housing, Wizard's Tower, Warfront Towers East/West
+### Phase 6: Draconia City Map (COMPLETE)
+- Restructured Draconia tab from 3 zones to 5 wards:
+  - THE KEEP: Draconia Keep (centered, top)
+  - INNER WARD: Housing, Librarium, Wizard's Tower
+  - CRAFT WARD: The Forge, Ranger's Lodge
+  - OUTER WARD: The Garrison, Wayfinder's Outpost
+  - CITY EDGE: Tower East, Tower West
+- Added new BuildingId values: `housing`, `wizard`, `tower_east`, `tower_west`
+- Added building colors to theme: housing (#c084fc), wizard (#e879f9), tower (#fb923c)
+- New buildings show as "Coming soon" placeholders with `ComingSoonInterior` component
+- Coming soon buildings open interior sheet directly (no purchase modal)
+- Lodge and Outpost nodes conditionally rendered in their new wards
 
 ---
 

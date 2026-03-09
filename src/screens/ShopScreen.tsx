@@ -50,6 +50,20 @@ import { mapStyles } from './shop/mapStyles'
 // BUILDING INTERIOR ROUTER
 // =============================================================================
 
+function ComingSoonInterior() {
+  return (
+    <View style={{ alignItems: 'center', paddingVertical: 32 }}>
+      <Ionicons name="hammer" size={32} color={colors.text.muted} />
+      <Text variant="body" color="muted" center style={{ marginTop: 8 }}>
+        Under construction
+      </Text>
+      <Text variant="caption" color="muted" center>
+        This building will be available in a future update.
+      </Text>
+    </View>
+  )
+}
+
 function BuildingInterior({ id }: { id: BuildingId }) {
   switch (id) {
     case 'keep': return <DraconiaHallInterior />
@@ -58,6 +72,11 @@ function BuildingInterior({ id }: { id: BuildingId }) {
     case 'lodge': return <LodgeInterior />
     case 'outpost': return <PostInterior />
     case 'librarium': return <LibrariumInterior />
+    case 'housing':
+    case 'wizard':
+    case 'tower_east':
+    case 'tower_west':
+      return <ComingSoonInterior />
   }
 }
 
@@ -415,6 +434,66 @@ export function ShopScreen() {
         ? `${state.completedResearch.length}/${RESEARCH_NODES.length} researched`
         : undefined,
     },
+    housing: {
+      id: 'housing',
+      name: 'Housing',
+      icon: 'home',
+      description: 'Residential quarters that improve productivity and unlock population growth.',
+      accentColor: colors.building.housing,
+      isBuilt: false,
+      visible: true,
+      cost: null,
+      canAfford: false,
+      onBuild: () => {},
+      hasAction: false,
+      resourceKeys: ['inspiration'],
+      statusLabel: 'Coming soon',
+    },
+    wizard: {
+      id: 'wizard',
+      name: "Wizard's Tower",
+      icon: 'sparkles',
+      description: 'A towering spire of arcane power. Enchant weapons and unlock powerful bonuses.',
+      accentColor: colors.building.wizard,
+      isBuilt: false,
+      visible: true,
+      cost: null,
+      canAfford: false,
+      onBuild: () => {},
+      hasAction: false,
+      resourceKeys: ['inspiration'],
+      statusLabel: 'Coming soon',
+    },
+    tower_east: {
+      id: 'tower_east',
+      name: 'Tower East',
+      icon: 'flag',
+      description: 'A defensive tower on the eastern wall. Station fighters to boost defense and inspiration income.',
+      accentColor: colors.building.tower,
+      isBuilt: false,
+      visible: true,
+      cost: null,
+      canAfford: false,
+      onBuild: () => {},
+      hasAction: false,
+      resourceKeys: ['inspiration'],
+      statusLabel: 'Coming soon',
+    },
+    tower_west: {
+      id: 'tower_west',
+      name: 'Tower West',
+      icon: 'flag',
+      description: 'A defensive tower on the western wall. Station fighters to boost defense and inspiration income.',
+      accentColor: colors.building.tower,
+      isBuilt: false,
+      visible: true,
+      cost: null,
+      canAfford: false,
+      onBuild: () => {},
+      hasAction: false,
+      resourceKeys: ['inspiration'],
+      statusLabel: 'Coming soon',
+    },
   }
 
   const resolveResources = (keys: ResourceKey[]): ResourceItem[] =>
@@ -433,18 +512,21 @@ export function ShopScreen() {
   const [purchaseTarget, setPurchaseTarget] = React.useState<BuildingId | null>(null)
   const purchaseBuilding = purchaseTarget ? buildings[purchaseTarget] ?? null : null
 
+  const comingSoonIds: BuildingId[] = ['housing', 'wizard', 'tower_east', 'tower_west']
+
   const handleNodePress = (id: BuildingId) => {
     haptics.selection()
     const b = buildings[id]
-    if (b && !b.isBuilt) {
+    if (comingSoonIds.includes(id)) {
+      // Coming soon buildings open interior directly (shows placeholder)
+      setSelected(id)
+    } else if (b && !b.isBuilt) {
       playShop()
       setPurchaseTarget(id)
     } else {
       setSelected(id)
     }
   }
-
-  const hasOutskirts = buildings.lodge.visible || buildings.outpost.visible
 
   return (
     <View style={mapStyles.container}>
@@ -471,52 +553,85 @@ export function ShopScreen() {
               onPress={() => handleNodePress('keep')}
             />
           </View>
-          {buildings.librarium.visible && (
-            <View style={mapStyles.zoneNodesCenter}>
-              <BuildingNode
-                building={buildings.librarium}
-                onPress={() => handleNodePress('librarium')}
-              />
-            </View>
-          )}
         </View>
 
         <ZonePath />
 
-        {/* === ZONE: MILITARY QUARTER === */}
+        {/* === ZONE: INNER WARD === */}
         <View style={mapStyles.zone}>
-          <ZoneHeader label="MILITARY QUARTER" />
+          <ZoneHeader label="INNER WARD" />
+          <View style={mapStyles.zoneNodesRow}>
+            <BuildingNode
+              building={buildings.housing}
+              onPress={() => handleNodePress('housing')}
+            />
+            {buildings.librarium.visible && (
+              <BuildingNode
+                building={buildings.librarium}
+                onPress={() => handleNodePress('librarium')}
+              />
+            )}
+            <BuildingNode
+              building={buildings.wizard}
+              onPress={() => handleNodePress('wizard')}
+            />
+          </View>
+        </View>
+
+        <ZonePath />
+
+        {/* === ZONE: CRAFT WARD === */}
+        <View style={mapStyles.zone}>
+          <ZoneHeader label="CRAFT WARD" />
+          <View style={mapStyles.zoneNodesRow}>
+            <BuildingNode
+              building={buildings.forge}
+              onPress={() => handleNodePress('forge')}
+            />
+            {buildings.lodge.visible && (
+              <BuildingNode
+                building={buildings.lodge}
+                onPress={() => handleNodePress('lodge')}
+              />
+            )}
+          </View>
+        </View>
+
+        <ZonePath />
+
+        {/* === ZONE: OUTER WARD === */}
+        <View style={mapStyles.zone}>
+          <ZoneHeader label="OUTER WARD" />
           <View style={mapStyles.zoneNodesRow}>
             <BuildingNode
               building={buildings.garrison}
               onPress={() => handleNodePress('garrison')}
             />
-            <BuildingNode
-              building={buildings.forge}
-              onPress={() => handleNodePress('forge')}
-            />
+            {buildings.outpost.visible && (
+              <BuildingNode
+                building={buildings.outpost}
+                onPress={() => handleNodePress('outpost')}
+              />
+            )}
           </View>
         </View>
 
-        {/* === ZONE: THE OUTSKIRTS === */}
-        {hasOutskirts && (
-          <>
-            <ZonePath />
-            <View style={mapStyles.zone}>
-              <ZoneHeader label="THE OUTSKIRTS" />
-              <View style={mapStyles.zoneNodesRow}>
-                <BuildingNode
-                  building={buildings.lodge}
-                  onPress={() => handleNodePress('lodge')}
-                />
-                <BuildingNode
-                  building={buildings.outpost}
-                  onPress={() => handleNodePress('outpost')}
-                />
-              </View>
-            </View>
-          </>
-        )}
+        <ZonePath />
+
+        {/* === ZONE: CITY EDGE === */}
+        <View style={mapStyles.zone}>
+          <ZoneHeader label="CITY EDGE" />
+          <View style={mapStyles.zoneNodesRow}>
+            <BuildingNode
+              building={buildings.tower_east}
+              onPress={() => handleNodePress('tower_east')}
+            />
+            <BuildingNode
+              building={buildings.tower_west}
+              onPress={() => handleNodePress('tower_west')}
+            />
+          </View>
+        </View>
       </ScrollView>
 
       {/* Purchase confirmation for unbuilt buildings */}

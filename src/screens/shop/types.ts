@@ -1,6 +1,6 @@
 import type { Ionicons } from '@expo/vector-icons'
 
-export type BuildingId = 'keep' | 'garrison' | 'forge' | 'lodge' | 'outpost' | 'librarium'
+export type BuildingId = 'keep' | 'garrison' | 'forge' | 'lodge' | 'outpost' | 'librarium' | 'housing' | 'wizard' | 'tower_east' | 'tower_west'
 
 /** Resource types a building can declare it uses */
 export type ResourceKey = 'inspiration' | 'food' | 'villagers'

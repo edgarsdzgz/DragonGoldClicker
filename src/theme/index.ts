@@ -100,6 +100,9 @@ export const colors = {
     explorer: '#60a5fa',
     draconia: '#a78bfa',
     librarium: '#38bdf8',
+    housing: '#c084fc',
+    wizard: '#e879f9',
+    tower: '#fb923c',
   },
 
   dark,
