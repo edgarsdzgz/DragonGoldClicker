@@ -55,8 +55,15 @@
 - `GameOverModal` component -- shown when city HP reaches 0, offers restart or continue watching
 - `threatLevel` and `defenseLevel` exposed on GameContext
 
-### Phase 4: Milestone Recruitment (PENDING)
-- Villager groups at 500/1000/2500/3500 total inspiration
+### Phase 4: Milestone Recruitment (COMPLETE)
+- Created `src/types/milestones.ts` -- milestone definitions and `getNextMilestone` helper
+- Milestones at 500/1000/2500/3500 total inspiration offering 3/3/2/7 villagers
+- Created `MilestoneModal` component (`src/components/MilestoneModal.tsx`) with accept/reject
+- Added `milestonesOffered: number[]` to GameState (tracks which thresholds have fired)
+- Milestone check via `useEffect` on `totalInspirationEarned` changes
+- `acceptMilestone` / `rejectMilestone` callbacks on GameContext
+- Both accept and reject mark the milestone as offered (no repeat triggers)
+- Save migration for `milestonesOffered` field in useStorage.ts
 
 ### Phase 5: Forage Train Button (PENDING)
 - Train gatherers directly from Forage tab (no Lodge required)

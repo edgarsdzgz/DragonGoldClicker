@@ -85,6 +85,7 @@ export function useStorage() {
         if (typeof merged.foodSystemActive !== 'boolean') merged.foodSystemActive = false
         if (typeof merged.librariumBuilt !== 'boolean') merged.librariumBuilt = false
         if (!Array.isArray(merged.completedResearch)) merged.completedResearch = []
+        if (!Array.isArray(merged.milestonesOffered)) merged.milestonesOffered = []
 
         const gameState = merged as GameState
 

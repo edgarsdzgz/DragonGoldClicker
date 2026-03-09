@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
-import type { GameState, SoldierTier, SoldierCounts, ForagerTier, ForagerCounts, RoleId, StarvationResult, WandererEncounter, ResearchPrereq } from '../types/game'
+import type { GameState, SoldierTier, SoldierCounts, ForagerTier, ForagerCounts, RoleId, StarvationResult, WandererEncounter, ResearchPrereq, MilestoneDef } from '../types/game'
 import {
   DEFAULT_GAME_STATE,
   ARMORY_COST,
@@ -63,6 +63,7 @@ import {
   SIEGE_TICK_INTERVAL,
   MAX_CITY_HP,
   getThreatLevel,
+  getNextMilestone,
   getDefenseLevel,
   getSiegeDamage,
   getRepairRate,
@@ -128,6 +129,9 @@ interface GameContextType {
   defenseLevel: number
   isGameOver: boolean
   dismissGameOver: () => void
+  pendingMilestone: MilestoneDef | null
+  acceptMilestone: () => void
+  rejectMilestone: () => void
   buildLibrarium: () => boolean
   completeResearch: (id: string) => boolean
   isResearchAvailable: (id: string) => boolean
@@ -144,6 +148,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [pendingFoodWarning, setPendingFoodWarning] = useState<0 | 3 | 1>(0)
   const [pendingExplorerIntro, setPendingExplorerIntro] = useState(false)
   const [isGameOver, setIsGameOver] = useState(false)
+  const [pendingMilestone, setPendingMilestone] = useState<MilestoneDef | null>(null)
   const [pendingWanderer, setPendingWanderer] = useState<WandererEncounter | null>(null)
   const wandererTimerRef = useRef(0)
   const lastFoodWarningRef = useRef<0 | 3 | 1>(0)
@@ -425,6 +430,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       })
     }, [loaded, pendingWanderer])
   )
+
+  // Milestone recruitment check -- fires when totalInspirationEarned crosses a threshold
+  useEffect(() => {
+    if (!loaded || pendingMilestone) return
+    const next = getNextMilestone(state.totalInspirationEarned, state.milestonesOffered)
+    if (next) {
+      setPendingMilestone(next)
+    }
+  }, [loaded, state.totalInspirationEarned, state.milestonesOffered, pendingMilestone])
 
   // Check if we should activate food system after any state-changing action
   const checkFoodActivation = useCallback(() => {
@@ -1078,6 +1092,27 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setPendingWanderer(null)
   }, [])
 
+  const acceptMilestone = useCallback(() => {
+    if (!pendingMilestone) return
+    const milestone = pendingMilestone
+    setState((prev) => ({
+      ...prev,
+      villagers: prev.villagers + milestone.villagers,
+      milestonesOffered: [...prev.milestonesOffered, milestone.threshold],
+    }))
+    setPendingMilestone(null)
+  }, [pendingMilestone])
+
+  const rejectMilestone = useCallback(() => {
+    if (!pendingMilestone) return
+    // Mark as offered so it doesn't fire again, but don't add villagers
+    setState((prev) => ({
+      ...prev,
+      milestonesOffered: [...prev.milestonesOffered, pendingMilestone.threshold],
+    }))
+    setPendingMilestone(null)
+  }, [pendingMilestone])
+
   // Computed food warning level for badge display (always current, not just on events)
   const foodWarningLevel: 0 | 3 | 1 = (() => {
     if (!state.foodSystemActive) return 0
@@ -1233,6 +1268,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         defenseLevel,
         isGameOver,
         dismissGameOver,
+        pendingMilestone,
+        acceptMilestone,
+        rejectMilestone,
         buildLibrarium,
         completeResearch,
         isResearchAvailable,

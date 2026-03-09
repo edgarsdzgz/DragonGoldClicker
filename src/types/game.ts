@@ -161,3 +161,9 @@ export {
   getSiegeDamage,
   getRepairRate,
 } from './siege'
+
+export type { MilestoneDef } from './milestones'
+export {
+  MILESTONES,
+  getNextMilestone,
+} from './milestones'

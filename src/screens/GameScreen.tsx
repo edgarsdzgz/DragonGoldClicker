@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { Text, Badge, InspirationIcon, ActionOrb, ProgressBar, GameOverModal } from '../components'
+import { Text, Badge, InspirationIcon, ActionOrb, ProgressBar, GameOverModal, MilestoneModal } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -24,7 +24,7 @@ const RALLY_PALETTE = { accent: colors.building.garrison, glow: colors.building.
 const REPAIR_PALETTE = { accent: '#94a3b8', glow: '#94a3b8' }
 
 export function GameScreen() {
-  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, threatLevel, defenseLevel, isGameOver, dismissGameOver, resetGame, pendingOfflineEarnings, dismissOfflineEarnings, pendingFoodIntro, dismissFoodIntro, pendingStarvationReport, dismissStarvationReport, pendingFoodWarning, dismissFoodWarning, pendingExplorerIntro, dismissExplorerIntro, pendingWanderer, acceptWanderer, rejectWanderer } = useGame()
+  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, threatLevel, defenseLevel, isGameOver, dismissGameOver, resetGame, pendingOfflineEarnings, dismissOfflineEarnings, pendingFoodIntro, dismissFoodIntro, pendingStarvationReport, dismissStarvationReport, pendingFoodWarning, dismissFoodWarning, pendingExplorerIntro, dismissExplorerIntro, pendingWanderer, acceptWanderer, rejectWanderer, pendingMilestone, acceptMilestone, rejectMilestone } = useGame()
   const navigation = useNavigation<any>()
   const incomeFlash = useRef(new Animated.Value(1)).current
   const flavor = useFlavorText(COMBAT_LINES)
@@ -131,6 +131,14 @@ export function GameScreen() {
           encounter={pendingWanderer}
           onAccept={acceptWanderer}
           onReject={rejectWanderer}
+        />
+      )}
+      {pendingMilestone !== null && (
+        <MilestoneModal
+          visible={pendingMilestone !== null}
+          milestone={pendingMilestone}
+          onAccept={acceptMilestone}
+          onReject={rejectMilestone}
         />
       )}
       <GameOverModal

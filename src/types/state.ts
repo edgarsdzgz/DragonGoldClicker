@@ -132,6 +132,8 @@ export interface GameState {
   librariumBuilt: boolean
   /** IDs of completed research nodes */
   completedResearch: string[]
+  /** Milestone thresholds already offered (each fires once) */
+  milestonesOffered: number[]
 }
 
 export const DEFAULT_GAME_STATE: GameState = {
@@ -185,6 +187,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   repairProgress: 0,
   librariumBuilt: false,
   completedResearch: [],
+  milestonesOffered: [],
 }
 
 // =============================================================================
