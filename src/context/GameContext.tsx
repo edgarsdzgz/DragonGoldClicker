@@ -60,6 +60,12 @@ import {
   getRepairerCost,
   getFighterAutoRate,
   REPAIR_UNLOCK_FIGHTERS,
+  SIEGE_TICK_INTERVAL,
+  MAX_CITY_HP,
+  getThreatLevel,
+  getDefenseLevel,
+  getSiegeDamage,
+  getRepairRate,
 } from '../types/game'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -118,6 +124,10 @@ interface GameContextType {
   rejectWanderer: () => void
   rallyFighter: () => boolean
   directRepairer: () => boolean
+  threatLevel: number
+  defenseLevel: number
+  isGameOver: boolean
+  dismissGameOver: () => void
   buildLibrarium: () => boolean
   completeResearch: (id: string) => boolean
   isResearchAvailable: (id: string) => boolean
@@ -133,6 +143,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [pendingStarvationReport, setPendingStarvationReport] = useState<StarvationResult | null>(null)
   const [pendingFoodWarning, setPendingFoodWarning] = useState<0 | 3 | 1>(0)
   const [pendingExplorerIntro, setPendingExplorerIntro] = useState(false)
+  const [isGameOver, setIsGameOver] = useState(false)
   const [pendingWanderer, setPendingWanderer] = useState<WandererEncounter | null>(null)
   const wandererTimerRef = useRef(0)
   const lastFoodWarningRef = useRef<0 | 3 | 1>(0)
@@ -182,6 +193,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const effectiveAutoRate = soldiersStarving ? 0 : potentialAutoRate
 
   const autoFoodRate = getAutoFoodRate(state.foragers)
+
+  const threatLevel = getThreatLevel(state.totalInspirationEarned)
+  const defenseLevel = getDefenseLevel(state.clickPower, state.fighters)
 
   // Integer inspiration accumulator (soldiers stop fighting when starving)
   useGameLoop(
@@ -330,6 +344,50 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           fighters: prev.fighters - fightersLost,
           repairers: prev.repairers - repairersLost,
         }
+      })
+    }, [loaded])
+  )
+
+  // Siege damage tick (every SIEGE_TICK_INTERVAL seconds)
+  useGameLoop(
+    useCallback(() => {
+      if (!loaded) return
+      setState((prev) => {
+        if (prev.cityHp <= 0) return prev
+        const newTimer = prev.siegeTimer + 1
+        if (newTimer < SIEGE_TICK_INTERVAL) {
+          return { ...prev, siegeTimer: newTimer }
+        }
+        // Siege tick fires
+        const threat = getThreatLevel(prev.totalInspirationEarned)
+        const defense = getDefenseLevel(prev.clickPower, prev.fighters)
+        const damage = getSiegeDamage(threat, defense)
+        if (damage <= 0) {
+          return { ...prev, siegeTimer: 0 }
+        }
+        const newHp = Math.max(0, prev.cityHp - damage)
+        if (newHp <= 0) {
+          setIsGameOver(true)
+        }
+        return { ...prev, siegeTimer: 0, cityHp: newHp }
+      })
+    }, [loaded])
+  )
+
+  // Repair loop (repairers heal city HP continuously)
+  useGameLoop(
+    useCallback(() => {
+      if (!loaded) return
+      setState((prev) => {
+        if (prev.repairers <= 0 || prev.cityHp >= MAX_CITY_HP || prev.cityHp <= 0) return prev
+        const rate = getRepairRate(prev.repairers)
+        const newProgress = prev.repairProgress + rate
+        const healed = Math.floor(newProgress)
+        if (healed <= 0) {
+          return { ...prev, repairProgress: newProgress }
+        }
+        const newHp = Math.min(MAX_CITY_HP, prev.cityHp + healed)
+        return { ...prev, repairProgress: newProgress - healed, cityHp: newHp }
       })
     }, [loaded])
   )
@@ -944,6 +1002,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setPendingStarvationReport(null)
   }, [])
 
+  const dismissGameOver = useCallback(() => {
+    setIsGameOver(false)
+  }, [])
+
   const dismissFoodWarning = useCallback(() => {
     setPendingFoodWarning(0)
   }, [])
@@ -1167,6 +1229,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         rejectWanderer,
         rallyFighter,
         directRepairer,
+        threatLevel,
+        defenseLevel,
+        isGameOver,
+        dismissGameOver,
         buildLibrarium,
         completeResearch,
         isResearchAvailable,

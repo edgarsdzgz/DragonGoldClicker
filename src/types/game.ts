@@ -149,3 +149,15 @@ export {
   getNodesByCategory,
   getResearchBonuses,
 } from './research'
+
+export {
+  STARTING_CITY_HP,
+  MAX_CITY_HP,
+  SIEGE_TICK_INTERVAL,
+  SIEGE_DAMAGE_FACTOR,
+  REPAIR_RATE_PER_REPAIRER,
+  getThreatLevel,
+  getDefenseLevel,
+  getSiegeDamage,
+  getRepairRate,
+} from './siege'

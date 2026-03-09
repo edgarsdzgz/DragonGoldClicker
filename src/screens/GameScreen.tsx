@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { Text, Badge, InspirationIcon, ActionOrb } from '../components'
+import { Text, Badge, InspirationIcon, ActionOrb, ProgressBar, GameOverModal } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -17,14 +17,14 @@ import { useSfx } from '../hooks/useSfx'
 import { SFX } from '../data/sfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, getTotalSoldiers, getTotalForagers, getFighterCost, getRepairerCost, REPAIR_UNLOCK_FIGHTERS } from '../types/game'
+import { formatNumber, getTotalSoldiers, getTotalForagers, getFighterCost, getRepairerCost, REPAIR_UNLOCK_FIGHTERS, MAX_CITY_HP } from '../types/game'
 
 const SLAY_PALETTE = { accent: gold[400], glow: gold[500] }
 const RALLY_PALETTE = { accent: colors.building.garrison, glow: colors.building.garrison }
 const REPAIR_PALETTE = { accent: '#94a3b8', glow: '#94a3b8' }
 
 export function GameScreen() {
-  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, pendingOfflineEarnings, dismissOfflineEarnings, pendingFoodIntro, dismissFoodIntro, pendingStarvationReport, dismissStarvationReport, pendingFoodWarning, dismissFoodWarning, pendingExplorerIntro, dismissExplorerIntro, pendingWanderer, acceptWanderer, rejectWanderer } = useGame()
+  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, threatLevel, defenseLevel, isGameOver, dismissGameOver, resetGame, pendingOfflineEarnings, dismissOfflineEarnings, pendingFoodIntro, dismissFoodIntro, pendingStarvationReport, dismissStarvationReport, pendingFoodWarning, dismissFoodWarning, pendingExplorerIntro, dismissExplorerIntro, pendingWanderer, acceptWanderer, rejectWanderer } = useGame()
   const navigation = useNavigation<any>()
   const incomeFlash = useRef(new Animated.Value(1)).current
   const flavor = useFlavorText(COMBAT_LINES)
@@ -133,7 +133,39 @@ export function GameScreen() {
           onReject={rejectWanderer}
         />
       )}
+      <GameOverModal
+        visible={isGameOver}
+        onReset={resetGame}
+        onDismiss={dismissGameOver}
+      />
       <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={state.foodSystemActive} autoInspPerSec={effectiveAutoRate} />
+
+      {/* City HP bar */}
+      <View style={styles.cityHpBar}>
+        <View style={styles.cityHpHeader}>
+          <View style={styles.cityHpLabel}>
+            <Ionicons name="shield-checkmark" size={12} color={state.cityHp > 30 ? colors.status.success : colors.status.error} />
+            <Text variant="caption" style={{ color: state.cityHp > 30 ? colors.status.success : colors.status.error }}>
+              Draconia {state.cityHp}/{MAX_CITY_HP} HP
+            </Text>
+          </View>
+          {threatLevel > defenseLevel && (
+            <Text variant="caption" style={{ color: colors.status.error }}>
+              Threat {threatLevel} / Def {defenseLevel}
+            </Text>
+          )}
+          {threatLevel <= defenseLevel && threatLevel > 0 && (
+            <Text variant="caption" style={{ color: colors.status.success }}>
+              Defended
+            </Text>
+          )}
+        </View>
+        <ProgressBar
+          progress={state.cityHp / MAX_CITY_HP}
+          height={4}
+          gradientColors={state.cityHp > 30 ? ['#4ade80', '#22c55e'] : ['#ff6b6b', '#ef4444']}
+        />
+      </View>
 
       {/* HERO: Inspiration is the primary number */}
       <View style={styles.heroSection}>
@@ -282,9 +314,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.bg.base,
   },
+  cityHpBar: {
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[2],
+    gap: spacing[1],
+  },
+  cityHpHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  cityHpLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[1],
+  },
   heroSection: {
     alignItems: 'center',
-    paddingTop: spacing[6],
+    paddingTop: spacing[4],
     gap: spacing[1],
   },
   inspRow: {

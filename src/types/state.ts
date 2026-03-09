@@ -4,6 +4,7 @@ import { getTotalForagers } from './foragers'
 import { getTotalSoldiers } from './soldiers'
 import type { ActiveExpedition } from './explorers'
 import { STARTING_FOOD, STARTING_VILLAGERS } from './food'
+import { STARTING_CITY_HP } from './siege'
 
 // =============================================================================
 // OFFLINE PROGRESS
@@ -121,6 +122,12 @@ export interface GameState {
   repairers: number
   /** Lifetime repairers directed (for cost curve, never decreases) */
   repairersDirected: number
+  /** Current city HP (0 = game over) */
+  cityHp: number
+  /** Accumulator for siege damage ticks (seconds) */
+  siegeTimer: number
+  /** Fractional accumulator for repair HP */
+  repairProgress: number
   /** Whether the Librarium has been built */
   librariumBuilt: boolean
   /** IDs of completed research nodes */
@@ -173,6 +180,9 @@ export const DEFAULT_GAME_STATE: GameState = {
   fightersRallied: 0,
   repairers: 0,
   repairersDirected: 0,
+  cityHp: STARTING_CITY_HP,
+  siegeTimer: 0,
+  repairProgress: 0,
   librariumBuilt: false,
   completedResearch: [],
 }

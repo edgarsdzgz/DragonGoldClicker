@@ -43,12 +43,17 @@
 - Starvation system updated to include fighters and repairers
 - Population badges on Warfront show fighter/repairer counts
 
-### Phase 3: City HP / Siege (PENDING)
-- Draconia HP system (100 starting)
-- Threat level milestones
-- Damage when threat > defense
-- Repair loop
-- Game over at 0 HP
+### Phase 3: City HP / Siege (COMPLETE)
+- Created `src/types/siege.ts` -- threat milestones, defense calc, damage formula, repair rate
+- Added `cityHp`, `siegeTimer`, `repairProgress` to GameState (100 HP starting)
+- Threat level milestones: 0->1, 200->3, 750->6, 1500->10, 3000->15, 5000->22 (based on totalInspirationEarned)
+- Defense level = clickPower + fighters (tower bonuses in Phase 6)
+- Siege damage tick every 10s: max(0, threat - defense) * 0.5
+- Repair loop: 0.5 HP/sec per repairer (integer accumulator pattern)
+- City HP bar on Warfront with color shift (green > 30 HP, red <= 30 HP)
+- Threat/Defense indicator: shows "Threat X / Def Y" when under siege, "Defended" when safe
+- `GameOverModal` component -- shown when city HP reaches 0, offers restart or continue watching
+- `threatLevel` and `defenseLevel` exposed on GameContext
 
 ### Phase 4: Milestone Recruitment (PENDING)
 - Villager groups at 500/1000/2500/3500 total inspiration
