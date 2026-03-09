@@ -1,5 +1,6 @@
 import type { SoldierCounts } from './soldiers'
 import type { ForagerCounts } from './foragers'
+import { FIGHTER_FOOD_COST, REPAIRER_FOOD_COST } from './fighters'
 
 // =============================================================================
 // FOOD & POPULATION
@@ -37,6 +38,8 @@ export function getFoodConsumption(
   soldiers: SoldierCounts,
   foragers: ForagerCounts = { gatherers: 0, trappers: 0, rangers: 0 },
   explorers: number = 0,
+  fighters: number = 0,
+  repairers: number = 0,
 ): number {
   return (
     villagers * FOOD_CONSUMPTION.villager +
@@ -46,7 +49,9 @@ export function getFoodConsumption(
     soldiers.conscripts * FOOD_CONSUMPTION.conscript +
     soldiers.footmen * FOOD_CONSUMPTION.footman +
     soldiers.knights * FOOD_CONSUMPTION.knight +
-    explorers * FOOD_CONSUMPTION.explorer
+    explorers * FOOD_CONSUMPTION.explorer +
+    fighters * FIGHTER_FOOD_COST +
+    repairers * REPAIRER_FOOD_COST
   )
 }
 
@@ -60,8 +65,10 @@ export function getFoodEventsRemaining(
   soldiers: SoldierCounts,
   foragers: ForagerCounts,
   explorers: number,
+  fighters: number = 0,
+  repairers: number = 0,
 ): number {
-  const consumption = getFoodConsumption(villagers, soldiers, foragers, explorers)
+  const consumption = getFoodConsumption(villagers, soldiers, foragers, explorers, fighters, repairers)
   if (consumption <= 0) return Infinity
   return Math.floor(food / consumption)
 }
@@ -72,4 +79,6 @@ export interface StarvationResult {
   soldiersLost: SoldierCounts
   foragersLost: ForagerCounts
   explorersLost: number
+  fightersLost: number
+  repairersLost: number
 }

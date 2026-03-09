@@ -1,5 +1,5 @@
 // Barrel re-export -- all game types, constants, and helpers.
-// Domain modules: soldiers, foragers, explorers, food, state, reassignment.
+// Domain modules: soldiers, foragers, explorers, fighters, food, state, reassignment.
 
 export type {
   SoldierTier,
@@ -64,6 +64,20 @@ export {
   getPostUpgradeCost,
   getExplorerCap,
 } from './explorers'
+
+export {
+  FIGHTER_BASE_COST,
+  FIGHTER_COST_EXPONENT,
+  FIGHTER_INSP_RATE,
+  FIGHTER_FOOD_COST,
+  REPAIR_UNLOCK_FIGHTERS,
+  REPAIRER_BASE_COST,
+  REPAIRER_COST_EXPONENT,
+  REPAIRER_FOOD_COST,
+  getFighterCost,
+  getRepairerCost,
+  getFighterAutoRate,
+} from './fighters'
 
 export type { StarvationResult } from './food'
 export {

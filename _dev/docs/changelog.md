@@ -28,12 +28,20 @@
 - Added `repairers: number` field to `GameState` (default 0, ready for Phase 2)
 - Badges suppressed on locked tabs (build dot, food warning)
 
-### Phase 2: Fighters & Repairers (PENDING)
-- Rally button on Warfront tab (garrison red, 25% size of Slay)
-- Repair button (steel blue, unlocks at 3 fighters)
-- Flat Fighter unit (0.25 insp/sec)
-- Repairer unit (heals city HP, 75% food of fighter)
-- ActionOrb component (25% HarvestOrb variant)
+### Phase 2: Fighters & Repairers (COMPLETE)
+- Created `ActionOrb` component (`src/components/ActionOrb.tsx`) -- 25% size HarvestOrb variant
+- Rally button (garrison red) flanks Slay orb on left, shows cost, disabled when unaffordable
+- Repair button (steel blue #94a3b8) flanks Slay orb on right, unlocks at 3 fighters
+- Locked repair slot shows "N more fighter(s)" placeholder with dashed border
+- Created `src/types/fighters.ts` -- Fighter/Repairer constants and cost helpers
+- Fighter: 20 insp base cost (n^1.4 scaling), +0.25 insp/sec, 2 food/check
+- Repairer: 15 insp base cost (n^1.4 scaling), 1.5 food/check
+- Added `fighters`, `fightersRallied`, `repairersDirected` to GameState
+- Added `rallyFighter` and `directRepairer` actions to GameContext
+- Fighter auto-income integrated into game loop and offline earnings
+- Food consumption updated to include fighters and repairers
+- Starvation system updated to include fighters and repairers
+- Population badges on Warfront show fighter/repairer counts
 
 ### Phase 3: City HP / Siege (PENDING)
 - Draconia HP system (100 starting)

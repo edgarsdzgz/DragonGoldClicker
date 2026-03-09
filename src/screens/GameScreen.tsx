@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { Text, Badge, InspirationIcon } from '../components'
+import { Text, Badge, InspirationIcon, ActionOrb } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -17,12 +17,14 @@ import { useSfx } from '../hooks/useSfx'
 import { SFX } from '../data/sfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, getTotalSoldiers, getTotalForagers } from '../types/game'
+import { formatNumber, getTotalSoldiers, getTotalForagers, getFighterCost, getRepairerCost, REPAIR_UNLOCK_FIGHTERS } from '../types/game'
 
 const SLAY_PALETTE = { accent: gold[400], glow: gold[500] }
+const RALLY_PALETTE = { accent: colors.building.garrison, glow: colors.building.garrison }
+const REPAIR_PALETTE = { accent: '#94a3b8', glow: '#94a3b8' }
 
 export function GameScreen() {
-  const { state, click, effectiveAutoRate, pendingOfflineEarnings, dismissOfflineEarnings, pendingFoodIntro, dismissFoodIntro, pendingStarvationReport, dismissStarvationReport, pendingFoodWarning, dismissFoodWarning, pendingExplorerIntro, dismissExplorerIntro, pendingWanderer, acceptWanderer, rejectWanderer } = useGame()
+  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, pendingOfflineEarnings, dismissOfflineEarnings, pendingFoodIntro, dismissFoodIntro, pendingStarvationReport, dismissStarvationReport, pendingFoodWarning, dismissFoodWarning, pendingExplorerIntro, dismissExplorerIntro, pendingWanderer, acceptWanderer, rejectWanderer } = useGame()
   const navigation = useNavigation<any>()
   const incomeFlash = useRef(new Animated.Value(1)).current
   const flavor = useFlavorText(COMBAT_LINES)
@@ -164,6 +166,20 @@ export function GameScreen() {
               </Text>
             </Badge>
           )}
+          {state.fighters > 0 && (
+            <Badge icon="shield" color={colors.building.garrison}>
+              <Text variant="caption" style={{ color: colors.building.garrison }}>
+                {state.fighters} fighter{state.fighters !== 1 ? 's' : ''}
+              </Text>
+            </Badge>
+          )}
+          {state.repairers > 0 && (
+            <Badge icon="construct" color="#94a3b8">
+              <Text variant="caption" style={{ color: '#94a3b8' }}>
+                {state.repairers} repairer{state.repairers !== 1 ? 's' : ''}
+              </Text>
+            </Badge>
+          )}
           {getTotalSoldiers(state.soldiers) > 0 && (
             <Badge icon="people" color={gold[300]}>
               <Text variant="caption" style={{ color: gold[300] }}>
@@ -180,10 +196,10 @@ export function GameScreen() {
             </Badge>
           )}
         </View>
-        {state.foodSystemActive && state.food === 0 && getTotalSoldiers(state.soldiers) > 0 && (
+        {state.foodSystemActive && state.food === 0 && (state.fighters > 0 || getTotalSoldiers(state.soldiers) > 0) && (
           <Badge icon="warning" color={colors.status.error} style={{ marginTop: spacing[1] }}>
             <Text variant="caption" style={{ color: colors.status.error }}>
-              No food! Soldiers refuse to fight.
+              No food! Fighters refuse to fight.
             </Text>
           </Badge>
         )}
@@ -199,13 +215,52 @@ export function GameScreen() {
       {/* Flavor text */}
       <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} />
 
-      {/* SLAY button */}
-      <HarvestOrb
-        onAction={handleClick}
-        icon="flash"
-        label="SLAY"
-        palette={SLAY_PALETTE}
-      />
+      {/* Action area: Rally -- SLAY -- Repair */}
+      <View style={styles.actionRow}>
+        <View style={styles.sideOrb}>
+          <ActionOrb
+            onAction={rallyFighter}
+            icon="shield"
+            label="RALLY"
+            palette={RALLY_PALETTE}
+            disabled={state.villagers <= 0 || state.inspiration < getFighterCost(state.fightersRallied)}
+          />
+          <Text variant="caption" color="muted" center style={styles.orbCost}>
+            {formatNumber(getFighterCost(state.fightersRallied))} insp
+          </Text>
+        </View>
+        <HarvestOrb
+          onAction={handleClick}
+          icon="flash"
+          label="SLAY"
+          palette={SLAY_PALETTE}
+        />
+        <View style={styles.sideOrb}>
+          {state.fighters >= REPAIR_UNLOCK_FIGHTERS ? (
+            <>
+              <ActionOrb
+                onAction={directRepairer}
+                icon="construct"
+                label="REPAIR"
+                palette={REPAIR_PALETTE}
+                disabled={state.villagers <= 0 || state.inspiration < getRepairerCost(state.repairersDirected)}
+              />
+              <Text variant="caption" color="muted" center style={styles.orbCost}>
+                {formatNumber(getRepairerCost(state.repairersDirected))} insp
+              </Text>
+            </>
+          ) : (
+            <View style={styles.lockedOrb}>
+              <Text variant="caption" color="muted" center>
+                {REPAIR_UNLOCK_FIGHTERS - state.fighters} more
+              </Text>
+              <Text variant="caption" color="muted" center>
+                fighter{REPAIR_UNLOCK_FIGHTERS - state.fighters !== 1 ? 's' : ''}
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
 
       {/* Footer: secondary kill counter + reward hint */}
       <View style={styles.footer}>
@@ -245,6 +300,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing[2],
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  actionRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing[4],
+  },
+  sideOrb: {
+    alignItems: 'center',
+    width: 70,
+    gap: spacing[1],
+  },
+  orbCost: {
+    fontSize: 10,
+  },
+  lockedOrb: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
+    borderStyle: 'dashed',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   footer: {
     alignItems: 'center',

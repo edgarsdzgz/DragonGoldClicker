@@ -10,6 +10,7 @@ import {
   getFoodConsumption,
   FOOD_CHECK_INTERVAL,
   getResearchBonuses,
+  getFighterAutoRate,
 } from '../types/game'
 
 const STORAGE_KEY = '@dragongold/gamestate'
@@ -101,7 +102,8 @@ export function useStorage() {
             gameState.armoryGear.shields,
           )
           const gearBoost = (gameState.armoryGear.swords * 0.1 + gameState.armoryGear.shields * 0.05) * rb.gearBonusMultiplier
-          const autoRate = (baseAutoRate + gearBoost) * (1 + rb.autoRateMultiplier)
+          const soldierRate = (baseAutoRate + gearBoost) * (1 + rb.autoRateMultiplier)
+          const autoRate = soldierRate + getFighterAutoRate(gameState.fighters)
           const maxSec = getOfflineMaxSeconds(gameState.offlineLevel)
           const cappedSec = Math.min(elapsedSec, maxSec)
 
@@ -109,7 +111,7 @@ export function useStorage() {
             // If food system is active, soldiers only earn while food lasts
             let inspSeconds = cappedSec
             if (gameState.foodSystemActive) {
-              const baseConsumption = getFoodConsumption(gameState.villagers, gameState.soldiers)
+              const baseConsumption = getFoodConsumption(gameState.villagers, gameState.soldiers, gameState.foragers, gameState.explorers, gameState.fighters, gameState.repairers)
               const perCheck = Math.max(0, Math.ceil(baseConsumption * (1 - rb.foodConsumptionReduction)))
               const foodChecks = Math.floor(cappedSec / FOOD_CHECK_INTERVAL)
 

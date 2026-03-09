@@ -56,6 +56,10 @@ import {
   LIBRARIUM_COST,
   RESEARCH_NODES,
   getResearchBonuses,
+  getFighterCost,
+  getRepairerCost,
+  getFighterAutoRate,
+  REPAIR_UNLOCK_FIGHTERS,
 } from '../types/game'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -112,6 +116,8 @@ interface GameContextType {
   pendingWanderer: WandererEncounter | null
   acceptWanderer: () => { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null
   rejectWanderer: () => void
+  rallyFighter: () => boolean
+  directRepairer: () => boolean
   buildLibrarium: () => boolean
   completeResearch: (id: string) => boolean
   isResearchAvailable: (id: string) => boolean
@@ -167,9 +173,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   )
   // Apply research: gear bonus multiplier boosts the gear portion, auto rate multiplier boosts all
   const gearRate = (state.armoryGear.swords * 0.1 + state.armoryGear.shields * 0.05) * researchBonuses.gearBonusMultiplier
-  const potentialAutoRate = (baseAutoRate + gearRate) * (1 + researchBonuses.autoRateMultiplier)
-  // Soldiers stop earning when starving
-  const soldiersStarving = state.foodSystemActive && state.food <= 0 && getTotalSoldiers(state.soldiers) > 0
+  const soldierAutoRate = (baseAutoRate + gearRate) * (1 + researchBonuses.autoRateMultiplier)
+  const fighterAutoRate = getFighterAutoRate(state.fighters)
+  const potentialAutoRate = soldierAutoRate + fighterAutoRate
+  // Soldiers/fighters stop earning when starving
+  const combatantsExist = getTotalSoldiers(state.soldiers) > 0 || state.fighters > 0
+  const soldiersStarving = state.foodSystemActive && state.food <= 0 && combatantsExist
   const effectiveAutoRate = soldiersStarving ? 0 : potentialAutoRate
 
   const autoFoodRate = getAutoFoodRate(state.foragers)
@@ -230,7 +239,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
 
         // Food check fires
-        const baseConsumption = getFoodConsumption(prev.villagers, prev.soldiers, prev.foragers, prev.explorers)
+        const baseConsumption = getFoodConsumption(prev.villagers, prev.soldiers, prev.foragers, prev.explorers, prev.fighters, prev.repairers)
         const rb = getResearchBonuses(prev.completedResearch)
         const consumption = Math.max(0, Math.ceil(baseConsumption * (1 - rb.foodConsumptionReduction)))
         const newFood = Math.max(0, prev.food - consumption)
@@ -252,6 +261,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const soldiersLost: SoldierCounts = { conscripts: 0, footmen: 0, knights: 0 }
         const foragersLost: ForagerCounts = { gatherers: 0, trappers: 0, rangers: 0 }
         let explorersLost = 0
+        let fightersLost = 0
+        let repairersLost = 0
 
         if (newFood === 0) {
           // Idle villagers: higher death chance
@@ -282,11 +293,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           for (let i = 0; i < prev.explorers; i++) {
             if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) explorersLost++
           }
+          // Fighters: lower death chance
+          for (let i = 0; i < prev.fighters; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) fightersLost++
+          }
+          // Repairers: lower death chance
+          for (let i = 0; i < prev.repairers; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) repairersLost++
+          }
 
           const totalProfLost = soldiersLost.conscripts + soldiersLost.footmen + soldiersLost.knights +
-            foragersLost.gatherers + foragersLost.trappers + foragersLost.rangers + explorersLost
+            foragersLost.gatherers + foragersLost.trappers + foragersLost.rangers +
+            explorersLost + fightersLost + repairersLost
           if (villagersLost > 0 || totalProfLost > 0) {
-            setPendingStarvationReport({ villagersLost, soldiersLost, foragersLost, explorersLost })
+            setPendingStarvationReport({ villagersLost, soldiersLost, foragersLost, explorersLost, fightersLost, repairersLost })
           }
         }
 
@@ -307,6 +327,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             rangers: prev.foragers.rangers - foragersLost.rangers,
           },
           explorers: prev.explorers - explorersLost,
+          fighters: prev.fighters - fightersLost,
+          repairers: prev.repairers - repairersLost,
         }
       })
     }, [loaded])
@@ -385,6 +407,45 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         forageClicks: prev.forageClicks + 1,
       }
     })
+  }, [])
+
+  const rallyFighter = useCallback((): boolean => {
+    let rallied = false
+    setState((prev) => {
+      if (prev.villagers <= 0) return prev
+      const cost = getFighterCost(prev.fightersRallied)
+      if (prev.inspiration < cost) return prev
+      rallied = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - cost,
+        totalInspirationSpent: prev.totalInspirationSpent + cost,
+        villagers: prev.villagers - 1,
+        fighters: prev.fighters + 1,
+        fightersRallied: prev.fightersRallied + 1,
+      }
+    })
+    return rallied
+  }, [])
+
+  const directRepairer = useCallback((): boolean => {
+    let directed = false
+    setState((prev) => {
+      if (prev.villagers <= 0) return prev
+      if (prev.fighters < REPAIR_UNLOCK_FIGHTERS) return prev
+      const cost = getRepairerCost(prev.repairersDirected)
+      if (prev.inspiration < cost) return prev
+      directed = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - cost,
+        totalInspirationSpent: prev.totalInspirationSpent + cost,
+        villagers: prev.villagers - 1,
+        repairers: prev.repairers + 1,
+        repairersDirected: prev.repairersDirected + 1,
+      }
+    })
+    return directed
   }, [])
 
   const buildOrUpgradeBarracks = useCallback((): boolean => {
@@ -1104,6 +1165,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         pendingWanderer,
         acceptWanderer,
         rejectWanderer,
+        rallyFighter,
+        directRepairer,
         buildLibrarium,
         completeResearch,
         isResearchAvailable,

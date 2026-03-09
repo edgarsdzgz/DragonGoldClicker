@@ -113,8 +113,14 @@ export interface GameState {
   lastWandererCheck: number
   /** Lifetime wanderers welcomed into Draconia */
   wanderersWelcomed: number
+  /** Number of active fighters (earn inspiration via auto-combat) */
+  fighters: number
+  /** Lifetime fighters rallied (for cost curve, never decreases) */
+  fightersRallied: number
   /** Number of active repairers (heal city HP during siege) */
   repairers: number
+  /** Lifetime repairers directed (for cost curve, never decreases) */
+  repairersDirected: number
   /** Whether the Librarium has been built */
   librariumBuilt: boolean
   /** IDs of completed research nodes */
@@ -163,7 +169,10 @@ export const DEFAULT_GAME_STATE: GameState = {
   explorerIntroShown: false,
   lastWandererCheck: 0,
   wanderersWelcomed: 0,
+  fighters: 0,
+  fightersRallied: 0,
   repairers: 0,
+  repairersDirected: 0,
   librariumBuilt: false,
   completedResearch: [],
 }
@@ -179,8 +188,10 @@ export function getTotalAssigned(
   soldiers: SoldierCounts,
   foragers: ForagerCounts,
   explorers: number,
+  fighters: number = 0,
+  repairers: number = 0,
 ): number {
-  return getTotalSoldiers(soldiers) + getTotalForagers(foragers) + explorers
+  return getTotalSoldiers(soldiers) + getTotalForagers(foragers) + explorers + fighters + repairers
 }
 
 /**
