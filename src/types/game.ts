@@ -1,92 +1,137 @@
-export type UpgradeId = 'strongerClick' | 'goldMine' | 'dragonEgg' | 'treasureHoard'
+// Barrel re-export -- all game types, constants, and helpers.
+// Domain modules: soldiers, foragers, explorers, food, state, reassignment.
 
-export interface UpgradeDefinition {
-  id: UpgradeId
-  name: string
-  description: string
-  baseCost: number
-  costMultiplier: number
-  /** For click upgrades: bonus click power per level */
-  clickPower?: number
-  /** For idle upgrades: gold per second per level */
-  goldPerSecond?: number
-}
+export type {
+  SoldierTier,
+  SoldierTierDef,
+  SoldierCounts,
+  BarracksLevelDef,
+  AvatarWeaponDef,
+} from './soldiers'
+export {
+  SOLDIER_TIERS,
+  BARRACKS_LEVELS,
+  MAX_BARRACKS_LEVEL,
+  ARMORY_COST,
+  SWORD_COST,
+  SHIELD_COST,
+  SWORD_BONUS,
+  SHIELD_BONUS,
+  AVATAR_WEAPONS,
+  getTotalSoldiers,
+  getSoldierCap,
+  getBarracksUpgradeCost,
+  getSoldierCost,
+  getSoldierCount,
+  getEffectiveAutoRate,
+  getTierIndex,
+  getPromotionCost,
+  getPromotionTargets,
+} from './soldiers'
 
-export interface GameState {
-  gold: number
-  totalGoldEarned: number
-  totalClicks: number
-  clickPower: number
-  upgrades: Record<UpgradeId, number>
-  startedAt: number
-}
+export type {
+  ForagerTier,
+  ForagerTierDef,
+  ForagerCounts,
+  LodgeLevelDef,
+} from './foragers'
+export {
+  FORAGER_TIERS,
+  LODGE_LEVELS,
+  MAX_LODGE_LEVEL,
+  getTotalForagers,
+  getForagerCap,
+  getLodgeUpgradeCost,
+  getForagerCost,
+  getForagerCount,
+  getAutoFoodRate,
+  getForageYield,
+} from './foragers'
 
-export const UPGRADES: UpgradeDefinition[] = [
-  {
-    id: 'strongerClick',
-    name: 'Stronger Click',
-    description: '+1 gold per click',
-    baseCost: 10,
-    costMultiplier: 1.5,
-    clickPower: 1,
-  },
-  {
-    id: 'goldMine',
-    name: 'Gold Mine',
-    description: '+1 gold per second',
-    baseCost: 50,
-    costMultiplier: 1.4,
-    goldPerSecond: 1,
-  },
-  {
-    id: 'dragonEgg',
-    name: 'Dragon Egg',
-    description: '+10 gold per second',
-    baseCost: 500,
-    costMultiplier: 1.6,
-    goldPerSecond: 10,
-  },
-  {
-    id: 'treasureHoard',
-    name: 'Treasure Hoard',
-    description: '+100 gold per second',
-    baseCost: 5000,
-    costMultiplier: 1.8,
-    goldPerSecond: 100,
-  },
-]
+export type {
+  PostLevelDef,
+  ActiveExpedition,
+} from './explorers'
+export {
+  POST_LEVELS,
+  MAX_POST_LEVEL,
+  EXPLORER_COST,
+  EXPEDITION_INSPIRATION_COST,
+  EXPEDITION_FOOD_COST,
+  EXPEDITION_DURATION,
+  EXPEDITION_PITY_THRESHOLD,
+  rollExpeditionReward,
+  getPostUpgradeCost,
+  getExplorerCap,
+} from './explorers'
 
-export const DEFAULT_GAME_STATE: GameState = {
-  gold: 0,
-  totalGoldEarned: 0,
-  totalClicks: 0,
-  clickPower: 1,
-  upgrades: {
-    strongerClick: 0,
-    goldMine: 0,
-    dragonEgg: 0,
-    treasureHoard: 0,
-  },
-  startedAt: Date.now(),
-}
+export type { StarvationResult } from './food'
+export {
+  STARTING_FOOD,
+  STARTING_VILLAGERS,
+  FOOD_CHECK_INTERVAL,
+  FOOD_CONSUMPTION,
+  STARVATION_DEATH_CHANCE,
+  PROFESSIONAL_STARVATION_CHANCE,
+  getFoodConsumption,
+  getFoodEventsRemaining,
+} from './food'
 
-export function getUpgradeCost(upgrade: UpgradeDefinition, level: number): number {
-  return Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, level))
-}
+export type {
+  GameState,
+  OfflineLevelDef,
+} from './state'
+export {
+  OFFLINE_LEVELS,
+  MAX_OFFLINE_LEVEL,
+  getOfflineMaxSeconds,
+  getOfflineUpgradeCost,
+  DRACONIA_HALL_COST,
+  DEFAULT_GAME_STATE,
+  getTotalAssigned,
+  shouldRevealExplorerPost,
+  formatNumber,
+} from './state'
 
-export function getIdleIncome(upgrades: Record<UpgradeId, number>): number {
-  return UPGRADES.reduce((total, def) => {
-    if (def.goldPerSecond) {
-      return total + def.goldPerSecond * upgrades[def.id]
-    }
-    return total
-  }, 0)
-}
+export type {
+  RoleId,
+  ReassignOption,
+} from './reassignment'
+export {
+  REASSIGN_REFUND_RATE,
+  DISMISS_REFUND_RATE,
+  getRoleTierIndex,
+  getTrainingCost,
+  getRecruitCost,
+  getReassignOptions,
+} from './reassignment'
 
-export function formatNumber(n: number): string {
-  if (n >= 1_000_000_000_000) return `${(n / 1_000_000_000_000).toFixed(1)}T`
-  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`
-  return Math.floor(n).toString()
-}
+export type {
+  WandererType,
+  TrainedRole,
+  WandererEncounter,
+} from './wanderers'
+export {
+  WANDERER_COOLDOWN,
+  getEncounterName,
+  getTrainedRoleName,
+  getTrainedBuildingName,
+  rollWandererCheck,
+  getTrainedOverflowRefund,
+} from './wanderers'
+
+export type {
+  ResearchCategory,
+  ResearchEffect,
+  ResearchPrereq,
+  ResearchNodeDef,
+  ResearchBonuses,
+} from './research'
+export {
+  LIBRARIUM_COST,
+  RESEARCH_CATEGORIES,
+  RESEARCH_NODES,
+  getResearchNode,
+  getNodesByCategory,
+  getResearchBonuses,
+} from './research'

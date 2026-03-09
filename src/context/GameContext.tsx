@@ -1,22 +1,120 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
-import type { GameState, UpgradeId } from '../types/game'
+import type { GameState, SoldierTier, SoldierCounts, ForagerTier, ForagerCounts, RoleId, StarvationResult, WandererEncounter, ResearchPrereq } from '../types/game'
 import {
   DEFAULT_GAME_STATE,
-  UPGRADES,
-  getUpgradeCost,
-  getIdleIncome,
+  ARMORY_COST,
+  BARRACKS_LEVELS,
+  SOLDIER_TIERS,
+  AVATAR_WEAPONS,
+  SWORD_COST,
+  SHIELD_COST,
+  OFFLINE_LEVELS,
+  MAX_OFFLINE_LEVEL,
+  FOOD_CHECK_INTERVAL,
+  STARVATION_DEATH_CHANCE,
+  PROFESSIONAL_STARVATION_CHANCE,
+  getSoldierCost,
+  getSoldierCount,
+  getTotalSoldiers,
+  getSoldierCap,
+  getBarracksUpgradeCost,
+  getEffectiveAutoRate,
+  getPromotionCost,
+  getTierIndex,
+  getOfflineUpgradeCost,
+  getFoodConsumption,
+  getFoodEventsRemaining,
+  getForageYield,
+  FORAGER_TIERS,
+  LODGE_LEVELS,
+  MAX_LODGE_LEVEL,
+  getTotalForagers,
+  getForagerCap,
+  getForagerCost,
+  getForagerCount,
+  getAutoFoodRate,
+  POST_LEVELS,
+  MAX_POST_LEVEL,
+  EXPLORER_COST,
+  EXPEDITION_INSPIRATION_COST,
+  EXPEDITION_FOOD_COST,
+  EXPEDITION_DURATION,
+  EXPEDITION_PITY_THRESHOLD,
+  getExplorerCap,
+  rollExpeditionReward,
+  DRACONIA_HALL_COST,
+  getTrainingCost,
+  getRecruitCost,
+  REASSIGN_REFUND_RATE,
+  DISMISS_REFUND_RATE,
+  shouldRevealExplorerPost,
+  WANDERER_COOLDOWN,
+  rollWandererCheck,
+  getTrainedOverflowRefund,
+  getTrainedBuildingName,
+  getTrainedRoleName,
+  LIBRARIUM_COST,
+  RESEARCH_NODES,
+  getResearchBonuses,
 } from '../types/game'
 import { useStorage } from '../hooks/useStorage'
+import type { OfflineEarnings } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
+
+/**
+ * Food system activates when:
+ * - Player has trained >= 4 conscripts, OR
+ * - Player has purchased 2+ buildings (barracks + armory)
+ */
+function shouldActivateFoodSystem(s: GameState): boolean {
+  if (s.foodSystemActive) return false
+  const buildingCount = (s.barracksLevel > 0 ? 1 : 0) + (s.armoryBuilt ? 1 : 0)
+  return s.soldiersTrained.conscripts >= 4 || buildingCount >= 2
+}
 
 interface GameContextType {
   state: GameState
   click: () => void
-  buyUpgrade: (id: UpgradeId) => boolean
-  idleIncome: number
-  getUpgradePrice: (id: UpgradeId) => number
-  canAfford: (id: UpgradeId) => boolean
+  forage: () => void
+  buildOrUpgradeBarracks: () => boolean
+  buildArmory: () => boolean
+  trainSoldier: (tier: SoldierTier) => boolean
+  promoteSoldier: (fromTier: SoldierTier, toTier: SoldierTier) => boolean
+  buySword: () => boolean
+  buyShield: () => boolean
+  buyWeapon: (id: string) => boolean
+  upgradeOffline: () => boolean
+  buildOrUpgradeLodge: () => boolean
+  trainForager: (tier: ForagerTier) => boolean
+  buildOrUpgradePost: () => boolean
+  trainExplorer: () => boolean
+  sendExpedition: () => boolean
+  claimExpedition: (id: number) => { villagersFound: number } | null
+  buildDraconiaHall: () => boolean
+  dismissSoldier: (tier: SoldierTier) => boolean
+  dismissForager: (tier: ForagerTier) => boolean
+  dismissExplorer: () => boolean
+  reassignRole: (from: RoleId, to: RoleId) => boolean
+  effectiveAutoRate: number
+  autoFoodRate: number
+  foodWarningLevel: 0 | 3 | 1
   resetGame: () => void
+  pendingOfflineEarnings: OfflineEarnings | null
+  dismissOfflineEarnings: () => void
+  pendingFoodIntro: boolean
+  dismissFoodIntro: () => void
+  pendingStarvationReport: StarvationResult | null
+  dismissStarvationReport: () => void
+  pendingFoodWarning: 0 | 3 | 1
+  dismissFoodWarning: () => void
+  pendingExplorerIntro: boolean
+  dismissExplorerIntro: () => void
+  pendingWanderer: WandererEncounter | null
+  acceptWanderer: () => { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null
+  rejectWanderer: () => void
+  buildLibrarium: () => boolean
+  completeResearch: (id: string) => boolean
+  isResearchAvailable: (id: string) => boolean
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined)
@@ -24,18 +122,27 @@ const GameContext = createContext<GameContextType | undefined>(undefined)
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(DEFAULT_GAME_STATE)
   const [loaded, setLoaded] = useState(false)
+  const [pendingOfflineEarnings, setPendingOfflineEarnings] = useState<OfflineEarnings | null>(null)
+  const [pendingFoodIntro, setPendingFoodIntro] = useState(false)
+  const [pendingStarvationReport, setPendingStarvationReport] = useState<StarvationResult | null>(null)
+  const [pendingFoodWarning, setPendingFoodWarning] = useState<0 | 3 | 1>(0)
+  const [pendingExplorerIntro, setPendingExplorerIntro] = useState(false)
+  const [pendingWanderer, setPendingWanderer] = useState<WandererEncounter | null>(null)
+  const wandererTimerRef = useRef(0)
+  const lastFoodWarningRef = useRef<0 | 3 | 1>(0)
   const { save, load, clear } = useStorage()
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Load saved state on mount
   useEffect(() => {
-    load().then((savedState) => {
-      setState(savedState)
+    load().then((result) => {
+      setState(result.state)
+      if (result.offlineEarnings) {
+        setPendingOfflineEarnings(result.offlineEarnings)
+      }
       setLoaded(true)
     })
   }, [load])
 
-  // Debounced auto-save when state changes
   useEffect(() => {
     if (!loaded) return
     if (saveTimerRef.current) {
@@ -51,70 +158,904 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [state, loaded, save])
 
-  const idleIncome = getIdleIncome(state.upgrades)
+  const researchBonuses = getResearchBonuses(state.completedResearch)
 
-  // Idle income tick
+  const baseAutoRate = getEffectiveAutoRate(
+    state.soldiers,
+    state.armoryGear.swords,
+    state.armoryGear.shields,
+  )
+  // Apply research: gear bonus multiplier boosts the gear portion, auto rate multiplier boosts all
+  const gearRate = (state.armoryGear.swords * 0.1 + state.armoryGear.shields * 0.05) * researchBonuses.gearBonusMultiplier
+  const potentialAutoRate = (baseAutoRate + gearRate) * (1 + researchBonuses.autoRateMultiplier)
+  // Soldiers stop earning when starving
+  const soldiersStarving = state.foodSystemActive && state.food <= 0 && getTotalSoldiers(state.soldiers) > 0
+  const effectiveAutoRate = soldiersStarving ? 0 : potentialAutoRate
+
+  const autoFoodRate = getAutoFoodRate(state.foragers)
+
+  // Integer inspiration accumulator (soldiers stop fighting when starving)
   useGameLoop(
     useCallback(() => {
-      if (!loaded || idleIncome <= 0) return
-      setState((prev) => ({
-        ...prev,
-        gold: prev.gold + idleIncome,
-        totalGoldEarned: prev.totalGoldEarned + idleIncome,
-      }))
-    }, [loaded, idleIncome])
+      if (!loaded || effectiveAutoRate <= 0) return
+      setState((prev) => {
+        // No auto inspiration when food system is active and food is depleted
+        if (prev.foodSystemActive && prev.food <= 0) return prev
+
+        const newProgress = prev.autoProgress + effectiveAutoRate
+        const kills = Math.floor(newProgress)
+        if (kills <= 0) {
+          return { ...prev, autoProgress: newProgress }
+        }
+        return {
+          ...prev,
+          autoProgress: newProgress - kills,
+          inspiration: prev.inspiration + kills,
+          totalInspirationEarned: prev.totalInspirationEarned + kills,
+          monstersDefeated: prev.monstersDefeated + kills,
+        }
+      })
+    }, [loaded, effectiveAutoRate])
   )
+
+  // Auto food accumulator (foragers gather food automatically)
+  useGameLoop(
+    useCallback(() => {
+      if (!loaded || autoFoodRate <= 0) return
+      setState((prev) => {
+        const newProgress = prev.autoFoodProgress + autoFoodRate
+        const gained = Math.floor(newProgress)
+        if (gained <= 0) {
+          return { ...prev, autoFoodProgress: newProgress }
+        }
+        return {
+          ...prev,
+          autoFoodProgress: newProgress - gained,
+          food: prev.food + gained,
+          totalFoodForaged: prev.totalFoodForaged + gained,
+        }
+      })
+    }, [loaded, autoFoodRate])
+  )
+
+  // Food consumption tick (only when food system is active)
+  useGameLoop(
+    useCallback(() => {
+      if (!loaded) return
+      setState((prev) => {
+        if (!prev.foodSystemActive) return prev
+        const newTimer = prev.foodTimer + 1
+        if (newTimer < FOOD_CHECK_INTERVAL) {
+          return { ...prev, foodTimer: newTimer }
+        }
+
+        // Food check fires
+        const baseConsumption = getFoodConsumption(prev.villagers, prev.soldiers, prev.foragers, prev.explorers)
+        const rb = getResearchBonuses(prev.completedResearch)
+        const consumption = Math.max(0, Math.ceil(baseConsumption * (1 - rb.foodConsumptionReduction)))
+        const newFood = Math.max(0, prev.food - consumption)
+
+        // Check food warning level (events remaining AFTER this consumption)
+        const eventsLeft = consumption > 0 ? Math.floor(newFood / consumption) : Infinity
+        let warningLevel: 0 | 3 | 1 = 0
+        if (eventsLeft <= 1) warningLevel = 1
+        else if (eventsLeft <= 3) warningLevel = 3
+
+        // Only trigger popup if warning escalated (not on every tick)
+        if (warningLevel > 0 && warningLevel !== lastFoodWarningRef.current) {
+          setPendingFoodWarning(warningLevel)
+        }
+        lastFoodWarningRef.current = warningLevel
+
+        // Starvation: if no food, population may die
+        let villagersLost = 0
+        const soldiersLost: SoldierCounts = { conscripts: 0, footmen: 0, knights: 0 }
+        const foragersLost: ForagerCounts = { gatherers: 0, trappers: 0, rangers: 0 }
+        let explorersLost = 0
+
+        if (newFood === 0) {
+          // Idle villagers: higher death chance
+          for (let i = 0; i < prev.villagers; i++) {
+            if (Math.random() < STARVATION_DEATH_CHANCE) villagersLost++
+          }
+          // Soldiers: lower death chance
+          for (let i = 0; i < prev.soldiers.conscripts; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) soldiersLost.conscripts++
+          }
+          for (let i = 0; i < prev.soldiers.footmen; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) soldiersLost.footmen++
+          }
+          for (let i = 0; i < prev.soldiers.knights; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) soldiersLost.knights++
+          }
+          // Foragers: lower death chance
+          for (let i = 0; i < prev.foragers.gatherers; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) foragersLost.gatherers++
+          }
+          for (let i = 0; i < prev.foragers.trappers; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) foragersLost.trappers++
+          }
+          for (let i = 0; i < prev.foragers.rangers; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) foragersLost.rangers++
+          }
+          // Explorers: lower death chance
+          for (let i = 0; i < prev.explorers; i++) {
+            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) explorersLost++
+          }
+
+          const totalProfLost = soldiersLost.conscripts + soldiersLost.footmen + soldiersLost.knights +
+            foragersLost.gatherers + foragersLost.trappers + foragersLost.rangers + explorersLost
+          if (villagersLost > 0 || totalProfLost > 0) {
+            setPendingStarvationReport({ villagersLost, soldiersLost, foragersLost, explorersLost })
+          }
+        }
+
+        return {
+          ...prev,
+          foodTimer: 0,
+          food: newFood,
+          villagers: prev.villagers - villagersLost,
+          villagersLost: prev.villagersLost + villagersLost,
+          soldiers: {
+            conscripts: prev.soldiers.conscripts - soldiersLost.conscripts,
+            footmen: prev.soldiers.footmen - soldiersLost.footmen,
+            knights: prev.soldiers.knights - soldiersLost.knights,
+          },
+          foragers: {
+            gatherers: prev.foragers.gatherers - foragersLost.gatherers,
+            trappers: prev.foragers.trappers - foragersLost.trappers,
+            rangers: prev.foragers.rangers - foragersLost.rangers,
+          },
+          explorers: prev.explorers - explorersLost,
+        }
+      })
+    }, [loaded])
+  )
+
+  // Wanderer encounter check (time-based cooldown, active play only)
+  useGameLoop(
+    useCallback(() => {
+      if (!loaded) return
+      // Don't roll if a wanderer is already pending
+      if (pendingWanderer) return
+
+      wandererTimerRef.current += 1
+      if (wandererTimerRef.current < WANDERER_COOLDOWN) return
+      wandererTimerRef.current = 0
+
+      setState((prev) => {
+        // Requires food system to be active (foraging unlocked)
+        if (!prev.foodSystemActive) return prev
+
+        const totalSoldiers = getTotalSoldiers(prev.soldiers)
+        const totalForagers = getTotalForagers(prev.foragers)
+        const encounter = rollWandererCheck(
+          totalSoldiers,
+          totalForagers,
+          prev.villagers,
+          prev.activeExpeditions.length > 0,
+          prev.postLevel,
+        )
+
+        if (encounter) {
+          setPendingWanderer(encounter)
+        }
+
+        return { ...prev, lastWandererCheck: Date.now() }
+      })
+    }, [loaded, pendingWanderer])
+  )
+
+  // Check if we should activate food system after any state-changing action
+  const checkFoodActivation = useCallback(() => {
+    setState((prev) => {
+      if (!shouldActivateFoodSystem(prev)) return prev
+      setPendingFoodIntro(true)
+      return { ...prev, foodSystemActive: true }
+    })
+  }, [])
+
+  // Check if we should show explorer intro when outpost first becomes visible
+  const checkExplorerIntro = useCallback(() => {
+    setState((prev) => {
+      if (prev.explorerIntroShown) return prev
+      if (!shouldRevealExplorerPost(prev)) return prev
+      setPendingExplorerIntro(true)
+      return { ...prev, explorerIntroShown: true }
+    })
+  }, [])
 
   const click = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      gold: prev.gold + prev.clickPower,
-      totalGoldEarned: prev.totalGoldEarned + prev.clickPower,
+      inspiration: prev.inspiration + prev.clickPower,
+      totalInspirationEarned: prev.totalInspirationEarned + prev.clickPower,
+      monstersDefeated: prev.monstersDefeated + prev.clickPower,
       totalClicks: prev.totalClicks + 1,
     }))
   }, [])
 
-  const getUpgradePrice = useCallback(
-    (id: UpgradeId): number => {
-      const def = UPGRADES.find((u) => u.id === id)
-      if (!def) return Infinity
-      return getUpgradeCost(def, state.upgrades[id])
-    },
-    [state.upgrades]
-  )
+  const forage = useCallback(() => {
+    setState((prev) => {
+      const yield_ = getForageYield(prev.foragePower, prev.forageBonus)
+      return {
+        ...prev,
+        food: prev.food + yield_,
+        totalFoodForaged: prev.totalFoodForaged + yield_,
+        forageClicks: prev.forageClicks + 1,
+      }
+    })
+  }, [])
 
-  const canAfford = useCallback(
-    (id: UpgradeId): boolean => {
-      return state.gold >= getUpgradePrice(id)
-    },
-    [state.gold, getUpgradePrice]
-  )
+  const buildOrUpgradeBarracks = useCallback((): boolean => {
+    let success = false
+    setState((prev) => {
+      const nextLevel = prev.barracksLevel + 1
+      const def = BARRACKS_LEVELS.find((l) => l.level === nextLevel)
+      if (!def || prev.inspiration < def.cost) return prev
+      success = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - def.cost,
+        totalInspirationSpent: prev.totalInspirationSpent + def.cost,
+        barracksLevel: nextLevel,
+      }
+    })
+    if (success) { checkFoodActivation(); checkExplorerIntro() }
+    return success
+  }, [checkFoodActivation, checkExplorerIntro])
 
-  const buyUpgrade = useCallback(
-    (id: UpgradeId): boolean => {
-      const def = UPGRADES.find((u) => u.id === id)
-      if (!def) return false
+  const buildArmory = useCallback((): boolean => {
+    let success = false
+    setState((prev) => {
+      if (prev.armoryBuilt || prev.inspiration < ARMORY_COST) return prev
+      success = true
+      return { ...prev, inspiration: prev.inspiration - ARMORY_COST, totalInspirationSpent: prev.totalInspirationSpent + ARMORY_COST, armoryBuilt: true }
+    })
+    if (success) checkFoodActivation()
+    return success
+  }, [checkFoodActivation])
 
-      const cost = getUpgradeCost(def, state.upgrades[id])
-      if (state.gold < cost) return false
+  const trainSoldier = useCallback((tier: SoldierTier): boolean => {
+    let trained = false
+    setState((prev) => {
+      if (prev.barracksLevel <= 0) return prev
+      if (prev.villagers <= 0) return prev
+      const tierDef = SOLDIER_TIERS.find((t) => t.id === tier)
+      if (!tierDef || prev.barracksLevel < tierDef.unlocksAtBarracksLevel) return prev
+      const total = getTotalSoldiers(prev.soldiers)
+      const cap = getSoldierCap(prev.barracksLevel)
+      if (total >= cap) return prev
+      const lifetimeCount = getSoldierCount(prev.soldiersTrained, tier)
+      const baseCost = getSoldierCost(tierDef, lifetimeCount)
+      const rb = getResearchBonuses(prev.completedResearch)
+      const cost = Math.max(1, Math.floor(baseCost * (1 - rb.soldierCostDiscount)))
+      if (prev.inspiration < cost) return prev
+      trained = true
+      const key: keyof SoldierCounts =
+        tier === 'conscript' ? 'conscripts' :
+        tier === 'footman' ? 'footmen' : 'knights'
+      return {
+        ...prev,
+        inspiration: prev.inspiration - cost,
+        totalInspirationSpent: prev.totalInspirationSpent + cost,
+        villagers: prev.villagers - 1,
+        soldiers: { ...prev.soldiers, [key]: prev.soldiers[key] + 1 },
+        soldiersTrained: { ...prev.soldiersTrained, [key]: prev.soldiersTrained[key] + 1 },
+      }
+    })
+    if (trained) { checkFoodActivation(); checkExplorerIntro() }
+    return trained
+  }, [checkFoodActivation, checkExplorerIntro])
 
-      setState((prev) => {
-        const newUpgrades = { ...prev.upgrades, [id]: prev.upgrades[id] + 1 }
-        const clickBonus = def.clickPower ?? 0
-        return {
-          ...prev,
-          gold: prev.gold - cost,
-          upgrades: newUpgrades,
-          clickPower: prev.clickPower + clickBonus,
+  const promoteSoldier = useCallback((fromTier: SoldierTier, toTier: SoldierTier): boolean => {
+    let promoted = false
+    setState((prev) => {
+      if (prev.barracksLevel <= 0) return prev
+      const fromIdx = getTierIndex(fromTier)
+      const toIdx = getTierIndex(toTier)
+      if (toIdx <= fromIdx) return prev
+      const toDef = SOLDIER_TIERS[toIdx]
+      if (prev.barracksLevel < toDef.unlocksAtBarracksLevel) return prev
+      const fromCount = getSoldierCount(prev.soldiers, fromTier)
+      if (fromCount <= 0) return prev
+      const cost = getPromotionCost(fromTier, toTier, prev.soldiersTrained)
+      if (cost === null || prev.inspiration < cost) return prev
+      promoted = true
+      const fromKey: keyof SoldierCounts =
+        fromTier === 'conscript' ? 'conscripts' :
+        fromTier === 'footman' ? 'footmen' : 'knights'
+      const toKey: keyof SoldierCounts =
+        toTier === 'conscript' ? 'conscripts' :
+        toTier === 'footman' ? 'footmen' : 'knights'
+      return {
+        ...prev,
+        inspiration: prev.inspiration - cost,
+        totalInspirationSpent: prev.totalInspirationSpent + cost,
+        soldiersPromoted: prev.soldiersPromoted + 1,
+        soldiers: {
+          ...prev.soldiers,
+          [fromKey]: prev.soldiers[fromKey] - 1,
+          [toKey]: prev.soldiers[toKey] + 1,
+        },
+      }
+    })
+    return promoted
+  }, [])
+
+  const buySword = useCallback((): boolean => {
+    let bought = false
+    setState((prev) => {
+      if (!prev.armoryBuilt) return prev
+      const total = getTotalSoldiers(prev.soldiers)
+      if (prev.armoryGear.swords >= total) return prev
+      if (prev.inspiration < SWORD_COST) return prev
+      bought = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - SWORD_COST,
+        totalInspirationSpent: prev.totalInspirationSpent + SWORD_COST,
+        armoryGear: { ...prev.armoryGear, swords: prev.armoryGear.swords + 1 },
+      }
+    })
+    return bought
+  }, [])
+
+  const buyShield = useCallback((): boolean => {
+    let bought = false
+    setState((prev) => {
+      if (!prev.armoryBuilt) return prev
+      const total = getTotalSoldiers(prev.soldiers)
+      if (prev.armoryGear.shields >= total) return prev
+      if (prev.inspiration < SHIELD_COST) return prev
+      bought = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - SHIELD_COST,
+        totalInspirationSpent: prev.totalInspirationSpent + SHIELD_COST,
+        armoryGear: { ...prev.armoryGear, shields: prev.armoryGear.shields + 1 },
+      }
+    })
+    return bought
+  }, [])
+
+  const buyWeapon = useCallback((id: string): boolean => {
+    let bought = false
+    setState((prev) => {
+      if (prev.ownedWeapons.includes(id)) return prev
+      const def = AVATAR_WEAPONS.find((w) => w.id === id)
+      if (!def || prev.inspiration < def.cost) return prev
+      bought = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - def.cost,
+        totalInspirationSpent: prev.totalInspirationSpent + def.cost,
+        ownedWeapons: [...prev.ownedWeapons, id],
+        clickPower: prev.clickPower + def.clickPowerBonus,
+      }
+    })
+    return bought
+  }, [])
+
+  const buildOrUpgradeLodge = useCallback((): boolean => {
+    let success = false
+    setState((prev) => {
+      if (!prev.foodSystemActive) return prev
+      const nextLevel = prev.lodgeLevel + 1
+      const def = LODGE_LEVELS.find((l) => l.level === nextLevel)
+      if (!def || prev.inspiration < def.cost) return prev
+      success = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - def.cost,
+        totalInspirationSpent: prev.totalInspirationSpent + def.cost,
+        lodgeLevel: nextLevel,
+      }
+    })
+    if (success) checkExplorerIntro()
+    return success
+  }, [checkExplorerIntro])
+
+  const trainForager = useCallback((tier: ForagerTier): boolean => {
+    let trained = false
+    setState((prev) => {
+      if (prev.lodgeLevel <= 0) return prev
+      if (prev.villagers <= 0) return prev
+      const tierDef = FORAGER_TIERS.find((t) => t.id === tier)
+      if (!tierDef || prev.lodgeLevel < tierDef.unlocksAtLodgeLevel) return prev
+      const total = getTotalForagers(prev.foragers)
+      const cap = getForagerCap(prev.lodgeLevel)
+      if (total >= cap) return prev
+      const lifetimeCount = getForagerCount(prev.foragersTrained, tier)
+      const cost = getForagerCost(tierDef, lifetimeCount)
+      if (prev.inspiration < cost) return prev
+      trained = true
+      const key: keyof ForagerCounts =
+        tier === 'gatherer' ? 'gatherers' :
+        tier === 'trapper' ? 'trappers' : 'rangers'
+      return {
+        ...prev,
+        inspiration: prev.inspiration - cost,
+        totalInspirationSpent: prev.totalInspirationSpent + cost,
+        villagers: prev.villagers - 1,
+        foragers: { ...prev.foragers, [key]: prev.foragers[key] + 1 },
+        foragersTrained: { ...prev.foragersTrained, [key]: prev.foragersTrained[key] + 1 },
+      }
+    })
+    if (trained) checkExplorerIntro()
+    return trained
+  }, [checkExplorerIntro])
+
+  const buildOrUpgradePost = useCallback((): boolean => {
+    let success = false
+    setState((prev) => {
+      const nextLevel = prev.postLevel + 1
+      const def = POST_LEVELS.find((l) => l.level === nextLevel)
+      if (!def || prev.inspiration < def.cost) return prev
+      success = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - def.cost,
+        totalInspirationSpent: prev.totalInspirationSpent + def.cost,
+        postLevel: nextLevel,
+      }
+    })
+    return success
+  }, [])
+
+  const trainExplorer = useCallback((): boolean => {
+    let trained = false
+    setState((prev) => {
+      if (prev.postLevel <= 0) return prev
+      if (prev.villagers <= 0) return prev
+      const cap = getExplorerCap(prev.postLevel)
+      if (prev.explorers >= cap) return prev
+      const cost = EXPLORER_COST
+      if (prev.inspiration < cost) return prev
+      trained = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - cost,
+        totalInspirationSpent: prev.totalInspirationSpent + cost,
+        villagers: prev.villagers - 1,
+        explorers: prev.explorers + 1,
+        explorersTrained: prev.explorersTrained + 1,
+      }
+    })
+    return trained
+  }, [])
+
+  const sendExpedition = useCallback((): boolean => {
+    let sent = false
+    setState((prev) => {
+      if (prev.postLevel <= 0 || prev.explorers <= 0) return prev
+      // An explorer can only go on one expedition at a time
+      if (prev.activeExpeditions.length >= prev.explorers) return prev
+      if (prev.inspiration < EXPEDITION_INSPIRATION_COST || prev.food < EXPEDITION_FOOD_COST) return prev
+      sent = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - EXPEDITION_INSPIRATION_COST,
+        food: prev.food - EXPEDITION_FOOD_COST,
+        totalInspirationSpent: prev.totalInspirationSpent + EXPEDITION_INSPIRATION_COST,
+        activeExpeditions: [
+          ...prev.activeExpeditions,
+          {
+            id: prev.nextExpeditionId,
+            startedAt: Date.now(),
+            duration: Math.floor(EXPEDITION_DURATION * (1 - getResearchBonuses(prev.completedResearch).expeditionSpeedBonus)),
+          },
+        ],
+        nextExpeditionId: prev.nextExpeditionId + 1,
+      }
+    })
+    return sent
+  }, [])
+
+  const claimExpedition = useCallback((id: number): { villagersFound: number } | null => {
+    let result: { villagersFound: number } | null = null
+    setState((prev) => {
+      const expedition = prev.activeExpeditions.find((e) => e.id === id)
+      if (!expedition) return prev
+      const elapsed = (Date.now() - expedition.startedAt) / 1000
+      if (elapsed < expedition.duration) return prev
+      const pity = prev.expeditionDryStreak >= EXPEDITION_PITY_THRESHOLD
+      const rb = getResearchBonuses(prev.completedResearch)
+      const villagersFound = rollExpeditionReward(pity, rb.expeditionFindBonus)
+      result = { villagersFound }
+      return {
+        ...prev,
+        activeExpeditions: prev.activeExpeditions.filter((e) => e.id !== id),
+        villagers: prev.villagers + villagersFound,
+        villagersRescued: prev.villagersRescued + villagersFound,
+        expeditionDryStreak: villagersFound === 0 ? prev.expeditionDryStreak + 1 : 0,
+      }
+    })
+    return result
+  }, [])
+
+  const buildDraconiaHall = useCallback((): boolean => {
+    let success = false
+    setState((prev) => {
+      if (prev.draconiaHallBuilt || prev.inspiration < DRACONIA_HALL_COST) return prev
+      success = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - DRACONIA_HALL_COST,
+        totalInspirationSpent: prev.totalInspirationSpent + DRACONIA_HALL_COST,
+        draconiaHallBuilt: true,
+      }
+    })
+    return success
+  }, [])
+
+  const dismissSoldier = useCallback((tier: SoldierTier): boolean => {
+    let dismissed = false
+    setState((prev) => {
+      if (!prev.draconiaHallBuilt) return prev
+      const count = getSoldierCount(prev.soldiers, tier)
+      if (count <= 0) return prev
+      dismissed = true
+      const key: keyof SoldierCounts =
+        tier === 'conscript' ? 'conscripts' :
+        tier === 'footman' ? 'footmen' : 'knights'
+      return {
+        ...prev,
+        soldiers: { ...prev.soldiers, [key]: prev.soldiers[key] - 1 },
+        villagers: prev.villagers + 1,
+      }
+    })
+    return dismissed
+  }, [])
+
+  const dismissForager = useCallback((tier: ForagerTier): boolean => {
+    let dismissed = false
+    setState((prev) => {
+      if (!prev.draconiaHallBuilt) return prev
+      const count = getForagerCount(prev.foragers, tier)
+      if (count <= 0) return prev
+      dismissed = true
+      const key: keyof ForagerCounts =
+        tier === 'gatherer' ? 'gatherers' :
+        tier === 'trapper' ? 'trappers' : 'rangers'
+      return {
+        ...prev,
+        foragers: { ...prev.foragers, [key]: prev.foragers[key] - 1 },
+        villagers: prev.villagers + 1,
+      }
+    })
+    return dismissed
+  }, [])
+
+  const dismissExplorer = useCallback((): boolean => {
+    let dismissed = false
+    setState((prev) => {
+      if (!prev.draconiaHallBuilt) return prev
+      if (prev.explorers <= 0) return prev
+      // Can't dismiss an explorer who is on an active expedition
+      if (prev.activeExpeditions.length >= prev.explorers) return prev
+      dismissed = true
+      return {
+        ...prev,
+        explorers: prev.explorers - 1,
+        villagers: prev.villagers + 1,
+      }
+    })
+    return dismissed
+  }, [])
+
+  const reassignRole = useCallback((from: RoleId, to: RoleId): boolean => {
+    let success = false
+    setState((prev) => {
+      if (!prev.draconiaHallBuilt) return prev
+
+      // Validate source has units
+      if (from.type === 'soldier') {
+        if (getSoldierCount(prev.soldiers, from.tier) <= 0) return prev
+      } else if (from.type === 'forager') {
+        if (getForagerCount(prev.foragers, from.tier) <= 0) return prev
+      } else if (from.type === 'explorer') {
+        if (prev.explorers <= 0) return prev
+        if (prev.activeExpeditions.length >= prev.explorers) return prev
+      } else {
+        return prev // can't reassign from idle
+      }
+
+      // Block promotions within same type -- must use building promote flow
+      if (from.type === 'soldier' && to.type === 'soldier') {
+        if (getTierIndex(to.tier) > getTierIndex(from.tier)) return prev
+      }
+      if (from.type === 'forager' && to.type === 'forager') {
+        const fromIdx = FORAGER_TIERS.findIndex((t) => t.id === from.tier)
+        const toIdx = FORAGER_TIERS.findIndex((t) => t.id === to.tier)
+        if (toIdx > fromIdx) return prev
+      }
+
+      // Calculate costs
+      const refundRate = to.type === 'idle' ? DISMISS_REFUND_RATE : REASSIGN_REFUND_RATE
+      const refund = Math.floor(getTrainingCost(from, prev) * refundRate)
+      const recruitCost = to.type === 'idle' ? 0 : getRecruitCost(to, prev)
+      const netCost = recruitCost - refund // positive = player pays, negative = player gets inspiration
+
+      // Check player can afford (if net cost is positive)
+      if (netCost > 0 && prev.inspiration < netCost) return prev
+
+      // Validate target capacity (not needed for idle)
+      if (to.type === 'soldier') {
+        const total = getTotalSoldiers(prev.soldiers)
+        const effectiveTotal = from.type === 'soldier' ? total - 1 : total
+        if (effectiveTotal >= getSoldierCap(prev.barracksLevel)) return prev
+        const tierDef = SOLDIER_TIERS.find((t) => t.id === to.tier)
+        if (!tierDef || prev.barracksLevel < tierDef.unlocksAtBarracksLevel) return prev
+      } else if (to.type === 'forager') {
+        const total = getTotalForagers(prev.foragers)
+        const effectiveTotal = from.type === 'forager' ? total - 1 : total
+        if (effectiveTotal >= getForagerCap(prev.lodgeLevel)) return prev
+        const tierDef = FORAGER_TIERS.find((t) => t.id === to.tier)
+        if (!tierDef || prev.lodgeLevel < tierDef.unlocksAtLodgeLevel) return prev
+      } else if (to.type === 'explorer') {
+        if (prev.postLevel <= 0) return prev
+        const effectiveExplorers = from.type === 'explorer' ? prev.explorers - 1 : prev.explorers
+        if (effectiveExplorers >= getExplorerCap(prev.postLevel)) return prev
+      }
+
+      success = true
+      let next = { ...prev }
+
+      // Inspiration transaction
+      next.inspiration = prev.inspiration - netCost
+      if (netCost > 0) {
+        next.totalInspirationSpent = prev.totalInspirationSpent + netCost
+      }
+
+      // Remove from source role
+      if (from.type === 'soldier') {
+        const key: keyof SoldierCounts =
+          from.tier === 'conscript' ? 'conscripts' :
+          from.tier === 'footman' ? 'footmen' : 'knights'
+        next.soldiers = { ...prev.soldiers, [key]: prev.soldiers[key] - 1 }
+      } else if (from.type === 'forager') {
+        const key: keyof ForagerCounts =
+          from.tier === 'gatherer' ? 'gatherers' :
+          from.tier === 'trapper' ? 'trappers' : 'rangers'
+        next.foragers = { ...prev.foragers, [key]: prev.foragers[key] - 1 }
+      } else if (from.type === 'explorer') {
+        next.explorers = prev.explorers - 1
+      }
+
+      // Add to target role (or idle)
+      if (to.type === 'soldier') {
+        const key: keyof SoldierCounts =
+          to.tier === 'conscript' ? 'conscripts' :
+          to.tier === 'footman' ? 'footmen' : 'knights'
+        next.soldiers = { ...(next.soldiers ?? prev.soldiers), [key]: (next.soldiers ?? prev.soldiers)[key] + 1 }
+        next.soldiersTrained = {
+          ...prev.soldiersTrained,
+          [key]: prev.soldiersTrained[key] + 1,
         }
-      })
-      return true
-    },
-    [state.gold, state.upgrades]
-  )
+      } else if (to.type === 'forager') {
+        const key: keyof ForagerCounts =
+          to.tier === 'gatherer' ? 'gatherers' :
+          to.tier === 'trapper' ? 'trappers' : 'rangers'
+        next.foragers = { ...(next.foragers ?? prev.foragers), [key]: (next.foragers ?? prev.foragers)[key] + 1 }
+        next.foragersTrained = {
+          ...prev.foragersTrained,
+          [key]: prev.foragersTrained[key] + 1,
+        }
+      } else if (to.type === 'explorer') {
+        next.explorers = (next.explorers ?? prev.explorers) + 1
+        next.explorersTrained = prev.explorersTrained + 1
+      } else if (to.type === 'idle') {
+        next.villagers = prev.villagers + 1
+      }
+
+      return next
+    })
+    return success
+  }, [])
+
+  const upgradeOffline = useCallback((): boolean => {
+    let upgraded = false
+    setState((prev) => {
+      if (prev.offlineLevel >= MAX_OFFLINE_LEVEL) return prev
+      const cost = getOfflineUpgradeCost(prev.offlineLevel)
+      if (cost === null || prev.inspiration < cost) return prev
+      upgraded = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - cost,
+        totalInspirationSpent: prev.totalInspirationSpent + cost,
+        offlineLevel: prev.offlineLevel + 1,
+      }
+    })
+    return upgraded
+  }, [])
+
+  const dismissOfflineEarnings = useCallback(() => {
+    setPendingOfflineEarnings(null)
+  }, [])
+
+  const dismissFoodIntro = useCallback(() => {
+    setPendingFoodIntro(false)
+  }, [])
+
+  const dismissStarvationReport = useCallback(() => {
+    setPendingStarvationReport(null)
+  }, [])
+
+  const dismissFoodWarning = useCallback(() => {
+    setPendingFoodWarning(0)
+  }, [])
+
+  const dismissExplorerIntro = useCallback(() => {
+    setPendingExplorerIntro(false)
+  }, [])
+
+  const acceptWanderer = useCallback((): { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null => {
+    if (!pendingWanderer) return null
+    const encounter = pendingWanderer
+    let overflowResult: { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null = null
+
+    setState((prev) => {
+      let next = { ...prev }
+      next.wanderersWelcomed = prev.wanderersWelcomed + encounter.villagerCount
+
+      if (encounter.trained) {
+        // Try to place trained unit in their building
+        const trained = encounter.trained
+        let hasRoom = false
+
+        if (trained.type === 'soldier') {
+          const total = getTotalSoldiers(prev.soldiers)
+          const cap = getSoldierCap(prev.barracksLevel)
+          hasRoom = prev.barracksLevel > 0 && total < cap
+        } else {
+          const total = getTotalForagers(prev.foragers)
+          const cap = getForagerCap(prev.lodgeLevel)
+          hasRoom = prev.lodgeLevel > 0 && total < cap
+        }
+
+        if (hasRoom) {
+          // Place as trained unit
+          if (trained.type === 'soldier') {
+            const key: keyof SoldierCounts =
+              trained.tier === 'conscript' ? 'conscripts' :
+              trained.tier === 'footman' ? 'footmen' : 'knights'
+            next.soldiers = { ...prev.soldiers, [key]: prev.soldiers[key] + 1 }
+            next.soldiersTrained = { ...prev.soldiersTrained, [key]: prev.soldiersTrained[key] + 1 }
+          } else {
+            const key: keyof ForagerCounts =
+              trained.tier === 'gatherer' ? 'gatherers' :
+              trained.tier === 'trapper' ? 'trappers' : 'rangers'
+            next.foragers = { ...prev.foragers, [key]: prev.foragers[key] + 1 }
+            next.foragersTrained = { ...prev.foragersTrained, [key]: prev.foragersTrained[key] + 1 }
+          }
+          overflowResult = { overflow: false, refundInspiration: 0, roleName: getTrainedRoleName(trained), buildingName: getTrainedBuildingName(trained) }
+        } else {
+          // Overflow: place as idle + refund
+          const refund = getTrainedOverflowRefund(trained)
+          next.villagers = prev.villagers + 1
+          next.inspiration = (next.inspiration ?? prev.inspiration) + refund
+          overflowResult = { overflow: true, refundInspiration: refund, roleName: getTrainedRoleName(trained), buildingName: getTrainedBuildingName(trained) }
+        }
+      } else {
+        // Regular villagers
+        next.villagers = prev.villagers + encounter.villagerCount
+        overflowResult = { overflow: false, refundInspiration: 0, roleName: '', buildingName: '' }
+      }
+
+      return next
+    })
+
+    setPendingWanderer(null)
+    return overflowResult
+  }, [pendingWanderer])
+
+  const rejectWanderer = useCallback(() => {
+    setPendingWanderer(null)
+  }, [])
+
+  // Computed food warning level for badge display (always current, not just on events)
+  const foodWarningLevel: 0 | 3 | 1 = (() => {
+    if (!state.foodSystemActive) return 0
+    const eventsLeft = getFoodEventsRemaining(state.food, state.villagers, state.soldiers, state.foragers, state.explorers)
+    if (eventsLeft <= 1) return 1
+    if (eventsLeft <= 3) return 3
+    return 0
+  })()
+
+  // =========================================================================
+  // LIBRARIUM & RESEARCH
+  // =========================================================================
+
+  const checkPrereqs = useCallback((prereqs: ResearchPrereq[], s: GameState): boolean => {
+    for (const p of prereqs) {
+      switch (p.type) {
+        case 'research':
+          if (!s.completedResearch.includes(p.id)) return false
+          break
+        case 'barracksLevel':
+          if (s.barracksLevel < p.level) return false
+          break
+        case 'lodgeLevel':
+          if (s.lodgeLevel < p.level) return false
+          break
+        case 'postLevel':
+          if (s.postLevel < p.level) return false
+          break
+        case 'totalInspirationEarned':
+          if (s.totalInspirationEarned < p.amount) return false
+          break
+        case 'monstersDefeated':
+          if (s.monstersDefeated < p.amount) return false
+          break
+        case 'villagersRescued':
+          if (s.villagersRescued < p.amount) return false
+          break
+      }
+    }
+    return true
+  }, [])
+
+  const isResearchAvailable = useCallback((id: string): boolean => {
+    const node = RESEARCH_NODES.find((n) => n.id === id)
+    if (!node) return false
+    if (state.completedResearch.includes(id)) return false
+    return checkPrereqs(node.prereqs, state)
+  }, [state, checkPrereqs])
+
+  const buildLibrarium = useCallback((): boolean => {
+    let success = false
+    setState((prev) => {
+      if (prev.librariumBuilt) return prev
+      if (prev.inspiration < LIBRARIUM_COST) return prev
+      success = true
+      return {
+        ...prev,
+        inspiration: prev.inspiration - LIBRARIUM_COST,
+        totalInspirationSpent: prev.totalInspirationSpent + LIBRARIUM_COST,
+        librariumBuilt: true,
+      }
+    })
+    return success
+  }, [])
+
+  const completeResearch = useCallback((id: string): boolean => {
+    let success = false
+    setState((prev) => {
+      if (!prev.librariumBuilt) return prev
+      if (prev.completedResearch.includes(id)) return prev
+      const node = RESEARCH_NODES.find((n) => n.id === id)
+      if (!node || prev.inspiration < node.cost) return prev
+      if (!checkPrereqs(node.prereqs, prev)) return prev
+      success = true
+
+      const next = {
+        ...prev,
+        inspiration: prev.inspiration - node.cost,
+        totalInspirationSpent: prev.totalInspirationSpent + node.cost,
+        completedResearch: [...prev.completedResearch, id],
+      }
+
+      // Apply immediate effects
+      for (const effect of node.effects) {
+        switch (effect.type) {
+          case 'clickPowerBonus':
+            next.clickPower = next.clickPower + effect.value
+            break
+          case 'foragePowerBonus':
+            next.foragePower = next.foragePower + effect.value
+            break
+        }
+      }
+
+      return next
+    })
+    return success
+  }, [checkPrereqs])
 
   const resetGame = useCallback(() => {
-    const fresh = { ...DEFAULT_GAME_STATE, startedAt: Date.now() }
+    const fresh = { ...DEFAULT_GAME_STATE, startedAt: Date.now(), lastSavedAt: Date.now() }
     setState(fresh)
     clear()
   }, [clear])
@@ -126,11 +1067,46 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       value={{
         state,
         click,
-        buyUpgrade,
-        idleIncome,
-        getUpgradePrice,
-        canAfford,
+        forage,
+        buildOrUpgradeBarracks,
+        buildArmory,
+        trainSoldier,
+        promoteSoldier,
+        buySword,
+        buyShield,
+        buyWeapon,
+        upgradeOffline,
+        buildOrUpgradeLodge,
+        trainForager,
+        buildOrUpgradePost,
+        trainExplorer,
+        sendExpedition,
+        claimExpedition,
+        buildDraconiaHall,
+        dismissSoldier,
+        dismissForager,
+        dismissExplorer,
+        reassignRole,
+        effectiveAutoRate,
+        autoFoodRate,
         resetGame,
+        pendingOfflineEarnings,
+        dismissOfflineEarnings,
+        pendingFoodIntro,
+        dismissFoodIntro,
+        foodWarningLevel,
+        pendingStarvationReport,
+        dismissStarvationReport,
+        pendingFoodWarning,
+        dismissFoodWarning,
+        pendingExplorerIntro,
+        dismissExplorerIntro,
+        pendingWanderer,
+        acceptWanderer,
+        rejectWanderer,
+        buildLibrarium,
+        completeResearch,
+        isResearchAvailable,
       }}
     >
       {children}

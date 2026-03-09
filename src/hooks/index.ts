@@ -1,3 +1,8 @@
 export { useHaptics } from './useHaptics'
+export { useHoldPress } from './useHoldPress'
 export { useStorage } from './useStorage'
 export { useGameLoop } from './useGameLoop'
+export { useBgMusic } from './useBgMusic'
+export { useFlavorText } from './useFlavorText'
+export { useSfx } from './useSfx'
+export { useRandomSfx } from './useRandomSfx'

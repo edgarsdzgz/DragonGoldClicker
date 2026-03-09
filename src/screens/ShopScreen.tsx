@@ -1,119 +1,559 @@
 import React from 'react'
-import { View, StyleSheet, ScrollView, Pressable } from 'react-native'
-import { Text, Surface } from '../components'
+import { View, ScrollView, Pressable, Animated, Easing } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons'
+import { Text, Badge, ZoneHeader, BottomSheet, ConfirmModal, InspirationIcon, type ResourceItem } from '../components'
+import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
-import { useHaptics } from '../hooks'
-import { colors, spacing, gold, radius } from '../theme'
-import { UPGRADES, formatNumber } from '../types/game'
-import type { UpgradeId } from '../types/game'
+import { useHaptics, useSfx } from '../hooks'
+import { SFX } from '../data/sfx'
+import { colors, gold } from '../theme'
+import {
+  ARMORY_COST,
+  DRACONIA_HALL_COST,
+  LIBRARIUM_COST,
+  OFFLINE_LEVELS,
+  RESEARCH_NODES,
+  shouldRevealExplorerPost,
+  SOLDIER_TIERS,
+  FORAGER_TIERS,
+  SWORD_COST,
+  SHIELD_COST,
+  AVATAR_WEAPONS,
+  EXPLORER_COST,
+  EXPEDITION_INSPIRATION_COST,
+  EXPEDITION_FOOD_COST,
+  getTotalSoldiers,
+  getSoldierCap,
+  getSoldierCost,
+  getSoldierCount,
+  getBarracksUpgradeCost,
+  getTotalForagers,
+  getForagerCap,
+  getForagerCost,
+  getForagerCount,
+  getLodgeUpgradeCost,
+  getExplorerCap,
+  getPostUpgradeCost,
+  getOfflineUpgradeCost,
+} from '../types/game'
+import type { BuildingId, BuildingInfo, ResourceKey } from './shop/types'
+import { BarracksInterior } from './shop/BarracksInterior'
+import { ArmoryInterior } from './shop/ArmoryInterior'
+import { LodgeInterior } from './shop/LodgeInterior'
+import { PostInterior } from './shop/PostInterior'
+import { DraconiaHallInterior } from './shop/DraconiaHallInterior'
+import { LibrariumInterior } from './shop/LibrariumInterior'
+import { mapStyles } from './shop/mapStyles'
 
-export function ShopScreen() {
-  const { state, buyUpgrade, getUpgradePrice, canAfford } = useGame()
-  const haptics = useHaptics()
+// =============================================================================
+// BUILDING INTERIOR ROUTER
+// =============================================================================
 
-  const handleBuy = (id: UpgradeId) => {
-    const success = buyUpgrade(id)
-    if (success) {
-      haptics.medium()
-    } else {
-      haptics.warning()
-    }
+function BuildingInterior({ id }: { id: BuildingId }) {
+  switch (id) {
+    case 'keep': return <DraconiaHallInterior />
+    case 'garrison': return <BarracksInterior />
+    case 'forge': return <ArmoryInterior />
+    case 'lodge': return <LodgeInterior />
+    case 'outpost': return <PostInterior />
+    case 'librarium': return <LibrariumInterior />
   }
+}
+
+// =============================================================================
+// BUILDING NODE
+// =============================================================================
+
+function BuildingNode({
+  building,
+  onPress,
+}: {
+  building: BuildingInfo
+  onPress: () => void
+}) {
+  const canBuildNow = !building.isBuilt && building.canAfford
+
+  // Breathing pulse for affordable nodes
+  const pulse = React.useRef(new Animated.Value(0)).current
+
+  React.useEffect(() => {
+    if (canBuildNow) {
+      const animation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulse, {
+            toValue: 1,
+            duration: 2000,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulse, {
+            toValue: 0,
+            duration: 2000,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ]),
+      )
+      animation.start()
+      return () => animation.stop()
+    } else {
+      pulse.setValue(0)
+    }
+  }, [canBuildNow, pulse])
+
+  if (!building.visible) return null
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        mapStyles.nodeContainer,
+        pressed && { opacity: 0.7 },
+      ]}
+      accessibilityRole="button"
+      accessibilityLabel={`Open ${building.name}`}
     >
-      <View style={styles.goldHeader}>
-        <Text variant="h3" color="link">
-          {formatNumber(state.gold)} gold
+      <Animated.View
+        style={[
+          mapStyles.nodeCircle,
+          building.isBuilt
+            ? [
+                mapStyles.nodeCircleBuilt,
+                {
+                  borderColor: building.accentColor,
+                  backgroundColor: `${building.accentColor}30`,
+                  shadowColor: building.accentColor,
+                },
+              ]
+            : canBuildNow
+              ? [
+                  mapStyles.nodeCircleAffordable,
+                  {
+                    borderColor: building.accentColor,
+                    backgroundColor: `${building.accentColor}18`,
+                    shadowColor: building.accentColor,
+                  },
+                ]
+              : mapStyles.nodeCircleUnbuilt,
+          canBuildNow && {
+            opacity: pulse.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0.5, 1],
+            }),
+            transform: [{
+              scale: pulse.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 1.04],
+              }),
+            }],
+          },
+        ]}
+      >
+        {building.isBuilt && building.hasAction && (
+          <View
+            style={[
+              mapStyles.actionBadge,
+              { backgroundColor: building.accentColor },
+            ]}
+          />
+        )}
+        <Ionicons
+          name={building.icon}
+          size={24}
+          color={building.isBuilt || canBuildNow ? building.accentColor : colors.text.muted}
+        />
+      </Animated.View>
+      <Text
+        variant="caption"
+        color={building.isBuilt || canBuildNow ? 'primary' : 'muted'}
+        style={mapStyles.nodeLabel}
+      >
+        {building.name}
+      </Text>
+      {building.isBuilt && building.statusLabel ? (
+        <Text variant="caption" color="muted" style={mapStyles.nodeStatus}>
+          {building.statusLabel}
         </Text>
-      </View>
-
-      {UPGRADES.map((upgrade) => {
-        const level = state.upgrades[upgrade.id]
-        const cost = getUpgradePrice(upgrade.id)
-        const affordable = canAfford(upgrade.id)
-
-        return (
-          <Surface key={upgrade.id} style={styles.upgradeCard}>
-            <View style={styles.upgradeInfo}>
-              <View style={styles.upgradeHeader}>
-                <Text variant="h3">{upgrade.name}</Text>
-                <Text variant="caption" color="secondary">
-                  Lv. {level}
-                </Text>
-              </View>
-              <Text variant="bodySmall" color="secondary">
-                {upgrade.description}
-              </Text>
-            </View>
-            <Pressable
-              onPress={() => handleBuy(upgrade.id)}
-              disabled={!affordable}
-              style={({ pressed }) => [
-                styles.buyButton,
-                affordable ? styles.buyButtonActive : styles.buyButtonDisabled,
-                pressed && affordable && styles.buyButtonPressed,
-              ]}
-            >
-              <Text
-                variant="button"
-                color={affordable ? 'inverse' : 'muted'}
-                center
-              >
-                {formatNumber(cost)}
-              </Text>
-            </Pressable>
-          </Surface>
-        )
-      })}
-    </ScrollView>
+      ) : !building.isBuilt && building.cost !== null ? (
+        <Badge
+          iconElement={<InspirationIcon size={7} />}
+          color={gold[400]}
+          size="sm"
+          variant={canBuildNow ? 'subtle' : 'ghost'}
+        >
+          <Text variant="caption" style={{ color: gold[400], fontSize: 10 }}>
+            {building.cost}
+          </Text>
+        </Badge>
+      ) : null}
+    </Pressable>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg.base,
-  },
-  content: {
-    padding: spacing[4],
-    gap: spacing[3],
-  },
-  goldHeader: {
-    alignItems: 'center',
-    paddingVertical: spacing[3],
-  },
-  upgradeCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing[3],
-  },
-  upgradeInfo: {
-    flex: 1,
-    gap: spacing[1],
-  },
-  upgradeHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  buyButton: {
-    paddingHorizontal: spacing[4],
-    paddingVertical: spacing[3],
-    borderRadius: radius.md,
-    minWidth: 80,
-    alignItems: 'center',
-  },
-  buyButtonActive: {
-    backgroundColor: gold[500],
-  },
-  buyButtonDisabled: {
-    backgroundColor: colors.bg.surface2,
-  },
-  buyButtonPressed: {
-    backgroundColor: gold[600],
-  },
-})
+// =============================================================================
+// ZONE PATH CONNECTOR
+// =============================================================================
+
+function ZonePath() {
+  return (
+    <View style={mapStyles.pathContainer}>
+      <View style={mapStyles.pathLine} />
+      <View style={mapStyles.pathDot} />
+      <View style={mapStyles.pathLine} />
+    </View>
+  )
+}
+
+// =============================================================================
+// MAIN SHOP SCREEN - CITY MAP
+// =============================================================================
+
+export function ShopScreen() {
+  const [selected, setSelected] = React.useState<BuildingId | null>(null)
+  const {
+    state,
+    buildOrUpgradeBarracks,
+    buildArmory,
+    buildOrUpgradeLodge,
+    buildOrUpgradePost,
+    buildDraconiaHall,
+    buildLibrarium,
+    isResearchAvailable,
+    effectiveAutoRate,
+  } = useGame()
+  const haptics = useHaptics()
+  const playCoin = useSfx(SFX.COIN)
+  const playShop = useSfx(SFX.SHOP)
+
+  // Clear open panel when navigating away so it doesn't reopen on return
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => setSelected(null)
+    }, []),
+  )
+
+  const total = getTotalSoldiers(state.soldiers)
+  const cap = getSoldierCap(state.barracksLevel)
+  const barracksBuilt = state.barracksLevel > 0
+
+  const lodgeBuilt = state.lodgeLevel > 0
+  const foragerTotal = getTotalForagers(state.foragers)
+  const foragerCap = getForagerCap(state.lodgeLevel)
+  const lodgeBuildCost = getLodgeUpgradeCost(0)
+  const barracksBuildCost = getBarracksUpgradeCost(0)
+
+  const postBuildCost = getPostUpgradeCost(0)
+  const showExplorerPost = shouldRevealExplorerPost(state)
+
+  // Compute "has action" flags for built buildings
+  const garrisonHasAction = barracksBuilt && (() => {
+    const upgCost = getBarracksUpgradeCost(state.barracksLevel)
+    if (upgCost !== null && state.inspiration >= upgCost) return true
+    if (total < cap && state.villagers > 0) {
+      for (const tier of SOLDIER_TIERS) {
+        if (tier.unlocksAtBarracksLevel <= state.barracksLevel) {
+          const cost = getSoldierCost(tier, getSoldierCount(state.soldiersTrained, tier.id))
+          if (state.inspiration >= cost) return true
+        }
+      }
+    }
+    return false
+  })()
+
+  const forgeHasAction = state.armoryBuilt && (() => {
+    const totalSoldiers = getTotalSoldiers(state.soldiers)
+    if (state.armoryGear.swords < totalSoldiers && state.inspiration >= SWORD_COST) return true
+    if (state.armoryGear.shields < totalSoldiers && state.inspiration >= SHIELD_COST) return true
+    for (const w of AVATAR_WEAPONS) {
+      if (!state.ownedWeapons.includes(w.id) && state.inspiration >= w.cost) return true
+    }
+    return false
+  })()
+
+  const lodgeHasAction = lodgeBuilt && (() => {
+    const upgCost = getLodgeUpgradeCost(state.lodgeLevel)
+    if (upgCost !== null && state.inspiration >= upgCost) return true
+    if (foragerTotal < foragerCap && state.villagers > 0) {
+      for (const tier of FORAGER_TIERS) {
+        if (tier.unlocksAtLodgeLevel <= state.lodgeLevel) {
+          const cost = getForagerCost(tier, getForagerCount(state.foragersTrained, tier.id))
+          if (state.inspiration >= cost) return true
+        }
+      }
+    }
+    return false
+  })()
+
+  const outpostHasAction = state.postLevel > 0 && (() => {
+    const explorerCap = getExplorerCap(state.postLevel)
+    if (state.explorers < explorerCap && state.villagers > 0 && state.inspiration >= EXPLORER_COST) return true
+    const available = state.explorers - state.activeExpeditions.length
+    if (available > 0 && state.inspiration >= EXPEDITION_INSPIRATION_COST && state.food >= EXPEDITION_FOOD_COST) return true
+    const upgCost = getPostUpgradeCost(state.postLevel)
+    if (upgCost !== null && state.inspiration >= upgCost) return true
+    return false
+  })()
+
+  const keepHasAction = state.draconiaHallBuilt && (() => {
+    const upgCost = getOfflineUpgradeCost(state.offlineLevel)
+    return upgCost !== null && state.inspiration >= upgCost
+  })()
+
+  const librariumHasAction = state.librariumBuilt && (() => {
+    for (const node of RESEARCH_NODES) {
+      if (isResearchAvailable(node.id) && state.inspiration >= node.cost) return true
+    }
+    return false
+  })()
+
+  // Librarium visible once Draconia Keep is built and barracks >= 2 OR total inspiration earned >= 2000
+  const showLibrarium = state.librariumBuilt || (
+    state.draconiaHallBuilt && (state.barracksLevel >= 2 || state.totalInspirationEarned >= 2000)
+  )
+
+  const buildings: Record<string, BuildingInfo> = {
+    keep: {
+      id: 'keep',
+      name: 'Draconia Keep',
+      icon: 'business',
+      description: 'The heart of the settlement. From this seat of power, manage villager roles and unlock offline inspiration collection.',
+      accentColor: colors.building.draconia,
+      isBuilt: state.draconiaHallBuilt,
+      visible: true,
+      cost: DRACONIA_HALL_COST,
+      canAfford: state.inspiration >= DRACONIA_HALL_COST,
+      onBuild: buildDraconiaHall,
+      hasAction: keepHasAction,
+      resourceKeys: ['inspiration'],
+      statusLabel: state.draconiaHallBuilt
+        ? `Offline: ${OFFLINE_LEVELS[state.offlineLevel].label}`
+        : undefined,
+    },
+    garrison: {
+      id: 'garrison',
+      name: 'The Garrison',
+      icon: 'shield',
+      description: 'A fortified training ground where villagers take up arms. Soldiers auto-defeat monsters and earn inspiration for the settlement.',
+      accentColor: colors.building.garrison,
+      isBuilt: barracksBuilt,
+      visible: true,
+      cost: barracksBuildCost,
+      canAfford: barracksBuildCost !== null && state.inspiration >= barracksBuildCost,
+      onBuild: buildOrUpgradeBarracks,
+      hasAction: garrisonHasAction,
+      resourceKeys: ['inspiration', 'villagers'],
+      statusLabel: barracksBuilt
+        ? `Lv${state.barracksLevel} -- ${total}/${cap} soldiers`
+        : undefined,
+    },
+    forge: {
+      id: 'forge',
+      name: 'The Forge',
+      icon: 'construct',
+      description: 'A blazing smithy where weapons and armor are hammered into shape. Equip soldiers with swords and shields, or arm yourself.',
+      accentColor: colors.building.forge,
+      isBuilt: state.armoryBuilt,
+      visible: true,
+      cost: ARMORY_COST,
+      canAfford: state.inspiration >= ARMORY_COST,
+      onBuild: buildArmory,
+      hasAction: forgeHasAction,
+      resourceKeys: ['inspiration'],
+      statusLabel: state.armoryBuilt
+        ? `${state.armoryGear.swords} swords, ${state.armoryGear.shields} shields`
+        : undefined,
+    },
+    lodge: {
+      id: 'lodge',
+      name: "Ranger's Lodge",
+      icon: 'leaf',
+      description: 'A rustic outpost at the edge of the wilds. Train rangers to forage food from the surrounding wilderness.',
+      accentColor: colors.building.lodge,
+      isBuilt: lodgeBuilt,
+      visible: state.foodSystemActive,
+      cost: lodgeBuildCost,
+      canAfford: lodgeBuildCost !== null && state.inspiration >= lodgeBuildCost,
+      onBuild: buildOrUpgradeLodge,
+      hasAction: lodgeHasAction,
+      resourceKeys: ['inspiration', 'villagers'],
+      statusLabel: lodgeBuilt
+        ? `Lv${state.lodgeLevel} -- ${foragerTotal}/${foragerCap} rangers`
+        : undefined,
+    },
+    outpost: {
+      id: 'outpost',
+      name: "Wayfinder's Outpost",
+      icon: 'compass',
+      description: 'A staging ground for expeditions beyond the walls. Train wayfinders to venture into the wasteland and rescue lost villagers.',
+      accentColor: colors.building.explorer,
+      isBuilt: state.postLevel > 0,
+      visible: showExplorerPost,
+      cost: postBuildCost,
+      canAfford: (postBuildCost ?? 0) > 0 && state.inspiration >= (postBuildCost ?? 0),
+      onBuild: buildOrUpgradePost,
+      hasAction: outpostHasAction,
+      resourceKeys: ['inspiration', 'food', 'villagers'],
+      statusLabel: state.postLevel > 0
+        ? `Lv${state.postLevel} -- ${state.explorers}/${getExplorerCap(state.postLevel)} wayfinders`
+        : undefined,
+    },
+    librarium: {
+      id: 'librarium',
+      name: 'The Librarium',
+      icon: 'book',
+      description: 'A vast archive of ancient knowledge. Research upgrades to strengthen every aspect of Draconia.',
+      accentColor: colors.building.librarium,
+      isBuilt: state.librariumBuilt,
+      visible: showLibrarium,
+      cost: LIBRARIUM_COST,
+      canAfford: state.inspiration >= LIBRARIUM_COST,
+      onBuild: buildLibrarium,
+      hasAction: librariumHasAction,
+      resourceKeys: ['inspiration'],
+      statusLabel: state.librariumBuilt
+        ? `${state.completedResearch.length}/${RESEARCH_NODES.length} researched`
+        : undefined,
+    },
+  }
+
+  const resolveResources = (keys: ResourceKey[]): ResourceItem[] =>
+    keys.map((key): ResourceItem => {
+      switch (key) {
+        case 'inspiration':
+          return { icon: 'wallet', iconElement: <InspirationIcon size={10} />, value: state.inspiration, color: gold[400] }
+        case 'food':
+          return { icon: 'nutrition', value: state.food, color: state.food === 0 ? colors.status.error : state.food <= 10 ? colors.status.warning : colors.text.secondary }
+        case 'villagers':
+          return { icon: 'people', value: state.villagers, color: colors.text.secondary, label: 'idle' }
+      }
+    })
+
+  const selectedBuilding = selected ? buildings[selected] ?? null : null
+  const [purchaseTarget, setPurchaseTarget] = React.useState<BuildingId | null>(null)
+  const purchaseBuilding = purchaseTarget ? buildings[purchaseTarget] ?? null : null
+
+  const handleNodePress = (id: BuildingId) => {
+    haptics.selection()
+    const b = buildings[id]
+    if (b && !b.isBuilt) {
+      playShop()
+      setPurchaseTarget(id)
+    } else {
+      setSelected(id)
+    }
+  }
+
+  const hasOutskirts = buildings.lodge.visible || buildings.outpost.visible
+
+  return (
+    <View style={mapStyles.container}>
+      <ResourceBar
+        inspiration={state.inspiration}
+        food={state.food}
+        foodSystemActive={state.foodSystemActive}
+        autoInspPerSec={effectiveAutoRate}
+      />
+      <ScrollView
+        style={mapStyles.scrollView}
+        contentContainerStyle={mapStyles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* City title */}
+        <Text variant="h2" style={mapStyles.cityTitle}>Draconia</Text>
+
+        {/* === ZONE: THE KEEP === */}
+        <View style={mapStyles.zone}>
+          <ZoneHeader label="THE KEEP" />
+          <View style={mapStyles.zoneNodesCenter}>
+            <BuildingNode
+              building={buildings.keep}
+              onPress={() => handleNodePress('keep')}
+            />
+          </View>
+          {buildings.librarium.visible && (
+            <View style={mapStyles.zoneNodesCenter}>
+              <BuildingNode
+                building={buildings.librarium}
+                onPress={() => handleNodePress('librarium')}
+              />
+            </View>
+          )}
+        </View>
+
+        <ZonePath />
+
+        {/* === ZONE: MILITARY QUARTER === */}
+        <View style={mapStyles.zone}>
+          <ZoneHeader label="MILITARY QUARTER" />
+          <View style={mapStyles.zoneNodesRow}>
+            <BuildingNode
+              building={buildings.garrison}
+              onPress={() => handleNodePress('garrison')}
+            />
+            <BuildingNode
+              building={buildings.forge}
+              onPress={() => handleNodePress('forge')}
+            />
+          </View>
+        </View>
+
+        {/* === ZONE: THE OUTSKIRTS === */}
+        {hasOutskirts && (
+          <>
+            <ZonePath />
+            <View style={mapStyles.zone}>
+              <ZoneHeader label="THE OUTSKIRTS" />
+              <View style={mapStyles.zoneNodesRow}>
+                <BuildingNode
+                  building={buildings.lodge}
+                  onPress={() => handleNodePress('lodge')}
+                />
+                <BuildingNode
+                  building={buildings.outpost}
+                  onPress={() => handleNodePress('outpost')}
+                />
+              </View>
+            </View>
+          </>
+        )}
+      </ScrollView>
+
+      {/* Purchase confirmation for unbuilt buildings */}
+      <ConfirmModal
+        visible={purchaseBuilding !== null}
+        title={purchaseBuilding?.name ?? ''}
+        message={purchaseBuilding?.description ?? ''}
+        icon={purchaseBuilding?.icon ?? 'hammer'}
+        confirmLabel={`Build - ${purchaseBuilding?.cost ?? 0} inspiration`}
+        cancelLabel="Cancel"
+        accentColor={purchaseBuilding?.accentColor}
+        confirmDisabled={purchaseBuilding !== null && !purchaseBuilding.canAfford}
+        onConfirm={() => {
+          if (purchaseBuilding?.canAfford && purchaseTarget) {
+            haptics.medium()
+            playCoin()
+            purchaseBuilding.onBuild()
+            const openId = purchaseTarget
+            setPurchaseTarget(null)
+            setSelected(openId)
+          }
+        }}
+        onCancel={() => setPurchaseTarget(null)}
+      />
+
+      {/* Building interior sheet for built buildings */}
+      <BottomSheet
+        visible={selectedBuilding !== null}
+        onClose={() => setSelected(null)}
+        title={selectedBuilding?.name ?? ''}
+        subtitle={selectedBuilding?.statusLabel}
+        icon={selectedBuilding?.icon}
+        iconColor={selectedBuilding?.accentColor}
+        resources={selectedBuilding ? resolveResources(selectedBuilding.resourceKeys) : undefined}
+      >
+        {selectedBuilding && <BuildingInterior id={selectedBuilding.id} />}
+      </BottomSheet>
+    </View>
+  )
+}

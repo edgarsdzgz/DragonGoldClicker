@@ -5,8 +5,9 @@ import type { RouteProp } from '@react-navigation/native'
 // Tab navigator
 export type TabParamList = {
   GameTab: undefined
-  ShopTab: undefined
-  StatsTab: undefined
+  ForageTab: undefined
+  DraconiaTab: undefined
+  SettingsTab: undefined
 }
 
 // Root stack (wraps tabs + future modals)

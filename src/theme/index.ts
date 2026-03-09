@@ -45,7 +45,7 @@ export const colors = {
     surface1: dark[800],
     surface2: dark[700],
     surface3: dark[600],
-    overlay: 'rgba(5, 5, 10, 0.8)',
+    overlay: '#05050acc',
   },
 
   text: {
@@ -62,7 +62,7 @@ export const colors = {
     accent: gold[500],
   },
   divider: {
-    default: 'rgba(26, 26, 37, 0.5)',
+    default: '#1a1a2580',
   },
 
   accent: {
@@ -80,7 +80,26 @@ export const colors = {
   },
 
   focus: {
-    ring: 'rgba(224, 168, 64, 0.5)',
+    ring: '#e0a84080',
+  },
+
+  /** Disabled-state tokens (WCAG AA compliant) */
+  disabled: {
+    /** Text on accent-tinted dark bg -- 6:1+ contrast ratio */
+    text: '#b0b0c5',
+    /** Text on transparent/surface bg -- 4.5:1 contrast ratio */
+    textSubtle: '#80809a',
+    /** Border for disabled secondary buttons */
+    border: '#252530',
+  },
+
+  building: {
+    garrison: '#f87171',
+    forge: '#f59e0b',
+    lodge: '#4ade80',
+    explorer: '#60a5fa',
+    draconia: '#a78bfa',
+    librarium: '#38bdf8',
   },
 
   dark,

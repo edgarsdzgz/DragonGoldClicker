@@ -9,7 +9,7 @@ REM  Usage:
 REM    start_dev.bat             - Use default AVD (Pixel_9)
 REM    start_dev.bat Pixel_9     - Specify AVD name explicitly
 REM
-REM  Location: r:\Coding_Projects\_dragonGold\_dev\scripts\start_dev.bat
+REM  Location: r:\Coding_Projects\_dragonGold\scripts\start_dev.bat
 REM ============================================================
 
 REM Resolve the directory this .bat file lives in (works from any cwd)
@@ -32,7 +32,7 @@ REM  Verify the Python script exists
 REM -------------------------------------------------------
 if not exist "%PYTHON_SCRIPT%" (
     echo [ERROR] Python script not found: %PYTHON_SCRIPT%
-    echo         Expected location: r:\Coding_Projects\_dragonGold\_dev\scripts\start_dev.py
+    echo         Expected location: r:\Coding_Projects\_dragonGold\scripts\start_dev.py
     exit /b 1
 )
 

@@ -327,6 +327,34 @@ def wait_for_boot_completed(serial, timeout=BOOT_TIMEOUT_SECONDS):
 
 
 # ---------------------------------------------------------------------------
+# Expo Go cleanup
+# ---------------------------------------------------------------------------
+
+EXPO_GO_PACKAGE = "host.exp.exponent"
+
+
+def uninstall_stale_expo_go(serial):
+    """
+    Remove any existing Expo Go installation so that Expo CLI performs a clean
+    install of the correct version without prompting.  If Expo Go is not
+    installed, adb returns an error that we silently ignore.
+    """
+    log_step("Pre-clearing Expo Go for clean install")
+
+    result = subprocess.run(
+        [ADB_EXE, "-s", serial, "uninstall", EXPO_GO_PACKAGE],
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+
+    if result.returncode == 0:
+        log_ok("Removed existing Expo Go (will be freshly installed by Expo CLI).")
+    else:
+        log_info("Expo Go was not installed -- nothing to remove.")
+
+
+# ---------------------------------------------------------------------------
 # Expo launcher
 # ---------------------------------------------------------------------------
 
@@ -345,19 +373,13 @@ def launch_expo():
         sys.exit(1)
 
     try:
-        # Use Popen with piped stdin so we can auto-confirm prompts
-        # (e.g. "Install the recommended Expo Go version?")
+        # stdin is inherited (not piped) so Metro's interactive console works
+        # (press r to reload, etc.) and any Expo prompts display normally.
         proc = subprocess.Popen(
             "npx expo start --android --clear",
             shell=True,
             cwd=MOBILE_PROJECT,
-            stdin=subprocess.PIPE,
         )
-
-        # Auto-confirm any initial prompt (Expo Go version update)
-        proc.stdin.write(b"yes\n")
-        proc.stdin.flush()
-        proc.stdin.close()
 
         sys.exit(proc.wait())
     except KeyboardInterrupt:
@@ -456,7 +478,12 @@ def main():
         wait_for_boot_completed(serial, timeout=BOOT_TIMEOUT_SECONDS)
 
     # -----------------------------------------------------------------------
-    # Step 7: Launch Expo
+    # Step 7: Pre-clear stale Expo Go to avoid version mismatch prompts
+    # -----------------------------------------------------------------------
+    uninstall_stale_expo_go(serial)
+
+    # -----------------------------------------------------------------------
+    # Step 8: Launch Expo
     # -----------------------------------------------------------------------
     launch_expo()
 
