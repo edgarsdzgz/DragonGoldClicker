@@ -113,6 +113,8 @@ export interface GameState {
   lastWandererCheck: number
   /** Lifetime wanderers welcomed into Draconia */
   wanderersWelcomed: number
+  /** Number of active repairers (heal city HP during siege) */
+  repairers: number
   /** Whether the Librarium has been built */
   librariumBuilt: boolean
   /** IDs of completed research nodes */
@@ -161,6 +163,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   explorerIntroShown: false,
   lastWandererCheck: 0,
   wanderersWelcomed: 0,
+  repairers: 0,
   librariumBuilt: false,
   completedResearch: [],
 }

@@ -16,10 +16,17 @@
 - Changed starting villagers from 10 to 25
 - Updated `ResourceKey` type from `'gold'` to `'inspiration'`
 
-### Phase 1: Tab Locking System (PENDING)
-- All 4 bottom tabs always visible
-- Locked tabs show lock icon + "Locked" text
-- Floating toast on locked tab tap with unlock requirement
+### Phase 1: Tab Locking System (COMPLETE)
+- All 4 bottom tabs always visible (removed conditional Forage tab rendering)
+- Locked tabs show lock-closed icon + "Locked" label in muted color
+- Floating pill toast on locked tab tap with unlock requirement text
+- Created `useTabLocks` hook (`src/navigation/useTabLocks.ts`) with per-tab lock conditions
+- Created `UnlockToast` component (`src/components/UnlockToast.tsx`) with fade animation
+- Unlock conditions wired to final game-flow values:
+  - Forage: 3 repairers directed (Phase 2 will add repairers)
+  - Draconia: 3 gatherers trained (Phase 5 will add training path)
+- Added `repairers: number` field to `GameState` (default 0, ready for Phase 2)
+- Badges suppressed on locked tabs (build dot, food warning)
 
 ### Phase 2: Fighters & Repairers (PENDING)
 - Rally button on Warfront tab (garrison red, 25% size of Slay)

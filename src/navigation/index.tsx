@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { TouchableOpacity } from 'react-native'
+import React, { useMemo, useRef } from 'react'
+import { TouchableOpacity, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -10,6 +10,9 @@ import { useHaptics } from '../hooks/useHaptics'
 import { useSfx } from '../hooks/useSfx'
 import { SFX } from '../data/sfx'
 import { useGame } from '../context/GameContext'
+import { useTabLocks } from './useTabLocks'
+import { UnlockToast } from '../components/UnlockToast'
+import type { UnlockToastHandle } from '../components/UnlockToast'
 import {
   BARRACKS_LEVELS,
   ARMORY_COST,
@@ -173,83 +176,101 @@ function useBuildTabBadge(): boolean {
 }
 
 function TabNavigator() {
-  const { state, foodWarningLevel } = useGame()
+  const { foodWarningLevel } = useGame()
   const buildHasAction = useBuildTabBadge()
+  const locks = useTabLocks()
+  const toastRef = useRef<UnlockToastHandle | null>(null)
 
   return (
-    <Tab.Navigator
-      initialRouteName="GameTab"
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: colors.bg.surface1,
-        },
-        headerTintColor: colors.text.primary,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-        tabBarStyle: {
-          backgroundColor: colors.bg.surface1,
-          borderTopColor: colors.border.subtle,
-          borderTopWidth: 1,
-          height: 60,
-          paddingBottom: spacing[2],
-          paddingTop: spacing[2],
-        },
-        tabBarActiveTintColor: gold[500],
-        tabBarInactiveTintColor: colors.text.muted,
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '500',
-        },
-        tabBarHideOnKeyboard: true,
-        tabBarButton: (props) => <HapticTabButton {...props} />,
-      }}
-    >
-      <Tab.Screen
-        name="DraconiaTab"
-        component={ShopScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Draconia',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="hammer" size={size} color={color} />
-          ),
-          tabBarAccessibilityLabel: 'Draconia tab',
-          tabBarBadge: buildHasAction ? '' : undefined,
-          tabBarBadgeStyle: {
-            backgroundColor: gold[500],
-            minWidth: 10,
-            maxHeight: 10,
-            borderRadius: 5,
-            fontSize: 0,
-            top: 2,
+    <View style={{ flex: 1 }}>
+      <Tab.Navigator
+        initialRouteName="GameTab"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: colors.bg.surface1,
           },
+          headerTintColor: colors.text.primary,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          tabBarStyle: {
+            backgroundColor: colors.bg.surface1,
+            borderTopColor: colors.border.subtle,
+            borderTopWidth: 1,
+            height: 60,
+            paddingBottom: spacing[2],
+            paddingTop: spacing[2],
+          },
+          tabBarActiveTintColor: gold[500],
+          tabBarInactiveTintColor: colors.text.muted,
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: '500',
+          },
+          tabBarHideOnKeyboard: true,
+          tabBarButton: (props) => <HapticTabButton {...props} />,
         }}
-      />
-      <Tab.Screen
-        name="GameTab"
-        component={GameScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Warfront',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="flame" size={size} color={color} />
-          ),
-          tabBarAccessibilityLabel: 'Warfront tab',
-        }}
-      />
-      {state.foodSystemActive && (
+      >
+        <Tab.Screen
+          name="DraconiaTab"
+          component={ShopScreen}
+          options={{
+            headerShown: false,
+            tabBarLabel: locks.DraconiaTab.locked ? 'Locked' : 'Draconia',
+            tabBarIcon: ({ color, size }) => (
+              locks.DraconiaTab.locked
+                ? <Ionicons name="lock-closed" size={size} color={colors.text.muted} />
+                : <Ionicons name="hammer" size={size} color={color} />
+            ),
+            tabBarAccessibilityLabel: locks.DraconiaTab.locked
+              ? 'Draconia tab - locked'
+              : 'Draconia tab',
+            tabBarBadge: !locks.DraconiaTab.locked && buildHasAction ? '' : undefined,
+            tabBarBadgeStyle: {
+              backgroundColor: gold[500],
+              minWidth: 10,
+              maxHeight: 10,
+              borderRadius: 5,
+              fontSize: 0,
+              top: 2,
+            },
+          }}
+          listeners={{
+            tabPress: (e) => {
+              if (locks.DraconiaTab.locked) {
+                e.preventDefault()
+                toastRef.current?.show(locks.DraconiaTab.requirement)
+              }
+            },
+          }}
+        />
+        <Tab.Screen
+          name="GameTab"
+          component={GameScreen}
+          options={{
+            headerShown: false,
+            tabBarLabel: 'Warfront',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="flame" size={size} color={color} />
+            ),
+            tabBarAccessibilityLabel: 'Warfront tab',
+          }}
+        />
         <Tab.Screen
           name="ForageTab"
           component={ForageScreen}
           options={{
             headerShown: false,
-            tabBarLabel: 'Forage',
+            tabBarLabel: locks.ForageTab.locked ? 'Locked' : 'Forage',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="leaf" size={size} color={color} />
+              locks.ForageTab.locked
+                ? <Ionicons name="lock-closed" size={size} color={colors.text.muted} />
+                : <Ionicons name="leaf" size={size} color={color} />
             ),
-            tabBarAccessibilityLabel: 'Forage tab',
-            tabBarBadge: foodWarningLevel > 0 ? '!' : undefined,
+            tabBarAccessibilityLabel: locks.ForageTab.locked
+              ? 'Forage tab - locked'
+              : 'Forage tab',
+            tabBarBadge: !locks.ForageTab.locked && foodWarningLevel > 0 ? '!' : undefined,
             tabBarBadgeStyle: {
               backgroundColor: foodWarningLevel === 1 ? colors.status.error : colors.status.warning,
               color: '#fff',
@@ -262,21 +283,30 @@ function TabNavigator() {
               top: 1,
             },
           }}
+          listeners={{
+            tabPress: (e) => {
+              if (locks.ForageTab.locked) {
+                e.preventDefault()
+                toastRef.current?.show(locks.ForageTab.requirement)
+              }
+            },
+          }}
         />
-      )}
-      <Tab.Screen
-        name="SettingsTab"
-        component={SettingsScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Settings',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
-          ),
-          tabBarAccessibilityLabel: 'Settings tab',
-        }}
-      />
-    </Tab.Navigator>
+        <Tab.Screen
+          name="SettingsTab"
+          component={SettingsScreen}
+          options={{
+            headerShown: false,
+            tabBarLabel: 'Settings',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="settings-outline" size={size} color={color} />
+            ),
+            tabBarAccessibilityLabel: 'Settings tab',
+          }}
+        />
+      </Tab.Navigator>
+      <UnlockToast toastRef={toastRef} />
+    </View>
   )
 }
 
