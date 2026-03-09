@@ -37,6 +37,7 @@ export type {
 } from './foragers'
 export {
   FORAGER_TIERS,
+  BASE_GATHERER_CAP,
   LODGE_LEVELS,
   MAX_LODGE_LEVEL,
   getTotalForagers,

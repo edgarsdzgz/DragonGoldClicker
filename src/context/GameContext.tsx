@@ -692,7 +692,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const trainForager = useCallback((tier: ForagerTier): boolean => {
     let trained = false
     setState((prev) => {
-      if (prev.lodgeLevel <= 0) return prev
       if (prev.villagers <= 0) return prev
       const tierDef = FORAGER_TIERS.find((t) => t.id === tier)
       if (!tierDef || prev.lodgeLevel < tierDef.unlocksAtLodgeLevel) return prev

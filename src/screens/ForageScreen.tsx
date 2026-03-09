@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, MealCountdown } from '../components'
+import { Text, Badge, MealCountdown, ActionOrb } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -11,7 +11,7 @@ import { useRandomSfx } from '../hooks/useRandomSfx'
 import { SFX_HARVEST_POOL } from '../data/sfx'
 import { FORAGE_LINES } from '../data/flavorText'
 import { colors, spacing } from '../theme'
-import { formatNumber, getForageYield, getTotalForagers } from '../types/game'
+import { formatNumber, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS } from '../types/game'
 
 // Earthy green palette for foraging
 const forage = {
@@ -24,9 +24,10 @@ const forage = {
 } as const
 
 const FORAGE_PALETTE = { accent: forage[400], glow: forage[500] }
+const TRAIN_PALETTE = { accent: forage[300], glow: forage[400] }
 
 export function ForageScreen() {
-  const { state, forage: doForage, effectiveAutoRate, autoFoodRate } = useGame()
+  const { state, forage: doForage, trainForager, effectiveAutoRate, autoFoodRate } = useGame()
   const incomeFlash = useRef(new Animated.Value(1)).current
   const flavor = useFlavorText(FORAGE_LINES)
   const playHarvest = useRandomSfx(SFX_HARVEST_POOL, { cooldownMs: 2000 })
@@ -57,8 +58,18 @@ export function ForageScreen() {
     return () => pulse.stop()
   }, [autoFoodRate, incomeFlash])
 
+  const handleTrainGatherer = useCallback(() => {
+    trainForager('gatherer')
+  }, [trainForager])
+
   const yield_ = getForageYield(state.foragePower, state.forageBonus)
   const hasBonusPercent = state.forageBonus > 0
+  const gathererTier = FORAGER_TIERS[0]
+  const gathererCount = getForagerCount(state.foragers, 'gatherer')
+  const gathererCost = getForagerCost(gathererTier, getForagerCount(state.foragersTrained, 'gatherer'))
+  const gathererCap = getForagerCap(state.lodgeLevel)
+  const totalForagers = getTotalForagers(state.foragers)
+  const canTrainGatherer = state.villagers > 0 && state.inspiration >= gathererCost && totalForagers < gathererCap
 
   return (
     <View style={styles.container}>
@@ -117,13 +128,31 @@ export function ForageScreen() {
       {/* Flavor text */}
       <FlavorText text={flavor.text} opacity={flavor.opacity} color={forage[300]} />
 
-      {/* FORAGE button */}
-      <HarvestOrb
-        onAction={handleForage}
-        icon="leaf"
-        label="FORAGE"
-        palette={FORAGE_PALETTE}
-      />
+      {/* Action area: Train -- FORAGE */}
+      <View style={styles.actionRow}>
+        <View style={styles.sideOrb}>
+          <ActionOrb
+            onAction={handleTrainGatherer}
+            icon="person-add"
+            label="TRAIN"
+            palette={TRAIN_PALETTE}
+            disabled={!canTrainGatherer}
+          />
+          <Text variant="caption" color="muted" center style={styles.orbCost}>
+            {formatNumber(gathererCost)} insp
+          </Text>
+          <Text variant="caption" color="muted" center style={styles.orbCost}>
+            {gathererCount}/{gathererCap}
+          </Text>
+        </View>
+        <HarvestOrb
+          onAction={handleForage}
+          icon="leaf"
+          label="FORAGE"
+          palette={FORAGE_PALETTE}
+        />
+        <View style={styles.sideOrb} />
+      </View>
 
       {/* Footer: forage yield hint */}
       <View style={styles.footer}>
@@ -170,6 +199,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing[2],
+  },
+  actionRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing[4],
+  },
+  sideOrb: {
+    alignItems: 'center',
+    width: 70,
+    gap: spacing[1],
+  },
+  orbCost: {
+    fontSize: 10,
   },
   footer: {
     alignItems: 'center',

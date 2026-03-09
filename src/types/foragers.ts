@@ -13,8 +13,11 @@ export interface ForagerTierDef {
   unlocksAtLodgeLevel: number
 }
 
+/** Gatherers trainable from the Forage tab without a Lodge */
+export const BASE_GATHERER_CAP = 6
+
 export const FORAGER_TIERS: ForagerTierDef[] = [
-  { id: 'gatherer', name: 'Gatherer', baseRate: 0.2, baseCost: 5, unlocksAtLodgeLevel: 1 },
+  { id: 'gatherer', name: 'Gatherer', baseRate: 0.2, baseCost: 5, unlocksAtLodgeLevel: 0 },
   { id: 'trapper', name: 'Trapper', baseRate: 0.6, baseCost: 15, unlocksAtLodgeLevel: 3 },
   { id: 'ranger', name: 'Ranger', baseRate: 1.5, baseCost: 40, unlocksAtLodgeLevel: 5 },
 ]
@@ -54,8 +57,9 @@ export function getTotalForagers(foragers: ForagerCounts): number {
 }
 
 export function getForagerCap(lodgeLevel: number): number {
+  if (lodgeLevel <= 0) return BASE_GATHERER_CAP
   const def = LODGE_LEVELS.find((l) => l.level === lodgeLevel)
-  return def?.foragerCap ?? 0
+  return def?.foragerCap ?? BASE_GATHERER_CAP
 }
 
 export function getLodgeUpgradeCost(currentLevel: number): number | null {

@@ -65,8 +65,14 @@
 - Both accept and reject mark the milestone as offered (no repeat triggers)
 - Save migration for `milestonesOffered` field in useStorage.ts
 
-### Phase 5: Forage Train Button (PENDING)
-- Train gatherers directly from Forage tab (no Lodge required)
+### Phase 5: Forage Train Button (COMPLETE)
+- Added `BASE_GATHERER_CAP = 6` in foragers.ts -- gatherers trainable without Lodge
+- Changed gatherer `unlocksAtLodgeLevel` from 1 to 0
+- `getForagerCap(0)` now returns BASE_GATHERER_CAP instead of 0
+- Removed hard `lodgeLevel <= 0` gate from `trainForager` (tier check handles it)
+- Added Train ActionOrb on ForageScreen flanking the FORAGE orb (left side)
+- Shows gatherer cost and current/cap count below the Train button
+- Lodge still required for trappers (Lv3) and rangers (Lv5) and higher caps
 
 ### Phase 6: Draconia City Map (PENDING)
 - Ward-based building layout
