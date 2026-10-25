@@ -231,6 +231,48 @@ its result are computed from `prev` together. Game over is derived
 React may run updaters twice in development, which can fire an event twice. The director and the
 ticks must decide on events outside the updater and enqueue after the state change.
 
+### Guided tutorial: coach marks (owner rulings 2026-10-25)
+
+For the first minutes of play the game **dims the whole screen except the one control the
+player should press**, blocks taps everywhere else, and shows a one-line hint next to the
+target. This replaces the spec's original "pulsing ring" for these steps; the ring remains for
+later, lighter guidance.
+
+- **No skip.** Every player installs fresh, so everyone goes through the guided steps. (Scene
+  text stays skippable per ruling 4; the guided step that follows still runs.)
+- **Dialogue** uses the draft lines in this spec as written.
+
+**Guided steps** (in order; each starts after its beat's scene is dismissed):
+
+| Step | After beat | Target | Hint | Done when |
+|------|------------|--------|------|-----------|
+| `tap_slay` | `prologue` | SLAY orb | Tap SLAY to strike the monsters. | first slay |
+| `tap_rally` | `call_to_arms` | Rally orb | Rally a villager to fight beside you. | `fighters >= 1` |
+| `tap_repair` | `mend_the_walls` | Repair orb | Send a villager to mend the wall. | `repairers >= 1` |
+| `open_forage` | `empty_stores` | Forage tab button | Open the Forage tab. | Forage tab focused |
+| `tap_forage` | `open_forage` | FORAGE orb | Gather food for the city. | first forage |
+| `train_gatherer` | `tap_forage` | Train orb | Train a gatherer to forage for you. | `gatherers >= 1` |
+| `open_draconia` | `a_city_to_build` | Draconia tab button | Open the Draconia tab. | Draconia tab focused |
+| `tap_garrison` | `open_draconia` | Garrison node | Tap the Garrison. | its purchase sheet opens |
+| `build_garrison` | `tap_garrison` | Build button in the sheet | Build the Garrison. | `barracksLevel >= 1` |
+
+**Behaviour:**
+- **Targets register themselves.** A control opts in with a `useCoachTarget(id)` hook that
+  reports its on-screen rectangle (`measureInWindow`, re-measured on layout and scroll). A step
+  shows only once its target is registered and visible; until then nothing dims.
+- **The overlay:** four dim rectangles around a cutout, plus a highlight ring on the cutout. The
+  cutout passes taps through to the real control; the dim area swallows taps.
+- **Pop-ups win.** While any EventHost pop-up or scene is showing, the overlay hides, and it
+  returns afterwards.
+- **Saved progress:** `tutorialStepsDone: string[]` in GameState. Backfill marks a step done if
+  its "done when" already holds, so existing saves are never trapped in a step.
+- **Accessibility:**
+  - The overlay is modal to screen readers (`accessibilityViewIsModal`), and the hint is
+    announced when a step starts.
+  - With Reduce Motion on, the ring does not pulse.
+  - The hint text meets contrast on the dim background.
+- **Dev tab:** a "Reset tutorial" control, plus each step's state shown in the Story list.
+
 ### Skipping (ruling 4)
 
 `NpcDialog` gains a **Skip** action that closes the scene at any line. The beat still counts
@@ -285,8 +327,10 @@ phone.
    `playSeconds`, `useStoryDirector`, `EventHost`, and every gate change in the table above.
    Scenes use the existing `NpcDialog` with placeholder lines. The updater side-effect fix
    goes here.
-2. **Guide UI.** `ObjectiveStrip`, `Spotlight`, `NpcDialog` skip, `JournalSheet`,
-   `useScreenShake`, fogged building nodes on the Draconia map, and the dev tools.
+2. **Guide UI** (built together with group 3 in one pass, ruled 2026-10-25). The coach-mark
+   guided tutorial (above), `ObjectiveStrip`, `Spotlight` ring for later beats, `JournalSheet`,
+   `useScreenShake`, fogged building nodes on the Draconia map, and the dev controls.
+   (`NpcDialog` skip was done in group 1.)
 3. **Content and scripted events.** All scene lines, the HP floor, breach hit, first meal, lone
    wanderer, lean times, first-expedition success, Kael, Lirae as Trained Refugee, and the
    offline framing.
