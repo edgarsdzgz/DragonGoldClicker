@@ -83,6 +83,19 @@ describe('findNextBeat', () => {
     expect(findNextBeat({ ...hungry, food: 10 }, 'live')).toBeNull()
   })
 
+  it('lets the_keep and the_scholar fire before beyond_the_walls (it is a side beat)', () => {
+    const main = ['prologue', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate',
+      'a_city_to_build', 'the_smith', 'the_keep_stands']
+    const base = { playSeconds: 99999, draconiaHallBuilt: true, totalInspirationEarned: 0 }
+    expect(findNextBeat(make({ ...base, beatsSeen: main }), 'live')?.id).toBe('the_keep')
+    expect(findNextBeat(make({ ...base, beatsSeen: [...main, 'the_keep'] }), 'live')?.id).toBe('the_scholar')
+  })
+
+  it('fires beyond_the_walls whenever the explorer post is revealed', () => {
+    const s = make({ beatsSeen: ['prologue'], postLevel: 1, playSeconds: 300 })
+    expect(findNextBeat(s, 'live')?.id).toBe('beyond_the_walls')
+  })
+
   it('returns null when everything is seen', () => {
     const all = [
       'prologue', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate',

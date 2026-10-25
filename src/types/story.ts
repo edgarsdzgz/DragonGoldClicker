@@ -141,7 +141,7 @@ export const STORY_BEATS: BeatDef[] = [
     objective: { label: 'Get food above 0', current: (s) => (s.food > 0 ? 1 : 0), target: 1 },
   },
   {
-    id: 'beyond_the_walls', chapter: 8, dwellSec: 300,
+    id: 'beyond_the_walls', chapter: 8, dwellSec: 300, side: true,
     trigger: (s) => shouldRevealExplorerPost(s),
     unlocks: ['expeditions'],
     reveals: ['outpost'],

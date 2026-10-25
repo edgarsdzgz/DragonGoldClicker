@@ -80,6 +80,17 @@ describe('backfillStory', () => {
     expect(isBuildingRevealed(out, 'lodge')).toBe(true)
   })
 
+  it('reveals the Lodge for a save with the food system active but no Forge', () => {
+    const out = backfillStory(v1({ barracksLevel: 1, foodSystemActive: true, fighters: 2, fightersRallied: 2, repairers: 3, repairersDirected: 3 }))
+    expect(isBuildingRevealed(out, 'lodge')).toBe(true)
+    expect(isBuildingRevealed(out, 'keep')).toBe(true)
+  })
+
+  it('backfills beyond_the_walls on its own evidence', () => {
+    expect(backfillStory(v1({ postLevel: 1 })).beatsSeen).toContain('beyond_the_walls')
+    expect(backfillStory(v1({})).beatsSeen).not.toContain('beyond_the_walls')
+  })
+
   it('does not mutate the input or leave duplicate beats', () => {
     const input = v1({ fighters: 2, fightersRallied: 2 })
     const out = backfillStory(input)
