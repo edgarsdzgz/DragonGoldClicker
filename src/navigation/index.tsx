@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import type { RootStackParamList, TabParamList } from './types'
+import type { RootStackParamList, RootStackNavProp, TabParamList } from './types'
 import { colors, spacing, gold } from '../theme'
 import { useHaptics } from '../hooks/useHaptics'
 import { useSfx } from '../hooks/useSfx'
@@ -184,7 +184,7 @@ function TabNavigator() {
   const buildHasAction = useBuildTabBadge()
   const locks = useTabLocks()
   const toastRef = useRef<UnlockToastHandle | null>(null)
-  const navigation = useNavigation<any>()
+  const navigation = useNavigation<RootStackNavProp>()
   useStoryDirector()
   const goToTab = (tab: SceneTab) => navigation.navigate('Main', { screen: tab })
   // Fallback for when the system nav bar is visible (immersive refused, or swiped in)
