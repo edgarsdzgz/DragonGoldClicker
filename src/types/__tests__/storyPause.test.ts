@@ -42,7 +42,7 @@ describe('story pause', () => {
   })
 
   it('systems, guided steps and objectives behind paused beats stay off', () => {
-    const s = make({ beatsSeen: ['prologue', 'call_to_arms'], tutorialStepsDone: ['tap_slay', 'tap_rally'], fighters: 2 })
+    const s = make({ beatsSeen: ['prologue', 'call_to_arms'], tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'], fighters: 2 })
     expect(isSystemOn(s, 'siege')).toBe(false)
     expect(isSystemOn(s, 'repair')).toBe(false)
     expect(isSystemOn(s, 'hunger')).toBe(false)

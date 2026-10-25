@@ -10,14 +10,14 @@ describe('getCurrentObjective', () => {
   })
 
   it('shows the latest unmet objective once the guided steps are done', () => {
-    const s = make({ beatsSeen: ['prologue'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 2 })
+    const s = make({ beatsSeen: ['prologue'], tutorialStepsDone: ['begin_wave', 'tap_slay'], monstersDefeated: 2 })
     expect(getCurrentObjective(s)).toEqual({ label: 'Slay 5 monsters', current: 2, target: 5 })
   })
 
   it('prefers the most recently seen beat with an objective', () => {
     const s = make({
       beatsSeen: ['prologue', 'call_to_arms'],
-      tutorialStepsDone: ['tap_slay', 'tap_rally'],
+      tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'],
       fighters: 1,
       monstersDefeated: 2,
     })
@@ -27,7 +27,7 @@ describe('getCurrentObjective', () => {
   it('falls back to an earlier unmet objective when the latest is met', () => {
     const s = make({
       beatsSeen: ['prologue', 'call_to_arms'],
-      tutorialStepsDone: ['tap_slay', 'tap_rally'],
+      tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'],
       fighters: 2,
       monstersDefeated: 2,
     })
@@ -35,14 +35,14 @@ describe('getCurrentObjective', () => {
   })
 
   it('is null when every objective is met', () => {
-    const s = make({ beatsSeen: ['prologue'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 5 })
+    const s = make({ beatsSeen: ['prologue'], tutorialStepsDone: ['begin_wave', 'tap_slay'], monstersDefeated: 5 })
     expect(getCurrentObjective(s)).toBeNull()
   })
 })
 
 describe('isSpotlightActive', () => {
   it('stays off for controls a guided step already covers', () => {
-    const s = make({ beatsSeen: ['prologue', 'call_to_arms'], tutorialStepsDone: ['tap_slay', 'tap_rally'] })
+    const s = make({ beatsSeen: ['prologue', 'call_to_arms'], tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'] })
     expect(isSpotlightActive(s, 'rally')).toBe(false)
     expect(isSpotlightActive(s, 'repair')).toBe(false)
   })

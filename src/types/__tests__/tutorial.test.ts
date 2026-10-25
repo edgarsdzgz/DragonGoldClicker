@@ -11,10 +11,18 @@ describe('getActiveStep', () => {
     expect(getActiveStep(make({}))).toBeNull()
   })
 
-  it('starts tap_slay after the prologue and advances as steps complete', () => {
+  it('starts with begin_wave, then tap_slay once a monster is on the field', () => {
     let s = make({ beatsSeen: ['prologue'] })
+    expect(getActiveStep(s)?.id).toBe('begin_wave')
+    // tap_slay waits until the wave has begun (nothing dims in between)
+    expect(getActiveStep({ ...s, tutorialStepsDone: ['begin_wave'] })).toBeNull()
+    s = { ...s, waveActive: true, tutorialStepsDone: ['begin_wave'] }
     expect(getActiveStep(s)?.id).toBe('tap_slay')
-    s = { ...s, tutorialStepsDone: ['tap_slay'] }
+  })
+
+  it('advances as steps complete', () => {
+    let s = make({ beatsSeen: ['prologue'], waveActive: true })
+    s = { ...s, tutorialStepsDone: ['begin_wave', 'tap_slay'] }
     // next step belongs to call_to_arms, which is unseen: the tutorial holds back
     expect(getActiveStep(s)).toBeNull()
     s = { ...s, beatsSeen: ['prologue', 'call_to_arms'] }
@@ -23,12 +31,12 @@ describe('getActiveStep', () => {
 
   it('is strictly sequential even if a later beat is already seen', () => {
     const s = make({ beatsSeen: ['prologue', 'call_to_arms', 'the_breach', 'mend_the_walls'] })
-    expect(getActiveStep(s)?.id).toBe('tap_slay')
+    expect(getActiveStep(s)?.id).toBe('begin_wave')
   })
 
-  it('has the nine steps in order', () => {
+  it('has the ten steps in order', () => {
     expect(TUTORIAL_STEPS.map((t) => t.id)).toEqual([
-      'tap_slay', 'tap_rally', 'tap_repair', 'open_forage', 'tap_forage',
+      'begin_wave', 'tap_slay', 'tap_rally', 'tap_repair', 'open_forage', 'tap_forage',
       'train_gatherer', 'open_draconia', 'tap_garrison', 'build_garrison',
     ])
   })
@@ -63,12 +71,12 @@ describe('backfillTutorial', () => {
       foragersTrained: { gatherers: 3, trappers: 0, rangers: 0 },
       forageClicks: 4,
     }))
-    expect(done).toEqual(['tap_slay', 'tap_rally', 'tap_repair', 'open_forage', 'tap_forage', 'train_gatherer'])
+    expect(done).toEqual(['begin_wave', 'tap_slay', 'tap_rally', 'tap_repair', 'open_forage', 'tap_forage', 'train_gatherer'])
   })
 
   it('leaves steps pending when their beat is unseen', () => {
     const done = backfillTutorial(make({ beatsSeen: ['prologue', 'call_to_arms'], totalClicks: 5, fighters: 2 }))
-    expect(done).toEqual(['tap_slay', 'tap_rally'])
+    expect(done).toEqual(['begin_wave', 'tap_slay', 'tap_rally'])
   })
 
   it('marks everything for a save with the Garrison built', () => {
@@ -172,5 +180,27 @@ describe('coach geometry', () => {
     const r = { x: 10, y: 10, w: 50, h: 50 }
     expect(padRect(r, 6)).toEqual({ x: 4, y: 4, w: 62, h: 62 })
     expect(r.w).toBe(50)
+  })
+})
+
+describe('begin_wave step', () => {
+  const step = TUTORIAL_STEPS.find((t) => t.id === 'begin_wave')!
+
+  it('targets the Begin wave button with the planned hint', () => {
+    expect(step.target).toBe('begin_wave')
+    expect(step.hint).toBe('Begin the first wave.')
+    expect(step.afterBeat).toBe('prologue')
+  })
+
+  it('is done once a wave is on or any monster has been slain', () => {
+    expect(step.isDone(make({}))).toBe(false)
+    expect(step.isDone(make({ waveActive: true }))).toBe(true)
+    expect(step.isDone(make({ monstersDefeated: 1 }))).toBe(true)
+  })
+
+  it('backfill marks it done for a save that has fought, and leaves a fresh one pending', () => {
+    expect(backfillTutorial(make({ beatsSeen: ['prologue'], monstersDefeated: 3, totalClicks: 10 }))).toEqual(['begin_wave', 'tap_slay'])
+    expect(backfillTutorial(make({ beatsSeen: ['prologue'], waveActive: true }))).toEqual(['begin_wave'])
+    expect(backfillTutorial(make({ beatsSeen: ['prologue'] }))).toEqual([])
   })
 })

@@ -9,6 +9,7 @@ import { BARRACKS_LEVELS } from './soldiers'
 // =============================================================================
 
 export type TutorialStepId =
+  | 'begin_wave'
   | 'tap_slay'
   | 'tap_rally'
   | 'tap_repair'
@@ -36,6 +37,8 @@ export interface TutorialStep {
   hint: string
   /** The target lives inside a Modal, so the overlay renders inside that modal */
   inModal?: boolean
+  /** The step is held back (nothing dims) until this holds, e.g. a monster is on the field */
+  requires?: (s: GameState) => boolean
   /** The save already shows this step was done (also used to backfill old saves) */
   isDone: (s: GameState) => boolean
   /** Done when the UI reaches this state */
@@ -51,7 +54,13 @@ export const HINT_RETURN_TO_SLAY = 'Return to the Warfront and slay monsters to 
 
 export const TUTORIAL_STEPS: TutorialStep[] = [
   {
+    id: 'begin_wave', afterBeat: 'prologue', target: 'begin_wave',
+    hint: 'Begin the first wave.',
+    isDone: (s) => s.waveActive || s.monstersDefeated > 0,
+  },
+  {
     id: 'tap_slay', afterBeat: 'prologue', target: 'slay',
+    requires: (s) => s.waveActive,
     hint: 'Tap the monster to strike it.',
     isDone: (s) => s.totalClicks >= 1,
   },
@@ -112,6 +121,7 @@ export function getActiveStep(s: GameState): TutorialStep | null {
   const done = s.tutorialStepsDone ?? []
   const step = TUTORIAL_STEPS.find((t) => !done.includes(t.id))
   if (!step || !s.beatsSeen.includes(step.afterBeat)) return null
+  if (step.requires && !step.requires(s)) return null
   return step
 }
 
