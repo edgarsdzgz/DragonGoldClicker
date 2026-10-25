@@ -6,6 +6,9 @@ import { Text, Badge, ZoneHeader, BottomSheet, ConfirmModal, InspirationIcon, ty
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
 import { useHaptics, useSfx } from '../hooks'
+import { useCoachTarget } from '../hooks/useCoachTarget'
+import { useCoach } from '../context/CoachContext'
+import type { Rect } from '../context/coachRegistry'
 import { SFX } from '../data/sfx'
 import { colors, gold } from '../theme'
 import {
@@ -88,10 +91,16 @@ function BuildingInterior({ id }: { id: BuildingId }) {
 function BuildingNode({
   building,
   onPress,
+  coachId,
+  scrollIntoView,
 }: {
   building: BuildingInfo
   onPress: () => void
+  /** Opt into the guided tutorial under this target id */
+  coachId?: string
+  scrollIntoView?: (rect: Rect) => void
 }) {
+  const coach = useCoachTarget(coachId, scrollIntoView)
   const canBuildNow = !building.isBuilt && building.canAfford
 
   // Breathing pulse for affordable nodes
@@ -126,6 +135,8 @@ function BuildingNode({
 
   return (
     <Pressable
+      ref={coach.ref}
+      onLayout={coach.onLayout}
       onPress={onPress}
       style={({ pressed }) => [
         mapStyles.nodeContainer,
@@ -513,6 +524,17 @@ export function ShopScreen() {
 
   const comingSoonIds: BuildingId[] = ['housing', 'wizard', 'tower_east', 'tower_west']
 
+  // Guided tutorial: tell it when the Garrison sheet is open, and scroll a target into view
+  const { registry: coachRegistry, setGarrisonSheetOpen } = useCoach()
+  React.useEffect(() => {
+    setGarrisonSheetOpen(purchaseTarget === 'garrison')
+  }, [purchaseTarget, setGarrisonSheetOpen])
+  const scrollRef = React.useRef<ScrollView>(null)
+  const scrollY = React.useRef(0)
+  const scrollTargetIntoView = (rect: Rect) => {
+    scrollRef.current?.scrollTo({ y: Math.max(0, scrollY.current + rect.y - 220), animated: true })
+  }
+
   const handleNodePress = (id: BuildingId) => {
     haptics.selection()
     const b = buildings[id]
@@ -536,6 +558,12 @@ export function ShopScreen() {
         autoInspPerSec={effectiveAutoRate}
       />
       <ScrollView
+        ref={scrollRef}
+        onScroll={(e) => {
+          scrollY.current = e.nativeEvent.contentOffset.y
+          coachRegistry.notify()
+        }}
+        scrollEventThrottle={64}
         style={mapStyles.scrollView}
         contentContainerStyle={mapStyles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -605,6 +633,8 @@ export function ShopScreen() {
             <BuildingNode
               building={buildings.garrison}
               onPress={() => handleNodePress('garrison')}
+              coachId="garrison"
+              scrollIntoView={scrollTargetIntoView}
             />
             {buildings.outpost.visible && (
               <BuildingNode
@@ -643,6 +673,7 @@ export function ShopScreen() {
         cancelLabel="Cancel"
         accentColor={purchaseBuilding?.accentColor}
         confirmDisabled={purchaseBuilding !== null && !purchaseBuilding.canAfford}
+        confirmCoachId={purchaseTarget === 'garrison' ? 'garrison_build' : undefined}
         onConfirm={() => {
           if (purchaseBuilding?.canAfford && purchaseTarget) {
             haptics.medium()

@@ -5,6 +5,7 @@ import { AudioSettingsProvider } from './src/context/AudioSettingsContext'
 import { DevSettingsProvider } from './src/context/DevSettingsContext'
 import { GameProvider } from './src/context/GameContext'
 import { StoryProvider } from './src/context/StoryContext'
+import { CoachProvider } from './src/context/CoachContext'
 import { Navigation } from './src/navigation'
 import { useBgMusic, useImmersiveMode } from './src/hooks'
 import { configureTextDefaults } from './src/theme/textDefaults'
@@ -23,7 +24,9 @@ function AppInner() {
   return (
     <GameProvider>
       <StoryProvider>
-        <Navigation />
+        <CoachProvider>
+          <Navigation />
+        </CoachProvider>
       </StoryProvider>
       <StatusBar style="light" />
     </GameProvider>

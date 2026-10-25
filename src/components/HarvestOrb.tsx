@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
 import { useHaptics, useHoldPress } from '../hooks'
+import { useCoachTarget } from '../hooks/useCoachTarget'
 import { colors, spacing } from '../theme'
 
 interface HarvestOrbColors {
@@ -33,9 +34,12 @@ interface HarvestOrbProps {
   /** Disabled state -- dims visuals and blocks action */
   disabled?: boolean
   style?: ViewStyle
+  /** Opt into the guided tutorial under this target id */
+  coachId?: string
 }
 
-export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabled, style }: HarvestOrbProps) {
+export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabled, style, coachId }: HarvestOrbProps) {
+  const coach = useCoachTarget(coachId)
   const haptics = useHaptics()
   const scaleAnim = useRef(new Animated.Value(1)).current
   const glowAnim = useRef(new Animated.Value(0.3)).current
@@ -84,7 +88,7 @@ export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabl
   const glowColor = disabled ? colors.disabled.border : palette.glow
 
   return (
-    <View style={[styles.buttonArea, style]}>
+    <View ref={coach.ref} onLayout={coach.onLayout} style={[styles.buttonArea, style]}>
       <Pressable
         onPressIn={onPressIn}
         onPressOut={onPressOut}

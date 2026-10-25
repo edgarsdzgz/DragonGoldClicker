@@ -6,6 +6,7 @@ import type { SceneTab } from '../data/story/lines'
 import { OfflineModal } from './OfflineModal'
 import { NpcDialog } from './NpcDialog'
 import { FoodWarningModal } from './FoodWarningModal'
+import { useActiveEvent } from '../hooks/useActiveEvent'
 import { StarvationModal } from './StarvationModal'
 import { WandererModal } from './WandererModal'
 import { MilestoneModal } from './MilestoneModal'
@@ -23,7 +24,7 @@ interface EventHostProps {
  */
 export function EventHost({ onNavigate }: EventHostProps) {
   const {
-    isGameOver, dismissGameOver, resetGame,
+    dismissGameOver, resetGame,
     pendingOfflineEarnings, dismissOfflineEarnings,
     pendingStarvationReport, dismissStarvationReport,
     pendingFoodWarning, dismissFoodWarning,
@@ -35,15 +36,7 @@ export function EventHost({ onNavigate }: EventHostProps) {
   const queued = scenes[0]
   const scene = queued ? getScene(queued.id) : undefined
 
-  const activeModal =
-    isGameOver ? 'gameOver' :
-    pendingOfflineEarnings !== null ? 'offline' :
-    scene ? 'scene' :
-    pendingStarvationReport !== null ? 'starvation' :
-    pendingFoodWarning > 0 ? 'foodWarning' :
-    pendingMilestone !== null ? 'milestone' :
-    pendingWanderer !== null ? 'wanderer' :
-    null
+  const activeModal = useActiveEvent()
 
   const handleSceneDismiss = () => {
     dismissScene()

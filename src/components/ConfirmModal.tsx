@@ -12,6 +12,8 @@ import { REJECT_PHRASES } from './Button'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { useHaptics } from '../hooks'
 import { useSfx } from '../hooks/useSfx'
+import { useCoachTarget } from '../hooks/useCoachTarget'
+import { CoachMark } from './CoachMark'
 import { SFX } from '../data/sfx'
 
 interface ConfirmModalProps {
@@ -26,6 +28,8 @@ interface ConfirmModalProps {
   /** Override the default gold accent with a building/context color */
   accentColor?: string
   icon?: keyof typeof Ionicons.glyphMap
+  /** Opt the confirm button into the guided tutorial under this target id */
+  confirmCoachId?: string
   onConfirm: () => void
   onCancel: () => void
 }
@@ -40,10 +44,12 @@ export function ConfirmModal({
   confirmDisabled = false,
   accentColor: accentColorProp,
   icon = 'warning',
+  confirmCoachId,
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
   const haptics = useHaptics()
+  const confirmCoach = useCoachTarget(confirmCoachId)
   const backdropOpacity = useRef(new Animated.Value(0)).current
   const cardScale = useRef(new Animated.Value(0.85)).current
   const cardOpacity = useRef(new Animated.Value(0)).current
@@ -235,6 +241,8 @@ export function ConfirmModal({
             </Pressable>
 
             <Pressable
+              ref={confirmCoach.ref}
+              onLayout={confirmCoach.onLayout}
               onPress={handleConfirm}
               style={({ pressed }) => [
                 styles.button,
@@ -284,6 +292,8 @@ export function ConfirmModal({
           </Animated.View>
         </Animated.View>
       </View>
+      {/* Guided-tutorial overlay for targets inside this modal */}
+      <CoachMark inModal />
     </Modal>
   )
 }

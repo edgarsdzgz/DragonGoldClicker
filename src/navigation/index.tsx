@@ -15,6 +15,9 @@ import { useTabLocks } from './useTabLocks'
 import { UnlockToast } from '../components/UnlockToast'
 import { EventHost } from '../components/EventHost'
 import { useStoryDirector } from '../hooks/useStoryDirector'
+import { useCoachTarget } from '../hooks/useCoachTarget'
+import { useCoach } from '../context/CoachContext'
+import { CoachMark } from '../components/CoachMark'
 import type { SceneTab } from '../data/story/lines'
 import type { UnlockToastHandle } from '../components/UnlockToast'
 import {
@@ -59,13 +62,19 @@ import { SettingsScreen } from '../screens/SettingsScreen'
 // HAPTIC TAB BAR BUTTON
 // =============================================================================
 
-function HapticTabButton(props: any) {
+function HapticTabButton({ coachId, ...props }: any) {
   const haptics = useHaptics()
+  const coach = useCoachTarget(coachId)
   const playTap = useSfx(SFX.TAP)
 
   return (
     <TouchableOpacity
       {...props}
+      ref={coach.ref}
+      onLayout={(e) => {
+        props.onLayout?.(e)
+        coach.onLayout()
+      }}
       onPress={(e) => {
         haptics.light()
         playTap()
@@ -186,6 +195,7 @@ function TabNavigator() {
   const toastRef = useRef<UnlockToastHandle | null>(null)
   const navigation = useNavigation<RootStackNavProp>()
   useStoryDirector()
+  const { setFocusedTab } = useCoach()
   const goToTab = (tab: SceneTab) => navigation.navigate('Main', { screen: tab })
   // Fallback for when the system nav bar is visible (immersive refused, or swiped in)
   const insets = useSafeAreaInsets()
@@ -194,6 +204,7 @@ function TabNavigator() {
     <View style={{ flex: 1 }}>
       <Tab.Navigator
         initialRouteName="GameTab"
+        screenListeners={({ route }) => ({ focus: () => setFocusedTab(route.name) })}
         // Hardware back returns to Warfront (always unlocked). The default, firstRoute,
         // jumped to the Draconia tab and bypassed its lock.
         backBehavior="initialRoute"
@@ -228,6 +239,7 @@ function TabNavigator() {
           component={ShopScreen}
           options={{
             headerShown: false,
+            tabBarButton: (props) => <HapticTabButton {...props} coachId="tab_draconia" />,
             tabBarLabel: locks.DraconiaTab.locked ? 'Locked' : 'Draconia',
             tabBarIcon: ({ color, size }) => (
               locks.DraconiaTab.locked
@@ -273,6 +285,7 @@ function TabNavigator() {
           component={ForageScreen}
           options={{
             headerShown: false,
+            tabBarButton: (props) => <HapticTabButton {...props} coachId="tab_forage" />,
             tabBarLabel: locks.ForageTab.locked ? 'Locked' : 'Forage',
             tabBarIcon: ({ color, size }) => (
               locks.ForageTab.locked
@@ -319,6 +332,7 @@ function TabNavigator() {
       </Tab.Navigator>
       <UnlockToast toastRef={toastRef} />
       <EventHost onNavigate={goToTab} />
+      <CoachMark />
     </View>
   )
 }

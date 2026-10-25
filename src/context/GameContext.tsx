@@ -126,6 +126,8 @@ interface GameContextType {
   isResearchAvailable: (id: string) => boolean
   /** Story director: record a beat as seen and restart the dwell clock (at the game second it fired in) */
   markBeatSeen: (id: string, atPlaySec?: number) => void
+  /** Guided tutorial: record a step as done */
+  completeTutorialStep: (id: string) => void
   /** Dev tools only: apply an arbitrary state change (grants, checkpoints, forced timers) */
   devApply: (updater: (s: GameState) => GameState) => void
   /** Dev tools only: show a wanderer encounter now, skipping cooldown and chance */
@@ -1084,6 +1086,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       : { ...prev, beatsSeen: [...prev.beatsSeen, id], lastBeatAtPlaySec: atPlaySec ?? prev.playSeconds }))
   }, [])
 
+  const completeTutorialStep = useCallback((id: string) => {
+    setState((prev) => ((prev.tutorialStepsDone ?? []).includes(id)
+      ? prev
+      : { ...prev, tutorialStepsDone: [...(prev.tutorialStepsDone ?? []), id] }))
+  }, [])
+
   const devApply = useCallback((updater: (s: GameState) => GameState) => {
     if (!DEV_TOOLS_ENABLED) return
     setState(updater)
@@ -1154,6 +1162,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         completeResearch,
         isResearchAvailable,
         markBeatSeen,
+        completeTutorialStep,
         devApply,
         devForceWanderer,
       }}

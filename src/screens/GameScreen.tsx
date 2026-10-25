@@ -172,6 +172,7 @@ export function GameScreen() {
           onAction={handleClick}
           icon="flash"
           label="SLAY"
+          coachId="slay"
           palette={SLAY_PALETTE}
         />
       </View>
@@ -184,6 +185,7 @@ export function GameScreen() {
               onAction={rallyFighter}
               icon="shield"
               label="RALLY"
+              coachId="rally"
               palette={RALLY_PALETTE}
               size="md"
               disabled={state.villagers <= 0 || state.inspiration < getFighterCost(state.fightersRallied)}
@@ -200,6 +202,7 @@ export function GameScreen() {
               onAction={directRepairer}
               icon="construct"
               label="REPAIR"
+              coachId="repair"
               palette={REPAIR_PALETTE}
               size="md"
               disabled={state.villagers <= 0 || state.inspiration < getRepairerCost(state.repairersDirected)}

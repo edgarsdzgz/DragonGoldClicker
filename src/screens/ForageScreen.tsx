@@ -146,6 +146,7 @@ export function ForageScreen() {
           onAction={handleForage}
           icon="leaf"
           label="FORAGE"
+          coachId="forage"
           palette={FORAGE_PALETTE}
         />
       </View>
@@ -157,6 +158,7 @@ export function ForageScreen() {
             onAction={handleTrainGatherer}
             icon="person-add"
             label="TRAIN"
+            coachId="train"
             palette={TRAIN_PALETTE}
             size="md"
             disabled={!canTrainGatherer}

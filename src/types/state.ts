@@ -140,6 +140,8 @@ export interface GameState {
   milestonesOffered: number[]
   /** Story beat ids already seen, in the order they fired. Systems are derived from this. */
   beatsSeen: string[]
+  /** Guided tutorial steps already completed (see types/tutorial.ts) */
+  tutorialStepsDone: string[]
   /** Active play time in game seconds (ticked by the game loop, follows dev speed) */
   playSeconds: number
   /** playSeconds when the last beat fired (the dwell clock) */
@@ -210,13 +212,14 @@ export const DEFAULT_GAME_STATE: GameState = {
   completedResearch: [],
   milestonesOffered: [],
   beatsSeen: [],
+  tutorialStepsDone: [],
   playSeconds: 0,
   lastBeatAtPlaySec: 0,
   pendingWanderer: null,
   pendingStarvationReport: null,
   pendingFoodWarning: 0,
   lastFoodWarning: 0,
-  saveMigrationVersion: 2,
+  saveMigrationVersion: 3,
 }
 
 // =============================================================================
