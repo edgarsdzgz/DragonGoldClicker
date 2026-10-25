@@ -202,7 +202,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   beatsSeen: [],
   playSeconds: 0,
   lastBeatAtPlaySec: 0,
-  saveMigrationVersion: 1,
+  saveMigrationVersion: 2,
 }
 
 // =============================================================================

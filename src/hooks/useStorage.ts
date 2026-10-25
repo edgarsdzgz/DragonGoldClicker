@@ -14,7 +14,9 @@ import {
   SWORD_BONUS,
   SHIELD_BONUS,
   roundInsp,
+  isSystemOn,
 } from '../types/game'
+import { backfillStory } from '../types/storyMigration'
 
 const STORAGE_KEY = '@dragongold/gamestate'
 
@@ -107,15 +109,22 @@ export function useStorage() {
           merged.saveMigrationVersion = 1
         }
 
-        const gameState = merged as GameState
+        // Story migration: v1 saves get their beats backfilled from what they already did
+        let gameState = merged as GameState
+        if (!Array.isArray(gameState.beatsSeen)) gameState.beatsSeen = []
+        if (typeof gameState.playSeconds !== 'number') gameState.playSeconds = 0
+        if (typeof gameState.lastBeatAtPlaySec !== 'number') gameState.lastBeatAtPlaySec = 0
+        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 2) {
+          gameState = { ...backfillStory(gameState), saveMigrationVersion: 2 }
+        }
 
-        // Calculate offline earnings
+        // Calculate offline earnings (the Keep turns this on)
         let offlineEarnings: OfflineEarnings | null = null
         const now = Date.now()
         const elapsedMs = now - gameState.lastSavedAt
         const elapsedSec = elapsedMs / 1000
 
-        if (elapsedSec >= 60) {
+        if (elapsedSec >= 60 && isSystemOn(gameState, 'offline')) {
           const rb = getResearchBonuses(gameState.completedResearch)
           const baseAutoRate = getEffectiveAutoRate(
             gameState.soldiers,
@@ -131,7 +140,7 @@ export function useStorage() {
           if (autoRate > 0) {
             // If food system is active, soldiers only earn while food lasts
             let inspSeconds = cappedSec
-            if (gameState.foodSystemActive) {
+            if (isSystemOn(gameState, 'hunger')) {
               const baseConsumption = getFoodConsumption(gameState.villagers, gameState.soldiers, gameState.foragers, gameState.explorers, gameState.fighters, gameState.repairers)
               const perCheck = Math.max(0, Math.ceil(baseConsumption * (1 - rb.foodConsumptionReduction)))
               const foodChecks = Math.floor(cappedSec / FOOD_CHECK_INTERVAL)
