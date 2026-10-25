@@ -28,6 +28,8 @@ interface NpcDialogProps {
   onDismiss: () => void
   /** Closes the scene from any line without the dismiss follow-up (e.g. navigation) */
   onSkip?: () => void
+  /** Only cutscenes offer Skip (and only with 2+ pages) */
+  cutscene?: boolean
 }
 
 export function NpcDialog({
@@ -39,6 +41,7 @@ export function NpcDialog({
   dismissLabel = 'Continue',
   onDismiss,
   onSkip,
+  cutscene = false,
 }: NpcDialogProps) {
   const haptics = useHaptics()
   const playNpc = useSfx(SFX.NPC)
@@ -75,7 +78,7 @@ export function NpcDialog({
   }, [visible, playNpc, backdropOpacity, cardScale, cardOpacity])
 
   // One line per page. Continue steps through the pages; the last page's button is the
-  // scene's own dismiss (with its label and any navigation). Skip is only for scenes of 2+ pages.
+  // scene's own dismiss (with its label and any navigation). Skip is only for cutscenes of 2+ pages.
   const [page, setPage] = useState(0)
   const lastPress = useRef({ at: 0, page: -1 })
   useEffect(() => {
@@ -84,7 +87,7 @@ export function NpcDialog({
       lastPress.current = { at: 0, page: -1 }
     }
   }, [visible, lines])
-  const { pageCount, lastPage, canSkip: skippable } = dialogPaging(lines.length, page)
+  const { pageCount, lastPage, canSkip: skippable } = dialogPaging(lines.length, page, cutscene)
   const canSkip = skippable && !!onSkip
 
   // A double tap must not skip a page (or the whole scene): presses are ignored for a short

@@ -20,6 +20,8 @@ export interface SceneDef {
   altLines?: string[]
   dismissLabel?: string
   navigateTo?: SceneTab
+  /** A cutscene can be skipped; ordinary scenes never show Skip. No scene is a cutscene yet. */
+  cutscene?: boolean
 }
 
 const PYRETH = { speaker: 'Elder Pyreth', icon: 'person' } as const
