@@ -138,6 +138,40 @@ top, and the gate sits at the bottom by the player's thumb.
 
 ---
 
+## Layer 2c: the player starts each wave (approved 2026-10-25)
+
+**Owner ruling:** the enemy army is camped outside the walls. The player presses a button to
+make it attack in a wave. When the wave is defeated it ends, and no other enemy attacks (for
+now) until the player begins the next wave.
+
+- **States:** `camp` (between waves) and `wave` (fighting).
+  - Saved as `waveActive` in GameState, save v6.
+  - Migration: `waveActive = waveKills > 0`, so a save that was mid-wave resumes mid-wave.
+  - A new game starts in `camp`.
+- **Camp view** (the battlefield, in place of the monster):
+  - The next wave as a row of dim silhouettes of its monster type (5, using `MonsterIcon`),
+    with the line "The horde waits beyond the walls."
+  - A preview: "Wave N: 5 <plural>" and "+X when cleared" (the wave bonus).
+  - A large primary **Begin wave** button, centred where the monster stands. It must be at
+    least 48dp tall and is the only tappable thing in the camp view.
+  - Taps elsewhere on the battlefield do nothing: no damage, no effects, no sound.
+  - The wave row reads "WAVE N" with "Ready" in place of "K left".
+- **Begin wave:** the first monster enters (the existing spawn), and from then on it is the wave
+  as built in layer 2b.
+- **Wave cleared:** the existing banner and bonus. When the banner ends the view returns to
+  `camp` for wave N+1. Holding stops at the end of the wave and does not carry into the camp.
+- **Fighters** keep earning inspiration per second in both states.
+- **Guided tutorial:** a new step `begin_wave` after `prologue` targets the Begin wave button
+  (hint: "Begin the first wave."). `tap_slay` follows it once the first monster is on the field.
+  Backfill marks `begin_wave` done for any save with `monstersDefeated > 0` or `waveActive`.
+- **Accessibility:**
+  - The button label reads "Begin wave N, 5 <plural>".
+  - The camp line and the preview are text.
+  - Starting a wave announces "Wave N begins".
+- **Not yet** (layer 6): waves that start on their own, timers, monsters advancing on the gate.
+
+---
+
 ## Layer 1b: the hit you can see (approved 2026-10-25)
 
 **Owner ruling:** the player is the dragon, so strikes are claw slashes. Copy can say "claw"
