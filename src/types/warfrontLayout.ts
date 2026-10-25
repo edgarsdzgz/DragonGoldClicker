@@ -66,3 +66,41 @@ export function chipsFit(labels: string[], available: number): boolean {
   const total = labels.reduce((sum, l) => sum + chipWidth(l), 0) + CHIP_GAP * (labels.length - 1)
   return total <= available
 }
+
+// -----------------------------------------------------------------------------
+// The camp view (between waves)
+// -----------------------------------------------------------------------------
+
+/** The Begin wave button: always at least 48dp tall */
+export const BEGIN_BUTTON_H = 52
+const CAMP_HORDE_H = 18
+const CAMP_PREVIEW_H = 22
+const CAMP_BONUS_H = 16
+const CAMP_GAP = 8
+export const CAMP_MAX_SILHOUETTE = 48
+export const CAMP_MIN_SILHOUETTE = 24
+
+export interface CampLayout {
+  showSilhouettes: boolean
+  /** Size of each of the five dim silhouettes */
+  silhouette: number
+  /** Height the camp needs without the silhouettes (it never shrinks below this) */
+  minHeight: number
+}
+
+/** Height of the camp text and button, which always show: horde line, preview, bonus, button */
+export const CAMP_CORE_H = CAMP_HORDE_H + CAMP_PREVIEW_H + CAMP_BONUS_H + BEGIN_BUTTON_H + CAMP_GAP * 3 + FIELD_PAD * 2
+
+/**
+ * Budget the camp the way the monster is budgeted. The text and the button always show; the row
+ * of silhouettes takes what is left (24-48dp) and is dropped when there is less than that.
+ */
+export function campLayout(height: number): CampLayout {
+  const room = height - CAMP_CORE_H - CAMP_GAP
+  const showSilhouettes = room >= CAMP_MIN_SILHOUETTE
+  return {
+    showSilhouettes,
+    silhouette: showSilhouettes ? Math.min(CAMP_MAX_SILHOUETTE, Math.floor(room)) : 0,
+    minHeight: CAMP_CORE_H,
+  }
+}

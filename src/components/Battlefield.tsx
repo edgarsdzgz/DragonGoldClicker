@@ -33,6 +33,8 @@ interface BattlefieldProps {
   header?: React.ReactNode
   /** Dim queue of the next monsters, above the sprite */
   queue?: React.ReactNode
+  /** Between waves: shown in place of the monster, and taps on the field do nothing */
+  camp?: React.ReactNode
   /** Taps are ignored while true (the wave-cleared banner); a held press carries on afterwards */
   locked?: boolean
   /** Opt into the guided tutorial under this target id */
@@ -70,7 +72,7 @@ const KNOCKBACK = 0.06
  * (one strike every HOLD_STRIKE_MS) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
-  { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, locked = false, coachId },
+  { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, camp, locked = false, coachId },
   ref,
 ) {
   const coach = useCoachTarget(coachId)
@@ -195,9 +197,12 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   // Every hit: flash and shake the monster, float the damage up from it
   const lockedRef = useRef(locked)
   lockedRef.current = locked
+  const inCamp = camp !== undefined
+  const campRef = useRef(inCamp)
+  campRef.current = inCamp
 
   const strike = useCallback(() => {
-    if (lockedRef.current) return
+    if (lockedRef.current || campRef.current) return
     onStrike()
     setHitPose(true)
     if (hitTimer.current) clearTimeout(hitTimer.current)
@@ -250,6 +255,13 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     touching.current = false
   }, [])
 
+  // The wave ended: the field is replaced by the camp, so a held press must not carry on into it
+  useEffect(() => {
+    if (!inCamp) return
+    onPressOut()
+    cancelHold()
+  }, [inCamp, onPressOut, cancelHold])
+
   const focused = useIsFocused()
   useEffect(() => {
     if (!focused) cancelHold()
@@ -301,7 +313,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       collapsable={false}
       style={[styles.field, { transform: [{ translateY: nudge.interpolate({ inputRange: [0, 1], outputRange: [0, 3] }) }] }]}
     >
-      <Pressable
+      {camp ?? <Pressable
         onPressIn={handlePressIn}
         onPress={handlePress}
         onPressOut={handlePressOut}
@@ -373,7 +385,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
         </View>
         <Text variant="label" center style={styles.name}>{def.name}</Text>
         <EnemyHp hp={monsterHp} max={def.hp} width={Math.min(fieldW - spacing[6] * 2, 260)} />
-      </Pressable>
+      </Pressable>}
     </Animated.View>
   )
 })

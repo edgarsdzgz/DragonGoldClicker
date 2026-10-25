@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react'
-import { View, StyleSheet, Animated, useWindowDimensions, LayoutChangeEvent } from 'react-native'
+import { View, StyleSheet, Animated, AccessibilityInfo, useWindowDimensions, LayoutChangeEvent } from 'react-native'
 import { Text, StoryObjective, StorySpotlight, CoachTarget } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
@@ -23,6 +23,9 @@ import { PopulationChips } from './warfront/PopulationChips'
 import { WaveRow } from './warfront/WaveRow'
 import { MonsterQueue } from '../components/MonsterQueue'
 import { WaveBanner } from '../components/WaveBanner'
+import { EnemyCamp } from '../components/EnemyCamp'
+import { campView } from '../types/monsters'
+import { campLayout } from '../types/warfrontLayout'
 import { waveView } from '../types/monsters'
 import { waveBonus, WAVE_BANNER_MS } from '../types/waves'
 import { Gate } from './warfront/Gate'
@@ -40,7 +43,7 @@ const killsText = (kills: number) => {
 }
 
 export function GameScreen() {
-  const { state, click, rallyFighter, directRepairer, effectiveAutoRate } = useGame()
+  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, beginWave, endWave } = useGame()
   const { shakeNonce } = useShakeRequest()
   const shakeStyle = useScreenShake(shakeNonce)
   const flavor = useFlavorText(COMBAT_LINES)
@@ -51,6 +54,7 @@ export function GameScreen() {
   const onFieldLayout = (e: LayoutChangeEvent) => setFieldHeight(Math.floor(e.nativeEvent.layout.height))
   const field = battlefieldLayout(fieldHeight, { queue: true })
   const queue = waveView(state).queue
+  const camp = campView(state)
 
   // Clearing a wave: a banner for a moment, during which taps are ignored
   const [banner, setBanner] = useState<string | null>(null)
@@ -64,6 +68,12 @@ export function GameScreen() {
   const playKill = useSfx(SFX.COIN)
   const haptics = useHaptics()
   const battlefieldRef = useRef<BattlefieldHandle>(null)
+
+  const handleBegin = useCallback(() => {
+    haptics.medium()
+    beginWave()
+    AccessibilityInfo.announceForAccessibility(`Wave ${camp.waveNumber} begins`)
+  }, [haptics, beginWave, camp.waveNumber])
 
   const handleStrike = useCallback(() => {
     click()
@@ -81,7 +91,11 @@ export function GameScreen() {
       // The kill finished the wave (the state here is already the new one)
       setBanner(`Wave cleared +${waveBonus(monster.bounty).toFixed(2)}`)
       if (bannerTimer.current) clearTimeout(bannerTimer.current)
-      bannerTimer.current = setTimeout(() => setBanner(null), WAVE_BANNER_MS)
+      // When the banner ends the view returns to camp (the bonus was already paid at the kill)
+      bannerTimer.current = setTimeout(() => {
+        setBanner(null)
+        endWave()
+      }, WAVE_BANNER_MS)
       // One announcement for the kill and the wave, so the two never collide
       return { text: `${monster.name} slain. Wave cleared, +${waveBonus(monster.bounty).toFixed(2)}`, force: true }
     } else if (Math.random() < 0.25) {
@@ -119,6 +133,9 @@ export function GameScreen() {
             damage={state.tapDamage}
             onStrike={handleStrike}
             locked={banner !== null}
+            camp={state.waveActive ? undefined : (
+              <EnemyCamp view={camp} layout={campLayout(fieldHeight)} onBegin={handleBegin} coachId="begin_wave" />
+            )}
             coachId="slay"
             queue={field.showQueue ? <MonsterQueue monsters={queue} /> : undefined}
             header={field.showFlavor ? (

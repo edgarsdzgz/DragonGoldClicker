@@ -1,4 +1,5 @@
 import {
+  campLayout, CAMP_CORE_H, BEGIN_BUTTON_H, CAMP_MIN_SILHOUETTE, CAMP_MAX_SILHOUETTE,
   chipsFit, chipWidth, battlefieldLayout,
   MAX_MONSTER, MIN_MONSTER, FLOOR_MONSTER, FLAVOR_H, QUEUE_H, NAME_H, HP_H, FIELD_PAD,
 } from '../warfrontLayout'
@@ -71,5 +72,30 @@ describe('chipsFit', () => {
   it('has no chips to fit', () => {
     expect(chipsFit([], 100)).toBe(true)
     expect(chipWidth('1 fighter')).toBeGreaterThan(chipWidth('1'))
+  })
+})
+
+describe('campLayout', () => {
+  it('keeps the Begin wave button at least 48dp tall', () => {
+    expect(BEGIN_BUTTON_H).toBeGreaterThanOrEqual(48)
+  })
+
+  it('shows 48dp silhouettes on a tall screen (A16)', () => {
+    const l = campLayout(WORST_411x891)
+    expect(l.showSilhouettes).toBe(true)
+    expect(l.silhouette).toBe(CAMP_MAX_SILHOUETTE)
+  })
+
+  it('drops only the silhouettes on the tightest 360x640 screen; the text and button always fit', () => {
+    const l = campLayout(WORST_360x640)
+    expect(l.minHeight).toBe(CAMP_CORE_H)
+    expect(WORST_360x640).toBeGreaterThanOrEqual(CAMP_CORE_H)
+    if (!l.showSilhouettes) expect(WORST_360x640 - CAMP_CORE_H).toBeLessThan(CAMP_MIN_SILHOUETTE + 8)
+  })
+
+  it('shrinks the silhouettes between 24 and 48 as height falls', () => {
+    const h = CAMP_CORE_H + 8 + 30
+    expect(campLayout(h).silhouette).toBe(30)
+    expect(campLayout(CAMP_CORE_H + 8 + 10).showSilhouettes).toBe(false)
   })
 })

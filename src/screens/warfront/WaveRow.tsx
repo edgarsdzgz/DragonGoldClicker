@@ -10,17 +10,19 @@ import { colors, spacing, gold } from '../../theme'
 export function WaveRow() {
   const { state } = useGame()
   const wave = waveView(state)
+  // Between waves the row says the horde is ready instead of counting monsters
+  const status = state.waveActive ? wave.leftText : 'Ready'
   return (
     <View
       style={styles.row}
       accessible
-      accessibilityLabel={`Wave ${wave.waveNumber}, ${wave.leftText}`}
+      accessibilityLabel={`Wave ${wave.waveNumber}, ${status}`}
     >
       <View style={styles.title}>
         <Ionicons name="flag" size={12} color={gold[400]} />
         <Text variant="caption" style={styles.wave}>{`WAVE ${wave.waveNumber}`}</Text>
       </View>
-      <Text variant="caption" style={styles.left}>{wave.leftText}</Text>
+      <Text variant="caption" style={styles.left}>{status}</Text>
     </View>
   )
 }
