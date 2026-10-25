@@ -49,6 +49,12 @@ export interface BattlefieldHandle {
 /** The monster's art box as a share of the sprite circle (fits inside the circle) */
 const ART_SCALE = 0.68
 
+/**
+ * Time between strikes while holding, and before the first held strike. Owner ruling
+ * (2026-10-25): 3x slower than the default 250ms hold repeat, so holding stays deliberate.
+ */
+const HOLD_STRIKE_MS = 750
+
 /** Press squash: the monster shrinks about 5% */
 const SQUASH = 0.95
 
@@ -61,7 +67,7 @@ const KNOCKBACK = 0.06
 
 /**
  * The tap target: the whole battlefield. Every press strikes the monster; holding repeats
- * (four hits a second) with a steady pulse. Damage numbers rise from the monster.
+ * (one strike every HOLD_STRIKE_MS) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
   { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, locked = false, coachId },
@@ -163,8 +169,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       return
     }
     const loop = Animated.loop(Animated.sequence([
-      Animated.timing(holdPulse, { toValue: 1, duration: 125, useNativeDriver: true }),
-      Animated.timing(holdPulse, { toValue: 0, duration: 125, useNativeDriver: true }),
+      Animated.timing(holdPulse, { toValue: 1, duration: HOLD_STRIKE_MS / 2, useNativeDriver: true }),
+      Animated.timing(holdPulse, { toValue: 0, duration: HOLD_STRIKE_MS / 2, useNativeDriver: true }),
     ]))
     loop.start()
     return () => loop.stop()
@@ -220,7 +226,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       Animated.sequence([Animated.delay(HIT_STOP_MS), hop(2), hop(-2), hop(1), hop(0)]).start()
     }
   }, [onStrike, damage, size, flash, shake, knock, tilt, reduceMotion])
-  const { onPressIn, onPressOut } = useHoldPress(strike, strike)
+  const { onPressIn, onPressOut } = useHoldPress(strike, strike, { delayMs: HOLD_STRIKE_MS, intervalMs: HOLD_STRIKE_MS })
 
   // Screen readers activate with a tap-less click (onPress). A touch also ends in onPress, which
   // the press-in already struck for, so remember the touch just long enough to skip that one.

@@ -5,6 +5,13 @@ import { useIsFocused } from '@react-navigation/native'
 const HOLD_DELAY_MS = 300
 const REPEAT_INTERVAL_MS = 250
 
+interface HoldPressOptions {
+  /** Wait before repeating starts (default 300ms) */
+  delayMs?: number
+  /** Time between repeats (default 250ms) */
+  intervalMs?: number
+}
+
 /**
  * Hook for hold-to-repeat press behavior.
  * Fires `onTap` immediately on press. After a short delay, begins repeating
@@ -14,7 +21,11 @@ const REPEAT_INTERVAL_MS = 250
  * component unmounts, its screen loses focus, or the app leaves the foreground, so a
  * cancelled press can never keep striking.
  */
-export function useHoldPress(onTap: () => void, onHoldTick: () => void) {
+export function useHoldPress(
+  onTap: () => void,
+  onHoldTick: () => void,
+  { delayMs = HOLD_DELAY_MS, intervalMs = REPEAT_INTERVAL_MS }: HoldPressOptions = {},
+) {
   const delayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const holdingRef = useRef(false)
@@ -37,9 +48,9 @@ export function useHoldPress(onTap: () => void, onHoldTick: () => void) {
     delayRef.current = setTimeout(() => {
       holdingRef.current = true
       onHoldTick()
-      intervalRef.current = setInterval(onHoldTick, REPEAT_INTERVAL_MS)
-    }, HOLD_DELAY_MS)
-  }, [onTap, onHoldTick, clear])
+      intervalRef.current = setInterval(onHoldTick, intervalMs)
+    }, delayMs)
+  }, [onTap, onHoldTick, clear, delayMs, intervalMs])
 
   const onPressOut = useCallback(() => {
     clear()
