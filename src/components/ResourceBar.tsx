@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Pressable } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
-import { colors, spacing } from '../theme'
+import { useJournal } from '../context/JournalContext'
+import { colors, spacing, gold } from '../theme'
 import { formatNumber } from '../types/game'
 
 interface ResourceBarProps {
@@ -16,6 +17,7 @@ interface ResourceBarProps {
 
 export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, autoInspPerSec }: ResourceBarProps) {
   const insets = useSafeAreaInsets()
+  const journal = useJournal()
   const foodLow = foodAmount <= 10 && foodAmount > 0
   const foodEmpty = foodAmount === 0
 
@@ -50,6 +52,16 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, a
           </Text>
         </View>
       )}
+      {journal.available && (
+        <Pressable
+          onPress={journal.open}
+          style={styles.journalBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Open journal"
+        >
+          <Ionicons name="book" size={20} color={gold[400]} />
+        </Pressable>
+      )}
     </View>
   )
 }
@@ -64,6 +76,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg.surface1,
     borderBottomWidth: 1,
     borderBottomColor: colors.border.subtle,
+  },
+  journalBtn: {
+    width: 48,
+    height: 48,
+    marginRight: -spacing[3],
+    marginVertical: -spacing[2],
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   resource: {
     flexDirection: 'row',

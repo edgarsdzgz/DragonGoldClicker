@@ -19,6 +19,7 @@ import { useScriptedEvents } from '../hooks/useScriptedEvents'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useCoach } from '../context/CoachContext'
 import { CoachMark } from '../components/CoachMark'
+import { JournalSheet } from '../components/JournalSheet'
 import type { SceneTab } from '../data/story/lines'
 import type { UnlockToastHandle } from '../components/UnlockToast'
 import {
@@ -333,6 +334,7 @@ function TabNavigator() {
         />
       </Tab.Navigator>
       <UnlockToast toastRef={toastRef} />
+      <JournalSheet />
       <EventHost onNavigate={goToTab} onSceneClosed={onSceneClosed} />
       <CoachMark />
     </View>

@@ -5,6 +5,7 @@ import { AudioSettingsProvider } from './src/context/AudioSettingsContext'
 import { DevSettingsProvider } from './src/context/DevSettingsContext'
 import { GameProvider } from './src/context/GameContext'
 import { StoryProvider } from './src/context/StoryContext'
+import { JournalProvider } from './src/context/JournalContext'
 import { ShakeProvider } from './src/context/ShakeContext'
 import { CoachProvider } from './src/context/CoachContext'
 import { Navigation } from './src/navigation'
@@ -27,7 +28,9 @@ function AppInner() {
       <StoryProvider>
         <CoachProvider>
           <ShakeProvider>
-            <Navigation />
+            <JournalProvider>
+              <Navigation />
+            </JournalProvider>
           </ShakeProvider>
         </CoachProvider>
       </StoryProvider>
