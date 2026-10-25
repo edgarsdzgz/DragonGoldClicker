@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react'
+import React, { useRef, useCallback, useState, useEffect } from 'react'
 import { View, StyleSheet, Animated, useWindowDimensions, LayoutChangeEvent } from 'react-native'
 import { Text, StoryObjective, StorySpotlight, CoachTarget } from '../components'
 import { FlavorText } from '../components/FlavorText'
@@ -19,6 +19,11 @@ import { colors, spacing, gold } from '../theme'
 import { formatNumber, getFighterCost, getRepairerCost, isSystemOn } from '../types/game'
 import { battlefieldLayout, TALL_WINDOW, FLAVOR_H } from '../types/warfrontLayout'
 import { PopulationChips } from './warfront/PopulationChips'
+import { WaveRow } from './warfront/WaveRow'
+import { MonsterQueue } from '../components/MonsterQueue'
+import { WaveBanner } from '../components/WaveBanner'
+import { waveView } from '../types/monsters'
+import { waveBonus, WAVE_BANNER_MS } from '../types/waves'
 import { Gate } from './warfront/Gate'
 
 const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.rally }
@@ -38,7 +43,15 @@ export function GameScreen() {
   // The battlefield takes whatever height is left; its contents are sized to fit it
   const [fieldHeight, setFieldHeight] = useState(0)
   const onFieldLayout = (e: LayoutChangeEvent) => setFieldHeight(Math.floor(e.nativeEvent.layout.height))
-  const field = battlefieldLayout(fieldHeight)
+  const field = battlefieldLayout(fieldHeight, { queue: true })
+  const queue = waveView(state).queue
+
+  // Clearing a wave: a banner for a moment, during which taps are ignored
+  const [banner, setBanner] = useState<string | null>(null)
+  const bannerTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => () => {
+    if (bannerTimer.current) clearTimeout(bannerTimer.current)
+  }, [])
 
   const playClick = useSfx(SFX.CLICK)
   const playKill = useSfx(SFX.COIN)
@@ -56,7 +69,14 @@ export function GameScreen() {
     haptics.medium()
     playKill()
     battlefieldRef.current?.showBounty(`+${monster.bounty.toFixed(2)}`)
-    if (Math.random() < 0.25) flavor.show()
+    if (state.waveKills === 0) {
+      // The kill finished the wave (the state here is already the new one)
+      setBanner(`Wave cleared +${waveBonus(monster.bounty).toFixed(2)}`)
+      if (bannerTimer.current) clearTimeout(bannerTimer.current)
+      bannerTimer.current = setTimeout(() => setBanner(null), WAVE_BANNER_MS)
+    } else if (Math.random() < 0.25) {
+      flavor.show()
+    }
   })
 
   const rallyOn = isSystemOn(state, 'rally')
@@ -73,6 +93,7 @@ export function GameScreen() {
         foodSystemActive={hungerOn}
         autoInspPerSec={effectiveAutoRate}
       />
+      <WaveRow />
       <StoryObjective />
       <PopulationChips />
 
@@ -87,12 +108,15 @@ export function GameScreen() {
             kills={state.monstersDefeated}
             damage={state.tapDamage}
             onStrike={handleStrike}
+            locked={banner !== null}
             coachId="slay"
+            queue={field.showQueue ? <MonsterQueue monsters={queue} /> : undefined}
             header={field.showFlavor ? (
               <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} reserveHeight={FLAVOR_H} />
             ) : undefined}
           />
         )}
+        <WaveBanner text={banner} />
       </View>
 
       <Gate />

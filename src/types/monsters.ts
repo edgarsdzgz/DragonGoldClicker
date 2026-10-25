@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import type { Ionicons } from '@expo/vector-icons'
 import type { GameState } from './state'
 import { roundInsp } from './utils'
+import { progressWave, waveFromKills, WAVE_SIZE } from './waves'
 
 // =============================================================================
 // THE MONSTER (layer 2): the thing the SLAY circle shows and the tap hits
@@ -10,6 +11,8 @@ import { roundInsp } from './utils'
 export interface MonsterDef {
   id: string
   name: string
+  /** For "4 kobolds left" */
+  plural: string
   glyph: ComponentProps<typeof Ionicons>['name']
   hp: number
   /** Inspiration paid when it dies */
@@ -20,10 +23,10 @@ export interface MonsterDef {
 
 /** Provisional numbers; balance comes with the simulator. About 0.05 inspiration per tap at the start. */
 export const MONSTERS: MonsterDef[] = [
-  { id: 'kobold', name: 'Kobold', glyph: 'paw', hp: 5, bounty: 0.25, fromKills: 0 },
-  { id: 'goblin', name: 'Goblin', glyph: 'skull', hp: 8, bounty: 0.4, fromKills: 10 },
-  { id: 'shadow_crawler', name: 'Shadow Crawler', glyph: 'bug', hp: 12, bounty: 0.6, fromKills: 25 },
-  { id: 'orc', name: 'Orc', glyph: 'flame', hp: 20, bounty: 1.0, fromKills: 50 },
+  { id: 'kobold', name: 'Kobold', plural: 'kobolds', glyph: 'paw', hp: 5, bounty: 0.25, fromKills: 0 },
+  { id: 'goblin', name: 'Goblin', plural: 'goblins', glyph: 'skull', hp: 8, bounty: 0.4, fromKills: 10 },
+  { id: 'shadow_crawler', name: 'Shadow Crawler', plural: 'shadow crawlers', glyph: 'bug', hp: 12, bounty: 0.6, fromKills: 25 },
+  { id: 'orc', name: 'Orc', plural: 'orcs', glyph: 'flame', hp: 20, bounty: 1.0, fromKills: 50 },
 ]
 
 /** Damage per tap at the start */
@@ -49,7 +52,7 @@ export function currentMonster(s: Pick<GameState, 'monsterIndex'>): MonsterDef {
 /** A fresh monster of the tier the kill count calls for (used by the save migration) */
 export function spawnMonster(s: GameState): GameState {
   const monsterIndex = monsterIndexForKills(Math.floor(s.monstersDefeated))
-  return { ...s, monsterIndex, monsterHp: MONSTERS[monsterIndex].hp }
+  return { ...s, monsterIndex, monsterHp: MONSTERS[monsterIndex].hp, ...waveFromKills(s.monstersDefeated) }
 }
 
 export interface StrikeResult {
@@ -59,6 +62,10 @@ export interface StrikeResult {
   dealt: number
   killed: boolean
   bounty: number
+  /** The kill finished a wave */
+  waveCleared: boolean
+  /** Wave bonus paid on top of the bounty (0 unless the wave was cleared) */
+  waveBonus: number
 }
 
 /**
@@ -73,24 +80,30 @@ export function strike(s: GameState, damage: number = s.tapDamage): StrikeResult
   const tapped = { ...s, totalClicks: s.totalClicks + 1 }
 
   if (left > 0) {
-    return { state: { ...tapped, monsterHp: left }, monster, dealt, killed: false, bounty: 0 }
+    return { state: { ...tapped, monsterHp: left }, monster, dealt, killed: false, bounty: 0, waveCleared: false, waveBonus: 0 }
   }
 
   const kills = Math.floor(s.monstersDefeated) + 1
   const monsterIndex = monsterIndexForKills(kills)
+  const wave = progressWave(s, monster.bounty)
+  const paid = monster.bounty + wave.bonus
   return {
     state: {
       ...tapped,
-      inspiration: roundInsp(s.inspiration + monster.bounty),
-      totalInspirationEarned: roundInsp(s.totalInspirationEarned + monster.bounty),
+      inspiration: roundInsp(s.inspiration + paid),
+      totalInspirationEarned: roundInsp(s.totalInspirationEarned + paid),
       monstersDefeated: kills,
       monsterIndex,
       monsterHp: MONSTERS[monsterIndex].hp,
+      waveNumber: wave.waveNumber,
+      waveKills: wave.waveKills,
     },
     monster,
     dealt,
     killed: true,
     bounty: monster.bounty,
+    waveCleared: wave.cleared,
+    waveBonus: wave.bonus,
   }
 }
 
@@ -98,4 +111,28 @@ export function strike(s: GameState, damage: number = s.tapDamage): StrikeResult
 export function monsterLabel(s: Pick<GameState, 'monsterIndex' | 'monsterHp'>): string {
   const m = currentMonster(s)
   return `${m.name}, ${s.monsterHp} of ${m.hp} HP. Tap to strike`
+}
+
+export interface WaveView {
+  waveNumber: number
+  /** "4 kobolds left" */
+  leftText: string
+  left: number
+  /** The monsters still to come after the current one, at most 4 (the dim queue) */
+  queue: MonsterDef[]
+}
+
+export const MAX_QUEUE = 4
+
+/** What the wave row and the queue show */
+export function waveView(s: Pick<GameState, 'waveNumber' | 'waveKills' | 'monsterIndex'>): WaveView {
+  const monster = currentMonster(s)
+  const left = Math.max(1, WAVE_SIZE - s.waveKills)
+  const noun = left === 1 ? monster.name.toLowerCase() : monster.plural
+  return {
+    waveNumber: s.waveNumber,
+    left,
+    leftText: `${left} ${noun} left`,
+    queue: Array.from({ length: Math.min(MAX_QUEUE, left - 1) }, () => monster),
+  }
 }

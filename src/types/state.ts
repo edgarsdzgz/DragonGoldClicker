@@ -163,6 +163,10 @@ export interface GameState {
   monsterIndex: number
   /** Hit points the current monster has left */
   monsterHp: number
+  /** Current wave (1-based). Five monsters of one type per wave. */
+  waveNumber: number
+  /** Monsters already killed in the current wave (0-4) */
+  waveKills: number
   /** Save format version for migrations */
   saveMigrationVersion: number
 }
@@ -232,7 +236,9 @@ export const DEFAULT_GAME_STATE: GameState = {
   tapDamage: STARTING_TAP_DAMAGE,
   monsterIndex: 0,
   monsterHp: FIRST_MONSTER_HP,
-  saveMigrationVersion: 4,
+  waveNumber: 1,
+  waveKills: 0,
+  saveMigrationVersion: 5,
 }
 
 // =============================================================================

@@ -4,9 +4,10 @@ import {
 } from '../warfrontLayout'
 
 // Free battlefield heights (window - chrome). See the commit message for the sums.
-const WORST_360x640 = 640 - 430
-const TYPICAL_360x640 = 640 - 366
-const WORST_411x891 = 891 - 492
+// (the wave row adds 28 to the chrome)
+const WORST_360x640 = 640 - 458
+const TYPICAL_360x640 = 640 - 394
+const WORST_411x891 = 891 - 520
 
 const stack = (h: number, queue = false) => {
   const l = battlefieldLayout(h, { queue })
@@ -20,16 +21,21 @@ describe('battlefieldLayout', () => {
     expect(l.showFlavor).toBe(true)
   })
 
-  it('shows the flavour row at 120 or more on the typical 360x640 screen', () => {
-    const l = battlefieldLayout(TYPICAL_360x640)
-    expect(l.showFlavor).toBe(true)
+  it('keeps the queue and drops the flavour row on the typical 360x640 screen', () => {
+    const l = battlefieldLayout(TYPICAL_360x640, { queue: true })
+    expect(l).toMatchObject({ showFlavor: false, showQueue: true })
     expect(l.monster).toBeGreaterThanOrEqual(MIN_MONSTER)
   })
 
-  it('drops the flavour row before shrinking the monster under 120', () => {
-    const l = battlefieldLayout(WORST_360x640)
-    expect(l.showFlavor).toBe(false)
-    expect(l.monster).toBeGreaterThanOrEqual(MIN_MONSTER)
+  it('shows everything on the A16', () => {
+    expect(battlefieldLayout(WORST_411x891, { queue: true })).toMatchObject({ monster: 200, showFlavor: true, showQueue: true })
+  })
+
+  it('on the worst 360x640 screen drops both optional rows and still fits', () => {
+    const l = battlefieldLayout(WORST_360x640, { queue: true })
+    expect(l).toMatchObject({ showFlavor: false, showQueue: false })
+    expect(l.monster).toBeGreaterThanOrEqual(FLOOR_MONSTER)
+    expect(stack(WORST_360x640, true)).toBeLessThanOrEqual(WORST_360x640)
   })
 
   it('drops the queue after the flavour row, then shrinks the monster', () => {

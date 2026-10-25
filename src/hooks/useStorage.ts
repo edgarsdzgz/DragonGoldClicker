@@ -18,6 +18,7 @@ import {
 } from '../types/game'
 import { catchUpScripted } from '../types/scripted'
 import { spawnMonster } from '../types/monsters'
+import { waveFromKills } from '../types/waves'
 import { backfillStory, backfillScripted } from '../types/storyMigration'
 import { backfillTutorial } from '../types/tutorial'
 
@@ -132,6 +133,11 @@ export function useStorage() {
         // v4: the SLAY circle shows a monster. A save starts on a fresh monster of its tier.
         if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 4) {
           gameState = { ...spawnMonster(gameState), saveMigrationVersion: 4 }
+        }
+
+        // v5: waves. A save resumes mid-wave from its kill count.
+        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 5) {
+          gameState = { ...gameState, ...waveFromKills(gameState.monstersDefeated), saveMigrationVersion: 5 }
         }
 
         // A scene killed mid-read still gets its scripted event (state change only)

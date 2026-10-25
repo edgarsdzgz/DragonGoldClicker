@@ -27,6 +27,8 @@ interface BattlefieldProps {
   header?: React.ReactNode
   /** Dim queue of the next monsters, above the sprite */
   queue?: React.ReactNode
+  /** Taps are ignored while true (the wave-cleared banner); a held press carries on afterwards */
+  locked?: boolean
   /** Opt into the guided tutorial under this target id */
   coachId?: string
 }
@@ -44,7 +46,7 @@ const SQUASH = 0.95
  * (four hits a second) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
-  { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, coachId },
+  { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, locked = false, coachId },
   ref,
 ) {
   const coach = useCoachTarget(coachId)
@@ -76,7 +78,11 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   }, [kills, spawn])
 
   // Every hit: flash and shake the monster, float the damage up from it
+  const lockedRef = useRef(locked)
+  lockedRef.current = locked
+
   const strike = useCallback(() => {
+    if (lockedRef.current) return
     onStrike()
     const jitter = (Math.random() - 0.5) * size * 0.5
     numbers.current?.spawn({ x: size / 2 + jitter, y: size * 0.3, text: `-${damage}`, color: colors.text.primary })
