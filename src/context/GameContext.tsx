@@ -72,6 +72,8 @@ import {
   isBuildingRevealed,
 } from '../types/game'
 import { stepFood } from '../types/foodTick'
+import { applyCityDamage } from '../types/cityHp'
+import { firstExpeditionReward } from '../types/scripted'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
@@ -126,6 +128,8 @@ interface GameContextType {
   isResearchAvailable: (id: string) => boolean
   /** Story director: record a beat as seen and restart the dwell clock (at the game second it fired in) */
   markBeatSeen: (id: string, atPlaySec?: number) => void
+  /** Story: apply a scripted state change (pure updater; scripted events and flags) */
+  applyScripted: (updater: (s: GameState) => GameState) => void
   /** Guided tutorial: record a step as done */
   completeTutorialStep: (id: string) => void
   /** Dev tools only: apply an arbitrary state change (grants, checkpoints, forced timers) */
@@ -285,7 +289,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const defense = getDefenseLevel(prev.clickPower, prev.fighters)
         const damage = getSiegeDamage(threat, defense)
         if (damage <= 0) return { ...prev, siegeTimer: 0 }
-        return { ...prev, siegeTimer: 0, cityHp: Math.max(0, prev.cityHp - damage) }
+        // HP floor: no damage path drops the city below HP_FLOOR until threatUnfloored
+        return { ...applyCityDamage(prev, damage), siegeTimer: 0 }
       })
     }, [loaded])
   )
@@ -669,10 +674,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (elapsed < expedition.duration) return prev
       const pity = prev.expeditionDryStreak >= EXPEDITION_PITY_THRESHOLD
       const rb = getResearchBonuses(prev.completedResearch)
-      const villagersFound = rollExpeditionReward(pity, rb.expeditionFindBonus)
+      // The first expedition ever claimed always rescues at least 1 villager
+      const { found: villagersFound, state: base } = firstExpeditionReward(prev, rollExpeditionReward(pity, rb.expeditionFindBonus))
       result = { villagersFound }
       return {
-        ...prev,
+        ...base,
         activeExpeditions: prev.activeExpeditions.filter((e) => e.id !== id),
         villagers: prev.villagers + villagersFound,
         villagersRescued: prev.villagersRescued + villagersFound,
@@ -1086,6 +1092,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       : { ...prev, beatsSeen: [...prev.beatsSeen, id], lastBeatAtPlaySec: atPlaySec ?? prev.playSeconds }))
   }, [])
 
+  const applyScripted = useCallback((updater: (s: GameState) => GameState) => setState(updater), [])
+
   const completeTutorialStep = useCallback((id: string) => {
     setState((prev) => ((prev.tutorialStepsDone ?? []).includes(id)
       ? prev
@@ -1163,6 +1171,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         isResearchAvailable,
         markBeatSeen,
         completeTutorialStep,
+        applyScripted,
         devApply,
         devForceWanderer,
       }}

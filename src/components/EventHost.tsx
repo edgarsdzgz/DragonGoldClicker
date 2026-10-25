@@ -1,8 +1,10 @@
 import React from 'react'
 import { useGame } from '../context/GameContext'
 import { useStory } from '../context/StoryContext'
-import { getScene } from '../data/story/lines'
+import { getScene, OFFLINE_FRAMING } from '../data/story/lines'
 import type { SceneTab } from '../data/story/lines'
+import type { BeatId } from '../types/story'
+import { markScripted, hasRun } from '../types/scripted'
 import { OfflineModal } from './OfflineModal'
 import { NpcDialog } from './NpcDialog'
 import { FoodWarningModal } from './FoodWarningModal'
@@ -15,6 +17,8 @@ import { GameOverModal } from './GameOverModal'
 interface EventHostProps {
   /** Switches the visible tab (the host lives above the tab navigator) */
   onNavigate: (tab: SceneTab) => void
+  /** Called when a scene is closed (read or skipped), but not for replays */
+  onSceneClosed?: (id: BeatId) => void
 }
 
 /**
@@ -22,9 +26,9 @@ interface EventHostProps {
  * every screen. One at a time, highest priority first:
  * game over > offline > story scene > starvation > food warning > milestone > wanderer.
  */
-export function EventHost({ onNavigate }: EventHostProps) {
+export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
   const {
-    dismissGameOver, resetGame,
+    state, applyScripted, dismissGameOver, resetGame,
     pendingOfflineEarnings, dismissOfflineEarnings,
     pendingStarvationReport, dismissStarvationReport,
     pendingFoodWarning, dismissFoodWarning,
@@ -38,9 +42,21 @@ export function EventHost({ onNavigate }: EventHostProps) {
 
   const activeModal = useActiveEvent()
 
-  const handleSceneDismiss = () => {
+  const closeScene = () => {
     dismissScene()
+    if (queued && !queued.replay) onSceneClosed?.(queued.id)
+  }
+
+  const handleSceneDismiss = () => {
+    closeScene()
     if (scene?.navigateTo) onNavigate(scene.navigateTo)
+  }
+
+  // The first offline report after the Keep stands is spoken over by Pyreth
+  const offlineFramed = hasRun(state, 'offlineFraming')
+  const collectOffline = () => {
+    dismissOfflineEarnings()
+    applyScripted((s) => markScripted(s, 'offlineFraming'))
   }
 
   const handleFoodWarningGoForage = () => {
@@ -54,7 +70,8 @@ export function EventHost({ onNavigate }: EventHostProps) {
         visible={activeModal === 'offline'}
         inspirationEarned={pendingOfflineEarnings?.inspiration ?? 0}
         secondsAway={pendingOfflineEarnings?.seconds ?? 0}
-        onCollect={dismissOfflineEarnings}
+        onCollect={collectOffline}
+        framing={offlineFramed ? undefined : OFFLINE_FRAMING}
       />
       {scene && (
         <NpcDialog
@@ -63,10 +80,10 @@ export function EventHost({ onNavigate }: EventHostProps) {
           npcName={scene.speaker}
           icon={scene.icon}
           title={scene.title}
-          lines={scene.lines}
+          lines={queued?.alt && scene.altLines ? scene.altLines : scene.lines}
           dismissLabel={scene.dismissLabel}
           onDismiss={handleSceneDismiss}
-          onSkip={dismissScene}
+          onSkip={closeScene}
         />
       )}
       {pendingFoodWarning > 0 && (

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -15,6 +15,7 @@ import { useTabLocks } from './useTabLocks'
 import { UnlockToast } from '../components/UnlockToast'
 import { EventHost } from '../components/EventHost'
 import { useStoryDirector } from '../hooks/useStoryDirector'
+import { useScriptedEvents } from '../hooks/useScriptedEvents'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useCoach } from '../context/CoachContext'
 import { CoachMark } from '../components/CoachMark'
@@ -196,7 +197,8 @@ function TabNavigator() {
   const navigation = useNavigation<RootStackNavProp>()
   useStoryDirector()
   const { setFocusedTab } = useCoach()
-  const goToTab = (tab: SceneTab) => navigation.navigate('Main', { screen: tab })
+  const goToTab = useCallback((tab: SceneTab) => navigation.navigate('Main', { screen: tab }), [navigation])
+  const onSceneClosed = useScriptedEvents({ onNavigate: goToTab, toastRef })
   // Fallback for when the system nav bar is visible (immersive refused, or swiped in)
   const insets = useSafeAreaInsets()
 
@@ -331,7 +333,7 @@ function TabNavigator() {
         />
       </Tab.Navigator>
       <UnlockToast toastRef={toastRef} />
-      <EventHost onNavigate={goToTab} />
+      <EventHost onNavigate={goToTab} onSceneClosed={onSceneClosed} />
       <CoachMark />
     </View>
   )

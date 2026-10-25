@@ -142,6 +142,8 @@ export interface GameState {
   beatsSeen: string[]
   /** Guided tutorial steps already completed (see types/tutorial.ts) */
   tutorialStepsDone: string[]
+  /** Scripted first occurrences already run (see types/scripted.ts) */
+  scriptedDone: string[]
   /** Active play time in game seconds (ticked by the game loop, follows dev speed) */
   playSeconds: number
   /** playSeconds when the last beat fired (the dwell clock) */
@@ -213,6 +215,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   milestonesOffered: [],
   beatsSeen: [],
   tutorialStepsDone: [],
+  scriptedDone: [],
   playSeconds: 0,
   lastBeatAtPlaySec: 0,
   pendingWanderer: null,

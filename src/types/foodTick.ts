@@ -35,6 +35,13 @@ export interface FoodTickResult {
   report: StarvationResult | null
 }
 
+/** Food one check would eat from the current stores (after research reductions) */
+export function foodPerCheck(s: GameState): number {
+  const base = getFoodConsumption(s.villagers, s.soldiers, s.foragers, s.explorers, s.fighters, s.repairers)
+  const rb = getResearchBonuses(s.completedResearch)
+  return Math.min(s.food, Math.max(0, Math.ceil(base * (1 - rb.foodConsumptionReduction))))
+}
+
 const rollLosses = (count: number, chance: number): number => {
   let lost = 0
   for (let i = 0; i < count; i++) if (Math.random() < chance) lost++

@@ -6,6 +6,8 @@ import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
+import { useShakeRequest } from '../context/ShakeContext'
+import { useScreenShake } from '../hooks/useScreenShake'
 import { useFlavorText } from '../hooks/useFlavorText'
 import { useSfx } from '../hooks/useSfx'
 import { SFX } from '../data/sfx'
@@ -19,6 +21,8 @@ const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.r
 
 export function GameScreen() {
   const { state, click, rallyFighter, directRepairer, effectiveAutoRate, threatLevel, defenseLevel } = useGame()
+  const { shakeNonce } = useShakeRequest()
+  const shakeStyle = useScreenShake(shakeNonce)
   const incomeFlash = useRef(new Animated.Value(1)).current
   const flavor = useFlavorText(COMBAT_LINES)
 
@@ -56,7 +60,7 @@ export function GameScreen() {
   const hungerOn = isSystemOn(state, 'hunger')
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, shakeStyle]}>
       <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={hungerOn} autoInspPerSec={effectiveAutoRate} />
 
       {/* City HP bar (hidden until the siege begins) */}
@@ -225,7 +229,7 @@ export function GameScreen() {
           </Text>
         </Badge>
       </View>
-    </View>
+    </Animated.View>
   )
 }
 

@@ -51,7 +51,7 @@ export function DevStory() {
               size="xs"
               variant="ghost"
               disabled={!isSeen || !hasScene}
-              onPress={() => enqueueScene(beat.id)}
+              onPress={() => enqueueScene(beat.id, { replay: true })}
               accessibilityLabel={`Replay scene ${beat.id}`}
             >
               Replay

@@ -240,6 +240,20 @@ export function rollWandererEncounter(
 }
 
 /**
+ * A Lone Wanderer (1 villager, not trained), skipping the chance roll and the weighted pick.
+ * Used by the scripted arrival after strangers_at_gate.
+ */
+export function makeLoneWanderer(totalSoldiers: number, totalForagers: number): WandererEncounter {
+  return {
+    encounterType: 'lone_wanderer',
+    villagerCount: 1,
+    trained: null,
+    flavorText: pickFlavorText('lone_wanderer', getFlavorContext(totalSoldiers, totalForagers)),
+    foodCostPerCheck: FOOD_CONSUMPTION.villager,
+  }
+}
+
+/**
  * Calculate refund gold when a trained refugee overflows building capacity.
  * Returns max(floor(baseCost * DISMISS_REFUND_RATE), WANDERER_MIN_REFUND).
  */

@@ -5,6 +5,7 @@ import { AudioSettingsProvider } from './src/context/AudioSettingsContext'
 import { DevSettingsProvider } from './src/context/DevSettingsContext'
 import { GameProvider } from './src/context/GameContext'
 import { StoryProvider } from './src/context/StoryContext'
+import { ShakeProvider } from './src/context/ShakeContext'
 import { CoachProvider } from './src/context/CoachContext'
 import { Navigation } from './src/navigation'
 import { useBgMusic, useImmersiveMode } from './src/hooks'
@@ -25,7 +26,9 @@ function AppInner() {
     <GameProvider>
       <StoryProvider>
         <CoachProvider>
-          <Navigation />
+          <ShakeProvider>
+            <Navigation />
+          </ShakeProvider>
         </CoachProvider>
       </StoryProvider>
       <StatusBar style="light" />

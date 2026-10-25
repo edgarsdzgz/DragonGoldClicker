@@ -12,12 +12,16 @@ export interface QueuedScene {
   /** Unique per queue entry, so replaying the same scene remounts its dialog */
   uid: number
   id: BeatId
+  /** Show the scene's alternate lines */
+  alt?: boolean
+  /** A dev/journal replay: closing it must not run the beat's scripted event */
+  replay?: boolean
 }
 
 interface StoryContextType {
   /** Scenes waiting; the first one is on screen */
   scenes: QueuedScene[]
-  enqueueScene: (id: BeatId) => void
+  enqueueScene: (id: BeatId, opts?: { alt?: boolean; replay?: boolean }) => void
   /** Close the scene on screen (read or skipped) */
   dismissScene: () => void
 }
@@ -29,8 +33,8 @@ export function StoryProvider({ children }: { children: React.ReactNode }) {
   const [scenes, setScenes] = useState<QueuedScene[]>([])
   const nextUid = useRef(1)
 
-  const enqueueScene = useCallback((id: BeatId) => {
-    setScenes((prev) => [...prev, { uid: nextUid.current++, id }])
+  const enqueueScene = useCallback((id: BeatId, opts?: { alt?: boolean; replay?: boolean }) => {
+    setScenes((prev) => [...prev, { uid: nextUid.current++, id, ...opts }])
   }, [])
 
   // A new game (resetGame stamps a new startedAt) must not inherit the old queue

@@ -55,7 +55,7 @@ export function useStoryDirector() {
       firedRef.current = { ids: [...pending, beat.id], at: now }
       markBeatSeen(beat.id, now)
       const scene = beat.silent ? undefined : getScene(beat.id)
-      if (scene) enqueueScene(beat.id)
+      if (scene) enqueueScene(beat.id, { alt: beat.altScene?.(s) ?? false })
     }, [pacing, markBeatSeen, enqueueScene])
   )
 }

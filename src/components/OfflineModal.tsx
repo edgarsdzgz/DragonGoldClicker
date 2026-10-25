@@ -20,6 +20,8 @@ interface OfflineModalProps {
   inspirationEarned: number
   secondsAway: number
   onCollect: () => void
+  /** A character speaking over the report (the first time the Keep collects for you) */
+  framing?: { speaker: string; text: string }
 }
 
 function formatDuration(totalSeconds: number): string {
@@ -91,6 +93,7 @@ export function OfflineModal({
   inspirationEarned,
   secondsAway,
   onCollect,
+  framing,
 }: OfflineModalProps) {
   const haptics = useHaptics()
 
@@ -480,9 +483,20 @@ export function OfflineModal({
 
             {/* Subtitle */}
             <Animated.View style={{ opacity: footerOpacity }}>
-              <Text variant="caption" color="muted" center>
-                Your fighters held the line
-              </Text>
+              {framing ? (
+                <>
+                  <Text variant="caption" style={{ color: gold[400], letterSpacing: 1 }} center>
+                    {framing.speaker.toUpperCase()}
+                  </Text>
+                  <Text variant="bodySmall" color="secondary" center>
+                    {framing.text}
+                  </Text>
+                </>
+              ) : (
+                <Text variant="caption" color="muted" center>
+                  Your fighters held the line
+                </Text>
+              )}
             </Animated.View>
           </View>
 

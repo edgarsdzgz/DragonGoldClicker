@@ -27,6 +27,14 @@ const SIDE_EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   beyond_the_walls: (s) => s.postLevel > 0 || s.explorerIntroShown,
 }
 
+/** Scripted events of beats the save has already seen are treated as run (no replays for existing players) */
+export function backfillScripted(save: GameState): string[] {
+  return STORY_BEATS
+    .filter((b) => b.scripted && save.beatsSeen.includes(b.id))
+    .map((b) => b.scripted as string)
+    .filter((id) => id !== 'firstExpedition' || save.nextExpeditionId > 1)
+}
+
 /**
  * Walk the main beats in order and mark each seen if its trigger passes or the save
  * already uses something a later beat unlocks. Stop at the first beat failing both.

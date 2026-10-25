@@ -9,7 +9,7 @@ import { colors, spacing, radius, elevation } from '../theme'
 // =============================================================================
 
 export interface UnlockToastHandle {
-  show: (message: string) => void
+  show: (message: string, icon?: keyof typeof Ionicons.glyphMap) => void
 }
 
 interface Props {
@@ -22,13 +22,15 @@ const FADE_MS = 200
 export function UnlockToast({ toastRef }: Props) {
   const opacity = useRef(new Animated.Value(0)).current
   const [message, setMessage] = useState('')
+  const [icon, setIcon] = useState<keyof typeof Ionicons.glyphMap>('lock-closed')
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const show = useCallback((msg: string) => {
+  const show = useCallback((msg: string, iconName: keyof typeof Ionicons.glyphMap = 'lock-closed') => {
     // Clear any existing timer
     if (timerRef.current) clearTimeout(timerRef.current)
 
     setMessage(msg)
+    setIcon(iconName)
     opacity.setValue(0)
 
     Animated.timing(opacity, {
@@ -57,7 +59,7 @@ export function UnlockToast({ toastRef }: Props) {
   return (
     <Animated.View style={[styles.container, { opacity }]} pointerEvents="none">
       <View style={styles.pill}>
-        <Ionicons name="lock-closed" size={14} color={colors.text.secondary} />
+        <Ionicons name={icon} size={14} color={colors.text.secondary} />
         <Text variant="bodySmall" style={styles.text}>{message}</Text>
       </View>
     </Animated.View>

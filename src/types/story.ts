@@ -55,6 +55,8 @@ export interface BeatDef {
   scripted?: ScriptedEventId
   spotlight?: SpotlightTarget
   objective?: ObjectiveDef
+  /** The scene reads differently in this state (e.g. lean_times fired without the stores running dry) */
+  altScene?: (s: GameState) => boolean
   /** No scene: only reveals, spotlights and sets the objective */
   silent?: boolean
   /** May fire out of order whenever its own trigger passes; never blocks later beats */
@@ -138,6 +140,7 @@ export const STORY_BEATS: BeatDef[] = [
     // Fallback: if the stores never ran dry, it fires once the Keep stands
     trigger: (s) => (seen(s, 'empty_stores') && s.food <= 0) || seen(s, 'the_keep'),
     unlocks: ['starvation'],
+    altScene: (s) => s.food > 0,
     objective: { label: 'Get food above 0', current: (s) => (s.food > 0 ? 1 : 0), target: 1 },
   },
   {

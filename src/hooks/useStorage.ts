@@ -16,7 +16,7 @@ import {
   roundInsp,
   isSystemOn,
 } from '../types/game'
-import { backfillStory } from '../types/storyMigration'
+import { backfillStory, backfillScripted } from '../types/storyMigration'
 import { backfillTutorial } from '../types/tutorial'
 
 const STORAGE_KEY = '@dragongold/gamestate'
@@ -122,8 +122,9 @@ export function useStorage() {
         }
         // v3: guided tutorial. Steps the save already got past are marked done.
         if (!Array.isArray(gameState.tutorialStepsDone)) gameState.tutorialStepsDone = []
+        if (!Array.isArray(gameState.scriptedDone)) gameState.scriptedDone = []
         if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 3) {
-          gameState = { ...gameState, tutorialStepsDone: backfillTutorial(gameState), saveMigrationVersion: 3 }
+          gameState = { ...gameState, tutorialStepsDone: backfillTutorial(gameState), scriptedDone: backfillScripted(gameState), saveMigrationVersion: 3 }
         }
 
         // Calculate offline earnings (the Keep turns this on)
