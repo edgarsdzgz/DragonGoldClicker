@@ -1,12 +1,13 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
-import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent } from 'react-native'
+import { View, StyleSheet, Pressable, Animated, AppState, GestureResponderEvent, LayoutChangeEvent } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { MonsterIcon } from './MonsterIcon'
 import type { MonsterDef } from '../types/monsters'
 import { Text } from './Text'
 import { EnemyHp } from './EnemyHp'
-import { ClawSlash, SparkBurst } from './StrikeEffects'
-import type { ClawSlashHandle, SparkBurstHandle } from './StrikeEffects'
+import { ClawSlash, SparkBurst, EmberDissolve } from './StrikeEffects'
+import type { ClawSlashHandle, SparkBurstHandle, EmberDissolveHandle } from './StrikeEffects'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
 import { useHoldPress } from '../hooks'
@@ -53,6 +54,8 @@ const SQUASH = 0.95
 
 /** The monster holds still this long at impact before the knockback */
 const HIT_STOP_MS = 50
+/** A kill holds still a little longer before the nudge */
+const KILL_STOP_MS = 80
 /** Knockback travel, as a share of the sprite size (away from the gate) */
 const KNOCKBACK = 0.06
 
@@ -74,17 +77,21 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const coinFlight = useCoinFlight()
   const spriteRef = useRef<View>(null)
   const spawn = useRef(new Animated.Value(1)).current
-  // The fallen monster: a ghost that fades and drops (fade only with Reduce Motion)
+  // The fallen monster: its silhouette fades out in place while embers rise from it
   const fall = useRef(new Animated.Value(1)).current
   const [fallen, setFallen] = React.useState<MonsterDef | null>(null)
   // A steady pulse on the battlefield while the press is held
   const holdPulse = useRef(new Animated.Value(0)).current
   const [holding, setHolding] = React.useState(false)
+  const killToken = useRef(0)
   const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const squash = useRef(new Animated.Value(1)).current
   const shake = useRef(new Animated.Value(0)).current
   const flash = useRef(new Animated.Value(0)).current
   const slashes = useRef<ClawSlashHandle>(null)
+  const embers = useRef<EmberDissolveHandle>(null)
+  // The whole battlefield gives a small nudge on a kill
+  const nudge = useRef(new Animated.Value(0)).current
   const sparks = useRef<SparkBurstHandle>(null)
   // Knockback: 0 -> 1 pushes the monster up and tilts it, then springs back
   const knock = useRef(new Animated.Value(0)).current
@@ -127,12 +134,28 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     showBounty: (amount) =>
       numbers.current?.spawn({ x: size / 2, y: size * 0.25, text: amount, color: gold[300], large: true }),
     showKill: (monster) => {
+      // Each kill gets a token, so an older fade finishing can never remove a newer ghost
+      const token = ++killToken.current
       setFallen(monster)
+      fall.stopAnimation()
       fall.setValue(0)
-      Animated.timing(fall, { toValue: 1, duration: 420, useNativeDriver: true }).start(() => setFallen(null))
+      Animated.timing(fall, { toValue: 1, duration: reduceMotion ? 300 : 700, useNativeDriver: true }).start(({ finished }) => {
+        if (finished && killToken.current === token) setFallen(null)
+      })
+      embers.current?.dissolve(size / 2, size / 2, size)
+      // Kill punch: ~80ms hit-stop, then a 2-3px nudge of the battlefield
+      if (!reduceMotion) {
+        nudge.stopAnimation()
+        nudge.setValue(0)
+        Animated.sequence([
+          Animated.delay(KILL_STOP_MS),
+          Animated.timing(nudge, { toValue: 1, duration: 40, useNativeDriver: true }),
+          Animated.timing(nudge, { toValue: 0, duration: 110, useNativeDriver: true }),
+        ]).start()
+      }
       spriteRef.current?.measureInWindow((x, y, w, h) => coinFlight.fly({ x: x + w / 2, y: y + h / 2 }))
     },
-  }), [size, fall, coinFlight])
+  }), [size, fall, nudge, coinFlight, reduceMotion])
 
   useEffect(() => {
     if (!holding || reduceMotion) {
@@ -154,9 +177,14 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       firstRender.current = false
       return
     }
+    // Reduce Motion: the next monster is simply there, with no opacity ramp
+    if (reduceMotion) {
+      spawn.setValue(1)
+      return
+    }
     spawn.setValue(0)
     Animated.timing(spawn, { toValue: 1, duration: SPAWN_DELAY_MS, useNativeDriver: true }).start()
-  }, [kills, spawn])
+  }, [kills, spawn, reduceMotion])
 
   // Every hit: flash and shake the monster, float the damage up from it
   const lockedRef = useRef(locked)
@@ -198,11 +226,35 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   // the press-in already struck for, so remember the touch just long enough to skip that one.
   const touching = useRef(false)
   const touchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Stop the hold pulse (and forget the touch) for any reason the press can end without onPressOut
+  const cancelHold = useCallback(() => {
+    if (holdTimer.current) clearTimeout(holdTimer.current)
+    if (touchTimer.current) clearTimeout(touchTimer.current)
+    holdTimer.current = null
+    touchTimer.current = null
+    touching.current = false
+    setHolding(false)
+  }, [])
+
   useEffect(() => () => {
     if (touchTimer.current) clearTimeout(touchTimer.current)
     if (holdTimer.current) clearTimeout(holdTimer.current)
     if (hitTimer.current) clearTimeout(hitTimer.current)
+    touching.current = false
   }, [])
+
+  const focused = useIsFocused()
+  useEffect(() => {
+    if (!focused) cancelHold()
+  }, [focused, cancelHold])
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      if (next !== 'active') cancelHold()
+    })
+    return () => sub.remove()
+  }, [cancelHold])
 
   const handlePressIn = (e: GestureResponderEvent) => {
     touching.current = true
@@ -237,7 +289,12 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   }
 
   return (
-    <View ref={coach.ref} onLayout={onLayout} collapsable={false} style={styles.field}>
+    <Animated.View
+      ref={coach.ref}
+      onLayout={onLayout}
+      collapsable={false}
+      style={[styles.field, { transform: [{ translateY: nudge.interpolate({ inputRange: [0, 1], outputRange: [0, 3] }) }] }]}
+    >
       <Pressable
         onPressIn={handlePressIn}
         onPress={handlePress}
@@ -272,7 +329,6 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
                 styles.ghost,
                 {
                   opacity: fall.interpolate({ inputRange: [0, 1], outputRange: [0.9, 0] }),
-                  transform: [{ translateY: reduceMotion ? 0 : fall.interpolate({ inputRange: [0, 1], outputRange: [0, size * 0.35] }) }],
                 },
               ]}
             >
@@ -306,12 +362,13 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
           </Animated.View>
           <ClawSlash ref={slashes} size={Math.round(size * 0.9)} />
           <SparkBurst ref={sparks} />
+          <EmberDissolve ref={embers} />
           <FloatingNumbers ref={numbers} />
         </View>
         <Text variant="label" center style={styles.name}>{def.name}</Text>
         <EnemyHp hp={monsterHp} max={def.hp} width={Math.min(fieldW - spacing[6] * 2, 260)} />
       </Pressable>
-    </View>
+    </Animated.View>
   )
 })
 

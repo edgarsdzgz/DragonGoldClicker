@@ -3,6 +3,12 @@ import { AccessibilityInfo } from 'react-native'
 import { MONSTERS } from '../types/monsters'
 import type { MonsterDef } from '../types/monsters'
 
+export interface KillAnnouncement {
+  text: string
+  /** Say it even if something was announced in the last 2s */
+  force?: boolean
+}
+
 /** Screen-reader announcements for kills are rate-limited to one per this many ms */
 export const ANNOUNCE_EVERY_MS = 2000
 
@@ -13,7 +19,8 @@ export const ANNOUNCE_EVERY_MS = 2000
 export function useKillEvents(
   kills: number,
   monsterIndex: number,
-  onKill: (monster: MonsterDef) => void,
+  /** May return the words to announce instead of "<name> slain" (e.g. when the kill also cleared a wave) */
+  onKill: (monster: MonsterDef) => KillAnnouncement | void,
 ) {
   const prev = useRef({ kills, monsterIndex })
   const lastAnnounce = useRef(0)
@@ -26,12 +33,13 @@ export function useKillEvents(
     if (kills <= before.kills) return
 
     const monster = MONSTERS[Math.max(0, Math.min(MONSTERS.length - 1, before.monsterIndex))]
-    onKillRef.current(monster)
+    const custom = onKillRef.current(monster)
 
+    // One announcement per kill; a wave clear is worth saying even inside the 2s window
     const now = Date.now()
-    if (now - lastAnnounce.current >= ANNOUNCE_EVERY_MS) {
+    if (custom?.force || now - lastAnnounce.current >= ANNOUNCE_EVERY_MS) {
       lastAnnounce.current = now
-      AccessibilityInfo.announceForAccessibility(`${monster.name} slain`)
+      AccessibilityInfo.announceForAccessibility(custom?.text ?? `${monster.name} slain`)
     }
   }, [kills, monsterIndex])
 }

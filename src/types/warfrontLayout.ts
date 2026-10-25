@@ -11,8 +11,8 @@ export const FLOOR_MONSTER = 80
 export const FLAVOR_H = 36
 /** The dim queue of next monsters */
 export const QUEUE_H = 28
-/** Monster name under the sprite */
-export const NAME_H = 20
+/** Monster name under the sprite: 20dp of text plus its 2dp top margin */
+export const NAME_H = 22
 /** Enemy HP under the name: pips, or "cur/max" text over a bar */
 export const HP_H = 30
 /** Breathing room above and below the stack */

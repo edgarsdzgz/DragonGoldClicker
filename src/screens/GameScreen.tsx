@@ -34,6 +34,11 @@ const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.r
  * The Warfront is a scene read top to bottom along the monsters' path: they come from the
  * top, the whole battlefield is the tap target, and the gate sits by the thumb at the bottom.
  */
+const killsText = (kills: number) => {
+  const n = Math.floor(kills)
+  return `${n} ${n === 1 ? 'monster' : 'monsters'} slain`
+}
+
 export function GameScreen() {
   const { state, click, rallyFighter, directRepairer, effectiveAutoRate } = useGame()
   const { shakeNonce } = useShakeRequest()
@@ -77,6 +82,8 @@ export function GameScreen() {
       setBanner(`Wave cleared +${waveBonus(monster.bounty).toFixed(2)}`)
       if (bannerTimer.current) clearTimeout(bannerTimer.current)
       bannerTimer.current = setTimeout(() => setBanner(null), WAVE_BANNER_MS)
+      // One announcement for the kill and the wave, so the two never collide
+      return { text: `${monster.name} slain. Wave cleared, +${waveBonus(monster.bounty).toFixed(2)}`, force: true }
     } else if (Math.random() < 0.25) {
       flavor.show()
     }
@@ -169,7 +176,7 @@ export function GameScreen() {
       {showFooter && (
         <View style={styles.footer}>
           <Text variant="caption" color="muted">
-            {Math.floor(state.monstersDefeated)} monsters slain
+            {killsText(state.monstersDefeated)}
           </Text>
           <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
         </View>

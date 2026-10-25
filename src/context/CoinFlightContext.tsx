@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useMemo, useRef } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef } from 'react'
 import { useIsFocused } from '@react-navigation/native'
 import { View, Animated, StyleSheet, Easing } from 'react-native'
 import { InspirationIcon } from '../components/InspirationIcon'
@@ -127,8 +127,17 @@ export function useCoinTarget() {
   const reduceMotion = useReduceMotion()
   // Every tab has its own top bar; only the one on screen becomes the target
   const focused = useIsFocused()
+  const mine = useRef<View | null>(null)
   const ref = useCallback((node: View | null) => {
+    const previous = mine.current
+    mine.current = node
     if (node && focused) targetRef.current = node
+    // Unmounting: drop the target only if it is still this figure
+    else if (!node && targetRef.current === previous) targetRef.current = null
+  }, [focused, targetRef])
+  // Leaving the tab (blur) clears the target too
+  useEffect(() => {
+    if (!focused && targetRef.current === mine.current) targetRef.current = null
   }, [focused, targetRef])
   const style = {
     opacity: reduceMotion ? pulse.interpolate({ inputRange: [0, 1], outputRange: [1, 0.4] }) : 1,

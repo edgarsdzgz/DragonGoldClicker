@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Animated, StyleSheet, AccessibilityInfo } from 'react-native'
+import { Animated, StyleSheet } from 'react-native'
 import { Text } from './Text'
 import { useReduceMotion } from '../hooks/useReduceMotion'
 import { colors, spacing, radius, gold } from '../theme'
@@ -19,7 +19,7 @@ export function WaveBanner({ text }: WaveBannerProps) {
       progress.setValue(0)
       return
     }
-    AccessibilityInfo.announceForAccessibility(text)
+    // Not announced here: the kill's own announcement already says the wave was cleared
     Animated.sequence([
       Animated.timing(progress, { toValue: 1, duration: 200, useNativeDriver: true }),
       Animated.delay(1000),
