@@ -5,7 +5,8 @@ import { HP_FLOOR } from '../systems'
 import { FOOD_CHECK_INTERVAL } from '../food'
 import { STORY_BEATS } from '../story'
 import { backfillScripted } from '../storyMigration'
-import { runScripted, firstExpeditionReward, BREACH_DAMAGE, FIRST_MEAL_DELAY_SEC } from '../scripted'
+import { runScripted, firstExpeditionReward, catchUpScripted, hasRun, BREACH_DAMAGE, FIRST_MEAL_DELAY_SEC } from '../scripted'
+import { makeLoneWanderer } from '../wanderers'
 import { SCENES } from '../../data/story/lines'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
@@ -55,9 +56,54 @@ describe('runScripted', () => {
     expect(s.pendingWanderer?.trained).toBeNull()
   })
 
-  it('records events with no state effect without changing anything else', () => {
-    const s = runScripted(make({}), 'trainedRefugee')
-    expect(s.scriptedDone).toEqual(['trainedRefugee'])
+  it('does not record events that have no immediate effect', () => {
+    for (const id of ['firstExpedition', 'offlineFraming', 'trainedRefugee', 'milestoneFollow'] as const) {
+      const s = runScripted(make({}), id)
+      expect(hasRun(s, id)).toBe(false)
+    }
+  })
+
+  it('closing every scene in the story leaves the first-expedition guarantee and offline framing intact', () => {
+    let s = make({})
+    for (const beat of STORY_BEATS) if (beat.scripted) s = runScripted(s, beat.scripted)
+    expect(hasRun(s, 'firstExpedition')).toBe(false)
+    expect(hasRun(s, 'offlineFraming')).toBe(false)
+    const claim = firstExpeditionReward(s, 0)
+    expect(claim.found).toBe(1)
+    expect(hasRun(claim.state, 'firstExpedition')).toBe(true)
+  })
+
+  it('does not record loneWanderer while another wanderer is pending, and runs it once that clears', () => {
+    const pending = make({ pendingWanderer: makeLoneWanderer(0, 0) })
+    const blocked = runScripted(pending, 'loneWanderer')
+    expect(hasRun(blocked, 'loneWanderer')).toBe(false)
+    const cleared = runScripted({ ...blocked, pendingWanderer: null }, 'loneWanderer')
+    expect(cleared.pendingWanderer?.encounterType).toBe('lone_wanderer')
+    expect(hasRun(cleared, 'loneWanderer')).toBe(true)
+  })
+})
+
+describe('catchUpScripted', () => {
+  it('runs immediate events of seen beats that were never recorded', () => {
+    const s = catchUpScripted(make({ cityHp: 100, beatsSeen: ['prologue', 'the_breach', 'empty_stores', 'strangers_at_gate'] }))
+    expect(s.cityHp).toBe(100 - BREACH_DAMAGE)
+    expect(FOOD_CHECK_INTERVAL - s.foodTimer).toBe(FIRST_MEAL_DELAY_SEC)
+    expect(s.pendingWanderer?.encounterType).toBe('lone_wanderer')
+    expect(s.scriptedDone).toEqual(expect.arrayContaining(['breachHit', 'firstMeal', 'loneWanderer']))
+  })
+
+  it('leaves unseen beats, recorded events and effect-less events alone', () => {
+    const base = make({ cityHp: 85, beatsSeen: ['the_breach', 'beyond_the_walls', 'the_keep'], scriptedDone: ['breachHit'] })
+    const s = catchUpScripted(base)
+    expect(s.cityHp).toBe(85)
+    expect(s.pendingWanderer).toBeNull()
+    expect(hasRun(s, 'firstExpedition')).toBe(false)
+    expect(hasRun(s, 'offlineFraming')).toBe(false)
+  })
+
+  it('is idempotent', () => {
+    const once = catchUpScripted(make({ cityHp: 100, beatsSeen: ['the_breach'] }))
+    expect(catchUpScripted(once).cityHp).toBe(once.cityHp)
   })
 })
 

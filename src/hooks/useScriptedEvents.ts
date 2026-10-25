@@ -26,6 +26,13 @@ export function useScriptedEvents({ onNavigate, toastRef }: Options) {
 
   const stateRef = useRef(state)
   const mealArmed = useRef(false)
+  const shakeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Beats whose scene was closed this session and whose event had to wait (see retry below)
+  const waiting = useRef<Set<BeatId>>(new Set())
+
+  useEffect(() => () => {
+    if (shakeTimer.current) clearTimeout(shakeTimer.current)
+  }, [])
 
   // First meal: watch for the food timer wrapping to 0 and say what was eaten
   useEffect(() => {
@@ -37,15 +44,24 @@ export function useScriptedEvents({ onNavigate, toastRef }: Options) {
     }
   }, [state, toastRef])
 
+  // A lone wanderer could not arrive while another was pending: retry once that one is gone
+  useEffect(() => {
+    if (state.pendingWanderer || !waiting.current.has('strangers_at_gate')) return
+    waiting.current.delete('strangers_at_gate')
+    applyScripted((s) => runScripted(s, 'loneWanderer'))
+  }, [state.pendingWanderer, applyScripted])
+
   return useCallback((beatId: BeatId) => {
     const scripted = getBeat(beatId)?.scripted
     if (!scripted || hasRun(stateRef.current, scripted)) return
 
     applyScripted((s) => runScripted(s, scripted))
+    if (scripted === 'loneWanderer' && stateRef.current.pendingWanderer) waiting.current.add(beatId)
 
     if (scripted === 'breachHit') {
       onNavigate('GameTab')
-      setTimeout(() => {
+      if (shakeTimer.current) clearTimeout(shakeTimer.current)
+      shakeTimer.current = setTimeout(() => {
         haptics.heavy()
         requestShake()
       }, 350)

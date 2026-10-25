@@ -1,5 +1,6 @@
 import type { GameState } from './state'
 import type { ScriptedEventId } from './story'
+import { STORY_BEATS } from './story'
 import { applyCityDamage } from './cityHp'
 import { FOOD_CHECK_INTERVAL } from './food'
 import { makeLoneWanderer } from './wanderers'
@@ -22,20 +23,40 @@ export function markScripted(s: GameState, id: ScriptedEventId): GameState {
   return hasRun(s, id) ? s : { ...s, scriptedDone: [...(s.scriptedDone ?? []), id] }
 }
 
-/** Events whose effect is a state change made right when the scene closes */
-const EFFECTS: Partial<Record<ScriptedEventId, (s: GameState) => GameState>> = {
+/**
+ * Events with an immediate state change, made when the scene closes. Returns null when the
+ * event could not happen yet (so it is not recorded and can be retried).
+ * Events with no immediate effect are NOT here: `firstExpedition` is recorded when the first
+ * expedition is claimed, `offlineFraming` when the framed offline report is collected.
+ */
+const EFFECTS: Partial<Record<ScriptedEventId, (s: GameState) => GameState | null>> = {
   breachHit: (s) => applyCityDamage(s, BREACH_DAMAGE),
   firstMeal: (s) => ({ ...s, foodTimer: FOOD_CHECK_INTERVAL - FIRST_MEAL_DELAY_SEC }),
   loneWanderer: (s) =>
     s.pendingWanderer
-      ? s
+      ? null
       : { ...s, pendingWanderer: makeLoneWanderer(getTotalSoldiers(s.soldiers), getTotalForagers(s.foragers)) },
 }
 
-/** Run a scripted event once. A second call, or an event with no state effect, only records it. */
+/** Whether a scripted event does something the moment its scene closes */
+export const hasImmediateEffect = (id: ScriptedEventId): boolean => id in EFFECTS
+
+/** Run a scripted event once and record it. Does nothing (and records nothing) for events without an immediate effect or that cannot happen yet. */
 export function runScripted(s: GameState, id: ScriptedEventId): GameState {
   if (hasRun(s, id)) return s
-  return markScripted(EFFECTS[id]?.(s) ?? s, id)
+  const next = EFFECTS[id]?.(s)
+  return next ? markScripted(next, id) : s
+}
+
+/**
+ * On load: run any immediate-effect event whose beat was seen but never recorded (the app was
+ * killed while its scene was open). State change only; no shake, haptics or navigation.
+ */
+export function catchUpScripted(s: GameState): GameState {
+  return STORY_BEATS.reduce((acc, beat) => {
+    const id = beat.scripted
+    return id && acc.beatsSeen.includes(beat.id) && hasImmediateEffect(id) ? runScripted(acc, id) : acc
+  }, s)
 }
 
 /** The first expedition ever claimed always rescues at least 1 villager */

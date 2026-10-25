@@ -16,6 +16,7 @@ import {
   roundInsp,
   isSystemOn,
 } from '../types/game'
+import { catchUpScripted } from '../types/scripted'
 import { backfillStory, backfillScripted } from '../types/storyMigration'
 import { backfillTutorial } from '../types/tutorial'
 
@@ -126,6 +127,9 @@ export function useStorage() {
         if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 3) {
           gameState = { ...gameState, tutorialStepsDone: backfillTutorial(gameState), scriptedDone: backfillScripted(gameState), saveMigrationVersion: 3 }
         }
+
+        // A scene killed mid-read still gets its scripted event (state change only)
+        gameState = catchUpScripted(gameState)
 
         // Calculate offline earnings (the Keep turns this on)
         let offlineEarnings: OfflineEarnings | null = null
