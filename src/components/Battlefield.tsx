@@ -5,6 +5,8 @@ import { MonsterIcon } from './MonsterIcon'
 import type { MonsterDef } from '../types/monsters'
 import { Text } from './Text'
 import { EnemyHp } from './EnemyHp'
+import { ClawSlash, SparkBurst } from './StrikeEffects'
+import type { ClawSlashHandle, SparkBurstHandle } from './StrikeEffects'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
 import { useHoldPress } from '../hooks'
@@ -49,6 +51,11 @@ const ART_SCALE = 0.68
 /** Press squash: the monster shrinks about 5% */
 const SQUASH = 0.95
 
+/** The monster holds still this long at impact before the knockback */
+const HIT_STOP_MS = 50
+/** Knockback travel, as a share of the sprite size (away from the gate) */
+const KNOCKBACK = 0.06
+
 /**
  * The tap target: the whole battlefield. Every press strikes the monster; holding repeats
  * (four hits a second) with a steady pulse. Damage numbers rise from the monster.
@@ -77,6 +84,15 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const squash = useRef(new Animated.Value(1)).current
   const shake = useRef(new Animated.Value(0)).current
   const flash = useRef(new Animated.Value(0)).current
+  const slashes = useRef<ClawSlashHandle>(null)
+  const sparks = useRef<SparkBurstHandle>(null)
+  // Knockback: 0 -> 1 pushes the monster up and tilts it, then springs back
+  const knock = useRef(new Animated.Value(0)).current
+  const tilt = useRef(new Animated.Value(0)).current
+  const tiltSide = useRef(1)
+  // Where the last press landed, in dp from the sprite's top-left (hold repeats reuse it)
+  const tapPoint = useRef({ x: size / 2, y: size / 2 })
+  const spriteWindow = useRef<{ x: number; y: number } | null>(null)
 
   // Pose: the hit frame for ~120ms on each strike, else idle (or hurt at 1/3 HP or less)
   const [hitPose, setHitPose] = React.useState(false)
@@ -152,15 +168,30 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     setHitPose(true)
     if (hitTimer.current) clearTimeout(hitTimer.current)
     hitTimer.current = setTimeout(() => setHitPose(false), 120)
-    const jitter = (Math.random() - 0.5) * size * 0.5
-    numbers.current?.spawn({ x: size / 2 + jitter, y: size * 0.3, text: `-${damage}`, color: colors.text.primary })
+    const point = tapPoint.current
+    numbers.current?.spawn({ x: point.x, y: size * 0.3, text: `-${damage}`, color: colors.text.primary })
+    slashes.current?.slash(point.x, point.y)
+    if (!reduceMotion) sparks.current?.spark(point.x, point.y, size)
+    // Hit-stop: the monster holds still ~50ms, then the knockback runs
+    if (!reduceMotion) {
+      tiltSide.current = -tiltSide.current
+      tilt.setValue(tiltSide.current * (3 + Math.random() * 2))
+      knock.stopAnimation()
+      knock.setValue(0)
+      Animated.sequence([
+        Animated.delay(HIT_STOP_MS),
+        Animated.timing(knock, { toValue: 1, duration: 40, useNativeDriver: true }),
+        Animated.timing(knock, { toValue: 0, duration: 180, useNativeDriver: true }),
+      ]).start()
+    }
     flash.setValue(0.35)
     Animated.timing(flash, { toValue: 0, duration: 140, useNativeDriver: true }).start()
     if (!reduceMotion) {
+      // A small sideways jitter after the hit-stop; the knockback carries most of the motion
       const hop = (to: number) => Animated.timing(shake, { toValue: to, duration: 28, useNativeDriver: true })
-      Animated.sequence([hop(4), hop(-4), hop(2), hop(0)]).start()
+      Animated.sequence([Animated.delay(HIT_STOP_MS), hop(2), hop(-2), hop(1), hop(0)]).start()
     }
-  }, [onStrike, damage, size, flash, shake, reduceMotion])
+  }, [onStrike, damage, size, flash, shake, knock, tilt, reduceMotion])
   const { onPressIn, onPressOut } = useHoldPress(strike, strike)
 
   // Screen readers activate with a tap-less click (onPress). A touch also ends in onPress, which
@@ -173,8 +204,15 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     if (hitTimer.current) clearTimeout(hitTimer.current)
   }, [])
 
-  const handlePressIn = (_e: GestureResponderEvent) => {
+  const handlePressIn = (e: GestureResponderEvent) => {
     touching.current = true
+    const { pageX, pageY } = e.nativeEvent
+    const origin = spriteWindow.current
+    if (origin) {
+      const clamp = (v: number) => Math.max(size * 0.1, Math.min(size * 0.9, v))
+      tapPoint.current = { x: clamp(pageX - origin.x), y: clamp(pageY - origin.y) }
+    }
+    spriteRef.current?.measureInWindow((x, y) => { spriteWindow.current = { x, y } })
     // Held for as long as the repeat starts: show the pulse
     holdTimer.current = setTimeout(() => setHolding(true), 300)
     if (!reduceMotion) Animated.timing(squash, { toValue: SQUASH, duration: 70, useNativeDriver: true }).start()
@@ -252,6 +290,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
                 opacity: spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
                 transform: [
                   { translateX: shake },
+                  { translateY: knock.interpolate({ inputRange: [0, 1], outputRange: [0, -size * KNOCKBACK] }) },
+                  { rotate: Animated.multiply(knock, tilt).interpolate({ inputRange: [-5, 5], outputRange: ['-5deg', '5deg'] }) },
                   { scale: reduceMotion ? 1 : breath.interpolate({ inputRange: [0, 1], outputRange: [1, 1.02] }) },
                   { translateY: reduceMotion ? 0 : breath.interpolate({ inputRange: [0, 1], outputRange: [0, -size * 0.01] }) },
                   { scale: Animated.multiply(squash, spawn.interpolate({ inputRange: [0, 1], outputRange: [reduceMotion ? 1 : 0.8, 1] })) },
@@ -264,6 +304,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
             </LinearGradient>
             <Animated.View pointerEvents="none" style={[styles.flash, { opacity: flash }]} />
           </Animated.View>
+          <ClawSlash ref={slashes} size={Math.round(size * 0.9)} />
+          <SparkBurst ref={sparks} />
           <FloatingNumbers ref={numbers} />
         </View>
         <Text variant="label" center style={styles.name}>{def.name}</Text>

@@ -19,3 +19,15 @@ describe('monster poses', () => {
     expect(Object.keys(MONSTER_ART.kobold!).sort()).toEqual(['hit', 'hurt', 'idle'])
   })
 })
+
+describe('effect caps', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const fx = require('../../components/StrikeEffects')
+
+  it('keeps the pools within the plan', () => {
+    expect(fx.MAX_SLASHES).toBe(3)
+    expect(fx.MAX_SPARKS).toBe(24)
+    expect(fx.MAX_EMBERS).toBeGreaterThanOrEqual(12)
+    expect(fx.MAX_EMBERS).toBeLessThanOrEqual(16)
+  })
+})

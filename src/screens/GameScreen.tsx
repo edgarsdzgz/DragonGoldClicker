@@ -13,7 +13,8 @@ import { useFlavorText } from '../hooks/useFlavorText'
 import { useKillEvents } from '../hooks/useKillEvents'
 import { useHaptics } from '../hooks/useHaptics'
 import { useSfx } from '../hooks/useSfx'
-import { SFX } from '../data/sfx'
+import { SFX, SFX_WEAPON_POOL } from '../data/sfx'
+import { useRandomSfx } from '../hooks/useRandomSfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, getFighterCost, getRepairerCost, isSystemOn } from '../types/game'
@@ -53,16 +54,17 @@ export function GameScreen() {
     if (bannerTimer.current) clearTimeout(bannerTimer.current)
   }, [])
 
-  const playClick = useSfx(SFX.CLICK)
+  // Each hit is a claw swing (a random one from the weapon pool, slightly varied in pitch)
+  const playSwing = useRandomSfx(SFX_WEAPON_POOL, { cooldownMs: 90, pitchVariation: 0.06 })
   const playKill = useSfx(SFX.COIN)
   const haptics = useHaptics()
   const battlefieldRef = useRef<BattlefieldHandle>(null)
 
   const handleStrike = useCallback(() => {
     click()
-    playClick()
+    playSwing()
     haptics.light()
-  }, [click, playClick, haptics])
+  }, [click, playSwing, haptics])
 
   // A kill: medium haptic, coin sound, the bounty floats up, and about one in four brings a flavour line
   useKillEvents(state.monstersDefeated, state.monsterIndex, (monster) => {

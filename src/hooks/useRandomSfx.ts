@@ -6,6 +6,8 @@ import { useAudioSettings } from '../context/AudioSettingsContext'
 interface RandomSfxOptions {
   /** Minimum ms between plays. 0 = no cooldown (default). */
   cooldownMs?: number
+  /** Random playback-rate spread around 1 (0.06 = +-6%), which also shifts the pitch */
+  pitchVariation?: number
 }
 
 /**
@@ -18,6 +20,7 @@ export function useRandomSfx(sources: readonly AudioSource[], options?: RandomSf
   volRef.current = effectiveSfxVolume
 
   const cooldownMs = options?.cooldownMs ?? 0
+  const pitchVariation = options?.pitchVariation ?? 0
   const lastPlayRef = useRef(0)
   const playersRef = useRef<ReturnType<typeof createAudioPlayer>[]>([])
 
@@ -37,9 +40,18 @@ export function useRandomSfx(sources: readonly AudioSource[], options?: RandomSf
     lastPlayRef.current = now
     const player = players[Math.floor(Math.random() * players.length)]
     player.volume = volRef.current
+    if (pitchVariation > 0) {
+      try {
+        // Without pitch correction, the rate change is a pitch change
+        player.shouldCorrectPitch = false
+        player.setPlaybackRate(1 + (Math.random() * 2 - 1) * pitchVariation)
+      } catch {
+        // Pitch variation is a nicety; play at normal pitch if the platform refuses
+      }
+    }
     player.seekTo(0)
     player.play()
-  }, [cooldownMs])
+  }, [cooldownMs, pitchVariation])
 
   return play
 }
