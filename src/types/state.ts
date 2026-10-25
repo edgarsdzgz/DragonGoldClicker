@@ -7,6 +7,7 @@ import { STARTING_FOOD, STARTING_VILLAGERS } from './food'
 import { STARTING_CITY_HP } from './siege'
 import type { StarvationResult } from './food'
 import type { WandererEncounter } from './wanderers'
+import { STARTING_TAP_DAMAGE, FIRST_MONSTER_HP } from './monsters'
 
 // =============================================================================
 // OFFLINE PROGRESS
@@ -156,6 +157,12 @@ export interface GameState {
   pendingFoodWarning: 0 | 3 | 1
   /** Warning level of the last food check, so a warning only pops up when it escalates. Not saved. */
   lastFoodWarning: 0 | 3 | 1
+  /** Damage one tap deals to the monster */
+  tapDamage: number
+  /** Which MONSTERS entry the player is facing */
+  monsterIndex: number
+  /** Hit points the current monster has left */
+  monsterHp: number
   /** Save format version for migrations */
   saveMigrationVersion: number
 }
@@ -222,7 +229,10 @@ export const DEFAULT_GAME_STATE: GameState = {
   pendingStarvationReport: null,
   pendingFoodWarning: 0,
   lastFoodWarning: 0,
-  saveMigrationVersion: 3,
+  tapDamage: STARTING_TAP_DAMAGE,
+  monsterIndex: 0,
+  monsterHp: FIRST_MONSTER_HP,
+  saveMigrationVersion: 4,
 }
 
 // =============================================================================

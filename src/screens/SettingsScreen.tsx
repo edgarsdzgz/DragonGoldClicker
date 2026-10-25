@@ -150,7 +150,7 @@ function StatsContent() {
 
       <Surface style={styles.section}>
         <SectionLabel spacing={2}>COMBAT</SectionLabel>
-        <StatRow icon="skull" label="Monsters Defeated" value={formatNumber(state.monstersDefeated)} accent />
+        <StatRow icon="skull" label="Monsters Defeated" value={Math.floor(state.monstersDefeated).toLocaleString()} accent />
         <StatRow icon="hand-left" label="Total Clicks" value={formatNumber(state.totalClicks)} />
         <StatRow icon="flash" label="Click Power" value={String(state.clickPower)} />
       </Surface>

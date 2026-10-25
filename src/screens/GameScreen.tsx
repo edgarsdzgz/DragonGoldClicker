@@ -3,6 +3,8 @@ import { View, StyleSheet, Animated, useWindowDimensions, LayoutChangeEvent } fr
 import { Text, Badge, InspirationIcon, StorySpotlight, CoachTarget } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
+import { MonsterCircle } from '../components/MonsterCircle'
+import { useKillEvents } from '../hooks/useKillEvents'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
 import { useShakeRequest } from '../context/ShakeContext'
@@ -17,7 +19,6 @@ import { battleLayout, TALL_WINDOW, ORB_GAP } from '../types/warfrontLayout'
 import { WarfrontStatus } from './warfront/WarfrontStatus'
 import { PopulationChips } from './warfront/PopulationChips'
 
-const SLAY_PALETTE = { accent: gold[400], glow: gold[500] }
 const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.rally }
 const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.repair }
 
@@ -36,11 +37,15 @@ export function GameScreen() {
 
   const playClick = useSfx(SFX.CLICK)
 
-  const handleClick = useCallback(() => {
+  const handleStrike = useCallback(() => {
     click()
     playClick()
-    flavor.onTick()
-  }, [click, playClick, flavor.onTick])
+  }, [click, playClick])
+
+  // About one kill in four brings a flavour line
+  useKillEvents(state.monstersDefeated, state.monsterIndex, () => {
+    if (Math.random() < 0.25) flavor.show()
+  })
 
   // Subtle pulse on the income indicator to show it's "alive"
   useEffect(() => {
@@ -102,15 +107,16 @@ export function GameScreen() {
           <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} />
         )}
         {battleHeight > 0 && (
-          <HarvestOrb
-            onAction={handleClick}
-            icon="flash"
-            label="SLAY"
-            coachId="slay"
-            palette={SLAY_PALETTE}
-            diameter={battle.diameter}
-            style={{ marginTop: ORB_GAP }}
-          />
+          <View style={{ marginTop: ORB_GAP }}>
+            <MonsterCircle
+              diameter={battle.diameter}
+              monsterIndex={state.monsterIndex}
+              monsterHp={state.monsterHp}
+              kills={state.monstersDefeated}
+              onStrike={handleStrike}
+              coachId="slay"
+            />
+          </View>
         )}
       </View>
 

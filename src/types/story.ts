@@ -70,7 +70,7 @@ export const STORY_BEATS: BeatDef[] = [
     id: 'prologue', chapter: 0, dwellSec: 0,
     trigger: (s) => !seen(s, 'prologue'),
     unlocks: ['slay'],
-    objective: { label: 'Slay 20 monsters', current: (s) => s.monstersDefeated, target: 20 },
+    objective: { label: 'Slay 5 monsters', current: (s) => s.monstersDefeated, target: 5 },
   },
   {
     id: 'call_to_arms', chapter: 1, dwellSec: 20,

@@ -73,6 +73,7 @@ import {
 } from '../types/game'
 import { stepFood } from '../types/foodTick'
 import { applyCityDamage } from '../types/cityHp'
+import { strike } from '../types/monsters'
 import { firstExpeditionReward } from '../types/scripted'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -241,7 +242,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           ...prev,
           inspiration: prev.inspiration + earned,
           totalInspirationEarned: prev.totalInspirationEarned + earned,
-          monstersDefeated: prev.monstersDefeated + 1,
         }
       })
     }, [loaded, effectiveAutoRate])
@@ -345,14 +345,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [loaded, state.totalInspirationEarned, state.milestonesOffered, state.beatsSeen, pendingMilestone])
 
+  // One tap hits the monster; the bounty is paid and the kill counted on its death (types/monsters.ts)
   const click = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      inspiration: prev.inspiration + prev.clickPower,
-      totalInspirationEarned: prev.totalInspirationEarned + prev.clickPower,
-      monstersDefeated: prev.monstersDefeated + 1,
-      totalClicks: prev.totalClicks + 1,
-    }))
+    setState((prev) => strike(prev).state)
   }, [])
 
   const forage = useCallback(() => {

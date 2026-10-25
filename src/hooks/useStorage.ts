@@ -17,6 +17,7 @@ import {
   isSystemOn,
 } from '../types/game'
 import { catchUpScripted } from '../types/scripted'
+import { spawnMonster } from '../types/monsters'
 import { backfillStory, backfillScripted } from '../types/storyMigration'
 import { backfillTutorial } from '../types/tutorial'
 
@@ -128,6 +129,11 @@ export function useStorage() {
           gameState = { ...gameState, tutorialStepsDone: backfillTutorial(gameState), scriptedDone: backfillScripted(gameState), saveMigrationVersion: 3 }
         }
 
+        // v4: the SLAY circle shows a monster. A save starts on a fresh monster of its tier.
+        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 4) {
+          gameState = { ...spawnMonster(gameState), saveMigrationVersion: 4 }
+        }
+
         // A scene killed mid-read still gets its scripted event (state change only)
         gameState = catchUpScripted(gameState)
 
@@ -174,7 +180,6 @@ export function useStorage() {
             if (earned > 0) {
               gameState.inspiration += earned
               gameState.totalInspirationEarned += earned
-              gameState.monstersDefeated += Math.floor(inspSeconds)
               offlineEarnings = { inspiration: earned, seconds: Math.floor(cappedSec) }
             }
           }

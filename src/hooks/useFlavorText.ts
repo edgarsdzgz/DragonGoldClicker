@@ -20,10 +20,8 @@ export function useFlavorText(
   const cooldownRef = useRef(randomBetween(min, max))
   const animatingRef = useRef(false)
 
-  const onTick = useCallback(() => {
-    clicksSinceLastRef.current += 1
-
-    if (clicksSinceLastRef.current < cooldownRef.current) return
+  /** Show a line now (if one is not already showing) and restart the tap cooldown */
+  const show = useCallback(() => {
     if (animatingRef.current) return
 
     // Pick a random line
@@ -43,7 +41,13 @@ export function useFlavorText(
     })
   }, [lines, min, max, hold, opacity])
 
-  return { text, opacity, onTick }
+  const onTick = useCallback(() => {
+    clicksSinceLastRef.current += 1
+    if (clicksSinceLastRef.current < cooldownRef.current) return
+    show()
+  }, [show])
+
+  return { text, opacity, onTick, show }
 }
 
 function randomBetween(min: number, max: number) {

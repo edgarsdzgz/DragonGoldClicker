@@ -10,8 +10,8 @@ describe('getCurrentObjective', () => {
   })
 
   it('shows the latest unmet objective once the guided steps are done', () => {
-    const s = make({ beatsSeen: ['prologue'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 7 })
-    expect(getCurrentObjective(s)).toEqual({ label: 'Slay 20 monsters', current: 7, target: 20 })
+    const s = make({ beatsSeen: ['prologue'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 2 })
+    expect(getCurrentObjective(s)).toEqual({ label: 'Slay 5 monsters', current: 2, target: 5 })
   })
 
   it('prefers the most recently seen beat with an objective', () => {
@@ -19,7 +19,7 @@ describe('getCurrentObjective', () => {
       beatsSeen: ['prologue', 'call_to_arms'],
       tutorialStepsDone: ['tap_slay', 'tap_rally'],
       fighters: 1,
-      monstersDefeated: 5,
+      monstersDefeated: 2,
     })
     expect(getCurrentObjective(s)?.label).toBe('Rally 2 fighters')
   })
@@ -29,13 +29,13 @@ describe('getCurrentObjective', () => {
       beatsSeen: ['prologue', 'call_to_arms'],
       tutorialStepsDone: ['tap_slay', 'tap_rally'],
       fighters: 2,
-      monstersDefeated: 5,
+      monstersDefeated: 2,
     })
-    expect(getCurrentObjective(s)?.label).toBe('Slay 20 monsters')
+    expect(getCurrentObjective(s)?.label).toBe('Slay 5 monsters')
   })
 
   it('is null when every objective is met', () => {
-    const s = make({ beatsSeen: ['prologue'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 20 })
+    const s = make({ beatsSeen: ['prologue'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 5 })
     expect(getCurrentObjective(s)).toBeNull()
   })
 })
