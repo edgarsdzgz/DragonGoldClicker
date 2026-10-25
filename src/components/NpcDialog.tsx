@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   View,
   Modal,
@@ -11,6 +11,7 @@ import { Text } from './Text'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { useHaptics, useSfx } from '../hooks'
 import { SFX } from '../data/sfx'
+import { dialogPaging } from '../types/dialogPaging'
 
 interface NpcDialogProps {
   visible: boolean
@@ -30,7 +31,7 @@ export function NpcDialog({
   icon,
   title,
   lines,
-  dismissLabel = 'Understood',
+  dismissLabel = 'Continue',
   onDismiss,
   onSkip,
 }: NpcDialogProps) {
@@ -68,8 +69,21 @@ export function NpcDialog({
     }
   }, [visible, playNpc, backdropOpacity, cardScale, cardOpacity])
 
+  // One line per page. Continue steps through the pages; the last page's button is the
+  // scene's own dismiss (with its label and any navigation). Skip is only for scenes of 2+ pages.
+  const [page, setPage] = useState(0)
+  useEffect(() => {
+    if (visible) setPage(0)
+  }, [visible, lines])
+  const { pageCount, lastPage, canSkip: skippable } = dialogPaging(lines.length, page)
+  const canSkip = skippable && !!onSkip
+
   const handleDismiss = () => {
     haptics.light()
+    if (!lastPage) {
+      setPage((p) => p + 1)
+      return
+    }
     onDismiss()
   }
 
@@ -77,6 +91,8 @@ export function NpcDialog({
     haptics.light()
     onSkip?.()
   }
+
+  const buttonLabel = lastPage ? dismissLabel : 'Continue'
 
   return (
     <Modal
@@ -116,11 +132,14 @@ export function NpcDialog({
             <Text variant="h3" center>
               {title}
             </Text>
-            {lines.map((line, i) => (
-              <Text key={i} variant="bodySmall" color="secondary" style={styles.line}>
-                {line}
+            <Text variant="bodySmall" color="secondary" style={styles.line}>
+              {lines[Math.min(page, pageCount - 1)]}
+            </Text>
+            {pageCount > 1 && (
+              <Text variant="caption" color="muted" center accessibilityLabel={`Page ${page + 1} of ${pageCount}`}>
+                {`${page + 1} / ${pageCount}`}
               </Text>
-            ))}
+            )}
           </View>
 
           {/* Divider */}
@@ -135,13 +154,13 @@ export function NpcDialog({
                 pressed && styles.buttonPressed,
               ]}
               accessibilityRole="button"
-              accessibilityLabel={dismissLabel}
+              accessibilityLabel={buttonLabel}
             >
               <Text variant="label" bold style={{ color: dark[900] }}>
-                {dismissLabel}
+                {buttonLabel}
               </Text>
             </Pressable>
-            {onSkip && (
+            {canSkip && (
               <Pressable
                 onPress={handleSkip}
                 style={styles.skip}
