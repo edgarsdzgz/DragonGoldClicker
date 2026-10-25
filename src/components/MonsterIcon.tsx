@@ -3,7 +3,8 @@ import { Image } from 'react-native'
 import type { StyleProp, ImageStyle, TextStyle } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import type { MonsterDef } from '../types/monsters'
-import { MONSTER_ART } from '../data/monsterArt'
+import { MONSTER_ART, artForPose } from '../data/monsterArt'
+import type { MonsterPose } from '../data/monsterArt'
 
 /** Ionicons glyphs carry their own padding, so they draw smaller than the box to match art */
 const GLYPH_SCALE = 0.72
@@ -13,6 +14,8 @@ interface MonsterIconProps {
   /** Square box the art fills */
   size: number
   color: string
+  /** Which frame to draw; falls back to idle when the monster has no art for it */
+  pose?: MonsterPose
   style?: StyleProp<ImageStyle & TextStyle>
 }
 
@@ -21,12 +24,12 @@ interface MonsterIconProps {
  * (src/data/monsterArt.ts) and its Ionicons glyph otherwise. Decorative: callers
  * describe the monster in their own accessibility label.
  */
-export function MonsterIcon({ monster, size, color, style }: MonsterIconProps) {
+export function MonsterIcon({ monster, size, color, pose = 'idle', style }: MonsterIconProps) {
   const art = MONSTER_ART[monster.id]
   if (art) {
     return (
       <Image
-        source={art}
+        source={artForPose(art, pose)}
         resizeMode="contain"
         style={[{ width: size, height: size, tintColor: color }, style]}
         accessibilityIgnoresInvertColors

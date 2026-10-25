@@ -12,6 +12,7 @@ import { useCoinFlight } from '../context/CoinFlightContext'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useReduceMotion } from '../hooks/useReduceMotion'
 import { MONSTERS, SPAWN_DELAY_MS, monsterLabel } from '../types/monsters'
+import { restingPose } from '../data/monsterArt'
 import { colors, spacing, gold } from '../theme'
 
 interface BattlefieldProps {
@@ -77,6 +78,35 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const shake = useRef(new Animated.Value(0)).current
   const flash = useRef(new Animated.Value(0)).current
 
+  // Pose: the hit frame for ~120ms on each strike, else idle (or hurt at 1/3 HP or less)
+  const [hitPose, setHitPose] = React.useState(false)
+  const hitTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const resting = restingPose(monsterHp, def.hp)
+  const pose = hitPose ? 'hit' : resting
+
+  // Idle breathing: ~2% over ~1.5s; hurt breathes faster and uneven. Off with Reduce Motion.
+  const breath = useRef(new Animated.Value(0)).current
+  useEffect(() => {
+    if (reduceMotion) {
+      breath.setValue(0)
+      return
+    }
+    const hurt = resting === 'hurt'
+    const loop = Animated.loop(Animated.sequence(hurt
+      ? [
+          Animated.timing(breath, { toValue: 1, duration: 380, useNativeDriver: true }),
+          Animated.timing(breath, { toValue: 0.2, duration: 260, useNativeDriver: true }),
+          Animated.timing(breath, { toValue: 1, duration: 300, useNativeDriver: true }),
+          Animated.timing(breath, { toValue: 0, duration: 520, useNativeDriver: true }),
+        ]
+      : [
+          Animated.timing(breath, { toValue: 1, duration: 750, useNativeDriver: true }),
+          Animated.timing(breath, { toValue: 0, duration: 750, useNativeDriver: true }),
+        ]))
+    loop.start()
+    return () => loop.stop()
+  }, [reduceMotion, resting, breath])
+
   useImperativeHandle(ref, () => ({
     showBounty: (amount) =>
       numbers.current?.spawn({ x: size / 2, y: size * 0.25, text: amount, color: gold[300], large: true }),
@@ -119,6 +149,9 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const strike = useCallback(() => {
     if (lockedRef.current) return
     onStrike()
+    setHitPose(true)
+    if (hitTimer.current) clearTimeout(hitTimer.current)
+    hitTimer.current = setTimeout(() => setHitPose(false), 120)
     const jitter = (Math.random() - 0.5) * size * 0.5
     numbers.current?.spawn({ x: size / 2 + jitter, y: size * 0.3, text: `-${damage}`, color: colors.text.primary })
     flash.setValue(0.35)
@@ -137,6 +170,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   useEffect(() => () => {
     if (touchTimer.current) clearTimeout(touchTimer.current)
     if (holdTimer.current) clearTimeout(holdTimer.current)
+    if (hitTimer.current) clearTimeout(hitTimer.current)
   }, [])
 
   const handlePressIn = (_e: GestureResponderEvent) => {
@@ -218,13 +252,15 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
                 opacity: spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
                 transform: [
                   { translateX: shake },
+                  { scale: reduceMotion ? 1 : breath.interpolate({ inputRange: [0, 1], outputRange: [1, 1.02] }) },
+                  { translateY: reduceMotion ? 0 : breath.interpolate({ inputRange: [0, 1], outputRange: [0, -size * 0.01] }) },
                   { scale: Animated.multiply(squash, spawn.interpolate({ inputRange: [0, 1], outputRange: [reduceMotion ? 1 : 0.8, 1] })) },
                 ],
               },
             ]}
           >
             <LinearGradient colors={[colors.bg.surface2, colors.bg.surface1]} style={styles.inner}>
-              <MonsterIcon monster={def} size={Math.round(size * ART_SCALE)} color={gold[400]} />
+              <MonsterIcon monster={def} size={Math.round(size * ART_SCALE)} color={gold[400]} pose={pose} />
             </LinearGradient>
             <Animated.View pointerEvents="none" style={[styles.flash, { opacity: flash }]} />
           </Animated.View>
