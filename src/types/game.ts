@@ -176,3 +176,18 @@ export {
   MILESTONES,
   getNextMilestone,
 } from './milestones'
+
+export type { SystemId, BuildingRevealId } from './systems'
+export { HP_FLOOR, isSystemOn, isBuildingRevealed } from './systems'
+
+export type {
+  BeatId,
+  BeatDef,
+  ScriptedEventId,
+  SpotlightTarget,
+  ObjectiveDef,
+} from './story'
+export { STORY_BEATS, getBeat } from './story'
+
+export type { StoryPacing } from './storyDirector'
+export { findNextBeat, effectiveDwell, TEST_DWELL_CAP_SEC } from './storyDirector'

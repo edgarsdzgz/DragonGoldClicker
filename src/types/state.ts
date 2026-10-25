@@ -136,6 +136,12 @@ export interface GameState {
   completedResearch: string[]
   /** Milestone thresholds already offered (each fires once) */
   milestonesOffered: number[]
+  /** Story beat ids already seen, in the order they fired. Systems are derived from this. */
+  beatsSeen: string[]
+  /** Active play time in game seconds (ticked by the game loop, follows dev speed) */
+  playSeconds: number
+  /** playSeconds when the last beat fired (the dwell clock) */
+  lastBeatAtPlaySec: number
   /** Save format version for migrations */
   saveMigrationVersion: number
 }
@@ -193,6 +199,9 @@ export const DEFAULT_GAME_STATE: GameState = {
   librariumBuilt: false,
   completedResearch: [],
   milestonesOffered: [],
+  beatsSeen: [],
+  playSeconds: 0,
+  lastBeatAtPlaySec: 0,
   saveMigrationVersion: 1,
 }
 
