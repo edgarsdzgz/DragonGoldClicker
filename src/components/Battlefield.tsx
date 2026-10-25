@@ -1,7 +1,8 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
+import { MonsterIcon } from './MonsterIcon'
+import type { MonsterDef } from '../types/monsters'
 import { Text } from './Text'
 import { EnemyHp } from './EnemyHp'
 import { FloatingNumbers } from './FloatingNumbers'
@@ -38,8 +39,11 @@ export interface BattlefieldHandle {
   /** Float a gold bounty up from the monster */
   showBounty: (amount: string) => void
   /** The monster that was just killed falls away and a coin flies to the inspiration figure */
-  showKill: (glyph: keyof typeof Ionicons.glyphMap) => void
+  showKill: (monster: MonsterDef) => void
 }
+
+/** The monster's art box as a share of the sprite circle (fits inside the circle) */
+const ART_SCALE = 0.68
 
 /** Press squash: the monster shrinks about 5% */
 const SQUASH = 0.95
@@ -64,7 +68,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const spawn = useRef(new Animated.Value(1)).current
   // The fallen monster: a ghost that fades and drops (fade only with Reduce Motion)
   const fall = useRef(new Animated.Value(1)).current
-  const [fallen, setFallen] = React.useState<keyof typeof Ionicons.glyphMap | null>(null)
+  const [fallen, setFallen] = React.useState<MonsterDef | null>(null)
   // A steady pulse on the battlefield while the press is held
   const holdPulse = useRef(new Animated.Value(0)).current
   const [holding, setHolding] = React.useState(false)
@@ -76,8 +80,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   useImperativeHandle(ref, () => ({
     showBounty: (amount) =>
       numbers.current?.spawn({ x: size / 2, y: size * 0.25, text: amount, color: gold[300], large: true }),
-    showKill: (glyph) => {
-      setFallen(glyph)
+    showKill: (monster) => {
+      setFallen(monster)
       fall.setValue(0)
       Animated.timing(fall, { toValue: 1, duration: 420, useNativeDriver: true }).start(() => setFallen(null))
       spriteRef.current?.measureInWindow((x, y, w, h) => coinFlight.fly({ x: x + w / 2, y: y + h / 2 }))
@@ -200,7 +204,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
                 },
               ]}
             >
-              <Ionicons name={fallen} size={Math.round(size * 0.5)} color={gold[400]} />
+              <MonsterIcon monster={fallen} size={Math.round(size * ART_SCALE)} color={gold[400]} />
             </Animated.View>
           )}
           <Animated.View
@@ -220,7 +224,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
             ]}
           >
             <LinearGradient colors={[colors.bg.surface2, colors.bg.surface1]} style={styles.inner}>
-              <Ionicons name={def.glyph} size={Math.round(size * 0.5)} color={gold[400]} />
+              <MonsterIcon monster={def} size={Math.round(size * ART_SCALE)} color={gold[400]} />
             </LinearGradient>
             <Animated.View pointerEvents="none" style={[styles.flash, { opacity: flash }]} />
           </Animated.View>

@@ -1,9 +1,12 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { MonsterIcon } from './MonsterIcon'
 import type { MonsterDef } from '../types/monsters'
 import { QUEUE_H } from '../types/warfrontLayout'
 import { colors, spacing } from '../theme'
+
+/** Icon box for a queued monster (glyph-only monsters draw at about 18dp inside it) */
+const QUEUE_ICON = 25
 
 /** The next monsters as dim silhouettes (the caller passes at most four). Decorative only. */
 export function MonsterQueue({ monsters }: { monsters: MonsterDef[] }) {
@@ -14,7 +17,7 @@ export function MonsterQueue({ monsters }: { monsters: MonsterDef[] }) {
       accessibilityElementsHidden
     >
       {monsters.map((m, i) => (
-        <Ionicons key={i} name={m.glyph} size={18} color={colors.text.muted} style={{ opacity: 0.35 - i * 0.05 }} />
+        <MonsterIcon key={i} monster={m} size={QUEUE_ICON} color={colors.text.muted} style={{ opacity: 0.35 - i * 0.05 }} />
       ))}
     </View>
   )
