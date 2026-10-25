@@ -4,6 +4,8 @@ import { Text, Badge, InspirationIcon, StorySpotlight, CoachTarget } from '../co
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { MonsterCircle } from '../components/MonsterCircle'
+import type { MonsterCircleHandle } from '../components/MonsterCircle'
+import { useHaptics } from '../hooks/useHaptics'
 import { useKillEvents } from '../hooks/useKillEvents'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
@@ -37,13 +39,21 @@ export function GameScreen() {
 
   const playClick = useSfx(SFX.CLICK)
 
+  const playKill = useSfx(SFX.COIN)
+  const haptics = useHaptics()
+  const monsterRef = useRef<MonsterCircleHandle>(null)
+
   const handleStrike = useCallback(() => {
     click()
     playClick()
-  }, [click, playClick])
+    haptics.light()
+  }, [click, playClick, haptics])
 
-  // About one kill in four brings a flavour line
-  useKillEvents(state.monstersDefeated, state.monsterIndex, () => {
+  // A kill: medium haptic, coin sound, the bounty floats up, and about one in four brings a flavour line
+  useKillEvents(state.monstersDefeated, state.monsterIndex, (monster) => {
+    haptics.medium()
+    playKill()
+    monsterRef.current?.showBounty(`+${monster.bounty.toFixed(2)}`)
     if (Math.random() < 0.25) flavor.show()
   })
 
@@ -113,6 +123,8 @@ export function GameScreen() {
               monsterIndex={state.monsterIndex}
               monsterHp={state.monsterHp}
               kills={state.monstersDefeated}
+              ref={monsterRef}
+              damage={state.tapDamage}
               onStrike={handleStrike}
               coachId="slay"
             />
