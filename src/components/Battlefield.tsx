@@ -38,6 +38,8 @@ interface BattlefieldProps {
   queue?: React.ReactNode
   /** Between waves: shown in place of the monster, and taps on the field do nothing */
   camp?: React.ReactNode
+  /** Show the monster's name under it (hidden until the first kill) */
+  showName?: boolean
   /** Taps are ignored while true (the wave-cleared banner); a held press carries on afterwards */
   locked?: boolean
   /** Opt into the guided tutorial under this target id */
@@ -75,7 +77,7 @@ const KNOCKBACK = 0.06
  * (one strike every HOLD_STRIKE_MS) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
-  { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, camp, locked = false, coachId },
+  { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, camp, showName = true, locked = false, coachId },
   ref,
 ) {
   const coach = useCoachTarget(coachId)
@@ -390,7 +392,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
           <EmberDissolve ref={embers} unit={size} />
           <FloatingNumbers ref={numbers} />
         </View>
-        <Text variant="label" center style={styles.name}>{def.name}</Text>
+        {showName ? <Text variant="label" center style={styles.name}>{def.name}</Text> : <View style={styles.name} />}
         <EnemyHp hp={monsterHp} max={def.hp} width={Math.min(fieldW - spacing[6] * 2, 260)} />
         </View>
       </Pressable>}

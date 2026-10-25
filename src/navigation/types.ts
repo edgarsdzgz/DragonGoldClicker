@@ -7,7 +7,8 @@ export type TabParamList = {
   GameTab: undefined
   ForageTab: undefined
   DraconiaTab: undefined
-  SettingsTab: undefined
+  /** `section: 'dev'` opens Settings on the Dev tab (playtest builds) */
+  SettingsTab: { section?: 'dev' } | undefined
 }
 
 // Root stack (wraps tabs + future modals)

@@ -61,7 +61,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 'tap_slay', afterBeat: 'prologue', target: 'slay',
     requires: (s) => s.waveActive,
-    hint: 'Tap the monster to strike it.',
+    hint: 'Tap the kobold to strike it.',
     isDone: (s) => s.totalClicks >= 1,
   },
   {

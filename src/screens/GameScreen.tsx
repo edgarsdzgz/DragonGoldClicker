@@ -19,6 +19,9 @@ import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, getFighterCost, getRepairerCost, isSystemOn } from '../types/game'
 import { battlefieldLayout, TALL_WINDOW, FLAVOR_H } from '../types/warfrontLayout'
+import { DevShortcut } from '../components/DevShortcut'
+import { warfrontReveal } from '../types/opening'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
 import { WaveRow } from './warfront/WaveRow'
 import { MonsterQueue } from '../components/MonsterQueue'
@@ -48,6 +51,9 @@ export function GameScreen() {
   const shakeStyle = useScreenShake(shakeNonce)
   const flavor = useFlavorText(COMBAT_LINES)
   const windowHeight = useWindowDimensions().height
+  const insets = useSafeAreaInsets()
+  // What the Warfront shows so far (the opening reveals it in order)
+  const reveal = warfrontReveal(state)
 
   // The battlefield takes whatever height is left; its contents are sized to fit it
   const [fieldHeight, setFieldHeight] = useState(0)
@@ -110,16 +116,19 @@ export function GameScreen() {
   const showFooter = windowHeight >= TALL_WINDOW
 
   return (
-    <Animated.View style={[styles.container, shakeStyle]}>
-      <ResourceBar
-        inspiration={state.inspiration}
-        food={state.food}
-        foodSystemActive={hungerOn}
-        autoInspPerSec={effectiveAutoRate}
-      />
-      <WaveRow />
-      <StoryObjective />
-      <PopulationChips />
+    <Animated.View style={[styles.container, shakeStyle, !reveal.chrome && { paddingBottom: insets.bottom }]}>
+      {reveal.topBar && (
+        <ResourceBar
+          inspiration={state.inspiration}
+          food={state.food}
+          foodSystemActive={hungerOn}
+          autoInspPerSec={effectiveAutoRate}
+        />
+      )}
+      {reveal.waveRow && <WaveRow />}
+      {reveal.chrome && <StoryObjective />}
+      {reveal.chrome && <PopulationChips />}
+      {!reveal.chrome && <DevShortcut offsetTop={reveal.topBar ? 56 : 0} />}
 
       {/* Battlefield: the tap target, between the top rows and the gate */}
       <View style={styles.battlefield} onLayout={onFieldLayout}>
@@ -133,12 +142,13 @@ export function GameScreen() {
             damage={state.tapDamage}
             onStrike={handleStrike}
             locked={banner !== null}
+            showName={reveal.monsterName}
             camp={state.waveActive ? undefined : (
-              <EnemyCamp view={camp} layout={campLayout(fieldHeight)} onBegin={handleBegin} coachId="begin_wave" />
+              <EnemyCamp view={camp} layout={campLayout(fieldHeight)} onBegin={handleBegin} minimal={reveal.buttonOnly} coachId="begin_wave" />
             )}
             coachId="slay"
-            queue={field.showQueue ? <MonsterQueue monsters={queue} /> : undefined}
-            header={field.showFlavor ? (
+            queue={field.showQueue && reveal.waveRow ? <MonsterQueue monsters={queue} /> : undefined}
+            header={field.showFlavor && reveal.waveRow ? (
               <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} reserveHeight={FLAVOR_H} />
             ) : undefined}
           />
@@ -146,7 +156,7 @@ export function GameScreen() {
         <WaveBanner text={banner} />
       </View>
 
-      <Gate />
+      {reveal.gate && <Gate />}
 
       {/* Command row: Rally + Repair below the gate, near the thumb */}
       {(rallyOn || repairOn) && (
@@ -190,7 +200,7 @@ export function GameScreen() {
       )}
 
       {/* Footer: one line, kills and damage per tap (only on tall windows) */}
-      {showFooter && (
+      {showFooter && reveal.waveRow && (
         <View style={styles.footer}>
           <Text variant="caption" color="muted">
             {killsText(state.monstersDefeated)}

@@ -12,6 +12,8 @@ interface EnemyCampProps {
   view: CampView
   layout: CampLayout
   onBegin: () => void
+  /** The opening: only the button, nothing else */
+  minimal?: boolean
   /** Opt the Begin wave button into the guided tutorial under this target id */
   coachId?: string
 }
@@ -20,11 +22,11 @@ interface EnemyCampProps {
  * The battlefield between waves: the next wave waiting as dim silhouettes, a preview, and a
  * large Begin wave button. The button is the only tappable thing here.
  */
-export function EnemyCamp({ view, layout, onBegin, coachId }: EnemyCampProps) {
+export function EnemyCamp({ view, layout, onBegin, minimal = false, coachId }: EnemyCampProps) {
   const coach = useCoachTarget(coachId)
   return (
     <View style={styles.root}>
-      {layout.showSilhouettes && (
+      {!minimal && layout.showSilhouettes && (
         <View
           style={styles.row}
           importantForAccessibility="no-hide-descendants"
@@ -35,9 +37,13 @@ export function EnemyCamp({ view, layout, onBegin, coachId }: EnemyCampProps) {
           ))}
         </View>
       )}
-      <Text variant="caption" center style={styles.horde}>The horde waits beyond the walls.</Text>
-      <Text variant="label" center style={styles.preview}>{view.previewText}</Text>
-      <Text variant="caption" center style={styles.bonus}>{view.bonusText}</Text>
+      {!minimal && (
+        <>
+          <Text variant="caption" center style={styles.horde}>The horde waits beyond the walls.</Text>
+          <Text variant="label" center style={styles.preview}>{view.previewText}</Text>
+          <Text variant="caption" center style={styles.bonus}>{view.bonusText}</Text>
+        </>
+      )}
       <View ref={coach.ref} onLayout={coach.onLayout} collapsable={false}>
         <Pressable
           onPress={onBegin}
@@ -45,7 +51,7 @@ export function EnemyCamp({ view, layout, onBegin, coachId }: EnemyCampProps) {
           accessibilityRole="button"
           accessibilityLabel={view.buttonLabel}
         >
-          <Text variant="button" style={styles.buttonText}>Begin wave</Text>
+          <Text variant="button" style={styles.buttonText}>{`Begin Wave ${view.waveNumber}`}</Text>
         </Pressable>
       </View>
     </View>

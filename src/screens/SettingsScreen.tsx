@@ -1,4 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useRoute } from '@react-navigation/native'
+import type { RouteProp } from '@react-navigation/native'
+import type { TabParamList } from '../navigation/types'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Text, Surface, Button, StatRow, SectionLabel, InspirationIcon, ToggleRow, StoryObjective } from '../components'
 import { PillTabs } from '../components/PillTabs'
@@ -22,6 +25,12 @@ const TABS: PillTab[] = [
 
 export function SettingsScreen() {
   const [activeTab, setActiveTab] = useState('settings')
+  const route = useRoute<RouteProp<TabParamList, 'SettingsTab'>>()
+  // The Dev shortcut on the Warfront opens straight onto the Dev tab
+  const wantsDev = route.params?.section === 'dev'
+  useEffect(() => {
+    if (wantsDev && DEV_TOOLS_ENABLED) setActiveTab('dev')
+  }, [wantsDev, route.params])
   const { state, effectiveAutoRate, resetGame } = useGame()
   const [showResetModal, setShowResetModal] = useState(false)
 

@@ -15,6 +15,7 @@ import { useTabLocks } from './useTabLocks'
 import { UnlockToast } from '../components/UnlockToast'
 import { EventHost } from '../components/EventHost'
 import { useStoryDirector } from '../hooks/useStoryDirector'
+import { warfrontReveal } from '../types/opening'
 import { useScriptedEvents } from '../hooks/useScriptedEvents'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useCoach } from '../context/CoachContext'
@@ -192,7 +193,10 @@ function useBuildTabBadge(): boolean {
 }
 
 function TabNavigator() {
-  const { foodWarningLevel } = useGame()
+  const { foodWarningLevel, state } = useGame()
+  // The opening hides the tab bar on the Warfront until call_to_arms; other tabs (the dev
+  // shortcut's Settings) keep it so there is always a way back
+  const tabBarHidden = !warfrontReveal(state).chrome
   const buildHasAction = useBuildTabBadge()
   const locks = useTabLocks()
   const toastRef = useRef<UnlockToastHandle | null>(null)
@@ -212,7 +216,7 @@ function TabNavigator() {
         // Hardware back returns to Warfront (always unlocked). The default, firstRoute,
         // jumped to the Draconia tab and bypassed its lock.
         backBehavior="initialRoute"
-        screenOptions={{
+        screenOptions={({ route }) => ({
           headerStyle: {
             backgroundColor: colors.bg.surface1,
           },
@@ -220,7 +224,7 @@ function TabNavigator() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          tabBarStyle: {
+          tabBarStyle: tabBarHidden && route.name === 'GameTab' ? { display: 'none' } : {
             backgroundColor: colors.bg.surface1,
             borderTopColor: colors.border.subtle,
             borderTopWidth: 1,
@@ -236,7 +240,7 @@ function TabNavigator() {
           },
           tabBarHideOnKeyboard: true,
           tabBarButton: (props) => <HapticTabButton {...props} />,
-        }}
+        })}
       >
         <Tab.Screen
           name="DraconiaTab"

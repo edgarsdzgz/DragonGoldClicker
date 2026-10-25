@@ -21,7 +21,7 @@ interface Point {
 
 interface CoinFlightContextType {
   /** Fly a coin from a point in window coordinates to the registered target */
-  fly: (from: Point) => void
+  fly: (from: Point, retried?: boolean) => void
   targetRef: React.RefObject<View | null>
   /** 0 -> 1 -> 0 each time a coin lands; the target maps it to its pulse */
   pulse: Animated.Value
@@ -54,13 +54,20 @@ export function CoinFlightProvider({ children }: { children: React.ReactNode }) 
     ]).start()
   }, [pulse])
 
-  const fly = useCallback((from: Point) => {
+  const fly = useCallback((from: Point, retried = false) => {
+    // The top bar can appear in the same moment as the first kill; give it one frame to lay out
     const target = targetRef.current
-    if (!target) return
+    if (!target) {
+      if (!retried) setTimeout(() => fly(from, true), 80)
+      return
+    }
     layerRef.current?.measureInWindow((ox, oy) => {
       origin.current = { x: ox, y: oy }
       target.measureInWindow((tx, ty, tw, th) => {
-        if (tw <= 0 || th <= 0) return
+        if (tw <= 0 || th <= 0) {
+          if (!retried) setTimeout(() => fly(from, true), 80)
+          return
+        }
         const slot = coins[next.current]
         next.current = (next.current + 1) % MAX_COINS
         const to = { x: tx + tw / 2, y: ty + th / 2 }
