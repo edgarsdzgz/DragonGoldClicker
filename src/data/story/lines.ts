@@ -30,12 +30,13 @@ const LIRAE = { speaker: 'Lirae the Ink-Wing', icon: 'book' } as const
 
 /** Silent beats (mend_the_walls, the_keep_stands) have no scene and no entry here */
 export const SCENES: Partial<Record<BeatId, SceneDef>> = {
-  prologue: {
+  // prologue is silent: a fresh install shows only the Begin Wave 0 button
+  first_renown: {
     ...PYRETH,
-    title: 'The Walls of Draconia',
+    title: 'Renown',
     lines: [
-      'My lord, the monsters have reached the walls.',
-      'Strike them down. Every one you slay gives our people the courage to stand.',
+      'Your victory echoes through Draconia, my lord. Defeating our enemies in battle earns you renown.',
+      'The more foes you defeat, the more renown you gain, and the more the people and the elders of Draconia will listen to you.',
     ],
   },
   call_to_arms: {

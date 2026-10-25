@@ -18,7 +18,7 @@ describe('isSystemOn', () => {
 
   it('turns a system on only once its beat is seen', () => {
     expect(isSystemOn(withSeen('prologue'), 'rally')).toBe(false)
-    expect(isSystemOn(withSeen('prologue', 'call_to_arms'), 'rally')).toBe(true)
+    expect(isSystemOn(withSeen('prologue', 'first_renown', 'call_to_arms'), 'rally')).toBe(true)
   })
 
   it('lets one beat unlock several systems', () => {

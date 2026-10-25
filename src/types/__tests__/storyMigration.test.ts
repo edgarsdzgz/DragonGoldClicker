@@ -28,7 +28,7 @@ describe('backfillStory', () => {
       totalInspirationEarned: 10,
     }))
     expect(out.beatsSeen).toEqual([
-      'prologue', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate', 'a_city_to_build',
+      'prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate', 'a_city_to_build',
     ])
     expect(isSystemOn(out, 'draconiaTab')).toBe(true)
     expect(isSystemOn(out, 'hunger')).toBe(true)
@@ -69,7 +69,7 @@ describe('backfillStory', () => {
       totalInspirationEarned: 500,
     }))
     for (const id of [
-      'prologue', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate',
+      'prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate',
       'a_city_to_build', 'the_smith', 'the_keep_stands', 'word_spreads', 'beyond_the_walls', 'the_keep',
       'the_scholar', 'the_horde_grows', 'lean_times',
     ]) {
@@ -101,5 +101,18 @@ describe('backfillStory', () => {
     const out = backfillStory(input)
     expect(input.beatsSeen).toEqual([])
     expect(new Set(out.beatsSeen).size).toBe(out.beatsSeen.length)
+  })
+})
+
+describe('first_renown backfill', () => {
+  it('is marked seen for any save that has slain a monster', () => {
+    expect(backfillStory(v1({ monstersDefeated: 4 })).beatsSeen).toEqual(['prologue', 'first_renown'])
+    expect(backfillStory(v1({})).beatsSeen).toEqual(['prologue'])
+  })
+
+  it('is marked seen for a save further along, before call_to_arms', () => {
+    const seen = backfillStory(v1({ fightersRallied: 1, fighters: 1 })).beatsSeen
+    expect(seen.indexOf('first_renown')).toBe(1)
+    expect(seen.indexOf('call_to_arms')).toBe(2)
   })
 })

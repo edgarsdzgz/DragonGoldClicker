@@ -14,12 +14,12 @@ describe('story pause', () => {
     expect(STORY_PAUSED_AFTER).toBe('call_to_arms')
     expect(isBeatPaused('prologue')).toBe(false)
     expect(isBeatPaused('call_to_arms')).toBe(false)
-    for (const b of STORY_BEATS.slice(2)) expect(isBeatPaused(b.id)).toBe(true)
+    for (const b of STORY_BEATS.slice(3)) expect(isBeatPaused(b.id)).toBe(true)
   })
 
   it('the director never offers a paused beat, main or side', () => {
     const s = make({
-      beatsSeen: ['prologue', 'call_to_arms'],
+      beatsSeen: ['prologue', 'first_renown', 'call_to_arms'],
       fighters: 5, repairers: 5, totalInspirationEarned: 999, playSeconds: 99999,
     })
     expect(findNextBeat(s, 'live')).toBeNull()
@@ -28,7 +28,7 @@ describe('story pause', () => {
 
   it('still fires the live beats', () => {
     expect(findNextBeat(make({}), 'live')?.id).toBe('prologue')
-    expect(findNextBeat(make({ beatsSeen: ['prologue'], inspiration: 2, playSeconds: 99 }), 'live')?.id).toBe('call_to_arms')
+    expect(findNextBeat(make({ beatsSeen: ['prologue', 'first_renown'], inspiration: 2, playSeconds: 99 }), 'live')?.id).toBe('call_to_arms')
   })
 
   it('backfill still covers the whole table: the pause only limits the director', () => {
@@ -37,12 +37,12 @@ describe('story pause', () => {
       barracksLevel: 2, armoryBuilt: true, draconiaHallBuilt: true, totalInspirationEarned: 500,
       milestonesOffered: [25], foodSystemActive: true,
     }))
-    expect(out.beatsSeen).toEqual(expect.arrayContaining(['prologue', 'call_to_arms', 'the_breach', 'empty_stores', 'the_keep']))
+    expect(out.beatsSeen).toEqual(expect.arrayContaining(['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'empty_stores', 'the_keep']))
     expect(findNextBeat({ ...out, playSeconds: 99999 }, 'live')).toBeNull()
   })
 
   it('systems, guided steps and objectives behind paused beats stay off', () => {
-    const s = make({ beatsSeen: ['prologue', 'call_to_arms'], tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'], fighters: 2 })
+    const s = make({ beatsSeen: ['prologue', 'first_renown', 'call_to_arms'], tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'], fighters: 2 })
     expect(isSystemOn(s, 'siege')).toBe(false)
     expect(isSystemOn(s, 'repair')).toBe(false)
     expect(isSystemOn(s, 'hunger')).toBe(false)
@@ -51,7 +51,7 @@ describe('story pause', () => {
   })
 
   it('keeps progress a save already has behind the pause', () => {
-    const s = make({ beatsSeen: ['prologue', 'call_to_arms', 'the_breach', 'mend_the_walls'] })
+    const s = make({ beatsSeen: ['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls'] })
     expect(isSystemOn(s, 'siege')).toBe(true)
     expect(isSystemOn(s, 'repair')).toBe(true)
   })

@@ -25,12 +25,12 @@ describe('getActiveStep', () => {
     s = { ...s, tutorialStepsDone: ['begin_wave', 'tap_slay'] }
     // next step belongs to call_to_arms, which is unseen: the tutorial holds back
     expect(getActiveStep(s)).toBeNull()
-    s = { ...s, beatsSeen: ['prologue', 'call_to_arms'] }
+    s = { ...s, beatsSeen: ['prologue', 'first_renown', 'call_to_arms'] }
     expect(getActiveStep(s)?.id).toBe('tap_rally')
   })
 
   it('is strictly sequential even if a later beat is already seen', () => {
-    const s = make({ beatsSeen: ['prologue', 'call_to_arms', 'the_breach', 'mend_the_walls'] })
+    const s = make({ beatsSeen: ['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls'] })
     expect(getActiveStep(s)?.id).toBe('begin_wave')
   })
 
@@ -65,7 +65,7 @@ describe('backfillTutorial', () => {
 
   it('marks every step up to the proven one for the 3/3/3 example save', () => {
     const done = backfillTutorial(make({
-      beatsSeen: ['prologue', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate', 'a_city_to_build'],
+      beatsSeen: ['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate', 'a_city_to_build'],
       totalClicks: 50, fighters: 3, fightersRallied: 3, repairers: 3, repairersDirected: 3,
       foragers: { gatherers: 3, trappers: 0, rangers: 0 },
       foragersTrained: { gatherers: 3, trappers: 0, rangers: 0 },
@@ -75,13 +75,13 @@ describe('backfillTutorial', () => {
   })
 
   it('leaves steps pending when their beat is unseen', () => {
-    const done = backfillTutorial(make({ beatsSeen: ['prologue', 'call_to_arms'], totalClicks: 5, fighters: 2 }))
+    const done = backfillTutorial(make({ beatsSeen: ['prologue', 'first_renown', 'call_to_arms'], totalClicks: 5, fighters: 2 }))
     expect(done).toEqual(['begin_wave', 'tap_slay', 'tap_rally'])
   })
 
   it('marks everything for a save with the Garrison built', () => {
     const done = backfillTutorial(make({
-      beatsSeen: ['prologue', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'a_city_to_build'],
+      beatsSeen: ['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'a_city_to_build'],
       barracksLevel: 1,
     }))
     expect(done).toHaveLength(TUTORIAL_STEPS.length)

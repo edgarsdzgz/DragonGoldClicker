@@ -16,7 +16,7 @@ describe('getCurrentObjective', () => {
 
   it('prefers the most recently seen beat with an objective', () => {
     const s = make({
-      beatsSeen: ['prologue', 'call_to_arms'],
+      beatsSeen: ['prologue', 'first_renown', 'call_to_arms'],
       tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'],
       fighters: 1,
       monstersDefeated: 2,
@@ -26,7 +26,7 @@ describe('getCurrentObjective', () => {
 
   it('falls back to an earlier unmet objective when the latest is met', () => {
     const s = make({
-      beatsSeen: ['prologue', 'call_to_arms'],
+      beatsSeen: ['prologue', 'first_renown', 'call_to_arms'],
       tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'],
       fighters: 2,
       monstersDefeated: 2,
@@ -42,7 +42,7 @@ describe('getCurrentObjective', () => {
 
 describe('isSpotlightActive', () => {
   it('stays off for controls a guided step already covers', () => {
-    const s = make({ beatsSeen: ['prologue', 'call_to_arms'], tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'] })
+    const s = make({ beatsSeen: ['prologue', 'first_renown', 'call_to_arms'], tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'] })
     expect(isSpotlightActive(s, 'rally')).toBe(false)
     expect(isSpotlightActive(s, 'repair')).toBe(false)
   })

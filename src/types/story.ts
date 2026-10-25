@@ -10,6 +10,7 @@ import type { SystemId, BuildingRevealId } from './systems'
 
 export type BeatId =
   | 'prologue'
+  | 'first_renown'
   | 'call_to_arms'
   | 'the_breach'
   | 'mend_the_walls'
@@ -70,7 +71,15 @@ export const STORY_BEATS: BeatDef[] = [
     id: 'prologue', chapter: 0, dwellSec: 0,
     trigger: (s) => !seen(s, 'prologue'),
     unlocks: ['slay'],
+    // No scene: a fresh install shows only the Begin Wave 0 button
+    silent: true,
     objective: { label: 'Slay 5 monsters', current: (s) => s.monstersDefeated, target: 5 },
+  },
+  {
+    // The first kill explains renown; the wave continues after the scene
+    id: 'first_renown', chapter: 0, dwellSec: 0,
+    trigger: (s) => s.monstersDefeated >= 1,
+    unlocks: [],
   },
   {
     id: 'call_to_arms', chapter: 1, dwellSec: 20,
