@@ -180,12 +180,22 @@ describe('save migrations', () => {
   })
 
   it('a save that was mid-wave resumes mid-wave (waveActive = waveKills > 0)', () => {
-    const save = (kills: number) => ({ waveKills: kills % 5, monstersDefeated: kills })
+    const save = (kills: number) => ({ waveKills: kills % 5, monstersDefeated: kills, monsterHp: 5, monsterMaxHp: 5 })
     expect(waveActiveOnLoad(save(7), 5)).toBe(true)
     expect(waveActiveOnLoad(save(10), 5)).toBe(false)
     expect(waveActiveOnLoad({ ...save(7), waveActive: true }, 6)).toBe(true)
     expect(waveActiveOnLoad({ ...save(10), waveActive: true }, 6)).toBe(false)
     expect(waveActiveOnLoad({ ...save(0), waveActive: true }, 6)).toBe(true)
+  })
+
+  it('a wave that has begun keeps its first monster damage; the cleared-banner case still loads to camp', () => {
+    const base = { waveKills: 0, monstersDefeated: 8, waveActive: true, monsterMaxHp: 5 }
+    // Wave 2 begun, nothing killed yet in it, first monster hurt: mid-wave
+    expect(waveActiveOnLoad({ ...base, monsterHp: 3 }, 7)).toBe(true)
+    // Closed during the clear banner: kills made, new full-HP monster untouched: camp
+    expect(waveActiveOnLoad({ ...base, monsterHp: 5 }, 7)).toBe(false)
+    // An older save with a hurt monster and no kills in the wave also resumes mid-wave
+    expect(waveActiveOnLoad({ ...base, waveActive: undefined, monsterHp: 2 }, 5)).toBe(true)
   })
 })
 

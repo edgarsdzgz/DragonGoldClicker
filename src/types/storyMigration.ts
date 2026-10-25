@@ -61,3 +61,26 @@ export function backfillStory(save: GameState): GameState {
 
   return { ...save, beatsSeen: work.beatsSeen, playSeconds: 0, lastBeatAtPlaySec: 0 }
 }
+
+/**
+ * Beats added to the table before ones a save has already seen (first_renown, say) must not play
+ * their scene for that save. On every load, any unseen main beat that sits before the furthest seen
+ * main beat, and whose trigger or evidence holds, is marked seen with no scene. It is slotted into
+ * beatsSeen before the first seen beat that follows it in the table, so the order stays sensible.
+ */
+export function catchUpBeats(save: GameState): GameState {
+  const main = STORY_BEATS.filter((b) => !b.side)
+  const furthest = main.reduce((last, b, i) => (save.beatsSeen.includes(b.id) ? i : last), -1)
+  if (furthest < 0) return save
+
+  const order = (id: string) => STORY_BEATS.findIndex((b) => b.id === id)
+  let seen = save.beatsSeen
+  for (let i = 0; i < furthest; i++) {
+    const beat = main[i]
+    if (seen.includes(beat.id)) continue
+    if (!(beat.trigger(save) || EVIDENCE[beat.id]?.(save))) continue
+    const at = seen.findIndex((id) => order(id) > order(beat.id))
+    seen = at === -1 ? [...seen, beat.id] : [...seen.slice(0, at), beat.id, ...seen.slice(at)]
+  }
+  return seen === save.beatsSeen ? save : { ...save, beatsSeen: seen }
+}

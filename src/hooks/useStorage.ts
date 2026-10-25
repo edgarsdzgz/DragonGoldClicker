@@ -16,13 +16,21 @@ import {
   roundInsp,
   isSystemOn,
 } from '../types/game'
-import { catchUpScripted } from '../types/scripted'
-import { migrateToV4, migrateToV5, migrateToV7 } from '../types/waveMigration'
-import { waveActiveOnLoad } from '../types/waves'
-import { backfillStory, backfillScripted } from '../types/storyMigration'
-import { backfillTutorial } from '../types/tutorial'
+import { migrateSave } from '../types/saveMigrations'
 
 const STORAGE_KEY = '@dragongold/gamestate'
+
+/** Fields the story code reads must exist before any migration step looks at them */
+function normalizeStory(s: GameState): GameState {
+  return {
+    ...s,
+    beatsSeen: Array.isArray(s.beatsSeen) ? s.beatsSeen : [],
+    playSeconds: typeof s.playSeconds === 'number' ? s.playSeconds : 0,
+    lastBeatAtPlaySec: typeof s.lastBeatAtPlaySec === 'number' ? s.lastBeatAtPlaySec : 0,
+    tutorialStepsDone: Array.isArray(s.tutorialStepsDone) ? s.tutorialStepsDone : [],
+    scriptedDone: Array.isArray(s.scriptedDone) ? s.scriptedDone : [],
+  }
+}
 
 export interface OfflineEarnings {
   inspiration: number
@@ -115,45 +123,8 @@ export function useStorage() {
           merged.saveMigrationVersion = 1
         }
 
-        // Story migration: v1 saves get their beats backfilled from what they already did
-        let gameState = merged as GameState
-        if (!Array.isArray(gameState.beatsSeen)) gameState.beatsSeen = []
-        if (typeof gameState.playSeconds !== 'number') gameState.playSeconds = 0
-        if (typeof gameState.lastBeatAtPlaySec !== 'number') gameState.lastBeatAtPlaySec = 0
-        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 2) {
-          gameState = { ...backfillStory(gameState), saveMigrationVersion: 2 }
-        }
-        // v3: guided tutorial. Steps the save already got past are marked done.
-        if (!Array.isArray(gameState.tutorialStepsDone)) gameState.tutorialStepsDone = []
-        if (!Array.isArray(gameState.scriptedDone)) gameState.scriptedDone = []
-        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 3) {
-          gameState = { ...gameState, tutorialStepsDone: backfillTutorial(gameState), scriptedDone: backfillScripted(gameState), saveMigrationVersion: 3 }
-        }
-
-        // v4: the SLAY circle shows a monster. A save starts on a fresh monster of its tier.
-        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 4) {
-          gameState = { ...migrateToV4(gameState), saveMigrationVersion: 4 }
-        }
-
-        // v5: waves. A save resumes mid-wave from its kill count.
-        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 5) {
-          gameState = { ...migrateToV5(gameState), saveMigrationVersion: 5 }
-        }
-
-        // v6: the player starts each wave. A save that was mid-wave resumes mid-wave.
-        gameState = {
-          ...gameState,
-          waveActive: waveActiveOnLoad(gameState, (parsed.saveMigrationVersion as number) || 0),
-          saveMigrationVersion: 6,
-        }
-
-        // v7: wave 0 opens the game and the monster type follows the wave number
-        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 7) {
-          gameState = { ...migrateToV7(gameState), saveMigrationVersion: 7 }
-        }
-
-        // A scene killed mid-read still gets its scripted event (state change only)
-        gameState = catchUpScripted(gameState)
+        // Every step after v1 lives in types/saveMigrations.ts, gated on the version the save came from
+        const gameState = migrateSave(normalizeStory(merged as GameState), (parsed.saveMigrationVersion as number) || 0)
 
         // Calculate offline earnings (the Keep turns this on)
         let offlineEarnings: OfflineEarnings | null = null

@@ -51,12 +51,17 @@ export function progressWave(s: Pick<GameState, 'waveNumber' | 'waveKills'>, bou
 }
 
 /**
- * Whether a loaded save is in a wave. A v5 save mid-wave (waveKills > 0) resumes mid-wave. A v6
- * save keeps its flag, except one closed during the wave-cleared banner (flag on, no kills in
- * the new wave), which waits in camp.
+ * Whether a loaded save is in a wave. A v5 save mid-wave (kills, or a damaged monster) resumes
+ * mid-wave. A v6+ save keeps its flag, except one closed during the wave-cleared banner (flag on,
+ * kills made, no damage on the new wave's full-HP monster), which waits in camp.
  */
-export function waveActiveOnLoad(save: { waveActive?: boolean; waveKills: number; monstersDefeated: number }, fromVersion: number): boolean {
-  if (fromVersion < 6) return save.waveKills > 0
-  if (save.waveActive && save.waveKills === 0 && save.monstersDefeated > 0) return false
+export function waveActiveOnLoad(
+  save: { waveActive?: boolean; waveKills: number; monstersDefeated: number; monsterHp: number; monsterMaxHp: number },
+  fromVersion: number,
+): boolean {
+  // A monster that has taken damage means the wave is under way, even before its first kill
+  const damaged = save.monsterHp > 0 && save.monsterHp < save.monsterMaxHp
+  if (fromVersion < 6) return save.waveKills > 0 || damaged
+  if (save.waveActive && save.waveKills === 0 && save.monstersDefeated > 0 && !damaged) return false
   return !!save.waveActive
 }
