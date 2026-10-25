@@ -32,8 +32,8 @@ export function EventHost({ onNavigate }: EventHostProps) {
   } = useGame()
   const { scenes, dismissScene } = useStory()
 
-  const sceneId = scenes[0]
-  const scene = sceneId ? getScene(sceneId) : undefined
+  const queued = scenes[0]
+  const scene = queued ? getScene(queued.id) : undefined
 
   const activeModal =
     isGameOver ? 'gameOver' :
@@ -65,7 +65,7 @@ export function EventHost({ onNavigate }: EventHostProps) {
       />
       {scene && (
         <NpcDialog
-          key={sceneId}
+          key={queued?.uid}
           visible={activeModal === 'scene'}
           npcName={scene.speaker}
           icon={scene.icon}

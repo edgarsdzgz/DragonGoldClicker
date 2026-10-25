@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import type { BeatId } from '../types/story'
+import { useGame } from './GameContext'
 
 /**
  * FIFO queue of story scenes waiting to be shown. Owned by the director and
@@ -7,9 +8,15 @@ import type { BeatId } from '../types/story'
  * lost to an app kill is still recorded as seen and stays re-readable.
  */
 
+export interface QueuedScene {
+  /** Unique per queue entry, so replaying the same scene remounts its dialog */
+  uid: number
+  id: BeatId
+}
+
 interface StoryContextType {
-  /** Beat ids whose scenes are waiting; the first one is on screen */
-  scenes: BeatId[]
+  /** Scenes waiting; the first one is on screen */
+  scenes: QueuedScene[]
   enqueueScene: (id: BeatId) => void
   /** Close the scene on screen (read or skipped) */
   dismissScene: () => void
@@ -18,11 +25,21 @@ interface StoryContextType {
 const StoryContext = createContext<StoryContextType | null>(null)
 
 export function StoryProvider({ children }: { children: React.ReactNode }) {
-  const [scenes, setScenes] = useState<BeatId[]>([])
+  const { state } = useGame()
+  const [scenes, setScenes] = useState<QueuedScene[]>([])
+  const nextUid = useRef(1)
 
   const enqueueScene = useCallback((id: BeatId) => {
-    setScenes((prev) => [...prev, id])
+    setScenes((prev) => [...prev, { uid: nextUid.current++, id }])
   }, [])
+
+  // A new game (resetGame stamps a new startedAt) must not inherit the old queue
+  const startedAt = useRef(state.startedAt)
+  useEffect(() => {
+    if (state.startedAt === startedAt.current) return
+    startedAt.current = state.startedAt
+    setScenes([])
+  }, [state.startedAt])
 
   const dismissScene = useCallback(() => {
     setScenes((prev) => prev.slice(1))

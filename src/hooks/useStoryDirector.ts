@@ -28,19 +28,32 @@ export function useStoryDirector() {
     firedRef.current = { ids: [], at: 0 }
   }, [state.beatsSeen])
 
+  // Runs since the last render. State is stale by that many game seconds, so add it back
+  // to know the game second a beat really fired in.
+  const runsRef = useRef(0)
+  useEffect(() => {
+    runsRef.current = 0
+  }, [state.playSeconds])
+
   useGameLoop(
     useCallback(() => {
       const s = stateRef.current
+      const now = s.playSeconds + runsRef.current
+      runsRef.current += 1
+
       const pending = firedRef.current.ids.filter((id) => !s.beatsSeen.includes(id))
-      const view = pending.length > 0
-        ? { ...s, beatsSeen: [...s.beatsSeen, ...pending], lastBeatAtPlaySec: firedRef.current.at }
-        : s
+      const view = {
+        ...s,
+        playSeconds: now,
+        beatsSeen: pending.length > 0 ? [...s.beatsSeen, ...pending] : s.beatsSeen,
+        lastBeatAtPlaySec: pending.length > 0 ? firedRef.current.at : s.lastBeatAtPlaySec,
+      }
 
       const beat = findNextBeat(view, pacing)
       if (!beat) return
 
-      firedRef.current = { ids: [...pending, beat.id], at: s.playSeconds }
-      markBeatSeen(beat.id)
+      firedRef.current = { ids: [...pending, beat.id], at: now }
+      markBeatSeen(beat.id, now)
       const scene = beat.silent ? undefined : getScene(beat.id)
       if (scene) enqueueScene(beat.id)
     }, [pacing, markBeatSeen, enqueueScene])

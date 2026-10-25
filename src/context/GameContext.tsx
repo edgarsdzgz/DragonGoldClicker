@@ -123,8 +123,8 @@ interface GameContextType {
   buildLibrarium: () => boolean
   completeResearch: (id: string) => boolean
   isResearchAvailable: (id: string) => boolean
-  /** Story director: record a beat as seen and restart the dwell clock */
-  markBeatSeen: (id: string) => void
+  /** Story director: record a beat as seen and restart the dwell clock (at the game second it fired in) */
+  markBeatSeen: (id: string, atPlaySec?: number) => void
   /** Dev tools only: apply an arbitrary state change (grants, checkpoints, forced timers) */
   devApply: (updater: (s: GameState) => GameState) => void
   /** Dev tools only: show a wanderer encounter now, skipping cooldown and chance */
@@ -1077,10 +1077,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return success
   }, [checkPrereqs])
 
-  const markBeatSeen = useCallback((id: string) => {
+  const markBeatSeen = useCallback((id: string, atPlaySec?: number) => {
     setState((prev) => (prev.beatsSeen.includes(id)
       ? prev
-      : { ...prev, beatsSeen: [...prev.beatsSeen, id], lastBeatAtPlaySec: prev.playSeconds }))
+      : { ...prev, beatsSeen: [...prev.beatsSeen, id], lastBeatAtPlaySec: atPlaySec ?? prev.playSeconds }))
   }, [])
 
   const devApply = useCallback((updater: (s: GameState) => GameState) => {
