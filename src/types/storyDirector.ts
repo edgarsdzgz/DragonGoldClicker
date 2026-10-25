@@ -1,6 +1,6 @@
 import type { GameState } from './state'
 import type { BeatDef } from './story'
-import { STORY_BEATS } from './story'
+import { STORY_BEATS, isBeatPaused } from './story'
 
 // =============================================================================
 // BEAT SELECTION (pure; hooks/useStoryDirector.ts only calls this)
@@ -25,8 +25,9 @@ export function findNextBeat(state: GameState, pacing: StoryPacing): BeatDef | n
   const ready = (b: BeatDef) =>
     state.playSeconds - state.lastBeatAtPlaySec >= effectiveDwell(b, pacing) && b.trigger(state)
 
-  const nextMain = STORY_BEATS.find((b) => !b.side && !seen.includes(b.id))
+  const live = STORY_BEATS.filter((b) => !isBeatPaused(b.id))
+  const nextMain = live.find((b) => !b.side && !seen.includes(b.id))
   if (nextMain && ready(nextMain)) return nextMain
 
-  return STORY_BEATS.find((b) => b.side && !seen.includes(b.id) && ready(b)) ?? null
+  return live.find((b) => b.side && !seen.includes(b.id) && ready(b)) ?? null
 }

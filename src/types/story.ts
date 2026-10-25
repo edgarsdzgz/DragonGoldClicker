@@ -172,6 +172,27 @@ export const STORY_BEATS: BeatDef[] = [
   },
 ]
 
+/**
+ * Depth before breadth: only beats up to and including this one can fire. Every later beat is
+ * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
+ * the story; beats a save has already seen are kept, so no progress is deleted.
+ */
+export const STORY_PAUSED_AFTER: BeatId = 'call_to_arms'
+
+let pausedAfter: BeatId = STORY_PAUSED_AFTER
+
+/** Tests only: move the pause so full-story behaviour can still be exercised. Pass nothing to restore. */
+export function setStoryPauseForTests(id: BeatId = STORY_PAUSED_AFTER) {
+  pausedAfter = id
+}
+
+/** Whether a beat is behind the pause */
+export function isBeatPaused(id: string): boolean {
+  const limit = STORY_BEATS.findIndex((b) => b.id === pausedAfter)
+  const at = STORY_BEATS.findIndex((b) => b.id === id)
+  return at > limit
+}
+
 export function getBeat(id: string): BeatDef | undefined {
   return STORY_BEATS.find((b) => b.id === id)
 }

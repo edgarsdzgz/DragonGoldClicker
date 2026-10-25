@@ -1,6 +1,6 @@
 import type { GameState } from './state'
 import type { BeatId } from './story'
-import { STORY_BEATS } from './story'
+import { STORY_BEATS, isBeatPaused } from './story'
 
 // =============================================================================
 // SAVE v1 -> v2: BACKFILL STORY PROGRESS
@@ -41,7 +41,7 @@ export function backfillScripted(save: GameState): string[] {
  * Side beats are marked when their own trigger (or evidence) passes.
  */
 export function backfillStory(save: GameState): GameState {
-  const main = STORY_BEATS.filter((b) => !b.side)
+  const main = STORY_BEATS.filter((b) => !b.side && !isBeatPaused(b.id))
   const lastProven = main.reduce((last, b, i) => (EVIDENCE[b.id]?.(save) ? i : last), -1)
 
   const work: GameState = { ...save, beatsSeen: [] }
@@ -51,7 +51,7 @@ export function backfillStory(save: GameState): GameState {
     work.beatsSeen = [...work.beatsSeen, beat.id]
   }
 
-  for (const beat of STORY_BEATS.filter((b) => b.side)) {
+  for (const beat of STORY_BEATS.filter((b) => b.side && !isBeatPaused(b.id))) {
     if (beat.trigger(work) || SIDE_EVIDENCE[beat.id]?.(save)) {
       work.beatsSeen = [...work.beatsSeen, beat.id]
     }

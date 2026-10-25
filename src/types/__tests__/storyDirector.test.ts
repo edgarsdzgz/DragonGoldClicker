@@ -1,9 +1,14 @@
 import { DEFAULT_GAME_STATE } from '../state'
+import { setStoryPauseForTests } from '../story'
 import type { GameState } from '../state'
 import { findNextBeat, effectiveDwell } from '../storyDirector'
 import { getBeat } from '../story'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
+
+// These suites exercise the whole story, so lift the pause for them
+beforeAll(() => setStoryPauseForTests('the_horde_grows'))
+afterAll(() => setStoryPauseForTests())
 
 describe('effectiveDwell', () => {
   it('caps dwell at 5 seconds in test pacing and keeps it in live', () => {

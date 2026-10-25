@@ -1,9 +1,14 @@
 import { DEFAULT_GAME_STATE } from '../state'
+import { setStoryPauseForTests } from '../story'
 import type { GameState } from '../state'
 import { backfillStory } from '../storyMigration'
 import { isSystemOn, isBuildingRevealed } from '../systems'
 
 const v1 = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, saveMigrationVersion: 1, ...over })
+
+// These suites exercise the whole story, so lift the pause for them
+beforeAll(() => setStoryPauseForTests('the_horde_grows'))
+afterAll(() => setStoryPauseForTests())
 
 describe('backfillStory', () => {
   it('marks only the prologue for an untouched save', () => {

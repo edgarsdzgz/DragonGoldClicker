@@ -5,6 +5,7 @@ import { useGame } from '../../context/GameContext'
 import { useStory } from '../../context/StoryContext'
 import { getScene } from '../../data/story/lines'
 import { STORY_BEATS, TUTORIAL_STEPS, getActiveStep } from '../../types/game'
+import { isBeatPaused } from '../../types/story'
 import { backfillScripted } from '../../types/storyMigration'
 import { colors, spacing } from '../../theme'
 
@@ -51,17 +52,18 @@ export function DevStory() {
 
       {STORY_BEATS.map((beat, i) => {
         const isSeen = seen.has(beat.id)
+        const paused = isBeatPaused(beat.id)
         const hasScene = !beat.silent && getScene(beat.id) !== undefined
         return (
           <View key={beat.id} style={styles.row}>
             <View style={styles.rowText}>
               <Text variant="label">{`${beat.chapter}. ${beat.id}${beat.side ? ' (side)' : ''}`}</Text>
               <Text variant="caption" style={{ color: isSeen ? colors.status.success : colors.text.muted }}>
-                {isSeen ? 'SEEN' : 'UNSEEN'}
+                {isSeen ? 'SEEN' : paused ? 'PAUSED' : 'UNSEEN'}
                 {beat.silent ? ' - silent' : ''}
               </Text>
             </View>
-            <Button size="xs" variant="secondary" onPress={() => jumpTo(i)} accessibilityLabel={`Jump to beat ${beat.id}`}>Jump</Button>
+            <Button size="xs" variant="secondary" disabled={paused} onPress={() => jumpTo(i)} accessibilityLabel={`Jump to beat ${beat.id}`}>Jump</Button>
             <Button
               size="xs"
               variant="ghost"
