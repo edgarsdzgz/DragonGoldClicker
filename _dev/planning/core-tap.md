@@ -172,6 +172,51 @@ now) until the player begins the next wave.
 
 ---
 
+## Layer 2d: the opening, and renown (approved 2026-10-25)
+
+Owner rulings, from their direction for a fresh install:
+
+1. **Nothing but the Wave button.** A fresh install shows only a **Begin Wave 0** button, and
+   it is the only thing highlighted (the coach mark ring; there is nothing else to dim).
+   Hidden: top bar, objective line, wave row, chips, footer, gate, tab bar and every scene.
+   Pyreth's `prologue` scene is removed; the beat becomes silent.
+2. **Wave 0 is 3 kobolds.** Normal waves of 5 start at Wave 1. Monster type follows the wave:
+   waves 0-2 kobold, 3-5 goblin, 6-10 shadow crawler, 11+ orc. Wave 0's clear bonus is 2x the
+   kobold bounty (+0.50).
+3. **During the wave: only the kobold and the gate.** The monster (silhouette and HP pips) and
+   the gate at the bottom. No name label, no wave row, no footer, no top bar until the first
+   kill.
+4. **Renown replaces inspiration** as the player-facing currency.
+   - Kills, wave bonuses, fighters and costs are all shown as renown. Every visible
+     "inspiration" and "insp" becomes "renown", including scenes, journal cards, buttons, stats
+     and announcements.
+   - Its icon is a gold star (Ionicons `star`); the kill reward flies to the counter as a star.
+   - **This pass renames only what the player sees.** Internal identifiers (`inspiration`,
+     `totalInspirationEarned`, `InspirationIcon` and the rest) stay for now, each with a comment.
+     A separate refactor renames them with a save migration.
+5. **The first kill explains renown.**
+   - The top-bar renown figure appears as the first star arrives.
+   - Then a scene: Elder Pyreth, "Renown". Lines:
+     "Your victory echoes through Draconia, my lord. Defeating our enemies in battle earns you
+     renown." / "The more foes you defeat, the more renown you gain, and the more the people
+     and the elders of Draconia will listen to you."
+   - After the scene the wave continues.
+6. **Skip only for multi-page scenes.** A scene with one page shows only its Continue button. A
+   scene with two or more pages (a cutscene) shows Continue and Skip.
+7. **Reveal order:**
+   - The renown figure arrives at the first kill.
+   - After Wave 0 clears: the camp preview for Wave 1, the wave row and the footer.
+   - With `call_to_arms`, which now fires right after Wave 0 (0.75 + 0.50 = 1.25 renown, Rally
+     costs 1.00): the objective line, the villager and fighter chips, and the tab bar.
+8. **Testing:** with the UI hidden, playtest builds (`DEV_TOOLS_ENABLED`) keep a small,
+   labelled Dev button in a top corner that opens Settings > Dev. Player builds do not have it.
+
+**Guided steps:** `begin_wave` is now the first step (target: the Begin Wave 0 button, hint
+"Begin the first wave."). `tap_slay` (hint "Tap the kobold to strike it.") follows once a
+monster is on the field.
+
+---
+
 ## Layer 1b: the hit you can see (approved 2026-10-25)
 
 **Owner ruling:** the player is the dragon, so strikes are claw slashes. Copy can say "claw"
