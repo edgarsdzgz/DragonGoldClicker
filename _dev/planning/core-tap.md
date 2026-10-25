@@ -206,8 +206,14 @@ Owner rulings, from their direction for a fresh install:
 7. **Reveal order:**
    - The renown figure arrives at the first kill.
    - After Wave 0 clears: the camp preview for Wave 1, the wave row and the footer.
-   - With `call_to_arms`, which now fires right after Wave 0 (0.75 + 0.50 = 1.25 renown, Rally
-     costs 1.00): the objective line, the villager and fighter chips, and the tab bar.
+   - With `call_to_arms`: the objective line, the villager and fighter chips, and the tab bar.
+   - **Owner ruling (2026-10-25), replacing "right after Wave 0":** "jumping from clicking on a
+     wave to immediately rallying is too fast; have some waves first." So `call_to_arms` fires
+     when Wave 2 has been cleared and the player is back in camp, before the first goblin wave:
+     - Trigger: `waveNumber >= 3 && !waveActive`, with dwell 0 so it plays at once in that camp.
+     - By then: 13 kobold kills, about 4.75 renown. Rally costs 1.00.
+     - Until then, Waves 0-2 show only the battlefield, the gate, renown, the wave row and the
+       footer.
 8. **Testing:** with the UI hidden, playtest builds (`DEV_TOOLS_ENABLED`) keep a small,
    labelled Dev button in a top corner that opens Settings > Dev. Player builds do not have it.
 
