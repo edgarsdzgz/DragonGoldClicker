@@ -128,3 +128,21 @@ export function applyFoodTick(cur: GameState, t: FoodTick): GameState {
     repairers: sub(cur.repairers, t.repairersLost),
   }
 }
+
+/**
+ * One food-timer second as a pure function of `prev`. The pop-up payloads (warning,
+ * starvation report) are part of the returned state, so the decision and its result
+ * commit together even when other updates were queued in the same frame.
+ */
+export function stepFood(prev: GameState, starvationOn: boolean): GameState {
+  const { tick, warning, report } = resolveFoodTick(prev, starvationOn)
+  const next = applyFoodTick(prev, tick)
+  if (warning === null) return next
+  return {
+    ...next,
+    lastFoodWarning: warning,
+    // Only pop up when the warning escalates, not on every check
+    pendingFoodWarning: warning > 0 && warning !== prev.lastFoodWarning ? warning : next.pendingFoodWarning,
+    pendingStarvationReport: report ?? next.pendingStarvationReport,
+  }
+}

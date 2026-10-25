@@ -1,7 +1,7 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { FOOD_CHECK_INTERVAL } from '../food'
-import { resolveFoodTick, applyFoodTick } from '../foodTick'
+import { resolveFoodTick, applyFoodTick, stepFood } from '../foodTick'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
@@ -36,5 +36,34 @@ describe('resolveFoodTick', () => {
     roll.mockRestore()
     expect(r.report?.villagersLost).toBe(5)
     expect(applyFoodTick(s, r.tick).villagers).toBe(0)
+  })
+})
+
+describe('stepFood (decides from prev)', () => {
+  const due = { foodTimer: FOOD_CHECK_INTERVAL - 1, villagers: 5 }
+
+  it('rolls starvation only against the stores in prev, so refilled stores are safe', () => {
+    const roll = jest.spyOn(Math, 'random').mockReturnValue(0)
+    const empty = stepFood(make({ ...due, food: 0 }), true)
+    const refilled = stepFood(make({ ...due, food: 500 }), true)
+    roll.mockRestore()
+    expect(empty.pendingStarvationReport?.villagersLost).toBe(5)
+    expect(refilled.pendingStarvationReport).toBeNull()
+    expect(refilled.villagers).toBe(5)
+  })
+
+  it('puts the warning in the returned state and only when it escalates', () => {
+    const first = stepFood(make({ ...due, food: 0 }), false)
+    expect(first.pendingFoodWarning).toBe(1)
+    expect(first.lastFoodWarning).toBe(1)
+    const again = stepFood(make({ ...due, food: 0, lastFoodWarning: 1 }), false)
+    expect(again.pendingFoodWarning).toBe(0)
+  })
+
+  it('leaves pending payloads alone on seconds where no check fires', () => {
+    const report = { villagersLost: 1, soldiersLost: { conscripts: 0, footmen: 0, knights: 0 }, foragersLost: { gatherers: 0, trappers: 0, rangers: 0 }, explorersLost: 0, fightersLost: 0, repairersLost: 0 }
+    const next = stepFood(make({ foodTimer: 3, pendingStarvationReport: report }), true)
+    expect(next.pendingStarvationReport).toBe(report)
+    expect(next.foodTimer).toBe(4)
   })
 })

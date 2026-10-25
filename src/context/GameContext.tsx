@@ -70,7 +70,7 @@ import {
   isSystemOn,
   isBuildingRevealed,
 } from '../types/game'
-import { resolveFoodTick, applyFoodTick } from '../types/foodTick'
+import { stepFood } from '../types/foodTick'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
@@ -137,13 +137,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(DEFAULT_GAME_STATE)
   const [loaded, setLoaded] = useState(false)
   const [pendingOfflineEarnings, setPendingOfflineEarnings] = useState<OfflineEarnings | null>(null)
-  const [pendingStarvationReport, setPendingStarvationReport] = useState<StarvationResult | null>(null)
-  const [pendingFoodWarning, setPendingFoodWarning] = useState<0 | 3 | 1>(0)
-  const [isGameOver, setIsGameOver] = useState(false)
+  const [gameOverDismissed, setGameOverDismissed] = useState(false)
   const [pendingMilestone, setPendingMilestone] = useState<MilestoneDef | null>(null)
-  const [pendingWanderer, setPendingWanderer] = useState<WandererEncounter | null>(null)
   const wandererTimerRef = useRef(0)
-  const lastFoodWarningRef = useRef<0 | 3 | 1>(0)
   const { save, load, clear } = useStorage()
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -187,6 +183,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       }
     }
   }, [loaded, save])
+
+  const { pendingStarvationReport, pendingFoodWarning, pendingWanderer } = state
+  // Derived, so it can never disagree with the HP that caused it
+  const isGameOver = isSystemOn(state, 'siege') && state.cityHp <= 0 && !gameOverDismissed
+  useEffect(() => {
+    if (state.cityHp > 0) setGameOverDismissed(false)
+  }, [state.cityHp])
 
   const researchBonuses = getResearchBonuses(state.completedResearch)
 
@@ -257,25 +260,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }, [loaded, autoFoodRate])
   )
 
-  // Food consumption tick (only once the Hunger system is on). The check is decided from the
-  // latest state, then applied as deltas by a pure updater; the pop-ups are set separately.
+  // Food consumption tick (only once the Hunger system is on). Decision and pop-up payloads
+  // are computed from `prev` inside one pure updater, so they always commit together.
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      const prev = stateRef.current
-      if (!isSystemOn(prev, 'hunger')) return
-
-      const { tick, warning, report } = resolveFoodTick(prev, isSystemOn(prev, 'starvation'))
-      // Keep the ref current so several ticks in one frame (high dev speed) stay consistent
-      stateRef.current = applyFoodTick(prev, tick)
-      setState((cur) => applyFoodTick(cur, tick))
-
-      if (warning !== null) {
-        // Only trigger popup if warning escalated (not on every check)
-        if (warning > 0 && warning !== lastFoodWarningRef.current) setPendingFoodWarning(warning)
-        lastFoodWarningRef.current = warning
-      }
-      if (report) setPendingStarvationReport(report)
+      setState((prev) => (isSystemOn(prev, 'hunger') ? stepFood(prev, isSystemOn(prev, 'starvation')) : prev))
     }, [loaded])
   )
 
@@ -283,24 +273,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      const prev = stateRef.current
-      if (!isSystemOn(prev, 'siege') || prev.cityHp <= 0) return
-
-      const timer = prev.siegeTimer + 1
-      if (timer < SIEGE_TICK_INTERVAL) {
-        stateRef.current = { ...prev, siegeTimer: timer }
-        setState((cur) => ({ ...cur, siegeTimer: timer }))
-        return
-      }
-      // Siege tick fires
-      const threat = getThreatLevel(prev.totalInspirationEarned)
-      const defense = getDefenseLevel(prev.clickPower, prev.fighters)
-      const damage = getSiegeDamage(threat, defense)
-      const apply = (s: GameState): GameState =>
-        damage <= 0 ? { ...s, siegeTimer: 0 } : { ...s, siegeTimer: 0, cityHp: Math.max(0, s.cityHp - damage) }
-      stateRef.current = apply(prev)
-      setState(apply)
-      if (damage > 0 && prev.cityHp - damage <= 0) setIsGameOver(true)
+      setState((prev) => {
+        if (!isSystemOn(prev, 'siege') || prev.cityHp <= 0) return prev
+        const timer = prev.siegeTimer + 1
+        if (timer < SIEGE_TICK_INTERVAL) return { ...prev, siegeTimer: timer }
+        // Siege tick fires
+        const threat = getThreatLevel(prev.totalInspirationEarned)
+        const defense = getDefenseLevel(prev.clickPower, prev.fighters)
+        const damage = getSiegeDamage(threat, defense)
+        if (damage <= 0) return { ...prev, siegeTimer: 0 }
+        return { ...prev, siegeTimer: 0, cityHp: Math.max(0, prev.cityHp - damage) }
+      })
     }, [loaded])
   )
 
@@ -326,28 +309,23 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      // Don't roll if a wanderer is already pending
-      if (pendingWanderer) return
-
       wandererTimerRef.current += 1
       if (wandererTimerRef.current < WANDERER_COOLDOWN) return
 
-      // Decide from the latest state, outside any updater, so the event cannot fire twice
-      const prev = stateRef.current
-      if (!isSystemOn(prev, 'wanderers')) return
-
-      const encounter = rollWandererCheck(
-        getTotalSoldiers(prev.soldiers),
-        getTotalForagers(prev.foragers),
-        prev.villagers,
-        prev.activeExpeditions.length > 0,
-        prev.postLevel,
-      )
-      if (encounter) setPendingWanderer(encounter)
-
       const now = Date.now()
-      setState((cur) => ({ ...cur, lastWandererCheck: now }))
-    }, [loaded, pendingWanderer])
+      setState((prev) => {
+        // Don't roll if a wanderer is already pending, or the system is not on yet
+        if (prev.pendingWanderer || !isSystemOn(prev, 'wanderers')) return prev
+        const encounter = rollWandererCheck(
+          getTotalSoldiers(prev.soldiers),
+          getTotalForagers(prev.foragers),
+          prev.villagers,
+          prev.activeExpeditions.length > 0,
+          prev.postLevel,
+        )
+        return { ...prev, lastWandererCheck: now, pendingWanderer: encounter }
+      })
+    }, [loaded])
   )
 
   // Milestone recruitment check -- fires when totalInspirationEarned crosses a threshold
@@ -903,24 +881,24 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const dismissStarvationReport = useCallback(() => {
-    setPendingStarvationReport(null)
+    setState((prev) => ({ ...prev, pendingStarvationReport: null }))
   }, [])
 
   const dismissGameOver = useCallback(() => {
-    setIsGameOver(false)
+    setGameOverDismissed(true)
   }, [])
 
   const dismissFoodWarning = useCallback(() => {
-    setPendingFoodWarning(0)
+    setState((prev) => ({ ...prev, pendingFoodWarning: 0 }))
   }, [])
 
   const acceptWanderer = useCallback((): { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null => {
-    if (!pendingWanderer) return null
-    const encounter = pendingWanderer
+    const encounter = state.pendingWanderer
+    if (!encounter) return null
     let overflowResult: { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null = null
 
     setState((prev) => {
-      let next = { ...prev }
+      let next = { ...prev, pendingWanderer: null }
       next.wanderersWelcomed = prev.wanderersWelcomed + encounter.villagerCount
 
       if (encounter.trained) {
@@ -970,13 +948,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       return next
     })
 
-    setPendingWanderer(null)
     wandererTimerRef.current = 0
     return overflowResult
-  }, [pendingWanderer])
+  }, [state.pendingWanderer])
 
   const rejectWanderer = useCallback(() => {
-    setPendingWanderer(null)
+    setState((prev) => ({ ...prev, pendingWanderer: null }))
     wandererTimerRef.current = 0
   }, [])
 
@@ -1114,8 +1091,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const devForceWanderer = useCallback(() => {
     if (!__DEV__) return
     wandererTimerRef.current = 0
-    setPendingWanderer(rollWandererEncounter(getTotalSoldiers(state.soldiers), getTotalForagers(state.foragers)))
-  }, [state.soldiers, state.foragers])
+    setState((prev) => ({ ...prev, pendingWanderer: rollWandererEncounter(getTotalSoldiers(prev.soldiers), getTotalForagers(prev.foragers)) }))
+  }, [])
 
   const resetGame = useCallback(() => {
     const fresh = { ...DEFAULT_GAME_STATE, startedAt: Date.now(), lastSavedAt: Date.now() }

@@ -5,6 +5,8 @@ import { getTotalSoldiers } from './soldiers'
 import type { ActiveExpedition } from './explorers'
 import { STARTING_FOOD, STARTING_VILLAGERS } from './food'
 import { STARTING_CITY_HP } from './siege'
+import type { StarvationResult } from './food'
+import type { WandererEncounter } from './wanderers'
 
 // =============================================================================
 // OFFLINE PROGRESS
@@ -142,6 +144,14 @@ export interface GameState {
   playSeconds: number
   /** playSeconds when the last beat fired (the dwell clock) */
   lastBeatAtPlaySec: number
+  /** Wanderer waiting at the gate. Set by the wander tick from the same state it decided on. */
+  pendingWanderer: WandererEncounter | null
+  /** Who starved in the last food check, until the player dismisses the report. Not saved. */
+  pendingStarvationReport: StarvationResult | null
+  /** Food warning level waiting to be shown (0 = none). Not saved. */
+  pendingFoodWarning: 0 | 3 | 1
+  /** Warning level of the last food check, so a warning only pops up when it escalates. Not saved. */
+  lastFoodWarning: 0 | 3 | 1
   /** Save format version for migrations */
   saveMigrationVersion: number
 }
@@ -202,6 +212,10 @@ export const DEFAULT_GAME_STATE: GameState = {
   beatsSeen: [],
   playSeconds: 0,
   lastBeatAtPlaySec: 0,
+  pendingWanderer: null,
+  pendingStarvationReport: null,
+  pendingFoodWarning: 0,
+  lastFoodWarning: 0,
   saveMigrationVersion: 2,
 }
 

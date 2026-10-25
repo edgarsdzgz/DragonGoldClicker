@@ -28,7 +28,9 @@ export interface OfflineEarnings {
 export function useStorage() {
   const save = useCallback(async (state: GameState) => {
     try {
-      const toSave = { ...state, lastSavedAt: Date.now() }
+      // Transient pop-up state is not worth restoring after a restart
+      const { pendingStarvationReport, pendingFoodWarning, lastFoodWarning, ...persisted } = state
+      const toSave = { ...persisted, lastSavedAt: Date.now() }
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
     } catch {
       // Storage write failed silently
