@@ -164,7 +164,7 @@ export function ForageScreen() {
             disabled={!canTrainGatherer}
           />
           <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
-            {formatNumber(gathererCost)} insp
+            {formatNumber(gathererCost)} renown
           </Text>
           <Text variant="caption" color="muted" center>
             {gathererCount}/{gathererCap}
@@ -183,7 +183,7 @@ export function ForageScreen() {
                 disabled={!canRecruitExplorer}
               />
               <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
-                {EXPLORER_COST} insp
+                {EXPLORER_COST} renown
               </Text>
               <Text variant="caption" color="muted" center>
                 {state.explorers}/{explorerCap}

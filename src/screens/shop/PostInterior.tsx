@@ -217,7 +217,7 @@ export function PostInterior() {
           pressed && canSend && expStyles.sendBtnPressed,
         ]}
         accessibilityRole="button"
-        accessibilityLabel={`Send expedition for ${EXPEDITION_INSPIRATION_COST} inspiration and ${EXPEDITION_FOOD_COST} food`}
+        accessibilityLabel={`Send expedition for ${EXPEDITION_INSPIRATION_COST} renown and ${EXPEDITION_FOOD_COST} food`}
       >
         <LinearGradient
           colors={canSend
@@ -279,7 +279,7 @@ export function PostInterior() {
           rejectPhrases={REJECT_GOLD}
           fullWidth
         >
-          {`Upgrade to Lv${state.postLevel + 1} - ${formatNumber(upgradeCost)} insp`}
+          {`Upgrade to Lv${state.postLevel + 1} - ${formatNumber(upgradeCost)} renown`}
         </Button>
       )}
 

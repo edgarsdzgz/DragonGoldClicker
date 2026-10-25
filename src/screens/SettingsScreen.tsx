@@ -61,7 +61,7 @@ export function SettingsScreen() {
       <ConfirmModal
         visible={showResetModal}
         title="Reset Game"
-        message="All inspiration, soldiers, buildings, and progress will be permanently erased. This cannot be undone."
+        message="All renown, soldiers, buildings, and progress will be permanently erased. This cannot be undone."
         confirmLabel="Reset"
         cancelLabel="Cancel"
         destructive
@@ -151,10 +151,10 @@ function StatsContent() {
     >
       <Surface style={styles.section}>
         <SectionLabel spacing={2}>ECONOMY</SectionLabel>
-        <StatRow icon="wallet" iconElement={<InspirationIcon size={14} />} label="Inspiration" value={formatNumber(state.inspiration)} accent />
+        <StatRow icon="wallet" iconElement={<InspirationIcon size={14} />} label="Renown" value={formatNumber(state.inspiration)} accent />
         <StatRow icon="trending-up" label="Total Earned" value={formatNumber(state.totalInspirationEarned)} />
         <StatRow icon="trending-down" label="Total Spent" value={formatNumber(state.totalInspirationSpent)} />
-        <StatRow icon="speedometer" label="Auto insp/s" value={effectiveAutoRate.toFixed(2)} />
+        <StatRow icon="speedometer" label="Auto renown/s" value={effectiveAutoRate.toFixed(2)} />
       </Surface>
 
       <Surface style={styles.section}>

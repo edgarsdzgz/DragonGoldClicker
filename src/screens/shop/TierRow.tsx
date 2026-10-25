@@ -65,7 +65,7 @@ function PromoteRow({
             pressed && target.canPromote && styles.promoteBtnPressed,
           ]}
           accessibilityRole="button"
-          accessibilityLabel={`Promote to ${target.name} for ${target.cost} inspiration`}
+          accessibilityLabel={`Promote to ${target.name} for ${target.cost} renown`}
         >
           <Ionicons
             name="arrow-up"
@@ -138,7 +138,7 @@ export function SoldierTierRow({ tier, buildingColor }: { tier: SoldierTierDef; 
       icon={locked ? 'lock-closed' : undefined}
       iconColor={colors.text.muted}
       title={tier.name}
-      subtitle={locked ? undefined : `${tier.baseRate} insp/s each -- ${count} trained`}
+      subtitle={locked ? undefined : `${tier.baseRate} renown/s each -- ${count} trained`}
       locked={locked}
       lockLabel={`Barracks Lv${tier.unlocksAtBarracksLevel}`}
       right={

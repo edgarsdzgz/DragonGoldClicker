@@ -525,7 +525,7 @@ export function OfflineModal({
                 pressed && styles.collectBtnPressed,
               ]}
               accessibilityRole="button"
-              accessibilityLabel={`Collect ${inspirationEarned} offline inspiration`}
+              accessibilityLabel={`Collect ${inspirationEarned} offline renown`}
             >
               <LinearGradient
                 colors={[gold[400], gold[500], gold[600]]}

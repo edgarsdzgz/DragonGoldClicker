@@ -18,7 +18,7 @@ export const RESEARCH_CATEGORIES: {
   icon: keyof typeof Ionicons.glyphMap
   description: string
 }[] = [
-  { id: 'economy', name: 'Economy', icon: 'wallet', description: 'Inspiration generation and click power' },
+  { id: 'economy', name: 'Economy', icon: 'wallet', description: 'Renown generation and click power' },
   { id: 'military', name: 'Military', icon: 'shield', description: 'Soldier training and combat' },
   { id: 'survival', name: 'Survival', icon: 'leaf', description: 'Food and village growth' },
   { id: 'exploration', name: 'Exploration', icon: 'compass', description: 'Expedition improvements' },
@@ -76,7 +76,7 @@ export const RESEARCH_NODES: ResearchNodeDef[] = [
   {
     id: 'keen_eye',
     name: 'Keen Eye',
-    description: 'Sharper instincts reveal more inspiration per strike. +0.05 click power.',
+    description: 'Sharper instincts reveal more renown per strike. +0.05 click power.',
     category: 'economy',
     icon: 'eye',
     cost: 15,
@@ -86,7 +86,7 @@ export const RESEARCH_NODES: ResearchNodeDef[] = [
   {
     id: 'efficient_patrols',
     name: 'Efficient Patrols',
-    description: 'Optimized patrol routes increase fighter inspiration income by 15%.',
+    description: 'Optimized patrol routes increase fighter renown income by 15%.',
     category: 'economy',
     icon: 'trending-up',
     cost: 25,
@@ -96,7 +96,7 @@ export const RESEARCH_NODES: ResearchNodeDef[] = [
   {
     id: 'golden_harvest',
     name: 'Golden Harvest',
-    description: 'Recovered inspiration is meticulously sorted. +25% offline earnings.',
+    description: 'Recovered renown is meticulously sorted. +25% offline earnings.',
     category: 'economy',
     icon: 'moon',
     cost: 50,

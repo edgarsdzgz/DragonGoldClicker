@@ -360,7 +360,7 @@ function PrereqChip({ prereq }: { prereq: ResearchNodeDef['prereqs'][number] }) 
       met = state.postLevel >= prereq.level
       break
     case 'totalInspirationEarned':
-      label = `${formatNumber(prereq.amount)} inspiration earned`
+      label = `${formatNumber(prereq.amount)} renown earned`
       met = state.totalInspirationEarned >= prereq.amount
       break
     case 'monstersDefeated':

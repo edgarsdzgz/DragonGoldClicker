@@ -359,7 +359,7 @@ export function ShopScreen() {
       id: 'keep',
       name: 'Draconia Keep',
       icon: 'business',
-      description: 'The heart of the settlement. From this seat of power, manage villager roles and unlock offline inspiration collection.',
+      description: 'The heart of the settlement. From this seat of power, manage villager roles and unlock offline renown collection.',
       accentColor: colors.building.draconia,
       isBuilt: state.draconiaHallBuilt,
       visible: revealed('keep', state.draconiaHallBuilt),
@@ -376,7 +376,7 @@ export function ShopScreen() {
       id: 'garrison',
       name: 'The Garrison',
       icon: 'shield',
-      description: 'A fortified training ground where villagers take up arms. Soldiers auto-defeat monsters and earn inspiration for the settlement.',
+      description: 'A fortified training ground where villagers take up arms. Soldiers auto-defeat monsters and earn renown for the settlement.',
       accentColor: colors.building.garrison,
       isBuilt: barracksBuilt,
       visible: true,
@@ -491,7 +491,7 @@ export function ShopScreen() {
       id: 'tower_east',
       name: 'Tower East',
       icon: 'flag',
-      description: 'A defensive tower on the eastern wall. Station fighters to boost defense and inspiration income.',
+      description: 'A defensive tower on the eastern wall. Station fighters to boost defense and renown income.',
       accentColor: colors.building.tower,
       isBuilt: false,
       visible: false, // fogged until a beat reveals it
@@ -506,7 +506,7 @@ export function ShopScreen() {
       id: 'tower_west',
       name: 'Tower West',
       icon: 'flag',
-      description: 'A defensive tower on the western wall. Station fighters to boost defense and inspiration income.',
+      description: 'A defensive tower on the western wall. Station fighters to boost defense and renown income.',
       accentColor: colors.building.tower,
       isBuilt: false,
       visible: false, // fogged until a beat reveals it
@@ -678,7 +678,7 @@ export function ShopScreen() {
         title={purchaseBuilding?.name ?? ''}
         message={purchaseBuilding?.description ?? ''}
         icon={purchaseBuilding?.icon ?? 'hammer'}
-        confirmLabel={`Build - ${purchaseBuilding?.cost ?? 0} inspiration`}
+        confirmLabel={`Build - ${purchaseBuilding?.cost ?? 0} renown`}
         cancelLabel="Cancel"
         accentColor={purchaseBuilding?.accentColor}
         confirmDisabled={purchaseBuilding !== null && !purchaseBuilding.canAfford}

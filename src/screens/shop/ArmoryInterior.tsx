@@ -67,7 +67,7 @@ function GearRow({
       icon={icon}
       iconColor={gold[400]}
       title={label}
-      subtitle={`${owned}/${max} owned -- +${bonus} insp/s each`}
+      subtitle={`${owned}/${max} owned -- +${bonus} renown/s each`}
       right={
         <Button size="xs" onPress={handleBuy} disabled={!canBuy} accentColor={colors.building.forge} rejectPhrases={rejectPhrases} holdToRepeat>
           {buttonLabel}

@@ -3,6 +3,7 @@ import type { Ionicons } from '@expo/vector-icons'
 export type BuildingId = 'keep' | 'garrison' | 'forge' | 'lodge' | 'outpost' | 'librarium' | 'housing' | 'wizard' | 'tower_east' | 'tower_west'
 
 /** Resource types a building can declare it uses */
+// 'inspiration' is the renown resource (identifier kept until the rename)
 export type ResourceKey = 'inspiration' | 'food' | 'villagers'
 
 export type BuildingInfo = {

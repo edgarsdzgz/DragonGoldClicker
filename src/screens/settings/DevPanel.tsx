@@ -55,8 +55,8 @@ export function DevPanel() {
       <Surface style={styles.section}>
         <SectionLabel spacing={2}>GRANTS</SectionLabel>
         <View style={styles.buttonGrid}>
-          <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ inspiration: roundInsp(s.inspiration + 10), totalInspirationEarned: roundInsp(s.totalInspirationEarned + 10) }))}>+10 insp</Button>
-          <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ inspiration: roundInsp(s.inspiration + 100), totalInspirationEarned: roundInsp(s.totalInspirationEarned + 100) }))}>+100 insp</Button>
+          <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ inspiration: roundInsp(s.inspiration + 10), totalInspirationEarned: roundInsp(s.totalInspirationEarned + 10) }))}>+10 renown</Button>
+          <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ inspiration: roundInsp(s.inspiration + 100), totalInspirationEarned: roundInsp(s.totalInspirationEarned + 100) }))}>+100 renown</Button>
           <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ food: s.food + 100 }))}>+100 food</Button>
           <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ villagers: s.villagers + 5 }))}>+5 villagers</Button>
           <Button size="sm" variant="secondary" onPress={() => grant(() => ({ cityHp: MAX_CITY_HP }))}>Repair wall</Button>

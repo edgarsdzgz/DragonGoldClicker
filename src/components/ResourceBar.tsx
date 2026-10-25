@@ -28,7 +28,13 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, a
   return (
     <View style={[styles.container, { paddingTop: insets.top + spacing[2] }]}>
       {!hideInspiration && (
-        <Animated.View ref={coin.ref} collapsable={false} style={[styles.resource, coin.style]}>
+        <Animated.View
+          ref={coin.ref}
+          collapsable={false}
+          accessible
+          accessibilityLabel={`${formatNumber(inspiration)} renown`}
+          style={[styles.resource, coin.style]}
+        >
           <InspirationIcon size={12} />
           <Text variant="label" color="link">
             {formatNumber(inspiration)}

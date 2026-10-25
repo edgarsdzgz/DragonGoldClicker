@@ -52,7 +52,7 @@ export function DevCheckpoints() {
             <View style={styles.rowText}>
               <Text variant="label">{cp.name}</Text>
               <Text variant="caption" color="muted">
-                {`${new Date(cp.savedAt).toLocaleString()} - ${formatNumber(cp.state.inspiration)} insp, ${cp.state.fighters ?? 0} fighters`}
+                {`${new Date(cp.savedAt).toLocaleString()} - ${formatNumber(cp.state.inspiration)} renown, ${cp.state.fighters ?? 0} fighters`}
               </Text>
             </View>
             <Button size="xs" variant="secondary" onPress={() => setPendingLoad(cp)}>Load</Button>

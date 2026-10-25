@@ -173,7 +173,7 @@ export function GameScreen() {
                   disabled={state.villagers <= 0 || state.inspiration < getFighterCost(state.fightersRallied)}
                 />
                 <Text variant="bodySmall" center style={styles.cost}>
-                  {formatNumber(getFighterCost(state.fightersRallied))} insp
+                  {formatNumber(getFighterCost(state.fightersRallied))} renown
                 </Text>
               </CoachTarget>
             </StorySpotlight>
@@ -191,7 +191,7 @@ export function GameScreen() {
                   disabled={state.villagers <= 0 || state.inspiration < getRepairerCost(state.repairersDirected)}
                 />
                 <Text variant="bodySmall" center style={styles.cost}>
-                  {formatNumber(getRepairerCost(state.repairersDirected))} insp
+                  {formatNumber(getRepairerCost(state.repairersDirected))} renown
                 </Text>
               </CoachTarget>
             </StorySpotlight>

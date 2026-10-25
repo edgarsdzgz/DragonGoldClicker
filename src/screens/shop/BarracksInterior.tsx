@@ -39,7 +39,7 @@ export function BarracksInterior() {
         {isSystemOn(state, 'hunger') && (
           <StatBox value={state.villagers} label="Villagers" />
         )}
-        <StatBox value={effectiveAutoRate.toFixed(2)} label="insp/s" />
+        <StatBox value={effectiveAutoRate.toFixed(2)} label="renown/s" />
         <StatBox label="Gear">
           <View style={styles.gearCount}>
             <Ionicons name="flash" size={12} color={gold[300]} />
@@ -76,7 +76,7 @@ export function BarracksInterior() {
           rejectPhrases={REJECT_GOLD}
           fullWidth
         >
-          {`Upgrade to Lv${state.barracksLevel + 1} - ${formatNumber(upgradeCost)} insp`}
+          {`Upgrade to Lv${state.barracksLevel + 1} - ${formatNumber(upgradeCost)} renown`}
         </Button>
       )}
     </View>

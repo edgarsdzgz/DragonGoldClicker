@@ -408,7 +408,7 @@ export function WandererModal({
               <View style={styles.overflowNotice}>
                 <Ionicons name="information-circle" size={14} color={colors.status.info} />
                 <Text variant="caption" style={{ color: colors.status.info, flex: 1 }}>
-                  No room in the {getTrainedBuildingName(encounter.trained!)} -- they'll settle as an idle villager. +{overflowRefund} insp refund for equipment.
+                  No room in the {getTrainedBuildingName(encounter.trained!)} -- they'll settle as an idle villager. +{overflowRefund} renown refund for equipment.
                 </Text>
               </View>
             )}

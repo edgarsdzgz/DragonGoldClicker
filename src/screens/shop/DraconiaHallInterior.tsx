@@ -321,7 +321,7 @@ export function DraconiaHallInterior() {
         <Text variant="bodySmall" color="secondary">
           Soldiers earn{' '}
           <Text variant="bodySmall" style={{ color: gold[400] }}>
-            {effectiveAutoRate.toFixed(2)} insp/s
+            {effectiveAutoRate.toFixed(2)} renown/s
           </Text>
           {' '}while you rest.
         </Text>

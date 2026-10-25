@@ -51,12 +51,14 @@ export const DRACONIA_HALL_COST = 7.5
 // =============================================================================
 
 export interface GameState {
+  /** Renown (player-facing name). The identifier stays `inspiration` until the save-migrating rename. */
   inspiration: number
   food: number
   villagers: number
   villagersLost: number
   /** Food system activates when triggered by milestone (barracks built) */
   foodSystemActive: boolean
+  /** Lifetime renown earned (identifier predates the rename to renown) */
   totalInspirationEarned: number
   monstersDefeated: number
   barracksLevel: number
@@ -73,6 +75,7 @@ export interface GameState {
   autoProgress: number
   /** Accumulator for food consumption (fractional seconds between checks) */
   foodTimer: number
+  /** Lifetime renown spent (identifier predates the rename to renown) */
   totalInspirationSpent: number
   totalClicks: number
   soldiersPromoted: number

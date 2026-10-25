@@ -65,7 +65,7 @@ export function LodgeInterior() {
           rejectPhrases={REJECT_GOLD}
           fullWidth
         >
-          {`Upgrade to Lv${state.lodgeLevel + 1} - ${formatNumber(upgradeCost)} insp`}
+          {`Upgrade to Lv${state.lodgeLevel + 1} - ${formatNumber(upgradeCost)} renown`}
         </Button>
       )}
     </View>

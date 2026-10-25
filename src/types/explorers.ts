@@ -19,6 +19,7 @@ export const MAX_POST_LEVEL = POST_LEVELS.length
 export const EXPLORER_COST = 1.5
 
 /** Inspiration cost to send an explorer on an expedition */
+/** Renown cost of an expedition (identifier predates the rename to renown) */
 export const EXPEDITION_INSPIRATION_COST = 2.5
 
 /** Food cost to send an explorer on an expedition */
