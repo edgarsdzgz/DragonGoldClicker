@@ -19,10 +19,10 @@ export interface OfflineLevelDef {
 
 export const OFFLINE_LEVELS: OfflineLevelDef[] = [
   { level: 0, maxSeconds: 3 * 3600, cost: 0, label: '3 hours' },
-  { level: 1, maxSeconds: 5 * 3600, cost: 500, label: '5 hours' },
-  { level: 2, maxSeconds: 7 * 3600, cost: 2000, label: '7 hours' },
-  { level: 3, maxSeconds: 9 * 3600, cost: 5000, label: '9 hours' },
-  { level: 4, maxSeconds: 12 * 3600, cost: 8000, label: '12 hours' },
+  { level: 1, maxSeconds: 5 * 3600, cost: 25, label: '5 hours' },
+  { level: 2, maxSeconds: 7 * 3600, cost: 100, label: '7 hours' },
+  { level: 3, maxSeconds: 9 * 3600, cost: 250, label: '9 hours' },
+  { level: 4, maxSeconds: 12 * 3600, cost: 400, label: '12 hours' },
 ]
 
 export const MAX_OFFLINE_LEVEL = OFFLINE_LEVELS.length - 1
@@ -41,7 +41,7 @@ export function getOfflineUpgradeCost(currentLevel: number): number | null {
 // DRACONIA HALL
 // =============================================================================
 
-export const DRACONIA_HALL_COST = 150
+export const DRACONIA_HALL_COST = 7.5
 
 // =============================================================================
 // GAME STATE
@@ -128,12 +128,16 @@ export interface GameState {
   siegeTimer: number
   /** Fractional accumulator for repair HP */
   repairProgress: number
+  /** Whether the city HP / siege system is unlocked (trigger TBD) */
+  hpUnlocked: boolean
   /** Whether the Librarium has been built */
   librariumBuilt: boolean
   /** IDs of completed research nodes */
   completedResearch: string[]
   /** Milestone thresholds already offered (each fires once) */
   milestonesOffered: number[]
+  /** Save format version for migrations */
+  saveMigrationVersion: number
 }
 
 export const DEFAULT_GAME_STATE: GameState = {
@@ -149,7 +153,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   soldiers: { conscripts: 0, footmen: 0, knights: 0 },
   soldiersTrained: { conscripts: 0, footmen: 0, knights: 0 },
   armoryGear: { swords: 0, shields: 0 },
-  clickPower: 1,
+  clickPower: 0.05,
   ownedWeapons: [],
   autoProgress: 0,
   foodTimer: 0,
@@ -185,9 +189,11 @@ export const DEFAULT_GAME_STATE: GameState = {
   cityHp: STARTING_CITY_HP,
   siegeTimer: 0,
   repairProgress: 0,
+  hpUnlocked: false,
   librariumBuilt: false,
   completedResearch: [],
   milestonesOffered: [],
+  saveMigrationVersion: 1,
 }
 
 // =============================================================================
@@ -229,5 +235,7 @@ export function formatNumber(n: number): string {
   if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`
-  return Math.floor(n).toString()
+  return n.toFixed(2)
 }
+
+export { roundInsp, roundCost } from './utils'

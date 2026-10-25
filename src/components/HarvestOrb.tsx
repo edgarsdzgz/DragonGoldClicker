@@ -13,6 +13,12 @@ interface HarvestOrbColors {
   glow: string
 }
 
+/** Size presets: lg = primary CTA (200px), md = secondary action (100px) */
+const SIZES = {
+  lg: { orb: 200, glow: 260, icon: 32, fontSize: 22, letterSpacing: 4, border: 2, shadowRadius: 24, padding: spacing[4], gap: spacing[1] },
+  md: { orb: 100, glow: 130, icon: 20, fontSize: 14, letterSpacing: 2, border: 1.5, shadowRadius: 12, padding: spacing[2], gap: 2 },
+} as const
+
 interface HarvestOrbProps {
   /** Action fired on each tap / hold tick */
   onAction: () => void
@@ -22,13 +28,18 @@ interface HarvestOrbProps {
   label: string
   /** Color palette */
   palette: HarvestOrbColors
+  /** lg = primary CTA, md = secondary action */
+  size?: 'lg' | 'md'
+  /** Disabled state -- dims visuals and blocks action */
+  disabled?: boolean
   style?: ViewStyle
 }
 
-export function HarvestOrb({ onAction, icon, label, palette, style }: HarvestOrbProps) {
+export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabled, style }: HarvestOrbProps) {
   const haptics = useHaptics()
   const scaleAnim = useRef(new Animated.Value(1)).current
   const glowAnim = useRef(new Animated.Value(0.3)).current
+  const dim = SIZES[size]
 
   const animateTap = useCallback(() => {
     Animated.sequence([
@@ -54,41 +65,76 @@ export function HarvestOrb({ onAction, icon, label, palette, style }: HarvestOrb
   }, [scaleAnim, glowAnim])
 
   const handleTap = useCallback(() => {
+    if (disabled) return
     onAction()
     haptics.light()
     animateTap()
-  }, [onAction, haptics, animateTap])
+  }, [onAction, haptics, animateTap, disabled])
 
   const handleHoldTick = useCallback(() => {
+    if (disabled) return
     onAction()
     haptics.light()
     animateHoldTick()
-  }, [onAction, haptics, animateHoldTick])
+  }, [onAction, haptics, animateHoldTick, disabled])
 
   const { onPressIn, onPressOut } = useHoldPress(handleTap, handleHoldTick)
+
+  const accentColor = disabled ? colors.disabled.textSubtle : palette.accent
+  const glowColor = disabled ? colors.disabled.border : palette.glow
 
   return (
     <View style={[styles.buttonArea, style]}>
       <Pressable
         onPressIn={onPressIn}
         onPressOut={onPressOut}
-        style={styles.touchArea}
+        style={[styles.touchArea, { padding: dim.padding }]}
         accessibilityRole="button"
         accessibilityLabel={label}
+        accessibilityState={{ disabled }}
       >
-        <Animated.View style={[styles.glowRing, { opacity: glowAnim, backgroundColor: palette.glow }]} />
+        <Animated.View
+          style={[
+            styles.glowRing,
+            {
+              width: dim.glow,
+              height: dim.glow,
+              borderRadius: dim.glow / 2,
+              opacity: disabled ? 0.1 : glowAnim,
+              backgroundColor: glowColor,
+            },
+          ]}
+        />
         <Animated.View
           style={[
             styles.orbButton,
-            { borderColor: palette.glow, shadowColor: palette.glow, transform: [{ scale: scaleAnim }] },
+            {
+              width: dim.orb,
+              height: dim.orb,
+              borderRadius: dim.orb / 2,
+              borderWidth: dim.border,
+              borderColor: glowColor,
+              shadowColor: glowColor,
+              shadowRadius: dim.shadowRadius,
+              transform: [{ scale: scaleAnim }],
+            },
           ]}
         >
           <LinearGradient
             colors={[colors.bg.surface2, colors.bg.surface1]}
-            style={styles.gradient}
+            style={[styles.gradient, { gap: dim.gap }]}
           >
-            <Ionicons name={icon} size={32} color={palette.accent} />
-            <Text variant="h2" center style={[styles.label, { color: palette.accent }]}>
+            <Ionicons name={icon} size={dim.icon} color={accentColor} />
+            <Text
+              variant="h2"
+              center
+              style={{
+                color: accentColor,
+                fontSize: dim.fontSize,
+                fontWeight: 'bold',
+                letterSpacing: dim.letterSpacing,
+              }}
+            >
               {label}
             </Text>
           </LinearGradient>
@@ -100,39 +146,25 @@ export function HarvestOrb({ onAction, icon, label, palette, style }: HarvestOrb
 
 const styles = StyleSheet.create({
   buttonArea: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   touchArea: {
-    padding: spacing[4],
     justifyContent: 'center',
     alignItems: 'center',
   },
   glowRing: {
     position: 'absolute',
-    width: 260,
-    height: 260,
-    borderRadius: 130,
   },
   orbButton: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    borderWidth: 2,
     overflow: 'hidden',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.4,
-    shadowRadius: 24,
     elevation: 10,
   },
   gradient: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: spacing[1],
-  },
-  label: {
-    letterSpacing: 4,
   },
 })

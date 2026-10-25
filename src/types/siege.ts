@@ -28,11 +28,11 @@ interface ThreatMilestone {
 
 const THREAT_MILESTONES: ThreatMilestone[] = [
   { threshold: 0, threat: 1 },
-  { threshold: 200, threat: 3 },
-  { threshold: 750, threat: 6 },
-  { threshold: 1500, threat: 10 },
-  { threshold: 3000, threat: 15 },
-  { threshold: 5000, threat: 22 },
+  { threshold: 10, threat: 3 },
+  { threshold: 37.5, threat: 6 },
+  { threshold: 75, threat: 10 },
+  { threshold: 150, threat: 15 },
+  { threshold: 250, threat: 22 },
 ]
 
 /**
@@ -68,7 +68,7 @@ export function getDefenseLevel(clickPower: number, fighters: number): number {
  * Returns 0 if defense >= threat.
  */
 export function getSiegeDamage(threat: number, defense: number): number {
-  return Math.max(0, threat - defense) * SIEGE_DAMAGE_FACTOR
+  return parseFloat((Math.max(0, threat - defense) * SIEGE_DAMAGE_FACTOR).toFixed(2))
 }
 
 /**

@@ -1,6 +1,6 @@
 /**
  * Dragon Gold Mobile Design System
- * Gold/amber themed dark UI for an idle clicker game
+ * Ember & Stone -- torchlit medieval siege defense
  */
 
 // =============================================================================
@@ -40,12 +40,13 @@ export const gold = {
 // =============================================================================
 
 export const colors = {
+  /** Warm charcoal backgrounds -- torchlit stone feel */
   bg: {
-    base: dark[900],
-    surface1: dark[800],
-    surface2: dark[700],
-    surface3: dark[600],
-    overlay: '#05050acc',
+    base: '#0f0d0b',
+    surface1: '#161412',
+    surface2: '#1e1c19',
+    surface3: '#272520',
+    overlay: '#0a080680',
   },
 
   text: {
@@ -103,6 +104,13 @@ export const colors = {
     housing: '#c084fc',
     wizard: '#e879f9',
     tower: '#fb923c',
+  },
+
+  /** Warfront-specific action colors */
+  warfront: {
+    rally: '#dc4444',
+    repair: '#b0a890',
+    slay: gold[400],
   },
 
   dark,

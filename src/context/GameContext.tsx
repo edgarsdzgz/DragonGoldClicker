@@ -67,6 +67,11 @@ import {
   getDefenseLevel,
   getSiegeDamage,
   getRepairRate,
+  SWORD_BONUS,
+  SHIELD_BONUS,
+  FOOD_ACTIVATE_CONSCRIPTS,
+  FOOD_ACTIVATE_BUILDINGS,
+  roundInsp,
 } from '../types/game'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -80,7 +85,7 @@ import { useGameLoop } from '../hooks/useGameLoop'
 function shouldActivateFoodSystem(s: GameState): boolean {
   if (s.foodSystemActive) return false
   const buildingCount = (s.barracksLevel > 0 ? 1 : 0) + (s.armoryBuilt ? 1 : 0)
-  return s.soldiersTrained.conscripts >= 4 || buildingCount >= 2
+  return s.soldiersTrained.conscripts >= FOOD_ACTIVATE_CONSCRIPTS || buildingCount >= FOOD_ACTIVATE_BUILDINGS
 }
 
 interface GameContextType {
@@ -188,7 +193,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     state.armoryGear.shields,
   )
   // Apply research: gear bonus multiplier boosts the gear portion, auto rate multiplier boosts all
-  const gearRate = (state.armoryGear.swords * 0.1 + state.armoryGear.shields * 0.05) * researchBonuses.gearBonusMultiplier
+  const gearRate = (state.armoryGear.swords * SWORD_BONUS + state.armoryGear.shields * SHIELD_BONUS) * researchBonuses.gearBonusMultiplier
   const soldierAutoRate = (baseAutoRate + gearRate) * (1 + researchBonuses.autoRateMultiplier)
   const fighterAutoRate = getFighterAutoRate(state.fighters)
   const potentialAutoRate = soldierAutoRate + fighterAutoRate
@@ -202,7 +207,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const threatLevel = getThreatLevel(state.totalInspirationEarned)
   const defenseLevel = getDefenseLevel(state.clickPower, state.fighters)
 
-  // Integer inspiration accumulator (soldiers stop fighting when starving)
+  // Fractional inspiration accumulator (soldiers stop fighting when starving)
   useGameLoop(
     useCallback(() => {
       if (!loaded || effectiveAutoRate <= 0) return
@@ -210,17 +215,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         // No auto inspiration when food system is active and food is depleted
         if (prev.foodSystemActive && prev.food <= 0) return prev
 
-        const newProgress = prev.autoProgress + effectiveAutoRate
-        const kills = Math.floor(newProgress)
-        if (kills <= 0) {
-          return { ...prev, autoProgress: newProgress }
-        }
+        const earned = effectiveAutoRate
         return {
           ...prev,
-          autoProgress: newProgress - kills,
-          inspiration: prev.inspiration + kills,
-          totalInspirationEarned: prev.totalInspirationEarned + kills,
-          monstersDefeated: prev.monstersDefeated + kills,
+          inspiration: prev.inspiration + earned,
+          totalInspirationEarned: prev.totalInspirationEarned + earned,
+          monstersDefeated: prev.monstersDefeated + 1,
         }
       })
     }, [loaded, effectiveAutoRate])
@@ -358,7 +358,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     useCallback(() => {
       if (!loaded) return
       setState((prev) => {
-        if (prev.cityHp <= 0) return prev
+        if (!prev.hpUnlocked || prev.cityHp <= 0) return prev
         const newTimer = prev.siegeTimer + 1
         if (newTimer < SIEGE_TICK_INTERVAL) {
           return { ...prev, siegeTimer: newTimer }
@@ -384,7 +384,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     useCallback(() => {
       if (!loaded) return
       setState((prev) => {
-        if (prev.repairers <= 0 || prev.cityHp >= MAX_CITY_HP || prev.cityHp <= 0) return prev
+        if (!prev.hpUnlocked || prev.repairers <= 0 || prev.cityHp >= MAX_CITY_HP || prev.cityHp <= 0) return prev
         const rate = getRepairRate(prev.repairers)
         const newProgress = prev.repairProgress + rate
         const healed = Math.floor(newProgress)
@@ -406,7 +406,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       wandererTimerRef.current += 1
       if (wandererTimerRef.current < WANDERER_COOLDOWN) return
-      wandererTimerRef.current = 0
 
       setState((prev) => {
         // Requires food system to be active (foraging unlocked)
@@ -464,7 +463,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       ...prev,
       inspiration: prev.inspiration + prev.clickPower,
       totalInspirationEarned: prev.totalInspirationEarned + prev.clickPower,
-      monstersDefeated: prev.monstersDefeated + prev.clickPower,
+      monstersDefeated: prev.monstersDefeated + 1,
       totalClicks: prev.totalClicks + 1,
     }))
   }, [])
@@ -562,7 +561,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const lifetimeCount = getSoldierCount(prev.soldiersTrained, tier)
       const baseCost = getSoldierCost(tierDef, lifetimeCount)
       const rb = getResearchBonuses(prev.completedResearch)
-      const cost = Math.max(1, Math.floor(baseCost * (1 - rb.soldierCostDiscount)))
+      const cost = roundInsp(baseCost * (1 - rb.soldierCostDiscount))
       if (prev.inspiration < cost) return prev
       trained = true
       const key: keyof SoldierCounts =
@@ -905,7 +904,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       // Calculate costs
       const refundRate = to.type === 'idle' ? DISMISS_REFUND_RATE : REASSIGN_REFUND_RATE
-      const refund = Math.floor(getTrainingCost(from, prev) * refundRate)
+      const refund = roundInsp(getTrainingCost(from, prev) * refundRate)
       const recruitCost = to.type === 'idle' ? 0 : getRecruitCost(to, prev)
       const netCost = recruitCost - refund // positive = player pays, negative = player gets inspiration
 
@@ -1084,11 +1083,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     })
 
     setPendingWanderer(null)
+    wandererTimerRef.current = 0
     return overflowResult
   }, [pendingWanderer])
 
   const rejectWanderer = useCallback(() => {
     setPendingWanderer(null)
+    wandererTimerRef.current = 0
   }, [])
 
   const acceptMilestone = useCallback(() => {

@@ -9,6 +9,12 @@ import { FIGHTER_FOOD_COST, REPAIRER_FOOD_COST } from './fighters'
 export const STARTING_FOOD = 200
 export const STARTING_VILLAGERS = 25
 
+/** Conscripts trained before food system activates */
+export const FOOD_ACTIVATE_CONSCRIPTS = 4
+
+/** Buildings purchased before food system activates */
+export const FOOD_ACTIVATE_BUILDINGS = 2
+
 /** Seconds between food consumption checks */
 export const FOOD_CHECK_INTERVAL = 30
 

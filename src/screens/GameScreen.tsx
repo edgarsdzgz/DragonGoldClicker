@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { Text, Badge, InspirationIcon, ActionOrb, ProgressBar, GameOverModal, MilestoneModal } from '../components'
+import { Text, Badge, InspirationIcon, ProgressBar, GameOverModal, MilestoneModal } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -20,8 +20,8 @@ import { colors, spacing, gold } from '../theme'
 import { formatNumber, getTotalSoldiers, getTotalForagers, getFighterCost, getRepairerCost, REPAIR_UNLOCK_FIGHTERS, MAX_CITY_HP } from '../types/game'
 
 const SLAY_PALETTE = { accent: gold[400], glow: gold[500] }
-const RALLY_PALETTE = { accent: colors.building.garrison, glow: colors.building.garrison }
-const REPAIR_PALETTE = { accent: '#94a3b8', glow: '#94a3b8' }
+const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.rally }
+const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.repair }
 
 export function GameScreen() {
   const { state, click, rallyFighter, directRepairer, effectiveAutoRate, threatLevel, defenseLevel, isGameOver, dismissGameOver, resetGame, pendingOfflineEarnings, dismissOfflineEarnings, pendingFoodIntro, dismissFoodIntro, pendingStarvationReport, dismissStarvationReport, pendingFoodWarning, dismissFoodWarning, pendingExplorerIntro, dismissExplorerIntro, pendingWanderer, acceptWanderer, rejectWanderer, pendingMilestone, acceptMilestone, rejectMilestone } = useGame()
@@ -73,16 +73,30 @@ export function GameScreen() {
     navigation.navigate('DraconiaTab')
   }, [dismissExplorerIntro, navigation])
 
+  const repairUnlocked = state.fighters >= REPAIR_UNLOCK_FIGHTERS
+
+  // Only one event modal at a time -- priority order (highest first)
+  const activeModal =
+    isGameOver ? 'gameOver' :
+    pendingOfflineEarnings !== null ? 'offline' :
+    pendingStarvationReport !== null ? 'starvation' :
+    pendingFoodWarning > 0 ? 'foodWarning' :
+    pendingFoodIntro ? 'foodIntro' :
+    pendingExplorerIntro ? 'explorerIntro' :
+    pendingMilestone !== null ? 'milestone' :
+    pendingWanderer !== null ? 'wanderer' :
+    null
+
   return (
     <View style={styles.container}>
       <OfflineModal
-        visible={pendingOfflineEarnings !== null}
+        visible={activeModal === 'offline'}
         inspirationEarned={pendingOfflineEarnings?.inspiration ?? 0}
         secondsAway={pendingOfflineEarnings?.seconds ?? 0}
         onCollect={dismissOfflineEarnings}
       />
       <NpcDialog
-        visible={pendingFoodIntro}
+        visible={activeModal === 'foodIntro'}
         npcName="Elder Pyreth"
         icon="person"
         title="Our Stores Run Low"
@@ -98,7 +112,7 @@ export function GameScreen() {
       />
       {pendingFoodWarning > 0 && (
         <FoodWarningModal
-          visible={pendingFoodWarning > 0}
+          visible={activeModal === 'foodWarning'}
           level={pendingFoodWarning as 3 | 1}
           onGoToForage={handleFoodWarningGoForage}
           onDismiss={dismissFoodWarning}
@@ -106,13 +120,13 @@ export function GameScreen() {
       )}
       {pendingStarvationReport !== null && (
         <StarvationModal
-          visible={pendingStarvationReport !== null}
+          visible={activeModal === 'starvation'}
           report={pendingStarvationReport}
           onDismiss={dismissStarvationReport}
         />
       )}
       <NpcDialog
-        visible={pendingExplorerIntro}
+        visible={activeModal === 'explorerIntro'}
         npcName="Scout Mirael"
         icon="compass"
         title="Beyond the Walls"
@@ -127,7 +141,7 @@ export function GameScreen() {
       />
       {pendingWanderer !== null && (
         <WandererModal
-          visible={pendingWanderer !== null}
+          visible={activeModal === 'wanderer'}
           encounter={pendingWanderer}
           onAccept={acceptWanderer}
           onReject={rejectWanderer}
@@ -135,45 +149,47 @@ export function GameScreen() {
       )}
       {pendingMilestone !== null && (
         <MilestoneModal
-          visible={pendingMilestone !== null}
+          visible={activeModal === 'milestone'}
           milestone={pendingMilestone}
           onAccept={acceptMilestone}
           onReject={rejectMilestone}
         />
       )}
       <GameOverModal
-        visible={isGameOver}
+        visible={activeModal === 'gameOver'}
         onReset={resetGame}
         onDismiss={dismissGameOver}
       />
       <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={state.foodSystemActive} autoInspPerSec={effectiveAutoRate} />
 
-      {/* City HP bar */}
-      <View style={styles.cityHpBar}>
-        <View style={styles.cityHpHeader}>
-          <View style={styles.cityHpLabel}>
-            <Ionicons name="shield-checkmark" size={12} color={state.cityHp > 30 ? colors.status.success : colors.status.error} />
-            <Text variant="caption" style={{ color: state.cityHp > 30 ? colors.status.success : colors.status.error }}>
-              Draconia {state.cityHp}/{MAX_CITY_HP} HP
-            </Text>
+      {/* City HP bar (hidden until unlocked) */}
+      {state.hpUnlocked && (
+        <View style={styles.cityHpBar}>
+          <View style={styles.cityHpHeader}>
+            <View style={styles.cityHpLabel}>
+              <Ionicons name="shield-checkmark" size={14} color={state.cityHp > 30 ? colors.status.success : colors.status.error} />
+              <Text variant="caption" style={{ color: state.cityHp > 30 ? colors.status.success : colors.status.error }}>
+                Draconia {state.cityHp.toFixed(2)}/{MAX_CITY_HP} HP
+              </Text>
+            </View>
+            {threatLevel > defenseLevel && (
+              <Text variant="caption" style={{ color: colors.status.error }}>
+                Threat {threatLevel} / Def {defenseLevel}
+              </Text>
+            )}
+            {threatLevel <= defenseLevel && threatLevel > 0 && (
+              <Text variant="caption" style={{ color: colors.status.success }}>
+                Defended
+              </Text>
+            )}
           </View>
-          {threatLevel > defenseLevel && (
-            <Text variant="caption" style={{ color: colors.status.error }}>
-              Threat {threatLevel} / Def {defenseLevel}
-            </Text>
-          )}
-          {threatLevel <= defenseLevel && threatLevel > 0 && (
-            <Text variant="caption" style={{ color: colors.status.success }}>
-              Defended
-            </Text>
-          )}
+          <ProgressBar
+            progress={state.cityHp / MAX_CITY_HP}
+            height={6}
+            gradientColors={state.cityHp > 30 ? ['#4ade80', '#22c55e'] : ['#ff6b6b', '#ef4444']}
+          />
         </View>
-        <ProgressBar
-          progress={state.cityHp / MAX_CITY_HP}
-          height={4}
-          gradientColors={state.cityHp > 30 ? ['#4ade80', '#22c55e'] : ['#ff6b6b', '#ef4444']}
-        />
-      </View>
+      )}
 
       {/* HERO: Inspiration is the primary number */}
       <View style={styles.heroSection}>
@@ -197,7 +213,7 @@ export function GameScreen() {
       </View>
 
       {/* Population status */}
-      <View style={styles.autoIndicator}>
+      <View style={styles.popSection}>
         <View style={styles.popRow}>
           {state.villagers > 0 && (
             <Badge icon="home" color={gold[500]}>
@@ -207,15 +223,15 @@ export function GameScreen() {
             </Badge>
           )}
           {state.fighters > 0 && (
-            <Badge icon="shield" color={colors.building.garrison}>
-              <Text variant="caption" style={{ color: colors.building.garrison }}>
+            <Badge icon="shield" color={colors.warfront.rally}>
+              <Text variant="caption" style={{ color: colors.warfront.rally }}>
                 {state.fighters} fighter{state.fighters !== 1 ? 's' : ''}
               </Text>
             </Badge>
           )}
           {state.repairers > 0 && (
-            <Badge icon="construct" color="#94a3b8">
-              <Text variant="caption" style={{ color: '#94a3b8' }}>
+            <Badge icon="construct" color={colors.warfront.repair}>
+              <Text variant="caption" style={{ color: colors.warfront.repair }}>
                 {state.repairers} repairer{state.repairers !== 1 ? 's' : ''}
               </Text>
             </Badge>
@@ -252,45 +268,51 @@ export function GameScreen() {
         )}
       </View>
 
-      {/* Flavor text */}
-      <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} />
-
-      {/* Action area: Rally -- SLAY -- Repair */}
-      <View style={styles.actionRow}>
-        <View style={styles.sideOrb}>
-          <ActionOrb
-            onAction={rallyFighter}
-            icon="shield"
-            label="RALLY"
-            palette={RALLY_PALETTE}
-            disabled={state.villagers <= 0 || state.inspiration < getFighterCost(state.fightersRallied)}
-          />
-          <Text variant="caption" color="muted" center style={styles.orbCost}>
-            {formatNumber(getFighterCost(state.fightersRallied))} insp
-          </Text>
-        </View>
+      {/* Battle area: SLAY dominates center */}
+      <View style={styles.battleArea}>
+        <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} style={{ marginBottom: spacing[3] }} />
         <HarvestOrb
           onAction={handleClick}
           icon="flash"
           label="SLAY"
           palette={SLAY_PALETTE}
         />
-        <View style={styles.sideOrb}>
-          {state.fighters >= REPAIR_UNLOCK_FIGHTERS ? (
+      </View>
+
+      {/* Command row: Rally + Repair as secondary HarvestOrbs */}
+      <View style={styles.commandRow}>
+        <View style={styles.commandSlot}>
+          <HarvestOrb
+            onAction={rallyFighter}
+            icon="shield"
+            label="RALLY"
+            palette={RALLY_PALETTE}
+            size="md"
+            disabled={state.villagers <= 0 || state.inspiration < getFighterCost(state.fightersRallied)}
+          />
+          <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
+            {formatNumber(getFighterCost(state.fightersRallied))} insp
+          </Text>
+        </View>
+
+        <View style={styles.commandSlot}>
+          {repairUnlocked ? (
             <>
-              <ActionOrb
+              <HarvestOrb
                 onAction={directRepairer}
                 icon="construct"
                 label="REPAIR"
                 palette={REPAIR_PALETTE}
+                size="md"
                 disabled={state.villagers <= 0 || state.inspiration < getRepairerCost(state.repairersDirected)}
               />
-              <Text variant="caption" color="muted" center style={styles.orbCost}>
+              <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
                 {formatNumber(getRepairerCost(state.repairersDirected))} insp
               </Text>
             </>
           ) : (
             <View style={styles.lockedOrb}>
+              <Ionicons name="lock-closed" size={16} color={colors.text.muted} />
               <Text variant="caption" color="muted" center>
                 {REPAIR_UNLOCK_FIGHTERS - state.fighters} more
               </Text>
@@ -309,7 +331,7 @@ export function GameScreen() {
         </Text>
         <Badge iconElement={<InspirationIcon size={8} />} color={gold[400]} variant="ghost">
           <Text variant="caption" color="link">
-            +{state.clickPower} per click
+            +{state.clickPower.toFixed(2)} per click
           </Text>
         </Badge>
       </View>
@@ -339,7 +361,7 @@ const styles = StyleSheet.create({
   },
   heroSection: {
     alignItems: 'center',
-    paddingTop: spacing[4],
+    paddingTop: spacing[3],
     gap: spacing[1],
   },
   inspRow: {
@@ -347,7 +369,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing[2],
   },
-  autoIndicator: {
+  popSection: {
     alignItems: 'center',
     paddingTop: spacing[2],
   },
@@ -358,34 +380,38 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  actionRow: {
+  battleArea: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing[4],
-  },
-  sideOrb: {
     alignItems: 'center',
-    width: 70,
+  },
+  commandRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'flex-start',
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[3],
+    paddingBottom: spacing[2],
+  },
+  commandSlot: {
+    alignItems: 'center',
     gap: spacing[1],
   },
-  orbCost: {
-    fontSize: 10,
-  },
   lockedOrb: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    borderWidth: 1,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 1.5,
     borderColor: colors.border.subtle,
     borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 2,
   },
   footer: {
     alignItems: 'center',
-    paddingBottom: spacing[6],
+    paddingBottom: spacing[4],
+    paddingTop: spacing[2],
     gap: spacing[1],
   },
 })

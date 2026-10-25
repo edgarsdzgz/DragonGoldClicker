@@ -9,17 +9,17 @@ export interface PostLevelDef {
 }
 
 export const POST_LEVELS: PostLevelDef[] = [
-  { level: 1, cost: 200, explorerCap: 1 },
-  { level: 2, cost: 600, explorerCap: 2 },
-  { level: 3, cost: 1200, explorerCap: 3 },
+  { level: 1, cost: 10, explorerCap: 1 },
+  { level: 2, cost: 30, explorerCap: 2 },
+  { level: 3, cost: 60, explorerCap: 3 },
 ]
 
 export const MAX_POST_LEVEL = POST_LEVELS.length
 
-export const EXPLORER_COST = 30
+export const EXPLORER_COST = 1.5
 
 /** Inspiration cost to send an explorer on an expedition */
-export const EXPEDITION_INSPIRATION_COST = 50
+export const EXPEDITION_INSPIRATION_COST = 2.5
 
 /** Food cost to send an explorer on an expedition */
 export const EXPEDITION_FOOD_COST = 30

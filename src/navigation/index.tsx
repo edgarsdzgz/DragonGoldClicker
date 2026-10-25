@@ -103,7 +103,7 @@ function useBuildTabBadge(): boolean {
         for (const tier of SOLDIER_TIERS) {
           if (tier.unlocksAtBarracksLevel <= state.barracksLevel) {
             const baseCost = getSoldierCost(tier, getSoldierCount(state.soldiersTrained, tier.id))
-            if (g >= Math.max(1, Math.floor(baseCost * (1 - rb.soldierCostDiscount)))) return true
+            if (g >= parseFloat((baseCost * (1 - rb.soldierCostDiscount)).toFixed(2))) return true
           }
         }
       }

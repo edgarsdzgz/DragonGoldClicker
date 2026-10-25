@@ -14,10 +14,10 @@ export interface MilestoneDef {
  * Each fires once when totalInspirationEarned crosses the threshold.
  */
 export const MILESTONES: MilestoneDef[] = [
-  { threshold: 500, villagers: 3 },
-  { threshold: 1000, villagers: 3 },
-  { threshold: 2500, villagers: 2 },
-  { threshold: 3500, villagers: 7 },
+  { threshold: 25, villagers: 3 },
+  { threshold: 50, villagers: 3 },
+  { threshold: 125, villagers: 2 },
+  { threshold: 175, villagers: 7 },
 ]
 
 /**

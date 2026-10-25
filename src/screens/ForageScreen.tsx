@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, MealCountdown, ActionOrb } from '../components'
+import { Text, Badge, MealCountdown } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -10,8 +10,8 @@ import { useFlavorText } from '../hooks/useFlavorText'
 import { useRandomSfx } from '../hooks/useRandomSfx'
 import { SFX_HARVEST_POOL } from '../data/sfx'
 import { FORAGE_LINES } from '../data/flavorText'
-import { colors, spacing } from '../theme'
-import { formatNumber, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS } from '../types/game'
+import { colors, spacing, gold } from '../theme'
+import { formatNumber, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap } from '../types/game'
 
 // Earthy green palette for foraging
 const forage = {
@@ -23,11 +23,18 @@ const forage = {
   300: '#86efac',
 } as const
 
+// Blue-tinted palette for explorers
+const explorer = {
+  accent: colors.building.explorer,
+  glow: '#3b82f6',
+} as const
+
 const FORAGE_PALETTE = { accent: forage[400], glow: forage[500] }
 const TRAIN_PALETTE = { accent: forage[300], glow: forage[400] }
+const RECRUIT_PALETTE = { accent: explorer.accent, glow: explorer.glow }
 
 export function ForageScreen() {
-  const { state, forage: doForage, trainForager, effectiveAutoRate, autoFoodRate } = useGame()
+  const { state, forage: doForage, trainForager, trainExplorer, effectiveAutoRate, autoFoodRate } = useGame()
   const incomeFlash = useRef(new Animated.Value(1)).current
   const flavor = useFlavorText(FORAGE_LINES)
   const playHarvest = useRandomSfx(SFX_HARVEST_POOL, { cooldownMs: 2000 })
@@ -62,6 +69,10 @@ export function ForageScreen() {
     trainForager('gatherer')
   }, [trainForager])
 
+  const handleRecruitExplorer = useCallback(() => {
+    trainExplorer()
+  }, [trainExplorer])
+
   const yield_ = getForageYield(state.foragePower, state.forageBonus)
   const hasBonusPercent = state.forageBonus > 0
   const gathererTier = FORAGER_TIERS[0]
@@ -70,6 +81,9 @@ export function ForageScreen() {
   const gathererCap = getForagerCap(state.lodgeLevel)
   const totalForagers = getTotalForagers(state.foragers)
   const canTrainGatherer = state.villagers > 0 && state.inspiration >= gathererCost && totalForagers < gathererCap
+
+  const explorerCap = getExplorerCap(state.postLevel)
+  const canRecruitExplorer = state.postLevel > 0 && state.villagers > 0 && state.inspiration >= EXPLORER_COST && state.explorers < explorerCap
 
   return (
     <View style={styles.container}>
@@ -125,33 +139,63 @@ export function ForageScreen() {
       {/* Meal consumption info */}
       <MealCountdown variant="full" />
 
-      {/* Flavor text */}
-      <FlavorText text={flavor.text} opacity={flavor.opacity} color={forage[300]} />
-
-      {/* Action area: Train -- FORAGE */}
-      <View style={styles.actionRow}>
-        <View style={styles.sideOrb}>
-          <ActionOrb
-            onAction={handleTrainGatherer}
-            icon="person-add"
-            label="TRAIN"
-            palette={TRAIN_PALETTE}
-            disabled={!canTrainGatherer}
-          />
-          <Text variant="caption" color="muted" center style={styles.orbCost}>
-            {formatNumber(gathererCost)} insp
-          </Text>
-          <Text variant="caption" color="muted" center style={styles.orbCost}>
-            {gathererCount}/{gathererCap}
-          </Text>
-        </View>
+      {/* Battle area: FORAGE dominates center */}
+      <View style={styles.battleArea}>
+        <FlavorText text={flavor.text} opacity={flavor.opacity} color={forage[300]} />
         <HarvestOrb
           onAction={handleForage}
           icon="leaf"
           label="FORAGE"
           palette={FORAGE_PALETTE}
         />
-        <View style={styles.sideOrb} />
+      </View>
+
+      {/* Command row: Train Gatherer + Recruit Explorer */}
+      <View style={styles.commandRow}>
+        <View style={styles.commandSlot}>
+          <HarvestOrb
+            onAction={handleTrainGatherer}
+            icon="person-add"
+            label="TRAIN"
+            palette={TRAIN_PALETTE}
+            size="md"
+            disabled={!canTrainGatherer}
+          />
+          <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
+            {formatNumber(gathererCost)} insp
+          </Text>
+          <Text variant="caption" color="muted" center>
+            {gathererCount}/{gathererCap}
+          </Text>
+        </View>
+
+        <View style={styles.commandSlot}>
+          {state.postLevel > 0 ? (
+            <>
+              <HarvestOrb
+                onAction={handleRecruitExplorer}
+                icon="compass"
+                label="RECRUIT"
+                palette={RECRUIT_PALETTE}
+                size="md"
+                disabled={!canRecruitExplorer}
+              />
+              <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
+                {EXPLORER_COST} insp
+              </Text>
+              <Text variant="caption" color="muted" center>
+                {state.explorers}/{explorerCap}
+              </Text>
+            </>
+          ) : (
+            <View style={styles.lockedOrb}>
+              <Ionicons name="lock-closed" size={16} color={colors.text.muted} />
+              <Text variant="caption" color="muted" center>
+                Build Outpost
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
 
       {/* Footer: forage yield hint */}
@@ -183,7 +227,7 @@ const styles = StyleSheet.create({
   },
   heroSection: {
     alignItems: 'center',
-    paddingTop: spacing[6],
+    paddingTop: spacing[4],
     gap: spacing[1],
   },
   foodRow: {
@@ -200,24 +244,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing[2],
   },
-  actionRow: {
+  battleArea: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing[4],
-  },
-  sideOrb: {
     alignItems: 'center',
-    width: 70,
+  },
+  commandRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'flex-start',
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[3],
+    paddingBottom: spacing[2],
+  },
+  commandSlot: {
+    alignItems: 'center',
     gap: spacing[1],
   },
-  orbCost: {
-    fontSize: 10,
+  lockedOrb: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 1.5,
+    borderColor: colors.border.subtle,
+    borderStyle: 'dashed',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 2,
   },
   footer: {
     alignItems: 'center',
-    paddingBottom: spacing[6],
+    paddingBottom: spacing[4],
+    paddingTop: spacing[2],
     gap: spacing[1],
   },
 })

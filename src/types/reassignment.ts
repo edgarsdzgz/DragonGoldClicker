@@ -104,8 +104,8 @@ export interface ReassignOption {
 export function getReassignOptions(from: RoleId, state: GameState): ReassignOption[] {
   if (from.type === 'idle') return []
 
-  const refundAmount = Math.floor(getTrainingCost(from, state) * REASSIGN_REFUND_RATE)
-  const dismissRefund = Math.floor(getTrainingCost(from, state) * DISMISS_REFUND_RATE)
+  const refundAmount = parseFloat((getTrainingCost(from, state) * REASSIGN_REFUND_RATE).toFixed(2))
+  const dismissRefund = parseFloat((getTrainingCost(from, state) * DISMISS_REFUND_RATE).toFixed(2))
   const options: ReassignOption[] = []
 
   // Soldier targets

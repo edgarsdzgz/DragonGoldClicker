@@ -1,15 +1,17 @@
+import { roundCost } from './utils'
+
 // =============================================================================
 // FIGHTERS & REPAIRERS (Warfront units)
 // =============================================================================
 
 /** Base inspiration cost to rally a fighter */
-export const FIGHTER_BASE_COST = 20
+export const FIGHTER_BASE_COST = 1.0
 
 /** Cost scaling exponent: floor(baseCost * (n+1)^FIGHTER_COST_EXPONENT) */
 export const FIGHTER_COST_EXPONENT = 1.4
 
 /** Inspiration per second per fighter */
-export const FIGHTER_INSP_RATE = 0.25
+export const FIGHTER_INSP_RATE = 0.05
 
 /** Food consumed per fighter per food check */
 export const FIGHTER_FOOD_COST = 2
@@ -18,7 +20,7 @@ export const FIGHTER_FOOD_COST = 2
 export const REPAIR_UNLOCK_FIGHTERS = 3
 
 /** Base inspiration cost to direct a repairer */
-export const REPAIRER_BASE_COST = 15
+export const REPAIRER_BASE_COST = 0.75
 
 /** Cost scaling exponent for repairers */
 export const REPAIRER_COST_EXPONENT = 1.4
@@ -35,7 +37,7 @@ export const REPAIRER_FOOD_COST = 1.5
  * @param totalRallied lifetime fighters rallied (for cost curve)
  */
 export function getFighterCost(totalRallied: number): number {
-  return Math.floor(FIGHTER_BASE_COST * Math.pow(totalRallied + 1, FIGHTER_COST_EXPONENT))
+  return roundCost(FIGHTER_BASE_COST * Math.pow(totalRallied + 1, FIGHTER_COST_EXPONENT))
 }
 
 /**
@@ -43,7 +45,7 @@ export function getFighterCost(totalRallied: number): number {
  * @param totalDirected lifetime repairers directed (for cost curve)
  */
 export function getRepairerCost(totalDirected: number): number {
-  return Math.floor(REPAIRER_BASE_COST * Math.pow(totalDirected + 1, REPAIRER_COST_EXPONENT))
+  return roundCost(REPAIRER_BASE_COST * Math.pow(totalDirected + 1, REPAIRER_COST_EXPONENT))
 }
 
 /**

@@ -333,25 +333,48 @@ def wait_for_boot_completed(serial, timeout=BOOT_TIMEOUT_SECONDS):
 EXPO_GO_PACKAGE = "host.exp.exponent"
 
 
-def uninstall_stale_expo_go(serial):
-    """
-    Remove any existing Expo Go installation so that Expo CLI performs a clean
-    install of the correct version without prompting.  If Expo Go is not
-    installed, adb returns an error that we silently ignore.
-    """
-    log_step("Pre-clearing Expo Go for clean install")
-
+def is_expo_go_installed(serial):
+    """Check if Expo Go is currently installed on the emulator."""
     result = subprocess.run(
-        [ADB_EXE, "-s", serial, "uninstall", EXPO_GO_PACKAGE],
+        [ADB_EXE, "-s", serial, "shell", "pm", "list", "packages", EXPO_GO_PACKAGE],
         capture_output=True,
         text=True,
-        timeout=30,
+        timeout=10,
     )
+    return EXPO_GO_PACKAGE in result.stdout
 
-    if result.returncode == 0:
-        log_ok("Removed existing Expo Go (will be freshly installed by Expo CLI).")
+
+def install_expo_go(serial):
+    """Use Expo CLI to install the correct Expo Go version on the emulator."""
+    log_info("Installing Expo Go via Expo CLI...")
+    try:
+        result = subprocess.run(
+            "npx expo install:expo-go",
+            shell=True,
+            cwd=MOBILE_PROJECT,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if result.returncode == 0:
+            log_ok("Expo Go installed successfully.")
+        else:
+            # Fallback: expo start --android will attempt its own install
+            log_warn("Expo Go install returned non-zero; Expo CLI will retry on launch.")
+            log_dim(result.stderr.strip() if result.stderr else "(no stderr)")
+    except subprocess.TimeoutExpired:
+        log_warn("Expo Go install timed out; Expo CLI will retry on launch.")
+
+
+def ensure_expo_go(serial):
+    """Make sure Expo Go is present on the emulator before launching Metro."""
+    log_step("Checking Expo Go installation")
+
+    if is_expo_go_installed(serial):
+        log_ok("Expo Go is already installed.")
     else:
-        log_info("Expo Go was not installed -- nothing to remove.")
+        log_info("Expo Go is not installed on the emulator.")
+        install_expo_go(serial)
 
 
 # ---------------------------------------------------------------------------
@@ -478,9 +501,9 @@ def main():
         wait_for_boot_completed(serial, timeout=BOOT_TIMEOUT_SECONDS)
 
     # -----------------------------------------------------------------------
-    # Step 7: Pre-clear stale Expo Go to avoid version mismatch prompts
+    # Step 7: Ensure Expo Go is installed
     # -----------------------------------------------------------------------
-    uninstall_stale_expo_go(serial)
+    ensure_expo_go(serial)
 
     # -----------------------------------------------------------------------
     # Step 8: Launch Expo

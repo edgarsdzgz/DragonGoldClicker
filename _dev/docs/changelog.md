@@ -87,6 +87,21 @@
 - Coming soon buildings open interior sheet directly (no purchase modal)
 - Lodge and Outpost nodes conditionally rendered in their new wards
 
+### Phase 7: Number Shrink (COMPLETE)
+- Divided all inspiration-economy values by 20 (ratio: 1 insp/click -> 0.05 insp/click)
+- Click power default: 1 -> 0.05
+- Fighter insp rate: 0.25/s -> 0.05/s per fighter
+- All costs, thresholds, research prices, and bonuses scaled by 1/20
+- Food system values unchanged (separate economy)
+- Fixed hardcoded gear bonus rates (0.1/0.05) in GameContext and useStorage -- now use SWORD_BONUS/SHIELD_BONUS constants
+- Extracted food activation thresholds into named constants (FOOD_ACTIVATE_CONSCRIPTS, FOOD_ACTIVATE_BUILDINGS)
+- Changed cost curve functions from Math.floor to 2-decimal precision (parseFloat/toFixed)
+- Changed inspiration accumulator from integer-only to fractional awards
+- Updated formatNumber() to show 2 decimal places for values under 1000
+- Added roundInsp() utility for consistent 2-decimal rounding
+- Added saveMigrationVersion field to GameState for save format tracking
+- Save migration: divides pre-shrink values by 20, remaps milestone thresholds
+
 ---
 
 ## 2026-03-06 - Initial Release

@@ -1,3 +1,5 @@
+import { roundCost } from './utils'
+
 // =============================================================================
 // FORAGER TIERS
 // =============================================================================
@@ -17,9 +19,9 @@ export interface ForagerTierDef {
 export const BASE_GATHERER_CAP = 6
 
 export const FORAGER_TIERS: ForagerTierDef[] = [
-  { id: 'gatherer', name: 'Gatherer', baseRate: 0.2, baseCost: 5, unlocksAtLodgeLevel: 0 },
-  { id: 'trapper', name: 'Trapper', baseRate: 0.6, baseCost: 15, unlocksAtLodgeLevel: 3 },
-  { id: 'ranger', name: 'Ranger', baseRate: 1.5, baseCost: 40, unlocksAtLodgeLevel: 5 },
+  { id: 'gatherer', name: 'Gatherer', baseRate: 0.2, baseCost: 0.25, unlocksAtLodgeLevel: 0 },
+  { id: 'trapper', name: 'Trapper', baseRate: 0.6, baseCost: 0.75, unlocksAtLodgeLevel: 3 },
+  { id: 'ranger', name: 'Ranger', baseRate: 1.5, baseCost: 2.0, unlocksAtLodgeLevel: 5 },
 ]
 
 export interface ForagerCounts {
@@ -39,11 +41,11 @@ export interface LodgeLevelDef {
 }
 
 export const LODGE_LEVELS: LodgeLevelDef[] = [
-  { level: 1, cost: 40, foragerCap: 4 },
-  { level: 2, cost: 120, foragerCap: 8 },
-  { level: 3, cost: 350, foragerCap: 12 },
-  { level: 4, cost: 700, foragerCap: 16 },
-  { level: 5, cost: 1200, foragerCap: 20 },
+  { level: 1, cost: 2, foragerCap: 4 },
+  { level: 2, cost: 6, foragerCap: 8 },
+  { level: 3, cost: 17.5, foragerCap: 12 },
+  { level: 4, cost: 35, foragerCap: 16 },
+  { level: 5, cost: 60, foragerCap: 20 },
 ]
 
 export const MAX_LODGE_LEVEL = LODGE_LEVELS.length
@@ -68,7 +70,7 @@ export function getLodgeUpgradeCost(currentLevel: number): number | null {
 }
 
 export function getForagerCost(tier: ForagerTierDef, currentCountOfTier: number): number {
-  return Math.floor(tier.baseCost * Math.pow(currentCountOfTier + 1, 1.15))
+  return roundCost(tier.baseCost * Math.pow(currentCountOfTier + 1, 1.15))
 }
 
 export function getForagerCount(foragers: ForagerCounts, tier: ForagerTier): number {

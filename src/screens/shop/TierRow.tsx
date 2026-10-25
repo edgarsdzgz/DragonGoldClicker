@@ -101,7 +101,7 @@ export function SoldierTierRow({ tier, buildingColor }: { tier: SoldierTierDef; 
   const locked = state.barracksLevel < tier.unlocksAtBarracksLevel
   const baseCost = getSoldierCost(tier, lifetimeCount)
   const rb = getResearchBonuses(state.completedResearch)
-  const cost = Math.max(1, Math.floor(baseCost * (1 - rb.soldierCostDiscount)))
+  const cost = parseFloat((baseCost * (1 - rb.soldierCostDiscount)).toFixed(2))
   const canAfford = state.inspiration >= cost && !atCap && !locked && !noVillagers
 
   const promoteTargets = count > 0

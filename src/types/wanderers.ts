@@ -10,7 +10,7 @@ import { DISMISS_REFUND_RATE } from './reassignment'
 // =============================================================================
 
 /** Minimum gold refund for trained overflow (whichever is greater: 30% or this) */
-export const WANDERER_MIN_REFUND = 5
+export const WANDERER_MIN_REFUND = 0.25
 
 /** Seconds between wanderer eligibility checks */
 export const WANDERER_COOLDOWN = 300
@@ -235,9 +235,9 @@ export function rollWandererCheck(
 export function getTrainedOverflowRefund(trained: TrainedRole): number {
   let baseCost = 0
   if (trained.type === 'soldier') {
-    baseCost = SOLDIER_TIERS.find((t) => t.id === trained.tier)?.baseCost ?? 5
+    baseCost = SOLDIER_TIERS.find((t) => t.id === trained.tier)?.baseCost ?? 0.25
   } else {
-    baseCost = FORAGER_TIERS.find((t) => t.id === trained.tier)?.baseCost ?? 5
+    baseCost = FORAGER_TIERS.find((t) => t.id === trained.tier)?.baseCost ?? 0.25
   }
-  return Math.max(Math.floor(baseCost * DISMISS_REFUND_RATE), WANDERER_MIN_REFUND)
+  return Math.max(parseFloat((baseCost * DISMISS_REFUND_RATE).toFixed(2)), WANDERER_MIN_REFUND)
 }

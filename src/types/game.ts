@@ -84,6 +84,8 @@ export type { StarvationResult } from './food'
 export {
   STARTING_FOOD,
   STARTING_VILLAGERS,
+  FOOD_ACTIVATE_CONSCRIPTS,
+  FOOD_ACTIVATE_BUILDINGS,
   FOOD_CHECK_INTERVAL,
   FOOD_CONSUMPTION,
   STARVATION_DEATH_CHANCE,
@@ -107,6 +109,11 @@ export {
   shouldRevealExplorerPost,
   formatNumber,
 } from './state'
+
+export {
+  roundInsp,
+  roundCost,
+} from './utils'
 
 export type {
   RoleId,

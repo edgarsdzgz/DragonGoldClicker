@@ -1,4 +1,5 @@
 import type { Ionicons } from '@expo/vector-icons'
+import { roundCost } from './utils'
 
 // =============================================================================
 // SOLDIER TIERS
@@ -15,9 +16,9 @@ export interface SoldierTierDef {
 }
 
 export const SOLDIER_TIERS: SoldierTierDef[] = [
-  { id: 'conscript', name: 'Conscript', baseRate: 0.25, baseCost: 5, unlocksAtBarracksLevel: 1 },
-  { id: 'footman', name: 'Footman', baseRate: 0.75, baseCost: 15, unlocksAtBarracksLevel: 3 },
-  { id: 'knight', name: 'Knight', baseRate: 2.0, baseCost: 40, unlocksAtBarracksLevel: 5 },
+  { id: 'conscript', name: 'Conscript', baseRate: 0.0125, baseCost: 0.25, unlocksAtBarracksLevel: 1 },
+  { id: 'footman', name: 'Footman', baseRate: 0.0375, baseCost: 0.75, unlocksAtBarracksLevel: 3 },
+  { id: 'knight', name: 'Knight', baseRate: 0.1, baseCost: 2.0, unlocksAtBarracksLevel: 5 },
 ]
 
 export interface SoldierCounts {
@@ -37,11 +38,11 @@ export interface BarracksLevelDef {
 }
 
 export const BARRACKS_LEVELS: BarracksLevelDef[] = [
-  { level: 1, cost: 25, soldierCap: 4 },
-  { level: 2, cost: 150, soldierCap: 8 },
-  { level: 3, cost: 400, soldierCap: 12 },
-  { level: 4, cost: 800, soldierCap: 16 },
-  { level: 5, cost: 1500, soldierCap: 20 },
+  { level: 1, cost: 1.25, soldierCap: 4 },
+  { level: 2, cost: 7.5, soldierCap: 8 },
+  { level: 3, cost: 20, soldierCap: 12 },
+  { level: 4, cost: 40, soldierCap: 16 },
+  { level: 5, cost: 75, soldierCap: 20 },
 ]
 
 export const MAX_BARRACKS_LEVEL = BARRACKS_LEVELS.length
@@ -50,11 +51,11 @@ export const MAX_BARRACKS_LEVEL = BARRACKS_LEVELS.length
 // ARMORY GEAR (soldier equipment -- capped at total soldiers)
 // =============================================================================
 
-export const ARMORY_COST = 100
-export const SWORD_COST = 15
-export const SHIELD_COST = 20
-export const SWORD_BONUS = 0.1
-export const SHIELD_BONUS = 0.05
+export const ARMORY_COST = 5
+export const SWORD_COST = 0.75
+export const SHIELD_COST = 1.0
+export const SWORD_BONUS = 0.005
+export const SHIELD_BONUS = 0.0025
 
 // =============================================================================
 // AVATAR WEAPONS (flat purchases, increase click power)
@@ -70,7 +71,7 @@ export interface AvatarWeaponDef {
 }
 
 export const AVATAR_WEAPONS: AvatarWeaponDef[] = [
-  { id: 'war_hammer', name: 'War Hammer', description: '+1 per click', icon: 'hammer', cost: 500, clickPowerBonus: 1 },
+  { id: 'war_hammer', name: 'War Hammer', description: '+0.05 per click', icon: 'hammer', cost: 25, clickPowerBonus: 0.05 },
 ]
 
 // =============================================================================
@@ -95,7 +96,7 @@ export function getBarracksUpgradeCost(currentLevel: number): number | null {
  * Polynomial cost curve: floor(baseCost * (currentCount + 1)^1.15)
  */
 export function getSoldierCost(tier: SoldierTierDef, currentCountOfTier: number): number {
-  return Math.floor(tier.baseCost * Math.pow(currentCountOfTier + 1, 1.15))
+  return roundCost(tier.baseCost * Math.pow(currentCountOfTier + 1, 1.15))
 }
 
 // Helper to get correct count from SoldierCounts for a given tier
@@ -152,7 +153,7 @@ export function getPromotionCost(
   const trainedCount = getSoldierCount(soldiersTrained, toTier)
   const freshCost = getSoldierCost(targetDef, trainedCount)
 
-  return Math.floor(freshCost * discount)
+  return roundCost(freshCost * discount)
 }
 
 /**

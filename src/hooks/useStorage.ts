@@ -11,6 +11,9 @@ import {
   FOOD_CHECK_INTERVAL,
   getResearchBonuses,
   getFighterAutoRate,
+  SWORD_BONUS,
+  SHIELD_BONUS,
+  roundInsp,
 } from '../types/game'
 
 const STORAGE_KEY = '@dragongold/gamestate'
@@ -51,8 +54,8 @@ export function useStorage() {
         const hadOldWeapons = (merged.ownedWeapons as string[]).some((id: string) => REMOVED_WEAPONS.includes(id))
         if (hadOldWeapons) {
           merged.ownedWeapons = (merged.ownedWeapons as string[]).filter((id: string) => !REMOVED_WEAPONS.includes(id))
-          // Reset clickPower to base 1 (no valid old weapons carry over)
-          merged.clickPower = 1
+          // Reset clickPower to base (no valid old weapons carry over)
+          merged.clickPower = 0.05
         }
         if (typeof merged.soldiersTrained !== 'object' || merged.soldiersTrained === null) {
           merged.soldiersTrained = typeof merged.soldiers === 'object' && merged.soldiers !== null
@@ -87,6 +90,23 @@ export function useStorage() {
         if (!Array.isArray(merged.completedResearch)) merged.completedResearch = []
         if (!Array.isArray(merged.milestonesOffered)) merged.milestonesOffered = []
 
+        // Number shrink migration: divide inspiration-economy values by 20
+        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 1) {
+          if (typeof merged.clickPower === 'number' && merged.clickPower >= 1) {
+            merged.inspiration = roundInsp((merged.inspiration as number) / 20)
+            merged.totalInspirationEarned = roundInsp((merged.totalInspirationEarned as number) / 20)
+            merged.totalInspirationSpent = roundInsp((merged.totalInspirationSpent as number) / 20)
+            merged.clickPower = roundInsp((merged.clickPower as number) / 20)
+          }
+          const MILESTONE_REMAP: Record<number, number> = { 500: 25, 1000: 50, 2500: 125, 3500: 175 }
+          if (Array.isArray(merged.milestonesOffered)) {
+            merged.milestonesOffered = (merged.milestonesOffered as number[]).map(
+              (t: number) => MILESTONE_REMAP[t] ?? roundInsp(t / 20)
+            )
+          }
+          merged.saveMigrationVersion = 1
+        }
+
         const gameState = merged as GameState
 
         // Calculate offline earnings
@@ -102,7 +122,7 @@ export function useStorage() {
             gameState.armoryGear.swords,
             gameState.armoryGear.shields,
           )
-          const gearBoost = (gameState.armoryGear.swords * 0.1 + gameState.armoryGear.shields * 0.05) * rb.gearBonusMultiplier
+          const gearBoost = (gameState.armoryGear.swords * SWORD_BONUS + gameState.armoryGear.shields * SHIELD_BONUS) * rb.gearBonusMultiplier
           const soldierRate = (baseAutoRate + gearBoost) * (1 + rb.autoRateMultiplier)
           const autoRate = soldierRate + getFighterAutoRate(gameState.fighters)
           const maxSec = getOfflineMaxSeconds(gameState.offlineLevel)
@@ -128,11 +148,11 @@ export function useStorage() {
               }
             }
 
-            const earned = Math.floor(autoRate * inspSeconds * (1 + rb.offlineMultiplier))
+            const earned = roundInsp(autoRate * inspSeconds * (1 + rb.offlineMultiplier))
             if (earned > 0) {
               gameState.inspiration += earned
               gameState.totalInspirationEarned += earned
-              gameState.monstersDefeated += earned
+              gameState.monstersDefeated += Math.floor(inspSeconds)
               offlineEarnings = { inspiration: earned, seconds: Math.floor(cappedSec) }
             }
           }
