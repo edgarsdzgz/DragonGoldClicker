@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, MealCountdown } from '../components'
+import { Text, Badge, MealCountdown, StoryObjective } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -88,6 +88,7 @@ export function ForageScreen() {
   return (
     <View style={styles.container}>
       <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} autoInspPerSec={effectiveAutoRate} />
+      <StoryObjective />
 
       {/* HERO: Food is the primary number */}
       <View style={styles.heroSection}>

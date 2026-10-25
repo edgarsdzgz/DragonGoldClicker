@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, Animated, AccessibilityInfo, useWindowDimensions } from 'react-native'
+import { useReduceMotion } from '../hooks/useReduceMotion'
 import { Text } from './Text'
 import { useCoach } from '../context/CoachContext'
 import { useActiveEvent } from '../hooks/useActiveEvent'
@@ -150,20 +151,6 @@ function sameRect(a: Rect | null, b: Rect | null) {
   if (a === b) return true
   if (!a || !b) return false
   return Math.abs(a.x - b.x) < 1 && Math.abs(a.y - b.y) < 1 && Math.abs(a.w - b.w) < 1 && Math.abs(a.h - b.h) < 1
-}
-
-function useReduceMotion(): boolean {
-  const [reduce, setReduce] = useState(false)
-  useEffect(() => {
-    let live = true
-    AccessibilityInfo.isReduceMotionEnabled().then((v) => live && setReduce(v))
-    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduce)
-    return () => {
-      live = false
-      sub.remove()
-    }
-  }, [])
-  return reduce
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
-import { Text, Surface, Button, StatRow, SectionLabel, InspirationIcon, ToggleRow } from '../components'
+import { Text, Surface, Button, StatRow, SectionLabel, InspirationIcon, ToggleRow, StoryObjective } from '../components'
 import { PillTabs } from '../components/PillTabs'
 import type { PillTab } from '../components/PillTabs'
 import { VolumeControl } from '../components/VolumeControl'
@@ -28,6 +28,7 @@ export function SettingsScreen() {
   return (
     <View style={styles.container}>
       <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} autoInspPerSec={effectiveAutoRate} />
+      <StoryObjective />
       <PillTabs tabs={TABS} activeKey={activeTab} onSelect={setActiveTab} />
 
       {activeTab === 'settings' && (

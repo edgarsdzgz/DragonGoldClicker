@@ -2,7 +2,7 @@ import React from 'react'
 import { View, ScrollView, Pressable, Animated, Easing } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, ZoneHeader, BottomSheet, ConfirmModal, InspirationIcon, type ResourceItem } from '../components'
+import { Text, Badge, ZoneHeader, BottomSheet, ConfirmModal, InspirationIcon, StoryObjective, type ResourceItem } from '../components'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
 import { useHaptics, useSfx } from '../hooks'
@@ -557,6 +557,7 @@ export function ShopScreen() {
         foodSystemActive={isSystemOn(state, 'hunger')}
         autoInspPerSec={effectiveAutoRate}
       />
+      <StoryObjective />
       <ScrollView
         ref={scrollRef}
         onScroll={(e) => {

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, InspirationIcon, ProgressBar } from '../components'
+import { Text, Badge, InspirationIcon, ProgressBar, StoryObjective, StorySpotlight } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -62,6 +62,7 @@ export function GameScreen() {
   return (
     <Animated.View style={[styles.container, shakeStyle]}>
       <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={hungerOn} autoInspPerSec={effectiveAutoRate} />
+      <StoryObjective />
 
       {/* City HP bar (hidden until the siege begins) */}
       {isSystemOn(state, 'siege') && (
@@ -184,7 +185,7 @@ export function GameScreen() {
       {/* Command row: Rally + Repair as secondary HarvestOrbs */}
       <View style={styles.commandRow}>
         {rallyOn && (
-          <View style={styles.commandSlot}>
+          <StorySpotlight target="rally" style={styles.commandSlot}>
             <HarvestOrb
               onAction={rallyFighter}
               icon="shield"
@@ -197,11 +198,11 @@ export function GameScreen() {
             <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
               {formatNumber(getFighterCost(state.fightersRallied))} insp
             </Text>
-          </View>
+          </StorySpotlight>
         )}
 
         {repairOn && (
-          <View style={styles.commandSlot}>
+          <StorySpotlight target="repair" style={styles.commandSlot}>
             <HarvestOrb
               onAction={directRepairer}
               icon="construct"
@@ -214,7 +215,7 @@ export function GameScreen() {
             <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
               {formatNumber(getRepairerCost(state.repairersDirected))} insp
             </Text>
-          </View>
+          </StorySpotlight>
         )}
       </View>
 
