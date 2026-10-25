@@ -167,6 +167,8 @@ export interface GameState {
   waveNumber: number
   /** Monsters already killed in the current wave (0-4) */
   waveKills: number
+  /** In a wave (monsters on the field) or in camp between waves, waiting for Begin wave */
+  waveActive: boolean
   /** Save format version for migrations */
   saveMigrationVersion: number
 }
@@ -238,7 +240,8 @@ export const DEFAULT_GAME_STATE: GameState = {
   monsterHp: FIRST_MONSTER_HP,
   waveNumber: 1,
   waveKills: 0,
-  saveMigrationVersion: 5,
+  waveActive: false,
+  saveMigrationVersion: 6,
 }
 
 // =============================================================================

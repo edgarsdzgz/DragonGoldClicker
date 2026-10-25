@@ -73,7 +73,7 @@ import {
 } from '../types/game'
 import { stepFood } from '../types/foodTick'
 import { applyCityDamage } from '../types/cityHp'
-import { strike } from '../types/monsters'
+import { strike, beginWave as beginWaveState, endWave as endWaveState } from '../types/monsters'
 import { firstExpeditionReward } from '../types/scripted'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -129,6 +129,10 @@ interface GameContextType {
   isResearchAvailable: (id: string) => boolean
   /** Story director: record a beat as seen and restart the dwell clock (at the game second it fired in) */
   markBeatSeen: (id: string, atPlaySec?: number) => void
+  /** Send the next wave in from the camp */
+  beginWave: () => void
+  /** The wave-cleared banner is over: back to camp */
+  endWave: () => void
   /** Story: apply a scripted state change (pure updater; scripted events and flags) */
   applyScripted: (updater: (s: GameState) => GameState) => void
   /** Guided tutorial: record a step as done */
@@ -1087,6 +1091,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       : { ...prev, beatsSeen: [...prev.beatsSeen, id], lastBeatAtPlaySec: atPlaySec ?? prev.playSeconds }))
   }, [])
 
+  const beginWave = useCallback(() => setState(beginWaveState), [])
+  const endWave = useCallback(() => setState(endWaveState), [])
+
   const applyScripted = useCallback((updater: (s: GameState) => GameState) => setState(updater), [])
 
   const completeTutorialStep = useCallback((id: string) => {
@@ -1166,6 +1173,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         isResearchAvailable,
         markBeatSeen,
         completeTutorialStep,
+        beginWave,
+        endWave,
         applyScripted,
         devApply,
         devForceWanderer,

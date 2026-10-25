@@ -36,3 +36,14 @@ export function progressWave(s: Pick<GameState, 'waveNumber' | 'waveKills'>, bou
   if (kills < WAVE_SIZE) return { waveNumber: s.waveNumber, waveKills: kills, cleared: false, bonus: 0 }
   return { waveNumber: s.waveNumber + 1, waveKills: 0, cleared: true, bonus: waveBonus(bounty) }
 }
+
+/**
+ * Whether a loaded save is in a wave. A v5 save mid-wave (waveKills > 0) resumes mid-wave. A v6
+ * save keeps its flag, except one closed during the wave-cleared banner (flag on, no kills in
+ * the new wave), which waits in camp.
+ */
+export function waveActiveOnLoad(save: { waveActive?: boolean; waveKills: number; monstersDefeated: number }, fromVersion: number): boolean {
+  if (fromVersion < 6) return save.waveKills > 0
+  if (save.waveActive && save.waveKills === 0 && save.monstersDefeated > 0) return false
+  return !!save.waveActive
+}

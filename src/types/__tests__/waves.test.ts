@@ -1,10 +1,11 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
-import { strike, waveView, spawnMonster } from '../monsters'
-import { progressWave, waveFromKills, waveBonus, WAVE_SIZE, WAVE_BANNER_MS } from '../waves'
+import { strike, waveView, spawnMonster, beginWave, endWave, campView } from '../monsters'
+import { progressWave, waveActiveOnLoad, waveFromKills, waveBonus, WAVE_SIZE, WAVE_BANNER_MS } from '../waves'
 import { getFighterCost } from '../fighters'
 
-const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
+// Most tests fight, so they start with the wave already begun
+const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, waveActive: true, ...over })
 
 /** Tap until `kills` monsters are dead; returns the state and the list of strikes that killed */
 function killN(s: GameState, n: number) {
@@ -100,5 +101,86 @@ describe('waves in play', () => {
     expect(s.waveNumber).toBe(3)
     expect(s.waveKills).toBe(2)
     expect(waveView(s).leftText).toBe('3 goblins left')
+  })
+})
+
+describe('camp and begin wave', () => {
+  const camp = (over: Partial<GameState> = {}) => ({ ...DEFAULT_GAME_STATE, ...over })
+
+  it('a new game starts in camp and strikes do nothing there', () => {
+    const s = camp()
+    expect(s.waveActive).toBe(false)
+    const r = strike(s)
+    expect(r.ignored).toBe(true)
+    expect(r.state).toBe(s)
+    expect(r.state.totalClicks).toBe(0)
+    expect(r.killed).toBe(false)
+  })
+
+  it('begin, kill five, back in camp, with the bonus paid once', () => {
+    let s = beginWave(camp())
+    expect(s.waveActive).toBe(true)
+    let bonusPaid = 0
+    let kills = 0
+    while (kills < 5) {
+      const r = strike(s)
+      s = r.state
+      bonusPaid += r.waveBonus
+      if (r.killed) kills++
+    }
+    expect(bonusPaid).toBe(0.5)
+    expect(s.inspiration).toBe(1.25 + 0.5)
+    // The view stays on the field until the banner is done
+    expect(s.waveActive).toBe(true)
+    s = endWave(s)
+    expect(s.waveActive).toBe(false)
+    expect(s.waveNumber).toBe(2)
+    // Camp ignores taps, so the bonus cannot be farmed
+    expect(strike(s).state.inspiration).toBe(s.inspiration)
+    expect(endWave(s)).toBe(s)
+  })
+
+  it('endWave leaves a wave that is still being fought alone', () => {
+    const mid = beginWave(camp())
+    expect(endWave(mid)).toBe(mid)
+    const hit = strike(mid).state
+    expect(endWave(hit).waveActive).toBe(true)
+  })
+
+  it('beginWave is idempotent and brings in a full-HP monster of the tier', () => {
+    const s = beginWave(camp({ monstersDefeated: 12, waveNumber: 3, waveKills: 2 * 0 }))
+    expect(s.monsterIndex).toBe(1)
+    expect(s.monsterHp).toBe(8)
+    expect(beginWave(s)).toBe(s)
+  })
+
+  it('the first Rally is still affordable at kill 4 after beginning', () => {
+    let s = beginWave(camp())
+    let kills = 0
+    while (kills < 4) {
+      const r = strike(s)
+      s = r.state
+      if (r.killed) kills++
+    }
+    expect(s.inspiration).toBeGreaterThanOrEqual(getFighterCost(0))
+    expect(s.totalClicks).toBe(20)
+  })
+
+  it('a save that was mid-wave resumes mid-wave (v6 rule: waveActive = waveKills > 0)', () => {
+    const save = (kills: number) => ({ ...waveFromKills(kills), monstersDefeated: kills })
+    expect(waveActiveOnLoad(save(7), 5)).toBe(true)
+    expect(waveActiveOnLoad(save(10), 5)).toBe(false)
+    expect(waveActiveOnLoad(save(0), 3)).toBe(false)
+    // v6: the flag is kept, except when closed during the cleared banner
+    expect(waveActiveOnLoad({ ...save(7), waveActive: true }, 6)).toBe(true)
+    expect(waveActiveOnLoad({ ...save(10), waveActive: true }, 6)).toBe(false)
+    expect(waveActiveOnLoad({ ...save(0), waveActive: true }, 6)).toBe(true)
+  })
+
+  it('describes the camp for the next wave', () => {
+    const v = campView({ waveNumber: 3, monsterIndex: 1 })
+    expect(v.previewText).toBe('Wave 3: 5 goblins')
+    expect(v.bonusText).toBe('+0.80 when cleared')
+    expect(v.buttonLabel).toBe('Begin wave 3, 5 goblins')
   })
 })

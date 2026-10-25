@@ -4,7 +4,7 @@ import { MONSTERS, monsterIndexForKills, spawnMonster, strike, monsterLabel, cur
 import { getFighterCost } from '../fighters'
 import { ANNOUNCE_EVERY_MS } from '../../hooks/useKillEvents'
 
-const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
+const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, waveActive: true, ...over })
 
 describe('roster', () => {
   it('has the four monsters from the plan, in order of appearance', () => {

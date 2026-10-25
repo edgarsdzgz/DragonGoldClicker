@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import type { Ionicons } from '@expo/vector-icons'
 import type { GameState } from './state'
 import { roundInsp } from './utils'
-import { progressWave, waveFromKills, WAVE_SIZE } from './waves'
+import { progressWave, waveFromKills, waveBonus, WAVE_SIZE } from './waves'
 
 // =============================================================================
 // THE MONSTER (layer 2): the thing the SLAY circle shows and the tap hits
@@ -66,6 +66,8 @@ export interface StrikeResult {
   waveCleared: boolean
   /** Wave bonus paid on top of the bounty (0 unless the wave was cleared) */
   waveBonus: number
+  /** The tap was ignored (the horde is still in camp) */
+  ignored: boolean
 }
 
 /**
@@ -74,13 +76,17 @@ export interface StrikeResult {
  */
 export function strike(s: GameState, damage: number = s.tapDamage): StrikeResult {
   const monster = currentMonster(s)
+  // In camp there is nothing to strike: no damage, no click counted
+  if (!s.waveActive) {
+    return { state: s, monster, dealt: 0, killed: false, bounty: 0, waveCleared: false, waveBonus: 0, ignored: true }
+  }
   const hp = s.monsterHp > 0 ? s.monsterHp : monster.hp
   const dealt = Math.min(damage, hp)
   const left = hp - damage
   const tapped = { ...s, totalClicks: s.totalClicks + 1 }
 
   if (left > 0) {
-    return { state: { ...tapped, monsterHp: left }, monster, dealt, killed: false, bounty: 0, waveCleared: false, waveBonus: 0 }
+    return { state: { ...tapped, monsterHp: left }, monster, dealt, killed: false, bounty: 0, waveCleared: false, waveBonus: 0, ignored: false }
   }
 
   const kills = Math.floor(s.monstersDefeated) + 1
@@ -104,6 +110,49 @@ export function strike(s: GameState, damage: number = s.tapDamage): StrikeResult
     bounty: monster.bounty,
     waveCleared: wave.cleared,
     waveBonus: wave.bonus,
+    ignored: false,
+  }
+}
+
+/** Send the next wave in: the first monster enters. Does nothing if a wave is already on. */
+export function beginWave(s: GameState): GameState {
+  if (s.waveActive) return s
+  const monsterIndex = monsterIndexForKills(Math.floor(s.monstersDefeated))
+  return { ...s, waveActive: true, monsterIndex, monsterHp: MONSTERS[monsterIndex].hp }
+}
+
+/**
+ * The wave is over and its banner is done: back to camp. The bonus was already paid at the
+ * kill, so this only flips the view. Only a cleared wave (waveKills back at 0) can end.
+ */
+export function endWave(s: GameState): GameState {
+  if (!s.waveActive || s.waveKills !== 0 || s.monstersDefeated === 0) return s
+  return { ...s, waveActive: false }
+}
+
+export interface CampView {
+  waveNumber: number
+  monster: MonsterDef
+  count: number
+  /** "Wave 3: 5 goblins" */
+  previewText: string
+  /** "+0.80 when cleared" */
+  bonusText: string
+  /** Screen-reader label of the Begin wave button */
+  buttonLabel: string
+}
+
+/** What the camp shows about the next wave */
+export function campView(s: Pick<GameState, 'waveNumber' | 'monsterIndex'>): CampView {
+  const monster = currentMonster(s)
+  const bonus = waveBonus(monster.bounty)
+  return {
+    waveNumber: s.waveNumber,
+    monster,
+    count: WAVE_SIZE,
+    previewText: `Wave ${s.waveNumber}: ${WAVE_SIZE} ${monster.plural}`,
+    bonusText: `+${bonus.toFixed(2)} when cleared`,
+    buttonLabel: `Begin wave ${s.waveNumber}, ${WAVE_SIZE} ${monster.plural}`,
   }
 }
 
