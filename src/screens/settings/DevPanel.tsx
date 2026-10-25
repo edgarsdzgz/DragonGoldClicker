@@ -1,14 +1,15 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Text, Surface, Button, SectionLabel, ToggleRow, PillTabs } from '../../components'
+import { Text, Surface, Button, SectionLabel, PillTabs } from '../../components'
 import type { PillTab } from '../../components'
 import { useGame } from '../../context/GameContext'
 import { useDevSettings, GAME_SPEEDS } from '../../context/DevSettingsContext'
 import type { GameSpeed, Pacing } from '../../context/DevSettingsContext'
-import { FOOD_CHECK_INTERVAL, MAX_CITY_HP, MILESTONES, roundInsp } from '../../types/game'
+import { FOOD_CHECK_INTERVAL, MAX_CITY_HP, MILESTONES, roundInsp, isSystemOn } from '../../types/game'
 import type { GameState } from '../../types/game'
 import { spacing } from '../../theme'
 import { DevCheckpoints } from './DevCheckpoints'
+import { DevStory } from './DevStory'
 
 /**
  * Dev-only test panel (Settings > Dev). Rendered only when __DEV__ is true.
@@ -39,7 +40,7 @@ export function DevPanel() {
         <SectionLabel spacing={2}>STORY PACING</SectionLabel>
         <PillTabs tabs={PACING_TABS} activeKey={dev.pacing} onSelect={(k) => dev.setPacing(k as Pacing)} />
         <Text variant="caption" color="muted">
-          Test pacing shortens the wait between story beats to seconds. Live is the real, hours-long pacing. No effect until the story system is built.
+          Test pacing shortens the wait between story beats to seconds. Live is the real, hours-long pacing.
         </Text>
       </Surface>
 
@@ -62,21 +63,7 @@ export function DevPanel() {
         </View>
       </Surface>
 
-      <Surface style={styles.section}>
-        <SectionLabel spacing={2}>SYSTEMS</SectionLabel>
-        <ToggleRow
-          label="Siege and city HP"
-          description="City HP bar and siege damage. Nothing in the game turns this on yet."
-          value={state.hpUnlocked}
-          onValueChange={(on) => grant(() => ({ hpUnlocked: on }))}
-        />
-        <ToggleRow
-          label="Food system"
-          description="Eating, warnings, starvation, wanderers"
-          value={state.foodSystemActive}
-          onValueChange={(on) => grant(() => ({ foodSystemActive: on }))}
-        />
-      </Surface>
+      <DevStory />
 
       <Surface style={styles.section}>
         <SectionLabel spacing={2}>FORCE EVENTS</SectionLabel>
@@ -90,9 +77,9 @@ export function DevPanel() {
           >
             {nextMilestone ? `Milestone (${nextMilestone.threshold})` : 'No milestones left'}
           </Button>
-          <Button size="sm" variant="secondary" disabled={!state.foodSystemActive} onPress={() => grant(() => ({ foodTimer: FOOD_CHECK_INTERVAL - 1 }))}>Food check now</Button>
+          <Button size="sm" variant="secondary" disabled={!isSystemOn(state, 'hunger')} onPress={() => grant(() => ({ foodTimer: FOOD_CHECK_INTERVAL - 1 }))}>Food check now</Button>
           <Button size="sm" variant="secondary" onPress={() => grant(() => ({ food: 0 }))}>Empty food stores</Button>
-          <Button size="sm" variant="secondary" disabled={!state.hpUnlocked} onPress={() => grant((s) => ({ cityHp: Math.max(1, s.cityHp - WALL_HIT) }))}>{`Damage wall ${WALL_HIT}`}</Button>
+          <Button size="sm" variant="secondary" disabled={!isSystemOn(state, 'siege')} onPress={() => grant((s) => ({ cityHp: Math.max(1, s.cityHp - WALL_HIT) }))}>{`Damage wall ${WALL_HIT}`}</Button>
           <Button
             size="sm"
             variant="secondary"
