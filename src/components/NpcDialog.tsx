@@ -145,10 +145,11 @@ export function NpcDialog({
               <Pressable
                 onPress={handleSkip}
                 style={styles.skip}
+                hitSlop={{ top: 4, bottom: 4, left: 16, right: 16 }}
                 accessibilityRole="button"
                 accessibilityLabel="Skip scene"
               >
-                <Text variant="caption" color="muted">Skip</Text>
+                <Text variant="label" color="secondary">Skip</Text>
               </Pressable>
             )}
           </View>
@@ -234,7 +235,7 @@ const styles = StyleSheet.create({
   skip: {
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 44,
+    minHeight: 48,
     marginTop: spacing[1],
   },
   buttonPressed: {
