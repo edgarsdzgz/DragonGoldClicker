@@ -4,7 +4,8 @@ import { Text, Surface, Button, SectionLabel } from '../../components'
 import { useGame } from '../../context/GameContext'
 import { useStory } from '../../context/StoryContext'
 import { getScene } from '../../data/story/lines'
-import { STORY_BEATS } from '../../types/game'
+import { STORY_BEATS, TUTORIAL_STEPS, getActiveStep } from '../../types/game'
+import { backfillScripted } from '../../types/storyMigration'
 import { colors, spacing } from '../../theme'
 
 /**
@@ -17,21 +18,35 @@ export function DevStory() {
 
   const seen = new Set(state.beatsSeen)
 
-  // Mark every beat up to and including the chosen one as seen (no scenes shown)
+  // Mark every beat up to and including the chosen one as seen (no scenes shown).
+  // Guided steps and scripted events of the EARLIER beats count as done, so the chosen
+  // beat's own guided step is still there to test.
   const jumpTo = (index: number) =>
-    devApply((s) => ({
-      ...s,
-      beatsSeen: STORY_BEATS.slice(0, index + 1).map((b) => b.id),
-      lastBeatAtPlaySec: s.playSeconds,
-    }))
+    devApply((s) => {
+      const before = STORY_BEATS.slice(0, index).map((b) => b.id)
+      return {
+        ...s,
+        beatsSeen: STORY_BEATS.slice(0, index + 1).map((b) => b.id),
+        lastBeatAtPlaySec: s.playSeconds,
+        tutorialStepsDone: TUTORIAL_STEPS.filter((t) => before.includes(t.afterBeat)).map((t) => t.id),
+        scriptedDone: backfillScripted({ ...s, beatsSeen: before }),
+      }
+    })
 
-  const resetStory = () => devApply((s) => ({ ...s, beatsSeen: [], lastBeatAtPlaySec: 0 }))
+  const resetTutorial = () => devApply((s) => ({ ...s, tutorialStepsDone: [] }))
+
+  // Reset story: beats, the guided tutorial and scripted events all start over; the economy stays
+  const resetStory = () =>
+    devApply((s) => ({ ...s, beatsSeen: [], lastBeatAtPlaySec: 0, tutorialStepsDone: [], scriptedDone: [] }))
+
+  const doneSteps = new Set(state.tutorialStepsDone ?? [])
+  const activeStep = getActiveStep(state)
 
   return (
     <Surface style={styles.section}>
       <SectionLabel spacing={2}>STORY</SectionLabel>
       <Text variant="caption" color="muted">
-        {`${seen.size}/${STORY_BEATS.length} beats seen, play time ${state.playSeconds}s. Jump marks every beat up to the chosen one as seen and shows no scenes; later beats become unseen.`}
+        {`${seen.size}/${STORY_BEATS.length} beats seen, play time ${state.playSeconds}s. Jump marks every beat up to the chosen one as seen and shows no scenes; later beats become unseen. Reset story also resets the tutorial and scripted events.`}
       </Text>
 
       {STORY_BEATS.map((beat, i) => {
@@ -60,7 +75,25 @@ export function DevStory() {
         )
       })}
 
+      <SectionLabel spacing={2}>GUIDED TUTORIAL</SectionLabel>
+      {TUTORIAL_STEPS.map((step) => {
+        const done = doneSteps.has(step.id)
+        const isActive = activeStep?.id === step.id
+        return (
+          <View key={step.id} style={styles.row}>
+            <View style={styles.rowText}>
+              <Text variant="label">{step.id}</Text>
+              <Text variant="caption" style={{ color: done ? colors.status.success : colors.text.muted }}>
+                {done ? 'DONE' : isActive ? 'ACTIVE' : 'PENDING'}
+                {` - after ${step.afterBeat}`}
+              </Text>
+            </View>
+          </View>
+        )
+      })}
+
       <View style={styles.actions}>
+        <Button size="sm" variant="secondary" onPress={resetTutorial}>Reset tutorial</Button>
         <Button size="sm" variant="secondary" onPress={resetStory}>Reset story</Button>
       </View>
     </Surface>
