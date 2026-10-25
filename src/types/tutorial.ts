@@ -52,7 +52,7 @@ export const HINT_RETURN_TO_SLAY = 'Return to the Warfront and slay monsters to 
 export const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 'tap_slay', afterBeat: 'prologue', target: 'slay',
-    hint: 'Tap SLAY to strike the monsters.',
+    hint: 'Tap the monster to strike it.',
     isDone: (s) => s.totalClicks >= 1,
   },
   {

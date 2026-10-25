@@ -1,47 +1,49 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react'
+import React, { useRef, useCallback, useState } from 'react'
 import { View, StyleSheet, Animated, useWindowDimensions, LayoutChangeEvent } from 'react-native'
-import { Text, Badge, InspirationIcon, StorySpotlight, CoachTarget } from '../components'
+import { Text, StoryObjective, StorySpotlight, CoachTarget } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
-import { MonsterCircle } from '../components/MonsterCircle'
-import type { MonsterCircleHandle } from '../components/MonsterCircle'
-import { useHaptics } from '../hooks/useHaptics'
-import { useKillEvents } from '../hooks/useKillEvents'
 import { ResourceBar } from '../components/ResourceBar'
+import { Battlefield } from '../components/Battlefield'
+import type { BattlefieldHandle } from '../components/Battlefield'
 import { useGame } from '../context/GameContext'
 import { useShakeRequest } from '../context/ShakeContext'
 import { useScreenShake } from '../hooks/useScreenShake'
 import { useFlavorText } from '../hooks/useFlavorText'
+import { useKillEvents } from '../hooks/useKillEvents'
+import { useHaptics } from '../hooks/useHaptics'
 import { useSfx } from '../hooks/useSfx'
 import { SFX } from '../data/sfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, getFighterCost, getRepairerCost, isSystemOn } from '../types/game'
-import { battleLayout, TALL_WINDOW, ORB_GAP, FLAVOR_H } from '../types/warfrontLayout'
-import { WarfrontStatus } from './warfront/WarfrontStatus'
+import { battlefieldLayout, TALL_WINDOW, FLAVOR_H } from '../types/warfrontLayout'
 import { PopulationChips } from './warfront/PopulationChips'
+import { Gate } from './warfront/Gate'
 
 const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.rally }
 const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.repair }
 
+/**
+ * The Warfront is a scene read top to bottom along the monsters' path: they come from the
+ * top, the whole battlefield is the tap target, and the gate sits by the thumb at the bottom.
+ */
 export function GameScreen() {
   const { state, click, rallyFighter, directRepairer, effectiveAutoRate } = useGame()
   const { shakeNonce } = useShakeRequest()
   const shakeStyle = useScreenShake(shakeNonce)
-  const incomeFlash = useRef(new Animated.Value(1)).current
   const flavor = useFlavorText(COMBAT_LINES)
   const windowHeight = useWindowDimensions().height
 
-  // The battle circle is sized from the height the battle area actually gets
-  const [battleHeight, setBattleHeight] = useState(0)
-  const onBattleLayout = (e: LayoutChangeEvent) => setBattleHeight(Math.floor(e.nativeEvent.layout.height))
-  const battle = battleLayout(battleHeight)
+  // The battlefield takes whatever height is left; its contents are sized to fit it
+  const [fieldHeight, setFieldHeight] = useState(0)
+  const onFieldLayout = (e: LayoutChangeEvent) => setFieldHeight(Math.floor(e.nativeEvent.layout.height))
+  const field = battlefieldLayout(fieldHeight)
 
   const playClick = useSfx(SFX.CLICK)
-
   const playKill = useSfx(SFX.COIN)
   const haptics = useHaptics()
-  const monsterRef = useRef<MonsterCircleHandle>(null)
+  const battlefieldRef = useRef<BattlefieldHandle>(null)
 
   const handleStrike = useCallback(() => {
     click()
@@ -53,27 +55,14 @@ export function GameScreen() {
   useKillEvents(state.monstersDefeated, state.monsterIndex, (monster) => {
     haptics.medium()
     playKill()
-    monsterRef.current?.showBounty(`+${monster.bounty.toFixed(2)}`)
+    battlefieldRef.current?.showBounty(`+${monster.bounty.toFixed(2)}`)
     if (Math.random() < 0.25) flavor.show()
   })
-
-  // Subtle pulse on the income indicator to show it's "alive"
-  useEffect(() => {
-    if (effectiveAutoRate <= 0) return
-    const pulse = Animated.loop(
-      Animated.sequence([
-        Animated.timing(incomeFlash, { toValue: 0.5, duration: 1500, useNativeDriver: true }),
-        Animated.timing(incomeFlash, { toValue: 1, duration: 1500, useNativeDriver: true }),
-      ])
-    )
-    pulse.start()
-    return () => pulse.stop()
-  }, [effectiveAutoRate, incomeFlash])
 
   const rallyOn = isSystemOn(state, 'rally')
   const repairOn = isSystemOn(state, 'repair')
   const hungerOn = isSystemOn(state, 'hunger')
-  // Short windows drop the footer line so the circle keeps its room
+  // Short windows drop the footer line so the battlefield keeps its room
   const showFooter = windowHeight >= TALL_WINDOW
 
   return (
@@ -83,56 +72,32 @@ export function GameScreen() {
         food={state.food}
         foodSystemActive={hungerOn}
         autoInspPerSec={effectiveAutoRate}
-        hideInspiration
       />
-      <WarfrontStatus />
-
-      {/* HERO: Inspiration is the primary number */}
-      <View style={styles.heroSection}>
-        <View style={styles.inspRow}>
-          <InspirationIcon size={24} />
-          <Text variant="display" color="link">
-            {formatNumber(state.inspiration)}
-          </Text>
-        </View>
-        <View style={styles.heroSub}>
-          <Text variant="bodySmall" color="muted">inspiration</Text>
-          {effectiveAutoRate > 0 && (
-            <Animated.View style={{ opacity: incomeFlash }}>
-              <Badge icon="trending-up" color={colors.status.success}>
-                <Text variant="caption" style={{ color: colors.status.success }}>
-                  +{effectiveAutoRate.toFixed(2)} insp/s
-                </Text>
-              </Badge>
-            </Animated.View>
-          )}
-        </View>
-      </View>
-
+      <StoryObjective />
       <PopulationChips />
 
-      {/* Battle area: takes whatever height is left; the circle is sized to fit it */}
-      <View style={styles.battleArea} onLayout={onBattleLayout}>
-        {battle.showFlavor && (
-          <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} reserveHeight={FLAVOR_H} />
-        )}
-        {battleHeight > 0 && (
-          <View style={{ marginTop: ORB_GAP }}>
-            <MonsterCircle
-              diameter={battle.diameter}
-              monsterIndex={state.monsterIndex}
-              monsterHp={state.monsterHp}
-              kills={state.monstersDefeated}
-              ref={monsterRef}
-              damage={state.tapDamage}
-              onStrike={handleStrike}
-              coachId="slay"
-            />
-          </View>
+      {/* Battlefield: the tap target, between the top rows and the gate */}
+      <View style={styles.battlefield} onLayout={onFieldLayout}>
+        {fieldHeight > 0 && (
+          <Battlefield
+            ref={battlefieldRef}
+            monster={field.monster}
+            monsterIndex={state.monsterIndex}
+            monsterHp={state.monsterHp}
+            kills={state.monstersDefeated}
+            damage={state.tapDamage}
+            onStrike={handleStrike}
+            coachId="slay"
+            header={field.showFlavor ? (
+              <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} reserveHeight={FLAVOR_H} />
+            ) : undefined}
+          />
         )}
       </View>
 
-      {/* Command row: Rally + Repair as secondary HarvestOrbs */}
+      <Gate />
+
+      {/* Command row: Rally + Repair below the gate, near the thumb */}
       {(rallyOn || repairOn) && (
         <View style={styles.commandRow}>
           {rallyOn && (
@@ -173,15 +138,13 @@ export function GameScreen() {
         </View>
       )}
 
-      {/* Footer: one line, kills and reward per tap (only on tall windows) */}
+      {/* Footer: one line, kills and damage per tap (only on tall windows) */}
       {showFooter && (
         <View style={styles.footer}>
           <Text variant="caption" color="muted">
             {Math.floor(state.monstersDefeated)} monsters slain
           </Text>
-          <Badge iconElement={<InspirationIcon size={8} />} color={gold[400]} variant="ghost">
-            <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
-          </Badge>
+          <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
         </View>
       )}
     </Animated.View>
@@ -193,25 +156,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.bg.base,
   },
-  heroSection: {
-    alignItems: 'center',
-    paddingTop: spacing[1],
-  },
-  heroSub: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing[2],
-  },
-  inspRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing[2],
-  },
-  battleArea: {
+  battlefield: {
     flex: 1,
     minHeight: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   commandRow: {
     flexDirection: 'row',
@@ -233,7 +180,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing[2],
+    gap: spacing[3],
     paddingBottom: spacing[2],
     paddingTop: spacing[1],
   },

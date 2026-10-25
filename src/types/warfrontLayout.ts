@@ -1,40 +1,52 @@
 // Warfront layout math (pure, so the fit on small and large phones is tested)
 
-/** Battle circle diameter limits in dp */
-export const MIN_ORB = 180
-export const MAX_ORB = 260
-/** Smallest circle we will ever draw, when even the minimum cannot fit */
-export const FLOOR_ORB = 120
+/** Monster sprite diameter limits in dp */
+export const MAX_MONSTER = 200
+/** The sprite is kept at least this big while the flavour line or queue row can still be dropped */
+export const MIN_MONSTER = 120
+/** Smallest sprite we will ever draw, when even dropping the optional rows is not enough */
+export const FLOOR_MONSTER = 80
 
-/** Padding of the touch area around the circle */
-export const ORB_PAD = 8
-/** Gap kept between the circle's touch area and the row below */
-export const ORB_GAP = 4
 /** Height of the flavour row: always rendered at this height, one line with ellipsis */
 export const FLAVOR_H = 36
+/** The dim queue of next monsters */
+export const QUEUE_H = 28
+/** Monster name under the sprite */
+export const NAME_H = 20
+/** Enemy HP under the name: pips, or "cur/max" text over a bar */
+export const HP_H = 30
+/** Breathing room above and below the stack */
+export const FIELD_PAD = 8
 
-/** Windows shorter than this drop the footer line to give the circle room */
+/** Windows shorter than this drop the footer line to give the battlefield room */
 export const TALL_WINDOW = 700
 
-export interface BattleLayout {
-  /** Circle diameter */
-  diameter: number
-  /** Whether the flavour line fits above the circle */
+export interface BattlefieldLayout {
+  /** Monster sprite diameter */
+  monster: number
   showFlavor: boolean
+  showQueue: boolean
 }
 
 /**
- * Size the battle circle from the free height of the battle area. The circle is
- * 180-260dp when it can be; the flavour line is dropped before the circle shrinks
- * below 180; and below that the circle shrinks (down to 120) rather than overlap.
+ * Lay out the battlefield (the tap area between the wave row and the gate) in its measured
+ * height. The stack is [flavour][queue][monster][name][HP]. The flavour line goes first when
+ * space is short, then the queue, and only then does the monster shrink (down to 80dp),
+ * so nothing ever overlaps the gate below.
  */
-export function battleLayout(freeHeight: number): BattleLayout {
-  const chrome = ORB_PAD * 2 + ORB_GAP
-  const withFlavor = freeHeight - chrome - FLAVOR_H
-  const showFlavor = withFlavor >= MIN_ORB
-  const room = showFlavor ? withFlavor : freeHeight - chrome
-  const diameter = Math.max(FLOOR_ORB, Math.min(MAX_ORB, Math.floor(room)))
-  return { diameter, showFlavor }
+export function battlefieldLayout(height: number, opts: { queue?: boolean } = {}): BattlefieldLayout {
+  const fixed = NAME_H + HP_H + FIELD_PAD * 2
+  const queueH = opts.queue ? QUEUE_H : 0
+  const fits = (flavor: boolean, queue: boolean) =>
+    height - fixed - (flavor ? FLAVOR_H : 0) - (queue ? queueH : 0)
+
+  const tries: Array<[boolean, boolean]> = [[true, true], [false, true], [false, false]]
+  for (const [showFlavor, showQueue] of tries) {
+    const room = fits(showFlavor, showQueue)
+    if (room >= MIN_MONSTER) return { monster: Math.min(MAX_MONSTER, Math.floor(room)), showFlavor, showQueue: showQueue && !!opts.queue }
+  }
+  const room = fits(false, false)
+  return { monster: Math.max(FLOOR_MONSTER, Math.min(MAX_MONSTER, Math.floor(room))), showFlavor: false, showQueue: false }
 }
 
 // -----------------------------------------------------------------------------
