@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { DEV_TOOLS_ENABLED } from '../config/devTools'
 
 /**
  * Development-only test controls (speed and story pacing).
  *
- * In release builds (__DEV__ false) the provider ignores storage and always
+ * In player builds (DEV_TOOLS_ENABLED false) the provider ignores storage and always
  * reports speed 1 and live pacing, so none of this can reach players.
  */
 
@@ -33,11 +34,11 @@ interface DevSettingsContextType extends DevSettings {
 const DevSettingsContext = createContext<DevSettingsContextType | null>(null)
 
 export function DevSettingsProvider({ children }: { children: React.ReactNode }) {
-  const [settings, setSettings] = useState<DevSettings>(__DEV__ ? DEV_DEFAULTS : RELEASE_SETTINGS)
-  const [loaded, setLoaded] = useState(!__DEV__)
+  const [settings, setSettings] = useState<DevSettings>(DEV_TOOLS_ENABLED ? DEV_DEFAULTS : RELEASE_SETTINGS)
+  const [loaded, setLoaded] = useState(!DEV_TOOLS_ENABLED)
 
   useEffect(() => {
-    if (!__DEV__) return
+    if (!DEV_TOOLS_ENABLED) return
     AsyncStorage.getItem(STORAGE_KEY)
       .then((raw) => {
         if (!raw) return
@@ -51,7 +52,7 @@ export function DevSettingsProvider({ children }: { children: React.ReactNode })
   }, [])
 
   const update = useCallback((partial: Partial<DevSettings>) => {
-    if (!__DEV__) return
+    if (!DEV_TOOLS_ENABLED) return
     setSettings((prev) => {
       const next = { ...prev, ...partial }
       AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {})
@@ -65,7 +66,7 @@ export function DevSettingsProvider({ children }: { children: React.ReactNode })
   if (!loaded) return null
 
   return (
-    <DevSettingsContext.Provider value={{ ...settings, isDev: __DEV__, setSpeed, setPacing }}>
+    <DevSettingsContext.Provider value={{ ...settings, isDev: DEV_TOOLS_ENABLED, setSpeed, setPacing }}>
       {children}
     </DevSettingsContext.Provider>
   )

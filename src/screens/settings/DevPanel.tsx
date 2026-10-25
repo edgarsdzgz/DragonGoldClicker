@@ -12,7 +12,7 @@ import { DevCheckpoints } from './DevCheckpoints'
 import { DevStory } from './DevStory'
 
 /**
- * Dev-only test panel (Settings > Dev). Rendered only when __DEV__ is true.
+ * Dev-only test panel (Settings > Dev). Rendered only when DEV_TOOLS_ENABLED (src/config/devTools.ts).
  * Speeds up, skips, and replays progression so testing never takes hours.
  */
 

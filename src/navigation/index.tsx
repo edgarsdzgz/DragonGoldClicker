@@ -194,6 +194,9 @@ function TabNavigator() {
     <View style={{ flex: 1 }}>
       <Tab.Navigator
         initialRouteName="GameTab"
+        // Hardware back returns to Warfront (always unlocked). The default, firstRoute,
+        // jumped to the Draconia tab and bypassed its lock.
+        backBehavior="initialRoute"
         screenOptions={{
           headerStyle: {
             backgroundColor: colors.bg.surface1,

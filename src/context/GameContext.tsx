@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { AppState } from 'react-native'
+import { DEV_TOOLS_ENABLED } from '../config/devTools'
 import type { GameState, SoldierTier, SoldierCounts, ForagerTier, ForagerCounts, RoleId, StarvationResult, WandererEncounter, ResearchPrereq, MilestoneDef } from '../types/game'
 import {
   DEFAULT_GAME_STATE,
@@ -1084,12 +1085,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const devApply = useCallback((updater: (s: GameState) => GameState) => {
-    if (!__DEV__) return
+    if (!DEV_TOOLS_ENABLED) return
     setState(updater)
   }, [])
 
   const devForceWanderer = useCallback(() => {
-    if (!__DEV__) return
+    if (!DEV_TOOLS_ENABLED) return
     wandererTimerRef.current = 0
     setState((prev) => ({ ...prev, pendingWanderer: rollWandererEncounter(getTotalSoldiers(prev.soldiers), getTotalForagers(prev.foragers)) }))
   }, [])

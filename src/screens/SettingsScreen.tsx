@@ -9,14 +9,15 @@ import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
 import { useAudioSettings } from '../context/AudioSettingsContext'
 import { DevPanel } from './settings/DevPanel'
+import { DEV_TOOLS_ENABLED } from '../config/devTools'
 import { colors, spacing } from '../theme'
 import { formatNumber, getTotalSoldiers, getFoodConsumption, FOOD_CHECK_INTERVAL, RESEARCH_NODES, isSystemOn } from '../types/game'
 
 const TABS: PillTab[] = [
   { key: 'settings', label: 'Settings', icon: 'settings-outline' },
   { key: 'stats', label: 'Stats', icon: 'stats-chart' },
-  // Test tools: development builds only, never shipped to players
-  ...(__DEV__ ? [{ key: 'dev', label: 'Dev', icon: 'construct-outline' } as PillTab] : []),
+  // Test tools: development and playtest builds only, never shipped to players
+  ...(DEV_TOOLS_ENABLED ? [{ key: 'dev', label: 'Dev', icon: 'construct-outline' } as PillTab] : []),
 ]
 
 export function SettingsScreen() {
@@ -36,7 +37,7 @@ export function SettingsScreen() {
         />
       )}
       {activeTab === 'stats' && <StatsContent />}
-      {__DEV__ && activeTab === 'dev' && (
+      {DEV_TOOLS_ENABLED && activeTab === 'dev' && (
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.content}
