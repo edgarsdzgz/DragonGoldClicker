@@ -9,6 +9,7 @@ import type { SystemId, BuildingRevealId } from './systems'
 
 export type BeatId =
   | 'prologue'
+  | 'elder_approaches'
   | 'first_renown'
   | 'call_to_arms'
   | 'the_breach'
@@ -70,9 +71,14 @@ export const STORY_BEATS: BeatDef[] = [
     id: 'prologue', chapter: 0, dwellSec: 0,
     trigger: (s) => !seen(s, 'prologue'),
     unlocks: ['slay'],
-    // No scene: a fresh install shows only the Begin Wave 0 button
-    silent: true,
+    // Owner's opening (2026-10-25): narration sets the scene at the gate, then the elder speaks
     objective: { label: 'Slay 5 monsters', current: (s) => s.monstersDefeated, target: 5 },
+  },
+  {
+    // Elder Pyreth approaches right after the narration; the Begin Wave 0 step follows her scene
+    id: 'elder_approaches', chapter: 0, dwellSec: 0,
+    trigger: (s) => seen(s, 'prologue'),
+    unlocks: [],
   },
   {
     // The first kill explains renown; the wave continues after the scene

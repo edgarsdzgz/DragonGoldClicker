@@ -54,12 +54,12 @@ export const HINT_RETURN_TO_SLAY = 'Return to the Warfront and slay monsters to 
 
 export const TUTORIAL_STEPS: TutorialStep[] = [
   {
-    id: 'begin_wave', afterBeat: 'prologue', target: 'begin_wave',
-    hint: 'Begin the first wave.',
+    id: 'begin_wave', afterBeat: 'elder_approaches', target: 'begin_wave',
+    hint: 'The first wave is coming. Tap when you are ready to confront them.',
     isDone: (s) => s.waveActive || s.monstersDefeated > 0,
   },
   {
-    id: 'tap_slay', afterBeat: 'prologue', target: 'slay',
+    id: 'tap_slay', afterBeat: 'elder_approaches', target: 'slay',
     requires: (s) => s.waveActive,
     hint: 'Tap the kobold to strike it.',
     isDone: (s) => s.totalClicks >= 1,

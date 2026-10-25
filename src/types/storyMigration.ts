@@ -8,6 +8,13 @@ import { STORY_BEATS } from './story'
 // Existing players keep their progress. Beats are marked seen from what the save
 // has already done; backfilled beats show no scene.
 
+/** Whether the save has played at all (so the opening scenes are not replayed for it) */
+export function hasPlayed(s: GameState): boolean {
+  if (s.totalClicks > 0 || s.monstersDefeated > 0 || s.waveActive || s.totalInspirationEarned > 0) return true
+  // Anything a later beat turns on counts too
+  return Object.values(EVIDENCE).some((proof) => proof?.(s)) || Object.values(SIDE_EVIDENCE).some((proof) => proof?.(s))
+}
+
 /** Proof, from a v1 save, that the player already used what a beat turns on */
 const EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   first_renown: (s) => s.monstersDefeated > 0,
@@ -42,6 +49,8 @@ export function backfillScripted(save: GameState): string[] {
  * Side beats are marked when their own trigger (or evidence) passes.
  */
 export function backfillStory(save: GameState): GameState {
+  // A save that has not played at all gets the opening, like a fresh install
+  if (!hasPlayed(save)) return { ...save, beatsSeen: [], playSeconds: 0, lastBeatAtPlaySec: 0 }
   // The whole table: the pause only stops the director from offering new beats
   const main = STORY_BEATS.filter((b) => !b.side)
   const lastProven = main.reduce((last, b, i) => (EVIDENCE[b.id]?.(save) ? i : last), -1)
@@ -62,6 +71,16 @@ export function backfillStory(save: GameState): GameState {
   return { ...save, beatsSeen: work.beatsSeen, playSeconds: 0, lastBeatAtPlaySec: 0 }
 }
 
+/** Add a beat to beatsSeen before the first seen beat that follows it in the table */
+function insertInOrder(seen: string[], id: string): string[] {
+  const order = (b: string) => STORY_BEATS.findIndex((x) => x.id === b)
+  const at = seen.findIndex((other) => order(other) > order(id))
+  return at === -1 ? [...seen, id] : [...seen.slice(0, at), id, ...seen.slice(at)]
+}
+
+/** The opening scenes, in order */
+const OPENING_BEATS: BeatId[] = ['prologue', 'elder_approaches']
+
 /**
  * Beats added to the table before ones a save has already seen (first_renown, say) must not play
  * their scene for that save. On every load, any unseen main beat that sits before the furthest seen
@@ -69,18 +88,22 @@ export function backfillStory(save: GameState): GameState {
  * beatsSeen before the first seen beat that follows it in the table, so the order stays sensible.
  */
 export function catchUpBeats(save: GameState): GameState {
+  // A save that has fought never gets the opening replayed, whatever its beatsSeen says
+  if (save.monstersDefeated > 0 || save.waveActive) {
+    let seenNow = save.beatsSeen
+    for (const id of OPENING_BEATS) if (!seenNow.includes(id)) seenNow = insertInOrder(seenNow, id)
+    if (seenNow !== save.beatsSeen) save = { ...save, beatsSeen: seenNow }
+  }
   const main = STORY_BEATS.filter((b) => !b.side)
   const furthest = main.reduce((last, b, i) => (save.beatsSeen.includes(b.id) ? i : last), -1)
   if (furthest < 0) return save
 
-  const order = (id: string) => STORY_BEATS.findIndex((b) => b.id === id)
   let seen = save.beatsSeen
   for (let i = 0; i < furthest; i++) {
     const beat = main[i]
     if (seen.includes(beat.id)) continue
     if (!(beat.trigger(save) || EVIDENCE[beat.id]?.(save))) continue
-    const at = seen.findIndex((id) => order(id) > order(beat.id))
-    seen = at === -1 ? [...seen, beat.id] : [...seen.slice(0, at), beat.id, ...seen.slice(at)]
+    seen = insertInOrder(seen, beat.id)
   }
   return seen === save.beatsSeen ? save : { ...save, beatsSeen: seen }
 }

@@ -52,19 +52,19 @@ describe('catchUpBeats', () => {
   it('marks first_renown seen for a far-along save without playing a scene for it', () => {
     const save = make({ beatsSeen: ['prologue', 'call_to_arms', 'the_breach'], monstersDefeated: 30, fighters: 3 })
     const out = catchUpBeats(save)
-    expect(out.beatsSeen).toEqual(['prologue', 'first_renown', 'call_to_arms', 'the_breach'])
+    expect(out.beatsSeen).toEqual(['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach'])
   })
 
   it('leaves a save alone when the missing beat does not hold yet', () => {
     const save = make({ beatsSeen: ['prologue', 'call_to_arms'], monstersDefeated: 0 })
-    // first_renown trigger (a kill) is false and so is its evidence
-    expect(catchUpBeats(save).beatsSeen).toEqual(['prologue', 'call_to_arms'])
+    // first_renown trigger (a kill) is false and so is its evidence; elder_approaches holds (prologue is seen)
+    expect(catchUpBeats(save).beatsSeen).toEqual(['prologue', 'elder_approaches', 'call_to_arms'])
   })
 
   it('does nothing for a save at the start or fully caught up', () => {
     const fresh = make({})
     expect(catchUpBeats(fresh)).toBe(fresh)
-    const done = make({ beatsSeen: ['prologue', 'first_renown'], monstersDefeated: 3 })
+    const done = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], monstersDefeated: 3 })
     expect(catchUpBeats(done)).toBe(done)
   })
 
@@ -74,6 +74,34 @@ describe('catchUpBeats', () => {
       fightersRallied: 2, fighters: 2, waveNumber: 3, waveKills: 2, waveActive: true,
     })
     const out = migrateSave(save, 6)
-    expect(out.beatsSeen).toEqual(['prologue', 'first_renown', 'call_to_arms'])
+    expect(out.beatsSeen).toEqual(['prologue', 'elder_approaches', 'first_renown', 'call_to_arms'])
+  })
+})
+
+describe('the opening is never replayed for a save that has played', () => {
+  const opening = ['prologue', 'elder_approaches']
+
+  it('a save that has fought gets both opening beats marked, in order, with no scenes', () => {
+    const fought = make({ beatsSeen: [], monstersDefeated: 4 })
+    expect(catchUpBeats(fought).beatsSeen).toEqual(expect.arrayContaining(opening))
+    expect(catchUpBeats(fought).beatsSeen.slice(0, 2)).toEqual(opening)
+    const mid = make({ beatsSeen: ['prologue', 'first_renown'], waveActive: true })
+    expect(catchUpBeats(mid).beatsSeen).toEqual(['prologue', 'elder_approaches', 'first_renown'])
+  })
+
+  it('a save that saw the prologue and anything after it gets elder_approaches silently', () => {
+    const out = catchUpBeats(make({ beatsSeen: ['prologue', 'first_renown', 'call_to_arms'] }))
+    expect(out.beatsSeen).toEqual(['prologue', 'elder_approaches', 'first_renown', 'call_to_arms'])
+  })
+
+  it('a pre-story save that has played skips the opening; an untouched one plays it', () => {
+    expect(migrateSave(make({ saveMigrationVersion: 1, totalClicks: 30, monstersDefeated: 6 }), 1).beatsSeen.slice(0, 2)).toEqual(opening)
+    expect(migrateSave(make({ saveMigrationVersion: 1 }), 1).beatsSeen).toEqual([])
+  })
+
+  it('only a truly fresh save, or a mid-opening one, plays it', () => {
+    expect(migrateSave(make({ saveMigrationVersion: 7 }), 7).beatsSeen).toEqual([])
+    // Closed between the two scenes: the elder still has her scene to come
+    expect(migrateSave(make({ saveMigrationVersion: 7, beatsSeen: ['prologue'] }), 7).beatsSeen).toEqual(['prologue'])
   })
 })

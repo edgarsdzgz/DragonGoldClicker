@@ -204,7 +204,7 @@ describe('a fresh game reaches call_to_arms in the Wave 3 camp', () => {
   const { findNextBeat } = require('../storyDirector')
 
   it('plays it exactly there, with about 4.75 renown', () => {
-    let s: GameState = { ...DEFAULT_GAME_STATE, beatsSeen: ['prologue', 'first_renown'] }
+    let s: GameState = { ...DEFAULT_GAME_STATE, beatsSeen: ['prologue', 'elder_approaches', 'first_renown'] }
     const firedIn: string[] = []
     for (let wave = 0; wave <= 3; wave++) {
       // In camp: does the director offer call_to_arms here?

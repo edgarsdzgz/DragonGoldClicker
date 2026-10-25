@@ -32,7 +32,25 @@ const LIRAE = { speaker: 'Lirae the Ink-Wing', icon: 'book' } as const
 
 /** Silent beats (mend_the_walls, the_keep_stands) have no scene and no entry here */
 export const SCENES: Partial<Record<BeatId, SceneDef>> = {
-  // prologue is silent: a fresh install shows only the Begin Wave 0 button
+  // The owner's opening: narration at the gate, then the elder. The Begin Wave 0 hint carries
+  // the last line ("The first wave is coming...").
+  prologue: {
+    speaker: 'The Gate of Draconia',
+    icon: 'flame',
+    title: 'The Last Bastion',
+    lines: [
+      'You are one of the last lines of defense in Draconia.',
+      'The lone dragon standing upon its gate. Beyond the walls, the masses of the apocalypse lie camped, seeking to snuff out the last bastion of light.',
+    ],
+  },
+  elder_approaches: {
+    ...PYRETH,
+    title: 'The Elder Approaches',
+    lines: [
+      'I have known you your whole life. I believe you have the strength to defend Draconia, but you cannot hold the gate alone.',
+      'You must stand up and fight. The renown you earn defending our people may inspire the remaining villagers to stand beside you.',
+    ],
+  },
   first_renown: {
     ...PYRETH,
     title: 'Renown',

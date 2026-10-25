@@ -12,7 +12,7 @@ describe('getActiveStep', () => {
   })
 
   it('starts with begin_wave, then tap_slay once a monster is on the field', () => {
-    let s = make({ beatsSeen: ['prologue'] })
+    let s = make({ beatsSeen: ['prologue', 'elder_approaches'] })
     expect(getActiveStep(s)?.id).toBe('begin_wave')
     // tap_slay waits until the wave has begun (nothing dims in between)
     expect(getActiveStep({ ...s, tutorialStepsDone: ['begin_wave'] })).toBeNull()
@@ -21,16 +21,16 @@ describe('getActiveStep', () => {
   })
 
   it('advances as steps complete', () => {
-    let s = make({ beatsSeen: ['prologue'], waveActive: true })
+    let s = make({ beatsSeen: ['prologue', 'elder_approaches'], waveActive: true })
     s = { ...s, tutorialStepsDone: ['begin_wave', 'tap_slay'] }
     // next step belongs to call_to_arms, which is unseen: the tutorial holds back
     expect(getActiveStep(s)).toBeNull()
-    s = { ...s, beatsSeen: ['prologue', 'first_renown', 'call_to_arms'] }
+    s = { ...s, beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms'] }
     expect(getActiveStep(s)?.id).toBe('tap_rally')
   })
 
   it('is strictly sequential even if a later beat is already seen', () => {
-    const s = make({ beatsSeen: ['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls'] })
+    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls'] })
     expect(getActiveStep(s)?.id).toBe('begin_wave')
   })
 
@@ -60,12 +60,12 @@ describe('isStepComplete', () => {
 
 describe('backfillTutorial', () => {
   it('marks nothing for a save that has only seen the prologue', () => {
-    expect(backfillTutorial(make({ beatsSeen: ['prologue'] }))).toEqual([])
+    expect(backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches'] }))).toEqual([])
   })
 
   it('marks every step up to the proven one for the 3/3/3 example save', () => {
     const done = backfillTutorial(make({
-      beatsSeen: ['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate', 'a_city_to_build'],
+      beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate', 'a_city_to_build'],
       totalClicks: 50, fighters: 3, fightersRallied: 3, repairers: 3, repairersDirected: 3,
       foragers: { gatherers: 3, trappers: 0, rangers: 0 },
       foragersTrained: { gatherers: 3, trappers: 0, rangers: 0 },
@@ -75,13 +75,13 @@ describe('backfillTutorial', () => {
   })
 
   it('leaves steps pending when their beat is unseen', () => {
-    const done = backfillTutorial(make({ beatsSeen: ['prologue', 'first_renown', 'call_to_arms'], totalClicks: 5, fighters: 2 }))
+    const done = backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms'], totalClicks: 5, fighters: 2 }))
     expect(done).toEqual(['begin_wave', 'tap_slay', 'tap_rally'])
   })
 
   it('marks everything for a save with the Garrison built', () => {
     const done = backfillTutorial(make({
-      beatsSeen: ['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'a_city_to_build'],
+      beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'a_city_to_build'],
       barracksLevel: 1,
     }))
     expect(done).toHaveLength(TUTORIAL_STEPS.length)
@@ -188,8 +188,8 @@ describe('begin_wave step', () => {
 
   it('targets the Begin wave button with the planned hint', () => {
     expect(step.target).toBe('begin_wave')
-    expect(step.hint).toBe('Begin the first wave.')
-    expect(step.afterBeat).toBe('prologue')
+    expect(step.hint).toBe('The first wave is coming. Tap when you are ready to confront them.')
+    expect(step.afterBeat).toBe('elder_approaches')
   })
 
   it('is done once a wave is on or any monster has been slain', () => {
@@ -199,8 +199,16 @@ describe('begin_wave step', () => {
   })
 
   it('backfill marks it done for a save that has fought, and leaves a fresh one pending', () => {
-    expect(backfillTutorial(make({ beatsSeen: ['prologue'], monstersDefeated: 3, totalClicks: 10 }))).toEqual(['begin_wave', 'tap_slay'])
-    expect(backfillTutorial(make({ beatsSeen: ['prologue'], waveActive: true }))).toEqual(['begin_wave'])
-    expect(backfillTutorial(make({ beatsSeen: ['prologue'] }))).toEqual([])
+    expect(backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches'], monstersDefeated: 3, totalClicks: 10 }))).toEqual(['begin_wave', 'tap_slay'])
+    expect(backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches'], waveActive: true }))).toEqual(['begin_wave'])
+    expect(backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches'] }))).toEqual([])
+  })
+})
+
+describe('the opening and the Begin Wave 0 step', () => {
+  it('begin_wave is not active until elder_approaches has closed', () => {
+    expect(getActiveStep(make({}))).toBeNull()
+    expect(getActiveStep(make({ beatsSeen: ['prologue'] }))).toBeNull()
+    expect(getActiveStep(make({ beatsSeen: ['prologue', 'elder_approaches'] }))?.id).toBe('begin_wave')
   })
 })
