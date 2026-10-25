@@ -2,7 +2,10 @@ import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef 
 import { View, StyleSheet, Pressable, Animated, AppState, GestureResponderEvent, LayoutChangeEvent } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
+import { PosedMonster } from './PosedMonster'
+import type { PosedMonsterHandle } from './PosedMonster'
 import { MonsterIcon } from './MonsterIcon'
+import { useAppActive } from '../hooks/useAppActive'
 import type { MonsterDef } from '../types/monsters'
 import { Text } from './Text'
 import { EnemyHp } from './EnemyHp'
@@ -107,18 +110,20 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const tiltSide = useRef(1)
   // Where the last press landed, in dp from the sprite's top-left (hold repeats reuse it)
   const tapPoint = useRef({ x: size / 2, y: size / 2 })
-  const spriteWindow = useRef<{ x: number; y: number } | null>(null)
+  // The sprite's offset inside the press area; both are measured in the press area's own space
+  const spriteOffset = useRef({ x: 0, y: 0 })
+  const focused = useIsFocused()
+  const appActive = useAppActive()
 
   // Pose: the hit frame for ~120ms on each strike, else idle (or hurt at 1/3 HP or less)
-  const [hitPose, setHitPose] = React.useState(false)
-  const hitTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const posed = useRef<PosedMonsterHandle>(null)
   const resting = restingPose(monsterHp, def.hp)
-  const pose = hitPose ? 'hit' : resting
 
   // Idle breathing: ~2% over ~1.5s; hurt breathes faster and uneven. Off with Reduce Motion.
   const breath = useRef(new Animated.Value(0)).current
   useEffect(() => {
-    if (reduceMotion) {
+    // Only breathe while this screen is showing and the app is in the foreground
+    if (reduceMotion || !focused || !appActive) {
       breath.setValue(0)
       return
     }
@@ -136,7 +141,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
         ]))
     loop.start()
     return () => loop.stop()
-  }, [reduceMotion, resting, breath])
+  }, [reduceMotion, resting, breath, focused, appActive])
 
   useImperativeHandle(ref, () => ({
     showBounty: (amount) =>
@@ -204,9 +209,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const strike = useCallback(() => {
     if (lockedRef.current || campRef.current) return
     onStrike()
-    setHitPose(true)
-    if (hitTimer.current) clearTimeout(hitTimer.current)
-    hitTimer.current = setTimeout(() => setHitPose(false), 120)
+    posed.current?.hit()
     const point = tapPoint.current
     numbers.current?.spawn({ x: point.x, y: size * 0.3, text: `-${damage}`, color: colors.text.primary })
     slashes.current?.slash(point.x, point.y)
@@ -251,7 +254,6 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   useEffect(() => () => {
     if (touchTimer.current) clearTimeout(touchTimer.current)
     if (holdTimer.current) clearTimeout(holdTimer.current)
-    if (hitTimer.current) clearTimeout(hitTimer.current)
     touching.current = false
   }, [])
 
@@ -262,7 +264,6 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     cancelHold()
   }, [inCamp, onPressOut, cancelHold])
 
-  const focused = useIsFocused()
   useEffect(() => {
     if (!focused) cancelHold()
   }, [focused, cancelHold])
@@ -276,13 +277,13 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
 
   const handlePressIn = (e: GestureResponderEvent) => {
     touching.current = true
-    const { pageX, pageY } = e.nativeEvent
-    const origin = spriteWindow.current
-    if (origin) {
-      const clamp = (v: number) => Math.max(size * 0.1, Math.min(size * 0.9, v))
-      tapPoint.current = { x: clamp(pageX - origin.x), y: clamp(pageY - origin.y) }
+    // locationX/Y are relative to the press area (its children ignore touches), as is the sprite offset
+    const { locationX, locationY } = e.nativeEvent
+    const clamp = (v: number) => Math.max(size * 0.1, Math.min(size * 0.9, v))
+    tapPoint.current = {
+      x: clamp(locationX - spriteOffset.current.x),
+      y: clamp(locationY - spriteOffset.current.y),
     }
-    spriteRef.current?.measureInWindow((x, y) => { spriteWindow.current = { x, y } })
     // Held for as long as the repeat starts: show the pulse
     holdTimer.current = setTimeout(() => setHolding(true), 300)
     if (!reduceMotion) Animated.timing(squash, { toValue: SQUASH, duration: 70, useNativeDriver: true }).start()
@@ -317,14 +318,20 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
         onPressIn={handlePressIn}
         onPress={handlePress}
         onPressOut={handlePressOut}
-        style={styles.press}
+        style={styles.pressArea}
         accessibilityRole="button"
         accessibilityLabel={monsterLabel({ monsterIndex, monsterHp })}
         accessibilityHint="Double tap to strike the monster"
       >
+        <View pointerEvents="none" style={styles.press}>
         {header}
         {queue}
-        <View ref={spriteRef} collapsable={false} style={{ width: size, height: size }}>
+        <View
+          ref={spriteRef}
+          collapsable={false}
+          onLayout={(e) => { spriteOffset.current = { x: e.nativeEvent.layout.x, y: e.nativeEvent.layout.y } }}
+          style={{ width: size, height: size }}
+        >
           {holding && !reduceMotion && (
             <Animated.View
               pointerEvents="none"
@@ -374,17 +381,18 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
             ]}
           >
             <LinearGradient colors={[colors.bg.surface2, colors.bg.surface1]} style={styles.inner}>
-              <MonsterIcon monster={def} size={Math.round(size * ART_SCALE)} color={gold[400]} pose={pose} />
+              <PosedMonster ref={posed} monster={def} size={Math.round(size * ART_SCALE)} color={gold[400]} resting={resting} spawnKey={kills} />
             </LinearGradient>
             <Animated.View pointerEvents="none" style={[styles.flash, { opacity: flash }]} />
           </Animated.View>
           <ClawSlash ref={slashes} size={Math.round(size * 0.9)} />
-          <SparkBurst ref={sparks} />
-          <EmberDissolve ref={embers} />
+          <SparkBurst ref={sparks} unit={size} />
+          <EmberDissolve ref={embers} unit={size} />
           <FloatingNumbers ref={numbers} />
         </View>
         <Text variant="label" center style={styles.name}>{def.name}</Text>
         <EnemyHp hp={monsterHp} max={def.hp} width={Math.min(fieldW - spacing[6] * 2, 260)} />
+        </View>
       </Pressable>}
     </Animated.View>
   )
@@ -394,6 +402,9 @@ const styles = StyleSheet.create({
   field: {
     flex: 1,
     alignSelf: 'stretch',
+  },
+  pressArea: {
+    flex: 1,
   },
   press: {
     flex: 1,

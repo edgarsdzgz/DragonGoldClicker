@@ -36,6 +36,8 @@ interface ParticleBurstProps {
   /** Particles alive at once; a burst recycles the oldest */
   max: number
   tint: string
+  /** Slot size to start with, so the first burst is already drawn at its real size */
+  initialSize?: number
 }
 
 /**
@@ -44,7 +46,7 @@ interface ParticleBurstProps {
  * screen readers. With Reduce Motion nothing travels: one soft fade at the origin.
  */
 export const ParticleBurst = forwardRef<ParticleBurstHandle, ParticleBurstProps>(function ParticleBurst(
-  { source, max, tint },
+  { source, max, tint, initialSize = 12 },
   ref,
 ) {
   const reduceMotion = useReduceMotion()
@@ -60,7 +62,7 @@ export const ParticleBurst = forwardRef<ParticleBurstHandle, ParticleBurstProps>
       size: 0,
     })),
   ).current
-  const sizes = useRef<number[]>(pool.map(() => 8)).current
+  const sizes = useRef<number[]>(pool.map(() => initialSize)).current
   const [, force] = React.useReducer((n: number) => n + 1, 0)
   const next = useRef(0)
 
