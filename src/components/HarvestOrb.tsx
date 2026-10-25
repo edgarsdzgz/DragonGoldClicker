@@ -7,6 +7,23 @@ import { useHaptics, useHoldPress } from '../hooks'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { colors, spacing } from '../theme'
 
+/** The preset for a size; a diameter rescales the large preset proportionally */
+function sizeFor(size: 'lg' | 'md', diameter?: number) {
+  const base = SIZES[size]
+  if (size !== 'lg' || !diameter) return base
+  const k = diameter / base.orb
+  return {
+    ...base,
+    orb: diameter,
+    glow: Math.round(diameter * (base.glow / base.orb)),
+    icon: Math.round(base.icon * k),
+    fontSize: Math.round(base.fontSize * k),
+    letterSpacing: base.letterSpacing * k,
+    padding: spacing[2],
+    shadowRadius: Math.round(base.shadowRadius * k),
+  }
+}
+
 interface HarvestOrbColors {
   /** Accent for icon, label text, border, glow ring, and shadow */
   accent: string
@@ -34,16 +51,18 @@ interface HarvestOrbProps {
   /** Disabled state -- dims visuals and blocks action */
   disabled?: boolean
   style?: ViewStyle
+  /** lg only: draw the circle at this diameter (dp) instead of 200 */
+  diameter?: number
   /** Opt into the guided tutorial under this target id */
   coachId?: string
 }
 
-export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabled, style, coachId }: HarvestOrbProps) {
+export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabled, style, coachId, diameter }: HarvestOrbProps) {
   const coach = useCoachTarget(coachId)
   const haptics = useHaptics()
   const scaleAnim = useRef(new Animated.Value(1)).current
   const glowAnim = useRef(new Animated.Value(0.3)).current
-  const dim = SIZES[size]
+  const dim = sizeFor(size, diameter)
 
   const animateTap = useCallback(() => {
     Animated.sequence([

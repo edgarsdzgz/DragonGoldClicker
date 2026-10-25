@@ -10,21 +10,25 @@ interface ObjectiveStripProps {
   label: string
   current: number
   target: number
+  /** Something to show at the right end of the line (e.g. a compact HP meter) */
+  right?: React.ReactNode
 }
 
 /** One line: icon, label, and progress as `current/target`. Presentational and reusable. */
-export function ObjectiveStrip({ label, current, target }: ObjectiveStripProps) {
+export function ObjectiveStrip({ label, current, target, right }: ObjectiveStripProps) {
   const shown = Math.min(Math.floor(current), target)
   return (
-    <View
-      style={styles.strip}
-      accessible
-      accessibilityRole="text"
-      accessibilityLabel={`Objective: ${label}, ${shown} of ${target}`}
-    >
-      <Ionicons name="flag" size={12} color={gold[400]} />
-      <Text variant="caption" style={styles.label}>{label}</Text>
-      <Text variant="caption" style={styles.count}>{`${shown}/${target}`}</Text>
+    <View style={styles.strip}>
+      <View
+        style={styles.objective}
+        accessible
+        accessibilityLabel={`Objective: ${label}, ${shown} of ${target}`}
+      >
+        <Ionicons name="flag" size={12} color={gold[400]} />
+        <Text variant="caption" style={styles.label} numberOfLines={1}>{label}</Text>
+      </View>
+      <Text variant="caption" style={styles.count} importantForAccessibility="no" accessibilityElementsHidden>{`${shown}/${target}`}</Text>
+      {right}
     </View>
   )
 }
@@ -48,8 +52,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border.subtle,
   },
-  label: {
+  objective: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[2],
+  },
+  label: {
+    flexShrink: 1,
     color: colors.text.secondary,
   },
   count: {

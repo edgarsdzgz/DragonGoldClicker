@@ -13,9 +13,11 @@ interface ResourceBarProps {
   food: number
   foodSystemActive: boolean
   autoInspPerSec: number
+  /** Hide the inspiration figure where a bigger one is already on screen (the Warfront) */
+  hideInspiration?: boolean
 }
 
-export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, autoInspPerSec }: ResourceBarProps) {
+export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, autoInspPerSec, hideInspiration = false }: ResourceBarProps) {
   const insets = useSafeAreaInsets()
   const journal = useJournal()
   const foodLow = foodAmount <= 10 && foodAmount > 0
@@ -23,12 +25,14 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, a
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + spacing[2] }]}>
-      <View style={styles.resource}>
-        <InspirationIcon size={12} />
-        <Text variant="label" color="link">
-          {formatNumber(inspiration)}
-        </Text>
-      </View>
+      {!hideInspiration && (
+        <View style={styles.resource}>
+          <InspirationIcon size={12} />
+          <Text variant="label" color="link">
+            {formatNumber(inspiration)}
+          </Text>
+        </View>
+      )}
       {foodSystemActive && (
         <View style={styles.resource}>
           <Ionicons
