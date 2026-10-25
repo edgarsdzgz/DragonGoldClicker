@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, StyleSheet, Pressable } from 'react-native'
+import { View, StyleSheet, Pressable, Animated } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
 import { useJournal } from '../context/JournalContext'
+import { useCoinTarget } from '../context/CoinFlightContext'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber } from '../types/game'
 
@@ -20,18 +21,19 @@ interface ResourceBarProps {
 export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, autoInspPerSec, hideInspiration = false }: ResourceBarProps) {
   const insets = useSafeAreaInsets()
   const journal = useJournal()
+  const coin = useCoinTarget()
   const foodLow = foodAmount <= 10 && foodAmount > 0
   const foodEmpty = foodAmount === 0
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + spacing[2] }]}>
       {!hideInspiration && (
-        <View style={styles.resource}>
+        <Animated.View ref={coin.ref} collapsable={false} style={[styles.resource, coin.style]}>
           <InspirationIcon size={12} />
           <Text variant="label" color="link">
             {formatNumber(inspiration)}
           </Text>
-        </View>
+        </Animated.View>
       )}
       {foodSystemActive && (
         <View style={styles.resource}>

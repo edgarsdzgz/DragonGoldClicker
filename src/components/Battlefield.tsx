@@ -7,6 +7,7 @@ import { EnemyHp } from './EnemyHp'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
 import { useHoldPress } from '../hooks'
+import { useCoinFlight } from '../context/CoinFlightContext'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useReduceMotion } from '../hooks/useReduceMotion'
 import { MONSTERS, SPAWN_DELAY_MS, monsterLabel } from '../types/monsters'
@@ -36,6 +37,8 @@ interface BattlefieldProps {
 export interface BattlefieldHandle {
   /** Float a gold bounty up from the monster */
   showBounty: (amount: string) => void
+  /** The monster that was just killed falls away and a coin flies to the inspiration figure */
+  showKill: (glyph: keyof typeof Ionicons.glyphMap) => void
 }
 
 /** Press squash: the monster shrinks about 5% */
@@ -56,7 +59,16 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const widthRef = useRef(300)
   const [fieldW, setFieldW] = React.useState(300)
 
+  const coinFlight = useCoinFlight()
+  const spriteRef = useRef<View>(null)
   const spawn = useRef(new Animated.Value(1)).current
+  // The fallen monster: a ghost that fades and drops (fade only with Reduce Motion)
+  const fall = useRef(new Animated.Value(1)).current
+  const [fallen, setFallen] = React.useState<keyof typeof Ionicons.glyphMap | null>(null)
+  // A steady pulse on the battlefield while the press is held
+  const holdPulse = useRef(new Animated.Value(0)).current
+  const [holding, setHolding] = React.useState(false)
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const squash = useRef(new Animated.Value(1)).current
   const shake = useRef(new Animated.Value(0)).current
   const flash = useRef(new Animated.Value(0)).current
@@ -64,7 +76,26 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   useImperativeHandle(ref, () => ({
     showBounty: (amount) =>
       numbers.current?.spawn({ x: size / 2, y: size * 0.25, text: amount, color: gold[300], large: true }),
-  }), [size])
+    showKill: (glyph) => {
+      setFallen(glyph)
+      fall.setValue(0)
+      Animated.timing(fall, { toValue: 1, duration: 420, useNativeDriver: true }).start(() => setFallen(null))
+      spriteRef.current?.measureInWindow((x, y, w, h) => coinFlight.fly({ x: x + w / 2, y: y + h / 2 }))
+    },
+  }), [size, fall, coinFlight])
+
+  useEffect(() => {
+    if (!holding || reduceMotion) {
+      holdPulse.setValue(0)
+      return
+    }
+    const loop = Animated.loop(Animated.sequence([
+      Animated.timing(holdPulse, { toValue: 1, duration: 125, useNativeDriver: true }),
+      Animated.timing(holdPulse, { toValue: 0, duration: 125, useNativeDriver: true }),
+    ]))
+    loop.start()
+    return () => loop.stop()
+  }, [holding, reduceMotion, holdPulse])
 
   // After a kill the next monster eases in (taps meanwhile already hit it)
   const firstRender = useRef(true)
@@ -101,14 +132,19 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const touchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   useEffect(() => () => {
     if (touchTimer.current) clearTimeout(touchTimer.current)
+    if (holdTimer.current) clearTimeout(holdTimer.current)
   }, [])
 
   const handlePressIn = (_e: GestureResponderEvent) => {
     touching.current = true
+    // Held for as long as the repeat starts: show the pulse
+    holdTimer.current = setTimeout(() => setHolding(true), 300)
     if (!reduceMotion) Animated.timing(squash, { toValue: SQUASH, duration: 70, useNativeDriver: true }).start()
     onPressIn()
   }
   const handlePressOut = () => {
+    if (holdTimer.current) clearTimeout(holdTimer.current)
+    setHolding(false)
     if (touchTimer.current) clearTimeout(touchTimer.current)
     touchTimer.current = setTimeout(() => { touching.current = false }, 400)
     if (!reduceMotion) Animated.spring(squash, { toValue: 1, tension: 220, friction: 7, useNativeDriver: true }).start()
@@ -137,7 +173,36 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       >
         {header}
         {queue}
-        <View style={{ width: size, height: size }}>
+        <View ref={spriteRef} collapsable={false} style={{ width: size, height: size }}>
+          {holding && !reduceMotion && (
+            <Animated.View
+              pointerEvents="none"
+              style={[
+                styles.holdRing,
+                {
+                  width: size + 24,
+                  height: size + 24,
+                  borderRadius: (size + 24) / 2,
+                  opacity: holdPulse.interpolate({ inputRange: [0, 1], outputRange: [0.15, 0.6] }),
+                  transform: [{ scale: holdPulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.06] }) }],
+                },
+              ]}
+            />
+          )}
+          {fallen && (
+            <Animated.View
+              pointerEvents="none"
+              style={[
+                styles.ghost,
+                {
+                  opacity: fall.interpolate({ inputRange: [0, 1], outputRange: [0.9, 0] }),
+                  transform: [{ translateY: reduceMotion ? 0 : fall.interpolate({ inputRange: [0, 1], outputRange: [0, size * 0.35] }) }],
+                },
+              ]}
+            >
+              <Ionicons name={fallen} size={Math.round(size * 0.5)} color={gold[400]} />
+            </Animated.View>
+          )}
           <Animated.View
             pointerEvents="none"
             style={[
@@ -190,6 +255,18 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  holdRing: {
+    position: 'absolute',
+    left: -12,
+    top: -12,
+    borderWidth: 3,
+    borderColor: gold[400],
+  },
+  ghost: {
+    ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
   },

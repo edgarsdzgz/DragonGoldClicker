@@ -6,6 +6,7 @@ import { DevSettingsProvider } from './src/context/DevSettingsContext'
 import { GameProvider } from './src/context/GameContext'
 import { StoryProvider } from './src/context/StoryContext'
 import { JournalProvider } from './src/context/JournalContext'
+import { CoinFlightProvider } from './src/context/CoinFlightContext'
 import { ShakeProvider } from './src/context/ShakeContext'
 import { CoachProvider } from './src/context/CoachContext'
 import { Navigation } from './src/navigation'
@@ -29,7 +30,9 @@ function AppInner() {
         <CoachProvider>
           <ShakeProvider>
             <JournalProvider>
-              <Navigation />
+              <CoinFlightProvider>
+                <Navigation />
+              </CoinFlightProvider>
             </JournalProvider>
           </ShakeProvider>
         </CoachProvider>

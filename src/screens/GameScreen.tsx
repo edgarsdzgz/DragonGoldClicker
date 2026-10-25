@@ -69,6 +69,7 @@ export function GameScreen() {
     haptics.medium()
     playKill()
     battlefieldRef.current?.showBounty(`+${monster.bounty.toFixed(2)}`)
+    battlefieldRef.current?.showKill(monster.glyph)
     if (state.waveKills === 0) {
       // The kill finished the wave (the state here is already the new one)
       setBanner(`Wave cleared +${waveBonus(monster.bounty).toFixed(2)}`)
