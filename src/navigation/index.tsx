@@ -66,7 +66,8 @@ import { SettingsScreen } from '../screens/SettingsScreen'
 
 function HapticTabButton({ coachId, ...props }: any) {
   const haptics = useHaptics()
-  const coach = useCoachTarget(coachId)
+  // Tab buttons live in the bar, so they must not depend on their own tab being focused
+  const coach = useCoachTarget(coachId, undefined, { skipFocusGate: true })
   const playTap = useSfx(SFX.TAP)
 
   return (

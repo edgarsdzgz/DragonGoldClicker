@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useGame } from '../context/GameContext'
 import { useStory } from '../context/StoryContext'
 import { getScene, OFFLINE_FRAMING } from '../data/story/lines'
@@ -42,13 +42,14 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
 
   const activeModal = useActiveEvent()
 
-  const closeScene = () => {
+  // Each queued scene closes once, even on a double tap on Skip or the dismiss button
+  const closedUids = useRef(new Set<number>())
+  const handleSceneClose = () => {
+    if (!queued || closedUids.current.has(queued.uid)) return
+    closedUids.current.add(queued.uid)
     dismissScene()
-    if (queued && !queued.replay) onSceneClosed?.(queued.id)
-  }
-
-  const handleSceneDismiss = () => {
-    closeScene()
+    if (!queued.replay) onSceneClosed?.(queued.id)
+    // Skip goes where dismiss goes, so a skipped scene never strands the player off a guided step
     if (scene?.navigateTo) onNavigate(scene.navigateTo)
   }
 
@@ -82,8 +83,8 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
           title={scene.title}
           lines={queued?.alt && scene.altLines ? scene.altLines : scene.lines}
           dismissLabel={scene.dismissLabel}
-          onDismiss={handleSceneDismiss}
-          onSkip={closeScene}
+          onDismiss={handleSceneClose}
+          onSkip={handleSceneClose}
         />
       )}
       {pendingFoodWarning > 0 && (

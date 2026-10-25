@@ -60,8 +60,6 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     title: 'Our Stores Run Low',
     lines: [
       'My lord, I bring troubling news. Our food stores in Draconia are dwindling.',
-      'Every soul in the city must eat. Villagers consume a modest share, but soldiers require far more -- and the higher their rank, the greater their appetite.',
-      'If our food runs out entirely, our people will begin to starve. And without food, the soldiers will refuse to fight.',
       'We have no farms yet, but the wilderness around Draconia is rich with wild plants and game. I have opened a foraging path for you.',
       'Go to the Forage tab and gather what you can. It is humble work, but it will keep our people alive.',
     ],

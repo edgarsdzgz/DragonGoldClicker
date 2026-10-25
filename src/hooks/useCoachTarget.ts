@@ -9,7 +9,11 @@ import type { Rect } from '../context/coachRegistry'
  * wrapper View. The target is registered only while its screen is focused, so a
  * screen kept alive in another tab never shows a stale cutout.
  */
-export function useCoachTarget(id: string | undefined, scrollIntoView?: (rect: Rect) => void) {
+export function useCoachTarget(
+  id: string | undefined,
+  scrollIntoView?: (rect: Rect) => void,
+  options?: { /** Register even when the surrounding route is not focused (tab-bar buttons) */ skipFocusGate?: boolean },
+) {
   const { registry } = useCoach()
   const ref = useRef<View>(null)
   const focused = useIsFocused()
@@ -17,7 +21,7 @@ export function useCoachTarget(id: string | undefined, scrollIntoView?: (rect: R
   scrollRef.current = scrollIntoView
 
   useEffect(() => {
-    if (!id || !focused) return
+    if (!id || !(focused || options?.skipFocusGate)) return
     return registry.register(id, {
       measure: (cb) => {
         const node = ref.current
@@ -26,7 +30,7 @@ export function useCoachTarget(id: string | undefined, scrollIntoView?: (rect: R
       },
       scrollIntoView: (rect) => scrollRef.current?.(rect),
     })
-  }, [id, focused, registry])
+  }, [id, focused, options?.skipFocusGate, registry])
 
   const onLayout = useCallback(() => registry.notify(), [registry])
   return { ref, onLayout }
