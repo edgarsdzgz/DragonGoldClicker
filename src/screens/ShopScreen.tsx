@@ -131,7 +131,20 @@ function BuildingNode({
     }
   }, [canBuildNow, pulse])
 
-  if (!building.visible) return null
+  // Unrevealed buildings show as fog: a silhouette with no name and no cost
+  if (!building.visible) {
+    return (
+      <View
+        style={mapStyles.nodeContainer}
+        accessible
+        accessibilityLabel="Undiscovered building"
+      >
+        <View style={[mapStyles.nodeCircle, mapStyles.nodeCircleUnbuilt, { opacity: 0.35 }]}>
+          <Ionicons name={building.icon} size={24} color={colors.text.muted} />
+        </View>
+      </View>
+    )
+  }
 
   return (
     <Pressable
@@ -451,7 +464,7 @@ export function ShopScreen() {
       description: 'Residential quarters that improve productivity and unlock population growth.',
       accentColor: colors.building.housing,
       isBuilt: false,
-      visible: true,
+      visible: false, // fogged until a beat reveals it
       cost: null,
       canAfford: false,
       onBuild: () => {},
@@ -466,7 +479,7 @@ export function ShopScreen() {
       description: 'A towering spire of arcane power. Enchant weapons and unlock powerful bonuses.',
       accentColor: colors.building.wizard,
       isBuilt: false,
-      visible: true,
+      visible: false, // fogged until a beat reveals it
       cost: null,
       canAfford: false,
       onBuild: () => {},
@@ -481,7 +494,7 @@ export function ShopScreen() {
       description: 'A defensive tower on the eastern wall. Station fighters to boost defense and inspiration income.',
       accentColor: colors.building.tower,
       isBuilt: false,
-      visible: true,
+      visible: false, // fogged until a beat reveals it
       cost: null,
       canAfford: false,
       onBuild: () => {},
@@ -496,7 +509,7 @@ export function ShopScreen() {
       description: 'A defensive tower on the western wall. Station fighters to boost defense and inspiration income.',
       accentColor: colors.building.tower,
       isBuilt: false,
-      visible: true,
+      visible: false, // fogged until a beat reveals it
       cost: null,
       canAfford: false,
       onBuild: () => {},
@@ -536,8 +549,9 @@ export function ShopScreen() {
   }
 
   const handleNodePress = (id: BuildingId) => {
-    haptics.selection()
     const b = buildings[id]
+    if (!b?.visible) return // fog: nothing to open yet
+    haptics.selection()
     if (comingSoonIds.includes(id)) {
       // Coming soon buildings open interior directly (shows placeholder)
       setSelected(id)
@@ -593,12 +607,10 @@ export function ShopScreen() {
               building={buildings.housing}
               onPress={() => handleNodePress('housing')}
             />
-            {buildings.librarium.visible && (
-              <BuildingNode
-                building={buildings.librarium}
-                onPress={() => handleNodePress('librarium')}
-              />
-            )}
+            <BuildingNode
+              building={buildings.librarium}
+              onPress={() => handleNodePress('librarium')}
+            />
             <BuildingNode
               building={buildings.wizard}
               onPress={() => handleNodePress('wizard')}
@@ -616,12 +628,10 @@ export function ShopScreen() {
               building={buildings.forge}
               onPress={() => handleNodePress('forge')}
             />
-            {buildings.lodge.visible && (
-              <BuildingNode
-                building={buildings.lodge}
-                onPress={() => handleNodePress('lodge')}
-              />
-            )}
+            <BuildingNode
+              building={buildings.lodge}
+              onPress={() => handleNodePress('lodge')}
+            />
           </View>
         </View>
 
@@ -637,12 +647,10 @@ export function ShopScreen() {
               coachId="garrison"
               scrollIntoView={scrollTargetIntoView}
             />
-            {buildings.outpost.visible && (
-              <BuildingNode
-                building={buildings.outpost}
-                onPress={() => handleNodePress('outpost')}
-              />
-            )}
+            <BuildingNode
+              building={buildings.outpost}
+              onPress={() => handleNodePress('outpost')}
+            />
           </View>
         </View>
 
