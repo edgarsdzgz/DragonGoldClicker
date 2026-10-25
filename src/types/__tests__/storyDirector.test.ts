@@ -10,12 +10,19 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 beforeAll(() => setStoryPauseForTests('the_horde_grows'))
 afterAll(() => setStoryPauseForTests())
 
+// Everything up to mend_the_walls seen and the repairers in place: empty_stores (dwell 180) is next
+const DWELL_BASE = {
+  beatsSeen: ['prologue', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls'],
+  repairers: 3,
+  lastBeatAtPlaySec: 0,
+}
+
 describe('effectiveDwell', () => {
   it('caps dwell at 5 seconds in test pacing and keeps it in live', () => {
     const stores = getBeat('empty_stores')!
     expect(effectiveDwell(stores, 'test')).toBe(5)
     expect(effectiveDwell(stores, 'live')).toBe(180)
-    expect(effectiveDwell(getBeat('call_to_arms')!, 'test')).toBe(5)
+    expect(effectiveDwell(getBeat('call_to_arms')!, 'live')).toBe(0)
     expect(effectiveDwell(getBeat('prologue')!, 'test')).toBe(0)
   })
 })
@@ -31,25 +38,23 @@ describe('findNextBeat', () => {
   })
 
   it('waits for the live dwell, then fires', () => {
-    const base = { beatsSeen: ['prologue', 'first_renown'], inspiration: 5, lastBeatAtPlaySec: 0 }
-    expect(findNextBeat(make({ ...base, playSeconds: 19 }), 'live')).toBeNull()
-    expect(findNextBeat(make({ ...base, playSeconds: 20 }), 'live')?.id).toBe('call_to_arms')
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 179 }), 'live')).toBeNull()
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 180 }), 'live')?.id).toBe('empty_stores')
   })
 
   it('uses the capped dwell in test pacing', () => {
-    const base = { beatsSeen: ['prologue', 'first_renown'], inspiration: 5, lastBeatAtPlaySec: 0 }
-    expect(findNextBeat(make({ ...base, playSeconds: 4 }), 'test')).toBeNull()
-    expect(findNextBeat(make({ ...base, playSeconds: 5 }), 'test')?.id).toBe('call_to_arms')
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 4 }), 'test')).toBeNull()
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 5 }), 'test')?.id).toBe('empty_stores')
   })
 
   it('measures dwell from the last beat, not from zero', () => {
-    const s = make({ beatsSeen: ['prologue', 'first_renown'], inspiration: 5, playSeconds: 110, lastBeatAtPlaySec: 100 })
+    const s = make({ ...DWELL_BASE, playSeconds: 110, lastBeatAtPlaySec: 100 })
     expect(findNextBeat(s, 'live')).toBeNull()
   })
 
   it('never skips an unseen earlier beat', () => {
     // Trigger of the_breach passes, but call_to_arms is unseen: it must come first
-    const s = make({ beatsSeen: ['prologue', 'first_renown'], fighters: 5, inspiration: 5, playSeconds: 1000 })
+    const s = make({ beatsSeen: ['prologue', 'first_renown'], waveNumber: 3, fighters: 5, playSeconds: 1000 })
     expect(findNextBeat(s, 'live')?.id).toBe('call_to_arms')
   })
 
@@ -116,8 +121,16 @@ describe('first_renown', () => {
     expect(findNextBeat(make({ beatsSeen: ['prologue'], playSeconds: 99 }), 'live')).toBeNull()
     const killed = make({ beatsSeen: ['prologue'], monstersDefeated: 1, playSeconds: 99 })
     expect(findNextBeat(killed, 'live')?.id).toBe('first_renown')
-    const after = make({ beatsSeen: ['prologue', 'first_renown'], monstersDefeated: 3, inspiration: 1.25, playSeconds: 99, lastBeatAtPlaySec: 0 })
-    expect(findNextBeat(after, 'live')?.id).toBe('call_to_arms')
+    const wave2Cleared = make({ beatsSeen: ['prologue', 'first_renown'], waveNumber: 2, waveActive: false, playSeconds: 99 })
+    expect(findNextBeat(wave2Cleared, 'live')).toBeNull()
+  })
+
+  it('call_to_arms plays at once in the camp after Wave 2 is cleared, not mid-wave', () => {
+    const seen = ['prologue', 'first_renown']
+    const camp3 = make({ beatsSeen: seen, waveNumber: 3, waveActive: false, playSeconds: 0 })
+    expect(findNextBeat(camp3, 'live')?.id).toBe('call_to_arms')
+    expect(findNextBeat({ ...camp3, waveActive: true }, 'live')).toBeNull()
+    expect(findNextBeat({ ...camp3, waveNumber: 2 }, 'live')).toBeNull()
   })
 
   it('prologue is silent and has no scene', () => {

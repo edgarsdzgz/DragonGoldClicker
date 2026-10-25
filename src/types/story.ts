@@ -1,6 +1,5 @@
 import type { GameState } from './state'
 import { shouldRevealExplorerPost } from './state'
-import { FIGHTER_BASE_COST } from './fighters'
 // Type-only: systems.ts imports STORY_BEATS from this file at runtime
 import type { SystemId, BuildingRevealId } from './systems'
 
@@ -82,8 +81,9 @@ export const STORY_BEATS: BeatDef[] = [
     unlocks: [],
   },
   {
-    id: 'call_to_arms', chapter: 1, dwellSec: 20,
-    trigger: (s) => s.inspiration >= FIGHTER_BASE_COST,
+    // Owner ruling: some waves first. It plays in the camp after Wave 2 is cleared, before the first goblin wave.
+    id: 'call_to_arms', chapter: 1, dwellSec: 0,
+    trigger: (s) => s.waveNumber >= 3 && !s.waveActive,
     unlocks: ['rally'],
     spotlight: 'rally',
     objective: { label: 'Rally 2 fighters', current: (s) => s.fighters, target: 2 },

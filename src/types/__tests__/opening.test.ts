@@ -37,3 +37,12 @@ describe('warfrontReveal', () => {
     expect(r).toEqual({ buttonOnly: false, topBar: true, monsterName: true, gate: true, waveRow: true, chrome: true })
   })
 })
+
+describe('Waves 0-2 stay plain', () => {
+  it('after Wave 0, 1 and 2 clear there is still no objective, chips or tab bar', () => {
+    for (const waveNumber of [1, 2, 3]) {
+      const r = warfrontReveal(make({ waveNumber, monstersDefeated: 3, beatsSeen: ['prologue', 'first_renown'] }))
+      expect(r).toMatchObject({ waveRow: true, gate: true, topBar: true, chrome: false })
+    }
+  })
+})

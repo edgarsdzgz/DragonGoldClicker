@@ -116,3 +116,16 @@ describe('first_renown backfill', () => {
     expect(seen.indexOf('call_to_arms')).toBe(2)
   })
 })
+
+describe('call_to_arms backfill', () => {
+  it('is seen for a save that has rallied', () => {
+    expect(backfillStory(v1({ fightersRallied: 1, fighters: 1 })).beatsSeen).toContain('call_to_arms')
+  })
+
+  it('is seen for a save in the camp of Wave 3 or later, and not mid-wave or earlier', () => {
+    const camp = (over: Partial<GameState>) => backfillStory(v1({ monstersDefeated: 13, ...over })).beatsSeen
+    expect(camp({ waveNumber: 3, waveActive: false })).toContain('call_to_arms')
+    expect(camp({ waveNumber: 3, waveActive: true })).not.toContain('call_to_arms')
+    expect(camp({ waveNumber: 2, waveActive: false })).not.toContain('call_to_arms')
+  })
+})

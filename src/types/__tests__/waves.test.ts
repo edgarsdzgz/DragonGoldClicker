@@ -188,3 +188,27 @@ describe('save migrations', () => {
     expect(waveActiveOnLoad({ ...save(0), waveActive: true }, 6)).toBe(true)
   })
 })
+
+describe('a fresh game reaches call_to_arms in the Wave 3 camp', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { findNextBeat } = require('../storyDirector')
+
+  it('plays it exactly there, with about 4.75 renown', () => {
+    let s: GameState = { ...DEFAULT_GAME_STATE, beatsSeen: ['prologue', 'first_renown'] }
+    const firedIn: string[] = []
+    for (let wave = 0; wave <= 3; wave++) {
+      // In camp: does the director offer call_to_arms here?
+      const beat = findNextBeat({ ...s, playSeconds: 999 }, 'live')
+      if (beat) firedIn.push(`camp${s.waveNumber}:${beat.id}`)
+      if (wave === 3) break
+      s = beginWave(s)
+      const mid = findNextBeat({ ...s, playSeconds: 999 }, 'live')
+      expect(mid).toBeNull()
+      s = killN(s, waveSize(s.waveNumber)).state
+      s = endWave(s)
+    }
+    expect(firedIn).toEqual(['camp3:call_to_arms'])
+    expect(s.waveNumber).toBe(3)
+    expect(s.inspiration).toBeCloseTo(4.75, 2)
+  })
+})
