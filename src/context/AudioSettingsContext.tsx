@@ -8,6 +8,8 @@ interface AudioSettings {
   sfxVolume: number
   musicMuted: boolean
   sfxMuted: boolean
+  /** Vibration feedback on taps and events (stored here so all feedback settings persist together) */
+  hapticsEnabled: boolean
 }
 
 const DEFAULT_SETTINGS: AudioSettings = {
@@ -15,6 +17,7 @@ const DEFAULT_SETTINGS: AudioSettings = {
   sfxVolume: 0.7,
   musicMuted: false,
   sfxMuted: false,
+  hapticsEnabled: true,
 }
 
 interface AudioSettingsContextType {
@@ -22,6 +25,7 @@ interface AudioSettingsContextType {
   sfxVolume: number
   musicMuted: boolean
   sfxMuted: boolean
+  hapticsEnabled: boolean
   /** Effective music volume (0 when muted) */
   effectiveMusicVolume: number
   /** Effective SFX volume (0 when muted) */
@@ -30,6 +34,7 @@ interface AudioSettingsContextType {
   setSfxVolume: (v: number) => void
   toggleMusicMute: () => void
   toggleSfxMute: () => void
+  toggleHaptics: () => void
   muteAll: () => void
   unmuteAll: () => void
 }
@@ -86,6 +91,13 @@ export function AudioSettingsProvider({ children }: { children: React.ReactNode 
       return next
     })
   }, [persist])
+  const toggleHaptics = useCallback(() => {
+    setSettings((prev) => {
+      const next = { ...prev, hapticsEnabled: !prev.hapticsEnabled }
+      persist(next)
+      return next
+    })
+  }, [persist])
   const muteAll = useCallback(() => update({ musicMuted: true, sfxMuted: true }), [update])
   const unmuteAll = useCallback(() => update({ musicMuted: false, sfxMuted: false }), [update])
 
@@ -97,6 +109,7 @@ export function AudioSettingsProvider({ children }: { children: React.ReactNode 
     setSfxVolume,
     toggleMusicMute,
     toggleSfxMute,
+    toggleHaptics,
     muteAll,
     unmuteAll,
   }

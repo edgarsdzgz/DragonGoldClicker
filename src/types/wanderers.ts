@@ -196,6 +196,17 @@ export function rollWandererCheck(
 
   if (Math.random() >= chance) return null
 
+  return rollWandererEncounter(totalSoldiers, totalForagers)
+}
+
+/**
+ * Pick an encounter from the weighted table, skipping the chance roll.
+ * Used by rollWandererCheck and by dev tools that force an arrival.
+ */
+export function rollWandererEncounter(
+  totalSoldiers: number,
+  totalForagers: number,
+): WandererEncounter {
   // Weighted random pick
   const totalWeight = WANDERER_TABLE.reduce((sum, w) => sum + w.weight, 0)
   let roll = Math.random() * totalWeight

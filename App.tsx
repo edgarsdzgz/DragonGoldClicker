@@ -2,9 +2,10 @@ import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { AudioSettingsProvider } from './src/context/AudioSettingsContext'
+import { DevSettingsProvider } from './src/context/DevSettingsContext'
 import { GameProvider } from './src/context/GameContext'
 import { Navigation } from './src/navigation'
-import { useBgMusic } from './src/hooks'
+import { useBgMusic, useImmersiveMode } from './src/hooks'
 import { configureTextDefaults } from './src/theme/textDefaults'
 
 // Configure global text rendering defaults for Expo 54 / RN 0.81
@@ -16,6 +17,7 @@ const BGM_PLAYLIST = [
 
 function AppInner() {
   useBgMusic(BGM_PLAYLIST)
+  useImmersiveMode()
 
   return (
     <GameProvider>
@@ -28,9 +30,11 @@ function AppInner() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <AudioSettingsProvider>
-        <AppInner />
-      </AudioSettingsProvider>
+      <DevSettingsProvider>
+        <AudioSettingsProvider>
+          <AppInner />
+        </AudioSettingsProvider>
+      </DevSettingsProvider>
     </SafeAreaProvider>
   )
 }

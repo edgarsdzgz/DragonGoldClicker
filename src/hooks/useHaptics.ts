@@ -2,7 +2,7 @@
  * Haptic Feedback Hook
  *
  * Provides a consistent API for haptic feedback across the app.
- * Respects system settings and handles platform availability.
+ * Respects the in-game Vibration setting and handles platform availability.
  *
  * Usage:
  * - Light: Tab switches, gold clicks
@@ -13,72 +13,47 @@
 import { useCallback } from 'react'
 import * as Haptics from 'expo-haptics'
 import { Platform } from 'react-native'
+import { useAudioSettings } from '../context/AudioSettingsContext'
 
 const isHapticsAvailable = Platform.OS === 'ios' || Platform.OS === 'android'
 
 export function useHaptics() {
-  const light = useCallback(async () => {
-    if (!isHapticsAvailable) return
-    try {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-    } catch {
-      // Silently fail if haptics unavailable
-    }
-  }, [])
+  const { hapticsEnabled } = useAudioSettings()
 
-  const medium = useCallback(async () => {
-    if (!isHapticsAvailable) return
+  const fire = useCallback(async (effect: () => Promise<void>) => {
+    if (!isHapticsAvailable || !hapticsEnabled) return
     try {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+      await effect()
     } catch {
       // Silently fail if haptics unavailable
     }
-  }, [])
+  }, [hapticsEnabled])
 
-  const heavy = useCallback(async () => {
-    if (!isHapticsAvailable) return
-    try {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
-    } catch {
-      // Silently fail if haptics unavailable
-    }
-  }, [])
-
-  const selection = useCallback(async () => {
-    if (!isHapticsAvailable) return
-    try {
-      await Haptics.selectionAsync()
-    } catch {
-      // Silently fail if haptics unavailable
-    }
-  }, [])
-
-  const success = useCallback(async () => {
-    if (!isHapticsAvailable) return
-    try {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
-    } catch {
-      // Silently fail if haptics unavailable
-    }
-  }, [])
-
-  const warning = useCallback(async () => {
-    if (!isHapticsAvailable) return
-    try {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
-    } catch {
-      // Silently fail if haptics unavailable
-    }
-  }, [])
-
-  const error = useCallback(async () => {
-    if (!isHapticsAvailable) return
-    try {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
-    } catch {
-      // Silently fail if haptics unavailable
-    }
-  }, [])
+  const light = useCallback(
+    () => fire(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)),
+    [fire],
+  )
+  const medium = useCallback(
+    () => fire(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)),
+    [fire],
+  )
+  const heavy = useCallback(
+    () => fire(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)),
+    [fire],
+  )
+  const selection = useCallback(() => fire(() => Haptics.selectionAsync()), [fire])
+  const success = useCallback(
+    () => fire(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)),
+    [fire],
+  )
+  const warning = useCallback(
+    () => fire(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)),
+    [fire],
+  )
+  const error = useCallback(
+    () => fire(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)),
+    [fire],
+  )
 
   return {
     light,
@@ -88,7 +63,7 @@ export function useHaptics() {
     success,
     warning,
     error,
-    isAvailable: isHapticsAvailable,
+    isAvailable: isHapticsAvailable && hapticsEnabled,
   }
 }
 

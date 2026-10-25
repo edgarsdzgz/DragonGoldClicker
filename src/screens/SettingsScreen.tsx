@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
-import { Text, Surface, Button, StatRow, SectionLabel, InspirationIcon } from '../components'
+import { Text, Surface, Button, StatRow, SectionLabel, InspirationIcon, ToggleRow } from '../components'
 import { PillTabs } from '../components/PillTabs'
 import type { PillTab } from '../components/PillTabs'
 import { VolumeControl } from '../components/VolumeControl'
@@ -8,12 +8,15 @@ import { ConfirmModal } from '../components/ConfirmModal'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
 import { useAudioSettings } from '../context/AudioSettingsContext'
+import { DevPanel } from './settings/DevPanel'
 import { colors, spacing } from '../theme'
 import { formatNumber, getTotalSoldiers, getFoodConsumption, FOOD_CHECK_INTERVAL, RESEARCH_NODES } from '../types/game'
 
 const TABS: PillTab[] = [
   { key: 'settings', label: 'Settings', icon: 'settings-outline' },
   { key: 'stats', label: 'Stats', icon: 'stats-chart' },
+  // Test tools: development builds only, never shipped to players
+  ...(__DEV__ ? [{ key: 'dev', label: 'Dev', icon: 'construct-outline' } as PillTab] : []),
 ]
 
 export function SettingsScreen() {
@@ -26,13 +29,22 @@ export function SettingsScreen() {
       <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={state.foodSystemActive} autoInspPerSec={effectiveAutoRate} />
       <PillTabs tabs={TABS} activeKey={activeTab} onSelect={setActiveTab} />
 
-      {activeTab === 'settings' ? (
+      {activeTab === 'settings' && (
         <SettingsContent
           showResetModal={showResetModal}
           onShowReset={() => setShowResetModal(true)}
         />
-      ) : (
-        <StatsContent />
+      )}
+      {activeTab === 'stats' && <StatsContent />}
+      {__DEV__ && activeTab === 'dev' && (
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <DevPanel />
+        </ScrollView>
       )}
 
       <ConfirmModal
@@ -65,7 +77,7 @@ function SettingsContent({ showResetModal, onShowReset }: { showResetModal: bool
       showsVerticalScrollIndicator={false}
     >
       <Surface style={styles.section}>
-        <SectionLabel spacing={2}>AUDIO</SectionLabel>
+        <SectionLabel spacing={2}>SOUND & VIBRATION</SectionLabel>
         <VolumeControl
           label="Music"
           value={audio.musicVolume}
@@ -80,6 +92,14 @@ function SettingsContent({ showResetModal, onShowReset }: { showResetModal: bool
           muted={audio.sfxMuted}
           onValueChange={audio.setSfxVolume}
           onToggleMute={audio.toggleSfxMute}
+        />
+        <View style={styles.spacer} />
+        <ToggleRow
+          label="Vibration"
+          description="Buzz on taps, purchases and events"
+          icon="phone-portrait-outline"
+          value={audio.hapticsEnabled}
+          onValueChange={audio.toggleHaptics}
         />
       </Surface>
 

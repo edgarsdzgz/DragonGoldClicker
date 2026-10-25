@@ -139,6 +139,7 @@ export {
   getTrainedRoleName,
   getTrainedBuildingName,
   rollWandererCheck,
+  rollWandererEncounter,
   getTrainedOverflowRefund,
 } from './wanderers'
 

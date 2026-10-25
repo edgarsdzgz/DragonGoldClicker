@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
+import { AppState } from 'react-native'
 import type { GameState, SoldierTier, SoldierCounts, ForagerTier, ForagerCounts, RoleId, StarvationResult, WandererEncounter, ResearchPrereq, MilestoneDef } from '../types/game'
 import {
   DEFAULT_GAME_STATE,
@@ -50,6 +51,7 @@ import {
   shouldRevealExplorerPost,
   WANDERER_COOLDOWN,
   rollWandererCheck,
+  rollWandererEncounter,
   getTrainedOverflowRefund,
   getTrainedBuildingName,
   getTrainedRoleName,
@@ -140,6 +142,10 @@ interface GameContextType {
   buildLibrarium: () => boolean
   completeResearch: (id: string) => boolean
   isResearchAvailable: (id: string) => boolean
+  /** Dev tools only: apply an arbitrary state change (grants, checkpoints, forced timers) */
+  devApply: (updater: (s: GameState) => GameState) => void
+  /** Dev tools only: show a wanderer encounter now, skipping cooldown and chance */
+  devForceWanderer: () => void
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined)
@@ -170,20 +176,36 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     })
   }, [load])
 
+  // Latest state for the throttled and background saves below
+  const stateRef = useRef(state)
+  useEffect(() => {
+    stateRef.current = state
+  }, [state])
+
+  // Throttled save: at most once per 2s. A debounce would never fire while
+  // auto-income changes state every second, so progress would never persist.
+  useEffect(() => {
+    if (!loaded || saveTimerRef.current) return
+    saveTimerRef.current = setTimeout(() => {
+      saveTimerRef.current = null
+      save(stateRef.current)
+    }, 2000)
+  }, [state, loaded, save])
+
+  // Save immediately when the app leaves the foreground, and clear any pending timer on unmount
   useEffect(() => {
     if (!loaded) return
-    if (saveTimerRef.current) {
-      clearTimeout(saveTimerRef.current)
-    }
-    saveTimerRef.current = setTimeout(() => {
-      save(state)
-    }, 2000)
+    const sub = AppState.addEventListener('change', (next) => {
+      if (next !== 'active') save(stateRef.current)
+    })
     return () => {
+      sub.remove()
       if (saveTimerRef.current) {
         clearTimeout(saveTimerRef.current)
+        saveTimerRef.current = null
       }
     }
-  }, [state, loaded, save])
+  }, [loaded, save])
 
   const researchBonuses = getResearchBonuses(state.completedResearch)
 
@@ -1212,6 +1234,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return success
   }, [checkPrereqs])
 
+  const devApply = useCallback((updater: (s: GameState) => GameState) => {
+    if (!__DEV__) return
+    setState(updater)
+  }, [])
+
+  const devForceWanderer = useCallback(() => {
+    if (!__DEV__) return
+    wandererTimerRef.current = 0
+    setPendingWanderer(rollWandererEncounter(getTotalSoldiers(state.soldiers), getTotalForagers(state.foragers)))
+  }, [state.soldiers, state.foragers])
+
   const resetGame = useCallback(() => {
     const fresh = { ...DEFAULT_GAME_STATE, startedAt: Date.now(), lastSavedAt: Date.now() }
     setState(fresh)
@@ -1274,6 +1307,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         buildLibrarium,
         completeResearch,
         isResearchAvailable,
+        devApply,
+        devForceWanderer,
       }}
     >
       {children}

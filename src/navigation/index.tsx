@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { RootStackParamList, TabParamList } from './types'
 import { colors, spacing, gold } from '../theme'
 import { useHaptics } from '../hooks/useHaptics'
@@ -180,6 +181,8 @@ function TabNavigator() {
   const buildHasAction = useBuildTabBadge()
   const locks = useTabLocks()
   const toastRef = useRef<UnlockToastHandle | null>(null)
+  // Fallback for when the system nav bar is visible (immersive refused, or swiped in)
+  const insets = useSafeAreaInsets()
 
   return (
     <View style={{ flex: 1 }}>
@@ -197,8 +200,8 @@ function TabNavigator() {
             backgroundColor: colors.bg.surface1,
             borderTopColor: colors.border.subtle,
             borderTopWidth: 1,
-            height: 60,
-            paddingBottom: spacing[2],
+            height: 60 + insets.bottom,
+            paddingBottom: spacing[2] + insets.bottom,
             paddingTop: spacing[2],
           },
           tabBarActiveTintColor: gold[500],
