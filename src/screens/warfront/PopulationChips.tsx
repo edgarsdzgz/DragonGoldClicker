@@ -1,14 +1,17 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, useWindowDimensions } from 'react-native'
 import { Text, Badge } from '../../components'
 import { useGame } from '../../context/GameContext'
 import { getTotalSoldiers, getTotalForagers, isSystemOn } from '../../types/game'
 import { colors, spacing, gold } from '../../theme'
+import { chipsFit } from '../../types/warfrontLayout'
 
 const plural = (n: number, word: string) => `${n} ${word}${n !== 1 ? 's' : ''}`
 
 /** Icon and number only, so the whole row stays on one line; the label says it in words */
-function Chip({ icon, color, count, noun, suffix = '', textColor }: {
+function Chip({ icon, color, count, noun, suffix = '', textColor, words }: {
+  /** Show "24 villagers" instead of just "24" */
+  words: boolean
   icon: React.ComponentProps<typeof Badge>['icon']
   color: string
   count: number
@@ -20,7 +23,7 @@ function Chip({ icon, color, count, noun, suffix = '', textColor }: {
   return (
     <View accessible accessibilityLabel={`${plural(count, noun)}${suffix}`}>
       <Badge icon={icon} color={color}>
-        <Text variant="caption" style={{ color: textColor ?? color }}>{count}</Text>
+        <Text variant="caption" style={{ color: textColor ?? color }}>{words ? plural(count, noun) : count}</Text>
       </Badge>
     </View>
   )
@@ -33,15 +36,23 @@ export function PopulationChips() {
   const soldiers = getTotalSoldiers(state.soldiers)
   const foragers = getTotalForagers(state.foragers)
   const foodOut = hungerOn && state.food === 0
+  const width = useWindowDimensions().width
+
+  // Words when everything fits on one line, else icon + number
+  const labels = [
+    [state.villagers, 'villager'], [state.fighters, 'fighter'], [state.repairers, 'repairer'],
+    [soldiers, 'soldier'], [foragers, 'forager'],
+  ].filter(([n]) => (n as number) > 0).map(([n, w]) => plural(n as number, w as string))
+  const words = chipsFit(labels, width - spacing[4] * 2)
 
   return (
     <View style={styles.section}>
       <View style={styles.row}>
-        <Chip icon="home" color={gold[500]} count={state.villagers} noun="villager" textColor={colors.text.secondary} />
-        <Chip icon="shield" color={colors.warfront.rally} count={state.fighters} noun="fighter" />
-        <Chip icon="construct" color={colors.warfront.repair} count={state.repairers} noun="repairer" />
-        <Chip icon="people" color={gold[300]} count={soldiers} noun="soldier" suffix={foodOut ? ' (idle)' : ' fighting'} />
-        <Chip icon="leaf" color={colors.status.success} count={foragers} noun="forager" />
+        <Chip icon="home" color={gold[500]} count={state.villagers} words={words} noun="villager" textColor={colors.text.secondary} />
+        <Chip icon="shield" color={colors.warfront.rally} count={state.fighters} words={words} noun="fighter" />
+        <Chip icon="construct" color={colors.warfront.repair} count={state.repairers} words={words} noun="repairer" />
+        <Chip icon="people" color={gold[300]} count={soldiers} words={words} noun="soldier" suffix={foodOut ? ' (idle)' : ' fighting'} />
+        <Chip icon="leaf" color={colors.status.success} count={foragers} words={words} noun="forager" />
       </View>
       {foodOut && (state.fighters > 0 || soldiers > 0) ? (
         <Badge icon="warning" color={colors.status.error} style={styles.warning}>

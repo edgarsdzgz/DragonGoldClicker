@@ -70,6 +70,7 @@ export interface AvatarWeaponDef {
   clickPowerBonus: number
 }
 
+// TODO layer 3: weapons become tap-damage upgrades; the "per click" income claim is no longer true
 export const AVATAR_WEAPONS: AvatarWeaponDef[] = [
   { id: 'war_hammer', name: 'War Hammer', description: '+0.05 per click', icon: 'hammer', cost: 25, clickPowerBonus: 0.05 },
 ]

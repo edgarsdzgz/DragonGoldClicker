@@ -150,6 +150,7 @@ export function ArmoryInterior() {
       <View style={{ marginTop: spacing[3] }}>
         <SectionLabel>AVATAR WEAPONS</SectionLabel>
       </View>
+      {/* TODO layer 3: weapons will raise tap damage; for now clickPower only feeds the city's defence */}
       <Text variant="caption" color="muted">
         Click power: {state.clickPower}
       </Text>

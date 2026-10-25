@@ -1,4 +1,6 @@
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useEffect } from 'react'
+import { AppState } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
 
 const HOLD_DELAY_MS = 300
 const REPEAT_INTERVAL_MS = 250
@@ -8,7 +10,9 @@ const REPEAT_INTERVAL_MS = 250
  * Fires `onTap` immediately on press. After a short delay, begins repeating
  * `onHoldTick` at a fixed interval until released.
  *
- * Returns pressIn/pressOut handlers for use with Pressable.
+ * Returns pressIn/pressOut handlers for use with Pressable. The repeat also stops when the
+ * component unmounts, its screen loses focus, or the app leaves the foreground, so a
+ * cancelled press can never keep striking.
  */
 export function useHoldPress(onTap: () => void, onHoldTick: () => void) {
   const delayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -40,6 +44,21 @@ export function useHoldPress(onTap: () => void, onHoldTick: () => void) {
   const onPressOut = useCallback(() => {
     clear()
   }, [clear])
+
+  const focused = useIsFocused()
+  useEffect(() => {
+    if (!focused) clear()
+  }, [focused, clear])
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      if (next !== 'active') clear()
+    })
+    return () => sub.remove()
+  }, [clear])
+
+  // Unmount
+  useEffect(() => clear, [clear])
 
   const isHolding = useCallback(() => holdingRef.current, [])
 

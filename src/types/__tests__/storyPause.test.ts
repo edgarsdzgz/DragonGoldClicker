@@ -31,13 +31,14 @@ describe('story pause', () => {
     expect(findNextBeat(make({ beatsSeen: ['prologue'], inspiration: 2, playSeconds: 99 }), 'live')?.id).toBe('call_to_arms')
   })
 
-  it('backfill stops at the pause even for a far-advanced v1 save', () => {
+  it('backfill still covers the whole table: the pause only limits the director', () => {
     const out = backfillStory(make({
       saveMigrationVersion: 1, fighters: 5, fightersRallied: 5, repairers: 3, repairersDirected: 3,
       barracksLevel: 2, armoryBuilt: true, draconiaHallBuilt: true, totalInspirationEarned: 500,
       milestonesOffered: [25], foodSystemActive: true,
     }))
-    expect(out.beatsSeen).toEqual(['prologue', 'call_to_arms'])
+    expect(out.beatsSeen).toEqual(expect.arrayContaining(['prologue', 'call_to_arms', 'the_breach', 'empty_stores', 'the_keep']))
+    expect(findNextBeat({ ...out, playSeconds: 99999 }, 'live')).toBeNull()
   })
 
   it('systems, guided steps and objectives behind paused beats stay off', () => {

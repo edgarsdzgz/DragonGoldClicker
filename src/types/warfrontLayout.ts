@@ -10,8 +10,8 @@ export const FLOOR_ORB = 120
 export const ORB_PAD = 8
 /** Gap kept between the circle's touch area and the row below */
 export const ORB_GAP = 4
-/** Height reserved for one flavour-text line (text + padding) */
-export const FLAVOR_H = 28
+/** Height of the flavour row: always rendered at this height, one line with ellipsis */
+export const FLAVOR_H = 36
 
 /** Windows shorter than this drop the footer line to give the circle room */
 export const TALL_WINDOW = 700
@@ -35,4 +35,22 @@ export function battleLayout(freeHeight: number): BattleLayout {
   const room = showFlavor ? withFlavor : freeHeight - chrome
   const diameter = Math.max(FLOOR_ORB, Math.min(MAX_ORB, Math.floor(room)))
   return { diameter, showFlavor }
+}
+
+// -----------------------------------------------------------------------------
+// Population chips: words when they fit on one line, icon + number when not
+// -----------------------------------------------------------------------------
+
+/** Rough width of one chip with a text label: icon 14 + gap 4 + padding 24 + border 2, 6.6 per character */
+export function chipWidth(label: string): number {
+  return 14 + 4 + 24 + 2 + Math.ceil(label.length * 6.6)
+}
+
+const CHIP_GAP = 8
+
+/** Whether all labels fit side by side in `available` dp (otherwise show icon + number only) */
+export function chipsFit(labels: string[], available: number): boolean {
+  if (labels.length === 0) return true
+  const total = labels.reduce((sum, l) => sum + chipWidth(l), 0) + CHIP_GAP * (labels.length - 1)
+  return total <= available
 }

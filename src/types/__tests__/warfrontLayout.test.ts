@@ -1,4 +1,4 @@
-import { battleLayout, MIN_ORB, MAX_ORB, FLOOR_ORB, ORB_PAD, ORB_GAP, FLAVOR_H } from '../warfrontLayout'
+import { chipsFit, chipWidth, battleLayout, MIN_ORB, MAX_ORB, FLOOR_ORB, ORB_PAD, ORB_GAP, FLAVOR_H } from '../warfrontLayout'
 
 // Heights used for the screens (dp): window - chrome. See the commit message for the sums.
 const TYPICAL_360x640 = 640 - 414
@@ -40,5 +40,21 @@ describe('battleLayout', () => {
   it('stays within 120 and 260', () => {
     expect(battleLayout(0).diameter).toBe(FLOOR_ORB)
     expect(battleLayout(5000).diameter).toBe(MAX_ORB)
+  })
+})
+
+describe('chipsFit', () => {
+  it('shows words for the 2 chips of the paused story on a 360dp phone, and 3 on a 411dp one', () => {
+    expect(chipsFit(['24 villagers', '2 fighters'], 360 - 32)).toBe(true)
+    expect(chipsFit(['24 villagers', '2 fighters', '1 repairer'], 411 - 32)).toBe(true)
+  })
+
+  it('falls back to icon + number when five chips cannot fit', () => {
+    expect(chipsFit(['24 villagers', '12 fighters', '3 repairers', '9 soldiers', '4 foragers'], 360 - 32)).toBe(false)
+  })
+
+  it('has no chips to fit', () => {
+    expect(chipsFit([], 100)).toBe(true)
+    expect(chipWidth('1 fighter')).toBeGreaterThan(chipWidth('1'))
   })
 })

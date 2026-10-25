@@ -17,7 +17,7 @@ import { SFX } from '../data/sfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, getFighterCost, getRepairerCost, isSystemOn } from '../types/game'
-import { battleLayout, TALL_WINDOW, ORB_GAP } from '../types/warfrontLayout'
+import { battleLayout, TALL_WINDOW, ORB_GAP, FLAVOR_H } from '../types/warfrontLayout'
 import { WarfrontStatus } from './warfront/WarfrontStatus'
 import { PopulationChips } from './warfront/PopulationChips'
 
@@ -114,7 +114,7 @@ export function GameScreen() {
       {/* Battle area: takes whatever height is left; the circle is sized to fit it */}
       <View style={styles.battleArea} onLayout={onBattleLayout}>
         {battle.showFlavor && (
-          <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} />
+          <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} reserveHeight={FLAVOR_H} />
         )}
         {battleHeight > 0 && (
           <View style={{ marginTop: ORB_GAP }}>
@@ -180,7 +180,7 @@ export function GameScreen() {
             {Math.floor(state.monstersDefeated)} monsters slain
           </Text>
           <Badge iconElement={<InspirationIcon size={8} />} color={gold[400]} variant="ghost">
-            <Text variant="caption" color="link">+{state.clickPower.toFixed(2)} per click</Text>
+            <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
           </Badge>
         </View>
       )}

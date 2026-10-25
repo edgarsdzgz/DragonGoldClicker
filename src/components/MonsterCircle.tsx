@@ -90,12 +90,29 @@ export const MonsterCircle = forwardRef<MonsterCircleHandle, MonsterCircleProps>
   const { onPressIn, onPressOut } = useHoldPress(strike, strike)
 
   const handlePressIn = (e: GestureResponderEvent) => {
+    touching.current = true
     lastPoint.current = { x: e.nativeEvent.locationX, y: e.nativeEvent.locationY }
     if (!reduceMotion) Animated.timing(squash, { toValue: SQUASH, duration: 70, useNativeDriver: true }).start()
     onPressIn()
   }
 
+  // Screen readers activate with a tap-less click (onPress). A touch also ends in onPress, which the
+  // press-in already struck for, so remember the touch just long enough to skip that one.
+  const touching = useRef(false)
+  const touchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => () => {
+    if (touchTimer.current) clearTimeout(touchTimer.current)
+  }, [])
+
+  const handlePress = () => {
+    if (touching.current) return
+    lastPoint.current = { x: half, y: half }
+    strike()
+  }
+
   const handlePressOut = () => {
+    if (touchTimer.current) clearTimeout(touchTimer.current)
+    touchTimer.current = setTimeout(() => { touching.current = false }, 400)
     if (!reduceMotion) Animated.spring(squash, { toValue: 1, tension: 220, friction: 7, useNativeDriver: true }).start()
     onPressOut()
   }
@@ -113,10 +130,12 @@ export const MonsterCircle = forwardRef<MonsterCircleHandle, MonsterCircleProps>
     >
       <Pressable
         onPressIn={handlePressIn}
+        onPress={handlePress}
         onPressOut={handlePressOut}
         style={{ padding: pad, alignItems: 'center', justifyContent: 'center' }}
         accessibilityRole="button"
         accessibilityLabel={monsterLabel({ monsterIndex, monsterHp })}
+        accessibilityHint="Double tap to strike the monster"
       >
         <View pointerEvents="none" style={[styles.glow, { width: glow, height: glow, borderRadius: glow / 2 }]} />
         <Animated.View
@@ -130,7 +149,7 @@ export const MonsterCircle = forwardRef<MonsterCircleHandle, MonsterCircleProps>
               opacity: spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
               transform: [
                 { translateX: shake },
-                { scale: Animated.multiply(squash, spawn.interpolate({ inputRange: [0, 1], outputRange: [0.8, 1] })) },
+                { scale: Animated.multiply(squash, spawn.interpolate({ inputRange: [0, 1], outputRange: [reduceMotion ? 1 : 0.8, 1] })) },
               ],
             },
           ]}

@@ -46,7 +46,12 @@ export const FloatingNumbers = forwardRef<FloatingNumbersHandle>(function Floati
   useImperativeHandle(ref, () => ({ spawn }), [spawn])
 
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+    <View
+      style={StyleSheet.absoluteFill}
+      pointerEvents="none"
+      importantForAccessibility="no-hide-descendants"
+      accessibilityElementsHidden
+    >
       {Array.from({ length: MAX_FLOATING_NUMBERS }, (_, i) => (
         <Slot key={i} reduceMotion={reduceMotion} handleRef={(h) => { slots.current[i] = h }} />
       ))}
