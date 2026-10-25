@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useGame } from '../context/GameContext'
+import { isSystemOn } from '../types/game'
 import type { TabParamList } from './types'
 
 // =============================================================================
@@ -21,10 +22,10 @@ export type TabLockMap = Record<keyof TabParamList, TabLockInfo>
 /**
  * Returns lock state for each tab based on game progression.
  *
- * Unlock conditions (from game-flow.md):
+ * Unlocked by story beats, not by counts:
  *   Warfront  -- always unlocked
- *   Forage    -- direct 3 repairers
- *   Draconia  -- train 3 gatherers
+ *   Forage    -- `forageTab` (empty_stores)
+ *   Draconia  -- `draconiaTab` (a_city_to_build)
  *   Settings  -- always unlocked
  */
 export function useTabLocks(): TabLockMap {
@@ -36,16 +37,16 @@ export function useTabLocks(): TabLockMap {
       requirement: '',
     },
     ForageTab: {
-      locked: state.repairers < 3,
-      requirement: 'Direct 3 Repairers to unlock',
+      locked: !isSystemOn(state, 'forageTab'),
+      requirement: 'Not yet discovered',
     },
     DraconiaTab: {
-      locked: state.foragers.gatherers < 3,
-      requirement: 'Train 3 Gatherers to unlock',
+      locked: !isSystemOn(state, 'draconiaTab'),
+      requirement: 'Not yet discovered',
     },
     SettingsTab: {
       locked: false,
       requirement: '',
     },
-  }), [state.repairers, state.foragers.gatherers])
+  }), [state.beatsSeen])
 }

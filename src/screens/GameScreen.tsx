@@ -11,7 +11,7 @@ import { useSfx } from '../hooks/useSfx'
 import { SFX } from '../data/sfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, getTotalSoldiers, getTotalForagers, getFighterCost, getRepairerCost, REPAIR_UNLOCK_FIGHTERS, MAX_CITY_HP } from '../types/game'
+import { formatNumber, getTotalSoldiers, getTotalForagers, getFighterCost, getRepairerCost, MAX_CITY_HP, isSystemOn } from '../types/game'
 
 const SLAY_PALETTE = { accent: gold[400], glow: gold[500] }
 const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.rally }
@@ -51,14 +51,16 @@ export function GameScreen() {
     return () => pulse.stop()
   }, [effectiveAutoRate, incomeFlash])
 
-  const repairUnlocked = state.fighters >= REPAIR_UNLOCK_FIGHTERS
+  const rallyOn = isSystemOn(state, 'rally')
+  const repairOn = isSystemOn(state, 'repair')
+  const hungerOn = isSystemOn(state, 'hunger')
 
   return (
     <View style={styles.container}>
-      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={state.foodSystemActive} autoInspPerSec={effectiveAutoRate} />
+      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={hungerOn} autoInspPerSec={effectiveAutoRate} />
 
-      {/* City HP bar (hidden until unlocked) */}
-      {state.hpUnlocked && (
+      {/* City HP bar (hidden until the siege begins) */}
+      {isSystemOn(state, 'siege') && (
         <View style={styles.cityHpBar}>
           <View style={styles.cityHpHeader}>
             <View style={styles.cityHpLabel}>
@@ -135,7 +137,7 @@ export function GameScreen() {
             <Badge icon="people" color={gold[300]}>
               <Text variant="caption" style={{ color: gold[300] }}>
                 {getTotalSoldiers(state.soldiers)} soldier{getTotalSoldiers(state.soldiers) !== 1 ? 's' : ''}
-                {state.foodSystemActive && state.food === 0 ? ' (idle)' : ' fighting'}
+                {hungerOn && state.food === 0 ? ' (idle)' : ' fighting'}
               </Text>
             </Badge>
           )}
@@ -147,14 +149,14 @@ export function GameScreen() {
             </Badge>
           )}
         </View>
-        {state.foodSystemActive && state.food === 0 && (state.fighters > 0 || getTotalSoldiers(state.soldiers) > 0) && (
+        {hungerOn && state.food === 0 && (state.fighters > 0 || getTotalSoldiers(state.soldiers) > 0) && (
           <Badge icon="warning" color={colors.status.error} style={{ marginTop: spacing[1] }}>
             <Text variant="caption" style={{ color: colors.status.error }}>
               No food! Fighters refuse to fight.
             </Text>
           </Badge>
         )}
-        {state.foodSystemActive && state.food === 0 && state.villagers > 0 && (
+        {hungerOn && state.food === 0 && state.villagers > 0 && (
           <Badge icon="warning" color={colors.status.warning} style={{ marginTop: spacing[1] }}>
             <Text variant="caption" style={{ color: colors.status.warning }}>
               Villagers are starving!
@@ -176,47 +178,37 @@ export function GameScreen() {
 
       {/* Command row: Rally + Repair as secondary HarvestOrbs */}
       <View style={styles.commandRow}>
-        <View style={styles.commandSlot}>
-          <HarvestOrb
-            onAction={rallyFighter}
-            icon="shield"
-            label="RALLY"
-            palette={RALLY_PALETTE}
-            size="md"
-            disabled={state.villagers <= 0 || state.inspiration < getFighterCost(state.fightersRallied)}
-          />
-          <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
-            {formatNumber(getFighterCost(state.fightersRallied))} insp
-          </Text>
-        </View>
+        {rallyOn && (
+          <View style={styles.commandSlot}>
+            <HarvestOrb
+              onAction={rallyFighter}
+              icon="shield"
+              label="RALLY"
+              palette={RALLY_PALETTE}
+              size="md"
+              disabled={state.villagers <= 0 || state.inspiration < getFighterCost(state.fightersRallied)}
+            />
+            <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
+              {formatNumber(getFighterCost(state.fightersRallied))} insp
+            </Text>
+          </View>
+        )}
 
-        <View style={styles.commandSlot}>
-          {repairUnlocked ? (
-            <>
-              <HarvestOrb
-                onAction={directRepairer}
-                icon="construct"
-                label="REPAIR"
-                palette={REPAIR_PALETTE}
-                size="md"
-                disabled={state.villagers <= 0 || state.inspiration < getRepairerCost(state.repairersDirected)}
-              />
-              <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
-                {formatNumber(getRepairerCost(state.repairersDirected))} insp
-              </Text>
-            </>
-          ) : (
-            <View style={styles.lockedOrb}>
-              <Ionicons name="lock-closed" size={16} color={colors.text.muted} />
-              <Text variant="caption" color="muted" center>
-                {REPAIR_UNLOCK_FIGHTERS - state.fighters} more
-              </Text>
-              <Text variant="caption" color="muted" center>
-                fighter{REPAIR_UNLOCK_FIGHTERS - state.fighters !== 1 ? 's' : ''}
-              </Text>
-            </View>
-          )}
-        </View>
+        {repairOn && (
+          <View style={styles.commandSlot}>
+            <HarvestOrb
+              onAction={directRepairer}
+              icon="construct"
+              label="REPAIR"
+              palette={REPAIR_PALETTE}
+              size="md"
+              disabled={state.villagers <= 0 || state.inspiration < getRepairerCost(state.repairersDirected)}
+            />
+            <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
+              {formatNumber(getRepairerCost(state.repairersDirected))} insp
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* Footer: secondary kill counter + reward hint */}
@@ -291,17 +283,6 @@ const styles = StyleSheet.create({
   commandSlot: {
     alignItems: 'center',
     gap: spacing[1],
-  },
-  lockedOrb: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 1.5,
-    borderColor: colors.border.subtle,
-    borderStyle: 'dashed',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 2,
   },
   footer: {
     alignItems: 'center',

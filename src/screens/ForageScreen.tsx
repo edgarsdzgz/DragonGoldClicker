@@ -11,7 +11,7 @@ import { useRandomSfx } from '../hooks/useRandomSfx'
 import { SFX_HARVEST_POOL } from '../data/sfx'
 import { FORAGE_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap } from '../types/game'
+import { formatNumber, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap, isSystemOn } from '../types/game'
 
 // Earthy green palette for foraging
 const forage = {
@@ -87,7 +87,7 @@ export function ForageScreen() {
 
   return (
     <View style={styles.container}>
-      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={state.foodSystemActive} autoInspPerSec={effectiveAutoRate} />
+      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} autoInspPerSec={effectiveAutoRate} />
 
       {/* HERO: Food is the primary number */}
       <View style={styles.heroSection}>

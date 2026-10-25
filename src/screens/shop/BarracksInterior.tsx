@@ -11,6 +11,7 @@ import {
   getSoldierCap,
   getBarracksUpgradeCost,
   formatNumber,
+  isSystemOn,
 } from '../../types/game'
 import { SoldierTierRow } from './TierRow'
 import { CapacitySection } from './shared'
@@ -35,7 +36,7 @@ export function BarracksInterior() {
       {/* Summary bar */}
       <SummaryBar>
         <StatBox value={`${total}/${cap}`} label="Soldiers" valueColor={gold[400]} />
-        {state.foodSystemActive && (
+        {isSystemOn(state, 'hunger') && (
           <StatBox value={state.villagers} label="Villagers" />
         )}
         <StatBox value={effectiveAutoRate.toFixed(2)} label="insp/s" />

@@ -5,7 +5,7 @@ import { Text } from './Text'
 import { ProgressBar } from './ProgressBar'
 import { useGame } from '../context/GameContext'
 import { colors, spacing, radius } from '../theme'
-import { FOOD_CHECK_INTERVAL, getFoodConsumption } from '../types/game'
+import { FOOD_CHECK_INTERVAL, getFoodConsumption, isSystemOn } from '../types/game'
 
 // Warm amber palette for consumption (contrasts with green forage / red garrison)
 const meal = {
@@ -32,7 +32,7 @@ export function MealCountdown({ variant = 'full' }: MealCountdownProps) {
   )
 
   // Nothing to show if nobody eats
-  if (!state.foodSystemActive || consumption <= 0) return null
+  if (!isSystemOn(state, 'hunger') || consumption <= 0) return null
 
   const secondsLeft = FOOD_CHECK_INTERVAL - state.foodTimer
   const progress = secondsLeft / FOOD_CHECK_INTERVAL

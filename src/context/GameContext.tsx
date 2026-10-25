@@ -11,9 +11,6 @@ import {
   SHIELD_COST,
   OFFLINE_LEVELS,
   MAX_OFFLINE_LEVEL,
-  FOOD_CHECK_INTERVAL,
-  STARVATION_DEATH_CHANCE,
-  PROFESSIONAL_STARVATION_CHANCE,
   getSoldierCost,
   getSoldierCount,
   getTotalSoldiers,
@@ -60,7 +57,6 @@ import {
   getFighterCost,
   getRepairerCost,
   getFighterAutoRate,
-  REPAIR_UNLOCK_FIGHTERS,
   SIEGE_TICK_INTERVAL,
   MAX_CITY_HP,
   getThreatLevel,
@@ -71,7 +67,10 @@ import {
   SWORD_BONUS,
   SHIELD_BONUS,
   roundInsp,
+  isSystemOn,
+  isBuildingRevealed,
 } from '../types/game'
+import { resolveFoodTick, applyFoodTick } from '../types/foodTick'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
@@ -203,7 +202,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const potentialAutoRate = soldierAutoRate + fighterAutoRate
   // Soldiers/fighters stop earning when starving
   const combatantsExist = getTotalSoldiers(state.soldiers) > 0 || state.fighters > 0
-  const soldiersStarving = state.foodSystemActive && state.food <= 0 && combatantsExist
+  const soldiersStarving = isSystemOn(state, 'hunger') && state.food <= 0 && combatantsExist
   const effectiveAutoRate = soldiersStarving ? 0 : potentialAutoRate
 
   const autoFoodRate = getAutoFoodRate(state.foragers)
@@ -225,7 +224,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (!loaded || effectiveAutoRate <= 0) return
       setState((prev) => {
         // No auto inspiration when food system is active and food is depleted
-        if (prev.foodSystemActive && prev.food <= 0) return prev
+        if (isSystemOn(prev, 'hunger') && prev.food <= 0) return prev
 
         const earned = effectiveAutoRate
         return {
@@ -258,145 +257,59 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }, [loaded, autoFoodRate])
   )
 
-  // Food consumption tick (only when food system is active)
+  // Food consumption tick (only once the Hunger system is on). The check is decided from the
+  // latest state, then applied as deltas by a pure updater; the pop-ups are set separately.
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      setState((prev) => {
-        if (!prev.foodSystemActive) return prev
-        const newTimer = prev.foodTimer + 1
-        if (newTimer < FOOD_CHECK_INTERVAL) {
-          return { ...prev, foodTimer: newTimer }
-        }
+      const prev = stateRef.current
+      if (!isSystemOn(prev, 'hunger')) return
 
-        // Food check fires
-        const baseConsumption = getFoodConsumption(prev.villagers, prev.soldiers, prev.foragers, prev.explorers, prev.fighters, prev.repairers)
-        const rb = getResearchBonuses(prev.completedResearch)
-        const consumption = Math.max(0, Math.ceil(baseConsumption * (1 - rb.foodConsumptionReduction)))
-        const newFood = Math.max(0, prev.food - consumption)
+      const { tick, warning, report } = resolveFoodTick(prev, isSystemOn(prev, 'starvation'))
+      // Keep the ref current so several ticks in one frame (high dev speed) stay consistent
+      stateRef.current = applyFoodTick(prev, tick)
+      setState((cur) => applyFoodTick(cur, tick))
 
-        // Check food warning level (events remaining AFTER this consumption)
-        const eventsLeft = consumption > 0 ? Math.floor(newFood / consumption) : Infinity
-        let warningLevel: 0 | 3 | 1 = 0
-        if (eventsLeft <= 1) warningLevel = 1
-        else if (eventsLeft <= 3) warningLevel = 3
-
-        // Only trigger popup if warning escalated (not on every tick)
-        if (warningLevel > 0 && warningLevel !== lastFoodWarningRef.current) {
-          setPendingFoodWarning(warningLevel)
-        }
-        lastFoodWarningRef.current = warningLevel
-
-        // Starvation: if no food, population may die
-        let villagersLost = 0
-        const soldiersLost: SoldierCounts = { conscripts: 0, footmen: 0, knights: 0 }
-        const foragersLost: ForagerCounts = { gatherers: 0, trappers: 0, rangers: 0 }
-        let explorersLost = 0
-        let fightersLost = 0
-        let repairersLost = 0
-
-        if (newFood === 0) {
-          // Idle villagers: higher death chance
-          for (let i = 0; i < prev.villagers; i++) {
-            if (Math.random() < STARVATION_DEATH_CHANCE) villagersLost++
-          }
-          // Soldiers: lower death chance
-          for (let i = 0; i < prev.soldiers.conscripts; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) soldiersLost.conscripts++
-          }
-          for (let i = 0; i < prev.soldiers.footmen; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) soldiersLost.footmen++
-          }
-          for (let i = 0; i < prev.soldiers.knights; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) soldiersLost.knights++
-          }
-          // Foragers: lower death chance
-          for (let i = 0; i < prev.foragers.gatherers; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) foragersLost.gatherers++
-          }
-          for (let i = 0; i < prev.foragers.trappers; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) foragersLost.trappers++
-          }
-          for (let i = 0; i < prev.foragers.rangers; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) foragersLost.rangers++
-          }
-          // Explorers: lower death chance
-          for (let i = 0; i < prev.explorers; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) explorersLost++
-          }
-          // Fighters: lower death chance
-          for (let i = 0; i < prev.fighters; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) fightersLost++
-          }
-          // Repairers: lower death chance
-          for (let i = 0; i < prev.repairers; i++) {
-            if (Math.random() < PROFESSIONAL_STARVATION_CHANCE) repairersLost++
-          }
-
-          const totalProfLost = soldiersLost.conscripts + soldiersLost.footmen + soldiersLost.knights +
-            foragersLost.gatherers + foragersLost.trappers + foragersLost.rangers +
-            explorersLost + fightersLost + repairersLost
-          if (villagersLost > 0 || totalProfLost > 0) {
-            setPendingStarvationReport({ villagersLost, soldiersLost, foragersLost, explorersLost, fightersLost, repairersLost })
-          }
-        }
-
-        return {
-          ...prev,
-          foodTimer: 0,
-          food: newFood,
-          villagers: prev.villagers - villagersLost,
-          villagersLost: prev.villagersLost + villagersLost,
-          soldiers: {
-            conscripts: prev.soldiers.conscripts - soldiersLost.conscripts,
-            footmen: prev.soldiers.footmen - soldiersLost.footmen,
-            knights: prev.soldiers.knights - soldiersLost.knights,
-          },
-          foragers: {
-            gatherers: prev.foragers.gatherers - foragersLost.gatherers,
-            trappers: prev.foragers.trappers - foragersLost.trappers,
-            rangers: prev.foragers.rangers - foragersLost.rangers,
-          },
-          explorers: prev.explorers - explorersLost,
-          fighters: prev.fighters - fightersLost,
-          repairers: prev.repairers - repairersLost,
-        }
-      })
+      if (warning !== null) {
+        // Only trigger popup if warning escalated (not on every check)
+        if (warning > 0 && warning !== lastFoodWarningRef.current) setPendingFoodWarning(warning)
+        lastFoodWarningRef.current = warning
+      }
+      if (report) setPendingStarvationReport(report)
     }, [loaded])
   )
 
-  // Siege damage tick (every SIEGE_TICK_INTERVAL seconds)
+  // Siege damage tick (every SIEGE_TICK_INTERVAL seconds, once the Siege system is on)
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      setState((prev) => {
-        if (!prev.hpUnlocked || prev.cityHp <= 0) return prev
-        const newTimer = prev.siegeTimer + 1
-        if (newTimer < SIEGE_TICK_INTERVAL) {
-          return { ...prev, siegeTimer: newTimer }
-        }
-        // Siege tick fires
-        const threat = getThreatLevel(prev.totalInspirationEarned)
-        const defense = getDefenseLevel(prev.clickPower, prev.fighters)
-        const damage = getSiegeDamage(threat, defense)
-        if (damage <= 0) {
-          return { ...prev, siegeTimer: 0 }
-        }
-        const newHp = Math.max(0, prev.cityHp - damage)
-        if (newHp <= 0) {
-          setIsGameOver(true)
-        }
-        return { ...prev, siegeTimer: 0, cityHp: newHp }
-      })
+      const prev = stateRef.current
+      if (!isSystemOn(prev, 'siege') || prev.cityHp <= 0) return
+
+      const timer = prev.siegeTimer + 1
+      if (timer < SIEGE_TICK_INTERVAL) {
+        stateRef.current = { ...prev, siegeTimer: timer }
+        setState((cur) => ({ ...cur, siegeTimer: timer }))
+        return
+      }
+      // Siege tick fires
+      const threat = getThreatLevel(prev.totalInspirationEarned)
+      const defense = getDefenseLevel(prev.clickPower, prev.fighters)
+      const damage = getSiegeDamage(threat, defense)
+      const apply = (s: GameState): GameState =>
+        damage <= 0 ? { ...s, siegeTimer: 0 } : { ...s, siegeTimer: 0, cityHp: Math.max(0, s.cityHp - damage) }
+      stateRef.current = apply(prev)
+      setState(apply)
+      if (damage > 0 && prev.cityHp - damage <= 0) setIsGameOver(true)
     }, [loaded])
   )
 
-  // Repair loop (repairers heal city HP continuously)
+  // Repair loop (repairers heal city HP continuously, once the Repair system is on)
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
       setState((prev) => {
-        if (!prev.hpUnlocked || prev.repairers <= 0 || prev.cityHp >= MAX_CITY_HP || prev.cityHp <= 0) return prev
+        if (!isSystemOn(prev, 'repair') || prev.repairers <= 0 || prev.cityHp >= MAX_CITY_HP || prev.cityHp <= 0) return prev
         const rate = getRepairRate(prev.repairers)
         const newProgress = prev.repairProgress + rate
         const healed = Math.floor(newProgress)
@@ -419,37 +332,32 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       wandererTimerRef.current += 1
       if (wandererTimerRef.current < WANDERER_COOLDOWN) return
 
-      setState((prev) => {
-        // Requires food system to be active (foraging unlocked)
-        if (!prev.foodSystemActive) return prev
+      // Decide from the latest state, outside any updater, so the event cannot fire twice
+      const prev = stateRef.current
+      if (!isSystemOn(prev, 'wanderers')) return
 
-        const totalSoldiers = getTotalSoldiers(prev.soldiers)
-        const totalForagers = getTotalForagers(prev.foragers)
-        const encounter = rollWandererCheck(
-          totalSoldiers,
-          totalForagers,
-          prev.villagers,
-          prev.activeExpeditions.length > 0,
-          prev.postLevel,
-        )
+      const encounter = rollWandererCheck(
+        getTotalSoldiers(prev.soldiers),
+        getTotalForagers(prev.foragers),
+        prev.villagers,
+        prev.activeExpeditions.length > 0,
+        prev.postLevel,
+      )
+      if (encounter) setPendingWanderer(encounter)
 
-        if (encounter) {
-          setPendingWanderer(encounter)
-        }
-
-        return { ...prev, lastWandererCheck: Date.now() }
-      })
+      const now = Date.now()
+      setState((cur) => ({ ...cur, lastWandererCheck: now }))
     }, [loaded, pendingWanderer])
   )
 
   // Milestone recruitment check -- fires when totalInspirationEarned crosses a threshold
   useEffect(() => {
-    if (!loaded || pendingMilestone) return
+    if (!loaded || pendingMilestone || !isSystemOn(state, 'milestones')) return
     const next = getNextMilestone(state.totalInspirationEarned, state.milestonesOffered)
     if (next) {
       setPendingMilestone(next)
     }
-  }, [loaded, state.totalInspirationEarned, state.milestonesOffered, pendingMilestone])
+  }, [loaded, state.totalInspirationEarned, state.milestonesOffered, state.beatsSeen, pendingMilestone])
 
   const click = useCallback(() => {
     setState((prev) => ({
@@ -496,7 +404,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     let directed = false
     setState((prev) => {
       if (prev.villagers <= 0) return prev
-      if (prev.fighters < REPAIR_UNLOCK_FIGHTERS) return prev
+      if (!isSystemOn(prev, 'repair')) return prev
       const cost = getRepairerCost(prev.repairersDirected)
       if (prev.inspiration < cost) return prev
       directed = true
@@ -662,7 +570,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const buildOrUpgradeLodge = useCallback((): boolean => {
     let success = false
     setState((prev) => {
-      if (!prev.foodSystemActive) return prev
+      if (!isBuildingRevealed(prev, 'lodge')) return prev
       const nextLevel = prev.lodgeLevel + 1
       const def = LODGE_LEVELS.find((l) => l.level === nextLevel)
       if (!def || prev.inspiration < def.cost) return prev
@@ -1095,7 +1003,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // Computed food warning level for badge display (always current, not just on events)
   const foodWarningLevel: 0 | 3 | 1 = (() => {
-    if (!state.foodSystemActive) return 0
+    if (!isSystemOn(state, 'hunger')) return 0
     const eventsLeft = getFoodEventsRemaining(state.food, state.villagers, state.soldiers, state.foragers, state.explorers)
     if (eventsLeft <= 1) return 1
     if (eventsLeft <= 3) return 3

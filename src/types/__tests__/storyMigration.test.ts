@@ -75,6 +75,11 @@ describe('backfillStory', () => {
     expect(isSystemOn(out, 'threatUnfloored')).toBe(true)
   })
 
+  it('keeps the Lodge revealed for a save that built it without a Forge', () => {
+    const out = backfillStory(v1({ barracksLevel: 1, lodgeLevel: 1, foodSystemActive: true, fighters: 2, fightersRallied: 2, repairers: 3, repairersDirected: 3 }))
+    expect(isBuildingRevealed(out, 'lodge')).toBe(true)
+  })
+
   it('does not mutate the input or leave duplicate beats', () => {
     const input = v1({ fighters: 2, fightersRallied: 2 })
     const out = backfillStory(input)

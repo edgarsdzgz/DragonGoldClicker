@@ -31,7 +31,7 @@ import {
   EXPLORER_COST,
   EXPEDITION_INSPIRATION_COST,
   EXPEDITION_FOOD_COST,
-  shouldRevealExplorerPost,
+  isBuildingRevealed,
   getTotalSoldiers,
   getSoldierCap,
   getSoldierCost,
@@ -89,10 +89,10 @@ function useBuildTabBadge(): boolean {
 
     // -- Unbuilt buildings the player can afford --
     if (state.barracksLevel === 0 && g >= BARRACKS_LEVELS[0].cost) return true
-    if (!state.armoryBuilt && g >= ARMORY_COST) return true
-    if (!state.draconiaHallBuilt && g >= DRACONIA_HALL_COST) return true
-    if (state.foodSystemActive && state.lodgeLevel === 0 && g >= LODGE_LEVELS[0].cost) return true
-    if (state.postLevel === 0 && shouldRevealExplorerPost(state) && g >= POST_LEVELS[0].cost) return true
+    if (!state.armoryBuilt && isBuildingRevealed(state, 'forge') && g >= ARMORY_COST) return true
+    if (!state.draconiaHallBuilt && isBuildingRevealed(state, 'keep') && g >= DRACONIA_HALL_COST) return true
+    if (isBuildingRevealed(state, 'lodge') && state.lodgeLevel === 0 && g >= LODGE_LEVELS[0].cost) return true
+    if (state.postLevel === 0 && isBuildingRevealed(state, 'outpost') && g >= POST_LEVELS[0].cost) return true
 
     // -- Built buildings with affordable actions --
     const rb = getResearchBonuses(state.completedResearch)
@@ -155,7 +155,7 @@ function useBuildTabBadge(): boolean {
     }
 
     // Librarium: can build or can research
-    if (!state.librariumBuilt && state.draconiaHallBuilt && g >= LIBRARIUM_COST) return true
+    if (!state.librariumBuilt && isBuildingRevealed(state, 'librarium') && g >= LIBRARIUM_COST) return true
     if (state.librariumBuilt) {
       for (const node of RESEARCH_NODES) {
         if (!state.completedResearch.includes(node.id) && g >= node.cost) {

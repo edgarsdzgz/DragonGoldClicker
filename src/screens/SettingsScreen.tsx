@@ -10,7 +10,7 @@ import { useGame } from '../context/GameContext'
 import { useAudioSettings } from '../context/AudioSettingsContext'
 import { DevPanel } from './settings/DevPanel'
 import { colors, spacing } from '../theme'
-import { formatNumber, getTotalSoldiers, getFoodConsumption, FOOD_CHECK_INTERVAL, RESEARCH_NODES } from '../types/game'
+import { formatNumber, getTotalSoldiers, getFoodConsumption, FOOD_CHECK_INTERVAL, RESEARCH_NODES, isSystemOn } from '../types/game'
 
 const TABS: PillTab[] = [
   { key: 'settings', label: 'Settings', icon: 'settings-outline' },
@@ -26,7 +26,7 @@ export function SettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={state.foodSystemActive} autoInspPerSec={effectiveAutoRate} />
+      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} autoInspPerSec={effectiveAutoRate} />
       <PillTabs tabs={TABS} activeKey={activeTab} onSelect={setActiveTab} />
 
       {activeTab === 'settings' && (
@@ -174,7 +174,7 @@ function StatsContent() {
         )}
       </Surface>
 
-      {state.foodSystemActive && (
+      {isSystemOn(state, 'hunger') && (
         <Surface style={styles.section}>
           <SectionLabel spacing={2}>DRACONIA</SectionLabel>
           <StatRow icon="nutrition" label="Food" value={formatNumber(state.food)} accent />

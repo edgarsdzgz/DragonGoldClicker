@@ -14,7 +14,8 @@ import {
   LIBRARIUM_COST,
   OFFLINE_LEVELS,
   RESEARCH_NODES,
-  shouldRevealExplorerPost,
+  isBuildingRevealed,
+  isSystemOn,
   SOLDIER_TIERS,
   FORAGER_TIERS,
   SWORD_COST,
@@ -263,7 +264,6 @@ export function ShopScreen() {
   const barracksBuildCost = getBarracksUpgradeCost(0)
 
   const postBuildCost = getPostUpgradeCost(0)
-  const showExplorerPost = shouldRevealExplorerPost(state)
 
   // Compute "has action" flags for built buildings
   const garrisonHasAction = barracksBuilt && (() => {
@@ -326,10 +326,9 @@ export function ShopScreen() {
     return false
   })()
 
-  // Librarium visible once Draconia Keep is built and barracks >= 2 OR total inspiration earned >= 2000
-  const showLibrarium = state.librariumBuilt || (
-    state.draconiaHallBuilt && (state.barracksLevel >= 2 || state.totalInspirationEarned >= 2000)
-  )
+  // Fogged buildings appear when their story beat reveals them (or once built)
+  const revealed = (id: Parameters<typeof isBuildingRevealed>[1], built: boolean) =>
+    built || isBuildingRevealed(state, id)
 
   const buildings: Record<string, BuildingInfo> = {
     keep: {
@@ -339,7 +338,7 @@ export function ShopScreen() {
       description: 'The heart of the settlement. From this seat of power, manage villager roles and unlock offline inspiration collection.',
       accentColor: colors.building.draconia,
       isBuilt: state.draconiaHallBuilt,
-      visible: true,
+      visible: revealed('keep', state.draconiaHallBuilt),
       cost: DRACONIA_HALL_COST,
       canAfford: state.inspiration >= DRACONIA_HALL_COST,
       onBuild: buildDraconiaHall,
@@ -373,7 +372,7 @@ export function ShopScreen() {
       description: 'A blazing smithy where weapons and armor are hammered into shape. Equip soldiers with swords and shields, or arm yourself.',
       accentColor: colors.building.forge,
       isBuilt: state.armoryBuilt,
-      visible: true,
+      visible: revealed('forge', state.armoryBuilt),
       cost: ARMORY_COST,
       canAfford: state.inspiration >= ARMORY_COST,
       onBuild: buildArmory,
@@ -390,7 +389,7 @@ export function ShopScreen() {
       description: 'A rustic outpost at the edge of the wilds. Train rangers to forage food from the surrounding wilderness.',
       accentColor: colors.building.lodge,
       isBuilt: lodgeBuilt,
-      visible: state.foodSystemActive,
+      visible: revealed('lodge', lodgeBuilt),
       cost: lodgeBuildCost,
       canAfford: lodgeBuildCost !== null && state.inspiration >= lodgeBuildCost,
       onBuild: buildOrUpgradeLodge,
@@ -407,7 +406,7 @@ export function ShopScreen() {
       description: 'A staging ground for expeditions beyond the walls. Train wayfinders to venture into the wasteland and rescue lost villagers.',
       accentColor: colors.building.explorer,
       isBuilt: state.postLevel > 0,
-      visible: showExplorerPost,
+      visible: revealed('outpost', state.postLevel > 0),
       cost: postBuildCost,
       canAfford: (postBuildCost ?? 0) > 0 && state.inspiration >= (postBuildCost ?? 0),
       onBuild: buildOrUpgradePost,
@@ -424,7 +423,7 @@ export function ShopScreen() {
       description: 'A vast archive of ancient knowledge. Research upgrades to strengthen every aspect of Draconia.',
       accentColor: colors.building.librarium,
       isBuilt: state.librariumBuilt,
-      visible: showLibrarium,
+      visible: revealed('librarium', state.librariumBuilt),
       cost: LIBRARIUM_COST,
       canAfford: state.inspiration >= LIBRARIUM_COST,
       onBuild: buildLibrarium,
@@ -533,7 +532,7 @@ export function ShopScreen() {
       <ResourceBar
         inspiration={state.inspiration}
         food={state.food}
-        foodSystemActive={state.foodSystemActive}
+        foodSystemActive={isSystemOn(state, 'hunger')}
         autoInspPerSec={effectiveAutoRate}
       />
       <ScrollView
