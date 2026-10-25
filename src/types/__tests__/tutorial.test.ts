@@ -1,6 +1,7 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
-import { getActiveStep, isStepComplete, backfillTutorial, TUTORIAL_STEPS, EMPTY_TUTORIAL_UI } from '../tutorial'
+import { getActiveStep, isStepComplete, backfillTutorial, needsMoreInspiration, TUTORIAL_STEPS, EMPTY_TUTORIAL_UI } from '../tutorial'
+import { blockerCells, holeRadius, padRect } from '../../context/coachGeometry'
 import { CoachRegistry, isRectVisible, hintSide } from '../../context/coachRegistry'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
@@ -114,5 +115,62 @@ describe('coach target registry', () => {
   it('puts the hint below a high target and above a low one', () => {
     expect(hintSide({ x: 0, y: 100, w: 50, h: 50 }, 800)).toBe('below')
     expect(hintSide({ x: 0, y: 650, w: 50, h: 50 }, 800)).toBe('above')
+  })
+})
+
+describe('needsMoreInspiration (spend steps)', () => {
+  const step = (id: string) => TUTORIAL_STEPS.find((t) => t.id === id)!
+
+  it('flags a spend step the player cannot afford', () => {
+    expect(needsMoreInspiration(step('tap_rally'), make({ inspiration: 0.2 }))).toBe(true)
+    expect(needsMoreInspiration(step('tap_repair'), make({ inspiration: 0.1 }))).toBe(true)
+    expect(needsMoreInspiration(step('train_gatherer'), make({ inspiration: 0 }))).toBe(true)
+    expect(needsMoreInspiration(step('build_garrison'), make({ inspiration: 1 }))).toBe(true)
+  })
+
+  it('clears once the player can afford it', () => {
+    expect(needsMoreInspiration(step('tap_rally'), make({ inspiration: 5 }))).toBe(false)
+    expect(needsMoreInspiration(step('build_garrison'), make({ inspiration: 1.25 }))).toBe(false)
+  })
+
+  it('never flags non-spend steps', () => {
+    for (const id of ['tap_slay', 'open_forage', 'tap_forage', 'open_draconia', 'tap_garrison']) {
+      expect(needsMoreInspiration(step(id), make({ inspiration: 0 }))).toBe(false)
+    }
+  })
+
+  it('uses the price after earlier purchases', () => {
+    const cheap = needsMoreInspiration(step('tap_repair'), make({ inspiration: 1, repairersDirected: 0 }))
+    const dear = needsMoreInspiration(step('tap_repair'), make({ inspiration: 1, repairersDirected: 6 }))
+    expect(cheap).toBe(false)
+    expect(dear).toBe(true)
+  })
+})
+
+describe('coach geometry', () => {
+  const area = (cells: Array<{ w: number; h: number }>) => cells.reduce((sum, c) => sum + c.w * c.h, 0)
+
+  it('blockers cover the whole window except the target rectangle, exactly', () => {
+    const hole = { x: 100, y: 200, w: 80, h: 80 }
+    const cells = blockerCells(400, 800, [hole])
+    expect(area(cells)).toBe(400 * 800 - 80 * 80)
+    const inside = cells.some((c) => 120 > c.x && 120 < c.x + c.w && 220 > c.y && 220 < c.y + c.h)
+    expect(inside).toBe(false)
+  })
+
+  it('handles two holes and a hole against the window edge', () => {
+    const holes = [{ x: 0, y: 700, w: 100, h: 100 }, { x: 150, y: 300, w: 60, h: 60 }]
+    expect(area(blockerCells(400, 800, holes))).toBe(400 * 800 - 100 * 100 - 60 * 60)
+  })
+
+  it('makes a circular hole for round targets and a rounded one otherwise', () => {
+    expect(holeRadius({ x: 0, y: 0, w: 100, h: 100 }, 12)).toBe(50)
+    expect(holeRadius({ x: 0, y: 0, w: 100, h: 140 }, 12)).toBe(12)
+  })
+
+  it('pads visually without changing the exact rectangle', () => {
+    const r = { x: 10, y: 10, w: 50, h: 50 }
+    expect(padRect(r, 6)).toEqual({ x: 4, y: 4, w: 62, h: 62 })
+    expect(r.w).toBe(50)
   })
 })

@@ -1,5 +1,8 @@
 import type { GameState } from './state'
 import type { BeatId } from './story'
+import { getFighterCost, getRepairerCost } from './fighters'
+import { FORAGER_TIERS, getForagerCost, getForagerCount } from './foragers'
+import { BARRACKS_LEVELS } from './soldiers'
 
 // =============================================================================
 // GUIDED TUTORIAL (coach marks): data and pure progression
@@ -37,7 +40,14 @@ export interface TutorialStep {
   isDone: (s: GameState) => boolean
   /** Done when the UI reaches this state */
   doneUi?: (ui: TutorialUi) => boolean
+  /** Inspiration this step's target spends (spend steps only) */
+  cost?: (s: GameState) => number
 }
+
+/** Shown when a spend step is unaffordable and SLAY is on screen */
+export const HINT_SLAY_TO_AFFORD = 'Slay monsters until you can afford this.'
+/** Shown when a spend step is unaffordable and SLAY is not on screen */
+export const HINT_RETURN_TO_SLAY = 'Return to the Warfront and slay monsters to afford this.'
 
 export const TUTORIAL_STEPS: TutorialStep[] = [
   {
@@ -49,11 +59,13 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     id: 'tap_rally', afterBeat: 'call_to_arms', target: 'rally',
     hint: 'Rally a villager to fight beside you.',
     isDone: (s) => s.fighters >= 1 || s.fightersRallied >= 1,
+    cost: (s) => getFighterCost(s.fightersRallied),
   },
   {
     id: 'tap_repair', afterBeat: 'mend_the_walls', target: 'repair',
     hint: 'Send a villager to mend the wall.',
     isDone: (s) => s.repairers >= 1 || s.repairersDirected >= 1,
+    cost: (s) => getRepairerCost(s.repairersDirected),
   },
   {
     id: 'open_forage', afterBeat: 'empty_stores', target: 'tab_forage',
@@ -70,6 +82,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     id: 'train_gatherer', afterBeat: 'empty_stores', target: 'train',
     hint: 'Train a gatherer to forage for you.',
     isDone: (s) => s.foragers.gatherers >= 1 || s.foragersTrained.gatherers >= 1,
+    cost: (s) => getForagerCost(FORAGER_TIERS[0], getForagerCount(s.foragersTrained, 'gatherer')),
   },
   {
     id: 'open_draconia', afterBeat: 'a_city_to_build', target: 'tab_draconia',
@@ -87,6 +100,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     id: 'build_garrison', afterBeat: 'a_city_to_build', target: 'garrison_build', inModal: true,
     hint: 'Build the Garrison.',
     isDone: (s) => s.barracksLevel >= 1,
+    cost: () => BARRACKS_LEVELS[0].cost,
   },
 ]
 
@@ -99,6 +113,11 @@ export function getActiveStep(s: GameState): TutorialStep | null {
   const step = TUTORIAL_STEPS.find((t) => !done.includes(t.id))
   if (!step || !s.beatsSeen.includes(step.afterBeat)) return null
   return step
+}
+
+/** A spend step whose target costs more inspiration than the player has */
+export function needsMoreInspiration(step: TutorialStep, s: GameState): boolean {
+  return step.cost !== undefined && s.inspiration < step.cost(s)
 }
 
 export function isStepComplete(step: TutorialStep, s: GameState, ui: TutorialUi): boolean {

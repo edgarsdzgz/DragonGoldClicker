@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, InspirationIcon, ProgressBar, StoryObjective, StorySpotlight } from '../components'
+import { Text, Badge, InspirationIcon, ProgressBar, StoryObjective, StorySpotlight, CoachTarget } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -185,12 +185,12 @@ export function GameScreen() {
       {/* Command row: Rally + Repair as secondary HarvestOrbs */}
       <View style={styles.commandRow}>
         {rallyOn && (
-          <StorySpotlight target="rally" style={styles.commandSlot}>
+          <StorySpotlight target="rally">
+            <CoachTarget id="rally" style={styles.commandSlot}>
             <HarvestOrb
               onAction={rallyFighter}
               icon="shield"
               label="RALLY"
-              coachId="rally"
               palette={RALLY_PALETTE}
               size="md"
               disabled={state.villagers <= 0 || state.inspiration < getFighterCost(state.fightersRallied)}
@@ -198,16 +198,17 @@ export function GameScreen() {
             <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
               {formatNumber(getFighterCost(state.fightersRallied))} insp
             </Text>
+            </CoachTarget>
           </StorySpotlight>
         )}
 
         {repairOn && (
-          <StorySpotlight target="repair" style={styles.commandSlot}>
+          <StorySpotlight target="repair">
+            <CoachTarget id="repair" style={styles.commandSlot}>
             <HarvestOrb
               onAction={directRepairer}
               icon="construct"
               label="REPAIR"
-              coachId="repair"
               palette={REPAIR_PALETTE}
               size="md"
               disabled={state.villagers <= 0 || state.inspiration < getRepairerCost(state.repairersDirected)}
@@ -215,6 +216,7 @@ export function GameScreen() {
             <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
               {formatNumber(getRepairerCost(state.repairersDirected))} insp
             </Text>
+            </CoachTarget>
           </StorySpotlight>
         )}
       </View>

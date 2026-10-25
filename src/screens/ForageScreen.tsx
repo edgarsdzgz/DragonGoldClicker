@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, MealCountdown, StoryObjective } from '../components'
+import { Text, Badge, MealCountdown, StoryObjective, CoachTarget } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -154,12 +154,11 @@ export function ForageScreen() {
 
       {/* Command row: Train Gatherer + Recruit Explorer */}
       <View style={styles.commandRow}>
-        <View style={styles.commandSlot}>
+        <CoachTarget id="train" style={styles.commandSlot}>
           <HarvestOrb
             onAction={handleTrainGatherer}
             icon="person-add"
             label="TRAIN"
-            coachId="train"
             palette={TRAIN_PALETTE}
             size="md"
             disabled={!canTrainGatherer}
@@ -170,7 +169,7 @@ export function ForageScreen() {
           <Text variant="caption" color="muted" center>
             {gathererCount}/{gathererCap}
           </Text>
-        </View>
+        </CoachTarget>
 
         <View style={styles.commandSlot}>
           {state.postLevel > 0 ? (
