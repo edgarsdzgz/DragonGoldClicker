@@ -75,7 +75,12 @@ export function GameScreen() {
   const haptics = useHaptics()
   const battlefieldRef = useRef<BattlefieldHandle>(null)
 
+  // A fast double press begins one wave: one haptic, one announcement
+  const lastBegin = useRef(0)
   const handleBegin = useCallback(() => {
+    const now = Date.now()
+    if (now - lastBegin.current < 600) return
+    lastBegin.current = now
     haptics.medium()
     beginWave()
     AccessibilityInfo.announceForAccessibility(`Wave ${camp.waveNumber} begins`)

@@ -5,6 +5,8 @@ import {
   Pressable,
   StyleSheet,
   Animated,
+  AccessibilityInfo,
+  Platform,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
@@ -12,6 +14,9 @@ import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { useHaptics, useSfx } from '../hooks'
 import { SFX } from '../data/sfx'
 import { dialogPaging } from '../types/dialogPaging'
+
+/** Ignore a second press on Continue this soon after the first */
+const PRESS_GUARD_MS = 250
 
 interface NpcDialogProps {
   visible: boolean
@@ -72,13 +77,22 @@ export function NpcDialog({
   // One line per page. Continue steps through the pages; the last page's button is the
   // scene's own dismiss (with its label and any navigation). Skip is only for scenes of 2+ pages.
   const [page, setPage] = useState(0)
+  const lastPress = useRef({ at: 0, page: -1 })
   useEffect(() => {
-    if (visible) setPage(0)
+    if (visible) {
+      setPage(0)
+      lastPress.current = { at: 0, page: -1 }
+    }
   }, [visible, lines])
   const { pageCount, lastPage, canSkip: skippable } = dialogPaging(lines.length, page)
   const canSkip = skippable && !!onSkip
 
+  // A double tap must not skip a page (or the whole scene): presses are ignored for a short
+  // moment after each press.
   const handleDismiss = () => {
+    const now = Date.now()
+    if (now - lastPress.current.at < PRESS_GUARD_MS) return
+    lastPress.current = { at: now, page }
     haptics.light()
     if (!lastPage) {
       setPage((p) => p + 1)
@@ -86,6 +100,11 @@ export function NpcDialog({
     }
     onDismiss()
   }
+
+  // Screen readers hear each new page: a polite live region on Android, an announcement on iOS
+  useEffect(() => {
+    if (visible && page > 0 && Platform.OS === 'ios') AccessibilityInfo.announceForAccessibility(lines[page] ?? '')
+  }, [visible, page, lines])
 
   const handleSkip = () => {
     haptics.light()
@@ -132,7 +151,12 @@ export function NpcDialog({
             <Text variant="h3" center>
               {title}
             </Text>
-            <Text variant="bodySmall" color="secondary" style={styles.line}>
+            <Text
+              variant="bodySmall"
+              color="secondary"
+              style={styles.line}
+              accessibilityLiveRegion="polite"
+            >
               {lines[Math.min(page, pageCount - 1)]}
             </Text>
             {pageCount > 1 && (

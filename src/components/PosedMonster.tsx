@@ -46,13 +46,20 @@ export const PosedMonster = forwardRef<PosedMonsterHandle, PosedMonsterProps>(fu
     POSES.forEach((p) => opacity[p].setValue(p === pose ? 1 : 0))
   }, [opacity])
 
-  // The resting pose follows HP; a new monster never inherits the hit frame
+  // A new monster (the killing blow moved on) never inherits the hit frame
   useLayoutEffect(() => {
-    restingRef.current = resting
     if (timer.current) clearTimeout(timer.current)
     timer.current = null
+    restingRef.current = resting
     show(resting)
-  }, [resting, spawnKey, show])
+  }, [spawnKey, show])
+
+  // The resting pose follows HP. A strike that crosses into hurt still shows its hit frame for
+  // the full 120ms, then settles to the new pose (the timer reads restingRef when it fires).
+  useLayoutEffect(() => {
+    restingRef.current = resting
+    if (timer.current === null) show(resting)
+  }, [resting, show])
 
   useEffect(() => () => {
     if (timer.current) clearTimeout(timer.current)
