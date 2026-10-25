@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { AudioSettingsProvider } from './src/context/AudioSettingsContext'
 import { DevSettingsProvider } from './src/context/DevSettingsContext'
 import { GameProvider } from './src/context/GameContext'
+import { StoryProvider } from './src/context/StoryContext'
 import { Navigation } from './src/navigation'
 import { useBgMusic, useImmersiveMode } from './src/hooks'
 import { configureTextDefaults } from './src/theme/textDefaults'
@@ -21,7 +22,9 @@ function AppInner() {
 
   return (
     <GameProvider>
-      <Navigation />
+      <StoryProvider>
+        <Navigation />
+      </StoryProvider>
       <StatusBar style="light" />
     </GameProvider>
   )

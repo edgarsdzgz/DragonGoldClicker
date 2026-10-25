@@ -20,6 +20,8 @@ interface NpcDialogProps {
   lines: string[]
   dismissLabel?: string
   onDismiss: () => void
+  /** Closes the scene from any line without the dismiss follow-up (e.g. navigation) */
+  onSkip?: () => void
 }
 
 export function NpcDialog({
@@ -30,6 +32,7 @@ export function NpcDialog({
   lines,
   dismissLabel = 'Understood',
   onDismiss,
+  onSkip,
 }: NpcDialogProps) {
   const haptics = useHaptics()
   const playNpc = useSfx(SFX.NPC)
@@ -68,6 +71,11 @@ export function NpcDialog({
   const handleDismiss = () => {
     haptics.light()
     onDismiss()
+  }
+
+  const handleSkip = () => {
+    haptics.light()
+    onSkip?.()
   }
 
   return (
@@ -133,6 +141,16 @@ export function NpcDialog({
                 {dismissLabel}
               </Text>
             </Pressable>
+            {onSkip && (
+              <Pressable
+                onPress={handleSkip}
+                style={styles.skip}
+                accessibilityRole="button"
+                accessibilityLabel="Skip scene"
+              >
+                <Text variant="caption" color="muted">Skip</Text>
+              </Pressable>
+            )}
           </View>
         </Animated.View>
       </View>
@@ -212,6 +230,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     minHeight: 44,
     backgroundColor: gold[500],
+  },
+  skip: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 44,
+    marginTop: spacing[1],
   },
   buttonPressed: {
     backgroundColor: gold[600],

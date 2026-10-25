@@ -1,16 +1,10 @@
 import React, { useRef, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
-import { Text, Badge, InspirationIcon, ProgressBar, GameOverModal, MilestoneModal } from '../components'
+import { Text, Badge, InspirationIcon, ProgressBar } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
-import { OfflineModal } from '../components/OfflineModal'
-import { NpcDialog } from '../components/NpcDialog'
-import { FoodWarningModal } from '../components/FoodWarningModal'
-import { StarvationModal } from '../components/StarvationModal'
-import { WandererModal } from '../components/WandererModal'
 import { useGame } from '../context/GameContext'
 import { useFlavorText } from '../hooks/useFlavorText'
 import { useSfx } from '../hooks/useSfx'
@@ -24,8 +18,7 @@ const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.ral
 const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.repair }
 
 export function GameScreen() {
-  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, threatLevel, defenseLevel, isGameOver, dismissGameOver, resetGame, pendingOfflineEarnings, dismissOfflineEarnings, pendingFoodIntro, dismissFoodIntro, pendingStarvationReport, dismissStarvationReport, pendingFoodWarning, dismissFoodWarning, pendingExplorerIntro, dismissExplorerIntro, pendingWanderer, acceptWanderer, rejectWanderer, pendingMilestone, acceptMilestone, rejectMilestone } = useGame()
-  const navigation = useNavigation<any>()
+  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, threatLevel, defenseLevel } = useGame()
   const incomeFlash = useRef(new Animated.Value(1)).current
   const flavor = useFlavorText(COMBAT_LINES)
 
@@ -58,108 +51,10 @@ export function GameScreen() {
     return () => pulse.stop()
   }, [effectiveAutoRate, incomeFlash])
 
-  const handleFoodIntroDismiss = useCallback(() => {
-    dismissFoodIntro()
-    navigation.navigate('ForageTab')
-  }, [dismissFoodIntro, navigation])
-
-  const handleFoodWarningGoForage = useCallback(() => {
-    dismissFoodWarning()
-    navigation.navigate('ForageTab')
-  }, [dismissFoodWarning, navigation])
-
-  const handleExplorerIntroDismiss = useCallback(() => {
-    dismissExplorerIntro()
-    navigation.navigate('DraconiaTab')
-  }, [dismissExplorerIntro, navigation])
-
   const repairUnlocked = state.fighters >= REPAIR_UNLOCK_FIGHTERS
-
-  // Only one event modal at a time -- priority order (highest first)
-  const activeModal =
-    isGameOver ? 'gameOver' :
-    pendingOfflineEarnings !== null ? 'offline' :
-    pendingStarvationReport !== null ? 'starvation' :
-    pendingFoodWarning > 0 ? 'foodWarning' :
-    pendingFoodIntro ? 'foodIntro' :
-    pendingExplorerIntro ? 'explorerIntro' :
-    pendingMilestone !== null ? 'milestone' :
-    pendingWanderer !== null ? 'wanderer' :
-    null
 
   return (
     <View style={styles.container}>
-      <OfflineModal
-        visible={activeModal === 'offline'}
-        inspirationEarned={pendingOfflineEarnings?.inspiration ?? 0}
-        secondsAway={pendingOfflineEarnings?.seconds ?? 0}
-        onCollect={dismissOfflineEarnings}
-      />
-      <NpcDialog
-        visible={activeModal === 'foodIntro'}
-        npcName="Elder Pyreth"
-        icon="person"
-        title="Our Stores Run Low"
-        lines={[
-          'My lord, I bring troubling news. Our food stores in Draconia are dwindling.',
-          'Every soul in the city must eat. Villagers consume a modest share, but soldiers require far more -- and the higher their rank, the greater their appetite.',
-          'If our food runs out entirely, our people will begin to starve. And without food, the soldiers will refuse to fight.',
-          'We have no farms yet, but the wilderness around Draconia is rich with wild plants and game. I have opened a foraging path for you.',
-          'Go to the Forage tab and gather what you can. It is humble work, but it will keep our people alive.',
-        ]}
-        dismissLabel="Begin foraging"
-        onDismiss={handleFoodIntroDismiss}
-      />
-      {pendingFoodWarning > 0 && (
-        <FoodWarningModal
-          visible={activeModal === 'foodWarning'}
-          level={pendingFoodWarning as 3 | 1}
-          onGoToForage={handleFoodWarningGoForage}
-          onDismiss={dismissFoodWarning}
-        />
-      )}
-      {pendingStarvationReport !== null && (
-        <StarvationModal
-          visible={activeModal === 'starvation'}
-          report={pendingStarvationReport}
-          onDismiss={dismissStarvationReport}
-        />
-      )}
-      <NpcDialog
-        visible={activeModal === 'explorerIntro'}
-        npcName="Scout Mirael"
-        icon="compass"
-        title="Beyond the Walls"
-        lines={[
-          'My lord, our scouts have spotted something troubling. The wilderness beyond Draconia grows wilder by the day -- and our villagers are stretched thin.',
-          'But there is opportunity in the danger. We have located a ruined outpost on the frontier that could serve as a staging ground for expeditions into the wasteland.',
-          'Wayfinders trained there can venture out and rescue lost souls -- villagers stranded beyond our borders. More people means a stronger Draconia.',
-          'The outpost will not come cheap, but the investment will pay for itself many times over. I urge you to save up and build it when you can.',
-        ]}
-        dismissLabel="View the outpost"
-        onDismiss={handleExplorerIntroDismiss}
-      />
-      {pendingWanderer !== null && (
-        <WandererModal
-          visible={activeModal === 'wanderer'}
-          encounter={pendingWanderer}
-          onAccept={acceptWanderer}
-          onReject={rejectWanderer}
-        />
-      )}
-      {pendingMilestone !== null && (
-        <MilestoneModal
-          visible={activeModal === 'milestone'}
-          milestone={pendingMilestone}
-          onAccept={acceptMilestone}
-          onReject={rejectMilestone}
-        />
-      )}
-      <GameOverModal
-        visible={activeModal === 'gameOver'}
-        onReset={resetGame}
-        onDismiss={dismissGameOver}
-      />
       <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={state.foodSystemActive} autoInspPerSec={effectiveAutoRate} />
 
       {/* City HP bar (hidden until unlocked) */}

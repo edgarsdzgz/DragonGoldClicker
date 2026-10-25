@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
@@ -13,6 +13,9 @@ import { SFX } from '../data/sfx'
 import { useGame } from '../context/GameContext'
 import { useTabLocks } from './useTabLocks'
 import { UnlockToast } from '../components/UnlockToast'
+import { EventHost } from '../components/EventHost'
+import { useStoryDirector } from '../hooks/useStoryDirector'
+import type { SceneTab } from '../data/story/lines'
 import type { UnlockToastHandle } from '../components/UnlockToast'
 import {
   BARRACKS_LEVELS,
@@ -181,6 +184,9 @@ function TabNavigator() {
   const buildHasAction = useBuildTabBadge()
   const locks = useTabLocks()
   const toastRef = useRef<UnlockToastHandle | null>(null)
+  const navigation = useNavigation<any>()
+  useStoryDirector()
+  const goToTab = (tab: SceneTab) => navigation.navigate('Main', { screen: tab })
   // Fallback for when the system nav bar is visible (immersive refused, or swiped in)
   const insets = useSafeAreaInsets()
 
@@ -309,6 +315,7 @@ function TabNavigator() {
         />
       </Tab.Navigator>
       <UnlockToast toastRef={toastRef} />
+      <EventHost onNavigate={goToTab} />
     </View>
   )
 }

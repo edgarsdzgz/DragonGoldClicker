@@ -48,7 +48,6 @@ import {
   getRecruitCost,
   REASSIGN_REFUND_RATE,
   DISMISS_REFUND_RATE,
-  shouldRevealExplorerPost,
   WANDERER_COOLDOWN,
   rollWandererCheck,
   rollWandererEncounter,
@@ -71,24 +70,11 @@ import {
   getRepairRate,
   SWORD_BONUS,
   SHIELD_BONUS,
-  FOOD_ACTIVATE_CONSCRIPTS,
-  FOOD_ACTIVATE_BUILDINGS,
   roundInsp,
 } from '../types/game'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
-
-/**
- * Food system activates when:
- * - Player has trained >= 4 conscripts, OR
- * - Player has purchased 2+ buildings (barracks + armory)
- */
-function shouldActivateFoodSystem(s: GameState): boolean {
-  if (s.foodSystemActive) return false
-  const buildingCount = (s.barracksLevel > 0 ? 1 : 0) + (s.armoryBuilt ? 1 : 0)
-  return s.soldiersTrained.conscripts >= FOOD_ACTIVATE_CONSCRIPTS || buildingCount >= FOOD_ACTIVATE_BUILDINGS
-}
 
 interface GameContextType {
   state: GameState
@@ -119,14 +105,10 @@ interface GameContextType {
   resetGame: () => void
   pendingOfflineEarnings: OfflineEarnings | null
   dismissOfflineEarnings: () => void
-  pendingFoodIntro: boolean
-  dismissFoodIntro: () => void
   pendingStarvationReport: StarvationResult | null
   dismissStarvationReport: () => void
   pendingFoodWarning: 0 | 3 | 1
   dismissFoodWarning: () => void
-  pendingExplorerIntro: boolean
-  dismissExplorerIntro: () => void
   pendingWanderer: WandererEncounter | null
   acceptWanderer: () => { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null
   rejectWanderer: () => void
@@ -142,6 +124,8 @@ interface GameContextType {
   buildLibrarium: () => boolean
   completeResearch: (id: string) => boolean
   isResearchAvailable: (id: string) => boolean
+  /** Story director: record a beat as seen and restart the dwell clock */
+  markBeatSeen: (id: string) => void
   /** Dev tools only: apply an arbitrary state change (grants, checkpoints, forced timers) */
   devApply: (updater: (s: GameState) => GameState) => void
   /** Dev tools only: show a wanderer encounter now, skipping cooldown and chance */
@@ -154,10 +138,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(DEFAULT_GAME_STATE)
   const [loaded, setLoaded] = useState(false)
   const [pendingOfflineEarnings, setPendingOfflineEarnings] = useState<OfflineEarnings | null>(null)
-  const [pendingFoodIntro, setPendingFoodIntro] = useState(false)
   const [pendingStarvationReport, setPendingStarvationReport] = useState<StarvationResult | null>(null)
   const [pendingFoodWarning, setPendingFoodWarning] = useState<0 | 3 | 1>(0)
-  const [pendingExplorerIntro, setPendingExplorerIntro] = useState(false)
   const [isGameOver, setIsGameOver] = useState(false)
   const [pendingMilestone, setPendingMilestone] = useState<MilestoneDef | null>(null)
   const [pendingWanderer, setPendingWanderer] = useState<WandererEncounter | null>(null)
@@ -228,6 +210,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const threatLevel = getThreatLevel(state.totalInspirationEarned)
   const defenseLevel = getDefenseLevel(state.clickPower, state.fighters)
+
+  // Active play clock for the story director's dwell timer (game seconds, follows dev speed)
+  useGameLoop(
+    useCallback(() => {
+      if (!loaded) return
+      setState((prev) => ({ ...prev, playSeconds: prev.playSeconds + 1 }))
+    }, [loaded])
+  )
 
   // Fractional inspiration accumulator (soldiers stop fighting when starving)
   useGameLoop(
@@ -461,25 +451,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [loaded, state.totalInspirationEarned, state.milestonesOffered, pendingMilestone])
 
-  // Check if we should activate food system after any state-changing action
-  const checkFoodActivation = useCallback(() => {
-    setState((prev) => {
-      if (!shouldActivateFoodSystem(prev)) return prev
-      setPendingFoodIntro(true)
-      return { ...prev, foodSystemActive: true }
-    })
-  }, [])
-
-  // Check if we should show explorer intro when outpost first becomes visible
-  const checkExplorerIntro = useCallback(() => {
-    setState((prev) => {
-      if (prev.explorerIntroShown) return prev
-      if (!shouldRevealExplorerPost(prev)) return prev
-      setPendingExplorerIntro(true)
-      return { ...prev, explorerIntroShown: true }
-    })
-  }, [])
-
   const click = useCallback(() => {
     setState((prev) => ({
       ...prev,
@@ -555,9 +526,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         barracksLevel: nextLevel,
       }
     })
-    if (success) { checkFoodActivation(); checkExplorerIntro() }
     return success
-  }, [checkFoodActivation, checkExplorerIntro])
+  }, [])
 
   const buildArmory = useCallback((): boolean => {
     let success = false
@@ -566,9 +536,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       success = true
       return { ...prev, inspiration: prev.inspiration - ARMORY_COST, totalInspirationSpent: prev.totalInspirationSpent + ARMORY_COST, armoryBuilt: true }
     })
-    if (success) checkFoodActivation()
     return success
-  }, [checkFoodActivation])
+  }, [])
 
   const trainSoldier = useCallback((tier: SoldierTier): boolean => {
     let trained = false
@@ -598,9 +567,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         soldiersTrained: { ...prev.soldiersTrained, [key]: prev.soldiersTrained[key] + 1 },
       }
     })
-    if (trained) { checkFoodActivation(); checkExplorerIntro() }
     return trained
-  }, [checkFoodActivation, checkExplorerIntro])
+  }, [])
 
   const promoteSoldier = useCallback((fromTier: SoldierTier, toTier: SoldierTier): boolean => {
     let promoted = false
@@ -706,9 +674,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         lodgeLevel: nextLevel,
       }
     })
-    if (success) checkExplorerIntro()
     return success
-  }, [checkExplorerIntro])
+  }, [])
 
   const trainForager = useCallback((tier: ForagerTier): boolean => {
     let trained = false
@@ -735,9 +702,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         foragersTrained: { ...prev.foragersTrained, [key]: prev.foragersTrained[key] + 1 },
       }
     })
-    if (trained) checkExplorerIntro()
     return trained
-  }, [checkExplorerIntro])
+  }, [])
 
   const buildOrUpgradePost = useCallback((): boolean => {
     let success = false
@@ -1028,10 +994,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setPendingOfflineEarnings(null)
   }, [])
 
-  const dismissFoodIntro = useCallback(() => {
-    setPendingFoodIntro(false)
-  }, [])
-
   const dismissStarvationReport = useCallback(() => {
     setPendingStarvationReport(null)
   }, [])
@@ -1042,10 +1004,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const dismissFoodWarning = useCallback(() => {
     setPendingFoodWarning(0)
-  }, [])
-
-  const dismissExplorerIntro = useCallback(() => {
-    setPendingExplorerIntro(false)
   }, [])
 
   const acceptWanderer = useCallback((): { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null => {
@@ -1234,6 +1192,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return success
   }, [checkPrereqs])
 
+  const markBeatSeen = useCallback((id: string) => {
+    setState((prev) => (prev.beatsSeen.includes(id)
+      ? prev
+      : { ...prev, beatsSeen: [...prev.beatsSeen, id], lastBeatAtPlaySec: prev.playSeconds }))
+  }, [])
+
   const devApply = useCallback((updater: (s: GameState) => GameState) => {
     if (!__DEV__) return
     setState(updater)
@@ -1283,15 +1247,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         resetGame,
         pendingOfflineEarnings,
         dismissOfflineEarnings,
-        pendingFoodIntro,
-        dismissFoodIntro,
         foodWarningLevel,
         pendingStarvationReport,
         dismissStarvationReport,
         pendingFoodWarning,
         dismissFoodWarning,
-        pendingExplorerIntro,
-        dismissExplorerIntro,
         pendingWanderer,
         acceptWanderer,
         rejectWanderer,
@@ -1307,6 +1267,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         buildLibrarium,
         completeResearch,
         isResearchAvailable,
+        markBeatSeen,
         devApply,
         devForceWanderer,
       }}
