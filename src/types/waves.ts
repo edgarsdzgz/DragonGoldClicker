@@ -4,19 +4,32 @@ import type { GameState } from './state'
 // WAVES (layer 2b): five monsters of one type, then a bonus
 // =============================================================================
 
+/** Monsters in a normal wave (Wave 1 onward) */
 export const WAVE_SIZE = 5
+/** Wave 0, the opening, is shorter */
+export const OPENING_WAVE_SIZE = 3
+
+export function waveSize(waveNumber: number): number {
+  return waveNumber === 0 ? OPENING_WAVE_SIZE : WAVE_SIZE
+}
+
+/** First wave of each monster tier: waves 0-2 kobold, 3-5 goblin, 6-10 shadow crawler, 11+ orc */
+export const TIER_FIRST_WAVES = [0, 3, 6, 11]
+
+/** Which MONSTERS entry a wave is made of (a wave is never split across types) */
+export function monsterIndexForWave(waveNumber: number): number {
+  let index = 0
+  TIER_FIRST_WAVES.forEach((first, i) => {
+    if (waveNumber >= first) index = i
+  })
+  return index
+}
 
 /** A cleared wave pays this many times the wave's single bounty */
 export const WAVE_BONUS_MULTIPLIER = 2
 
 /** How long the "Wave cleared" banner is up, during which taps are ignored */
 export const WAVE_BANNER_MS = 1500
-
-/** Wave number and kills inside it, for a lifetime kill count (used by the save migration) */
-export function waveFromKills(kills: number): { waveNumber: number; waveKills: number } {
-  const k = Math.max(0, Math.floor(kills))
-  return { waveNumber: Math.floor(k / WAVE_SIZE) + 1, waveKills: k % WAVE_SIZE }
-}
 
 export function waveBonus(bounty: number): number {
   return Math.round(bounty * WAVE_BONUS_MULTIPLIER * 100) / 100
@@ -33,7 +46,7 @@ export interface WaveProgress {
 /** Count one kill into the wave. The fifth clears it and starts the next. */
 export function progressWave(s: Pick<GameState, 'waveNumber' | 'waveKills'>, bounty: number): WaveProgress {
   const kills = s.waveKills + 1
-  if (kills < WAVE_SIZE) return { waveNumber: s.waveNumber, waveKills: kills, cleared: false, bonus: 0 }
+  if (kills < waveSize(s.waveNumber)) return { waveNumber: s.waveNumber, waveKills: kills, cleared: false, bonus: 0 }
   return { waveNumber: s.waveNumber + 1, waveKills: 0, cleared: true, bonus: waveBonus(bounty) }
 }
 

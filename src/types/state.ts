@@ -163,7 +163,7 @@ export interface GameState {
   monsterIndex: number
   /** Hit points the current monster has left */
   monsterHp: number
-  /** Current wave (1-based). Five monsters of one type per wave. */
+  /** Current wave. Wave 0 is the 3-kobold opening; Wave 1 onward have 5 monsters of one type. */
   waveNumber: number
   /** Monsters already killed in the current wave (0-4) */
   waveKills: number
@@ -238,10 +238,10 @@ export const DEFAULT_GAME_STATE: GameState = {
   tapDamage: STARTING_TAP_DAMAGE,
   monsterIndex: 0,
   monsterHp: FIRST_MONSTER_HP,
-  waveNumber: 1,
+  waveNumber: 0,
   waveKills: 0,
   waveActive: false,
-  saveMigrationVersion: 6,
+  saveMigrationVersion: 7,
 }
 
 // =============================================================================

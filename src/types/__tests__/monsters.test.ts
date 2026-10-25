@@ -1,6 +1,7 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
-import { MONSTERS, monsterIndexForKills, spawnMonster, strike, monsterLabel, currentMonster } from '../monsters'
+import { monsterIndexForWave } from '../waves'
+import { MONSTERS, spawnMonster, strike, monsterLabel, currentMonster } from '../monsters'
 import { getFighterCost } from '../fighters'
 import { ANNOUNCE_EVERY_MS } from '../../hooks/useKillEvents'
 
@@ -8,11 +9,11 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 
 describe('roster', () => {
   it('has the four monsters from the plan, in order of appearance', () => {
-    expect(MONSTERS.map((m) => [m.name, m.hp, m.bounty, m.fromKills])).toEqual([
+    expect(MONSTERS.map((m) => [m.name, m.hp, m.bounty, m.fromWave])).toEqual([
       ['Kobold', 5, 0.25, 0],
-      ['Goblin', 8, 0.4, 10],
-      ['Shadow Crawler', 12, 0.6, 25],
-      ['Orc', 20, 1, 50],
+      ['Goblin', 8, 0.4, 3],
+      ['Shadow Crawler', 12, 0.6, 6],
+      ['Orc', 20, 1, 11],
     ])
   })
 
@@ -22,15 +23,9 @@ describe('roster', () => {
     for (const m of MONSTERS) expect(m.glyph in glyphs).toBe(true)
   })
 
-  it('picks the tier from the kill count', () => {
-    expect(monsterIndexForKills(0)).toBe(0)
-    expect(monsterIndexForKills(9)).toBe(0)
-    expect(monsterIndexForKills(10)).toBe(1)
-    expect(monsterIndexForKills(24)).toBe(1)
-    expect(monsterIndexForKills(25)).toBe(2)
-    expect(monsterIndexForKills(49)).toBe(2)
-    expect(monsterIndexForKills(50)).toBe(3)
-    expect(monsterIndexForKills(5000)).toBe(3)
+  it('picks the tier from the wave number: 0-2 kobold, 3-5 goblin, 6-10 crawler, 11+ orc', () => {
+    const tiers = [0, 1, 2, 3, 5, 6, 10, 11, 500].map(monsterIndexForWave)
+    expect(tiers).toEqual([0, 0, 0, 1, 1, 2, 2, 3, 3])
   })
 })
 
@@ -54,22 +49,26 @@ describe('strike', () => {
     expect(r.state.monsterHp).toBe(5)
   })
 
-  it('moves to the next tier on the tenth kill', () => {
-    const r = strike(make({ monstersDefeated: 9, monsterHp: 1 }))
-    expect(r.state.monstersDefeated).toBe(10)
-    expect(r.state.monsterIndex).toBe(1)
-    expect(r.state.monsterHp).toBe(8)
-    expect(r.monster.name).toBe('Kobold')
+  it('moves to the next tier only when a wave is cleared', () => {
+    // Last kobold of wave 2: the next wave (3) is goblins
+    const clear = strike(make({ waveNumber: 2, waveKills: 4, monsterHp: 1 }))
+    expect(clear.state.waveNumber).toBe(3)
+    expect(clear.state.monsterIndex).toBe(1)
+    expect(clear.state.monsterHp).toBe(8)
+    expect(clear.monster.name).toBe('Kobold')
+    // Mid-wave kills keep the type
+    const mid = strike(make({ waveNumber: 3, waveKills: 1, monsterIndex: 1, monsterHp: 1 }))
+    expect(mid.state.monsterIndex).toBe(1)
   })
 
-  it('keeps the early pace: about 20 taps to afford the first Rally', () => {
+  it('keeps the early pace: wave 0 is 15 taps and pays enough for the first Rally', () => {
     let s = make({})
     let taps = 0
     while (s.inspiration < getFighterCost(0)) {
       s = strike(s).state
       taps++
     }
-    expect(taps).toBe(20)
+    expect(taps).toBe(15)
   })
 
   it('a tap right after a kill hits the new monster (taps are queued, none lost)', () => {
@@ -93,7 +92,7 @@ describe('strike', () => {
 
 describe('spawnMonster (save migration)', () => {
   it('starts an old save on a fresh monster of its tier', () => {
-    const s = spawnMonster(make({ monstersDefeated: 300, monsterIndex: 0, monsterHp: 1 }))
+    const s = spawnMonster(make({ waveNumber: 12, monsterIndex: 0, monsterHp: 1 }))
     expect(s.monsterIndex).toBe(3)
     expect(s.monsterHp).toBe(20)
   })

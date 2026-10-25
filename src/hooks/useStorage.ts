@@ -17,8 +17,8 @@ import {
   isSystemOn,
 } from '../types/game'
 import { catchUpScripted } from '../types/scripted'
-import { spawnMonster } from '../types/monsters'
-import { waveFromKills, waveActiveOnLoad } from '../types/waves'
+import { migrateToV4, migrateToV5, migrateToV7 } from '../types/waveMigration'
+import { waveActiveOnLoad } from '../types/waves'
 import { backfillStory, backfillScripted } from '../types/storyMigration'
 import { backfillTutorial } from '../types/tutorial'
 
@@ -132,12 +132,12 @@ export function useStorage() {
 
         // v4: the SLAY circle shows a monster. A save starts on a fresh monster of its tier.
         if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 4) {
-          gameState = { ...spawnMonster(gameState), saveMigrationVersion: 4 }
+          gameState = { ...migrateToV4(gameState), saveMigrationVersion: 4 }
         }
 
         // v5: waves. A save resumes mid-wave from its kill count.
         if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 5) {
-          gameState = { ...gameState, ...waveFromKills(gameState.monstersDefeated), saveMigrationVersion: 5 }
+          gameState = { ...migrateToV5(gameState), saveMigrationVersion: 5 }
         }
 
         // v6: the player starts each wave. A save that was mid-wave resumes mid-wave.
@@ -145,6 +145,11 @@ export function useStorage() {
           ...gameState,
           waveActive: waveActiveOnLoad(gameState, (parsed.saveMigrationVersion as number) || 0),
           saveMigrationVersion: 6,
+        }
+
+        // v7: wave 0 opens the game and the monster type follows the wave number
+        if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 7) {
+          gameState = { ...migrateToV7(gameState), saveMigrationVersion: 7 }
         }
 
         // A scene killed mid-read still gets its scripted event (state change only)
