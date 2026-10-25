@@ -69,6 +69,11 @@ so a fast tapper cannot outrun the story. Target times assume a normal player.
 | `the_horde_grows` | 11 | ~3:00 | `completedResearch.length >= 1` | 300 | Rodain | -- | `threatUnfloored` (HP floor removed; game over possible) | -- |
 | *later* | 12+ | 3:00+ | expedition finds / refugees | -- | Thornwick and others | Same pattern | Wizard's Tower, Housing, Towers | -- |
 
+**Side beats** fire whenever their own trigger passes and never block later beats:
+`word_spreads`, `lean_times`, and `beyond_the_walls` (ruled 2026-10-25 after review: as a main
+beat it stalled `the_keep` and everything after it for players who never revealed the
+Explorer's Outpost). All other beats fire strictly in table order.
+
 **Fallback:** if `lean_times` has not fired by the time `the_keep` fires, it fires then,
 with an alternate line ("Our stores have held so far, but it will not always be so"), so starvation
 cannot stay off forever.
@@ -214,6 +219,12 @@ One FIFO queue with priorities, consumed by `EventHost`:
 `gameOver` > `offline` > story scene > `starvation` > `foodWarning` > `milestone` > `wanderer`.
 A story beat whose scripted event shows a pop-up (wanderer, milestone, offline) enqueues the
 scene first, then the pop-up, so they never stack.
+
+**Ruling after group 1 review (2026-10-25):** event payloads (pending starvation report, food
+warning, wanderer encounter) live in the state the pure updater returns, so each decision and
+its result are computed from `prev` together. Game over is derived
+(`siege` on and `cityHp <= 0`), not stored as a separate flag. Deciding from a post-commit
+`stateRef` was rejected: it misses updates queued earlier in the same frame by other loops.
 
 **Fix while moving this:** several events are currently set from inside `setState` updaters
 (for example, `setPendingWanderer` at `GameContext.tsx:425`, `setPendingFoodIntro` at `:446`).
