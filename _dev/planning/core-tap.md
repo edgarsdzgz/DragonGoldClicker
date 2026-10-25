@@ -92,6 +92,52 @@ first claws").
 
 ---
 
+## Layer 2b: the gate, waves, legible HP (approved 2026-10-25)
+
+The Warfront becomes a scene read top to bottom along the monsters' path: they come from the
+top, and the gate sits at the bottom by the player's thumb.
+
+```
+| 12.40 insp                [book] |  top bar: inspiration shown again on Warfront
+| WAVE 3         4 kobolds left    |  wave row (+ objective / scene hints)
+|      .  .  o   (queue, dim)      |  next monsters as dim silhouettes (max 4 shown)
+|           [KOBOLD]               |  current monster, the whole battlefield is the tap target
+|         [#][#][#][ ][ ]          |  its HP, directly above or below it
+|  ============ GATE ============  |  the gate; its HP bar shows only once `siege` is on
+|     [ RALLY ]   [ REPAIR ]       |  commands near the thumb
+```
+
+- **Remove the big inspiration number.** It replaced the old "hero number" decision. The top
+  bar's inspiration figure comes back on the Warfront; kill coins fly to it.
+- **Tap target:** the entire battlefield area (between the wave row and the gate). Damage
+  numbers rise from the monster.
+- **Enemy HP:**
+  - Pips when max HP <= 12 (one pip per HP).
+  - Above that, a continuous bar with "current/max" text.
+  - A trailing chunk: the HP just lost shows white for about 400ms, then drains.
+  - HP is always also given as text to screen readers.
+- **Kill:** the monster falls (fade and drop). A coin flies from it to the top-bar inspiration
+  figure, and the figure pulses on arrival. With Reduce Motion, nothing moves: the coin and
+  the pulse just fade.
+- **Waves:**
+  - Each wave is 5 monsters of one type. The type follows the existing kill thresholds:
+    waves 1-2 kobold, 3-5 goblin, 6-10 shadow crawler, 11+ orc.
+  - The wave row shows "Wave N" and "K <type plural> left".
+  - Clearing a wave shows a "Wave cleared +X" banner for about 1.5s and pays a bonus of
+    2x that wave's single bounty (kobold wave: +0.50).
+  - Taps during the banner are ignored, and holding continues into the next wave.
+  - Save `waveNumber` and `waveKills` (GameState, migration v5). A loaded save resumes
+    mid-wave.
+- **Pacing check:** the first Rally (1.00) still comes at the 4th kill (20 taps). The first
+  wave bonus arrives at kill 5.
+- **Not yet:** bosses, timers, monsters advancing, gate damage. Those are layer 6.
+- **Hold:** keep hold-to-repeat, but make it visible: a steady pulse on the battlefield while
+  holding (no pulse with Reduce Motion).
+- **Copy:** neutral ("Tap to strike"). Whether the player is the dragon or a commander is
+  undecided.
+
+---
+
 ## Known side effects to handle later
 
 - Research prerequisites that use `monstersDefeated` (Librarium) were sized for the old
