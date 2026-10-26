@@ -11,13 +11,10 @@ import {
   SHIELD_COST,
   OFFLINE_LEVELS,
   MAX_OFFLINE_LEVEL,
-  getSoldierCost,
   getSoldierCount,
   getTotalSoldiers,
   getSoldierCap,
   getBarracksUpgradeCost,
-  getEffectiveAutoRate,
-  getPromotionCost,
   getTierIndex,
   getOfflineUpgradeCost,
   getFoodConsumption,
@@ -55,13 +52,10 @@ import {
   getFighterCost,
   getRepairerCost,
   stepFighterVolley,
-  FIGHTER_HIT_DAMAGE,
   FIGHTER_TICK_MS,
   MAX_CITY_HP,
   getNextMilestone,
   getRepairRate,
-  SWORD_BONUS,
-  SHIELD_BONUS,
   roundInsp,
   granaryRoom,
   isSystemOn,
@@ -77,6 +71,7 @@ import { isRationAvailable } from '../types/rations'
 import type { RationId } from '../types/rations'
 import { firstExpeditionReward } from '../types/scripted'
 import { sharpenClaws as sharpenClawsState } from '../types/claws'
+import { armySize, armyVolleyNow, makeRank as makeRankState } from '../types/army'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
@@ -87,8 +82,8 @@ interface GameContextType {
   forage: () => void
   buildOrUpgradeBarracks: () => boolean
   buildArmory: () => boolean
-  trainSoldier: (tier: SoldierTier) => boolean
-  promoteSoldier: (fromTier: SoldierTier, toTier: SoldierTier) => boolean
+  /** Train a fighter into a conscript, or promote a soldier one rank up (types/army.ts) */
+  makeRank: (tier: SoldierTier) => boolean
   buySword: () => boolean
   buyShield: () => boolean
   upgradeOffline: () => boolean
@@ -103,7 +98,6 @@ interface GameContextType {
   dismissForager: (tier: ForagerTier) => boolean
   dismissExplorer: () => boolean
   reassignRole: (from: RoleId, to: RoleId) => boolean
-  effectiveAutoRate: number
   autoFoodRate: number
   foodWarningLevel: 0 | 3 | 1
   resetGame: () => void
@@ -197,22 +191,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const { pendingStarvationReport, pendingFoodWarning, pendingWanderer } = state
 
-  const researchBonuses = getResearchBonuses(state.completedResearch)
-
-  const baseAutoRate = getEffectiveAutoRate(
-    state.soldiers,
-    state.armoryGear.swords,
-    state.armoryGear.shields,
-  )
-  // Apply research: gear bonus multiplier boosts the gear portion, auto rate multiplier boosts all
-  const gearRate = (state.armoryGear.swords * SWORD_BONUS + state.armoryGear.shields * SHIELD_BONUS) * researchBonuses.gearBonusMultiplier
-  const soldierAutoRate = (baseAutoRate + gearRate) * (1 + researchBonuses.autoRateMultiplier)
-  // Fighters earn nothing per second: they wear down the monster, and renown comes from its kill
-  const potentialAutoRate = soldierAutoRate
-  // Soldiers and fighters stop when starving
-  const starving = isSystemOn(state, 'hunger') && state.food <= 0
-  const soldiersStarving = starving && getTotalSoldiers(state.soldiers) > 0
-  const effectiveAutoRate = soldiersStarving ? 0 : potentialAutoRate
+  // Nothing earns renown per second (chapter 5): the army wears down the monster, and renown
+  // comes from its kill
 
   // A lean season or a bountiful harvest scales what the gatherers bring in (layer 3, phase C)
   const autoFoodRate = getAutoFoodRate(state.foragers) * gatherMultiplier(state)
@@ -227,38 +207,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }, [loaded])
   )
 
-  // Fractional inspiration accumulator (soldiers stop fighting when starving)
-  useGameLoop(
-    useCallback(() => {
-      if (!loaded || effectiveAutoRate <= 0) return
-      setState((prev) => {
-        // No auto inspiration when food system is active and food is depleted
-        if (isSystemOn(prev, 'hunger') && prev.food <= 0) return prev
-
-        const earned = effectiveAutoRate
-        return {
-          ...prev,
-          inspiration: prev.inspiration + earned,
-          totalInspirationEarned: prev.totalInspirationEarned + earned,
-        }
-      })
-    }, [loaded, effectiveAutoRate])
-  )
-
-  // Fighters' volley at the monster: all of them strike together every FIGHTER_SWING_MS, as one
-  // hit. The time to the next volley lives in a ref, so a tick in which nothing lands does not
-  // re-render.
+  // The army's volley at the monster (fighters and soldiers, chapter 5): all of them strike
+  // together every FIGHTER_SWING_MS, as one hit. The time to the next volley lives in a ref, so a
+  // tick in which nothing lands does not re-render.
   // Their ration and how fed they are scale the hit (layer 3); at 0 they stand down
   const fighterPower = fighterDamageMultiplier(state)
   const fighterSwing = useRef(0)
-  const fighters = loaded && fighterPower > 0 ? state.fighters : 0
+  const army = loaded && fighterPower > 0 ? armySize(state) : 0
   useGameLoop(
     useCallback(() => {
-      const { swings, progress } = stepFighterVolley(fighterSwing.current, fighters)
+      const { swings, progress } = stepFighterVolley(fighterSwing.current, army)
       fighterSwing.current = progress
       if (swings <= 0) return
-      setState((prev) => (prev.fighters > 0 ? fighterStrike(prev, swings * FIGHTER_HIT_DAMAGE * fighterPower, swings).state : prev))
-    }, [fighters, fighterPower]),
+      setState((prev) => (armySize(prev) > 0 ? fighterStrike(prev, armyVolleyNow(prev), swings).state : prev))
+    }, [army]),
     FIGHTER_TICK_MS,
   )
 
@@ -431,70 +393,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return success
   }, [])
 
-  const trainSoldier = useCallback((tier: SoldierTier): boolean => {
-    let trained = false
+  // The Garrison (chapter 5): train a fighter into a conscript, or promote one rank up
+  const makeRank = useCallback((tier: SoldierTier): boolean => {
+    let made = false
     setState((prev) => {
-      if (prev.barracksLevel <= 0) return prev
-      if (prev.villagers <= 0) return prev
-      const tierDef = SOLDIER_TIERS.find((t) => t.id === tier)
-      if (!tierDef || prev.barracksLevel < tierDef.unlocksAtBarracksLevel) return prev
-      const total = getTotalSoldiers(prev.soldiers)
-      const cap = getSoldierCap(prev.barracksLevel)
-      if (total >= cap) return prev
-      const lifetimeCount = getSoldierCount(prev.soldiersTrained, tier)
-      const baseCost = getSoldierCost(tierDef, lifetimeCount)
-      const rb = getResearchBonuses(prev.completedResearch)
-      const cost = roundInsp(baseCost * (1 - rb.soldierCostDiscount))
-      if (prev.inspiration < cost) return prev
-      trained = true
-      const key: keyof SoldierCounts =
-        tier === 'conscript' ? 'conscripts' :
-        tier === 'footman' ? 'footmen' : 'knights'
-      return {
-        ...prev,
-        inspiration: prev.inspiration - cost,
-        totalInspirationSpent: prev.totalInspirationSpent + cost,
-        villagers: prev.villagers - 1,
-        soldiers: { ...prev.soldiers, [key]: prev.soldiers[key] + 1 },
-        soldiersTrained: { ...prev.soldiersTrained, [key]: prev.soldiersTrained[key] + 1 },
-      }
+      const next = makeRankState(prev, tier)
+      made = next !== prev
+      return next
     })
-    return trained
-  }, [])
-
-  const promoteSoldier = useCallback((fromTier: SoldierTier, toTier: SoldierTier): boolean => {
-    let promoted = false
-    setState((prev) => {
-      if (prev.barracksLevel <= 0) return prev
-      const fromIdx = getTierIndex(fromTier)
-      const toIdx = getTierIndex(toTier)
-      if (toIdx <= fromIdx) return prev
-      const toDef = SOLDIER_TIERS[toIdx]
-      if (prev.barracksLevel < toDef.unlocksAtBarracksLevel) return prev
-      const fromCount = getSoldierCount(prev.soldiers, fromTier)
-      if (fromCount <= 0) return prev
-      const cost = getPromotionCost(fromTier, toTier, prev.soldiersTrained)
-      if (cost === null || prev.inspiration < cost) return prev
-      promoted = true
-      const fromKey: keyof SoldierCounts =
-        fromTier === 'conscript' ? 'conscripts' :
-        fromTier === 'footman' ? 'footmen' : 'knights'
-      const toKey: keyof SoldierCounts =
-        toTier === 'conscript' ? 'conscripts' :
-        toTier === 'footman' ? 'footmen' : 'knights'
-      return {
-        ...prev,
-        inspiration: prev.inspiration - cost,
-        totalInspirationSpent: prev.totalInspirationSpent + cost,
-        soldiersPromoted: prev.soldiersPromoted + 1,
-        soldiers: {
-          ...prev.soldiers,
-          [fromKey]: prev.soldiers[fromKey] - 1,
-          [toKey]: prev.soldiers[toKey] + 1,
-        },
-      }
-    })
-    return promoted
+    return made
   }, [])
 
   const buySword = useCallback((): boolean => {
@@ -1059,8 +966,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         forage,
         buildOrUpgradeBarracks,
         buildArmory,
-        trainSoldier,
-        promoteSoldier,
+        makeRank,
         buySword,
         buyShield,
         upgradeOffline,
@@ -1075,7 +981,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         dismissForager,
         dismissExplorer,
         reassignRole,
-        effectiveAutoRate,
         autoFoodRate,
         resetGame,
         pendingOfflineEarnings,

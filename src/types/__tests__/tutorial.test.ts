@@ -1,6 +1,7 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { getActiveStep, isStepComplete, backfillTutorial, needsMoreInspiration, TUTORIAL_STEPS, EMPTY_TUTORIAL_UI } from '../tutorial'
+import { BARRACKS_LEVELS } from '../soldiers'
 import { blockerCells, holeRadius, padRect } from '../../context/coachGeometry'
 import { CoachRegistry, isRectVisible, hintSide } from '../../context/coachRegistry'
 
@@ -150,7 +151,7 @@ describe('needsMoreInspiration (spend steps)', () => {
 
   it('clears once the player can afford it', () => {
     expect(needsMoreInspiration(step('tap_rally'), make({ inspiration: 5 }))).toBe(false)
-    expect(needsMoreInspiration(step('build_garrison'), make({ inspiration: 1.25 }))).toBe(false)
+    expect(needsMoreInspiration(step('build_garrison'), make({ inspiration: BARRACKS_LEVELS[0].cost }))).toBe(false)
   })
 
   it('never flags non-spend steps', () => {

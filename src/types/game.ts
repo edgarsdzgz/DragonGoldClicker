@@ -21,10 +21,7 @@ export {
   getBarracksUpgradeCost,
   getSoldierCost,
   getSoldierCount,
-  getEffectiveAutoRate,
   getTierIndex,
-  getPromotionCost,
-  getPromotionTargets,
 } from './soldiers'
 
 export type {

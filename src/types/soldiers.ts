@@ -9,15 +9,23 @@ export type SoldierTier = 'conscript' | 'footman' | 'knight'
 export interface SoldierTierDef {
   id: SoldierTier
   name: string
-  baseRate: number
+  plural: string
+  /** Damage each one adds to the army's volley at the Gate (a fighter adds FIGHTER_HIT_DAMAGE) */
+  damage: number
+  /** Renown to train (a conscript, from a fighter) or promote (from the rank below) the first one */
   baseCost: number
   unlocksAtBarracksLevel: number
 }
 
+/**
+ * Chapter 5 (owner ruling, 2026-10-26): soldiers are trained fighters. The Garrison trains a
+ * fighter into a conscript and promotes conscripts to footmen and footmen to knights. They fight
+ * at the Gate in the same volley and earn renown only from kills. Provisional numbers.
+ */
 export const SOLDIER_TIERS: SoldierTierDef[] = [
-  { id: 'conscript', name: 'Conscript', baseRate: 0.0125, baseCost: 0.25, unlocksAtBarracksLevel: 1 },
-  { id: 'footman', name: 'Footman', baseRate: 0.0375, baseCost: 0.75, unlocksAtBarracksLevel: 3 },
-  { id: 'knight', name: 'Knight', baseRate: 0.1, baseCost: 2.0, unlocksAtBarracksLevel: 5 },
+  { id: 'conscript', name: 'Conscript', plural: 'conscripts', damage: 0.5, baseCost: 10, unlocksAtBarracksLevel: 1 },
+  { id: 'footman', name: 'Footman', plural: 'footmen', damage: 1, baseCost: 30, unlocksAtBarracksLevel: 3 },
+  { id: 'knight', name: 'Knight', plural: 'knights', damage: 2, baseCost: 80, unlocksAtBarracksLevel: 5 },
 ]
 
 export interface SoldierCounts {
@@ -36,12 +44,13 @@ export interface BarracksLevelDef {
   soldierCap: number
 }
 
+/** The Garrison: each level holds more soldiers (untrained fighters need no room) */
 export const BARRACKS_LEVELS: BarracksLevelDef[] = [
-  { level: 1, cost: 1.25, soldierCap: 4 },
-  { level: 2, cost: 7.5, soldierCap: 8 },
-  { level: 3, cost: 20, soldierCap: 12 },
-  { level: 4, cost: 40, soldierCap: 16 },
-  { level: 5, cost: 75, soldierCap: 20 },
+  { level: 1, cost: 40, soldierCap: 4 },
+  { level: 2, cost: 100, soldierCap: 8 },
+  { level: 3, cost: 200, soldierCap: 12 },
+  { level: 4, cost: 400, soldierCap: 16 },
+  { level: 5, cost: 800, soldierCap: 20 },
 ]
 
 export const MAX_BARRACKS_LEVEL = BARRACKS_LEVELS.length
@@ -90,64 +99,11 @@ export function getSoldierCount(soldiers: SoldierCounts, tier: SoldierTier): num
   }
 }
 
-/**
- * Gold/s from all soldiers + armory gear bonuses.
- */
-export function getEffectiveAutoRate(soldiers: SoldierCounts, swords: number, shields: number): number {
-  let rate = 0
-  for (const tier of SOLDIER_TIERS) {
-    const count = getSoldierCount(soldiers, tier.id)
-    rate += count * tier.baseRate
-  }
-  rate += swords * SWORD_BONUS
-  rate += shields * SHIELD_BONUS
-  return rate
-}
-
-// =============================================================================
-// SOLDIER PROMOTION
-// =============================================================================
-
-/** Discount factor by number of tier steps: 1 step = 60%, 2 steps = 80% */
-const PROMOTION_DISCOUNT: Record<number, number> = { 1: 0.6, 2: 0.8 }
-
 export function getTierIndex(tier: SoldierTier): number {
   return SOLDIER_TIERS.findIndex((t) => t.id === tier)
 }
 
-/**
- * Cost to promote a soldier from one tier to a higher tier.
- * Based on the target tier's new-recruit cost (at current count) * discount.
- * More steps = smaller discount (higher cost).
- */
-export function getPromotionCost(
-  fromTier: SoldierTier,
-  toTier: SoldierTier,
-  soldiersTrained: SoldierCounts,
-): number | null {
-  const fromIdx = getTierIndex(fromTier)
-  const toIdx = getTierIndex(toTier)
-  if (fromIdx < 0 || toIdx < 0 || toIdx <= fromIdx) return null
-
-  const steps = toIdx - fromIdx
-  const discount = PROMOTION_DISCOUNT[steps] ?? 0.9
-  const targetDef = SOLDIER_TIERS[toIdx]
-  const trainedCount = getSoldierCount(soldiersTrained, toTier)
-  const freshCost = getSoldierCost(targetDef, trainedCount)
-
-  return roundCost(freshCost * discount)
-}
-
-/**
- * Returns promotable target tiers for a given source tier,
- * filtered by barracks level.
- */
-export function getPromotionTargets(
-  fromTier: SoldierTier,
-  barracksLevel: number,
-): SoldierTierDef[] {
-  const fromIdx = getTierIndex(fromTier)
-  return SOLDIER_TIERS.filter((t, i) =>
-    i > fromIdx && barracksLevel >= t.unlocksAtBarracksLevel
-  )
+/** The key for a rank in SoldierCounts */
+export function soldierKey(tier: SoldierTier): keyof SoldierCounts {
+  return tier === 'conscript' ? 'conscripts' : tier === 'footman' ? 'footmen' : 'knights'
 }

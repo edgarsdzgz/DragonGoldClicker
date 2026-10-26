@@ -149,11 +149,12 @@ export const STORY_BEATS: BeatDef[] = [
     scripted: 'loneWanderer',
   },
   {
-    id: 'a_city_to_build', chapter: 5, dwellSec: 120,
-    trigger: (s) => s.foragers.gatherers >= 3,
+    // Chapter 5 (reworked 2026-10-26): a minute of play after Open the Gates. Its goals are the
+    // Raise the Garrison and First Soldiers quests (soldiers are trained fighters, types/army.ts).
+    id: 'a_city_to_build', chapter: 5, dwellSec: 60,
+    trigger: (s) => s.questsDone.includes('open_the_gates'),
     unlocks: ['draconiaTab'],
     spotlight: 'draconiaTab',
-    objective: { label: 'Build the Garrison', current: (s) => s.barracksLevel, target: 1 },
   },
   {
     id: 'the_smith', chapter: 5, dwellSec: 60,
@@ -220,7 +221,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'strangers_at_gate'
+export const STORY_PAUSED_AFTER: BeatId = 'a_city_to_build'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

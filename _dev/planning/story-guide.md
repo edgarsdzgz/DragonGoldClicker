@@ -60,7 +60,7 @@ so a fast tapper cannot outrun the story. Target times assume a normal player.
 | `sharpen_claws` | 3 | right after | `the_wall_is_yours` seen | 30 | Pyreth | The Claws chip appears (core-tap layer 3) | -- | Sharpen Your Claws quest: buy the first level |
 | `empty_stores` | 3 | ~15:00 | `repairers >= 3` | 180 | Pyreth | First meal check fires 10 s after dismiss and shows the food drop | `hunger`, `forageTab`, food in ResourceBar, food warnings | Train 2 gatherers |
 | `strangers_at_gate` | 4 | after the claws | Sharpen Your Claws done | 60 | Mirael | A free **Lone Wanderer** (Mirael's rations) arrives right after the scene | `wanderers` | Open the Gates quest: welcome 3 newcomers |
-| `a_city_to_build` | 5 | ~40:00 | `foragers.gatherers >= 3` | 120 | Pyreth | Draconia shows **only the Garrison**; everything else is fog | `draconiaTab` | Build the Garrison |
+| `a_city_to_build` | 5 | after Open the Gates | Open the Gates done | 60 | Pyreth | Draconia shows **only the Garrison**; everything else is fog | `draconiaTab` | Quests Raise the Garrison, then First Soldiers (train 2 conscripts) |
 | `the_smith` | 5 | ~45:00 | `barracksLevel >= 1` | 60 | Kael | Forge revealed | reveal `forge` | Build the Forge |
 | `the_keep_stands` | 5 | ~55:00 | `armoryBuilt` | 60 | *silent* | Keep and Ranger's Lodge revealed | reveal `keep`, `lodge` | Restore the Keep |
 | `word_spreads` | 6 | varies | `totalInspirationEarned >= 25` | 0 | Pyreth | The existing MilestoneModal follows the scene | `milestones` | -- |

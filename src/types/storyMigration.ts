@@ -1,7 +1,7 @@
 import type { GameState } from './state'
 import type { BeatId } from './story'
 import { STORY_BEATS } from './story'
-import { DEFEND_THE_WALL_KILLS, MEND_THE_WALLS_REPAIRERS } from './quests'
+import { DEFEND_THE_WALL_KILLS, MEND_THE_WALLS_REPAIRERS, OPEN_THE_GATES_PEOPLE } from './quests'
 
 // =============================================================================
 // SAVE v1 -> v2: BACKFILL STORY PROGRESS
@@ -26,6 +26,7 @@ const EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   the_wall_is_yours: (s) => s.repairersDirected >= MEND_THE_WALLS_REPAIRERS,
   sharpen_claws: (s) => s.clawLevel >= 1,
   strangers_at_gate: (s) => s.wanderersWelcomed > 0,
+  a_city_to_build: (s) => s.wanderersWelcomed >= OPEN_THE_GATES_PEOPLE,
   empty_stores: (s) => s.foodSystemActive || s.foragers.gatherers > 0,
   the_smith: (s) => s.barracksLevel > 0,
   the_keep_stands: (s) => s.armoryBuilt || s.lodgeLevel > 0 || s.foodSystemActive,

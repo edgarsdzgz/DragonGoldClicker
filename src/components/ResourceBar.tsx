@@ -14,14 +14,13 @@ interface ResourceBarProps {
   inspiration: number
   food: number
   foodSystemActive: boolean
-  autoInspPerSec: number
   /** Hide the inspiration figure where a bigger one is already on screen (the Warfront) */
   hideInspiration?: boolean
   /** Hide the food figure where a bigger one is already on screen (the Forage tab) */
   hideFood?: boolean
 }
 
-export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, autoInspPerSec, hideInspiration = false, hideFood = false }: ResourceBarProps) {
+export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, hideInspiration = false, hideFood = false }: ResourceBarProps) {
   const insets = useSafeAreaInsets()
   const journal = useJournal()
   const coin = useCoinTarget()
@@ -60,14 +59,6 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, a
             style={{ color: foodEmpty ? colors.status.error : foodLow ? colors.status.warning : colors.text.secondary }}
           >
             {formatCount(foodAmount)}
-          </Text>
-        </View>
-      )}
-      {autoInspPerSec > 0 && (
-        <View style={styles.resource}>
-          <Ionicons name="trending-up" size={12} color={colors.status.success} />
-          <Text variant="caption" style={{ color: colors.status.success }}>
-            +{autoInspPerSec.toFixed(2)}/s
           </Text>
         </View>
       )}

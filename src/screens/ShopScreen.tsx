@@ -263,7 +263,6 @@ export function ShopScreen() {
     buildDraconiaHall,
     buildLibrarium,
     isResearchAvailable,
-    effectiveAutoRate,
   } = useGame()
   const haptics = useHaptics()
   const playCoin = useSfx(SFX.COIN)
@@ -372,7 +371,7 @@ export function ShopScreen() {
       id: 'garrison',
       name: 'The Garrison',
       icon: 'shield',
-      description: 'A fortified training ground where villagers take up arms. Soldiers auto-defeat monsters and earn renown for the settlement.',
+      description: 'A fortified training ground. Your fighters train here into conscripts, footmen and knights, who strike harder at the Gate.',
       accentColor: colors.building.garrison,
       isBuilt: barracksBuilt,
       visible: true,
@@ -565,7 +564,6 @@ export function ShopScreen() {
         inspiration={state.inspiration}
         food={state.food}
         foodSystemActive={isSystemOn(state, 'hunger')}
-        autoInspPerSec={effectiveAutoRate}
       />
       <StoryObjective />
       <ScrollView

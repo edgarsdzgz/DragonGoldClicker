@@ -131,7 +131,8 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     title: 'A City, Not a Wall',
     lines: [
       'Draconia was a city once, my lord, not only a wall. Let us begin to rebuild it.',
-      "Captain Rodain's soldiers need a garrison. Start there.",
+      'Your fighters need a garrison, a place to train into soldiers who strike harder. Start there.',
+      'A strong enough army holds the Gate on its own, even while you are in the valley.',
     ],
   },
   the_smith: {

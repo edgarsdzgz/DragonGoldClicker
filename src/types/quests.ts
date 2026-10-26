@@ -11,7 +11,7 @@ import { roundInsp } from './utils'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -45,6 +45,9 @@ export const MEND_THE_WALLS_REPAIRERS = 3
 
 /** Newcomers the player takes in from the road (chapter 4) */
 export const OPEN_THE_GATES_PEOPLE = 3
+
+/** Conscripts the player trains from fighters at the new Garrison (chapter 5) */
+export const FIRST_SOLDIERS_CONSCRIPTS = 2
 
 const done = (s: GameState, id: QuestId) => s.questsDone.includes(id)
 
@@ -92,6 +95,16 @@ export const QUESTS: QuestDef[] = [
     id: 'open_the_gates', title: 'Open the Gates',
     goals: [{ label: 'Welcome 3 newcomers', target: OPEN_THE_GATES_PEOPLE, progress: (s) => s.wanderersWelcomed }],
     offeredWhen: (s) => s.beatsSeen.includes('strangers_at_gate'),
+  },
+  {
+    id: 'raise_the_garrison', title: 'Raise the Garrison',
+    goals: [{ label: 'Build the Garrison', target: 1, progress: (s) => s.barracksLevel }],
+    offeredWhen: (s) => s.beatsSeen.includes('a_city_to_build'),
+  },
+  {
+    id: 'first_soldiers', title: 'First Soldiers',
+    goals: [{ label: 'Train 2 conscripts', target: FIRST_SOLDIERS_CONSCRIPTS, progress: (s) => s.soldiersTrained.conscripts }],
+    offeredWhen: (s) => done(s, 'raise_the_garrison'),
   },
 ]
 

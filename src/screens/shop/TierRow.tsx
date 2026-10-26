@@ -1,163 +1,85 @@
 import React from 'react'
-import { View, Pressable } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import { Text, ActionRow, Button } from '../../components'
+import { ActionRow, Button } from '../../components'
 import { REJECT_GOLD, REJECT_MAXED, REJECT_NO_POP } from '../../components/Button'
 import { useGame } from '../../context/GameContext'
 import { useHaptics, useSfx } from '../../hooks'
 import { SFX } from '../../data/sfx'
-import { colors, spacing, radius, gold } from '../../theme'
+import { colors } from '../../theme'
 import {
   formatNumber,
   formatAmount,
   FOOD_CHECK_INTERVAL,
   SOLDIER_TIERS,
-  FORAGER_TIERS,
   FOOD_CONSUMPTION,
-  getTotalSoldiers,
-  getSoldierCap,
-  getSoldierCost,
   getSoldierCount,
-  getPromotionCost,
-  getPromotionTargets,
-  getBarracksUpgradeCost,
   getLodgeUpgradeCost,
   getTotalForagers,
   getForagerCap,
   getForagerCost,
   getForagerCount,
-  getResearchBonuses,
 } from '../../types/game'
-import type { SoldierTierDef, ForagerTierDef, SoldierTier } from '../../types/game'
-import { styles } from './interiorStyles'
+import type { SoldierTierDef, ForagerTierDef } from '../../types/game'
+import { rankBlock, rankCost, rankBelow } from '../../types/army'
+import type { RankBlock } from '../../types/army'
 
 // =============================================================================
-// PROMOTE BUTTON ROW
+// RANK ROW (the Garrison, chapter 5): train a fighter into a conscript, or promote one rank up
 // =============================================================================
 
-interface PromoteTarget {
-  id: string
-  name: string
-  cost: number | null
-  canPromote: boolean
+const BLOCK_LABEL: Record<Exclude<RankBlock, null | 'renown'>, string> = {
+  noGarrison: 'BUILD FIRST',
+  locked: 'LOCKED',
+  full: 'FULL',
+  nobody: 'NONE',
 }
-
-function PromoteRow({
-  targets,
-  onPromote,
-}: {
-  targets: PromoteTarget[]
-  onPromote: (toTierId: string) => void
-}) {
-  const haptics = useHaptics()
-
-  return (
-    <View style={styles.promoteRow}>
-      {targets.map((target) => (
-        <Pressable
-          key={target.id}
-          onPress={() => {
-            haptics.medium()
-            onPromote(target.id)
-          }}
-          disabled={!target.canPromote}
-          style={({ pressed }) => [
-            styles.promoteBtn,
-            !target.canPromote && styles.promoteBtnDisabled,
-            pressed && target.canPromote && styles.promoteBtnPressed,
-          ]}
-          accessibilityRole="button"
-          accessibilityLabel={`Promote to ${target.name} for ${target.cost} renown`}
-        >
-          <Ionicons
-            name="arrow-up"
-            size={10}
-            color={target.canPromote ? gold[400] : colors.text.muted}
-          />
-          <Text
-            variant="caption"
-            style={{ color: target.canPromote ? gold[400] : colors.text.muted }}
-          >
-            {target.name} {target.cost !== null ? `${formatNumber(target.cost)} g` : ''}
-          </Text>
-        </Pressable>
-      ))}
-    </View>
-  )
-}
-
-// =============================================================================
-// SOLDIER TIER ROW (wrapper)
-// =============================================================================
 
 export function SoldierTierRow({ tier, buildingColor }: { tier: SoldierTierDef; buildingColor?: string }) {
-  const { state, trainSoldier, promoteSoldier } = useGame()
+  const { state, makeRank } = useGame()
   const haptics = useHaptics()
   const playPurchase = useSfx(SFX.PURCHASE)
   const count = getSoldierCount(state.soldiers, tier.id)
-  const lifetimeCount = getSoldierCount(state.soldiersTrained, tier.id)
-  const total = getTotalSoldiers(state.soldiers)
-  const cap = getSoldierCap(state.barracksLevel)
-  const atCap = total >= cap
-  const noVillagers = state.villagers <= 0
-  const locked = state.barracksLevel < tier.unlocksAtBarracksLevel
-  const baseCost = getSoldierCost(tier, lifetimeCount)
-  const rb = getResearchBonuses(state.completedResearch)
-  const cost = parseFloat((baseCost * (1 - rb.soldierCostDiscount)).toFixed(2))
-  const canAfford = state.inspiration >= cost && !atCap && !locked && !noVillagers
+  const block = rankBlock(state, tier.id)
+  const cost = rankCost(state, tier.id)
+  const from = rankBelow(tier.id)
+  const fromName = from === 'fighter' ? 'a fighter' : `a ${SOLDIER_TIERS.find((t) => t.id === from)!.name.toLowerCase()}`
+  const verb = from === 'fighter' ? 'Train' : 'Promote'
+  const locked = block === 'locked'
 
-  const promoteTargets = count > 0
-    ? getPromotionTargets(tier.id, state.barracksLevel).map((target) => {
-        const promoCost = getPromotionCost(tier.id, target.id, state.soldiersTrained)
-        return {
-          id: target.id,
-          name: target.name,
-          cost: promoCost,
-          canPromote: promoCost !== null && state.inspiration >= promoCost,
-        }
-      })
-    : []
-
-  const canUpgradeBarracks = getBarracksUpgradeCost(state.barracksLevel) !== null
-  const buttonLabel = atCap ? 'FULL' : noVillagers ? 'NO POP' : `${formatNumber(cost)} g`
-
-  const rejectPhrases = atCap
-    ? canUpgradeBarracks
-      ? ['Upgrade the Garrison for more room', 'The ranks are full -- upgrade to expand', 'Build higher to train more']
-      : REJECT_MAXED
-    : noVillagers
-      ? REJECT_NO_POP
+  const rejectPhrases = block === 'full'
+    ? ['Upgrade the Garrison for more room', 'The ranks are full: upgrade to expand']
+    : block === 'nobody'
+      ? [from === 'fighter' ? 'Rally a fighter first' : `No ${SOLDIER_TIERS.find((t) => t.id === from)!.plural} to promote`]
       : REJECT_GOLD
 
-  const handleTrain = () => {
+  const handleMake = () => {
     haptics.medium()
     playPurchase()
-    trainSoldier(tier.id)
+    makeRank(tier.id)
   }
 
   return (
     <ActionRow
       icon={locked ? 'lock-closed' : undefined}
       iconColor={colors.text.muted}
-      title={tier.name}
-      subtitle={locked ? undefined : `${tier.baseRate} renown/s each -- ${count} trained`}
+      title={`${tier.name} (${count})`}
+      subtitle={locked ? undefined : `${verb} ${fromName}. ${formatAmount(tier.damage)} damage per volley, eats ${FOOD_CONSUMPTION[tier.id]} a meal`}
       locked={locked}
-      lockLabel={`Barracks Lv${tier.unlocksAtBarracksLevel}`}
+      lockLabel={`Garrison Lv${tier.unlocksAtBarracksLevel}`}
       right={
         !locked ? (
-          <Button size="xs" onPress={handleTrain} disabled={!canAfford} accentColor={buildingColor} rejectPhrases={rejectPhrases}>
-            {buttonLabel}
+          <Button
+            size="xs"
+            onPress={handleMake}
+            disabled={block !== null}
+            accentColor={buildingColor}
+            rejectPhrases={rejectPhrases}
+            accessibilityLabel={`${verb} ${fromName} into a ${tier.name.toLowerCase()} for ${formatNumber(cost)} renown`}
+          >
+            {block !== null && block !== 'renown' ? BLOCK_LABEL[block] : `${formatNumber(cost)} renown`}
           </Button>
         ) : undefined
       }
-    >
-      {promoteTargets.length > 0 && (
-        <PromoteRow
-          targets={promoteTargets}
-          onPromote={(toTierId) => promoteSoldier(tier.id, toTierId as SoldierTier)}
-        />
-      )}
-    </ActionRow>
+    />
   )
 }
 

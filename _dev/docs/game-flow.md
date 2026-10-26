@@ -44,6 +44,18 @@ Locked tabs are always visible with a lock icon. Tapping shows the unlock requir
 | Fighter | Rally (Warfront tab) | 1.00 renown (scaling ~n^1.4) | 0.25 damage every 6s to the monster at the gate (1/32 of a held strike) | 2 |
 | Repairer | Direct (Warfront tab, unlocks at 3 fighters) | TBD | Heals city HP | 1.5 (75% of fighter) |
 
+### Soldiers (the Garrison, chapter 5): trained fighters
+| Rank | Made from | First price | Damage per volley | Eats per meal | Garrison level |
+|------|-----------|-------------|-------------------|---------------|----------------|
+| Conscript | a fighter | 10 renown (^1.15 after) | 0.5 | 4 | 1 |
+| Footman | a conscript | 30 renown | 1 | 6 | 3 |
+| Knight | a footman | 80 renown | 2 | 10 | 5 |
+
+Fighters and soldiers are one army: they strike together every 6s and earn renown only from
+kills (nothing earns per second). The Garrison (40/100/200/400/800 renown) holds 4/8/12/16/20
+soldiers; fighters need no room. Its screen shows how long the army takes to kill the toughest
+monster the horde sends now, against that monster's 5s strike on the wall.
+
 ### Foraging Units
 | Unit | Source | Cost | Effect | Food/check |
 |------|--------|------|--------|------------|

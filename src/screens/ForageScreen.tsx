@@ -36,7 +36,7 @@ const TRAIN_PALETTE = { accent: forage[300], glow: forage[400] }
 const RECRUIT_PALETTE = { accent: explorer.accent, glow: explorer.glow }
 
 export function ForageScreen() {
-  const { state, forage: doForage, trainForager, trainExplorer, effectiveAutoRate } = useGame()
+  const { state, forage: doForage, trainForager, trainExplorer } = useGame()
   const flavor = useFlavorText(FORAGE_LINES)
   const playHarvest = useRandomSfx(SFX_HARVEST_POOL, { cooldownMs: 2000 })
 
@@ -80,7 +80,7 @@ export function ForageScreen() {
   return (
     <View style={styles.container}>
       {/* The big figure below shows the food, so the top bar does not repeat it */}
-      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} autoInspPerSec={effectiveAutoRate} hideFood />
+      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} hideFood />
       <StoryObjective />
 
       {/* HERO: Food is the primary number */}

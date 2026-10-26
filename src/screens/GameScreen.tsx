@@ -18,7 +18,8 @@ import { SFX, SFX_WEAPON_POOL } from '../data/sfx'
 import { useRandomSfx } from '../hooks/useRandomSfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, getFighterCost, getRepairerCost, getFighterDps, isSystemOn, FIGHTER_HIT_DAMAGE } from '../types/game'
+import { formatNumber, getFighterCost, getRepairerCost, isSystemOn } from '../types/game'
+import { armySize, armyVolleyNow, armyDps } from '../types/army'
 import { battlefieldLayout, TALL_WINDOW, FLAVOR_H } from '../types/warfrontLayout'
 import { DevShortcut } from '../components/DevShortcut'
 import { warfrontReveal } from '../types/opening'
@@ -44,7 +45,7 @@ const killsText = (kills: number) => {
 }
 
 export function GameScreen() {
-  const { state, click, rallyFighter, directRepairer, sharpenClaws, effectiveAutoRate } = useGame()
+  const { state, click, rallyFighter, directRepairer, sharpenClaws } = useGame()
   const { shakeNonce } = useShakeRequest()
   const shakeStyle = useScreenShake(shakeNonce)
   const flavor = useFlavorText(COMBAT_LINES)
@@ -71,14 +72,18 @@ export function GameScreen() {
     haptics.light()
   }, [click, playSwing, haptics])
 
-  // Fighters' swings that landed: one small number per tick's worth (only while the Warfront shows)
+  // The army's volleys that landed: one small number each (only while the Warfront shows)
   const fighterPower = fighterDamageMultiplier(state)
+  const army = armySize(state)
+  const volleyNow = armyVolleyNow(state)
   const allyStrikesSeen = useRef(state.allyStrikes)
   useEffect(() => {
     const landed = state.allyStrikes - allyStrikesSeen.current
     allyStrikesSeen.current = state.allyStrikes
-    if (landed > 0 && focused) battlefieldRef.current?.showAllyHit(`-${(landed * FIGHTER_HIT_DAMAGE * fighterPower).toFixed(2)}`)
-  }, [state.allyStrikes, focused, fighterPower])
+    // A volley counts one strike per member of the army and lands as one hit
+    const volleys = landed / Math.max(1, army)
+    if (landed > 0 && focused) battlefieldRef.current?.showAllyHit(`-${(volleys * volleyNow).toFixed(2)}`)
+  }, [state.allyStrikes, focused, army, volleyNow])
 
   // A kill: coin sound, the bounty floats up, and about one in four brings a flavour line. Only
   // the player's own kills get the haptic; fighters' kills away from the Warfront stay quiet.
@@ -117,7 +122,6 @@ export function GameScreen() {
           inspiration={state.inspiration}
           food={state.food}
           foodSystemActive={hungerOn}
-          autoInspPerSec={effectiveAutoRate}
         />
       )}
       {/* The quest line shows from the first kill (the Defend the Wall quest) */}
@@ -210,9 +214,9 @@ export function GameScreen() {
           ) : (
             <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
           )}
-          {showDetails && state.fighters > 0 && (
+          {showDetails && army > 0 && (
             <Text variant="caption" style={styles.allyDps}>
-              {fighterPower > 0 ? `fighters ${(getFighterDps(state.fighters) * fighterPower).toFixed(2)} damage/s` : 'fighters stand down'}
+              {fighterPower > 0 ? `army ${armyDps(state).toFixed(2)} damage/s` : 'the army stands down'}
             </Text>
           )}
         </View>

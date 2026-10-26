@@ -20,6 +20,7 @@ import type { SoldierTier, ForagerTier, RoleId } from '../../types/game'
 import { DescriptionBanner } from './shared'
 import { SummaryBar } from './SummaryBar'
 import { styles, offStyles, draconiaStyles } from './interiorStyles'
+import { armyRenownPerSec } from '../../types/army'
 
 // =============================================================================
 // OFFLINE TIER STEP
@@ -158,7 +159,6 @@ export function DraconiaHallInterior() {
   const {
     state,
     upgradeOffline,
-    effectiveAutoRate,
     reassignRole,
   } = useGame()
 
@@ -319,9 +319,9 @@ export function DraconiaHallInterior() {
       {/* Description banner */}
       <DescriptionBanner icon="moon" color={gold[500]}>
         <Text variant="bodySmall" color="secondary">
-          Soldiers earn{' '}
+          Your army earns about{' '}
           <Text variant="bodySmall" style={{ color: gold[400] }}>
-            {effectiveAutoRate.toFixed(2)} renown/s
+            {(armyRenownPerSec(state) * 60).toFixed(2)} renown a minute
           </Text>
           {' '}while you rest.
         </Text>

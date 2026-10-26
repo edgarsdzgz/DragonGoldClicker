@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import { Text, StatBox, Button } from '../../components'
+import { StatBox, Button } from '../../components'
+import { ArmyReadout } from '../../components/ArmyReadout'
 import { REJECT_GOLD } from '../../components/Button'
 import { useGame } from '../../context/GameContext'
 import { colors, gold } from '../../theme'
@@ -11,15 +11,17 @@ import {
   getSoldierCap,
   getBarracksUpgradeCost,
   formatNumber,
-  isSystemOn,
+  WALL_STRIKE_SEC,
 } from '../../types/game'
+import { armyKillSeconds, toughestInPool } from '../../types/army'
 import { SoldierTierRow } from './TierRow'
 import { CapacitySection } from './shared'
 import { SummaryBar } from './SummaryBar'
 import { styles } from './interiorStyles'
 
 export function BarracksInterior() {
-  const { state, buildOrUpgradeBarracks, effectiveAutoRate } = useGame()
+  const { state, buildOrUpgradeBarracks } = useGame()
+  const toughest = toughestInPool(state)
   const total = getTotalSoldiers(state.soldiers)
   const cap = getSoldierCap(state.barracksLevel)
   const upgradeCost = getBarracksUpgradeCost(state.barracksLevel)
@@ -36,21 +38,11 @@ export function BarracksInterior() {
       {/* Summary bar */}
       <SummaryBar>
         <StatBox value={`${total}/${cap}`} label="Soldiers" valueColor={gold[400]} />
-        {isSystemOn(state, 'hunger') && (
-          <StatBox value={state.villagers} label="Villagers" />
-        )}
-        <StatBox value={effectiveAutoRate.toFixed(2)} label="renown/s" />
-        <StatBox label="Gear">
-          <View style={styles.gearCount}>
-            <Ionicons name="flash" size={12} color={gold[300]} />
-            <Text variant="caption" color="secondary">{state.armoryGear.swords}</Text>
-          </View>
-          <View style={styles.gearCount}>
-            <Ionicons name="shield" size={12} color={gold[300]} />
-            <Text variant="caption" color="secondary">{state.armoryGear.shields}</Text>
-          </View>
-        </StatBox>
+        <StatBox value={state.fighters} label="Fighters" />
       </SummaryBar>
+
+      {/* Can the army hold the Gate while the player is away? (chapter 5) */}
+      <ArmyReadout monsterName={toughest.name} killSec={armyKillSeconds(state, toughest)} strikeSec={WALL_STRIKE_SEC} />
 
       {/* Capacity bar */}
       <CapacitySection label="Capacity" current={total} max={cap} />

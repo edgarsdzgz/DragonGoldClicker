@@ -34,12 +34,12 @@ export function SettingsScreen() {
   useEffect(() => {
     if (wantsDev && DEV_TOOLS_ENABLED) setActiveTab('dev')
   }, [wantsDev, route.params])
-  const { state, effectiveAutoRate, resetGame } = useGame()
+  const { state, resetGame } = useGame()
   const [showResetModal, setShowResetModal] = useState(false)
 
   return (
     <View style={styles.container}>
-      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} autoInspPerSec={effectiveAutoRate} />
+      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} />
       <StoryObjective />
       <PillTabs tabs={TABS} activeKey={activeTab} onSelect={setActiveTab} />
 
@@ -142,7 +142,7 @@ function SettingsContent({ showResetModal, onShowReset }: { showResetModal: bool
 // -- Stats sub-page --
 
 function StatsContent() {
-  const { state, effectiveAutoRate } = useGame()
+  const { state } = useGame()
 
   const totalTrained = getTotalSoldiers(state.soldiersTrained)
   // What a meal really costs (every mouth, fighters too), as the meal tick charges it
@@ -163,7 +163,6 @@ function StatsContent() {
         <StatRow icon="wallet" iconElement={<InspirationIcon size={14} />} label="Renown" value={formatNumber(state.inspiration)} accent />
         <StatRow icon="trending-up" label="Total Earned" value={formatNumber(state.totalInspirationEarned)} />
         <StatRow icon="trending-down" label="Total Spent" value={formatNumber(state.totalInspirationSpent)} />
-        <StatRow icon="speedometer" label="Auto renown/s" value={effectiveAutoRate.toFixed(2)} />
       </Surface>
 
       <Surface style={styles.section}>

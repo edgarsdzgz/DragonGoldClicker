@@ -622,7 +622,7 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
-## Chapter 5: A City to Build (proposed 2026-10-26)
+## Chapter 5: A City to Build (approved 2026-10-26; phase A built)
 
 Pyreth's "A City, Not a Wall" opens the Draconia tab (the map, buildings in fog) with the
 Garrison first; then Kael's Forge; then the Keep and the Ranger's Lodge come out of the fog. All
@@ -682,13 +682,34 @@ Untrained fighters need no room; only soldiers count against the Garrison.
 - **The Keep Stands** reveals the Keep and the Ranger's Lodge; they come after the Forge.
 - The story pauses after First Soldiers until the Forge is planned.
 
-### Open questions
+### Rulings (2026-10-26)
 
-1. Soldiers as trained fighters at the Gate (recommended), or something else (for example
-   soldiers who guard the wall and soften monster strikes)?
-2. The numbers above as a starting point?
-3. Build it in this order: Draconia tab and Garrison first, then the Forge, then the Keep and
-   the Lodge?
+The owner approved the recommendations: soldiers are trained fighters at the Gate, the numbers
+above, and the order (Garrison first, then the Forge, then the Keep and the Lodge). Added on
+review: each renown sink has its own job. The claws are the player's power at the Gate, the army
+is the power while away (it lets the player forage), repairers are the wall's recovery. So the
+Garrison shows **the army readout**: how long the army takes to kill the toughest monster the
+horde sends now, against that monster's 5-second strike, and whether the army holds the Gate.
+
+### As built (phase A)
+
+- `types/army.ts`: one army (fighters plus soldiers) in one volley; `makeRank` trains a fighter
+  into a conscript or promotes one rank up; `rankBlock` says why it cannot; the readout
+  (`toughestInPool`, `armyKillSeconds`). The volley clock runs on its own, so a new monster's
+  first volley lands 3s in on average: kill time is 3s plus 6s per further volley. One volley
+  holds the Gate; two do not.
+- Removed: all renown per second (soldiers, swords and shields, the auto-income loop and its
+  "+x/s" display, the Settings stat). Offline earnings and the Keep's text use the army's kill
+  rate (`armyRenownPerSec`).
+- Rations scale soldiers' food too. A Breach takes 30% of each rank and steps back
+  `soldiersTrained`.
+- The Garrison screen: soldiers and fighters, the `ArmyReadout`, then a row per rank (Train a
+  fighter / Promote a conscript / Promote a footman).
+- Story: Pyreth's scene follows Open the Gates; quests Raise the Garrison and First Soldiers. The
+  story pauses after `a_city_to_build`.
+- Left for the Forge: swords and shields still exist (their Forge screen still says renown/s) but
+  the Forge is behind `the_smith`, which is paused. Research effects for auto income
+  (`autoRateMultiplier`, `gearBonusMultiplier`) do nothing now; the Librarium pass reworks them.
 
 ---
 

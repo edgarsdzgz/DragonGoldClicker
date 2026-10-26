@@ -45,9 +45,15 @@ export function foodPerCheck(s: GameState): number {
 
 /** What one meal costs: the army (fighters at their ration), after research, rounded up */
 export function mealCost(s: GameState): number {
-  // Rations scale what each fighter eats (none: they eat nothing)
-  const fighters = s.fighters * rationDef(s.ration).upkeep
-  const base = getFoodConsumption(s.villagers, s.soldiers, s.foragers, s.explorers, fighters, s.repairers)
+  // Rations scale what the army eats, fighters and soldiers alike (none: they eat nothing)
+  const upkeep = rationDef(s.ration).upkeep
+  const fighters = s.fighters * upkeep
+  const soldiers = {
+    conscripts: s.soldiers.conscripts * upkeep,
+    footmen: s.soldiers.footmen * upkeep,
+    knights: s.soldiers.knights * upkeep,
+  }
+  const base = getFoodConsumption(s.villagers, soldiers, s.foragers, s.explorers, fighters, s.repairers)
   const rb = getResearchBonuses(s.completedResearch)
   return Math.max(0, Math.ceil(base * (1 - rb.foodConsumptionReduction)))
 }

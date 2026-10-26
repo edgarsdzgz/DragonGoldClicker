@@ -1,5 +1,6 @@
 import type { GameState } from './state'
 import type { ForagerCounts } from './foragers'
+import type { SoldierCounts } from './soldiers'
 import { MONSTERS } from './monsterRoster'
 import { pickNextMonster } from './spawnPool'
 import { hordeLevel, pushedBackHorde } from './horde'
@@ -13,7 +14,7 @@ import { roundInsp } from './utils'
 // and the player's renown (it can go negative), and throws the horde back so starting again is
 // easy.
 
-/** Share of fighters, repairers and idle villagers who die (at least 1 fighter, if any) */
+/** Share of fighters, each rank of soldiers, repairers and idle villagers who die (at least 1 fighter, if any) */
 export const BREACH_PEOPLE_LOSS = 0.3
 /** Share of foragers who die: they are out in the valley and run back to help */
 export const BREACH_FORAGER_LOSS = 0.15
@@ -30,6 +31,8 @@ export interface BreachReport {
   /** Which Breach this was (1 = the first; it plays the full scene) */
   count: number
   fightersLost: number
+  /** Soldiers lost by rank (chapter 5); absent in reports saved before it */
+  soldiersLost?: SoldierCounts
   repairersLost: number
   villagersLost: number
   foragersLost: ForagerCounts
@@ -42,12 +45,23 @@ export interface BreachReport {
 
 const share = (n: number, frac: number) => Math.floor(Math.max(0, n) * frac)
 
+const minusSoldiers = (a: SoldierCounts, b: SoldierCounts): SoldierCounts => ({
+  conscripts: Math.max(0, a.conscripts - b.conscripts),
+  footmen: Math.max(0, a.footmen - b.footmen),
+  knights: Math.max(0, a.knights - b.knights),
+})
+
 /**
  * The wall has fallen. Applies every loss, the push-back, the patched wall and the ward, and
  * leaves the report for the player (`pendingBreach`). `rand` picks the monster that comes next.
  */
 export function resolveBreach(s: GameState, rand: number = Math.random()): GameState {
   const fightersLost = s.fighters > 0 ? Math.max(1, share(s.fighters, BREACH_PEOPLE_LOSS)) : 0
+  const soldiersLost: SoldierCounts = {
+    conscripts: share(s.soldiers.conscripts, BREACH_PEOPLE_LOSS),
+    footmen: share(s.soldiers.footmen, BREACH_PEOPLE_LOSS),
+    knights: share(s.soldiers.knights, BREACH_PEOPLE_LOSS),
+  }
   const repairersLost = share(s.repairers, BREACH_PEOPLE_LOSS)
   const villagersLost = share(s.villagers, BREACH_PEOPLE_LOSS)
   const foragersLost: ForagerCounts = {
@@ -68,6 +82,7 @@ export function resolveBreach(s: GameState, rand: number = Math.random()): GameS
   const report: BreachReport = {
     count,
     fightersLost,
+    soldiersLost,
     repairersLost,
     villagersLost,
     foragersLost,
@@ -87,6 +102,8 @@ export function resolveBreach(s: GameState, rand: number = Math.random()): GameS
   return {
     ...s,
     fighters: s.fighters - fightersLost,
+    soldiers: minusSoldiers(s.soldiers, soldiersLost),
+    soldiersTrained: minusSoldiers(s.soldiersTrained, soldiersLost),
     repairers: s.repairers - repairersLost,
     villagers: s.villagers - villagersLost,
     foragers: minus(s.foragers, foragersLost),
@@ -126,6 +143,9 @@ const fell = (n: number, one: string, many: string): BreachLine[] =>
 export function breachLines(r: BreachReport): BreachLine[] {
   return [
     ...fell(r.fightersLost, 'fighter', 'fighters'),
+    ...fell(r.soldiersLost?.conscripts ?? 0, 'conscript', 'conscripts'),
+    ...fell(r.soldiersLost?.footmen ?? 0, 'footman', 'footmen'),
+    ...fell(r.soldiersLost?.knights ?? 0, 'knight', 'knights'),
     ...fell(r.repairersLost, 'repairer', 'repairers'),
     ...fell(r.villagersLost, 'villager', 'villagers'),
     ...fell(r.foragersLost.gatherers, 'gatherer', 'gatherers'),

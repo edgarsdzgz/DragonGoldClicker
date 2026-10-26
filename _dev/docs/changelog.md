@@ -2,6 +2,20 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Chapter 5 phase A: A City to Build, the Garrison (2026-10-26)
+- Soldiers are trained fighters: the Garrison trains a fighter into a conscript (10 renown) and
+  promotes conscripts to footmen (30, Garrison Lv3) and footmen to knights (80, Lv5). They strike
+  in the army's volley at the Gate for 0.5, 1 and 2, and eat 4, 6 and 10 a meal
+- Nothing earns renown per second any more: soldier and gear income, the "+x/s" display and its
+  stat are gone. Offline earnings come from the army's kill rate
+- The Garrison costs 40/100/200/400/800 and holds 4/8/12/16/20 soldiers
+- The army readout on the Garrison: "Your army kills an Orc in about 39 seconds. An Orc strikes
+  the wall every 5", and whether the army holds the Gate while you are away
+- Rations scale soldiers' food; a Breach takes 30% of each rank. The Warfront footer shows the
+  army's damage per second
+- Story: Pyreth's "A City, Not a Wall" follows Open the Gates and opens the Draconia tab; quests
+  Raise the Garrison and First Soldiers. The story pauses after it
+
 ### Chapter 4: Strangers at the Gate, wanderers reworked (2026-10-26)
 - Mirael's scene now follows Sharpen Your Claws; the first wanderer is free (her own rations);
   quest Open the Gates: welcome 3 newcomers. The story pauses after it

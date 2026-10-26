@@ -5,20 +5,15 @@ import {
   DEFAULT_GAME_STATE,
   STARTING_FOOD,
   STARTING_VILLAGERS,
-  getEffectiveAutoRate,
   getOfflineMaxSeconds,
   FOOD_CHECK_INTERVAL,
   getResearchBonuses,
-  getFighterDps,
-  SWORD_BONUS,
-  SHIELD_BONUS,
   roundInsp,
   isSystemOn,
 } from '../types/game'
 import { migrateSave } from '../types/saveMigrations'
-import { currentMonster } from '../types/monsters'
+import { armyRenownPerSec } from '../types/army'
 import { mealCost } from '../types/foodTick'
-import { rationDef } from '../types/rations'
 
 const STORAGE_KEY = '@dragongold/gamestate'
 
@@ -136,18 +131,9 @@ export function useStorage() {
 
         if (elapsedSec >= 60 && isSystemOn(gameState, 'offline')) {
           const rb = getResearchBonuses(gameState.completedResearch)
-          const baseAutoRate = getEffectiveAutoRate(
-            gameState.soldiers,
-            gameState.armoryGear.swords,
-            gameState.armoryGear.shields,
-          )
-          const gearBoost = (gameState.armoryGear.swords * SWORD_BONUS + gameState.armoryGear.shields * SHIELD_BONUS) * rb.gearBonusMultiplier
-          const soldierRate = (baseAutoRate + gearBoost) * (1 + rb.autoRateMultiplier)
-          // Fighters earn only through kills: their damage over the time away, paid at the bounty
-          // per HP of the monster they face (no kills are counted offline)
-          const facing = currentMonster(gameState)
-          const fighterRate = getFighterDps(gameState.fighters) * rationDef(gameState.ration).damage * (facing.bounty / facing.hp)
-          const autoRate = soldierRate + fighterRate
+          // The army earns only through kills: its damage over the time away, paid at the bounty
+          // per HP of the monster it faces (no kills are counted offline; chapter 5)
+          const autoRate = armyRenownPerSec(gameState)
           const maxSec = getOfflineMaxSeconds(gameState.offlineLevel)
           const cappedSec = Math.min(elapsedSec, maxSec)
 

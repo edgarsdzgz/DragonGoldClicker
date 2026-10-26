@@ -12,7 +12,7 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 const AFTER_RENOWN = ['prologue', 'elder_approaches', 'first_renown']
 
 describe('the quest line', () => {
-  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls, Sharpen Your Claws, Open the Gates', () => {
+  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls, Sharpen Your Claws, Open the Gates, Raise the Garrison, First Soldiers', () => {
     expect(QUESTS.map((q) => [q.id, q.title, q.goals.map((g) => g.label)])).toEqual([
       ['defend_the_wall', 'Defend the Wall', ['Defeat 4 kobolds']],
       ['raise_the_guard', 'Raise the Guard', ['Rally 2 fighters']],
@@ -21,6 +21,8 @@ describe('the quest line', () => {
       ['mend_the_walls', 'Mend the Walls', ['Direct 3 repairers']],
       ['sharpen_your_claws', 'Sharpen Your Claws', ['Sharpen your claws']],
       ['open_the_gates', 'Open the Gates', ['Welcome 3 newcomers']],
+      ['raise_the_garrison', 'Raise the Garrison', ['Build the Garrison']],
+      ['first_soldiers', 'First Soldiers', ['Train 2 conscripts']],
     ])
   })
 
