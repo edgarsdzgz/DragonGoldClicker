@@ -150,3 +150,32 @@ This note gathers what tutorials and anatomy references say, maps each complaint
 | ANAT | Dragon anatomy and wing-attachment notes, collected from general tutorials (low authority; used only for chest mass and wing rooting) |
 | BAT | Bat-wing structure notes, collected from general tutorials (low authority; checked against bat-skeleton basics) |
 | MV | Mega Voxels, "How to Make a Pixel Art Dragon": https://www.megavoxels.com/learn/how-to-make-a-pixel-art-dragon/ (flat fill, then one shadow and two highlights) |
+
+## 4. Reference comparison: what reads "right" (2026-10-26)
+
+The owner shared eight dragon portraits that look right and asked what separates them from head study V2 (the thick-neck version). V3, with an 8-pixel neck, read as emaciated, so thinness was not the answer. The reference figures below were measured by eye on the images and are approximate. The V2 figures come from the sprite grid.
+
+| Trait | References | V2 |
+|---|---|---|
+| View | Mostly three-quarter: the top of the muzzle, both brow ridges and the far horns show | Pure side profile, which flattens the face into a crocodile outline |
+| Eye position along the head | Near the middle; eye-to-snout is 0.4-1.3 times eye-to-back of skull | Back third; eye-to-snout is 1.7 times eye-to-back (20 px against 12) |
+| Muzzle | Shorter than or equal to the cranium, tapering, with a clear step down from brow to muzzle | Long, even-depth box (12 px deep at mid-snout, 18 at the back), almost no step |
+| Back of the head | The biggest mass: cranium, cheek and jaw muscle, frills | Small and low; the horn root is the only mass back there |
+| Neck direction | Leaves the back corner of the jaw and runs down and back; the head is thrust forward of the chest | Throat runs down and forward under the face (13 px forward over 19 rows), so the head sits on a pedestal: the "pooch" |
+| Neck width | About 0.8-1.0 times the head's height, kept along its length | 0.77 at mid-neck, but flaring to 1.4 at the frame edge (V3 was 0.4: too thin) |
+| Head angle | Snout lower than the skull; one strong diagonal from snout tip to horn tips | Level |
+| Crest | 3-7 horns and spikes fanning back from the brow and skull, plus cheek and neck spikes; a jagged silhouette | Two smooth horns and a few spines; a calm silhouette |
+| Mouth line | Curves up toward the back and ends under or before the eye; often open with teeth | Straight, and runs past the eye, which reads as a lip or a duck bill |
+| Eye contrast | A bright red, orange or yellow eye in a dark socket, the brightest point on the head | Gold on red, of medium contrast |
+| Value | Dark overall, with bright accents (glow, gold trim, rim light); strong dark outline | Mid red throughout |
+
+**Rules for V4:**
+1. Three-quarter view, head tilted down.
+2. Eye near the middle of the head.
+3. A shorter, tapering muzzle with a brow step.
+4. A big back of the head.
+5. A neck as thick as V2 but leaning back from the jaw corner.
+6. A fanned crest.
+7. A curved mouth line, open or ajar.
+8. A bright eye in a dark socket.
+9. A darker overall value with accents.
