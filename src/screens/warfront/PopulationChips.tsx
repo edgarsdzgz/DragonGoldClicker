@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, useWindowDimensions } from 'react-native'
-import { Text, Badge } from '../../components'
+import { Text, Badge, FighterStatusBadge } from '../../components'
 import { useGame } from '../../context/GameContext'
 import { getTotalSoldiers, getTotalForagers, isSystemOn } from '../../types/game'
 import { colors, spacing, gold } from '../../theme'
@@ -54,15 +54,8 @@ export function PopulationChips() {
         <Chip icon="people" color={gold[300]} count={soldiers} words={words} noun="soldier" suffix={foodOut ? ' (idle)' : ' fighting'} />
         <Chip icon="leaf" color={colors.status.success} count={foragers} words={words} noun="forager" />
       </View>
-      {foodOut && (state.fighters > 0 || soldiers > 0) ? (
-        <Badge icon="warning" color={colors.status.error} style={styles.warning}>
-          <Text variant="caption" style={{ color: colors.status.error }}>No food! Fighters refuse to fight.</Text>
-        </Badge>
-      ) : foodOut && state.villagers > 0 ? (
-        <Badge icon="warning" color={colors.status.warning} style={styles.warning}>
-          <Text variant="caption" style={{ color: colors.status.warning }}>Villagers are starving!</Text>
-        </Badge>
-      ) : null}
+      {/* How the fighters are doing on their rations and the stores (layer 3); villagers feed themselves */}
+      {hungerOn && <FighterStatusBadge style={styles.warning} />}
     </View>
   )
 }

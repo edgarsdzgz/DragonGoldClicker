@@ -18,6 +18,7 @@ import {
 import { migrateSave } from '../types/saveMigrations'
 import { currentMonster } from '../types/monsters'
 import { mealCost } from '../types/foodTick'
+import { rationDef } from '../types/rations'
 
 const STORAGE_KEY = '@dragongold/gamestate'
 
@@ -145,7 +146,7 @@ export function useStorage() {
           // Fighters earn only through kills: their damage over the time away, paid at the bounty
           // per HP of the monster they face (no kills are counted offline)
           const facing = currentMonster(gameState)
-          const fighterRate = getFighterDps(gameState.fighters) * (facing.bounty / facing.hp)
+          const fighterRate = getFighterDps(gameState.fighters) * rationDef(gameState.ration).damage * (facing.bounty / facing.hp)
           const autoRate = soldierRate + fighterRate
           const maxSec = getOfflineMaxSeconds(gameState.offlineLevel)
           const cappedSec = Math.min(elapsedSec, maxSec)

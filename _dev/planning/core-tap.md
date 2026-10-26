@@ -441,7 +441,7 @@ with checkmarks in the Journal).
 
 ---
 
-## Layer 3: food that creates urgency, not exhaustion (PROPOSED 2026-10-26, numbers await approval)
+## Layer 3: food that creates urgency, not exhaustion (approved 2026-10-26; phases A and B built, C later)
 
 **Why:** on the A16 the stores emptied while the game sat idle. A meal cost 31 every 30s (about
 3,700 food an hour), one gatherer brings 6 per meal, and even the full 6 gatherers barely break even.

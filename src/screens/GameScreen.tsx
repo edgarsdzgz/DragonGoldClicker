@@ -25,6 +25,7 @@ import { warfrontReveal } from '../types/opening'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
 import { Gate } from './warfront/Gate'
+import { fighterDamageMultiplier } from '../types/fedState'
 
 const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.rally }
 const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.repair }
@@ -68,12 +69,13 @@ export function GameScreen() {
   }, [click, playSwing, haptics])
 
   // Fighters' swings that landed: one small number per tick's worth (only while the Warfront shows)
+  const fighterPower = fighterDamageMultiplier(state)
   const allyStrikesSeen = useRef(state.allyStrikes)
   useEffect(() => {
     const landed = state.allyStrikes - allyStrikesSeen.current
     allyStrikesSeen.current = state.allyStrikes
-    if (landed > 0 && focused) battlefieldRef.current?.showAllyHit(`-${(landed * FIGHTER_HIT_DAMAGE).toFixed(2)}`)
-  }, [state.allyStrikes, focused])
+    if (landed > 0 && focused) battlefieldRef.current?.showAllyHit(`-${(landed * FIGHTER_HIT_DAMAGE * fighterPower).toFixed(2)}`)
+  }, [state.allyStrikes, focused, fighterPower])
 
   // A kill: coin sound, the bounty floats up, and about one in four brings a flavour line. Only
   // the player's own kills get the haptic; fighters' kills away from the Warfront stay quiet.
@@ -181,7 +183,9 @@ export function GameScreen() {
           </Text>
           <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
           {state.fighters > 0 && (
-            <Text variant="caption" style={styles.allyDps}>fighters {getFighterDps(state.fighters).toFixed(2)} damage/s</Text>
+            <Text variant="caption" style={styles.allyDps}>
+              {fighterPower > 0 ? `fighters ${(getFighterDps(state.fighters) * fighterPower).toFixed(2)} damage/s` : 'fighters stand down'}
+            </Text>
           )}
         </View>
       )}

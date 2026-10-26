@@ -78,6 +78,9 @@ import { stepFood } from '../types/foodTick'
 import { applyCityDamage } from '../types/cityHp'
 import { strike, fighterStrike } from '../types/monsters'
 import { completeQuests, hasQuestToComplete } from '../types/quests'
+import { fighterDamageMultiplier } from '../types/fedState'
+import { isRationAvailable } from '../types/rations'
+import type { RationId } from '../types/rations'
 import { firstExpeditionReward } from '../types/scripted'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -131,6 +134,8 @@ interface GameContextType {
   buildLibrarium: () => boolean
   completeResearch: (id: string) => boolean
   isResearchAvailable: (id: string) => boolean
+  /** Set the fighters' rations (only an available one) */
+  setRation: (id: RationId) => void
   /** Story director: record a beat as seen and restart the dwell clock (at the game second it fired in) */
   markBeatSeen: (id: string, atPlaySec?: number) => void
   /** Story: apply a scripted state change (pure updater; scripted events and flags) */
@@ -254,15 +259,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // Fighters' volley at the monster: all of them strike together every FIGHTER_SWING_MS, as one
   // hit. The time to the next volley lives in a ref, so a tick in which nothing lands does not
   // re-render.
+  // Their ration and how fed they are scale the hit (layer 3); at 0 they stand down
+  const fighterPower = fighterDamageMultiplier(state)
   const fighterSwing = useRef(0)
-  const fighters = loaded && !starving ? state.fighters : 0
+  const fighters = loaded && fighterPower > 0 ? state.fighters : 0
   useGameLoop(
     useCallback(() => {
       const { swings, progress } = stepFighterVolley(fighterSwing.current, fighters)
       fighterSwing.current = progress
       if (swings <= 0) return
-      setState((prev) => (prev.fighters > 0 ? fighterStrike(prev, swings * FIGHTER_HIT_DAMAGE, swings).state : prev))
-    }, [fighters]),
+      setState((prev) => (prev.fighters > 0 ? fighterStrike(prev, swings * FIGHTER_HIT_DAMAGE * fighterPower, swings).state : prev))
+    }, [fighters, fighterPower]),
     FIGHTER_TICK_MS,
   )
 
@@ -1111,6 +1118,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return success
   }, [checkPrereqs])
 
+  const setRation = useCallback((id: RationId) => {
+    setState((prev) => (isRationAvailable(prev, id) && prev.ration !== id ? { ...prev, ration: id } : prev))
+  }, [])
+
   const markBeatSeen = useCallback((id: string, atPlaySec?: number) => {
     setState((prev) => (prev.beatsSeen.includes(id)
       ? prev
@@ -1196,6 +1207,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         completeResearch,
         isResearchAvailable,
         markBeatSeen,
+        setRation,
         completeTutorialStep,
         applyScripted,
         devApply,

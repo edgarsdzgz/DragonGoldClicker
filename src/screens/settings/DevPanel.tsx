@@ -60,6 +60,7 @@ export function DevPanel() {
           <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ food: s.food + 100 }))}>+100 food</Button>
           <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ villagers: s.villagers + 5 }))}>+5 villagers</Button>
           <Button size="sm" variant="secondary" onPress={() => grant(() => ({ cityHp: MAX_CITY_HP }))}>Repair wall</Button>
+          <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ completedResearch: [...new Set([...s.completedResearch, 'lean_rations', 'feast_hall'])] }))}>All rations</Button>
         </View>
       </Surface>
 

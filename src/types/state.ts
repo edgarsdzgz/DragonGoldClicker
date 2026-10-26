@@ -1,4 +1,6 @@
 import type { SoldierCounts } from './soldiers'
+import type { RationId } from './rations'
+import { DEFAULT_RATION } from './rations'
 import type { ForagerCounts } from './foragers'
 import { getTotalForagers } from './foragers'
 import { getTotalSoldiers } from './soldiers'
@@ -172,6 +174,8 @@ export interface GameState {
   monsterHp: number
   /** Lifetime kills per monster id (the spawn pool's debuts and per-type quests read it) */
   killsByMonster: Record<string, number>
+  /** The fighters' rations (types/rations.ts); full by default */
+  ration: RationId
   /** Fighter swings that have landed, lifetime (the Warfront floats a number for each new one) */
   allyStrikes: number
   /** Monsters killed by fighters rather than by a tap, lifetime */
@@ -257,6 +261,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   monsterIndex: 0,
   monsterHp: FIRST_MONSTER_HP,
   killsByMonster: {},
+  ration: DEFAULT_RATION,
   allyStrikes: 0,
   allyKills: 0,
   waveNumber: 0,

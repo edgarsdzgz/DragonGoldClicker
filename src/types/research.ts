@@ -158,6 +158,30 @@ export const RESEARCH_NODES: ResearchNodeDef[] = [
     effects: [{ type: 'foragePowerBonus', value: 0.1 }],
   },
   {
+    // Layer 3.4: unlocks quarter rations
+    id: 'lean_rations',
+    name: 'Lean Rations',
+    description: 'Fighters learn to march on little. Unlocks quarter rations: a quarter of the food, 40% of the damage.',
+    category: 'survival',
+    icon: 'remove-circle',
+    cost: 20,
+    prereqs: [{ type: 'research', id: 'rationing' }],
+    // Unlocks quarter rations: RationDef.research (types/rations.ts) names this node
+    effects: [],
+  },
+  {
+    // Layer 3.4: unlocks double rations
+    id: 'feast_hall',
+    name: 'Feast Hall',
+    description: 'A hall where fighters eat their fill before battle. Unlocks double rations: twice the food, 140% of the damage.',
+    category: 'survival',
+    icon: 'restaurant',
+    cost: 40,
+    prereqs: [{ type: 'research', id: 'lean_rations' }],
+    // Unlocks double rations: RationDef.research (types/rations.ts) names this node
+    effects: [],
+  },
+  {
     id: 'frontier_settlement',
     name: 'Frontier Settlement',
     description: 'Expanded housing attracts more wanderers. Village capacity +5.',

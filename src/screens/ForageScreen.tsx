@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, MealCountdown, StoryObjective, CoachTarget } from '../components'
+import { Text, Badge, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -153,6 +153,14 @@ export function ForageScreen() {
       {/* Meal consumption info */}
       <MealCountdown variant="full" />
 
+      {/* The fighters' rations and how fed they are (layer 3), once there is an army to feed */}
+      {isSystemOn(state, 'hunger') && state.fighters > 0 && (
+        <View style={styles.rations}>
+          <FighterStatusBadge style={styles.status} />
+          <RationSelector />
+        </View>
+      )}
+
       {/* Battle area: FORAGE dominates center */}
       <View style={styles.battleArea} onLayout={(e) => setAreaHeight(Math.floor(e.nativeEvent.layout.height))}>
         <FlavorText text={flavor.text} opacity={flavor.opacity} color={forage[300]} reserveHeight={FLAVOR_H} />
@@ -270,6 +278,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[4],
     paddingTop: spacing[3],
     paddingBottom: spacing[2],
+  },
+  rations: {
+    gap: spacing[1],
+    paddingTop: spacing[2],
+  },
+  status: {
+    alignSelf: 'center',
   },
   commandSlot: {
     alignItems: 'center',

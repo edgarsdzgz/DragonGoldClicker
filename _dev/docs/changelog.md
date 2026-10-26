@@ -2,6 +2,15 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Food, layer 3 phase B: fed states and rations (2026-10-26)
+- Five rations for the fighters: none, quarter, half, full (default), double. They scale upkeep
+  (0, 0.25, 0.5, 1, 2) and damage (0, 0.4, 0.7, 1, 1.4); none stands the fighters down
+- Quarter and double are unlocked by new Librarium research (Lean Rations, Feast Hall); Dev can
+  grant them
+- Fed states: well fed (10 meals in store) +10%, hungry 50%, starving stands down
+- The ration selector and the fighters' status sit on the Forage tab; the status also shows on the
+  Warfront, replacing the old "Villagers are starving!" warning
+
 ### Food, layer 3 phase A (2026-10-26)
 - Only the army eats from the stores (fighter 4, repairer 3, soldiers 4/6/10, explorer 2 per meal);
   villagers and foragers feed themselves, and only an unfed army can starve

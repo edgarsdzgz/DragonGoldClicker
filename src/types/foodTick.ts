@@ -10,6 +10,7 @@ import {
 import type { StarvationResult } from './food'
 import { getResearchBonuses } from './research'
 import { getAutoFoodRate } from './foragers'
+import { rationDef } from './rations'
 
 // =============================================================================
 // FOOD CHECK (decided from the latest state, applied by a pure updater)
@@ -41,9 +42,11 @@ export function foodPerCheck(s: GameState): number {
   return Math.min(s.food, mealCost(s))
 }
 
-/** What one meal costs: every mouth (fighters and repairers too), after research, rounded up */
+/** What one meal costs: the army (fighters at their ration), after research, rounded up */
 export function mealCost(s: GameState): number {
-  const base = getFoodConsumption(s.villagers, s.soldiers, s.foragers, s.explorers, s.fighters, s.repairers)
+  // Rations scale what each fighter eats (none: they eat nothing)
+  const fighters = s.fighters * rationDef(s.ration).upkeep
+  const base = getFoodConsumption(s.villagers, s.soldiers, s.foragers, s.explorers, fighters, s.repairers)
   const rb = getResearchBonuses(s.completedResearch)
   return Math.max(0, Math.ceil(base * (1 - rb.foodConsumptionReduction)))
 }
@@ -111,9 +114,7 @@ export function resolveFoodTick(prev: GameState, starvationOn: boolean): FoodTic
     return { tick: { timer, consumed: 0, ...noLoss }, warning: null, report: null }
   }
 
-  const baseConsumption = getFoodConsumption(prev.villagers, prev.soldiers, prev.foragers, prev.explorers, prev.fighters, prev.repairers)
-  const rb = getResearchBonuses(prev.completedResearch)
-  const consumption = Math.max(0, Math.ceil(baseConsumption * (1 - rb.foodConsumptionReduction)))
+  const consumption = mealCost(prev)
   const consumed = Math.min(prev.food, consumption)
   const newFood = prev.food - consumed
 
