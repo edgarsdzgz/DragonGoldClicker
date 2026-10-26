@@ -622,6 +622,72 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
+## Chapter 5 phase C: The Keep Stands (proposed 2026-10-26)
+
+After Arm the Ranks, the Keep and the Ranger's Lodge come out of the fog. Both exist in code
+(`DraconiaHallInterior`, `LodgeInterior`, `types/foragers.ts`, `types/reassignment.ts`), built
+for rules that have changed.
+
+### What no longer fits
+
+- **Shrink-era prices.** The Keep costs 7.5 renown; the Lodge 2/6/17.5/35/60; a trapper 0.75 and
+  a ranger 2. A single sword now costs 15.
+- **The Lodge lowers the gatherer cap.** Without it the Forage tab allows 6 gatherers; Lodge Lv1
+  allows 4.
+- **Time away ignores the army readout.** Offline, the army earns at its damage rate whether it
+  holds the Gate or not, and the wall is never touched. The readout's promise ("holds the Gate
+  while you are away") means nothing yet.
+- **Reassignment predates the army.** It moves soldiers, foragers and explorers with refunds of
+  training costs, but knows nothing of fighters or repairers, and a soldier is now a trained
+  fighter.
+- **Food runs short as the army grows.** The owner's save loses about 21 food a meal; soldiers eat
+  4, 6 and 10. Only gatherers (8 a meal) feed the city.
+- **Story order.** `the_keep` (offline, reassignment) sits after three old side beats
+  (`word_spreads`, `lean_times`, `beyond_the_walls`); moving the pause past it would turn them on
+  unreviewed.
+
+### Recommended
+
+**The Keep (Pyreth, 150 renown): the city tends itself while you rest.**
+- Offline progress turns on (3 hours, upgradable to 12 as today, 25/100/250/400).
+- **Time away follows the army readout.** An army that holds the Gate keeps the wall whole. One
+  that does not lets strikes through: the wall wears down while you are away (repairers count),
+  but never below 50 HP, so you never come back to a Breach. The return card says which: "Your
+  army held the Gate" or "The wall took 120 damage; your army could not hold the Orcs." Renown
+  earned is unchanged.
+- **Reassignment, redone for one army:** move people between fighters, repairers, gatherers and
+  idle villagers. A soldier can stand down to a fighter (their gear stays in the racks). Moving
+  is free and refunds nothing; the price curves do not step back. This lets the player rebalance
+  after a Breach or when food runs short.
+
+**The Ranger's Lodge (Mirael): better food, the same path as the army.**
+- **Promote foragers like soldiers:** a gatherer is promoted to a trapper, a trapper to a ranger.
+  One path: train a villager into a gatherer (the Forage tab, as now), then promote at the Lodge.
+- **Food per meal:** gatherer 8, trapper 20 (Lodge Lv1, 15 renown), ranger 40 (Lv3, 40 renown),
+  each on the ^1.15 curve. One trapper feeds five fighters.
+- **The Lodge raises the forager cap, never lowers it:** 6 without it, then 10/14/18/22/26.
+  Levels cost 30/75/150/300/600.
+- Foragers still eat nothing.
+
+**The story**
+- `the_keep_stands` fires a minute after Arm the Ranks (was: the Forge built) and reveals the Keep
+  and the Lodge. Quest **Restore the Keep** completes into `the_keep` (Pyreth: the city tends
+  itself while you rest, plus reassignment).
+- A new beat **`the_lodge`** (Mirael), a minute after the Keep: quests **Raise the Lodge** and
+  **First Trappers** (promote 2 gatherers).
+- Move `the_keep` (and the new beat) directly after `the_keep_stands`, so the pause can sit after
+  `the_lodge` while the old side beats stay paused for their own review.
+
+### Open questions
+
+1. Time away: the wall wears down when the army cannot hold, but never below 50 HP
+   (recommended), or keep time away as it is (no wear)?
+2. Reassignment: free moves with no refunds (recommended), or keep the old 50% refund?
+3. The Lodge: forager promotion (gatherer to trapper to ranger) with the numbers above?
+4. Prices: Keep 150; Lodge 30/75/150/300/600; trapper 15, ranger 40?
+
+---
+
 ## Chapter 5 phase B: Kael's Forge (approved and built 2026-10-26)
 
 Kael Ironwright's "The Forge Is Cold" reveals the Forge on the Draconia map. The Forge exists
