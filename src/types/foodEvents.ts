@@ -3,6 +3,7 @@ import { isSystemOn } from './systems'
 import { FOOD_CHECK_INTERVAL, NEWCOMER_FOOD_EACH } from './food'
 import { MONSTERS } from './monsterRoster'
 import { pickNextMonster } from './spawnPool'
+import { monsterAt } from './monsters'
 
 // =============================================================================
 // FOOD EVENTS (core-tap layer 3, phase C): pressure in waves, calm in between
@@ -128,8 +129,7 @@ export function stepFoodEvents(s: GameState, rand: () => number): GameState {
     const active = { ...s, foodEvent: { ...e, phase: 'active' as const, until: now + (e.id === 'raid' ? RAID_SEC : SEASON_SEC) } }
     if (e.id === 'raid') {
       // The raider pushes in front of whatever was at the gate
-      const raider = MONSTERS[RAIDER_INDEX]
-      return note({ ...active, monsterIndex: RAIDER_INDEX, monsterHp: raider.hp, siegeTimer: 0 }, 'A raider is at the gate! Kill it within 30 seconds.')
+      return note({ ...active, monsterIndex: RAIDER_INDEX, monsterHp: monsterAt(RAIDER_INDEX, s.hordeKills).hp, siegeTimer: 0 }, 'A raider is at the gate! Kill it within 30 seconds.')
     }
     return note(active, e.id === 'lean_season' ? 'The lean season begins.' : 'The harvest is in.')
   }
@@ -142,7 +142,7 @@ export function stepFoodEvents(s: GameState, rand: () => number): GameState {
       food: s.food - stolen,
       monsterIndex: pickNextMonster(s, rand()),
     }
-    const next = { ...escaped, monsterHp: MONSTERS[escaped.monsterIndex].hp, siegeTimer: 0 }
+    const next = { ...escaped, monsterHp: monsterAt(escaped.monsterIndex, s.hordeKills).hp, siegeTimer: 0 }
     return note(endFoodEvent(next, rand), stolen > 0 ? `The raider escaped with ${stolen} food.` : 'The raider escaped, but found nothing to take.')
   }
   return note(endFoodEvent(s, rand), e.id === 'lean_season' ? 'The lean season is over.' : 'The harvest is gathered in.')

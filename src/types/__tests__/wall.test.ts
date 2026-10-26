@@ -60,9 +60,11 @@ describe("the horde's level", () => {
     expect(hordeLevel(HORDE_LEVEL_KILLS * 4 + 3)).toBe(5)
   })
 
-  it('the strength hook is off: strikes are the roster numbers at any level', () => {
-    expect(hordeStrength(1000)).toBe(1)
-    expect(wallStrikeDamage(make({ monsterIndex: idx('orc'), hordeKills: 1000 }))).toBe(4)
+  it('grows 5% a level: strikes are the roster numbers at level 1 and harder after', () => {
+    expect(hordeStrength(HORDE_LEVEL_KILLS - 1)).toBe(1)
+    expect(hordeStrength(HORDE_LEVEL_KILLS * 9)).toBeCloseTo(1.45)
+    expect(wallStrikeDamage(make({ monsterIndex: idx('orc'), hordeKills: 0 }))).toBe(4)
+    expect(wallStrikeDamage(make({ monsterIndex: idx('orc'), hordeKills: 1000 }))).toBe(12)
   })
 })
 

@@ -2,7 +2,6 @@ import type { GameState } from './state'
 import { currentMonster } from './monsters'
 import { applyCityDamage } from './cityHp'
 import { isSystemOn } from './systems'
-import { hordeStrength } from './horde'
 import { resolveBreach, wardLeft } from './breach'
 
 export { HORDE_LEVEL_KILLS, HORDE_STRENGTH_PER_LEVEL, hordeLevel, hordeStrength } from './horde'
@@ -16,7 +15,7 @@ export const WALL_STRIKE_SEC = 5
 
 /** Wall damage of one strike by the monster at the gate */
 export function wallStrikeDamage(s: GameState): number {
-  return currentMonster(s).wallStrike * hordeStrength(s.hordeKills)
+  return currentMonster(s).wallStrike
 }
 
 /**

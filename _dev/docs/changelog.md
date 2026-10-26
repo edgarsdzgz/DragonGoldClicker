@@ -2,6 +2,16 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### The balance pass (2026-10-26)
+- The horde grows 5% a level: every monster's HP (whole numbers), bounty and wall strike rise
+  together, so each HP still pays 0.05 renown. An orc at horde level 27 has 46 HP, pays 2.30 and
+  strikes for 9.2. The army readout and time away measure the grown monster, so an army that held
+  early may not hold later. A Breach pushes the horde back by half, and its strength with it
+- 10 gatherers allowed without the Lodge (was 6), so 80 food a meal can feed an early army; the
+  Lodge levels raise the cap to 14/18/22/26/30
+- Removed the unused `lastWandererCheck` save field. Research is left as is until the Librarium
+  chapter rebuilds it
+
 ### Chapter 5 phase C: The Keep Stands (2026-10-26)
 - The Keep costs 150 renown (was 7.5). Time away now follows the army readout: an army that holds
   the Gate keeps the wall whole; one that does not lets the wall wear while you are away

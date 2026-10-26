@@ -3,6 +3,7 @@ import { roundInsp } from './utils'
 import { MONSTERS } from './monsterRoster'
 import type { MonsterDef } from './monsterRoster'
 import { pickNextMonster } from './spawnPool'
+import { hordeStrength } from './horde'
 
 export { MONSTERS } from './monsterRoster'
 export type { MonsterDef } from './monsterRoster'
@@ -18,8 +19,26 @@ export const FIRST_MONSTER_HP = MONSTERS[0].hp
 /** Pause before the next monster is shown after a kill (the UI uses it; taps in it hit the next one) */
 export const SPAWN_DELAY_MS = 250
 
-export function currentMonster(s: Pick<GameState, 'monsterIndex'>): MonsterDef {
-  return MONSTERS[Math.max(0, Math.min(MONSTERS.length - 1, s.monsterIndex))]
+/**
+ * A monster as the horde sends it at its current strength (the balance pass, 2026-10-26): HP
+ * grows with the horde level (whole HP), the bounty follows the HP so every HP still pays the
+ * same, and the wall strike grows by the same factor. Level 1 is the roster as written.
+ */
+export function hordeMonster(def: MonsterDef, hordeKills: number): MonsterDef {
+  const k = hordeStrength(hordeKills)
+  if (k === 1) return def
+  const hp = Math.round(def.hp * k)
+  return { ...def, hp, bounty: roundInsp((def.bounty * hp) / def.hp), wallStrike: roundHp(def.wallStrike * k) }
+}
+
+/** The monster at this roster index, at the horde's strength */
+export function monsterAt(index: number, hordeKills: number): MonsterDef {
+  return hordeMonster(MONSTERS[Math.max(0, Math.min(MONSTERS.length - 1, index))], hordeKills)
+}
+
+/** The monster at the gate, at the horde's strength */
+export function currentMonster(s: Pick<GameState, 'monsterIndex' | 'hordeKills'>): MonsterDef {
+  return monsterAt(s.monsterIndex, s.hordeKills)
 }
 
 /** The newest monster that has debuted after this many lifetime kills (the old fixed rule; saves use it) */
@@ -34,7 +53,7 @@ export function monsterIndexForKills(kills: number): number {
 /** A fresh monster of the tier the kills so far call for */
 export function spawnMonster(s: GameState): GameState {
   const monsterIndex = monsterIndexForKills(Math.floor(s.monstersDefeated))
-  return { ...s, monsterIndex, monsterHp: MONSTERS[monsterIndex].hp }
+  return { ...s, monsterIndex, monsterHp: monsterAt(monsterIndex, s.hordeKills).hp }
 }
 
 /** HP is fractional (fighters chip a quarter at a time); round away float drift */
@@ -85,7 +104,8 @@ export function applyDamage(s: GameState, damage: number, rand: number = Math.ra
       killsByMonster,
       hordeKills,
       monsterIndex,
-      monsterHp: MONSTERS[monsterIndex].hp,
+      // The next monster comes at the horde's new strength
+      monsterHp: monsterAt(monsterIndex, hordeKills).hp,
       // The new monster's wall-strike clock starts from its arrival
       siegeTimer: 0,
     },
@@ -116,7 +136,7 @@ export function fighterStrike(s: GameState, damage: number, swings: number, rand
 }
 
 /** The text a screen reader gets for the battlefield */
-export function monsterLabel(s: Pick<GameState, 'monsterIndex' | 'monsterHp'>): string {
+export function monsterLabel(s: Pick<GameState, 'monsterIndex' | 'monsterHp' | 'hordeKills'>): string {
   const m = currentMonster(s)
   return `${m.name}, ${shownHp(s.monsterHp)} of ${m.hp} HP. Tap to strike`
 }

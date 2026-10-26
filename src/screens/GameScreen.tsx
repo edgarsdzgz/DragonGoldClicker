@@ -88,7 +88,7 @@ export function GameScreen() {
   // A kill: coin sound, the bounty floats up, and about one in four brings a flavor line. Only
   // the player's own kills get the haptic; fighters' kills away from the Warfront stay quiet.
   const allyKillsSeen = useRef(state.allyKills)
-  useKillEvents(state.monstersDefeated, state.monsterIndex, (monster) => {
+  useKillEvents(state.monstersDefeated, state.monsterIndex, state.hordeKills, (monster) => {
     const byFighters = state.allyKills > allyKillsSeen.current
     allyKillsSeen.current = state.allyKills
     if (!focused) return { silent: true }
@@ -137,6 +137,7 @@ export function GameScreen() {
             monster={field.monster}
             monsterIndex={state.monsterIndex}
             monsterHp={state.monsterHp}
+            hordeKills={state.hordeKills}
             kills={state.monstersDefeated}
             damage={state.tapDamage}
             clawLevel={state.clawLevel}

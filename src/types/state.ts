@@ -122,8 +122,6 @@ export interface GameState {
   expeditionDryStreak: number
   /** Whether the explorer intro dialog has been shown */
   explorerIntroShown: boolean
-  /** Timestamp of last wanderer eligibility check */
-  lastWandererCheck: number
   /** Lifetime wanderers welcomed into Draconia */
   wanderersWelcomed: number
   /** playSeconds at which the next wanderer arrives (0 = not scheduled yet; types/wanderers.ts) */
@@ -256,7 +254,6 @@ export const DEFAULT_GAME_STATE: GameState = {
   villagersRescued: 0,
   expeditionDryStreak: 0,
   explorerIntroShown: false,
-  lastWandererCheck: 0,
   wanderersWelcomed: 0,
   nextWandererAt: 0,
   fighters: 0,

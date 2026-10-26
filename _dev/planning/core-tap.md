@@ -622,7 +622,7 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
-## The balance pass (proposed 2026-10-26)
+## The balance pass (approved and built 2026-10-26)
 
 Chapter 5 is done; this is a short pass over the live game (everything before the story pause),
 not new content.
@@ -670,11 +670,22 @@ At horde level 27 every monster doubles (2.3x): the Gate takes about twice the t
 as much per kill. The army readout will likely turn from "holds" to "cannot hold" until the army
 grows. With 10 gatherers allowed, four more can be trained to end the food deficit.
 
-### Open questions
+### Owner rulings (2026-10-26)
 
-1. The horde: +5% HP, bounty and strike per level (recommended), or a gentler or steeper rate?
-2. Food: 10 gatherers without the Lodge and Lodge caps 14 to 30?
-3. Research: leave it until the Librarium chapter (recommended)?
+All three as recommended: +5% a level; 10 gatherers without the Lodge, Lodge caps 14 to 30;
+research waits for the Librarium chapter.
+
+### As built
+
+- `hordeMonster(def, hordeKills)` (types/monsters.ts) scales HP (rounded to whole HP), bounty
+  (from the rounded HP, so 0.05 per HP holds exactly) and wall strike. `currentMonster`,
+  `monsterAt` and `toughestInPool` return the grown monster; every fresh spawn (a kill, a Breach,
+  a raid and its escape) uses it. The wall strike and time away no longer multiply by
+  `hordeStrength` themselves.
+- The screen: Battlefield takes `hordeKills` for the max HP and the screen-reader label; the kill
+  hook reports the bounty at the strength the monster died at.
+- Not scaled: the save migrations (history) and waves mode (cold storage).
+- A save loaded mid-fight keeps its monster's current HP; the next one arrives grown.
 
 ---
 

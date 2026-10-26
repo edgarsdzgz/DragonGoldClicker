@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { AccessibilityInfo } from 'react-native'
-import { MONSTERS } from '../types/monsters'
+import { monsterAt } from '../types/monsters'
 import type { MonsterDef } from '../types/monsters'
 
 export interface KillAnnouncement {
@@ -15,26 +15,28 @@ export interface KillAnnouncement {
 export const ANNOUNCE_EVERY_MS = 2000
 
 /**
- * Calls `onKill` once for each kill (not on first render), with the monster that died.
+ * Calls `onKill` once for each kill (not on first render), with the monster that died, at the
+ * horde's strength when it died.
  * Also announces the kill to screen readers, politely: at most one announcement every 2s.
  */
 export function useKillEvents(
   kills: number,
   monsterIndex: number,
+  hordeKills: number,
   /** May return the words to announce instead of "<name> slain" (e.g. when the kill also cleared a wave) */
   onKill: (monster: MonsterDef) => KillAnnouncement | void,
 ) {
-  const prev = useRef({ kills, monsterIndex })
+  const prev = useRef({ kills, monsterIndex, hordeKills })
   const lastAnnounce = useRef(0)
   const onKillRef = useRef(onKill)
   onKillRef.current = onKill
 
   useEffect(() => {
     const before = prev.current
-    prev.current = { kills, monsterIndex }
+    prev.current = { kills, monsterIndex, hordeKills }
     if (kills <= before.kills) return
 
-    const monster = MONSTERS[Math.max(0, Math.min(MONSTERS.length - 1, before.monsterIndex))]
+    const monster = monsterAt(before.monsterIndex, before.hordeKills)
     const custom = onKillRef.current(monster)
     if (custom?.silent) return
 
@@ -44,5 +46,5 @@ export function useKillEvents(
       lastAnnounce.current = now
       AccessibilityInfo.announceForAccessibility(custom?.text ?? `${monster.name} slain`)
     }
-  }, [kills, monsterIndex])
+  }, [kills, monsterIndex, hordeKills])
 }

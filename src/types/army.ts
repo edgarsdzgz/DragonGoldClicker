@@ -5,7 +5,7 @@ import { FIGHTER_HIT_DAMAGE, FIGHTER_SWING_MS } from './fighters'
 import { fighterDamageMultiplier } from './fedState'
 import { getResearchBonuses } from './research'
 import { MONSTERS } from './monsterRoster'
-import { currentMonster } from './monsters'
+import { currentMonster, hordeMonster } from './monsters'
 import type { MonsterDef } from './monsterRoster'
 import { spawnWeights } from './spawnPool'
 import { WALL_STRIKE_SEC } from './wall'
@@ -56,10 +56,11 @@ export function armyRenownPerSec(s: GameState): number {
 // THE READOUT: can the army hold the Gate while the player is away?
 // =============================================================================
 
-/** The toughest monster the horde can send right now (by HP) */
+/** The toughest monster the horde can send right now (by HP), at the horde's strength */
 export function toughestInPool(s: Pick<GameState, 'hordeKills'>): MonsterDef {
   const weights = spawnWeights(Math.floor(s.hordeKills))
-  return MONSTERS.filter((_, i) => weights[i] > 0).reduce((a, b) => (b.hp > a.hp ? b : a), MONSTERS[0])
+  const toughest = MONSTERS.filter((_, i) => weights[i] > 0).reduce((a, b) => (b.hp > a.hp ? b : a), MONSTERS[0])
+  return hordeMonster(toughest, s.hordeKills)
 }
 
 /** Volleys the army needs to kill this monster from full HP; Infinity if it cannot */

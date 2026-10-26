@@ -6,17 +6,17 @@
 export const HORDE_LEVEL_KILLS = 25
 
 /**
- * How much stronger the horde's strikes get per level above 1. Off (0) until the balance pass,
- * which may turn it on (0.05 was proposed).
+ * How much stronger the horde gets per level above 1: monster HP, bounty and wall strike
+ * (types/monsters.ts hordeMonster). The balance pass, approved 2026-10-26.
  */
-export const HORDE_STRENGTH_PER_LEVEL = 0
+export const HORDE_STRENGTH_PER_LEVEL = 0.05
 
 /** The horde's level: 1, then one more for every HORDE_LEVEL_KILLS of its advance */
 export function hordeLevel(hordeKills: number): number {
   return 1 + Math.floor(Math.max(0, hordeKills) / HORDE_LEVEL_KILLS)
 }
 
-/** The multiplier on the horde's strikes at its current level (1 while the hook is off) */
+/** The multiplier on the horde's monsters at its current level (1 at level 1) */
 export function hordeStrength(hordeKills: number): number {
   return 1 + HORDE_STRENGTH_PER_LEVEL * (hordeLevel(hordeKills) - 1)
 }

@@ -18,7 +18,7 @@ export interface ForagerTierDef {
 }
 
 /** Gatherers trainable from the Forage tab without a Lodge */
-export const BASE_GATHERER_CAP = 6
+export const BASE_GATHERER_CAP = 10
 
 /**
  * Chapter 5 phase C (owner ruling, 2026-10-26): foragers follow the army's path. A villager is
@@ -47,13 +47,13 @@ export interface LodgeLevelDef {
   foragerCap: number
 }
 
-/** The Lodge raises the forager cap above the 6 allowed without it, never lowers it */
+/** The Lodge raises the forager cap above the 10 allowed without it, never lowers it */
 export const LODGE_LEVELS: LodgeLevelDef[] = [
-  { level: 1, cost: 30, foragerCap: 10 },
-  { level: 2, cost: 75, foragerCap: 14 },
-  { level: 3, cost: 150, foragerCap: 18 },
-  { level: 4, cost: 300, foragerCap: 22 },
-  { level: 5, cost: 600, foragerCap: 26 },
+  { level: 1, cost: 30, foragerCap: 14 },
+  { level: 2, cost: 75, foragerCap: 18 },
+  { level: 3, cost: 150, foragerCap: 22 },
+  { level: 4, cost: 300, foragerCap: 26 },
+  { level: 5, cost: 600, foragerCap: 30 },
 ]
 
 export const MAX_LODGE_LEVEL = LODGE_LEVELS.length

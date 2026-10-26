@@ -1,7 +1,7 @@
 import type { GameState } from './state'
 import type { ForagerCounts } from './foragers'
 import type { SoldierCounts } from './soldiers'
-import { MONSTERS } from './monsterRoster'
+import { monsterAt } from './monsters'
 import { pickNextMonster } from './spawnPool'
 import { hordeLevel, pushedBackHorde } from './horde'
 import { roundInsp } from './utils'
@@ -128,7 +128,7 @@ export function resolveBreach(s: GameState, rand: number = Math.random()): GameS
     inspiration: renownAfter,
     hordeKills,
     monsterIndex,
-    monsterHp: MONSTERS[monsterIndex].hp,
+    monsterHp: monsterAt(monsterIndex, hordeKills).hp,
     siegeTimer: 0,
     cityHp: BREACH_WALL_PATCH,
     repairProgress: 0,

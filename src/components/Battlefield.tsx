@@ -19,7 +19,7 @@ import { useActionPress, HOLD_REPEAT_MS } from '../hooks/useActionPress'
 import { useCoinFlight } from '../context/CoinFlightContext'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useReduceMotion } from '../hooks/useReduceMotion'
-import { MONSTERS, SPAWN_DELAY_MS, monsterLabel } from '../types/monsters'
+import { SPAWN_DELAY_MS, monsterLabel, currentMonster } from '../types/monsters'
 import { restingPose } from '../data/monsterArt'
 import { colors, spacing, gold } from '../theme'
 
@@ -34,6 +34,8 @@ interface BattlefieldProps {
   monster: number
   monsterIndex: number
   monsterHp: number
+  /** The horde's advance: the monster's full HP grows with it (0 shows the roster as written) */
+  hordeKills?: number
   /** Kills so far: when it changes the next monster eases in */
   kills: number
   /** Damage per hit, shown as a floating number */
@@ -83,11 +85,11 @@ const KNOCKBACK = 0.06
  * (one strike every HOLD_REPEAT_MS, shared by every main button) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
-  { monster: size, monsterIndex, monsterHp, kills, damage, clawLevel = 0, onStrike, header, queue, camp, showName = true, locked = false, coachId },
+  { monster: size, monsterIndex, monsterHp, hordeKills = 0, kills, damage, clawLevel = 0, onStrike, header, queue, camp, showName = true, locked = false, coachId },
   ref,
 ) {
   const coach = useCoachTarget(coachId)
-  const def = MONSTERS[Math.max(0, Math.min(MONSTERS.length - 1, monsterIndex))]
+  const def = currentMonster({ monsterIndex, hordeKills })
   const reduceMotion = useReduceMotion()
   const numbers = useRef<FloatingNumbersHandle>(null)
   const widthRef = useRef(300)
@@ -293,7 +295,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
         onPressOut={handlePressOut}
         style={styles.pressArea}
         accessibilityRole="button"
-        accessibilityLabel={monsterLabel({ monsterIndex, monsterHp })}
+        accessibilityLabel={monsterLabel({ monsterIndex, monsterHp, hordeKills })}
         accessibilityHint="Double tap to strike the monster"
       >
         <View pointerEvents="none" style={styles.press}>

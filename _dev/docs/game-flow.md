@@ -74,10 +74,12 @@ monster the horde sends now, against that monster's 5s strike on the wall.
 
 - The wall has 100 HP. The monster at the gate strikes it every 5 seconds while it stands
   (kobold 1, goblin 1.5, shadow crawler 2, orc 4; raiders never strike). A monster killed within
-  5 seconds of arriving never touches the wall. Nothing strikes while the app is closed
+  5 seconds of arriving never touches the wall. While the app is closed the wall follows the army
+  readout (`types/timeAway.ts`): it wears only if the army cannot hold, never below 50
 - **Repair rate** = 0.5 HP/sec per repairer
 - **Horde level** = 1 + one per 25 kills of the horde's advance (`hordeKills`), which drives the
-  spawn pool
+  spawn pool. **The horde grows 5% a level** (`hordeStrength`, `hordeMonster`): monster HP
+  (rounded to whole HP), bounty (kept at 0.05 per HP) and wall strike. Level 27 is 2.3x
 - Rodain's company holds the wall at 50 HP until the Mend the Walls quest is done
   (`the_wall_is_yours`). The player never loses the game: when the wall falls it is a Breach
   (`types/breach.ts`): 30% of fighters, repairers and idle villagers and 15% of foragers die, 40%
@@ -114,7 +116,7 @@ Buildings are organized in wards, top to bottom:
 
 ### CRAFT WARD
 - **The Forge** (Kael, 75 renown) -- Swords (from 15): an armed soldier hits 50% harder. Shields (from 20): a shielded soldier never falls in a Breach. Best ranks first, one of each per soldier
-- **Ranger's Lodge** (30/75/150/300/600; forager cap 10-26, 6 without it) -- Promote gatherers (8 food a meal) to trappers (20, Lv1, from 15 renown) and trappers to rangers (40, Lv3, from 40)
+- **Ranger's Lodge** (30/75/150/300/600; forager cap 14-30, 10 without it) -- Promote gatherers (8 food a meal) to trappers (20, Lv1, from 15 renown) and trappers to rangers (40, Lv3, from 40)
 
 ### OUTER WARD
 - **Explorer's Outpost** -- Send explorers on expeditions

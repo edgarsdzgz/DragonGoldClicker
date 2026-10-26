@@ -2,7 +2,7 @@ import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { MONSTERS } from '../monsters'
 import { HORDE_LEVEL_KILLS, hordeLevel, pushedBackHorde } from '../horde'
-import { stepWall, WALL_STRIKE_SEC } from '../wall'
+import { stepWall, wallStrikeDamage, WALL_STRIKE_SEC } from '../wall'
 import {
   resolveBreach, breachLines, wardLeft,
   BREACH_WALL_PATCH, BREACH_WARD_SEC, BREACH_BLOOD_PRICE,
@@ -127,7 +127,7 @@ describe('the wall falls', () => {
     const warded = { ...resolveBreach(CITY, 0), monsterIndex: idx('orc') }
     expect(seconds(warded, WALL_STRIKE_SEC * 4).cityHp).toBe(BREACH_WALL_PATCH)
     const lapsed = { ...warded, playSeconds: warded.wardUntil }
-    expect(seconds(lapsed, WALL_STRIKE_SEC).cityHp).toBe(BREACH_WALL_PATCH - 4)
+    expect(seconds(lapsed, WALL_STRIKE_SEC).cityHp).toBe(BREACH_WALL_PATCH - wallStrikeDamage(lapsed))
   })
 
   it('one level of the horde is HORDE_LEVEL_KILLS kills', () => {

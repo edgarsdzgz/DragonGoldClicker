@@ -111,10 +111,10 @@ describe('spawnMonster (save migration)', () => {
 
 describe('accessibility text', () => {
   it('names the monster and its HP', () => {
-    expect(monsterLabel({ monsterIndex: 0, monsterHp: 3 })).toBe('Kobold, 3 of 5 HP. Tap to strike')
+    expect(monsterLabel({ monsterIndex: 0, hordeKills: 0, monsterHp: 3 })).toBe('Kobold, 3 of 5 HP. Tap to strike')
     // Fighter chip damage leaves fractions; the text rounds up so a standing monster never reads 0
-    expect(monsterLabel({ monsterIndex: 0, monsterHp: 0.25 })).toBe('Kobold, 1 of 5 HP. Tap to strike')
-    expect(currentMonster({ monsterIndex: 99 }).name).toBe(MONSTERS[MONSTERS.length - 1].name)
+    expect(monsterLabel({ monsterIndex: 0, hordeKills: 0, monsterHp: 0.25 })).toBe('Kobold, 1 of 5 HP. Tap to strike')
+    expect(currentMonster({ monsterIndex: 99, hordeKills: 0 }).name).toBe(MONSTERS[MONSTERS.length - 1].name)
   })
 
   it('announces kills at most every two seconds', () => {

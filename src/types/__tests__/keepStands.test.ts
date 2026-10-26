@@ -24,9 +24,9 @@ describe("the Ranger's Lodge", () => {
     ])
   })
 
-  it('costs 30 to 600 and raises the cap from 6 to 26, never lowering it', () => {
-    expect(LODGE_LEVELS.map((l) => [l.cost, l.foragerCap])).toEqual([[30, 10], [75, 14], [150, 18], [300, 22], [600, 26]])
-    expect(getForagerCap(0)).toBe(6)
+  it('costs 30 to 600 and raises the cap from 10 to 30, never lowering it', () => {
+    expect(LODGE_LEVELS.map((l) => [l.cost, l.foragerCap])).toEqual([[30, 14], [75, 18], [150, 22], [300, 26], [600, 30]])
+    expect(getForagerCap(0)).toBe(10)
     for (const l of LODGE_LEVELS) expect(l.foragerCap).toBeGreaterThan(getForagerCap(0))
   })
 
@@ -42,7 +42,7 @@ describe("the Ranger's Lodge", () => {
   })
 
   it('training a gatherer takes a villager and needs room; a promotion needs none', () => {
-    const full = make({ lodgeLevel: 1, villagers: 5, foragers: foragers(10, 0, 0), inspiration: 100 })
+    const full = make({ lodgeLevel: 1, villagers: 5, foragers: foragers(14, 0, 0), inspiration: 100 })
     expect(foragerBlock(full, 'gatherer')).toBe('full')
     expect(foragerBlock(full, 'trapper')).toBeNull()
     const trained = makeForager(make({ villagers: 5, inspiration: 100 }), 'gatherer')
@@ -68,7 +68,7 @@ describe('time away follows the army readout', () => {
   })
 
   it('an army that holds keeps the wall whole', () => {
-    const w = wallWhileAway(siege({ soldiers: { conscripts: 0, footmen: 0, knights: 10 } }), HOUR)!
+    const w = wallWhileAway(siege({ soldiers: { conscripts: 0, footmen: 0, knights: 15 } }), HOUR)!
     expect(w.held).toBe(true)
     expect(w.hpAfter).toBe(100)
     expect(wallAwayLine(w)).toBe('Your army held the Gate.')
@@ -82,7 +82,7 @@ describe('time away follows the army readout', () => {
   })
 
   it('a short time away wears it less than a long one', () => {
-    const short = wallWhileAway(siege({ fighters: 4 }), 60)!
+    const short = wallWhileAway(siege({ fighters: 4 }), 30)!
     expect(short.hpAfter).toBeLessThan(100)
     expect(short.hpAfter).toBeGreaterThan(AWAY_WALL_FLOOR)
   })
@@ -133,7 +133,7 @@ describe('the Keep: moving people between jobs', () => {
 
   it('anyone can stand idle; a gatherer needs room under the cap', () => {
     expect(movePerson(city, REPAIRER, IDLE)).toMatchObject({ repairers: 1, villagers: 4 })
-    const crowded = { ...city, foragers: foragers(6, 0, 0) }
+    const crowded = { ...city, foragers: foragers(10, 0, 0) }
     expect(moveBlock(crowded, FIGHTER, GATHERER)).toBe('full')
     expect(getReassignOptions(FIGHTER, crowded).find((o) => o.target.type === 'forager')?.atCap).toBe(true)
     expect(getReassignOptions(FIGHTER, crowded).every((o) => o.netCost === 0)).toBe(true)
