@@ -7,15 +7,15 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 
 describe('migrateSave', () => {
   it('always ends at the latest version', () => {
-    for (const from of [0, 1, 2, 3, 4, 5, 6, 7, 8]) {
+    for (const from of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
       expect(migrateSave(make({ saveMigrationVersion: from }), from).saveMigrationVersion).toBe(LATEST_SAVE_VERSION)
     }
     expect(LATEST_SAVE_VERSION).toBe(DEFAULT_GAME_STATE.saveMigrationVersion)
   })
 
-  it('a v8 save loads as v8 and no numbered migration re-runs', () => {
+  it('a v9 save loads as v9 and no numbered migration re-runs', () => {
     const save = make({
-      saveMigrationVersion: 8,
+      saveMigrationVersion: 9,
       beatsSeen: ['prologue'],
       tutorialStepsDone: ['custom_step'],
       scriptedDone: [],
@@ -27,8 +27,8 @@ describe('migrateSave', () => {
       monsterHp: 3,
       playSeconds: 500,
     })
-    const out = migrateSave(save, 8)
-    expect(out.saveMigrationVersion).toBe(8)
+    const out = migrateSave(save, 9)
+    expect(out.saveMigrationVersion).toBe(9)
     // v2 backfill would have rewritten beatsSeen and reset playSeconds; v3 the tutorial; v5/v7 the wave
     expect(out.playSeconds).toBe(500)
     expect(out.tutorialStepsDone).toEqual(['custom_step'])
@@ -37,20 +37,20 @@ describe('migrateSave', () => {
     expect(out.monsterHp).toBe(3)
     expect(out.waveActive).toBe(true)
     // Loading twice changes nothing
-    expect(migrateSave(out, 8)).toEqual(out)
+    expect(migrateSave(out, 9)).toEqual(out)
   })
 
-  it('a v6 save moves to v8 exactly once', () => {
+  it('a v6 save moves to v9 exactly once', () => {
     const out = migrateSave(make({ saveMigrationVersion: 6, waveNumber: 1, monstersDefeated: 0, waveActive: false }), 6)
-    expect(out.saveMigrationVersion).toBe(8)
+    expect(out.saveMigrationVersion).toBe(9)
     expect(out.waveNumber).toBe(0)
-    expect(migrateSave(out, 8).waveNumber).toBe(0)
+    expect(migrateSave(out, 9).waveNumber).toBe(0)
   })
 
   it('v8 (waves put away): a save keeps the monster it faces and its damage, wave fields untouched', () => {
     // Mid-wave 4 (goblins), 22 kills: goblins by kills too
     const mid = migrateSave(make({ saveMigrationVersion: 7, waveNumber: 4, waveKills: 2, waveActive: true, monstersDefeated: 22, monsterIndex: 1, monsterHp: 3 }), 7)
-    expect(mid).toMatchObject({ monsterIndex: 1, monsterHp: 3, waveNumber: 4, waveKills: 2, saveMigrationVersion: 8 })
+    expect(mid).toMatchObject({ monsterIndex: 1, monsterHp: 3, waveNumber: 4, waveKills: 2, saveMigrationVersion: 9 })
     // In the Wave 3 camp (13 kills): the goblin waiting there stays
     const camp = migrateSave(make({ saveMigrationVersion: 7, waveNumber: 3, waveActive: false, monstersDefeated: 13, monsterIndex: 1, monsterHp: 8 }), 7)
     expect(camp).toMatchObject({ monsterIndex: 1, monsterHp: 8 })
@@ -128,5 +128,14 @@ describe('the opening is never replayed for a save that has played', () => {
     expect(migrateSave(make({ saveMigrationVersion: 7 }), 7).beatsSeen).toEqual([])
     // Closed between the two scenes: the elder still has her scene to come
     expect(migrateSave(make({ saveMigrationVersion: 7, beatsSeen: ['prologue'] }), 7).beatsSeen).toEqual(['prologue'])
+  })
+
+  it('v9 rebuilds kills per monster from the old fixed rule', () => {
+    const out = migrateSave(make({ saveMigrationVersion: 8, monstersDefeated: 30 }), 8)
+    expect(out.killsByMonster).toEqual({ kobold: 13, goblin: 15, shadow_crawler: 2 })
+    expect(migrateSave(make({ saveMigrationVersion: 8, monstersDefeated: 0 }), 8).killsByMonster).toEqual({})
+    // A v9 save keeps its own counts
+    const kept = migrateSave(make({ saveMigrationVersion: 9, monstersDefeated: 30, killsByMonster: { kobold: 20, goblin: 10 } }), 9)
+    expect(kept.killsByMonster).toEqual({ kobold: 20, goblin: 10 })
   })
 })

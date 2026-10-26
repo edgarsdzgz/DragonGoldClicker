@@ -31,18 +31,20 @@ describe('the quest line', () => {
 
   it('shows progress capped at the target', () => {
     const q = QUESTS[0]
-    expect(questProgress(q, make({ monstersDefeated: 2 }))).toBe(2)
-    expect(questProgress(q, make({ monstersDefeated: 9 }))).toBe(4)
+    expect(questProgress(q, make({ killsByMonster: { kobold: 2 } }))).toBe(2)
+    expect(questProgress(q, make({ killsByMonster: { kobold: 9 } }))).toBe(4)
+    // Only kobolds count
+    expect(questProgress(q, make({ monstersDefeated: 9, killsByMonster: { kobold: 3, goblin: 6 } }))).toBe(3)
   })
 })
 
 describe('completing quests', () => {
   it('completes Defend the Wall at the fourth kill, with no reward of its own (Rally is the reward)', () => {
-    const three = make({ beatsSeen: AFTER_RENOWN, monstersDefeated: 3, inspiration: 0.75 })
+    const three = make({ beatsSeen: AFTER_RENOWN, monstersDefeated: 3, killsByMonster: { kobold: 3 }, inspiration: 0.75 })
     expect(hasQuestToComplete(three)).toBe(false)
     expect(completeQuests(three).state).toBe(three)
 
-    const four = { ...three, monstersDefeated: 4, inspiration: 1 }
+    const four = { ...three, monstersDefeated: 4, killsByMonster: { kobold: 4 }, inspiration: 1 }
     expect(hasQuestToComplete(four)).toBe(true)
     const r = completeQuests(four)
     expect(r.completed.map((q) => q.id)).toEqual(['defend_the_wall'])

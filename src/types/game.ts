@@ -80,7 +80,7 @@ export {
   getFighterCost,
   getRepairerCost,
   getFighterDps,
-  stepFighterSwings,
+  stepFighterVolley,
 } from './fighters'
 
 export type { StarvationResult } from './food'

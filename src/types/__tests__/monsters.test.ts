@@ -1,7 +1,7 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { MONSTERS, spawnMonster, strike, fighterStrike, monsterLabel, currentMonster, monsterIndexForKills, shownHp, roundHp } from '../monsters'
-import { getFighterCost, getFighterDps, stepFighterSwings, FIGHTER_HIT_DAMAGE, FIGHTER_SWING_MS, FIGHTER_TICK_MS } from '../fighters'
+import { getFighterCost, getFighterDps, stepFighterVolley, FIGHTER_HIT_DAMAGE, FIGHTER_SWING_MS, FIGHTER_TICK_MS } from '../fighters'
 import { ANNOUNCE_EVERY_MS } from '../../hooks/useKillEvents'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
@@ -115,41 +115,44 @@ describe('accessibility text', () => {
 })
 
 describe('fighters', () => {
-  it('a fighter deals 1/8 of a held strike (1 damage every 750ms)', () => {
+  it('a fighter swings every 6s for a quarter of a tap: 1/32 of a held strike (1 damage every 750ms)', () => {
     const heldDps = 1 / 0.75
-    expect(getFighterDps(1)).toBeCloseTo(heldDps / 8, 5)
-    expect(getFighterDps(8)).toBeCloseTo(heldDps, 5)
+    expect(getFighterDps(1)).toBeCloseTo(heldDps / 32, 5)
+    expect(getFighterDps(32)).toBeCloseTo(heldDps, 5)
     expect(FIGHTER_HIT_DAMAGE).toBe(0.25)
-    expect(FIGHTER_SWING_MS).toBe(1500)
+    expect(FIGHTER_SWING_MS).toBe(6000)
   })
 
-  it('one fighter lands one swing every 1.5s; no fighters, no swings', () => {
+  it('one fighter lands one swing every 6s; no fighters, no swings', () => {
     let progress = 0
     const landed: number[] = []
-    for (let tick = 1; tick <= 12; tick++) {
-      const r = stepFighterSwings(progress, 1)
+    for (let tick = 1; tick <= 48; tick++) {
+      const r = stepFighterVolley(progress, 1)
       progress = r.progress
       if (r.swings) landed.push(tick * FIGHTER_TICK_MS)
     }
-    expect(landed).toEqual([1500, 3000])
-    expect(stepFighterSwings(0.9, 0)).toEqual({ swings: 0, progress: 0 })
+    expect(landed).toEqual([6000, 12000])
+    expect(stepFighterVolley(0.9, 0)).toEqual({ swings: 0, progress: 0 })
   })
 
-  it('more fighters land more small swings, spread out rather than all at once', () => {
+  it('all fighters strike together as one hit every 6s, never one by one', () => {
     const swingsPerTick = (fighters: number) => {
       let progress = 0
       const out: number[] = []
-      for (let i = 0; i < 6; i++) {
-        const r = stepFighterSwings(progress, fighters)
+      for (let i = 0; i < 48; i++) {
+        const r = stepFighterVolley(progress, fighters)
         progress = r.progress
         out.push(r.swings)
       }
       return out
     }
-    // Two fighters: one swing every 750ms
-    expect(swingsPerTick(2)).toEqual([0, 0, 1, 0, 0, 1])
-    // Twelve fighters: 12 swings per 1.5s, two per tick, grouped
-    expect(swingsPerTick(12)).toEqual([2, 2, 2, 2, 2, 2])
+    // Four fighters: nothing for 6s, then all four at once (one hit of 1.00), twice in 12s
+    const four = swingsPerTick(4)
+    expect(four.filter((n) => n > 0)).toEqual([4, 4])
+    expect(four[23]).toBe(4)
+    expect(four[47]).toBe(4)
+    // More fighters make the one hit bigger, not more frequent
+    expect(swingsPerTick(10).filter((n) => n > 0)).toEqual([10, 10])
   })
 
   it('wears the monster down in slivers and keeps the HP free of float drift', () => {

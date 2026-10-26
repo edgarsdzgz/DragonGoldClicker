@@ -15,7 +15,7 @@ describe('getCurrentObjective', () => {
   })
 
   it('shows the Defend the Wall quest after the first kill', () => {
-    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 1 })
+    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 1, killsByMonster: { kobold: 1 } })
     expect(getCurrentObjective(s)).toEqual({ label: 'Defeat 4 kobolds', current: 1, target: 4 })
   })
 

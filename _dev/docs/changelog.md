@@ -2,6 +2,12 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Monster pool and slower fighters (2026-10-26)
+- Monsters come from a spawn pool: odds blend with kills, each new type's first appearance is
+  guaranteed at its threshold, kobolds phase out when orcs arrive (`types/spawnPool.ts`)
+- Kills are counted per monster; Defend the Wall counts kobolds. Save v9 rebuilds the counts
+- Fighters attack every 6s instead of 1.5s, and all of them strike together as one hit
+
 ### Quests (2026-10-26)
 - Quest system: one quest at a time on the objective line, rewards, completion into a story scene or a toast
 - Defend the Wall (defeat 4 kobolds) completes into "The Wall Holds", which explains fighters; Rally now at 4 kills

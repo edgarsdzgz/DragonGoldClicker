@@ -57,7 +57,7 @@ import {
   getResearchBonuses,
   getFighterCost,
   getRepairerCost,
-  stepFighterSwings,
+  stepFighterVolley,
   FIGHTER_HIT_DAMAGE,
   FIGHTER_TICK_MS,
   SIEGE_TICK_INTERVAL,
@@ -250,13 +250,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }, [loaded, effectiveAutoRate])
   )
 
-  // Fighters' swings at the monster, staggered and counted every FIGHTER_TICK_MS. The part of a
-  // swing still to come lives in a ref, so a tick in which nothing lands does not re-render.
+  // Fighters' volley at the monster: all of them strike together every FIGHTER_SWING_MS, as one
+  // hit. The time to the next volley lives in a ref, so a tick in which nothing lands does not
+  // re-render.
   const fighterSwing = useRef(0)
   const fighters = loaded && !starving ? state.fighters : 0
   useGameLoop(
     useCallback(() => {
-      const { swings, progress } = stepFighterSwings(fighterSwing.current, fighters)
+      const { swings, progress } = stepFighterVolley(fighterSwing.current, fighters)
       fighterSwing.current = progress
       if (swings <= 0) return
       setState((prev) => (prev.fighters > 0 ? fighterStrike(prev, swings * FIGHTER_HIT_DAMAGE, swings).state : prev))

@@ -1,36 +1,15 @@
-import type { ComponentProps } from 'react'
-import type { Ionicons } from '@expo/vector-icons'
 import type { GameState } from './state'
 import { roundInsp } from './utils'
+import { MONSTERS } from './monsterRoster'
+import type { MonsterDef } from './monsterRoster'
+import { pickNextMonster } from './spawnPool'
+
+export { MONSTERS } from './monsterRoster'
+export type { MonsterDef } from './monsterRoster'
 
 // =============================================================================
 // THE MONSTER (layer 2e): always one at the gate; taps and fighters both wear it down
 // =============================================================================
-
-export interface MonsterDef {
-  id: string
-  name: string
-  /** For "4 kobolds left" */
-  plural: string
-  glyph: ComponentProps<typeof Ionicons>['name']
-  hp: number
-  /** Inspiration paid when it dies */
-  bounty: number
-  /** Lifetime kills at which this monster starts to appear */
-  fromKills: number
-}
-
-/**
- * Provisional numbers; balance comes with the simulator. The kill thresholds are the old wave
- * boundaries (waves 0-2 kobold, 3-5 goblin, 6-10 crawler, 11+ orc) counted in kills, so the
- * pace is unchanged and no save changes monster type when waves were put away.
- */
-export const MONSTERS: MonsterDef[] = [
-  { id: 'kobold', name: 'Kobold', plural: 'kobolds', glyph: 'paw', hp: 5, bounty: 0.25, fromKills: 0 },
-  { id: 'goblin', name: 'Goblin', plural: 'goblins', glyph: 'skull', hp: 8, bounty: 0.4, fromKills: 13 },
-  { id: 'shadow_crawler', name: 'Shadow Crawler', plural: 'shadow crawlers', glyph: 'bug', hp: 12, bounty: 0.6, fromKills: 28 },
-  { id: 'orc', name: 'Orc', plural: 'orcs', glyph: 'flame', hp: 20, bounty: 1.0, fromKills: 53 },
-]
 
 /** Damage per tap at the start */
 export const STARTING_TAP_DAMAGE = 1
@@ -43,7 +22,7 @@ export function currentMonster(s: Pick<GameState, 'monsterIndex'>): MonsterDef {
   return MONSTERS[Math.max(0, Math.min(MONSTERS.length - 1, s.monsterIndex))]
 }
 
-/** Which MONSTERS entry comes after this many lifetime kills */
+/** The newest monster that has debuted after this many lifetime kills (the old fixed rule; saves use it) */
 export function monsterIndexForKills(kills: number): number {
   let index = 0
   MONSTERS.forEach((m, i) => {
@@ -79,10 +58,11 @@ export interface StrikeResult {
 
 /**
  * Damage the monster on the field. A kill pays the bounty (renown comes only from kills),
- * counts the kill and brings in the next monster at once, so a hit that lands during the
- * visual spawn pause hits the new one.
+ * counts the kill (in total and per monster) and brings in the next monster from the spawn pool
+ * at once, so a hit that lands during the visual spawn pause hits the new one. `rand` picks the
+ * next monster (types/spawnPool.ts).
  */
-export function applyDamage(s: GameState, damage: number): StrikeResult {
+export function applyDamage(s: GameState, damage: number, rand: number = Math.random()): StrikeResult {
   const monster = currentMonster(s)
   const hp = s.monsterHp > 0 ? s.monsterHp : monster.hp
   const dealt = Math.min(damage, hp)
@@ -93,13 +73,15 @@ export function applyDamage(s: GameState, damage: number): StrikeResult {
   }
 
   const kills = Math.floor(s.monstersDefeated) + 1
-  const monsterIndex = monsterIndexForKills(kills)
+  const killsByMonster = { ...s.killsByMonster, [monster.id]: (s.killsByMonster[monster.id] ?? 0) + 1 }
+  const monsterIndex = pickNextMonster({ monstersDefeated: kills, killsByMonster }, rand)
   return {
     state: {
       ...s,
       inspiration: roundInsp(s.inspiration + monster.bounty),
       totalInspirationEarned: roundInsp(s.totalInspirationEarned + monster.bounty),
       monstersDefeated: kills,
+      killsByMonster,
       monsterIndex,
       monsterHp: MONSTERS[monsterIndex].hp,
     },
@@ -111,14 +93,14 @@ export function applyDamage(s: GameState, damage: number): StrikeResult {
 }
 
 /** One tap: the player's strike, counted as a click */
-export function strike(s: GameState, damage: number = s.tapDamage): StrikeResult {
-  const r = applyDamage(s, damage)
+export function strike(s: GameState, damage: number = s.tapDamage, rand?: number): StrikeResult {
+  const r = applyDamage(s, damage, rand)
   return { ...r, state: { ...r.state, totalClicks: s.totalClicks + 1 } }
 }
 
 /** The fighters' swings that landed this tick; a kill by them is counted as theirs */
-export function fighterStrike(s: GameState, damage: number, swings: number): StrikeResult {
-  const r = applyDamage(s, damage)
+export function fighterStrike(s: GameState, damage: number, swings: number, rand?: number): StrikeResult {
+  const r = applyDamage(s, damage, rand)
   return {
     ...r,
     state: {

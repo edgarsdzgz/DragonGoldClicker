@@ -310,7 +310,8 @@ white on transparency, tinted at render time, same 600px footprint for every pos
 **Fighters:**
 - A held strike is 1 damage every 750ms (1.33 DPS). Each fighter swings for 0.25 every 1.5s
   (0.17 DPS, 1/8 of holding). Eight fighters match a held button.
-- Swings are staggered (n fighters land n swings per 1.5s, spread evenly), counted every 250ms
+- Superseded 2026-10-26: fighters swing every 6s (1/32 of holding) and all strike together as one
+  hit (n fighters: one hit of n x 0.25). Originally: swings were staggered (n fighters land n swings per 1.5s, spread evenly), counted every 250ms
   of game time; swings landing in the same 250ms are grouped into one number.
 - Fighters earn nothing per second. One fighter on kobolds earns about 0.008 renown/s through
   kills. They stop while starving. Offline (behind the Keep) they earn their DPS times the
@@ -363,6 +364,36 @@ which now shows on the Warfront from the first kill. The Journal has a Quests ta
 - `call_to_arms` now fires at 4 kills (the quest), replacing the 13-kill ruling of layer 2e.
 - Beat objectives ("Slay 5 monsters", "Rally 2 fighters") were replaced by the quests. Later beats
   keep their beat objectives until they become quests.
+
+---
+
+## Layer 2g: the monster pool; fighters strike as one (approved 2026-10-26)
+
+**Owner rulings:**
+- Monsters come from a pool. All kobolds at first; once goblins arrive, each next monster is a
+  kobold OR a goblin by chance. The odds change as the game goes on and can phase enemies out.
+- Chosen: the odds blend smoothly with lifetime kills; a new type's first appearance is
+  guaranteed at its threshold (13 goblin, 28 shadow crawler, 53 orc); kills drive the pool.
+- Fighters attack much slower: every 6s (was 1.5s), hit still 0.25, so 1/32 of holding.
+- Fighters deal all their damage in one hit: every 6s all fighters strike together (n x 0.25).
+
+**Odds by lifetime kills** (kobold / goblin / shadow crawler / orc, %; `SPAWN_ANCHORS`):
+
+| Kills | Odds |
+|-------|------|
+| 0-12 | 100 / 0 / 0 / 0 |
+| 13 | 85 / 15 / 0 / 0 (first goblin guaranteed) |
+| 20 | 67 / 33 / 0 / 0 |
+| 28 | 40 / 50 / 10 / 0 (first crawler guaranteed) |
+| 40 | 22 / 49 / 29 / 0 |
+| 53 | 0 / 40 / 45 / 15 (first orc guaranteed; kobolds gone) |
+| 100+ | 0 / 20 / 40 / 40 |
+
+- Kills are counted per monster (`killsByMonster`); Defend the Wall counts kobolds. Save v9
+  rebuilds the counts from the old fixed rule.
+- The roster moved to `types/monsterRoster.ts` (re-exported by `monsters.ts`) so the pool and the
+  damage code do not import each other.
+- Renown per monster and tougher monsters come with the balance pass.
 
 ---
 

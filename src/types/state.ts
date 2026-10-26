@@ -168,6 +168,8 @@ export interface GameState {
   monsterIndex: number
   /** Hit points the current monster has left (fractional: fighters chip it a quarter at a time) */
   monsterHp: number
+  /** Lifetime kills per monster id (the spawn pool's debuts and per-type quests read it) */
+  killsByMonster: Record<string, number>
   /** Fighter swings that have landed, lifetime (the Warfront floats a number for each new one) */
   allyStrikes: number
   /** Monsters killed by fighters rather than by a tap, lifetime */
@@ -251,12 +253,13 @@ export const DEFAULT_GAME_STATE: GameState = {
   tapDamage: STARTING_TAP_DAMAGE,
   monsterIndex: 0,
   monsterHp: FIRST_MONSTER_HP,
+  killsByMonster: {},
   allyStrikes: 0,
   allyKills: 0,
   waveNumber: 0,
   waveKills: 0,
   waveActive: false,
-  saveMigrationVersion: 8,
+  saveMigrationVersion: 9,
 }
 
 // =============================================================================

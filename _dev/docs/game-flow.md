@@ -41,7 +41,7 @@ Locked tabs are always visible with a lock icon. Tapping shows the unlock requir
 ### Warfront Units
 | Unit | Source | Cost | Effect | Food/check |
 |------|--------|------|--------|------------|
-| Fighter | Rally (Warfront tab) | 1.00 renown (scaling ~n^1.4) | 0.25 damage every 1.5s to the monster at the gate (1/8 of a held strike) | 2 |
+| Fighter | Rally (Warfront tab) | 1.00 renown (scaling ~n^1.4) | 0.25 damage every 6s to the monster at the gate (1/32 of a held strike) | 2 |
 | Repairer | Direct (Warfront tab, unlocks at 3 fighters) | TBD | Heals city HP | 1.5 (75% of fighter) |
 
 ### Foraging Units

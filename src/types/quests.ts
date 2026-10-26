@@ -35,7 +35,7 @@ export const QUESTS: QuestDef[] = [
   {
     id: 'defend_the_wall', title: 'Defend the Wall', goal: 'Defeat 4 kobolds',
     target: DEFEND_THE_WALL_KILLS,
-    progress: (s) => s.monstersDefeated,
+    progress: (s) => s.killsByMonster.kobold ?? 0,
     // Offered once the renown scene after the first kill has been seen
     offeredWhen: (s) => s.beatsSeen.includes('first_renown'),
     completesInto: 'call_to_arms',
