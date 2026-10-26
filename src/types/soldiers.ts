@@ -1,4 +1,3 @@
-import type { Ionicons } from '@expo/vector-icons'
 import { roundCost } from './utils'
 
 // =============================================================================
@@ -56,24 +55,6 @@ export const SWORD_COST = 0.75
 export const SHIELD_COST = 1.0
 export const SWORD_BONUS = 0.005
 export const SHIELD_BONUS = 0.0025
-
-// =============================================================================
-// AVATAR WEAPONS (flat purchases, increase click power)
-// =============================================================================
-
-export interface AvatarWeaponDef {
-  id: string
-  name: string
-  description: string
-  icon: keyof typeof Ionicons.glyphMap
-  cost: number
-  clickPowerBonus: number
-}
-
-// TODO layer 3: weapons become tap-damage upgrades; the "per click" income claim is no longer true
-export const AVATAR_WEAPONS: AvatarWeaponDef[] = [
-  { id: 'war_hammer', name: 'War Hammer', description: '+0.05 per click', icon: 'hammer', cost: 25, clickPowerBonus: 0.05 },
-]
 
 // =============================================================================
 // SOLDIER HELPERS

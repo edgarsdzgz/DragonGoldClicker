@@ -11,7 +11,7 @@ import { roundInsp } from './utils'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -79,6 +79,11 @@ export const QUESTS: QuestDef[] = [
     goals: [{ label: 'Direct 3 repairers', target: MEND_THE_WALLS_REPAIRERS, progress: (s) => s.repairersDirected }],
     offeredWhen: (s) => s.beatsSeen.includes('mend_the_walls'),
     completesInto: 'the_wall_is_yours',
+  },
+  {
+    id: 'sharpen_your_claws', title: 'Sharpen Your Claws',
+    goals: [{ label: 'Sharpen your claws', target: 1, progress: (s) => s.clawLevel }],
+    offeredWhen: (s) => s.beatsSeen.includes('sharpen_claws'),
   },
 ]
 

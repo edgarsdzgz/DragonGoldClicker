@@ -6,7 +6,6 @@ export type {
   SoldierTierDef,
   SoldierCounts,
   BarracksLevelDef,
-  AvatarWeaponDef,
 } from './soldiers'
 export {
   SOLDIER_TIERS,
@@ -17,7 +16,6 @@ export {
   SHIELD_COST,
   SWORD_BONUS,
   SHIELD_BONUS,
-  AVATAR_WEAPONS,
   getTotalSoldiers,
   getSoldierCap,
   getBarracksUpgradeCost,

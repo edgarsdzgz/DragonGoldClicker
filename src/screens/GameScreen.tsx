@@ -26,6 +26,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
 import { Gate } from './warfront/Gate'
 import { fighterDamageMultiplier } from '../types/fedState'
+import { clawDef, canSharpen } from '../types/claws'
+import { ClawsChip } from '../components/ClawsChip'
+import { ClawsSheet } from '../components/ClawsSheet'
 
 const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.rally }
 const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.repair }
@@ -41,7 +44,7 @@ const killsText = (kills: number) => {
 }
 
 export function GameScreen() {
-  const { state, click, rallyFighter, directRepairer, effectiveAutoRate } = useGame()
+  const { state, click, rallyFighter, directRepairer, sharpenClaws, effectiveAutoRate } = useGame()
   const { shakeNonce } = useShakeRequest()
   const shakeStyle = useScreenShake(shakeNonce)
   const flavor = useFlavorText(COMBAT_LINES)
@@ -94,8 +97,18 @@ export function GameScreen() {
   const rallyOn = isSystemOn(state, 'rally')
   const repairOn = isSystemOn(state, 'repair')
   const hungerOn = isSystemOn(state, 'hunger')
-  // Short windows drop the footer line so the battlefield keeps its room
+  // Short windows drop the footer line so the battlefield keeps its room; the Claws chip stays
   const showFooter = windowHeight >= TALL_WINDOW
+  const showDetails = showFooter && reveal.details
+  const claws = clawDef(state.clawLevel)
+  const [clawsOpen, setClawsOpen] = useState(false)
+  const playSharpen = useSfx(SFX.COIN)
+  const handleSharpen = useCallback(() => {
+    if (sharpenClaws()) {
+      playSharpen()
+      haptics.medium()
+    }
+  }, [sharpenClaws, playSharpen, haptics])
 
   return (
     <Animated.View style={[styles.container, shakeStyle, !reveal.chrome && { paddingBottom: insets.bottom }]}>
@@ -122,6 +135,7 @@ export function GameScreen() {
             monsterHp={state.monsterHp}
             kills={state.monstersDefeated}
             damage={state.tapDamage}
+            clawLevel={state.clawLevel}
             onStrike={handleStrike}
             showName={reveal.monsterName}
             coachId="slay"
@@ -175,20 +189,41 @@ export function GameScreen() {
         </View>
       )}
 
-      {/* Footer: kills, damage per tap and the fighters' damage (only on tall windows) */}
-      {showFooter && reveal.details && (
+      {/* Footer: kills, the claws (damage per tap) and the fighters' damage. Short windows keep
+          only the Claws chip. */}
+      {(showDetails || reveal.claws) && (
         <View style={styles.footer}>
-          <Text variant="caption" color="muted">
-            {killsText(state.monstersDefeated)}
-          </Text>
-          <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
-          {state.fighters > 0 && (
+          {showDetails && (
+            <Text variant="caption" color="muted">
+              {killsText(state.monstersDefeated)}
+            </Text>
+          )}
+          {reveal.claws ? (
+            <CoachTarget id="claws">
+              <ClawsChip
+                name={claws.name}
+                damage={state.tapDamage}
+                canSharpen={canSharpen(state)}
+                onPress={() => setClawsOpen(true)}
+              />
+            </CoachTarget>
+          ) : (
+            <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
+          )}
+          {showDetails && state.fighters > 0 && (
             <Text variant="caption" style={styles.allyDps}>
               {fighterPower > 0 ? `fighters ${(getFighterDps(state.fighters) * fighterPower).toFixed(2)} damage/s` : 'fighters stand down'}
             </Text>
           )}
         </View>
       )}
+      <ClawsSheet
+        visible={clawsOpen}
+        onClose={() => setClawsOpen(false)}
+        level={state.clawLevel}
+        renown={state.inspiration}
+        onSharpen={handleSharpen}
+      />
     </Animated.View>
   )
 }

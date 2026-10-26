@@ -10,6 +10,7 @@ import type { PillTab } from '../components/PillTabs'
 import { VolumeControl } from '../components/VolumeControl'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { ResourceBar } from '../components/ResourceBar'
+import { clawDef } from '../types/claws'
 import { useGame } from '../context/GameContext'
 import { useAudioSettings } from '../context/AudioSettingsContext'
 import { DevPanel } from './settings/DevPanel'
@@ -211,7 +212,7 @@ function StatsContent() {
           <SectionLabel spacing={2}>ARMORY</SectionLabel>
           <StatRow icon="flash" label="Swords" value={String(state.armoryGear.swords)} />
           <StatRow icon="shield" label="Shields" value={String(state.armoryGear.shields)} />
-          <StatRow icon="hammer" label="Weapons Owned" value={String(state.ownedWeapons.length)} />
+          <StatRow icon="flash" label="Claws" value={clawDef(state.clawLevel).name} />
         </Surface>
       )}
 

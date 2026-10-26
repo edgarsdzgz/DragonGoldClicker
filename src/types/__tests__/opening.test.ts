@@ -6,12 +6,12 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 
 describe('warfrontReveal', () => {
   it('a fresh install shows only the monster and the gate', () => {
-    expect(warfrontReveal(make({}))).toEqual({ topBar: false, monsterName: false, details: false, chrome: false })
+    expect(warfrontReveal(make({}))).toEqual({ topBar: false, monsterName: false, details: false, chrome: false, claws: false })
   })
 
   it('the renown figure arrives at the first kill; nothing else yet', () => {
     const r = warfrontReveal(make({ monstersDefeated: 1 }))
-    expect(r).toEqual({ topBar: true, monsterName: true, details: false, chrome: false })
+    expect(r).toEqual({ topBar: true, monsterName: true, details: false, chrome: false, claws: false })
   })
 
   it('flavour line and footer arrive at the third kill (where Wave 0 used to clear)', () => {
@@ -28,7 +28,13 @@ describe('warfrontReveal', () => {
 
   it('a save already past the opening shows everything', () => {
     const r = warfrontReveal(make({ monstersDefeated: 40, beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach'] }))
-    expect(r).toEqual({ topBar: true, monsterName: true, details: true, chrome: true })
+    expect(r).toEqual({ topBar: true, monsterName: true, details: true, chrome: true, claws: false })
+  })
+
+  it("the Claws chip arrives with Pyreth's sharpen_claws scene, or with claws already sharpened", () => {
+    expect(warfrontReveal(make({ beatsSeen: ['the_wall_is_yours'] })).claws).toBe(false)
+    expect(warfrontReveal(make({ beatsSeen: ['the_wall_is_yours', 'sharpen_claws'] })).claws).toBe(true)
+    expect(warfrontReveal(make({ clawLevel: 2 })).claws).toBe(true)
   })
 
   it('the old wave fields no longer change what is shown', () => {

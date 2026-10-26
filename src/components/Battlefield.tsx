@@ -10,6 +10,8 @@ import type { MonsterDef } from '../types/monsters'
 import { Text } from './Text'
 import { EnemyHp } from './EnemyHp'
 import { ClawSlash, SparkBurst, EmberDissolve } from './StrikeEffects'
+import { clawLook } from '../types/claws'
+import type { ClawTier } from '../types/claws'
 import type { ClawSlashHandle, SparkBurstHandle, EmberDissolveHandle } from './StrikeEffects'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
@@ -21,6 +23,12 @@ import { MONSTERS, SPAWN_DELAY_MS, monsterLabel } from '../types/monsters'
 import { restingPose } from '../data/monsterArt'
 import { colors, spacing, gold } from '../theme'
 
+const CLAW_TINT: Record<ClawTier, string> = {
+  plain: colors.warfront.clawPlain,
+  gold: colors.warfront.clawGold,
+  ember: colors.warfront.clawEmber,
+}
+
 interface BattlefieldProps {
   /** Monster sprite diameter in dp */
   monster: number
@@ -30,6 +38,8 @@ interface BattlefieldProps {
   kills: number
   /** Damage per hit, shown as a floating number */
   damage: number
+  /** The dragon's claws (layer 3): the slash grows and warms with them */
+  clawLevel?: number
   /** Called for every hit: the first press, then once per HOLD_REPEAT_MS while held */
   onStrike: () => void
   /** Flavour line row, above the stack */
@@ -73,7 +83,7 @@ const KNOCKBACK = 0.06
  * (one strike every HOLD_REPEAT_MS, shared by every main button) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
-  { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, camp, showName = true, locked = false, coachId },
+  { monster: size, monsterIndex, monsterHp, kills, damage, clawLevel = 0, onStrike, header, queue, camp, showName = true, locked = false, coachId },
   ref,
 ) {
   const coach = useCoachTarget(coachId)
@@ -348,7 +358,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
             </LinearGradient>
             <Animated.View pointerEvents="none" style={[styles.flash, { opacity: flash }]} />
           </Animated.View>
-          <ClawSlash ref={slashes} size={Math.round(size * 0.9)} />
+          <ClawSlash ref={slashes} size={Math.round(size * 0.9 * clawLook(clawLevel).scale)} tint={CLAW_TINT[clawLook(clawLevel).tier]} />
           <SparkBurst ref={sparks} unit={size} />
           <EmberDissolve ref={embers} unit={size} />
           <FloatingNumbers ref={numbers} />

@@ -34,7 +34,6 @@ import {
   SOLDIER_TIERS,
   SWORD_COST,
   SHIELD_COST,
-  AVATAR_WEAPONS,
   LODGE_LEVELS,
   FORAGER_TIERS,
   POST_LEVELS,
@@ -130,14 +129,11 @@ function useBuildTabBadge(): boolean {
       }
     }
 
-    // Forge: sword, shield, or weapon
+    // Forge: sword or shield (the player's own upgrade is the claws, on the Warfront)
     if (state.armoryBuilt) {
       const totalSoldiers = getTotalSoldiers(state.soldiers)
       if (state.armoryGear.swords < totalSoldiers && g >= SWORD_COST) return true
       if (state.armoryGear.shields < totalSoldiers && g >= SHIELD_COST) return true
-      for (const w of AVATAR_WEAPONS) {
-        if (!state.ownedWeapons.includes(w.id) && g >= w.cost) return true
-      }
     }
 
     // Lodge: upgrade or train forager

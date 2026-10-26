@@ -170,6 +170,8 @@ export interface GameState {
   lastFoodWarning: 0 | 3 | 1
   /** Damage one tap deals to the monster */
   tapDamage: number
+  /** The dragon's claws (types/claws.ts): 0 is Fledgling; each level sets tapDamage */
+  clawLevel: number
   /** Which MONSTERS entry the player is facing */
   monsterIndex: number
   /** Hit points the current monster has left (fractional: fighters chip it a quarter at a time) */
@@ -276,6 +278,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   pendingFoodWarning: 0,
   lastFoodWarning: 0,
   tapDamage: STARTING_TAP_DAMAGE,
+  clawLevel: 0,
   monsterIndex: 0,
   monsterHp: FIRST_MONSTER_HP,
   killsByMonster: {},

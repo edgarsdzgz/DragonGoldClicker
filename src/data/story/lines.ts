@@ -85,6 +85,15 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     dismissLabel: 'To the Gate',
     navigateTo: 'GameTab',
   },
+  sharpen_claws: {
+    ...PYRETH,
+    title: 'Young Claws',
+    lines: [
+      'The wall is yours now, my lord, and so is the fight at the Gate.',
+      'Forgive an old dragon for saying it: your claws are young. Against orcs, they will not be enough.',
+      'Renown buys more than soldiers. Spend it on your claws, and every strike lands harder and earns you more.',
+    ],
+  },
   the_wall_is_yours: {
     ...RODAIN,
     title: 'The Wall Is Yours',

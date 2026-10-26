@@ -30,8 +30,8 @@ interface SlashSlot {
   angle: Animated.Value
 }
 
-/** Pooled claw rakes at the tap point. With Reduce Motion a slash shows and fades in place. */
-export const ClawSlash = forwardRef<ClawSlashHandle, { size: number }>(function ClawSlash({ size }, ref) {
+/** Pooled claw rakes at the tap point, tinted by the claws' level. With Reduce Motion a slash shows and fades in place. */
+export const ClawSlash = forwardRef<ClawSlashHandle, { size: number; tint?: string }>(function ClawSlash({ size, tint = '#ffffff' }, ref) {
   const reduceMotion = useReduceMotion()
   const slots = useRef<SlashSlot[]>(
     Array.from({ length: MAX_SLASHES }, () => ({
@@ -86,7 +86,7 @@ export const ClawSlash = forwardRef<ClawSlashHandle, { size: number }>(function 
             ],
           }}
         >
-          <Image source={SLASH} style={{ width: size, height: size, tintColor: '#ffffff' }} accessibilityIgnoresInvertColors />
+          <Image source={SLASH} style={{ width: size, height: size, tintColor: tint }} accessibilityIgnoresInvertColors />
         </Animated.View>
       ))}
     </View>

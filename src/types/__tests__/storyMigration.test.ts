@@ -28,7 +28,7 @@ describe('backfillStory', () => {
       totalInspirationEarned: 10,
     }))
     expect(out.beatsSeen).toEqual([
-      'prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'strangers_at_gate', 'a_city_to_build',
+      'prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws', 'strangers_at_gate', 'a_city_to_build',
     ])
     expect(isSystemOn(out, 'draconiaTab')).toBe(true)
     expect(isSystemOn(out, 'hunger')).toBe(true)

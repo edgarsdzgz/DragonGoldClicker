@@ -16,7 +16,7 @@ and add no new mechanics or screens until the tap is fun.
 | 0 | Pause the story after Rally; fix the Warfront layout | this pass |
 | 1 | Tap feel: floating numbers, squash, flash, kill haptic | this pass |
 | 2 | A monster with an HP bar in the SLAY spot; inspiration paid on kill | this pass |
-| 3 | Tap upgrades: one track (the dragon's claws) | proposed 2026-10-26 |
+| 3 | Tap upgrades: one track (the dragon's claws) | approved and built 2026-10-26 |
 | 4 | Rhythm: combo multiplier that decays, occasional crits | later |
 | 5 | Fighters damage the same monster (visible small hits) instead of a separate insp/s | done in 2e |
 | 6 | The wall: monsters not killed in time hit the wall; Repair matters; the Breach | approved 2026-10-26; phases A and B built |
@@ -555,7 +555,7 @@ The ration multiplies the fighters' upkeep and their damage. Fed states apply on
 
 ---
 
-## Layer 3: the Dragon's Claws (proposed 2026-10-26)
+## Layer 3: the Dragon's Claws (approved and built 2026-10-26)
 
 Why now: the wall made fast kills matter (a monster killed within 5s never strikes), but a tap
 does 1 damage forever, so as orcs take over the pool the player falls behind however well they
@@ -611,11 +611,14 @@ past level 8.
   save keeps the fields; the Armory stops showing them. Research effects that add click power
   become tap-damage effects when the Librarium returns (balance pass).
 
-### Open questions
+### Rulings (2026-10-26)
 
-1. The numbers above: OK as a starting point?
-2. Chip and sheet in the footer (recommended), or a third orb?
-3. Names: keep, or do you want your own?
+The owner approved the recommendations: the numbers above as a starting point, the chip and
+sheet in the footer, and these names. As built: `types/claws.ts` (`clawLevel` sets `tapDamage`),
+`ClawsChip` and `ClawsSheet` on the Warfront (the chip shows on short windows too, where the rest
+of the footer is dropped), the slash grows 5% per level and turns gold at Serrated and ember at
+Ember. Pyreth's `sharpen_claws` beat (30s after "The Wall Is Yours"), the Sharpen Your Claws
+quest, and a tutorial step that points at the chip. The story pauses after `sharpen_claws`.
 
 ---
 

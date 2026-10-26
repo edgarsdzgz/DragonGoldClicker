@@ -36,10 +36,10 @@ describe('getActiveStep', () => {
     expect(getActiveStep(s)?.id).toBe('tap_slay')
   })
 
-  it('has the nine steps in order: foraging before Repair', () => {
+  it('has the ten steps in order: foraging before Repair, then the claws', () => {
     expect(TUTORIAL_STEPS.map((t) => t.id)).toEqual([
       'tap_slay', 'tap_rally', 'open_forage', 'tap_forage', 'train_gatherer',
-      'tap_repair', 'open_draconia', 'tap_garrison', 'build_garrison',
+      'tap_repair', 'sharpen_claws', 'open_draconia', 'tap_garrison', 'build_garrison',
     ])
   })
 
@@ -93,7 +93,7 @@ describe('backfillTutorial', () => {
 
   it('marks everything for a save with the Garrison built', () => {
     const done = backfillTutorial(make({
-      beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'a_city_to_build'],
+      beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws', 'empty_stores', 'a_city_to_build'],
       barracksLevel: 1,
     }))
     expect(done).toHaveLength(TUTORIAL_STEPS.length)

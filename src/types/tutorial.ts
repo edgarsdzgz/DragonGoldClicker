@@ -3,6 +3,7 @@ import type { BeatId } from './story'
 import { getFighterCost, getRepairerCost } from './fighters'
 import { FORAGER_TIERS, getForagerCost, getForagerCount } from './foragers'
 import { BARRACKS_LEVELS } from './soldiers'
+import { nextClaw } from './claws'
 
 // =============================================================================
 // GUIDED TUTORIAL (coach marks): data and pure progression
@@ -15,6 +16,7 @@ export type TutorialStepId =
   | 'open_forage'
   | 'tap_forage'
   | 'train_gatherer'
+  | 'sharpen_claws'
   | 'open_draconia'
   | 'tap_garrison'
   | 'build_garrison'
@@ -88,6 +90,12 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     hint: 'Send a villager to mend the wall.',
     isDone: (s) => s.repairers >= 1 || s.repairersDirected >= 1,
     cost: (s) => getRepairerCost(s.repairersDirected),
+  },
+  {
+    id: 'sharpen_claws', afterBeat: 'sharpen_claws', target: 'claws',
+    hint: 'Tap your claws to sharpen them.',
+    isDone: (s) => s.clawLevel >= 1,
+    cost: (s) => nextClaw(s.clawLevel)?.cost ?? 0,
   },
   {
     id: 'open_draconia', afterBeat: 'a_city_to_build', target: 'tab_draconia',

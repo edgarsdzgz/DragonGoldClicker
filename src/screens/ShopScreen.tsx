@@ -23,7 +23,6 @@ import {
   FORAGER_TIERS,
   SWORD_COST,
   SHIELD_COST,
-  AVATAR_WEAPONS,
   EXPLORER_COST,
   EXPEDITION_INSPIRATION_COST,
   EXPEDITION_FOOD_COST,
@@ -308,9 +307,6 @@ export function ShopScreen() {
     const totalSoldiers = getTotalSoldiers(state.soldiers)
     if (state.armoryGear.swords < totalSoldiers && state.inspiration >= SWORD_COST) return true
     if (state.armoryGear.shields < totalSoldiers && state.inspiration >= SHIELD_COST) return true
-    for (const w of AVATAR_WEAPONS) {
-      if (!state.ownedWeapons.includes(w.id) && state.inspiration >= w.cost) return true
-    }
     return false
   })()
 

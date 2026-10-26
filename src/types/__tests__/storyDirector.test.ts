@@ -10,8 +10,8 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 beforeAll(() => setStoryPauseForTests('the_horde_grows'))
 afterAll(() => setStoryPauseForTests())
 
-// Everything up to the_wall_is_yours seen and 2 gatherers out: strangers_at_gate (dwell 240) is next
-const MAIN_TO_MEND = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores', 'the_breach', 'mend_the_walls', 'the_wall_is_yours']
+// Everything up to sharpen_claws seen and 2 gatherers out: strangers_at_gate (dwell 240) is next
+const MAIN_TO_MEND = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws']
 const DWELL_BASE = {
   beatsSeen: MAIN_TO_MEND,
   foragers: { gatherers: 2, trappers: 0, rangers: 0 },
@@ -109,7 +109,7 @@ describe('findNextBeat', () => {
   })
 
   it('lets the_keep and the_scholar fire before beyond_the_walls (it is a side beat)', () => {
-    const main = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'empty_stores', 'strangers_at_gate',
+    const main = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws', 'empty_stores', 'strangers_at_gate',
       'a_city_to_build', 'the_smith', 'the_keep_stands']
     const base = { playSeconds: 99999, draconiaHallBuilt: true, totalInspirationEarned: 0 }
     expect(findNextBeat(make({ ...base, beatsSeen: main }), 'live')?.id).toBe('the_keep')

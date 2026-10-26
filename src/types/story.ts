@@ -15,6 +15,7 @@ export type BeatId =
   | 'the_breach'
   | 'mend_the_walls'
   | 'the_wall_is_yours'
+  | 'sharpen_claws'
   | 'empty_stores'
   | 'strangers_at_gate'
   | 'a_city_to_build'
@@ -132,6 +133,13 @@ export const STORY_BEATS: BeatDef[] = [
     unlocks: ['threatUnfloored'],
   },
   {
+    // Layer 3: Pyreth (an elder dragon) tells the young dragon its claws can be sharpened. Its
+    // goal is the Sharpen Your Claws quest; the Claws chip shows from here (types/opening.ts).
+    id: 'sharpen_claws', chapter: 3, dwellSec: 30,
+    trigger: (s) => seen(s, 'the_wall_is_yours'),
+    unlocks: [],
+  },
+  {
     id: 'strangers_at_gate', chapter: 4, dwellSec: 240,
     trigger: (s) => s.foragers.gatherers >= 2,
     unlocks: ['wanderers'],
@@ -209,7 +217,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'the_wall_is_yours'
+export const STORY_PAUSED_AFTER: BeatId = 'sharpen_claws'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

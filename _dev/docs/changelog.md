@@ -2,6 +2,18 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### The Dragon's Claws, layer 3 (2026-10-26)
+- The player's own upgrade: nine levels of claws bought with renown, Fledgling (1 damage per
+  tap) to Ancient (20, one tap kills an orc). Costs 5, 12, 25, 50, 100, 200, 400, 800
+- A Claws chip on the Warfront footer opens the Claws sheet (the next level, its cost, Sharpen,
+  and the whole track). A dot shows when the next level is affordable
+- The claw slash grows with each level and turns gold, then ember, at the top levels
+- Fighters do not use the claws; a Breach never takes them; nothing can be bought in debt
+- Story: Pyreth's "Young Claws" after "The Wall Is Yours"; quest Sharpen Your Claws; a tutorial
+  step points at the chip. The story pauses after it
+- Retired: the avatar weapons (the War Hammer) and their Forge section; Settings shows the
+  claws instead of weapons owned
+
 ### The wall, layer 6 phase B: the Breach (2026-10-26)
 - Mend the Walls completes into Rodain's "The Wall Is Yours": his company stands down, the wall
   can now fall, and he says what it costs

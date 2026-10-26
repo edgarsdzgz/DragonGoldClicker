@@ -7,7 +7,6 @@ import {
   ARMORY_COST,
   BARRACKS_LEVELS,
   SOLDIER_TIERS,
-  AVATAR_WEAPONS,
   SWORD_COST,
   SHIELD_COST,
   OFFLINE_LEVELS,
@@ -79,6 +78,7 @@ import { stepFoodEvents, gatherMultiplier, answerRefugees as answerRefugeesState
 import { isRationAvailable } from '../types/rations'
 import type { RationId } from '../types/rations'
 import { firstExpeditionReward } from '../types/scripted'
+import { sharpenClaws as sharpenClawsState } from '../types/claws'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
@@ -93,7 +93,6 @@ interface GameContextType {
   promoteSoldier: (fromTier: SoldierTier, toTier: SoldierTier) => boolean
   buySword: () => boolean
   buyShield: () => boolean
-  buyWeapon: (id: string) => boolean
   upgradeOffline: () => boolean
   buildOrUpgradeLodge: () => boolean
   trainForager: (tier: ForagerTier) => boolean
@@ -121,6 +120,8 @@ interface GameContextType {
   rejectWanderer: () => void
   rallyFighter: () => boolean
   directRepairer: () => boolean
+  /** Buy the next level of the dragon's claws (layer 3) */
+  sharpenClaws: () => boolean
   /** Clears the last Breach's report once the player has read it (layer 6) */
   dismissBreach: () => void
   pendingMilestone: MilestoneDef | null
@@ -417,6 +418,16 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return directed
   }, [])
 
+  const sharpenClaws = useCallback((): boolean => {
+    let sharpened = false
+    setState((prev) => {
+      const next = sharpenClawsState(prev)
+      sharpened = next !== prev
+      return next
+    })
+    return sharpened
+  }, [])
+
   const buildOrUpgradeBarracks = useCallback((): boolean => {
     let success = false
     setState((prev) => {
@@ -541,24 +552,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         inspiration: prev.inspiration - SHIELD_COST,
         totalInspirationSpent: prev.totalInspirationSpent + SHIELD_COST,
         armoryGear: { ...prev.armoryGear, shields: prev.armoryGear.shields + 1 },
-      }
-    })
-    return bought
-  }, [])
-
-  const buyWeapon = useCallback((id: string): boolean => {
-    let bought = false
-    setState((prev) => {
-      if (prev.ownedWeapons.includes(id)) return prev
-      const def = AVATAR_WEAPONS.find((w) => w.id === id)
-      if (!def || prev.inspiration < def.cost) return prev
-      bought = true
-      return {
-        ...prev,
-        inspiration: prev.inspiration - def.cost,
-        totalInspirationSpent: prev.totalInspirationSpent + def.cost,
-        ownedWeapons: [...prev.ownedWeapons, id],
-        clickPower: prev.clickPower + def.clickPowerBonus,
       }
     })
     return bought
@@ -1151,7 +1144,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         promoteSoldier,
         buySword,
         buyShield,
-        buyWeapon,
         upgradeOffline,
         buildOrUpgradeLodge,
         trainForager,
@@ -1179,6 +1171,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         rejectWanderer,
         rallyFighter,
         directRepairer,
+        sharpenClaws,
         dismissBreach,
         pendingMilestone,
         acceptMilestone,

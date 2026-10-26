@@ -18,16 +18,19 @@ export interface WarfrontReveal {
   details: boolean
   /** Objective line, chips and the tab bar (with call_to_arms) */
   chrome: boolean
+  /** The Claws chip (layer 3): with Pyreth's sharpen_claws scene, or once the claws were sharpened */
+  claws: boolean
 }
 
 /** A fresh install shows only the monster and the gate; the rest arrives as the player fights. */
-export function warfrontReveal(s: Pick<GameState, 'monstersDefeated' | 'beatsSeen'>): WarfrontReveal {
+export function warfrontReveal(s: Pick<GameState, 'monstersDefeated' | 'beatsSeen' | 'clawLevel'>): WarfrontReveal {
   const killed = s.monstersDefeated > 0 || s.beatsSeen.includes('first_renown')
   return {
     topBar: killed,
     monsterName: killed,
     details: s.monstersDefeated >= OPENING_KILLS,
     chrome: s.beatsSeen.includes('call_to_arms'),
+    claws: s.beatsSeen.includes('sharpen_claws') || s.clawLevel > 0,
   }
 }
 
