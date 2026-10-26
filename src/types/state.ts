@@ -48,7 +48,7 @@ export function getOfflineUpgradeCost(currentLevel: number): number | null {
 // DRACONIA HALL
 // =============================================================================
 
-export const DRACONIA_HALL_COST = 7.5
+export const DRACONIA_HALL_COST = 150
 
 // =============================================================================
 // GAME STATE

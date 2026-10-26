@@ -21,6 +21,7 @@ export type BeatId =
   | 'a_city_to_build'
   | 'the_smith'
   | 'the_keep_stands'
+  | 'the_lodge'
   | 'word_spreads'
   | 'lean_times'
   | 'beyond_the_walls'
@@ -166,12 +167,29 @@ export const STORY_BEATS: BeatDef[] = [
     spotlight: 'draconiaTab',
   },
   {
+    // Chapter 5 phase C: a minute of play after Arm the Ranks. The Keep and the Ranger's Lodge come
+    // out of the fog; its goal is the Restore the Keep quest, which completes into the_keep.
     id: 'the_keep_stands', chapter: 5, dwellSec: 60,
-    trigger: (s) => s.armoryBuilt,
+    trigger: (s) => s.questsDone.includes('arm_the_ranks'),
     unlocks: [],
     reveals: ['keep', 'lodge'],
     silent: true,
-    objective: { label: 'Restore the Keep', current: (s) => (s.draconiaHallBuilt ? 1 : 0), target: 1 },
+    spotlight: 'draconiaTab',
+  },
+  {
+    // Pyreth: the city tends itself while the player rests (time away follows the army readout,
+    // types/timeAway.ts), and people can be moved between jobs (types/reassignment.ts)
+    id: 'the_keep', chapter: 5, dwellSec: 0,
+    trigger: (s) => s.questsDone.includes('restore_the_keep'),
+    unlocks: ['offline', 'reassignment'],
+    scripted: 'offlineFraming',
+  },
+  {
+    // Mirael, a minute after the Keep. Its goals are the Raise the Lodge and First Trappers quests
+    // (foragers are promoted like soldiers, types/lodge.ts).
+    id: 'the_lodge', chapter: 5, dwellSec: 60,
+    trigger: (s) => seen(s, 'the_keep'),
+    unlocks: [],
   },
   {
     id: 'word_spreads', chapter: 6, dwellSec: 0, side: true,
@@ -196,12 +214,6 @@ export const STORY_BEATS: BeatDef[] = [
     objective: { label: 'Send an expedition', current: (s) => s.nextExpeditionId - 1, target: 1 },
   },
   {
-    id: 'the_keep', chapter: 9, dwellSec: 0,
-    trigger: (s) => s.draconiaHallBuilt,
-    unlocks: ['offline', 'reassignment'],
-    scripted: 'offlineFraming',
-  },
-  {
     id: 'the_scholar', chapter: 10, dwellSec: 600,
     trigger: (s) => seen(s, 'the_keep'),
     unlocks: [],
@@ -223,7 +235,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'the_smith'
+export const STORY_PAUSED_AFTER: BeatId = 'the_lodge'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

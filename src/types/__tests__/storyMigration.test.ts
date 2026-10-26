@@ -86,10 +86,12 @@ describe('backfillStory', () => {
     expect(isBuildingRevealed(out, 'lodge')).toBe(true)
   })
 
-  it('reveals the Lodge for a save with the food system active but no Forge', () => {
-    const out = backfillStory(v1({ barracksLevel: 1, foodSystemActive: true, fighters: 2, fightersRallied: 2, repairers: 3, repairersDirected: 3 }))
+  it('reveals the Lodge and the Keep for a save that built the Lodge, not for one that only has food', () => {
+    const fed = { barracksLevel: 1, foodSystemActive: true, fighters: 2, fightersRallied: 2, repairers: 3, repairersDirected: 3 }
+    const out = backfillStory(v1({ ...fed, lodgeLevel: 1 }))
     expect(isBuildingRevealed(out, 'lodge')).toBe(true)
     expect(isBuildingRevealed(out, 'keep')).toBe(true)
+    expect(isBuildingRevealed(backfillStory(v1(fed)), 'lodge')).toBe(false)
   })
 
   it('backfills beyond_the_walls on its own evidence', () => {

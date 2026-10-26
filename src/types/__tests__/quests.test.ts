@@ -12,7 +12,7 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 const AFTER_RENOWN = ['prologue', 'elder_approaches', 'first_renown']
 
 describe('the quest line', () => {
-  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls, Sharpen Your Claws, Open the Gates, Raise the Garrison, First Soldiers, Light the Forge, Arm the Ranks', () => {
+  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls, Sharpen Your Claws, Open the Gates, Raise the Garrison, First Soldiers, Light the Forge, Arm the Ranks, Restore the Keep, Raise the Lodge, First Trappers', () => {
     expect(QUESTS.map((q) => [q.id, q.title, q.goals.map((g) => g.label)])).toEqual([
       ['defend_the_wall', 'Defend the Wall', ['Defeat 4 kobolds']],
       ['raise_the_guard', 'Raise the Guard', ['Rally 2 fighters']],
@@ -25,6 +25,9 @@ describe('the quest line', () => {
       ['first_soldiers', 'First Soldiers', ['Train 2 conscripts']],
       ['light_the_forge', 'Light the Forge', ['Build the Forge']],
       ['arm_the_ranks', 'Arm the Ranks', ['Forge 2 swords']],
+      ['restore_the_keep', 'Restore the Keep', ['Restore the Keep']],
+      ['raise_the_lodge', 'Raise the Lodge', ["Build the Ranger's Lodge"]],
+      ['first_trappers', 'First Trappers', ['Promote 2 gatherers to trappers']],
     ])
   })
 

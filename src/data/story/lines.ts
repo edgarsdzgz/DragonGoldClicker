@@ -178,7 +178,20 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   the_keep: {
     ...PYRETH,
     title: 'The Keep Restored',
-    lines: ['With the Keep restored, the city can tend itself while you rest. I will keep the ledgers.'],
+    lines: [
+      'With the Keep restored, the city can tend itself while you rest. I will keep the ledgers.',
+      'Your army holds the Gate while you are away, if it is strong enough. If it is not, the wall will wear, but the people will not let it fall.',
+      'And from the Keep you can move our people to whatever work needs them most.',
+    ],
+  },
+  the_lodge: {
+    ...MIRAEL,
+    title: "The Ranger's Lodge",
+    lines: [
+      'Gathering berries will not feed an army, my lord. Your soldiers eat more than your fighters ever did.',
+      'Give me a lodge, and I will teach your gatherers to set traps, and the best of them to range the deep valley.',
+      'A trapper brings home what two gatherers do and more. A ranger, twice that again.',
+    ],
   },
   the_scholar: {
     ...LIRAE,

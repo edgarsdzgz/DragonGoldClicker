@@ -22,6 +22,8 @@ interface OfflineModalProps {
   onCollect: () => void
   /** A character speaking over the report (the first time the Keep collects for you) */
   framing?: { speaker: string; text: string }
+  /** What happened to the wall while away (chapter 5 phase C) */
+  wallLine?: string
 }
 
 function formatDuration(totalSeconds: number): string {
@@ -94,6 +96,7 @@ export function OfflineModal({
   secondsAway,
   onCollect,
   framing,
+  wallLine,
 }: OfflineModalProps) {
   const haptics = useHaptics()
 
@@ -491,10 +494,15 @@ export function OfflineModal({
                   <Text variant="bodySmall" color="secondary" center>
                     {framing.text}
                   </Text>
+                  {wallLine && (
+                    <Text variant="caption" color="muted" center>
+                      {wallLine}
+                    </Text>
+                  )}
                 </>
               ) : (
                 <Text variant="caption" color="muted" center>
-                  Your fighters held the line
+                  {wallLine ?? 'Your fighters held the line'}
                 </Text>
               )}
             </Animated.View>

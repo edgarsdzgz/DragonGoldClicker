@@ -10,17 +10,17 @@ import {
   formatAmount,
   FOOD_CHECK_INTERVAL,
   SOLDIER_TIERS,
+  FORAGER_TIERS,
   FOOD_CONSUMPTION,
   getSoldierCount,
   getLodgeUpgradeCost,
-  getTotalForagers,
-  getForagerCap,
-  getForagerCost,
   getForagerCount,
 } from '../../types/game'
 import type { SoldierTierDef, ForagerTierDef } from '../../types/game'
 import { rankBlock, rankCost, rankBelow } from '../../types/army'
 import type { RankBlock } from '../../types/army'
+import { foragerBlock, foragerCost, foragerBelow } from '../../types/lodge'
+import type { ForagerBlock } from '../../types/lodge'
 
 // =============================================================================
 // RANK ROW (the Garrison, chapter 5): train a fighter into a conscript, or promote one rank up
@@ -84,35 +84,36 @@ export function SoldierTierRow({ tier, buildingColor }: { tier: SoldierTierDef; 
 }
 
 // =============================================================================
-// FORAGER TIER ROW (wrapper)
+// FORAGER ROW (the Lodge, chapter 5 phase C): train a villager into a gatherer, or promote one rank up
 // =============================================================================
+
+const FORAGER_BLOCK_LABEL: Record<Exclude<ForagerBlock, null | 'renown'>, string> = {
+  locked: 'LOCKED',
+  full: 'FULL',
+  nobody: 'NONE',
+}
 
 export function ForagerTierRow({ tier, buildingColor }: { tier: ForagerTierDef; buildingColor?: string }) {
   const { state, trainForager } = useGame()
   const haptics = useHaptics()
   const playPurchase = useSfx(SFX.PURCHASE)
   const count = getForagerCount(state.foragers, tier.id)
-  const lifetimeCount = getForagerCount(state.foragersTrained, tier.id)
-  const total = getTotalForagers(state.foragers)
-  const cap = getForagerCap(state.lodgeLevel)
-  const atCap = total >= cap
-  const noVillagers = state.villagers <= 0
-  const locked = state.lodgeLevel < tier.unlocksAtLodgeLevel
-  const cost = getForagerCost(tier, lifetimeCount)
-  const canAfford = state.inspiration >= cost && !atCap && !locked && !noVillagers
+  const block = foragerBlock(state, tier.id)
+  const cost = foragerCost(state, tier.id)
+  const from = foragerBelow(tier.id)
+  const fromName = from === 'villager' ? 'a villager' : `a ${FORAGER_TIERS.find((t) => t.id === from)!.name.toLowerCase()}`
+  const verb = from === 'villager' ? 'Train' : 'Promote'
+  const locked = block === 'locked'
 
-  const canUpgradeLodge = getLodgeUpgradeCost(state.lodgeLevel) !== null
-  const buttonLabel = atCap ? 'FULL' : noVillagers ? 'NO POP' : `${formatNumber(cost)} g`
-
-  const rejectPhrases = atCap
-    ? canUpgradeLodge
-      ? ['Upgrade the Lodge for more room', 'The lodge is full -- time to expand', 'Build higher to train more']
+  const rejectPhrases = block === 'full'
+    ? getLodgeUpgradeCost(state.lodgeLevel) !== null
+      ? ['Upgrade the Lodge for more room', 'The lodge is full: upgrade to expand']
       : REJECT_MAXED
-    : noVillagers
-      ? REJECT_NO_POP
+    : block === 'nobody'
+      ? from === 'villager' ? REJECT_NO_POP : [`No ${FORAGER_TIERS.find((t) => t.id === from)!.plural} to promote`]
       : REJECT_GOLD
 
-  const handleTrain = () => {
+  const handleMake = () => {
     haptics.medium()
     playPurchase()
     trainForager(tier.id)
@@ -120,14 +121,23 @@ export function ForagerTierRow({ tier, buildingColor }: { tier: ForagerTierDef; 
 
   return (
     <ActionRow
-      title={tier.name}
-      subtitle={locked ? undefined : `${formatAmount(tier.baseRate * FOOD_CHECK_INTERVAL)} food per meal -- ${count} trained`}
+      icon={locked ? 'lock-closed' : undefined}
+      iconColor={colors.text.muted}
+      title={`${tier.name} (${count})`}
+      subtitle={locked ? undefined : `${verb} ${fromName}. ${formatAmount(tier.baseRate * FOOD_CHECK_INTERVAL)} food per meal`}
       locked={locked}
       lockLabel={`Lodge Lv${tier.unlocksAtLodgeLevel}`}
       right={
         !locked ? (
-          <Button size="xs" onPress={handleTrain} disabled={!canAfford} accentColor={buildingColor} rejectPhrases={rejectPhrases}>
-            {buttonLabel}
+          <Button
+            size="xs"
+            onPress={handleMake}
+            disabled={block !== null}
+            accentColor={buildingColor}
+            rejectPhrases={rejectPhrases}
+            accessibilityLabel={`${verb} ${fromName} into a ${tier.name.toLowerCase()} for ${formatNumber(cost)} renown`}
+          >
+            {block !== null && block !== 'renown' ? FORAGER_BLOCK_LABEL[block] : `${formatNumber(cost)} renown`}
           </Button>
         ) : undefined
       }

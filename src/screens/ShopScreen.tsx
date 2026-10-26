@@ -30,8 +30,6 @@ import {
   getBarracksUpgradeCost,
   getTotalForagers,
   getForagerCap,
-  getForagerCost,
-  getForagerCount,
   getLodgeUpgradeCost,
   getExplorerCap,
   getPostUpgradeCost,
@@ -46,6 +44,7 @@ import { DraconiaHallInterior } from './shop/DraconiaHallInterior'
 import { LibrariumInterior } from './shop/LibrariumInterior'
 import { mapStyles } from './shop/mapStyles'
 import { rankBlock } from '../types/army'
+import { foragerBlock } from '../types/lodge'
 
 // =============================================================================
 // BUILDING INTERIOR ROUTER
@@ -297,15 +296,7 @@ export function ShopScreen() {
   const lodgeHasAction = lodgeBuilt && (() => {
     const upgCost = getLodgeUpgradeCost(state.lodgeLevel)
     if (upgCost !== null && state.inspiration >= upgCost) return true
-    if (foragerTotal < foragerCap && state.villagers > 0) {
-      for (const tier of FORAGER_TIERS) {
-        if (tier.unlocksAtLodgeLevel <= state.lodgeLevel) {
-          const cost = getForagerCost(tier, getForagerCount(state.foragersTrained, tier.id))
-          if (state.inspiration >= cost) return true
-        }
-      }
-    }
-    return false
+    return FORAGER_TIERS.some((tier) => foragerBlock(state, tier.id) === null)
   })()
 
   const outpostHasAction = state.postLevel > 0 && (() => {

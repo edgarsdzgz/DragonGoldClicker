@@ -25,6 +25,7 @@ import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useCoach } from '../context/CoachContext'
 import { CoachMark } from '../components/CoachMark'
 import { rankBlock } from '../types/army'
+import { foragerBlock } from '../types/lodge'
 import { JournalSheet } from '../components/JournalSheet'
 import type { SceneTab } from '../data/story/lines'
 import type { UnlockToastHandle } from '../components/UnlockToast'
@@ -42,10 +43,6 @@ import {
   EXPEDITION_FOOD_COST,
   isBuildingRevealed,
   getBarracksUpgradeCost,
-  getTotalForagers,
-  getForagerCap,
-  getForagerCost,
-  getForagerCount,
   getLodgeUpgradeCost,
   getExplorerCap,
   getPostUpgradeCost,
@@ -121,15 +118,7 @@ function useBuildTabBadge(): boolean {
     if (state.lodgeLevel > 0) {
       const upgCost = getLodgeUpgradeCost(state.lodgeLevel)
       if (upgCost !== null && g >= upgCost) return true
-      const fTotal = getTotalForagers(state.foragers)
-      const fCap = getForagerCap(state.lodgeLevel)
-      if (fTotal < fCap && state.villagers > 0) {
-        for (const tier of FORAGER_TIERS) {
-          if (tier.unlocksAtLodgeLevel <= state.lodgeLevel) {
-            if (g >= getForagerCost(tier, getForagerCount(state.foragersTrained, tier.id))) return true
-          }
-        }
-      }
+      if (FORAGER_TIERS.some((tier) => foragerBlock(state, tier.id) === null)) return true
     }
 
     // Outpost: train explorer, send expedition, or upgrade

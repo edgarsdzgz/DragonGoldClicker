@@ -16,6 +16,7 @@ import { StarvationModal } from './StarvationModal'
 import { WandererModal } from './WandererModal'
 import { MilestoneModal } from './MilestoneModal'
 import { BreachEvent } from './BreachEvent'
+import { wallAwayLine } from '../types/timeAway'
 
 interface EventHostProps {
   /** Switches the visible tab (the host lives above the tab navigator) */
@@ -74,6 +75,7 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
         visible={activeModal === 'offline'}
         inspirationEarned={pendingOfflineEarnings?.inspiration ?? 0}
         secondsAway={pendingOfflineEarnings?.seconds ?? 0}
+        wallLine={pendingOfflineEarnings?.wall ? wallAwayLine(pendingOfflineEarnings.wall) : undefined}
         onCollect={collectOffline}
         framing={offlineFramed ? undefined : OFFLINE_FRAMING}
       />

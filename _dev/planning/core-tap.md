@@ -622,7 +622,7 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
-## Chapter 5 phase C: The Keep Stands (proposed 2026-10-26)
+## Chapter 5 phase C: The Keep Stands (approved and built 2026-10-26)
 
 After Arm the Ranks, the Keep and the Ranger's Lodge come out of the fog. Both exist in code
 (`DraconiaHallInterior`, `LodgeInterior`, `types/foragers.ts`, `types/reassignment.ts`), built
@@ -678,13 +678,12 @@ for rules that have changed.
 - Move `the_keep` (and the new beat) directly after `the_keep_stands`, so the pause can sit after
   `the_lodge` while the old side beats stay paused for their own review.
 
-### Open questions
+### Owner ruling (2026-10-26)
 
-1. Time away: the wall wears down when the army cannot hold, but never below 50 HP
-   (recommended), or keep time away as it is (no wear)?
-2. Reassignment: free moves with no refunds (recommended), or keep the old 50% refund?
-3. The Lodge: forager promotion (gatherer to trapper to ranger) with the numbers above?
-4. Prices: Keep 150; Lodge 30/75/150/300/600; trapper 15, ranger 40?
+All four as recommended. Built in `types/timeAway.ts` (the wall while away, measured against the
+toughest monster in the pool, as the readout is), `types/reassignment.ts` (rewritten),
+`types/lodge.ts` and `types/foragers.ts`. Explorers can move to a basic job or stand idle, but
+not while away on an expedition, and nobody moves into exploring there (it still costs).
 
 ---
 

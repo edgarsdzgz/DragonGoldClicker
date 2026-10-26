@@ -108,12 +108,14 @@ describe('findNextBeat', () => {
     expect(findNextBeat({ ...hungry, food: 10 }, 'live')).toBeNull()
   })
 
-  it('lets the_keep and the_scholar fire before beyond_the_walls (it is a side beat)', () => {
+  it('the_keep follows Restore the Keep, then the_lodge and the_scholar, before beyond_the_walls (a side beat)', () => {
     const main = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws', 'empty_stores', 'strangers_at_gate',
       'a_city_to_build', 'the_smith', 'the_keep_stands']
     const base = { playSeconds: 99999, draconiaHallBuilt: true, totalInspirationEarned: 0 }
-    expect(findNextBeat(make({ ...base, beatsSeen: main }), 'live')?.id).toBe('the_keep')
-    expect(findNextBeat(make({ ...base, beatsSeen: [...main, 'the_keep'] }), 'live')?.id).toBe('the_scholar')
+    expect(findNextBeat(make({ ...base, beatsSeen: main }), 'live')?.id).not.toBe('the_keep')
+    expect(findNextBeat(make({ ...base, beatsSeen: main, questsDone: ['restore_the_keep'] }), 'live')?.id).toBe('the_keep')
+    expect(findNextBeat(make({ ...base, beatsSeen: [...main, 'the_keep'] }), 'live')?.id).toBe('the_lodge')
+    expect(findNextBeat(make({ ...base, beatsSeen: [...main, 'the_keep', 'the_lodge'] }), 'live')?.id).toBe('the_scholar')
   })
 
   it('fires beyond_the_walls whenever the explorer post is revealed', () => {
@@ -124,8 +126,8 @@ describe('findNextBeat', () => {
   it('returns null when everything is seen', () => {
     const all = [
       'prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate',
-      'a_city_to_build', 'the_smith', 'the_keep_stands', 'word_spreads', 'lean_times',
-      'beyond_the_walls', 'the_keep', 'the_scholar', 'the_horde_grows',
+      'a_city_to_build', 'the_smith', 'the_keep_stands', 'the_keep', 'the_lodge', 'word_spreads', 'lean_times',
+      'beyond_the_walls', 'the_scholar', 'the_horde_grows',
     ]
     expect(findNextBeat(make({ beatsSeen: all, playSeconds: 99999 }), 'live')).toBeNull()
   })

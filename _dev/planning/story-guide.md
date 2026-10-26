@@ -62,11 +62,12 @@ so a fast tapper cannot outrun the story. Target times assume a normal player.
 | `strangers_at_gate` | 4 | after the claws | Sharpen Your Claws done | 60 | Mirael | A free **Lone Wanderer** (Mirael's rations) arrives right after the scene | `wanderers` | Open the Gates quest: welcome 3 newcomers |
 | `a_city_to_build` | 5 | after Open the Gates | Open the Gates done | 60 | Pyreth | Draconia shows **only the Garrison**; everything else is fog | `draconiaTab` | Quests Raise the Garrison, then First Soldiers (train 2 conscripts) |
 | `the_smith` | 5 | after First Soldiers | First Soldiers done | 60 | Kael | Forge revealed; spotlight the Draconia tab | reveal `forge` | Quests Light the Forge, then Arm the Ranks (forge 2 swords). The story pauses after it |
-| `the_keep_stands` | 5 | ~55:00 | `armoryBuilt` | 60 | *silent* | Keep and Ranger's Lodge revealed | reveal `keep`, `lodge` | Restore the Keep |
+| `the_keep_stands` | 5 | after Arm the Ranks | Arm the Ranks done | 60 | *silent* | Keep and Ranger's Lodge revealed; spotlight the Draconia tab | reveal `keep`, `lodge` | Restore the Keep quest (completes into `the_keep`) |
+| `the_keep` | 5 | Restore the Keep done | quest completes into it | 0 | Pyreth | The first return after 60 s or more away shows a framed OfflineModal; time away follows the army readout | `offline`, `reassignment` | -- |
+| `the_lodge` | 5 | a minute after the Keep | `the_keep` seen | 60 | Mirael | -- | -- | Quests Raise the Lodge, then First Trappers (promote 2 gatherers). The story pauses after it |
 | `word_spreads` | 6 | varies | `totalInspirationEarned >= 25` | 0 | Pyreth | The existing MilestoneModal follows the scene | `milestones` | -- |
 | `lean_times` | 7 | ~1:00 | first time `food <= 0` while `hunger` is on | 0 | Pyreth | **No deaths.** The scene replaces the StarvationModal | `starvation` | Get food above 0 |
 | `beyond_the_walls` | 8 | ~1:30 | `shouldRevealExplorerPost(state)` | 300 | Mirael | **First expedition always succeeds** (at least 1 villager) | `expeditions`, reveal `outpost` | Send an expedition |
-| `the_keep` | 9 | ~2:00 | `draconiaHallBuilt` | 0 | Pyreth | The first return after 60 s or more away shows a framed OfflineModal | `offline`, `reassignment` | -- |
 | `the_scholar` | 10 | ~2:30 | `the_keep` seen | 600 | Lirae | Arrives as a scripted **Trained Refugee** | reveal `librarium`; Journal gains the Lore tab | Build the Librarium |
 | `the_horde_grows` | 11 | ~3:00 | `completedResearch.length >= 1` | 300 | Rodain | -- | none (the floor is lifted by `the_wall_is_yours`; this scene needs new words) | -- |
 | *later* | 12+ | 3:00+ | expedition finds / refugees | -- | Thornwick and others | Same pattern | Wizard's Tower, Housing, Towers | -- |
@@ -127,6 +128,13 @@ at `GameScreen.tsx:103-109`; keep its last line.
 
 **the_keep** (Pyreth, "The Keep Restored")
 1. With the Keep restored, the city can tend itself while you rest. I will keep the ledgers.
+2. Your army holds the Gate while you are away, if it is strong enough. If it is not, the wall will wear, but the people will not let it fall.
+3. And from the Keep you can move our people to whatever work needs them most.
+
+**the_lodge** (Mirael, "The Ranger's Lodge")
+1. Gathering berries will not feed an army, my lord. Your soldiers eat more than your fighters ever did.
+2. Give me a lodge, and I will teach your gatherers to set traps, and the best of them to range the deep valley.
+3. A trapper brings home what two gatherers do and more. A ranger, twice that again.
 
 **the_scholar** (Lirae, "The Ink-Wing")
 1. Oh! Sorry, I didn't mean to... is this Draconia? I'm Lirae. I keep records. Kept. Keep.

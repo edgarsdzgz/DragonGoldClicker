@@ -10,13 +10,14 @@ import {
   SOLDIER_TIERS,
   FORAGER_TIERS,
   OFFLINE_LEVELS,
-  getSoldierCount,
-  getForagerCount,
   getOfflineUpgradeCost,
-  getTotalAssigned,
   getReassignOptions,
+  peopleAtWork,
+  roleCount,
+  roleName,
 } from '../../types/game'
-import type { SoldierTier, ForagerTier, RoleId } from '../../types/game'
+import type { RoleId } from '../../types/game'
+import { getRoleIcon, getRoleColor } from '../../components/ReassignModal'
 import { DescriptionBanner } from './shared'
 import { SummaryBar } from './SummaryBar'
 import { styles, offStyles, draconiaStyles } from './interiorStyles'
@@ -166,60 +167,21 @@ export function DraconiaHallInterior() {
 
   const upgradeCost = getOfflineUpgradeCost(state.offlineLevel)
 
-  // Collect all assigned roles with counts for the reassignment section
-  const soldierRows: { label: string; tier: SoldierTier; icon: keyof typeof Ionicons.glyphMap; color: string; count: number }[] = SOLDIER_TIERS
-    .map((t) => ({
-      label: t.name,
-      tier: t.id,
-      icon: 'shield' as keyof typeof Ionicons.glyphMap,
-      color: gold[500],
-      count: getSoldierCount(state.soldiers, t.id),
-    }))
-    .filter((r) => r.count > 0)
+  // Everyone at work who can be moved, one row per job (chapter 5 phase C)
+  const movable: RoleId[] = [
+    { type: 'fighter' },
+    { type: 'repairer' },
+    ...SOLDIER_TIERS.map((t): RoleId => ({ type: 'soldier', tier: t.id })),
+    ...FORAGER_TIERS.map((t): RoleId => ({ type: 'forager', tier: t.id })),
+    { type: 'explorer' },
+  ]
+  const rows = movable.filter((r) => roleCount(state, r) > 0)
+  const totalAssigned = peopleAtWork(state)
 
-  const foragerRows: { label: string; tier: ForagerTier; icon: keyof typeof Ionicons.glyphMap; color: string; count: number }[] = FORAGER_TIERS
-    .map((t) => ({
-      label: t.name,
-      tier: t.id,
-      icon: 'leaf' as keyof typeof Ionicons.glyphMap,
-      color: colors.building.lodge,
-      count: getForagerCount(state.foragers, t.id),
-    }))
-    .filter((r) => r.count > 0)
-
-  const hasAnyAssigned = soldierRows.length > 0 || foragerRows.length > 0 || state.explorers > 0
-
-  const totalAssigned = getTotalAssigned(state.soldiers, state.foragers, state.explorers)
-
-  // Reassign modal data
   const reassignOptions = reassignFrom ? getReassignOptions(reassignFrom, state) : []
-  const reassignLabel = reassignFrom
-    ? reassignFrom.type === 'soldier' ? SOLDIER_TIERS.find((t) => t.id === reassignFrom.tier)?.name ?? ''
-    : reassignFrom.type === 'forager' ? FORAGER_TIERS.find((t) => t.id === reassignFrom.tier)?.name ?? ''
-    : reassignFrom.type === 'explorer' ? 'Explorer'
-    : ''
-    : ''
-  const reassignIcon: keyof typeof Ionicons.glyphMap = reassignFrom
-    ? reassignFrom.type === 'soldier' ? 'shield'
-    : reassignFrom.type === 'forager' ? 'leaf'
-    : reassignFrom.type === 'explorer' ? 'compass'
-    : 'person'
-    : 'person'
-  const reassignColor = reassignFrom
-    ? reassignFrom.type === 'soldier' ? gold[500]
-    : reassignFrom.type === 'forager' ? colors.building.lodge
-    : reassignFrom.type === 'explorer' ? colors.building.explorer
-    : dark[300]
-    : dark[300]
+  const reassignCount = reassignFrom ? roleCount(state, reassignFrom) : 0
 
-  // Auto-close modal when source unit count reaches 0
-  const reassignCount = reassignFrom
-    ? reassignFrom.type === 'soldier' ? getSoldierCount(state.soldiers, reassignFrom.tier)
-    : reassignFrom.type === 'forager' ? getForagerCount(state.foragers, reassignFrom.tier)
-    : reassignFrom.type === 'explorer' ? state.explorers
-    : 0
-    : 0
-
+  // Auto-close the dialog when nobody is left to move
   React.useEffect(() => {
     if (reassignFrom && reassignCount <= 0) setReassignFrom(null)
   }, [reassignFrom, reassignCount])
@@ -252,58 +214,36 @@ export function DraconiaHallInterior() {
       {/* Description banner */}
       <DescriptionBanner icon="swap-horizontal" color={colors.building.draconia}>
         <Text variant="bodySmall" color="secondary">
-          Reassign villagers to a new role with a partial refund, or dismiss to idle.
+          Move people to another job at no cost. Soldiers stand down to fighters and leave their gear in the Forge; trappers and rangers go back to gathering.
         </Text>
       </DescriptionBanner>
 
-      {!hasAnyAssigned && (
+      {rows.length === 0 && (
         <View style={draconiaStyles.emptyState}>
           <Ionicons name="people-outline" size={24} color={dark[500]} />
           <Text variant="caption" color="muted">
-            No villagers are assigned to roles yet.
-          </Text>
-          <Text variant="caption" color="muted">
-            Train units in other buildings first.
+            Nobody is at work yet.
           </Text>
         </View>
       )}
 
-      {soldierRows.map((r) => (
+      {rows.map((r) => (
         <ReassignRow
-          key={r.tier}
-          label={r.label}
-          icon={r.icon}
-          accentColor={r.color}
-          count={r.count}
-          onReassign={() => setReassignFrom({ type: 'soldier', tier: r.tier })}
+          key={r.type === 'soldier' || r.type === 'forager' ? r.tier : r.type}
+          label={roleName(r)}
+          icon={getRoleIcon(r)}
+          accentColor={getRoleColor(r)}
+          count={roleCount(state, r)}
+          onReassign={() => setReassignFrom(r)}
         />
       ))}
-      {foragerRows.map((r) => (
-        <ReassignRow
-          key={r.tier}
-          label={r.label}
-          icon={r.icon}
-          accentColor={r.color}
-          count={r.count}
-          onReassign={() => setReassignFrom({ type: 'forager', tier: r.tier })}
-        />
-      ))}
-      {state.explorers > 0 && (
-        <ReassignRow
-          label="Explorer"
-          icon="compass"
-          accentColor={colors.building.explorer}
-          count={state.explorers}
-          onReassign={() => setReassignFrom({ type: 'explorer' })}
-        />
-      )}
 
       {/* Reassign modal */}
       <ReassignModal
         visible={reassignFrom !== null}
-        fromLabel={reassignLabel}
-        fromIcon={reassignIcon}
-        fromColor={reassignColor}
+        fromLabel={reassignFrom ? roleName(reassignFrom) : ''}
+        fromIcon={reassignFrom ? getRoleIcon(reassignFrom) : 'person'}
+        fromColor={reassignFrom ? getRoleColor(reassignFrom) : dark[300]}
         fromCount={reassignCount}
         options={reassignOptions}
         playerInspiration={state.inspiration}

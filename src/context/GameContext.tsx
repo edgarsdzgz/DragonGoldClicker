@@ -1,30 +1,20 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { AppState } from 'react-native'
 import { DEV_TOOLS_ENABLED } from '../config/devTools'
-import type { GameState, SoldierTier, SoldierCounts, ForagerTier, ForagerCounts, RoleId, StarvationResult, WandererEncounter, ResearchPrereq, MilestoneDef } from '../types/game'
+import type { GameState, SoldierTier, ForagerTier, RoleId, StarvationResult, WandererEncounter, ResearchPrereq, MilestoneDef } from '../types/game'
 import {
   DEFAULT_GAME_STATE,
   ARMORY_COST,
   BARRACKS_LEVELS,
-  SOLDIER_TIERS,
   OFFLINE_LEVELS,
   MAX_OFFLINE_LEVEL,
-  getSoldierCount,
-  getTotalSoldiers,
-  getSoldierCap,
   getBarracksUpgradeCost,
-  getTierIndex,
   getOfflineUpgradeCost,
   getFoodConsumption,
   getFoodEventsRemaining,
   getForageYield,
-  FORAGER_TIERS,
   LODGE_LEVELS,
   MAX_LODGE_LEVEL,
-  getTotalForagers,
-  getForagerCap,
-  getForagerCost,
-  getForagerCount,
   getAutoFoodRate,
   POST_LEVELS,
   MAX_POST_LEVEL,
@@ -36,10 +26,6 @@ import {
   getExplorerCap,
   rollExpeditionReward,
   DRACONIA_HALL_COST,
-  getTrainingCost,
-  getRecruitCost,
-  REASSIGN_REFUND_RATE,
-  DISMISS_REFUND_RATE,
   rollWandererEncounter,
   stepWanderers,
   welcomeWanderer,
@@ -54,7 +40,6 @@ import {
   MAX_CITY_HP,
   getNextMilestone,
   getRepairRate,
-  roundInsp,
   granaryRoom,
   isSystemOn,
   isBuildingRevealed,
@@ -71,6 +56,8 @@ import { firstExpeditionReward } from '../types/scripted'
 import { sharpenClaws as sharpenClawsState } from '../types/claws'
 import { armySize, armyVolleyNow, makeRank as makeRankState } from '../types/army'
 import { forgeGear } from '../types/forge'
+import { makeForager as makeForagerState } from '../types/lodge'
+import { movePerson } from '../types/reassignment'
 import type { Gear } from '../types/forge'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -94,9 +81,6 @@ interface GameContextType {
   sendExpedition: () => boolean
   claimExpedition: (id: number) => { villagersFound: number } | null
   buildDraconiaHall: () => boolean
-  dismissSoldier: (tier: SoldierTier) => boolean
-  dismissForager: (tier: ForagerTier) => boolean
-  dismissExplorer: () => boolean
   reassignRole: (from: RoleId, to: RoleId) => boolean
   autoFoodRate: number
   foodWarningLevel: 0 | 3 | 1
@@ -436,32 +420,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return success
   }, [])
 
+  // Train a villager into a gatherer, or promote at the Lodge (chapter 5 phase C)
   const trainForager = useCallback((tier: ForagerTier): boolean => {
-    let trained = false
+    let made = false
     setState((prev) => {
-      if (prev.villagers <= 0) return prev
-      const tierDef = FORAGER_TIERS.find((t) => t.id === tier)
-      if (!tierDef || prev.lodgeLevel < tierDef.unlocksAtLodgeLevel) return prev
-      const total = getTotalForagers(prev.foragers)
-      const cap = getForagerCap(prev.lodgeLevel)
-      if (total >= cap) return prev
-      const lifetimeCount = getForagerCount(prev.foragersTrained, tier)
-      const cost = getForagerCost(tierDef, lifetimeCount)
-      if (prev.inspiration < cost) return prev
-      trained = true
-      const key: keyof ForagerCounts =
-        tier === 'gatherer' ? 'gatherers' :
-        tier === 'trapper' ? 'trappers' : 'rangers'
-      return {
-        ...prev,
-        inspiration: prev.inspiration - cost,
-        totalInspirationSpent: prev.totalInspirationSpent + cost,
-        villagers: prev.villagers - 1,
-        foragers: { ...prev.foragers, [key]: prev.foragers[key] + 1 },
-        foragersTrained: { ...prev.foragersTrained, [key]: prev.foragersTrained[key] + 1 },
-      }
+      const next = makeForagerState(prev, tier)
+      made = next !== prev
+      return next
     })
-    return trained
+    return made
   }, [])
 
   const buildOrUpgradePost = useCallback((): boolean => {
@@ -568,169 +535,16 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return success
   }, [])
 
-  const dismissSoldier = useCallback((tier: SoldierTier): boolean => {
-    let dismissed = false
-    setState((prev) => {
-      if (!prev.draconiaHallBuilt) return prev
-      const count = getSoldierCount(prev.soldiers, tier)
-      if (count <= 0) return prev
-      dismissed = true
-      const key: keyof SoldierCounts =
-        tier === 'conscript' ? 'conscripts' :
-        tier === 'footman' ? 'footmen' : 'knights'
-      return {
-        ...prev,
-        soldiers: { ...prev.soldiers, [key]: prev.soldiers[key] - 1 },
-        villagers: prev.villagers + 1,
-      }
-    })
-    return dismissed
-  }, [])
-
-  const dismissForager = useCallback((tier: ForagerTier): boolean => {
-    let dismissed = false
-    setState((prev) => {
-      if (!prev.draconiaHallBuilt) return prev
-      const count = getForagerCount(prev.foragers, tier)
-      if (count <= 0) return prev
-      dismissed = true
-      const key: keyof ForagerCounts =
-        tier === 'gatherer' ? 'gatherers' :
-        tier === 'trapper' ? 'trappers' : 'rangers'
-      return {
-        ...prev,
-        foragers: { ...prev.foragers, [key]: prev.foragers[key] - 1 },
-        villagers: prev.villagers + 1,
-      }
-    })
-    return dismissed
-  }, [])
-
-  const dismissExplorer = useCallback((): boolean => {
-    let dismissed = false
-    setState((prev) => {
-      if (!prev.draconiaHallBuilt) return prev
-      if (prev.explorers <= 0) return prev
-      // Can't dismiss an explorer who is on an active expedition
-      if (prev.activeExpeditions.length >= prev.explorers) return prev
-      dismissed = true
-      return {
-        ...prev,
-        explorers: prev.explorers - 1,
-        villagers: prev.villagers + 1,
-      }
-    })
-    return dismissed
-  }, [])
-
+  // The Keep (chapter 5 phase C): move one person to another job, free and with no refund
   const reassignRole = useCallback((from: RoleId, to: RoleId): boolean => {
-    let success = false
+    let moved = false
     setState((prev) => {
       if (!prev.draconiaHallBuilt) return prev
-
-      // Validate source has units
-      if (from.type === 'soldier') {
-        if (getSoldierCount(prev.soldiers, from.tier) <= 0) return prev
-      } else if (from.type === 'forager') {
-        if (getForagerCount(prev.foragers, from.tier) <= 0) return prev
-      } else if (from.type === 'explorer') {
-        if (prev.explorers <= 0) return prev
-        if (prev.activeExpeditions.length >= prev.explorers) return prev
-      } else {
-        return prev // can't reassign from idle
-      }
-
-      // Block promotions within same type -- must use building promote flow
-      if (from.type === 'soldier' && to.type === 'soldier') {
-        if (getTierIndex(to.tier) > getTierIndex(from.tier)) return prev
-      }
-      if (from.type === 'forager' && to.type === 'forager') {
-        const fromIdx = FORAGER_TIERS.findIndex((t) => t.id === from.tier)
-        const toIdx = FORAGER_TIERS.findIndex((t) => t.id === to.tier)
-        if (toIdx > fromIdx) return prev
-      }
-
-      // Calculate costs
-      const refundRate = to.type === 'idle' ? DISMISS_REFUND_RATE : REASSIGN_REFUND_RATE
-      const refund = roundInsp(getTrainingCost(from, prev) * refundRate)
-      const recruitCost = to.type === 'idle' ? 0 : getRecruitCost(to, prev)
-      const netCost = recruitCost - refund // positive = player pays, negative = player gets inspiration
-
-      // Check player can afford (if net cost is positive)
-      if (netCost > 0 && prev.inspiration < netCost) return prev
-
-      // Validate target capacity (not needed for idle)
-      if (to.type === 'soldier') {
-        const total = getTotalSoldiers(prev.soldiers)
-        const effectiveTotal = from.type === 'soldier' ? total - 1 : total
-        if (effectiveTotal >= getSoldierCap(prev.barracksLevel)) return prev
-        const tierDef = SOLDIER_TIERS.find((t) => t.id === to.tier)
-        if (!tierDef || prev.barracksLevel < tierDef.unlocksAtBarracksLevel) return prev
-      } else if (to.type === 'forager') {
-        const total = getTotalForagers(prev.foragers)
-        const effectiveTotal = from.type === 'forager' ? total - 1 : total
-        if (effectiveTotal >= getForagerCap(prev.lodgeLevel)) return prev
-        const tierDef = FORAGER_TIERS.find((t) => t.id === to.tier)
-        if (!tierDef || prev.lodgeLevel < tierDef.unlocksAtLodgeLevel) return prev
-      } else if (to.type === 'explorer') {
-        if (prev.postLevel <= 0) return prev
-        const effectiveExplorers = from.type === 'explorer' ? prev.explorers - 1 : prev.explorers
-        if (effectiveExplorers >= getExplorerCap(prev.postLevel)) return prev
-      }
-
-      success = true
-      let next = { ...prev }
-
-      // Inspiration transaction
-      next.inspiration = prev.inspiration - netCost
-      if (netCost > 0) {
-        next.totalInspirationSpent = prev.totalInspirationSpent + netCost
-      }
-
-      // Remove from source role
-      if (from.type === 'soldier') {
-        const key: keyof SoldierCounts =
-          from.tier === 'conscript' ? 'conscripts' :
-          from.tier === 'footman' ? 'footmen' : 'knights'
-        next.soldiers = { ...prev.soldiers, [key]: prev.soldiers[key] - 1 }
-      } else if (from.type === 'forager') {
-        const key: keyof ForagerCounts =
-          from.tier === 'gatherer' ? 'gatherers' :
-          from.tier === 'trapper' ? 'trappers' : 'rangers'
-        next.foragers = { ...prev.foragers, [key]: prev.foragers[key] - 1 }
-      } else if (from.type === 'explorer') {
-        next.explorers = prev.explorers - 1
-      }
-
-      // Add to target role (or idle)
-      if (to.type === 'soldier') {
-        const key: keyof SoldierCounts =
-          to.tier === 'conscript' ? 'conscripts' :
-          to.tier === 'footman' ? 'footmen' : 'knights'
-        next.soldiers = { ...(next.soldiers ?? prev.soldiers), [key]: (next.soldiers ?? prev.soldiers)[key] + 1 }
-        next.soldiersTrained = {
-          ...prev.soldiersTrained,
-          [key]: prev.soldiersTrained[key] + 1,
-        }
-      } else if (to.type === 'forager') {
-        const key: keyof ForagerCounts =
-          to.tier === 'gatherer' ? 'gatherers' :
-          to.tier === 'trapper' ? 'trappers' : 'rangers'
-        next.foragers = { ...(next.foragers ?? prev.foragers), [key]: (next.foragers ?? prev.foragers)[key] + 1 }
-        next.foragersTrained = {
-          ...prev.foragersTrained,
-          [key]: prev.foragersTrained[key] + 1,
-        }
-      } else if (to.type === 'explorer') {
-        next.explorers = (next.explorers ?? prev.explorers) + 1
-        next.explorersTrained = prev.explorersTrained + 1
-      } else if (to.type === 'idle') {
-        next.villagers = prev.villagers + 1
-      }
-
+      const next = movePerson(prev, from, to)
+      moved = next !== prev
       return next
     })
-    return success
+    return moved
   }, [])
 
   const upgradeOffline = useCallback((): boolean => {
@@ -955,9 +769,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         sendExpedition,
         claimExpedition,
         buildDraconiaHall,
-        dismissSoldier,
-        dismissForager,
-        dismissExplorer,
         reassignRole,
         autoFoodRate,
         resetGame,

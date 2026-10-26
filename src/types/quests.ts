@@ -11,7 +11,7 @@ import { roundInsp } from './utils'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -51,6 +51,9 @@ export const FIRST_SOLDIERS_CONSCRIPTS = 2
 
 /** Swords the player has Kael forge for the soldiers (chapter 5 phase B) */
 export const ARM_THE_RANKS_SWORDS = 2
+
+/** Gatherers the player promotes to trappers at the new Lodge (chapter 5 phase C) */
+export const FIRST_TRAPPERS = 2
 
 const done = (s: GameState, id: QuestId) => s.questsDone.includes(id)
 
@@ -118,6 +121,22 @@ export const QUESTS: QuestDef[] = [
     id: 'arm_the_ranks', title: 'Arm the Ranks',
     goals: [{ label: 'Forge 2 swords', target: ARM_THE_RANKS_SWORDS, progress: (s) => s.armoryGear.swords }],
     offeredWhen: (s) => done(s, 'light_the_forge'),
+  },
+  {
+    id: 'restore_the_keep', title: 'Restore the Keep',
+    goals: [{ label: 'Restore the Keep', target: 1, progress: (s) => (s.draconiaHallBuilt ? 1 : 0) }],
+    offeredWhen: (s) => s.beatsSeen.includes('the_keep_stands'),
+    completesInto: 'the_keep',
+  },
+  {
+    id: 'raise_the_lodge', title: 'Raise the Lodge',
+    goals: [{ label: "Build the Ranger's Lodge", target: 1, progress: (s) => s.lodgeLevel }],
+    offeredWhen: (s) => s.beatsSeen.includes('the_lodge'),
+  },
+  {
+    id: 'first_trappers', title: 'First Trappers',
+    goals: [{ label: 'Promote 2 gatherers to trappers', target: FIRST_TRAPPERS, progress: (s) => s.foragersTrained.trappers }],
+    offeredWhen: (s) => done(s, 'raise_the_lodge'),
   },
 ]
 

@@ -14,6 +14,8 @@ import {
 import { migrateSave } from '../types/saveMigrations'
 import { armyRenownPerSec } from '../types/army'
 import { mealCost } from '../types/foodTick'
+import { wallWhileAway } from '../types/timeAway'
+import type { WallAway } from '../types/timeAway'
 
 const STORAGE_KEY = '@dragongold/gamestate'
 
@@ -32,6 +34,8 @@ function normalizeStory(s: GameState): GameState {
 export interface OfflineEarnings {
   inspiration: number
   seconds: number
+  /** What happened to the wall while away (absent before the siege) */
+  wall?: WallAway
 }
 
 export function useStorage() {
@@ -136,6 +140,10 @@ export function useStorage() {
           const autoRate = armyRenownPerSec(gameState)
           const maxSec = getOfflineMaxSeconds(gameState.offlineLevel)
           const cappedSec = Math.min(elapsedSec, maxSec)
+          // Time away follows the army readout (chapter 5 phase C): strikes it lets through wear the wall
+          const wall = wallWhileAway(gameState, cappedSec) ?? undefined
+          if (wall) gameState.cityHp = wall.hpAfter
+          let earned = 0
 
           if (autoRate > 0) {
             // Time away is fair (core-tap layer 3): the army eats its meals, but the stores never drop
@@ -150,13 +158,13 @@ export function useStorage() {
               }
             }
 
-            const earned = roundInsp(autoRate * inspSeconds * (1 + rb.offlineMultiplier))
+            earned = roundInsp(autoRate * inspSeconds * (1 + rb.offlineMultiplier))
             if (earned > 0) {
               gameState.inspiration += earned
               gameState.totalInspirationEarned += earned
-              offlineEarnings = { inspiration: earned, seconds: Math.floor(cappedSec) }
             }
           }
+          if (earned > 0 || wall) offlineEarnings = { inspiration: earned, seconds: Math.floor(cappedSec), wall }
         }
 
         gameState.lastSavedAt = now

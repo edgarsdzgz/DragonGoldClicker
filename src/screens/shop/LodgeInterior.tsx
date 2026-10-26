@@ -10,6 +10,8 @@ import {
   getForagerCap,
   getLodgeUpgradeCost,
   formatNumber,
+  formatAmount,
+  FOOD_CHECK_INTERVAL,
 } from '../../types/game'
 import { ForagerTierRow } from './TierRow'
 import { CapacitySection } from './shared'
@@ -35,7 +37,7 @@ export function LodgeInterior() {
       <SummaryBar>
         <StatBox value={`${total}/${cap}`} label="Foragers" valueColor={colors.building.lodge} />
         <StatBox value={state.villagers} label="Villagers" />
-        <StatBox value={autoFoodRate.toFixed(2)} label="food/s" valueColor={colors.building.lodge} />
+        <StatBox value={formatAmount(autoFoodRate * FOOD_CHECK_INTERVAL)} label="food a meal" valueColor={colors.building.lodge} />
       </SummaryBar>
 
       {/* Meal countdown */}

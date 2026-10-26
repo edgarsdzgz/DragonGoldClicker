@@ -105,7 +105,7 @@ Player can accept or reject each group.
 Buildings are organized in wards, top to bottom:
 
 ### THE KEEP
-- **Draconia Keep** (250 insp + 200 food) -- Enables reassignment + offline rewards
+- **Draconia Keep** (150 renown) -- Time away (the wall wears while away if the army cannot hold, never below 50) and moving people between jobs (free, no refund; soldiers stand down to fighters)
 
 ### INNER WARD
 - **Housing** -- Multiple houses, improves productivity
@@ -114,7 +114,7 @@ Buildings are organized in wards, top to bottom:
 
 ### CRAFT WARD
 - **The Forge** (Kael, 75 renown) -- Swords (from 15): an armed soldier hits 50% harder. Shields (from 20): a shielded soldier never falls in a Breach. Best ranks first, one of each per soldier
-- **Ranger's Lodge** -- Upgrade gatherers to trappers/rangers
+- **Ranger's Lodge** (30/75/150/300/600; forager cap 10-26, 6 without it) -- Promote gatherers (8 food a meal) to trappers (20, Lv1, from 15 renown) and trappers to rangers (40, Lv3, from 40)
 
 ### OUTER WARD
 - **Explorer's Outpost** -- Send explorers on expeditions

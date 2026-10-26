@@ -1,198 +1,127 @@
-import type { SoldierTier, SoldierCounts } from './soldiers'
-import {
-  SOLDIER_TIERS,
-  getTierIndex,
-  getSoldierCount,
-  getSoldierCost,
-  getTotalSoldiers,
-  getSoldierCap,
-} from './soldiers'
-import type { ForagerTier, ForagerCounts } from './foragers'
-import {
-  FORAGER_TIERS,
-  getForagerCount,
-  getForagerCost,
-  getTotalForagers,
-  getForagerCap,
-} from './foragers'
-import { EXPLORER_COST, getExplorerCap } from './explorers'
+import type { SoldierTier } from './soldiers'
+import { SOLDIER_TIERS, getSoldierCount, getTotalSoldiers, soldierKey } from './soldiers'
+import type { ForagerTier } from './foragers'
+import { FORAGER_TIERS, getForagerCount, getTotalForagers, getForagerCap, foragerKey } from './foragers'
 import type { GameState } from './state'
 
 // =============================================================================
-// DRACONIA HALL / ROLE REASSIGNMENT
+// THE KEEP: MOVING PEOPLE BETWEEN JOBS (chapter 5 phase C, approved 2026-10-26)
 // =============================================================================
+// Free, and it refunds nothing; the price curves do not step back. Fighters, repairers, gatherers
+// and explorers move between the basic jobs or stand idle. A soldier stands down to a fighter (their
+// gear stays in the Forge's racks) and a trapper or ranger goes back to gathering. Nobody moves out
+// of idle here: rallying, directing and training still cost what they cost.
 
-/** Fraction of original training cost refunded when reassigning or dismissing */
-export const REASSIGN_REFUND_RATE = 0.5
-
-/** Fraction of original training cost refunded when dismissing to idle */
-export const DISMISS_REFUND_RATE = 0.3
-
-/**
- * Unified role identifier used by the reassignment system.
- * Soldiers and foragers have tiered variants; explorer is flat.
- */
 export type RoleId =
+  | { type: 'fighter' }
+  | { type: 'repairer' }
   | { type: 'soldier'; tier: SoldierTier }
   | { type: 'forager'; tier: ForagerTier }
   | { type: 'explorer' }
   | { type: 'idle' }
 
-/** Tier index for cross-role equivalence (T1=0, T2=1, T3=2) */
-export function getRoleTierIndex(role: RoleId): number {
-  if (role.type === 'soldier') return getTierIndex(role.tier)
-  if (role.type === 'forager') {
-    const idx = FORAGER_TIERS.findIndex((t) => t.id === role.tier)
-    return idx >= 0 ? idx : 0
-  }
-  return 0 // explorer and idle are tier-0 equivalent
+const FIGHTER: RoleId = { type: 'fighter' }
+const GATHERER: RoleId = { type: 'forager', tier: 'gatherer' }
+
+/** The jobs anyone can move between */
+export const BASIC_ROLES: RoleId[] = [FIGHTER, { type: 'repairer' }, GATHERER, { type: 'idle' }]
+
+export function sameRole(a: RoleId, b: RoleId): boolean {
+  if (a.type !== b.type) return false
+  if (a.type === 'soldier' && b.type === 'soldier') return a.tier === b.tier
+  if (a.type === 'forager' && b.type === 'forager') return a.tier === b.tier
+  return true
 }
 
-/**
- * Estimate what it cost to train a unit into its current role.
- * Uses the lifetime-trained counter to approximate the most recent recruit's cost.
- */
-export function getTrainingCost(role: RoleId, state: GameState): number {
-  if (role.type === 'soldier') {
-    const tierDef = SOLDIER_TIERS.find((t) => t.id === role.tier)
-    if (!tierDef) return 0
-    // Use (lifetimeTrained - 1) to approximate cost of last trained unit, min 0
-    const lifetimeCount = Math.max(0, getSoldierCount(state.soldiersTrained, role.tier) - 1)
-    return getSoldierCost(tierDef, lifetimeCount)
+/** How many in this role can be moved now (explorers away on an expedition cannot) */
+export function roleCount(s: GameState, r: RoleId): number {
+  switch (r.type) {
+    case 'fighter': return s.fighters
+    case 'repairer': return s.repairers
+    case 'soldier': return getSoldierCount(s.soldiers, r.tier)
+    case 'forager': return getForagerCount(s.foragers, r.tier)
+    case 'explorer': return Math.max(0, s.explorers - s.activeExpeditions.length)
+    case 'idle': return s.villagers
   }
-  if (role.type === 'forager') {
-    const tierDef = FORAGER_TIERS.find((t) => t.id === role.tier)
-    if (!tierDef) return 0
-    const lifetimeCount = Math.max(0, getForagerCount(state.foragersTrained, role.tier) - 1)
-    return getForagerCost(tierDef, lifetimeCount)
-  }
-  if (role.type === 'explorer') return EXPLORER_COST
-  return 0
 }
 
-/**
- * Cost to train INTO a target role (fresh recruit price at current lifetime count).
- */
-export function getRecruitCost(role: RoleId, state: GameState): number {
-  if (role.type === 'soldier') {
-    const tierDef = SOLDIER_TIERS.find((t) => t.id === role.tier)
-    if (!tierDef) return 0
-    return getSoldierCost(tierDef, getSoldierCount(state.soldiersTrained, role.tier))
+export function roleName(r: RoleId): string {
+  switch (r.type) {
+    case 'fighter': return 'Fighter'
+    case 'repairer': return 'Repairer'
+    case 'soldier': return SOLDIER_TIERS.find((t) => t.id === r.tier)!.name
+    case 'forager': return FORAGER_TIERS.find((t) => t.id === r.tier)!.name
+    case 'explorer': return 'Explorer'
+    case 'idle': return 'Idle villager'
   }
-  if (role.type === 'forager') {
-    const tierDef = FORAGER_TIERS.find((t) => t.id === role.tier)
-    if (!tierDef) return 0
-    return getForagerCost(tierDef, getForagerCount(state.foragersTrained, role.tier))
-  }
-  if (role.type === 'explorer') return EXPLORER_COST
-  return 0
 }
 
+/** Everyone at work (not idle) */
+export function peopleAtWork(s: GameState): number {
+  return s.fighters + s.repairers + getTotalSoldiers(s.soldiers) + getTotalForagers(s.foragers) + s.explorers
+}
+
+/** Where someone in this role may go */
+export function moveTargets(from: RoleId): RoleId[] {
+  if (from.type === 'idle') return []
+  if (from.type === 'soldier') return [FIGHTER]
+  if (from.type === 'forager' && from.tier !== 'gatherer') return [GATHERER]
+  return BASIC_ROLES.filter((r) => !sameRole(r, from))
+}
+
+export type MoveBlock = 'nobody' | 'notAllowed' | 'full' | null
+
+/** Why one person cannot move from one job to the other now, or null if they can */
+export function moveBlock(s: GameState, from: RoleId, to: RoleId): MoveBlock {
+  if (!moveTargets(from).some((r) => sameRole(r, to))) return 'notAllowed'
+  if (roleCount(s, from) <= 0) return 'nobody'
+  // A promoted forager going back to gathering keeps their place; anyone else needs room
+  if (to.type === 'forager' && from.type !== 'forager' && getTotalForagers(s.foragers) >= getForagerCap(s.lodgeLevel)) return 'full'
+  return null
+}
+
+function withCount(s: GameState, r: RoleId, delta: number): GameState {
+  switch (r.type) {
+    case 'fighter': return { ...s, fighters: s.fighters + delta }
+    case 'repairer': return { ...s, repairers: s.repairers + delta }
+    case 'soldier': {
+      const k = soldierKey(r.tier)
+      return { ...s, soldiers: { ...s.soldiers, [k]: s.soldiers[k] + delta } }
+    }
+    case 'forager': {
+      const k = foragerKey(r.tier)
+      return { ...s, foragers: { ...s.foragers, [k]: s.foragers[k] + delta } }
+    }
+    case 'explorer': return { ...s, explorers: s.explorers + delta }
+    case 'idle': return { ...s, villagers: s.villagers + delta }
+  }
+}
+
+/** Move one person. Free, no refund, no counter steps back. Unchanged if blocked. */
+export function movePerson(s: GameState, from: RoleId, to: RoleId): GameState {
+  if (moveBlock(s, from, to) !== null) return s
+  return withCount(withCount(s, from, -1), to, 1)
+}
+
+/** A row in the Keep's move dialog */
 export interface ReassignOption {
   target: RoleId
   label: string
-  netCost: number // positive = player pays, negative = player gets refund
+  /** Always 0: moving is free (kept for the dialog's price badge) */
+  netCost: number
   locked: boolean
   lockReason: string
   atCap: boolean
 }
 
-/**
- * Calculate all valid reassignment targets for a unit in a given role.
- * Includes cross-role swaps at equivalent tier, dismiss to idle, etc.
- */
-export function getReassignOptions(from: RoleId, state: GameState): ReassignOption[] {
-  if (from.type === 'idle') return []
-
-  const refundAmount = parseFloat((getTrainingCost(from, state) * REASSIGN_REFUND_RATE).toFixed(2))
-  const dismissRefund = parseFloat((getTrainingCost(from, state) * DISMISS_REFUND_RATE).toFixed(2))
-  const options: ReassignOption[] = []
-
-  // Soldier targets
-  for (const tier of SOLDIER_TIERS) {
-    const target: RoleId = { type: 'soldier', tier: tier.id }
-    // Skip if same role
-    if (from.type === 'soldier' && from.tier === tier.id) continue
-    // Block promotions within same type -- must use Barracks promote flow
-    if (from.type === 'soldier') {
-      const fromIdx = getTierIndex(from.tier)
-      const toIdx = getTierIndex(tier.id)
-      if (toIdx > fromIdx) continue
-    }
-    const locked = state.barracksLevel < tier.unlocksAtBarracksLevel
-    const total = getTotalSoldiers(state.soldiers)
-    // When swapping FROM a soldier, they vacate their slot, so effective count is total - 1
-    const effectiveTotal = from.type === 'soldier' ? total - 1 : total
-    const cap = getSoldierCap(state.barracksLevel)
-    const atCap = effectiveTotal >= cap
-    const recruitCost = getRecruitCost(target, state)
-    const netCost = recruitCost - refundAmount
-
-    options.push({
-      target,
-      label: tier.name,
-      netCost,
-      locked,
-      lockReason: `Barracks Lv${tier.unlocksAtBarracksLevel}`,
-      atCap,
-    })
-  }
-
-  // Forager targets
-  for (const tier of FORAGER_TIERS) {
-    const target: RoleId = { type: 'forager', tier: tier.id }
-    if (from.type === 'forager' && from.tier === tier.id) continue
-    // Block promotions within same type -- must use Lodge promote flow
-    if (from.type === 'forager') {
-      const fromIdx = FORAGER_TIERS.findIndex((t) => t.id === from.tier)
-      const toIdx = FORAGER_TIERS.findIndex((t) => t.id === tier.id)
-      if (toIdx > fromIdx) continue
-    }
-    const locked = state.lodgeLevel < tier.unlocksAtLodgeLevel
-    const total = getTotalForagers(state.foragers)
-    const effectiveTotal = from.type === 'forager' ? total - 1 : total
-    const cap = getForagerCap(state.lodgeLevel)
-    const atCap = effectiveTotal >= cap
-    const recruitCost = getRecruitCost(target, state)
-    const netCost = recruitCost - refundAmount
-
-    options.push({
-      target,
-      label: tier.name,
-      netCost,
-      locked,
-      lockReason: `Lodge Lv${tier.unlocksAtLodgeLevel}`,
-      atCap,
-    })
-  }
-
-  // Explorer target
-  if (from.type !== 'explorer') {
-    const locked = state.postLevel <= 0
-    const cap = getExplorerCap(state.postLevel)
-    const atCap = state.explorers >= cap
-    const recruitCost = EXPLORER_COST
-    const netCost = recruitCost - refundAmount
-
-    options.push({
-      target: { type: 'explorer' },
-      label: 'Explorer',
-      netCost,
-      locked,
-      lockReason: 'Post Lv1',
-      atCap,
-    })
-  }
-
-  // Dismiss to idle (always available, gives small refund)
-  options.push({
-    target: { type: 'idle' },
-    label: 'Dismiss to Idle',
-    netCost: -dismissRefund,
+/** The dialog's choices for someone in this role */
+export function getReassignOptions(from: RoleId, s: GameState): ReassignOption[] {
+  return moveTargets(from).map((target) => ({
+    target,
+    label: target.type === 'idle' ? 'Stand idle' : roleName(target),
+    netCost: 0,
     locked: false,
     lockReason: '',
-    atCap: false,
-  })
-
-  return options
+    atCap: moveBlock(s, from, target) === 'full',
+  }))
 }

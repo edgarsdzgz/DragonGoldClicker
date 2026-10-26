@@ -128,11 +128,14 @@ export type {
   ReassignOption,
 } from './reassignment'
 export {
-  REASSIGN_REFUND_RATE,
-  DISMISS_REFUND_RATE,
-  getRoleTierIndex,
-  getTrainingCost,
-  getRecruitCost,
+  BASIC_ROLES,
+  sameRole,
+  roleCount,
+  roleName,
+  peopleAtWork,
+  moveTargets,
+  moveBlock,
+  movePerson,
   getReassignOptions,
 } from './reassignment'
 

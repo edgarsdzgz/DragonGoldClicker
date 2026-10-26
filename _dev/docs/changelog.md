@@ -2,6 +2,22 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Chapter 5 phase C: The Keep Stands (2026-10-26)
+- The Keep costs 150 renown (was 7.5). Time away now follows the army readout: an army that holds
+  the Gate keeps the wall whole; one that does not lets the wall wear while you are away
+  (repairers count), never below 50 HP, so you never return to a Breach. The Welcome Back card
+  says which. Renown earned while away is unchanged
+- Moving people between jobs, redone for one army: fighters, repairers, gatherers and explorers
+  move freely or stand idle; a soldier stands down to a fighter (gear stays in the Forge); a
+  trapper or ranger goes back to gathering. Free, no refund, no price steps back. Nobody moves
+  out of idle there: rallying and training still cost
+- The Ranger's Lodge promotes foragers like the Garrison promotes soldiers: gatherer (8 food a
+  meal) to trapper (20, Lv1, from 15 renown) to ranger (40, Lv3, from 40). Levels cost
+  30/75/150/300/600 and raise the forager cap to 10/14/18/22/26 (it used to drop to 4)
+- Story: the Keep and the Lodge come out of the fog a minute after Arm the Ranks; quest Restore
+  the Keep completes into Pyreth's "The Keep Restored"; Mirael's new "The Ranger's Lodge" follows
+  with quests Raise the Lodge and First Trappers. The story pauses after it
+
 ### Chapter 5 phase B: Kael's Forge (2026-10-26)
 - Swords: an armed soldier hits 50% harder (a knight 3 instead of 2). Shields: a shielded soldier
   never falls in a Breach. Gear is for soldiers only, one of each, and goes to the best ranks

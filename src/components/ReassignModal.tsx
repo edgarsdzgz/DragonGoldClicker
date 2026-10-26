@@ -19,15 +19,19 @@ import type { ReassignOption, RoleId } from '../types/game'
 // ROLE OPTION ROW
 // =============================================================================
 
-function getRoleIcon(target: RoleId): keyof typeof Ionicons.glyphMap {
-  if (target.type === 'soldier') return 'shield'
+export function getRoleIcon(target: RoleId): keyof typeof Ionicons.glyphMap {
+  if (target.type === 'fighter') return 'shield'
+  if (target.type === 'repairer') return 'construct'
+  if (target.type === 'soldier') return 'people'
   if (target.type === 'forager') return 'leaf'
   if (target.type === 'explorer') return 'compass'
-  return 'person'
+  return 'home'
 }
 
-function getRoleColor(target: RoleId): string {
-  if (target.type === 'soldier') return gold[500]
+export function getRoleColor(target: RoleId): string {
+  if (target.type === 'fighter') return colors.warfront.rally
+  if (target.type === 'repairer') return colors.warfront.repair
+  if (target.type === 'soldier') return gold[300]
   if (target.type === 'forager') return colors.building.lodge
   if (target.type === 'explorer') return colors.building.explorer
   return dark[300]
@@ -55,9 +59,9 @@ function RoleOptionRow({
   }
 
   const costLabel = option.netCost > 0
-    ? `${formatNumber(option.netCost)} g`
+    ? `${formatNumber(option.netCost)} renown`
     : option.netCost < 0
-      ? `+${formatNumber(Math.abs(option.netCost))} g`
+      ? `+${formatNumber(Math.abs(option.netCost))} renown`
       : 'FREE'
 
   const costColor = option.netCost > 0
@@ -81,7 +85,7 @@ function RoleOptionRow({
         pressed && !isDisabled && rowStyles.pressed,
       ]}
       accessibilityRole="button"
-      accessibilityLabel={`Reassign to ${option.label} for ${costLabel}`}
+      accessibilityLabel={`Move to ${option.label}, ${costLabel}`}
     >
       <View style={rowStyles.left}>
         <Ionicons

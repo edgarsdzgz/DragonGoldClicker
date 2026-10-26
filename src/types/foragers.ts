@@ -9,8 +9,10 @@ export type ForagerTier = 'gatherer' | 'trapper' | 'ranger'
 export interface ForagerTierDef {
   id: ForagerTier
   name: string
+  plural: string
   /** Food produced per second */
   baseRate: number
+  /** Renown to train (a gatherer, from a villager) or promote (from the rank below) the first one */
   baseCost: number
   unlocksAtLodgeLevel: number
 }
@@ -19,13 +21,14 @@ export interface ForagerTierDef {
 export const BASE_GATHERER_CAP = 6
 
 /**
- * Owner ruling (layer 3): one gatherer feeds two fighters, 8 food per 2-minute meal (was 0.2/s).
- * Trappers and rangers scale the same way.
+ * Chapter 5 phase C (owner ruling, 2026-10-26): foragers follow the army's path. A villager is
+ * trained into a gatherer (the Forage tab); the Ranger's Lodge promotes gatherers to trappers and
+ * trappers to rangers. Food per meal: 8, 20 and 40 (one trapper feeds five fighters).
  */
 export const FORAGER_TIERS: ForagerTierDef[] = [
-  { id: 'gatherer', name: 'Gatherer', baseRate: 8 / 120, baseCost: 0.25, unlocksAtLodgeLevel: 0 },
-  { id: 'trapper', name: 'Trapper', baseRate: 0.2, baseCost: 0.75, unlocksAtLodgeLevel: 3 },
-  { id: 'ranger', name: 'Ranger', baseRate: 0.5, baseCost: 2.0, unlocksAtLodgeLevel: 5 },
+  { id: 'gatherer', name: 'Gatherer', plural: 'gatherers', baseRate: 8 / 120, baseCost: 0.25, unlocksAtLodgeLevel: 0 },
+  { id: 'trapper', name: 'Trapper', plural: 'trappers', baseRate: 20 / 120, baseCost: 15, unlocksAtLodgeLevel: 1 },
+  { id: 'ranger', name: 'Ranger', plural: 'rangers', baseRate: 40 / 120, baseCost: 40, unlocksAtLodgeLevel: 3 },
 ]
 
 export interface ForagerCounts {
@@ -44,12 +47,13 @@ export interface LodgeLevelDef {
   foragerCap: number
 }
 
+/** The Lodge raises the forager cap above the 6 allowed without it, never lowers it */
 export const LODGE_LEVELS: LodgeLevelDef[] = [
-  { level: 1, cost: 2, foragerCap: 4 },
-  { level: 2, cost: 6, foragerCap: 8 },
-  { level: 3, cost: 17.5, foragerCap: 12 },
-  { level: 4, cost: 35, foragerCap: 16 },
-  { level: 5, cost: 60, foragerCap: 20 },
+  { level: 1, cost: 30, foragerCap: 10 },
+  { level: 2, cost: 75, foragerCap: 14 },
+  { level: 3, cost: 150, foragerCap: 18 },
+  { level: 4, cost: 300, foragerCap: 22 },
+  { level: 5, cost: 600, foragerCap: 26 },
 ]
 
 export const MAX_LODGE_LEVEL = LODGE_LEVELS.length
@@ -75,6 +79,11 @@ export function getLodgeUpgradeCost(currentLevel: number): number | null {
 
 export function getForagerCost(tier: ForagerTierDef, currentCountOfTier: number): number {
   return roundCost(tier.baseCost * Math.pow(currentCountOfTier + 1, 1.15))
+}
+
+/** The key for a forager rank in ForagerCounts */
+export function foragerKey(tier: ForagerTier): keyof ForagerCounts {
+  return tier === 'gatherer' ? 'gatherers' : tier === 'trapper' ? 'trappers' : 'rangers'
 }
 
 export function getForagerCount(foragers: ForagerCounts, tier: ForagerTier): number {
