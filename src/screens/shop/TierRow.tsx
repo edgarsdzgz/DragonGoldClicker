@@ -143,7 +143,7 @@ export function SoldierTierRow({ tier, buildingColor }: { tier: SoldierTierDef; 
       lockLabel={`Barracks Lv${tier.unlocksAtBarracksLevel}`}
       right={
         !locked ? (
-          <Button size="xs" onPress={handleTrain} disabled={!canAfford} accentColor={buildingColor} rejectPhrases={rejectPhrases} holdToRepeat>
+          <Button size="xs" onPress={handleTrain} disabled={!canAfford} accentColor={buildingColor} rejectPhrases={rejectPhrases}>
             {buttonLabel}
           </Button>
         ) : undefined
@@ -203,7 +203,7 @@ export function ForagerTierRow({ tier, buildingColor }: { tier: ForagerTierDef; 
       lockLabel={`Lodge Lv${tier.unlocksAtLodgeLevel}`}
       right={
         !locked ? (
-          <Button size="xs" onPress={handleTrain} disabled={!canAfford} accentColor={buildingColor} rejectPhrases={rejectPhrases} holdToRepeat>
+          <Button size="xs" onPress={handleTrain} disabled={!canAfford} accentColor={buildingColor} rejectPhrases={rejectPhrases}>
             {buttonLabel}
           </Button>
         ) : undefined

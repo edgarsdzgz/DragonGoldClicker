@@ -145,6 +145,7 @@ export function ForageScreen() {
         <FlavorText text={flavor.text} opacity={flavor.opacity} color={forage[300]} />
         <HarvestOrb
           onAction={handleForage}
+          repeatOnHold
           icon="leaf"
           label="FORAGE"
           coachId="forage"

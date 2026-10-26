@@ -430,6 +430,17 @@ with checkmarks in the Journal).
 
 ---
 
+## Shared press (owner rulings, 2026-10-26)
+
+- All main buttons are one shared press (`hooks/useActionPress`): same tap, same hold, same pulse.
+- One hold speed: 750ms between repeats, everywhere (`HOLD_REPEAT_MS`).
+- Holding repeats only actions that do not spend renown (the strike, FORAGE). Rally, Repair,
+  Train and Recruit: one tap, one purchase. `Button`'s `holdToRepeat` uses the same speed and is
+  off on purchase buttons.
+- Fill the Stores at this speed: 200 taps, or about 150s of holding FORAGE.
+
+---
+
 ## Known side effects to handle later
 
 - Research prerequisites that use `monstersDefeated` (Librarium) were sized for the old

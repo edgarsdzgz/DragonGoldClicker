@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
-import { View, StyleSheet, Pressable, Animated, AppState, GestureResponderEvent, LayoutChangeEvent } from 'react-native'
+import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { PosedMonster } from './PosedMonster'
@@ -13,7 +13,7 @@ import { ClawSlash, SparkBurst, EmberDissolve } from './StrikeEffects'
 import type { ClawSlashHandle, SparkBurstHandle, EmberDissolveHandle } from './StrikeEffects'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
-import { useHoldPress } from '../hooks'
+import { useActionPress, HOLD_REPEAT_MS } from '../hooks/useActionPress'
 import { useCoinFlight } from '../context/CoinFlightContext'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useReduceMotion } from '../hooks/useReduceMotion'
@@ -30,7 +30,7 @@ interface BattlefieldProps {
   kills: number
   /** Damage per hit, shown as a floating number */
   damage: number
-  /** Called for every hit: the first press, then four times a second while held */
+  /** Called for every hit: the first press, then once per HOLD_REPEAT_MS while held */
   onStrike: () => void
   /** Flavour line row, above the stack */
   header?: React.ReactNode
@@ -58,12 +58,6 @@ export interface BattlefieldHandle {
 /** The monster's art box as a share of the sprite circle (fits inside the circle) */
 const ART_SCALE = 0.68
 
-/**
- * Time between strikes while holding, and before the first held strike. Owner ruling
- * (2026-10-25): 3x slower than the default 250ms hold repeat, so holding stays deliberate.
- */
-const HOLD_STRIKE_MS = 750
-
 /** Press squash: the monster shrinks about 5% */
 const SQUASH = 0.95
 
@@ -76,7 +70,7 @@ const KNOCKBACK = 0.06
 
 /**
  * The tap target: the whole battlefield. Every press strikes the monster; holding repeats
- * (one strike every HOLD_STRIKE_MS) with a steady pulse. Damage numbers rise from the monster.
+ * (one strike every HOLD_REPEAT_MS, shared by every main button) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
   { monster: size, monsterIndex, monsterHp, kills, damage, onStrike, header, queue, camp, showName = true, locked = false, coachId },
@@ -97,9 +91,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const [fallen, setFallen] = React.useState<MonsterDef | null>(null)
   // A steady pulse on the battlefield while the press is held
   const holdPulse = useRef(new Animated.Value(0)).current
-  const [holding, setHolding] = React.useState(false)
   const killToken = useRef(0)
-  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const squash = useRef(new Animated.Value(1)).current
   const shake = useRef(new Animated.Value(0)).current
   const flash = useRef(new Animated.Value(0)).current
@@ -181,19 +173,6 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     },
   }), [size, fall, nudge, flash, coinFlight, reduceMotion])
 
-  useEffect(() => {
-    if (!holding || reduceMotion) {
-      holdPulse.setValue(0)
-      return
-    }
-    const loop = Animated.loop(Animated.sequence([
-      Animated.timing(holdPulse, { toValue: 1, duration: HOLD_STRIKE_MS / 2, useNativeDriver: true }),
-      Animated.timing(holdPulse, { toValue: 0, duration: HOLD_STRIKE_MS / 2, useNativeDriver: true }),
-    ]))
-    loop.start()
-    return () => loop.stop()
-  }, [holding, reduceMotion, holdPulse])
-
   // After a kill the next monster eases in (taps meanwhile already hit it)
   const firstRender = useRef(true)
   useEffect(() => {
@@ -245,49 +224,31 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       Animated.sequence([Animated.delay(HIT_STOP_MS), hop(2), hop(-2), hop(1), hop(0)]).start()
     }
   }, [onStrike, damage, size, flash, shake, knock, tilt, reduceMotion])
-  const { onPressIn, onPressOut } = useHoldPress(strike, strike, { delayMs: HOLD_STRIKE_MS, intervalMs: HOLD_STRIKE_MS })
+  // The same press as every main button: tap, hold (repeats at the shared speed), screen reader,
+  // and a stop when the screen or the app is left (hooks/useActionPress)
+  const press = useActionPress(strike, { repeatOnHold: true })
+  const { holding, cancel: cancelPress } = press
 
-  // Screen readers activate with a tap-less click (onPress). A touch also ends in onPress, which
-  // the press-in already struck for, so remember the touch just long enough to skip that one.
-  const touching = useRef(false)
-  const touchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Stop the hold pulse (and forget the touch) for any reason the press can end without onPressOut
-  const cancelHold = useCallback(() => {
-    if (holdTimer.current) clearTimeout(holdTimer.current)
-    if (touchTimer.current) clearTimeout(touchTimer.current)
-    holdTimer.current = null
-    touchTimer.current = null
-    touching.current = false
-    setHolding(false)
-  }, [])
-
-  useEffect(() => () => {
-    if (touchTimer.current) clearTimeout(touchTimer.current)
-    if (holdTimer.current) clearTimeout(holdTimer.current)
-    touching.current = false
-  }, [])
-
-  // The wave ended: the field is replaced by the camp, so a held press must not carry on into it
+  // Wave mode (cold storage): the field is replaced by the camp, so a held press must not carry on
   useEffect(() => {
-    if (!inCamp) return
-    onPressOut()
-    cancelHold()
-  }, [inCamp, onPressOut, cancelHold])
+    if (inCamp) cancelPress()
+  }, [inCamp, cancelPress])
 
+  // A steady pulse on the battlefield while the press is held
   useEffect(() => {
-    if (!focused) cancelHold()
-  }, [focused, cancelHold])
-
-  useEffect(() => {
-    const sub = AppState.addEventListener('change', (next) => {
-      if (next !== 'active') cancelHold()
-    })
-    return () => sub.remove()
-  }, [cancelHold])
+    if (!holding || reduceMotion) {
+      holdPulse.setValue(0)
+      return
+    }
+    const loop = Animated.loop(Animated.sequence([
+      Animated.timing(holdPulse, { toValue: 1, duration: HOLD_REPEAT_MS / 2, useNativeDriver: true }),
+      Animated.timing(holdPulse, { toValue: 0, duration: HOLD_REPEAT_MS / 2, useNativeDriver: true }),
+    ]))
+    loop.start()
+    return () => loop.stop()
+  }, [holding, reduceMotion, holdPulse])
 
   const handlePressIn = (e: GestureResponderEvent) => {
-    touching.current = true
     // locationX/Y are relative to the press area (its children ignore touches), as is the sprite offset
     const { locationX, locationY } = e.nativeEvent
     const clamp = (v: number) => Math.max(size * 0.1, Math.min(size * 0.9, v))
@@ -295,21 +256,12 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       x: clamp(locationX - spriteOffset.current.x),
       y: clamp(locationY - spriteOffset.current.y),
     }
-    // Held for as long as the repeat starts: show the pulse
-    holdTimer.current = setTimeout(() => setHolding(true), 300)
     if (!reduceMotion) Animated.timing(squash, { toValue: SQUASH, duration: 70, useNativeDriver: true }).start()
-    onPressIn()
+    press.handlers.onPressIn()
   }
   const handlePressOut = () => {
-    if (holdTimer.current) clearTimeout(holdTimer.current)
-    setHolding(false)
-    if (touchTimer.current) clearTimeout(touchTimer.current)
-    touchTimer.current = setTimeout(() => { touching.current = false }, 400)
     if (!reduceMotion) Animated.spring(squash, { toValue: 1, tension: 220, friction: 7, useNativeDriver: true }).start()
-    onPressOut()
-  }
-  const handlePress = () => {
-    if (!touching.current) strike()
+    press.handlers.onPressOut()
   }
 
   const onLayout = (e: LayoutChangeEvent) => {
@@ -327,7 +279,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     >
       {camp ?? <Pressable
         onPressIn={handlePressIn}
-        onPress={handlePress}
+        onPress={press.handlers.onPress}
         onPressOut={handlePressOut}
         style={styles.pressArea}
         accessibilityRole="button"

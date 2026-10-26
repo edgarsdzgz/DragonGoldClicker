@@ -1,5 +1,7 @@
 export { useHaptics } from './useHaptics'
 export { useHoldPress } from './useHoldPress'
+export { useActionPress, HOLD_REPEAT_MS, HOLD_PULSE_MS } from './useActionPress'
+export type { PressKind } from './useActionPress'
 export { useStorage } from './useStorage'
 export { useGameLoop } from './useGameLoop'
 export { useBgMusic } from './useBgMusic'

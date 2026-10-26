@@ -2,6 +2,13 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### One press for every main button (2026-10-26)
+- `useActionPress`: the battlefield and every orb (FORAGE, RALLY, REPAIR, TRAIN, RECRUIT) tap,
+  hold, pulse and answer screen readers the same way
+- One hold speed everywhere: a repeat every 750ms (the orbs were 250ms)
+- Holding repeats only actions that do not spend (the strike, FORAGE); purchases are one per tap
+- The orbs now work with a screen reader's activation (they only listened to finger-down)
+
 ### Food before the Breach (2026-10-26)
 - Quests can have several goals; Hold the Line: rally 5 fighters and defeat a Shadow Crawler
 - It completes into the rewritten "Our Stores Run Low": fighters eat twice what villagers do,

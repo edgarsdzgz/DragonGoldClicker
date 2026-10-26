@@ -13,6 +13,7 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import { colors, spacing, radius, touchTarget, typography, gold, dark } from '../theme'
 import { useHaptics, useHoldPress } from '../hooks'
+import { HOLD_REPEAT_MS } from '../hooks/useActionPress'
 import { useSfx } from '../hooks/useSfx'
 import { SFX } from '../data/sfx'
 
@@ -70,7 +71,10 @@ interface ButtonProps {
   iconSize?: number
   /** Overrides the primary variant's background color */
   accentColor?: string
-  /** Enable hold-to-repeat: fires onPress repeatedly while held down */
+  /**
+   * Enable hold-to-repeat at the shared hold speed (HOLD_REPEAT_MS). Not for buttons that spend:
+   * owner ruling (2026-10-26), one tap is one purchase.
+   */
   holdToRepeat?: boolean
   /** Phrases to cycle through when tapped while disabled.
    *  Pass an array to enable the reject float. Omit to disable. */
@@ -173,7 +177,7 @@ export function Button({
     onPress()
   }, [disabled, loading, haptics, onPress])
 
-  const { onPressIn, onPressOut } = useHoldPress(holdHandleTap, holdHandleTick)
+  const { onPressIn, onPressOut } = useHoldPress(holdHandleTap, holdHandleTick, { delayMs: HOLD_REPEAT_MS, intervalMs: HOLD_REPEAT_MS })
 
   // ---------------------------------------------------------------------------
   // Sizing

@@ -1,9 +1,12 @@
-import React, { useRef, useCallback } from 'react'
+import React, { useRef, useCallback, useEffect } from 'react'
 import { View, StyleSheet, Pressable, Animated, ViewStyle } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
-import { useHaptics, useHoldPress } from '../hooks'
+import { useHaptics } from '../hooks'
+import { useActionPress, HOLD_REPEAT_MS } from '../hooks/useActionPress'
+import type { PressKind } from '../hooks/useActionPress'
+import { useReduceMotion } from '../hooks/useReduceMotion'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { colors, spacing } from '../theme'
 
@@ -38,8 +41,13 @@ const SIZES = {
 } as const
 
 interface HarvestOrbProps {
-  /** Action fired on each tap / hold tick */
+  /** Action fired on each tap (and each hold repeat, with `repeatOnHold`) */
   onAction: () => void
+  /**
+   * Holding repeats the action at the shared hold speed (useActionPress). Leave it off for
+   * buttons that spend renown: one tap, one purchase.
+   */
+  repeatOnHold?: boolean
   /** Ionicons icon name */
   icon: keyof typeof Ionicons.glyphMap
   /** Button label (e.g. "SLAY", "FORAGE") */
@@ -57,7 +65,7 @@ interface HarvestOrbProps {
   coachId?: string
 }
 
-export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabled, style, coachId, diameter }: HarvestOrbProps) {
+export function HarvestOrb({ onAction, repeatOnHold = false, icon, label, palette, size = 'lg', disabled, style, coachId, diameter }: HarvestOrbProps) {
   const coach = useCoachTarget(coachId)
   const haptics = useHaptics()
   const scaleAnim = useRef(new Animated.Value(1)).current
@@ -87,21 +95,33 @@ export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabl
     ]).start()
   }, [scaleAnim, glowAnim])
 
-  const handleTap = useCallback(() => {
+  const handleAction = useCallback((kind: PressKind) => {
     if (disabled) return
     onAction()
     haptics.light()
-    animateTap()
-  }, [onAction, haptics, animateTap, disabled])
+    if (kind === 'tap') animateTap()
+    else animateHoldTick()
+  }, [onAction, haptics, animateTap, animateHoldTick, disabled])
 
-  const handleHoldTick = useCallback(() => {
-    if (disabled) return
-    onAction()
-    haptics.light()
-    animateHoldTick()
-  }, [onAction, haptics, animateHoldTick, disabled])
+  // The same press as every main button: tap, hold, screen reader (hooks/useActionPress)
+  const press = useActionPress(handleAction, { repeatOnHold })
 
-  const { onPressIn, onPressOut } = useHoldPress(handleTap, handleHoldTick)
+  // A steady pulse ring while held, in step with the repeats (none with Reduce Motion)
+  const reduceMotion = useReduceMotion()
+  const holdPulse = useRef(new Animated.Value(0)).current
+  const pulsing = press.holding && !reduceMotion && !disabled
+  useEffect(() => {
+    if (!pulsing) {
+      holdPulse.setValue(0)
+      return
+    }
+    const loop = Animated.loop(Animated.sequence([
+      Animated.timing(holdPulse, { toValue: 1, duration: HOLD_REPEAT_MS / 2, useNativeDriver: true }),
+      Animated.timing(holdPulse, { toValue: 0, duration: HOLD_REPEAT_MS / 2, useNativeDriver: true }),
+    ]))
+    loop.start()
+    return () => loop.stop()
+  }, [pulsing, holdPulse])
 
   const accentColor = disabled ? colors.disabled.textSubtle : palette.accent
   const glowColor = disabled ? colors.disabled.border : palette.glow
@@ -109,8 +129,7 @@ export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabl
   return (
     <View ref={coach.ref} onLayout={coach.onLayout} style={[styles.buttonArea, style]}>
       <Pressable
-        onPressIn={onPressIn}
-        onPressOut={onPressOut}
+        {...press.handlers}
         style={[styles.touchArea, { padding: dim.padding }]}
         accessibilityRole="button"
         accessibilityLabel={label}
@@ -128,6 +147,22 @@ export function HarvestOrb({ onAction, icon, label, palette, size = 'lg', disabl
             },
           ]}
         />
+        {pulsing && (
+          <Animated.View
+            pointerEvents="none"
+            style={[
+              styles.holdRing,
+              {
+                width: dim.orb + 16,
+                height: dim.orb + 16,
+                borderRadius: (dim.orb + 16) / 2,
+                borderColor: palette.accent,
+                opacity: holdPulse.interpolate({ inputRange: [0, 1], outputRange: [0.15, 0.6] }),
+                transform: [{ scale: holdPulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.06] }) }],
+              },
+            ]}
+          />
+        )}
         <Animated.View
           style={[
             styles.orbButton,
@@ -178,6 +213,10 @@ const styles = StyleSheet.create({
   },
   glowRing: {
     position: 'absolute',
+  },
+  holdRing: {
+    position: 'absolute',
+    borderWidth: 3,
   },
   orbButton: {
     overflow: 'hidden',
