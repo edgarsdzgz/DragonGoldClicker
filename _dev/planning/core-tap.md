@@ -441,6 +441,110 @@ with checkmarks in the Journal).
 
 ---
 
+## Layer 3: food that creates urgency, not exhaustion (PROPOSED 2026-10-26, numbers await approval)
+
+**Why:** on the A16 the stores emptied while the game sat idle. A meal cost 31 every 30s (about
+3,700 food an hour), one gatherer brings 6 per meal, and even the full 6 gatherers barely break even.
+About 60% of every meal was idle villagers. At 0 food the fighters stop, and the warning threatened
+deaths that cannot happen (starvation is off until `lean_times`). The owner: "I want to create
+urgency, but not exhaustion from a sisyphean task."
+
+**Owner rulings:**
+- Adopt all nine ideas: army upkeep, a slower meal bell, reachable break-even, a horizon instead
+  of a metronome, fed states, rations, pressure in waves, a granary cap, and fairness while away.
+- Rations get five levels: none, quarter, half, full (the default) and double. Quarter and double
+  are locked behind Librarium research, but the game is built ready for them.
+- No rations: fighters stand down. On paper they are villagers again: they eat nothing and deal no
+  damage, but still defend passively.
+
+### 3.1 Who eats, and how often
+
+- **The meal bell rings every 120s** (was 30s).
+- **Only the army eats from the stores.** Villagers and foragers feed themselves; gatherers' output
+  is already net.
+
+| Eats from the stores, per meal | Was (per 30s) | Proposed (per 120s) | Per hour, was / proposed |
+|--------------------------------|---------------|---------------------|--------------------------|
+| Fighter | 2 | 4 | 240 / 120 |
+| Repairer | 1.5 | 3 | 180 / 90 |
+| Conscript / footman / knight | 2 / 3 / 5 | 4 / 6 / 10 | halved |
+| Explorer | 1 | 2 | halved |
+| Villager | 1 | 0 | 120 / 0 |
+| Gatherer / trapper / ranger | 0.5 / 0.3 / 0.1 | 0 | 0 |
+
+- **Break-even is reachable:**
+  - A gatherer brings in 8 per meal (0.067/s, was 0.2/s), so one gatherer feeds two fighters, and
+    6 gatherers (the cap without a Lodge) feed 12.
+  - Trappers and rangers scale the same way (0.2/s and 0.5/s).
+- **Hand foraging stays at 1 per tap.** Holding gives about 160 per meal. It is the burst that pays
+  for growth, not the treadmill that pays for survival.
+- **Example:** 5 fighters cost 20 per meal; three gatherers bring 24, so the stores grow by 4 per
+  meal.
+
+### 3.2 What the player sees
+
+- **A horizon, not a metronome.** The stores panel reads one of:
+  - "Stores last about 14 min" when shrinking.
+  - "Stores grow by 4 each meal" when growing.
+  - "Stores hold steady".
+  - "Granary full".
+
+  The meal bell becomes a small ring, not a full-width bar.
+- **A granary cap of 500 food** at the start; buildings raise it later. Foraging into a full
+  granary adds nothing, and FORAGE shows "Granary full". Fill the Stores counts food actually
+  added.
+- **Honest warnings.** Until starvation is on, a warning says what will really happen (fighters
+  go hungry, then stand down), never deaths.
+
+### 3.3 Fed states
+
+States are measured in meals held in the stores:
+
+| State | When | Fighters |
+|-------|------|----------|
+| Well fed | at least 10 meals of upkeep in store | +10% damage |
+| Fed | otherwise | normal |
+| Hungry | the next meal cannot be paid in full | 50% damage |
+| Starving | stores at 0 and a meal went unpaid | stand down (no damage); deaths only once `lean_times` turns starvation on |
+
+### 3.4 Rations (fighters only)
+
+The ration multiplies the fighters' upkeep and their damage. Fed states apply on top.
+
+| Ration | Upkeep | Damage | Available |
+|--------|--------|--------|-----------|
+| None | 0x | none: fighters stand down (defend passively: still count for the wall's defence) | always |
+| Quarter | 0.25x | 0.4x | Librarium research "Lean Rations" |
+| Half | 0.5x | 0.7x | always |
+| Full | 1x | 1x | default |
+| Double | 2x | 1.4x | Librarium research "Feast Hall" |
+
+- Quarter is the most food-efficient (1.6 damage per food) but slow; double is a costly push
+  (0.7 damage per food). Full sits between.
+- Switching is instant and free; standing down keeps the fighters (no Rally cost to return).
+- The selector lives on the Forage tab's stores panel (five segments, locked ones show a lock and
+  their research). The Warfront fighter chip shows the current ration.
+- Both research nodes are defined now, behind the Librarium (paused story); dev tools can grant
+  them for testing.
+
+### 3.5 Fairness while away, and pressure in waves
+
+- **Away:** consumption while the app is closed never takes the stores below one meal's worth, and
+  no warning greets the player on return. The Keep's offline system later protects more.
+- **Pressure in waves** (phase C, designed later): occasional events to prepare for, with calm in
+  between. For example a lean season (gatherers at half for a while), a raid on the stores (lose a
+  share), or refugees at the gate (more hands, more mouths).
+
+### Phases
+
+| Phase | What |
+|-------|------|
+| A | Honest warnings; army-only upkeep; meal bell 120s with the new numbers; horizon display; granary cap; the away rule. Story text that says villagers eat is adjusted. |
+| B | Fed states; rations (five levels, quarter and double locked, research nodes defined); ration UI. |
+| C | Pressure events. |
+
+---
+
 ## Known side effects to handle later
 
 - Research prerequisites that use `monstersDefeated` (Librarium) were sized for the old
