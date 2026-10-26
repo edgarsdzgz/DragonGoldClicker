@@ -10,6 +10,12 @@ import { gold, radius } from '../theme'
 /** Re-measure this often while shown (the target may still be animating in) */
 const MEASURE_MS = 500
 
+/**
+ * Coach target id of the app's root view (registered by the tab navigator). It sits at the top
+ * of the screen (edge-to-edge), so a target's position relative to it is its screen position.
+ */
+export const APP_ROOT_TARGET = 'app_root'
+
 interface HighlightBackdropProps {
   /** Coach target id to light up and box (e.g. 'renown'); none gives a plain dim */
   targetId?: string
@@ -22,14 +28,17 @@ interface HighlightBackdropProps {
  * can point at what it is talking about. Without a target, or while the target cannot be
  * measured, it is a plain dim. Decorative only: it takes no touches and is hidden from screen
  * readers (the scene's own text names the thing).
+ *
+ * It must fill the whole screen (a full-screen, status-bar-translucent modal). A modal is its
+ * own window, and Android measures each window from a different top edge (the app's below the
+ * status bar, the modal's at the top of the screen), so the target is placed relative to the
+ * app's root view rather than by mixing the two windows' measurements.
  */
 export function HighlightBackdrop({ targetId, dim }: HighlightBackdropProps) {
   const { registry } = useCoach()
   const win = useWindowDimensions()
   const reduceMotion = useReduceMotion()
   const [rect, setRect] = useState<Rect | null>(null)
-  const [origin, setOrigin] = useState({ x: 0, y: 0 })
-  const rootRef = useRef<View>(null)
   const pulse = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
@@ -38,10 +47,14 @@ export function HighlightBackdrop({ targetId, dim }: HighlightBackdropProps) {
       return
     }
     const measure = () =>
-      registry.measure(targetId, (r) => {
-        const next = isRectVisible(r, win) ? r : null
-        setRect((prev) => (prev && next && prev.x === next.x && prev.y === next.y && prev.w === next.w && prev.h === next.h ? prev : next))
-      })
+      registry.measure(APP_ROOT_TARGET, (app) =>
+        registry.measure(targetId, (r) => {
+          // On screen = relative to the app's root (both measured in the app's own window)
+          const onScreen = r && app ? { x: r.x - app.x, y: r.y - app.y, w: r.w, h: r.h } : null
+          const next = isRectVisible(onScreen, win) ? onScreen : null
+          setRect((prev) => (prev && next && prev.x === next.x && prev.y === next.y && prev.w === next.w && prev.h === next.h ? prev : next))
+        }),
+      )
     measure()
     const unsub = registry.subscribe(measure)
     const timer = setInterval(measure, MEASURE_MS)
@@ -65,17 +78,12 @@ export function HighlightBackdrop({ targetId, dim }: HighlightBackdropProps) {
     return () => loop.stop()
   }, [lit, reduceMotion, pulse])
 
-  // The layer's own origin, so window coordinates map onto it exactly
-  const onLayout = () => rootRef.current?.measureInWindow((x, y) => setOrigin({ x, y }))
-
-  const hole = rect && padRect({ x: rect.x - origin.x, y: rect.y - origin.y, w: rect.w, h: rect.h }, HOLE_PAD)
+  const hole = rect && padRect(rect, HOLE_PAD)
   // One hole with a huge dim border, so the hole keeps rounded corners
   const border = Math.max(win.width, win.height) * 2
 
   return (
     <View
-      ref={rootRef}
-      onLayout={onLayout}
       style={StyleSheet.absoluteFill}
       pointerEvents="none"
       importantForAccessibility="no-hide-descendants"

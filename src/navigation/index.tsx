@@ -14,6 +14,7 @@ import { useGame } from '../context/GameContext'
 import { useTabLocks } from './useTabLocks'
 import { UnlockToast } from '../components/UnlockToast'
 import { EventHost } from '../components/EventHost'
+import { APP_ROOT_TARGET } from '../components/HighlightBackdrop'
 import { useStoryDirector } from '../hooks/useStoryDirector'
 import { warfrontReveal } from '../types/opening'
 import { useScriptedEvents } from '../hooks/useScriptedEvents'
@@ -205,6 +206,8 @@ function TabNavigator() {
   const { setFocusedTab } = useCoach()
   const goToTab = useCallback((tab: SceneTab) => navigation.navigate('Main', { screen: tab }), [navigation])
   const onSceneClosed = useScriptedEvents({ onNavigate: goToTab, toastRef })
+  // The app's root view: scenes place their highlight box relative to it (see HighlightBackdrop)
+  const appRoot = useCoachTarget(APP_ROOT_TARGET, undefined, { skipFocusGate: true })
   // A reset (from Settings or Game Over) stamps a new startedAt: the new game opens on the Warfront
   const startedAt = useRef(state.startedAt)
   useEffect(() => {
@@ -216,7 +219,7 @@ function TabNavigator() {
   const insets = useSafeAreaInsets()
 
   return (
-    <View style={{ flex: 1 }}>
+    <View ref={appRoot.ref} onLayout={appRoot.onLayout} collapsable={false} style={{ flex: 1 }}>
       <Tab.Navigator
         initialRouteName="GameTab"
         screenListeners={({ route }) => ({ focus: () => setFocusedTab(route.name) })}
