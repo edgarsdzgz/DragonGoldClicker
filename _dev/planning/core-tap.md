@@ -622,6 +622,54 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
+## Chapter 5 phase B: Kael's Forge (proposed 2026-10-26)
+
+Kael Ironwright's "The Forge Is Cold" reveals the Forge on the Draconia map. The Forge exists
+(`ArmoryInterior`, `buySword`, `buyShield`, `armoryGear`) but its swords and shields only added
+renown per second, which phase A removed. They need new jobs.
+
+### What each renown sink is for (the triangle from phase A)
+
+- **The claws:** the player's power at the Gate (only while tapping).
+- **The army:** the power while away; strong enough, it kills before a monster strikes.
+- **Repairers:** the wall's recovery when the army falls short.
+
+The Forge should strengthen the army's job and add something none of these do, without a fourth
+way to raise damage at the Gate that competes with the claws.
+
+### Recommended
+
+- **Swords make soldiers hit harder.** An armed soldier's hit is 50% stronger (a conscript 0.75,
+  a footman 1.5, a knight 3). Swords go to the best ranks first. This is the army's job, so the
+  readout on the Garrison moves with every sword.
+- **Shields keep soldiers alive in a Breach.** A shielded soldier never falls when the wall does.
+  Shields go to the best ranks first, so the knights you paid most for are the first protected.
+  This is new: insurance against the Breach, which the claws, the army and repairers do not give.
+  It makes the Breach less frightening as the city grows, without making the wall matter less
+  (people, food and renown are still lost).
+- **Gear is for soldiers only**, at most one sword and one shield each (as today: capped at the
+  number of soldiers). Fighters have none. A soldier killed in a Breach loses their sword with them.
+- **Prices:** the Forge 75 renown. A sword 15, a shield 20, each rising with how many were made
+  (the same ^1.15 curve as soldiers).
+- **Later, not now:** Kael taking the claws past Ancient. That is a late-game sink; it waits
+  until a player can reach Ancient (800 renown for the last level alone).
+
+### The story
+
+- **The Smith** (Kael) fires a minute after First Soldiers is done and reveals the Forge. His line
+  changes to "your soldiers will have something better than sticks".
+- Quest **Light the Forge**: build it. Quest **Arm the Ranks**: forge 2 swords.
+- The story pauses after it, before The Keep Stands.
+
+### Open questions
+
+1. Swords: +50% to an armed soldier's hit, best ranks first?
+2. Shields: a shielded soldier never falls in a Breach (recommended), or something else (for
+   example softening monster strikes on the wall, which overlaps repairers)?
+3. The prices: Forge 75, sword 15, shield 20?
+
+---
+
 ## Chapter 5: A City to Build (approved 2026-10-26; phase A built)
 
 Pyreth's "A City, Not a Wall" opens the Draconia tab (the map, buildings in fog) with the
