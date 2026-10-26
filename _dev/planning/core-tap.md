@@ -622,6 +622,62 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
+## The balance pass (proposed 2026-10-26)
+
+Chapter 5 is done; this is a short pass over the live game (everything before the story pause),
+not new content.
+
+### What the numbers say
+
+- **The horde stops growing after about 53 kills.** The spawn pool tops out at orcs (20 HP, 1.00
+  renown, 4 wall damage) and nothing after that gets harder: `HORDE_STRENGTH_PER_LEVEL` is 0. The
+  horde level climbs forever (the owner's save is near level 27), but it changes nothing except
+  what a Breach pushes back. Meanwhile the claws reach 20 damage a tap, the army grows and gets
+  swords, so the Gate gets steadily easier and the army readout only ever turns green.
+- **Every monster pays exactly 0.05 renown per HP.** So renown is simply damage dealt. If monsters
+  grow tougher and pay more in step, income per tap stays honest and nothing else needs retuning.
+- **Food runs short before the Lodge, and the player cannot fix it.** A fighter eats 4 a meal, a
+  repairer 3, a gatherer brings 8, and only 6 gatherers are allowed before the Lodge (48 a meal).
+  That feeds 12 fighters and no repairers. The owner's save (12 fighters, 7 repairers, 6
+  gatherers) loses 21 food a meal, and the Lodge arrives only at the end of chapter 5. The choice
+  between fighters and gatherers should be the player's, not a wall.
+- **Research has dead effects** (income per second, click power, gear bonuses), but research is
+  behind the story pause (the Librarium, chapter 10). Nothing a player can reach today is affected.
+- **Small leftovers:** the unused `lastWandererCheck` save field.
+
+### Recommended
+
+1. **The horde grows: +5% per horde level** to a monster's HP, its bounty and its wall strike
+   (one multiplier, `hordeStrength`, already wired into the strikes). Level 1 is unchanged; level
+   10 is 1.45x; level 27 is 2.3x (an orc with 46 HP, paying 2.30, striking for 9.2).
+   - Renown per HP stays 0.05, so tapping pays the same per damage; tougher monsters just take
+     more taps, and the claws and swords keep mattering.
+   - The army readout measures the scaled monster, so an army that held at level 10 may not hold
+     at level 30. Building the army becomes ongoing, not a one-time purchase.
+   - A Breach pushes the horde back by half, so it also resets the strength: falling behind costs
+     people, but the climb restarts at a fair level.
+   - Shown to the player: "Horde level 27" with the strength on the monster's HP readout
+     (its max HP already shows).
+2. **Food: 10 gatherers without the Lodge** (was 6), so 80 food a meal can feed 12 fighters and 7
+   repairers. The Lodge levels move up by the same amount: 14/18/22/26/30.
+3. **Remove `lastWandererCheck`.**
+4. **Research waits** for the Librarium chapter, where it will be rebuilt around kills, the army,
+   food and the wall instead of patched now.
+
+### Effect on the owner's save
+
+At horde level 27 every monster doubles (2.3x): the Gate takes about twice the taps and pays twice
+as much per kill. The army readout will likely turn from "holds" to "cannot hold" until the army
+grows. With 10 gatherers allowed, four more can be trained to end the food deficit.
+
+### Open questions
+
+1. The horde: +5% HP, bounty and strike per level (recommended), or a gentler or steeper rate?
+2. Food: 10 gatherers without the Lodge and Lodge caps 14 to 30?
+3. Research: leave it until the Librarium chapter (recommended)?
+
+---
+
 ## Chapter 5 phase C: The Keep Stands (approved and built 2026-10-26)
 
 After Arm the Ranks, the Keep and the Ranger's Lodge come out of the fog. Both exist in code
