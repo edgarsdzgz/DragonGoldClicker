@@ -622,6 +622,76 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
+## Chapter 5: A City to Build (proposed 2026-10-26)
+
+Pyreth's "A City, Not a Wall" opens the Draconia tab (the map, buildings in fog) with the
+Garrison first; then Kael's Forge; then the Keep and the Ranger's Lodge come out of the fog. All
+of it exists in code from before the redesign (`types/soldiers.ts`, `ShopScreen`, the
+`shop/*Interior` screens), built for rules that have changed.
+
+### What no longer fits
+
+- **Soldiers earn renown every second** just by existing (conscript 0.0125/s, footman 0.0375/s,
+  knight 0.1/s, plus swords and shields from the Forge). That breaks the ruling that renown
+  comes only from kills (layer 2e).
+- **Soldiers and fighters are two armies.** Fighters stand at the Gate and strike; soldiers sit in
+  the Garrison and earn. The player has no reason to want both.
+- **The prices are from the shrink era** (Garrison 1.25 renown; a conscript 0.25), tiny next to
+  renown today.
+- **The triggers** (`foragers.gatherers >= 3`, and so on) passed long ago for most saves.
+
+### Recommended: soldiers are trained fighters
+
+The Garrison trains the fighters you have rallied into soldiers who hit harder. One army, one
+path: **Rally** a villager into a fighter, **train** a fighter into a conscript, **promote** a
+conscript to a footman, then a knight. Every soldier stands at the Gate and strikes in the same
+volley (every 6 seconds); their kills pay renown like any other.
+
+| Rank | Damage per volley | Eats per meal | Train or promote from | Needs Garrison level |
+|------|-------------------|---------------|-----------------------|----------------------|
+| Fighter | 0.25 | 4 | Rally (a villager) | -- |
+| Conscript | 0.5 | 4 | 10 renown (a fighter) | 1 |
+| Footman | 1 | 6 | 30 renown (a conscript) | 3 |
+| Knight | 2 | 10 | 80 renown (a footman) | 5 |
+
+- Prices rise with how many of that rank were trained (the existing ^1.15 curve).
+- Food per rank is already in the game (conscript 4, footman 6, knight 10): better soldiers eat
+  more, so rations and the stores matter more as the army grows.
+- Rations and fed states scale soldiers' hits like fighters'. A Breach kills 30% of each rank,
+  and the training price curves step back the same way.
+- The old per-second income from soldiers, swords and shields is removed.
+
+### The Garrison
+
+| Level | Cost (renown) | Soldiers it holds |
+|-------|---------------|-------------------|
+| 1 | 40 | 4 |
+| 2 | 100 | 8 |
+| 3 | 200 | 12 (footmen) |
+| 4 | 400 | 16 |
+| 5 | 800 | 20 (knights) |
+
+Untrained fighters need no room; only soldiers count against the Garrison.
+
+### The story
+
+- **A City to Build** (Pyreth) fires a minute after Open the Gates is done and opens the Draconia
+  tab. Quest **Raise the Garrison**: build it. Quest **First Soldiers**: train 2 conscripts.
+- **The Smith** (Kael) follows; the Forge gets its own short plan when we reach it (likely:
+  swords raise soldiers' damage, and Kael can take the claws past Ancient).
+- **The Keep Stands** reveals the Keep and the Ranger's Lodge; they come after the Forge.
+- The story pauses after First Soldiers until the Forge is planned.
+
+### Open questions
+
+1. Soldiers as trained fighters at the Gate (recommended), or something else (for example
+   soldiers who guard the wall and soften monster strikes)?
+2. The numbers above as a starting point?
+3. Build it in this order: Draconia tab and Garrison first, then the Forge, then the Keep and
+   the Lodge?
+
+---
+
 ## Chapter 4: Strangers at the Gate, wanderers (approved and built 2026-10-26)
 
 Why now: people are the scarcest thing in Draconia. Every fighter, repairer and gatherer comes
