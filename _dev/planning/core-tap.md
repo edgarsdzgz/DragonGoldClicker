@@ -622,6 +622,103 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
+## The Librarium: Lirae's studies (proposed 2026-10-26)
+
+Research is the last old system behind the story pause. It was built for the idle game before
+the siege, and most of it no longer touches anything.
+
+### What no longer fits
+
+- **Half the effects do nothing.** Click power (taps now deal claw damage), fighter auto income
+  (renown comes only from kills), gear bonus and village size have no reader. Herbalist Knowledge
+  feeds the forage tap, not the gatherers.
+- **What still works:** soldier rank discount, food eaten, renown while away, and the two ration
+  unlocks (Lean Rations, Feast Hall).
+- **Shrink-era prices.** The Librarium costs 37.5; studies 15 to 150. A Garrison level now costs
+  40 to 800, the Keep 150.
+- **Old prerequisites:** lifetime kills and renown sized for the old game, rescued villagers and
+  the outpost (both behind paused side beats).
+- **Exploration and mystery branches** depend on expeditions, which are still paused.
+- **Story order.** `the_scholar` (chapter 10) sits after three paused side beats and triggers 10
+  minutes after the Keep. `the_horde_grows` (chapter 11) repeats words already said. Its
+  `trainedRefugee` script has no handler.
+- **The screen** (`LibrariumInterior.tsx`) is 617 lines.
+
+### Recommended
+
+**Lirae, the Ink-Wing, a minute after First Trappers.** Her scene stays as written. Quests:
+**Raise the Librarium** (200 renown), then **First Study** (finish one study).
+
+**Studies are bought with renown and take effect at once**, as now. No timers. Each branch is a
+short chain; each step needs the one before it, and the first needs its building.
+
+| Branch | Study | Cost | Needs | Effect |
+|---|---|---|---|---|
+| The Dragon | Dragon Anatomy | 60 | - | Taps deal 10% more damage |
+| | Weak Points | 150 | Anatomy | 1 tap in 10 strikes for double (a larger gold number) |
+| | Wyrm's Fury | 400 | Weak Points | Taps deal 20% more damage |
+| The Army | Drill Tactics | 60 | Garrison | Soldier ranks cost 10% less (as now) |
+| | Tempered Steel | 150 | Drill, the Forge | A sword adds 0.75 to a volley (was 0.5) |
+| | Battle Drill | 400 | Tempered Steel | The army's volleys deal 10% more |
+| The Stores | Rationing | 50 | Lodge | Fighters and repairers eat 15% less (as now) |
+| | Lean Rations | 80 | Rationing | Unlocks quarter rations (as now) |
+| | Snares and Nets | 150 | Lean Rations | Foragers bring 25% more food |
+| | Feast Hall | 300 | Snares | Unlocks double rations (as now) |
+| The Wall | Mortar Craft | 60 | - | Repairers mend 25% faster |
+| | Night Ledgers | 150 | Mortar, the Keep | 25% more renown while away (was Golden Harvest) |
+| | Evacuation Drills | 400 | Night Ledgers | A Breach takes a third fewer people |
+
+- **Renown stays honest.** No study raises the bounty; every HP still pays 0.05. Studies make the
+  player and the army hit harder, eat less, mend faster or lose less.
+- **The growing horde is the reason to study.** Wyrm's Fury and Battle Drill let a city keep up
+  at higher horde levels.
+- **Exploration and mystery wait** for the outpost chapter. Their nodes are removed, not hidden.
+- **Readouts show the result**, not the research: the claws chip, the army readout and the repair
+  rate already show the numbers studies change.
+
+**`the_horde_grows`, rewritten.** Now that the horde really grows, Rodain says so a minute after
+the first study:
+- "They come bigger now, Steward. Every season the horde sends worse than the last."
+- "The number beside the wall counts how far they have come. The Ink-Wing's books may be how we
+  keep pace."
+
+**Story order.** `the_scholar` and `the_horde_grows` move directly after `the_lodge` (chapter 5
+stays 5; these become chapter 6). The pause moves to `the_horde_grows`. The three side beats
+(`word_spreads`, `lean_times`, `beyond_the_walls`) stay paused, unreviewed.
+
+**Code**
+- `types/research.ts`: the new tree. Prerequisites become a study or a building only. A new
+  `types/library.ts` holds the rules as pure updaters: `researchBlock` (`'noLibrary' | 'done' |
+  'locked' | 'renown' | null`) and `study`, like `gearBlock` and `forgeGear`. GameContext and the
+  badges call them; `checkPrereqs` in GameContext goes.
+- The effects are read where they apply: tap damage in the strike, the double-strike roll, the
+  sword bonus, the army volley, the gather rate, the repair rate and the Breach losses.
+- Remove the dead effects and the `clickPower` reset paths that only fed them; `foragePower`
+  stays (the forage tap).
+- The screen splits into `LibrariumInterior` (header, branch tabs), `ResearchBranch` (one chain)
+  and `ResearchNode` (one card), each under 300 lines, using `ActionRow` and `Button`.
+- Saves: unknown study ids are ignored, so no migration. EVIDENCE already covers both beats
+  (`librariumBuilt`, a finished study).
+
+### Effect on the owner's save
+
+After First Trappers, Lirae arrives a minute later. At about 2.30 renown an orc, the Librarium is
+about 90 kills and the first study about 30 more. Mortar Craft and Dragon Anatomy are the first
+real choices.
+
+### Open questions
+
+1. **Placement:** Lirae a minute after First Trappers, Rodain a minute after the first study, the
+   pause after `the_horde_grows`, the side beats still paused (recommended)?
+2. **The tree:** the 13 studies in four branches above, with exploration and mystery removed for
+   now?
+3. **Weak Points:** a double strike on 1 tap in 10 (recommended, it makes tapping feel better),
+   or a plain +15% to tap damage?
+4. **Studies take effect at once** (recommended), or take time to study?
+5. **Prices:** the Librarium at 200 and studies from 50 to 400?
+
+---
+
 ## The balance pass (approved and built 2026-10-26)
 
 Chapter 5 is done; this is a short pass over the live game (everything before the story pause),
