@@ -3,7 +3,8 @@ import { useRoute } from '@react-navigation/native'
 import type { RouteProp } from '@react-navigation/native'
 import type { TabParamList } from '../navigation/types'
 import { View, StyleSheet, ScrollView } from 'react-native'
-import { Text, Surface, Button, StatRow, SectionLabel, InspirationIcon, ToggleRow, StoryObjective } from '../components'
+import { Text, Surface, Button, StatRow, SectionLabel, InspirationIcon, ToggleRow, StoryObjective, CreditCard } from '../components'
+import { CREDITS } from '../data/credits'
 import { PillTabs } from '../components/PillTabs'
 import type { PillTab } from '../components/PillTabs'
 import { VolumeControl } from '../components/VolumeControl'
@@ -112,6 +113,11 @@ function SettingsContent({ showResetModal, onShowReset }: { showResetModal: bool
           value={audio.hapticsEnabled}
           onValueChange={audio.toggleHaptics}
         />
+      </Surface>
+
+      <Surface style={styles.section}>
+        <SectionLabel spacing={2}>CREDITS</SectionLabel>
+        {CREDITS.map((credit) => <CreditCard key={credit.title} credit={credit} />)}
       </Surface>
 
       <View style={styles.resetSection}>

@@ -17,7 +17,8 @@ import { configureTextDefaults } from './src/theme/textDefaults'
 configureTextDefaults()
 
 const BGM_PLAYLIST = [
-  require('./assets/music/out/Ruins of Dawn_04.m4a'),
+  // Main theme, looped. CC BY-SA 3.0: credited in Settings > Credits and CREDITS.md
+  require('./assets/music/out/Refusing the Ultimatum.m4a'),
 ]
 
 function AppInner() {
