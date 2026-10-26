@@ -35,7 +35,7 @@ const HOW_IT_WORKS: HowItWorksCard[] = [
   { system: 'repair', title: 'Repair', text: 'Repairers mend the wall a little every second. Send villagers to fix it faster than it breaks.' },
   { system: 'hunger', title: 'Food', text: 'Only the army eats from the stores, at every meal bell; villagers fend for themselves. Gatherers bring food in, and one feeds about two fighters.' },
   { system: 'forageTab', title: 'Foraging', text: 'Tap FORAGE to gather food in the valley behind Draconia. While you forage, you are not defending the Gate.' },
-  { system: 'wanderers', title: 'Wanderers', text: 'Travelers sometimes arrive at the gates. Take them in for more hands, at the cost of more mouths.' },
+  { system: 'wanderers', title: 'Wanderers', text: 'Every few minutes someone reaches the gates. Take them in for more hands; each eats 10 food from the stores on arrival.' },
   { system: 'draconiaTab', title: 'Draconia', text: 'The city map. Build and restore places here, then open them to train people and buy upgrades.' },
   { system: 'milestones', title: 'Word Spreads', text: 'As your legend grows, villagers offer to join you. You may welcome them or turn them away.' },
   { system: 'starvation', title: 'Starvation', text: 'If the stores run dry at mealtime, people may die. Fighters also refuse to fight on an empty stomach.' },

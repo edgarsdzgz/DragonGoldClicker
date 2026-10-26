@@ -2,6 +2,16 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Chapter 4: Strangers at the Gate, wanderers reworked (2026-10-26)
+- Mirael's scene now follows Sharpen Your Claws; the first wanderer is free (her own rations);
+  quest Open the Gates: welcome 3 newcomers. The story pauses after it
+- One wanderer every 4-7 minutes of play (twice as often under 5 idle villagers), on the play
+  clock, so nobody arrives while the app is closed
+- Every newcomer eats 10 food on arrival (the same rule as refugees); Welcome is disabled when
+  the stores cannot pay. A rare Veteran (5%) arrives as a fighter with no Rally cost
+- The wanderer card shows the stores before and after, and a veteran's meal cost; flavour lines
+  rewritten for a dragon at the Gate. The old trained refugee and its overflow refund are gone
+
 ### The Dragon's Claws, layer 3 (2026-10-26)
 - The player's own upgrade: nine levels of claws bought with renown, Fledgling (1 damage per
   tap) to Ancient (20, one tap kills an orc). Costs 5, 12, 25, 50, 100, 200, 400, 800

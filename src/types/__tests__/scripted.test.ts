@@ -49,11 +49,12 @@ describe('runScripted', () => {
     expect(FOOD_CHECK_INTERVAL - s.foodTimer).toBe(FIRST_MEAL_DELAY_SEC)
   })
 
-  it('loneWanderer sets a lone, untrained wanderer pending, with no chance roll', () => {
+  it('loneWanderer sets one wanderer pending, free (Mirael feeds them), with no chance roll', () => {
     const s = runScripted(make({}), 'loneWanderer')
     expect(s.pendingWanderer?.encounterType).toBe('lone_wanderer')
-    expect(s.pendingWanderer?.villagerCount).toBe(1)
-    expect(s.pendingWanderer?.trained).toBeNull()
+    expect(s.pendingWanderer?.people).toBe(1)
+    expect(s.pendingWanderer?.veteran).toBe(false)
+    expect(s.pendingWanderer?.foodOnArrival).toBe(0)
   })
 
   it('does not record events that have no immediate effect', () => {
@@ -74,7 +75,7 @@ describe('runScripted', () => {
   })
 
   it('does not record loneWanderer while another wanderer is pending, and runs it once that clears', () => {
-    const pending = make({ pendingWanderer: makeLoneWanderer(0, 0) })
+    const pending = make({ pendingWanderer: makeLoneWanderer(make({})) })
     const blocked = runScripted(pending, 'loneWanderer')
     expect(hasRun(blocked, 'loneWanderer')).toBe(false)
     const cleared = runScripted({ ...blocked, pendingWanderer: null }, 'loneWanderer')

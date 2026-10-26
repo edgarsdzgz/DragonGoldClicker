@@ -6,6 +6,7 @@ import { backfillStory, backfillScripted, catchUpBeats } from './storyMigration'
 import { backfillTutorial } from './tutorial'
 import { catchUpScripted } from './scripted'
 import { backfillKillsByMonster } from './spawnPool'
+import { isCurrentEncounter } from './wanderers'
 
 /** The newest save format. Every load ends here, whichever version it started from. */
 export const LATEST_SAVE_VERSION = 10
@@ -34,6 +35,9 @@ export function migrateSave(input: GameState, from: number): GameState {
   if (from < 9) s = { ...s, killsByMonster: backfillKillsByMonster(s.monstersDefeated) }
   // v10: the spawn pool reads the horde's advance; until a first Breach it is every kill
   if (from < 10) s = { ...s, hordeKills: Math.floor(s.monstersDefeated) }
+
+  // A wanderer left waiting from before the rework (old shape) is dropped; another will come
+  if (s.pendingWanderer && !isCurrentEncounter(s.pendingWanderer)) s = { ...s, pendingWanderer: null }
 
   // Beats added before ones this save has already seen must not play their scene for it
   s = catchUpBeats(s)

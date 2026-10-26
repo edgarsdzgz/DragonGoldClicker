@@ -4,8 +4,6 @@ import { STORY_BEATS } from './story'
 import { applyCityDamage } from './cityHp'
 import { FOOD_CHECK_INTERVAL } from './food'
 import { makeLoneWanderer } from './wanderers'
-import { getTotalSoldiers } from './soldiers'
-import { getTotalForagers } from './foragers'
 
 // =============================================================================
 // SCRIPTED FIRST OCCURRENCES (pure; each runs once, when its beat's scene is closed)
@@ -35,7 +33,7 @@ const EFFECTS: Partial<Record<ScriptedEventId, (s: GameState) => GameState | nul
   loneWanderer: (s) =>
     s.pendingWanderer
       ? null
-      : { ...s, pendingWanderer: makeLoneWanderer(getTotalSoldiers(s.soldiers), getTotalForagers(s.foragers)) },
+      : { ...s, pendingWanderer: makeLoneWanderer(s) },
 }
 
 /** Whether a scripted event does something the moment its scene closes */

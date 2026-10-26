@@ -10,11 +10,11 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 beforeAll(() => setStoryPauseForTests('the_horde_grows'))
 afterAll(() => setStoryPauseForTests())
 
-// Everything up to sharpen_claws seen and 2 gatherers out: strangers_at_gate (dwell 240) is next
+// Everything up to sharpen_claws seen and its quest done: strangers_at_gate (dwell 60) is next
 const MAIN_TO_MEND = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws']
 const DWELL_BASE = {
   beatsSeen: MAIN_TO_MEND,
-  foragers: { gatherers: 2, trappers: 0, rangers: 0 },
+  questsDone: ['sharpen_your_claws'],
   lastBeatAtPlaySec: 0,
 }
 
@@ -22,7 +22,7 @@ describe('effectiveDwell', () => {
   it('caps dwell at 5 seconds in test pacing and keeps it in live', () => {
     const strangers = getBeat('strangers_at_gate')!
     expect(effectiveDwell(strangers, 'test')).toBe(5)
-    expect(effectiveDwell(strangers, 'live')).toBe(240)
+    expect(effectiveDwell(strangers, 'live')).toBe(60)
     expect(effectiveDwell(getBeat('the_breach')!, 'live')).toBe(0)
     expect(effectiveDwell(getBeat('empty_stores')!, 'live')).toBe(0)
     expect(effectiveDwell(getBeat('call_to_arms')!, 'live')).toBe(0)
@@ -41,8 +41,8 @@ describe('findNextBeat', () => {
   })
 
   it('waits for the live dwell, then fires', () => {
-    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 239 }), 'live')).toBeNull()
-    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 240 }), 'live')?.id).toBe('strangers_at_gate')
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 59 }), 'live')).toBeNull()
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 60 }), 'live')?.id).toBe('strangers_at_gate')
   })
 
   it('uses the capped dwell in test pacing', () => {
@@ -51,7 +51,7 @@ describe('findNextBeat', () => {
   })
 
   it('measures dwell from the last beat, not from zero', () => {
-    const s = make({ ...DWELL_BASE, playSeconds: 300, lastBeatAtPlaySec: 100 })
+    const s = make({ ...DWELL_BASE, playSeconds: 150, lastBeatAtPlaySec: 100 })
     expect(findNextBeat(s, 'live')).toBeNull()
   })
 

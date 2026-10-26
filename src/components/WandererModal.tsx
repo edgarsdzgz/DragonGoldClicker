@@ -17,15 +17,8 @@ import { SFX } from '../data/sfx'
 import type { WandererEncounter } from '../types/game'
 import {
   getEncounterName,
-  getTrainedRoleName,
-  getTrainedBuildingName,
-  getTrainedOverflowRefund,
-  getTotalSoldiers,
-  getTotalForagers,
-  getSoldierCap,
-  getForagerCap,
-  formatNumber,
-  FOOD_CHECK_INTERVAL,
+  formatCount,
+  canWelcome,
 } from '../types/game'
 import { useGame } from '../context/GameContext'
 import { mealCost } from '../types/foodTick'
@@ -105,7 +98,7 @@ function EncounterIcon({ type }: { type: WandererEncounter['encounterType'] }) {
     lone_wanderer: 'person',
     traveling_couple: 'people',
     small_family: 'people',
-    trained_refugee: 'shield-half',
+    veteran: 'shield-half',
   }
   return <Ionicons name={iconMap[type] ?? 'person'} size={28} color={warm.accent} />
 }
@@ -234,31 +227,14 @@ export function WandererModal({
     contentOpacity, contentTranslateY, actionsOpacity,
   ])
 
-  // Compute food impact
-  // What a meal really costs now (every mouth, fighters too), as the meal tick charges it
-  const currentConsumption = mealCost(state)
-  const newConsumption = currentConsumption + encounter.foodCostPerCheck
-
-  // Compute trained overflow
-  let willOverflow = false
-  let overflowRefund = 0
-  if (encounter.trained) {
-    const t = encounter.trained
-    if (t.type === 'soldier') {
-      const total = getTotalSoldiers(state.soldiers)
-      const cap = getSoldierCap(state.barracksLevel)
-      willOverflow = state.barracksLevel <= 0 || total >= cap
-    } else {
-      const total = getTotalForagers(state.foragers)
-      const cap = getForagerCap(state.lodgeLevel)
-      willOverflow = state.lodgeLevel <= 0 || total >= cap
-    }
-    if (willOverflow) {
-      overflowRefund = getTrainedOverflowRefund(encounter.trained)
-    }
-  }
+  // Newcomers are fed from the stores on arrival; a veteran also eats like any fighter after
+  const affordable = canWelcome(state)
+  const storesAfter = state.food - encounter.foodOnArrival
+  const mealNow = mealCost(state)
+  const mealWithVeteran = encounter.veteran ? mealCost({ ...state, fighters: state.fighters + encounter.people }) : mealNow
 
   const handleAccept = () => {
+    if (!affordable) return
     haptics.light()
     onAccept()
   }
@@ -269,7 +245,9 @@ export function WandererModal({
   }
 
   const encounterName = getEncounterName(encounter.encounterType)
-  const isTrainedType = encounter.trained !== null
+  const joins = encounter.veteran
+    ? `+${encounter.people} fighter`
+    : `+${encounter.people} ${encounter.people === 1 ? 'villager' : 'villagers'}`
 
   return (
     <Modal
@@ -359,55 +337,52 @@ export function WandererModal({
             {/* Villager count badge */}
             <View style={styles.badgeRow}>
               <Badge
-                icon={isTrainedType ? 'shield-half' : 'person-add'}
+                icon={encounter.veteran ? 'shield-half' : 'person-add'}
                 color={warm.accent}
               >
                 <Text variant="caption" style={{ color: warm.accent }}>
-                  +{encounter.villagerCount} {isTrainedType
-                    ? getTrainedRoleName(encounter.trained!)
-                    : encounter.villagerCount === 1 ? 'villager' : 'villagers'}
+                  {joins}
                 </Text>
               </Badge>
             </View>
 
-            {/* Food impact */}
+            {/* Food: what the stores pay when they arrive (and, for a veteran, each meal after) */}
             <View style={styles.foodImpact}>
               <View style={styles.foodHeader}>
                 <Ionicons name="restaurant" size={13} color={colors.status.warning} />
                 <Text variant="caption" bold style={{ color: colors.status.warning }}>
-                  Food Impact
+                  Fed on arrival
                 </Text>
               </View>
-              <View style={styles.foodRow}>
-                <Text variant="caption" color="secondary">
-                  Per meal ({FOOD_CHECK_INTERVAL}s):
-                </Text>
-                <View style={styles.foodDelta}>
-                  <Text variant="caption" color="secondary">
-                    {formatNumber(currentConsumption)}
-                  </Text>
-                  <Ionicons name="arrow-forward" size={10} color={dark[400]} />
-                  <Text variant="caption" bold style={{ color: colors.status.warning }}>
-                    {formatNumber(newConsumption)}
+              {encounter.foodOnArrival > 0 ? (
+                <View style={styles.foodRow}>
+                  <Text variant="caption" color="secondary">Stores:</Text>
+                  <View style={styles.foodDelta}>
+                    <Text variant="caption" color="secondary">{formatCount(state.food)}</Text>
+                    <Ionicons name="arrow-forward" size={10} color={dark[400]} />
+                    <Text variant="caption" bold style={{ color: affordable ? colors.status.warning : colors.status.error }}>
+                      {affordable ? formatCount(storesAfter) : `needs ${formatCount(encounter.foodOnArrival)}`}
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <Text variant="caption" color="secondary">Mirael shares her own rations: the stores pay nothing.</Text>
+              )}
+              {encounter.veteran && (
+                <View style={styles.foodRow}>
+                  <Text variant="caption" color="muted">Each meal after:</Text>
+                  <Text variant="caption" style={{ color: warm.accent }}>
+                    {`${formatCount(mealNow)} to ${formatCount(mealWithVeteran)} eaten`}
                   </Text>
                 </View>
-              </View>
-              <View style={styles.foodRow}>
-                <Text variant="caption" color="muted">
-                  Extra mouths:
-                </Text>
-                <Text variant="caption" style={{ color: warm.accent }}>
-                  +{encounter.foodCostPerCheck} food/meal
-                </Text>
-              </View>
+              )}
             </View>
 
-            {/* Trained overflow warning */}
-            {isTrainedType && willOverflow && (
+            {!affordable && (
               <View style={styles.overflowNotice}>
                 <Ionicons name="information-circle" size={14} color={colors.status.info} />
                 <Text variant="caption" style={{ color: colors.status.info, flex: 1 }}>
-                  No room in the {getTrainedBuildingName(encounter.trained!)} -- they'll settle as an idle villager. +{overflowRefund} renown refund for equipment.
+                  The stores cannot feed them. Gather food, or they move on.
                 </Text>
               </View>
             )}
@@ -438,13 +413,16 @@ export function WandererModal({
 
             <Pressable
               onPress={handleAccept}
+              disabled={!affordable}
               style={({ pressed }) => [
                 styles.button,
                 styles.acceptButton,
                 pressed && styles.acceptPressed,
+                !affordable && styles.acceptDisabled,
               ]}
               accessibilityRole="button"
-              accessibilityLabel={`Welcome ${encounter.villagerCount} wanderer`}
+              accessibilityState={{ disabled: !affordable }}
+              accessibilityLabel={`Welcome them: ${joins}, ${encounter.foodOnArrival} food from the stores`}
             >
               <LinearGradient
                 colors={[warm.accent, warm.glow]}
@@ -628,6 +606,9 @@ const styles = StyleSheet.create({
   acceptPressed: {
     opacity: 0.9,
     transform: [{ scale: 0.98 }],
+  },
+  acceptDisabled: {
+    opacity: 0.4,
   },
   acceptGradient: {
     flex: 1,

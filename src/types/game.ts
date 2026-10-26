@@ -135,17 +135,18 @@ export {
 
 export type {
   WandererType,
-  TrainedRole,
   WandererEncounter,
 } from './wanderers'
 export {
-  WANDERER_COOLDOWN,
+  WANDERER_GAP_MIN_SEC,
+  WANDERER_GAP_MAX_SEC,
+  SHORT_HANDED_VILLAGERS,
   getEncounterName,
-  getTrainedRoleName,
-  getTrainedBuildingName,
-  rollWandererCheck,
   rollWandererEncounter,
-  getTrainedOverflowRefund,
+  stepWanderers,
+  canWelcome,
+  welcomeWanderer,
+  turnAwayWanderer,
 } from './wanderers'
 
 export type {

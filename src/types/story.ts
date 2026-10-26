@@ -140,8 +140,11 @@ export const STORY_BEATS: BeatDef[] = [
     unlocks: [],
   },
   {
-    id: 'strangers_at_gate', chapter: 4, dwellSec: 240,
-    trigger: (s) => s.foragers.gatherers >= 2,
+    // Chapter 4 (reworked 2026-10-26): a minute of play after Sharpen Your Claws. The scripted
+    // first wanderer is free; then one every 4-7 minutes (types/wanderers.ts). Its goal is the
+    // Open the Gates quest.
+    id: 'strangers_at_gate', chapter: 4, dwellSec: 60,
+    trigger: (s) => s.questsDone.includes('sharpen_your_claws'),
     unlocks: ['wanderers'],
     scripted: 'loneWanderer',
   },
@@ -217,7 +220,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'sharpen_claws'
+export const STORY_PAUSED_AFTER: BeatId = 'strangers_at_gate'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

@@ -622,7 +622,7 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
-## Chapter 4: Strangers at the Gate, wanderers (proposed 2026-10-26)
+## Chapter 4: Strangers at the Gate, wanderers (approved and built 2026-10-26)
 
 Why now: people are the scarcest thing in Draconia. Every fighter, repairer and gatherer comes
 out of the villagers, there is no other way to get more, and a Breach kills 30% of them. The
@@ -673,11 +673,16 @@ changed, so it needs the same treatment the food and the wall got.
 - Quest: **Open the Gates**, welcome 3 newcomers (`wanderersWelcomed`).
 - The story pauses after it, before A City to Build (the Draconia tab).
 
-### Open questions
+### Rulings (2026-10-26)
 
-1. Fed on arrival at 10 food each (recommended), or free?
-2. One every 4-7 minutes, twice as often when idle villagers are under 5?
-3. Veterans arrive as fighters?
+The owner approved all three recommendations: fed on arrival at 10 food each
+(`NEWCOMER_FOOD_EACH`, shared with refugees), one every 4-7 minutes and twice as often under 5
+idle villagers, veterans arrive as fighters. As built: `types/wanderers.ts` is pure
+(`stepWanderers` on the play clock, `welcomeWanderer`, `turnAwayWanderer`); the modal shows the
+stores before and after (and a veteran's meal cost) and disables Welcome when the stores cannot
+pay; a wanderer saved in the old shape is dropped on load. The Forage tab's "Foragers attract
+wandering survivors" badge is gone (it is no longer true). The story pauses after
+`strangers_at_gate`, before A City to Build.
 
 ---
 

@@ -117,8 +117,11 @@ Buildings are organized in wards, top to bottom:
 
 ## Random Events
 
-- **Wanderer encounters** every 300 seconds during active play (requires food system active)
-- 4 types: Lone Wanderer (1), Traveling Couple (2), Small Family (3), Trained Refugee (1 + skill)
+- **Wanderers** (chapter 4, `types/wanderers.ts`): one every 4-7 minutes of play once Mirael's
+  Strangers at the Gate has played; twice as often while idle villagers are under 5
+- Lone Wanderer 60% (1 villager), Traveling Couple 25% (2), Small Family 10% (3), Veteran 5%
+  (1 fighter, no Rally cost). Each newcomer eats 10 food from the stores on arrival; if the stores
+  cannot pay, they move on. The scripted first one is free
 
 ---
 

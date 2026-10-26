@@ -1,6 +1,6 @@
 import type { GameState } from './state'
 import { isSystemOn } from './systems'
-import { FOOD_CHECK_INTERVAL } from './food'
+import { FOOD_CHECK_INTERVAL, NEWCOMER_FOOD_EACH } from './food'
 import { MONSTERS } from './monsterRoster'
 import { pickNextMonster } from './spawnPool'
 
@@ -42,7 +42,7 @@ export const RAID_STEAL = 0.2
 export const REFUGEES_MIN = 3
 export const REFUGEES_MAX = 5
 /** Food each refugee eats on arrival (they come in starving) */
-export const REFUGEE_FOOD_EACH = 10
+export const REFUGEE_FOOD_EACH = NEWCOMER_FOOD_EACH
 
 export const RAIDER_INDEX = MONSTERS.findIndex((m) => m.id === 'raider')
 

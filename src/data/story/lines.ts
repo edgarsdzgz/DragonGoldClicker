@@ -122,7 +122,8 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     title: 'A Stranger on the Road',
     lines: [
       'A traveler on the east road, alone and half-starved.',
-      'Every soul we take in is another mouth to feed, and another pair of hands. The choice is yours.',
+      'Every soul we take in must be fed the day they arrive, and every one is another pair of hands. The choice is yours.',
+      'This one I will feed from my own rations. After this, the stores pay.'
     ],
   },
   a_city_to_build: {

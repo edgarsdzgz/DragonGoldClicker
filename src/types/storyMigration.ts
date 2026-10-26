@@ -25,6 +25,7 @@ const EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   mend_the_walls: (s) => s.repairersDirected > 0,
   the_wall_is_yours: (s) => s.repairersDirected >= MEND_THE_WALLS_REPAIRERS,
   sharpen_claws: (s) => s.clawLevel >= 1,
+  strangers_at_gate: (s) => s.wanderersWelcomed > 0,
   empty_stores: (s) => s.foodSystemActive || s.foragers.gatherers > 0,
   the_smith: (s) => s.barracksLevel > 0,
   the_keep_stands: (s) => s.armoryBuilt || s.lodgeLevel > 0 || s.foodSystemActive,

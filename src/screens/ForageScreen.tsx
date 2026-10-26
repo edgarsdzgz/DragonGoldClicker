@@ -183,14 +183,6 @@ export function ForageScreen() {
             {granaryFull ? 'Granary full' : `+${yield_} per tap`}
           </Text>
         </Badge>
-        {/* Only once wanderers can actually arrive */}
-        {getTotalForagers(state.foragers) > 0 && isSystemOn(state, 'wanderers') && (
-          <Badge icon="footsteps" iconSize={10} color={colors.text.muted} variant="ghost">
-            <Text variant="caption" color="muted">
-              Foragers attract wandering survivors
-            </Text>
-          </Badge>
-        )}
       </View>
     </View>
   )

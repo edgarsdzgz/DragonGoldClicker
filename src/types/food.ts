@@ -6,6 +6,9 @@ import { FIGHTER_FOOD_COST, REPAIRER_FOOD_COST } from './fighters'
 // FOOD & POPULATION
 // =============================================================================
 
+/** Food each newcomer eats from the stores on arrival: refugees and wanderers alike */
+export const NEWCOMER_FOOD_EACH = 10
+
 export const STARTING_FOOD = 200
 export const STARTING_VILLAGERS = 25
 

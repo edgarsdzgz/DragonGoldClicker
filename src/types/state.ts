@@ -126,6 +126,8 @@ export interface GameState {
   lastWandererCheck: number
   /** Lifetime wanderers welcomed into Draconia */
   wanderersWelcomed: number
+  /** playSeconds at which the next wanderer arrives (0 = not scheduled yet; types/wanderers.ts) */
+  nextWandererAt: number
   /** Number of active fighters (earn inspiration via auto-combat) */
   fighters: number
   /** Lifetime fighters rallied (for cost curve, never decreases) */
@@ -256,6 +258,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   explorerIntroShown: false,
   lastWandererCheck: 0,
   wanderersWelcomed: 0,
+  nextWandererAt: 0,
   fighters: 0,
   fightersRallied: 0,
   repairers: 0,

@@ -18,7 +18,7 @@ describe('backfillStory', () => {
     expect(out.lastBeatAtPlaySec).toBe(0)
   })
 
-  it('backfills through a_city_to_build for 3 fighters, 3 repairers, 3 gatherers and no buildings', () => {
+  it('backfills through a_city_to_build for 3 fighters, 3 repairers, 3 gatherers, 2 wanderers taken in and no buildings', () => {
     const out = backfillStory(v1({
       fighters: 3, fightersRallied: 3,
       repairers: 3, repairersDirected: 3,
@@ -26,6 +26,7 @@ describe('backfillStory', () => {
       foragersTrained: { gatherers: 3, trappers: 0, rangers: 0 },
       inspiration: 0.2,
       totalInspirationEarned: 10,
+      wanderersWelcomed: 2,
     }))
     expect(out.beatsSeen).toEqual([
       'prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws', 'strangers_at_gate', 'a_city_to_build',

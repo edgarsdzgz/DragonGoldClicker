@@ -45,12 +45,10 @@ import {
   getRecruitCost,
   REASSIGN_REFUND_RATE,
   DISMISS_REFUND_RATE,
-  WANDERER_COOLDOWN,
-  rollWandererCheck,
   rollWandererEncounter,
-  getTrainedOverflowRefund,
-  getTrainedBuildingName,
-  getTrainedRoleName,
+  stepWanderers,
+  welcomeWanderer,
+  turnAwayWanderer,
   LIBRARIUM_COST,
   RESEARCH_NODES,
   getResearchBonuses,
@@ -116,7 +114,7 @@ interface GameContextType {
   pendingFoodWarning: 0 | 3 | 1
   dismissFoodWarning: () => void
   pendingWanderer: WandererEncounter | null
-  acceptWanderer: () => { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null
+  acceptWanderer: () => void
   rejectWanderer: () => void
   rallyFighter: () => boolean
   directRepairer: () => boolean
@@ -153,7 +151,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [loaded, setLoaded] = useState(false)
   const [pendingOfflineEarnings, setPendingOfflineEarnings] = useState<OfflineEarnings | null>(null)
   const [pendingMilestone, setPendingMilestone] = useState<MilestoneDef | null>(null)
-  const wandererTimerRef = useRef(0)
   const { save, load, clear } = useStorage()
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -224,8 +221,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      // Food events run on play time, so they pause while the app is closed
-      setState((prev) => stepFoodEvents({ ...prev, playSeconds: prev.playSeconds + 1 }, Math.random))
+      // Food events run on play time, so they pause while the app is closed.
+      // Wanderers too (chapter 4): nobody arrives while the app is closed
+      setState((prev) => stepWanderers(stepFoodEvents({ ...prev, playSeconds: prev.playSeconds + 1 }, Math.random), Math.random))
     }, [loaded])
   )
 
@@ -321,28 +319,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }, [loaded])
   )
 
-  // Wanderer encounter check (time-based cooldown, active play only)
-  useGameLoop(
-    useCallback(() => {
-      if (!loaded) return
-      wandererTimerRef.current += 1
-      if (wandererTimerRef.current < WANDERER_COOLDOWN) return
-
-      const now = Date.now()
-      setState((prev) => {
-        // Don't roll if a wanderer is already pending, or the system is not on yet
-        if (prev.pendingWanderer || !isSystemOn(prev, 'wanderers')) return prev
-        const encounter = rollWandererCheck(
-          getTotalSoldiers(prev.soldiers),
-          getTotalForagers(prev.foragers),
-          prev.villagers,
-          prev.activeExpeditions.length > 0,
-          prev.postLevel,
-        )
-        return { ...prev, lastWandererCheck: now, pendingWanderer: encounter }
-      })
-    }, [loaded])
-  )
 
   // Milestone recruitment check -- fires when totalInspirationEarned crosses a threshold
   useEffect(() => {
@@ -905,69 +881,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => ({ ...prev, pendingFoodWarning: 0 }))
   }, [])
 
-  const acceptWanderer = useCallback((): { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null => {
-    const encounter = state.pendingWanderer
-    if (!encounter) return null
-    let overflowResult: { overflow: boolean; refundInspiration: number; roleName: string; buildingName: string } | null = null
-
-    setState((prev) => {
-      let next = { ...prev, pendingWanderer: null }
-      next.wanderersWelcomed = prev.wanderersWelcomed + encounter.villagerCount
-
-      if (encounter.trained) {
-        // Try to place trained unit in their building
-        const trained = encounter.trained
-        let hasRoom = false
-
-        if (trained.type === 'soldier') {
-          const total = getTotalSoldiers(prev.soldiers)
-          const cap = getSoldierCap(prev.barracksLevel)
-          hasRoom = prev.barracksLevel > 0 && total < cap
-        } else {
-          const total = getTotalForagers(prev.foragers)
-          const cap = getForagerCap(prev.lodgeLevel)
-          hasRoom = prev.lodgeLevel > 0 && total < cap
-        }
-
-        if (hasRoom) {
-          // Place as trained unit
-          if (trained.type === 'soldier') {
-            const key: keyof SoldierCounts =
-              trained.tier === 'conscript' ? 'conscripts' :
-              trained.tier === 'footman' ? 'footmen' : 'knights'
-            next.soldiers = { ...prev.soldiers, [key]: prev.soldiers[key] + 1 }
-            next.soldiersTrained = { ...prev.soldiersTrained, [key]: prev.soldiersTrained[key] + 1 }
-          } else {
-            const key: keyof ForagerCounts =
-              trained.tier === 'gatherer' ? 'gatherers' :
-              trained.tier === 'trapper' ? 'trappers' : 'rangers'
-            next.foragers = { ...prev.foragers, [key]: prev.foragers[key] + 1 }
-            next.foragersTrained = { ...prev.foragersTrained, [key]: prev.foragersTrained[key] + 1 }
-          }
-          overflowResult = { overflow: false, refundInspiration: 0, roleName: getTrainedRoleName(trained), buildingName: getTrainedBuildingName(trained) }
-        } else {
-          // Overflow: place as idle + refund
-          const refund = getTrainedOverflowRefund(trained)
-          next.villagers = prev.villagers + 1
-          next.inspiration = (next.inspiration ?? prev.inspiration) + refund
-          overflowResult = { overflow: true, refundInspiration: refund, roleName: getTrainedRoleName(trained), buildingName: getTrainedBuildingName(trained) }
-        }
-      } else {
-        // Regular villagers
-        next.villagers = prev.villagers + encounter.villagerCount
-        overflowResult = { overflow: false, refundInspiration: 0, roleName: '', buildingName: '' }
-      }
-
-      return next
-    })
-
-    wandererTimerRef.current = 0
-    return overflowResult
-  }, [state.pendingWanderer])
+  // Take them in (fed from the stores on arrival) or turn them away; the next is scheduled after
+  const acceptWanderer = useCallback(() => {
+    setState(welcomeWanderer)
+  }, [])
 
   const rejectWanderer = useCallback(() => {
-    setState((prev) => ({ ...prev, pendingWanderer: null }))
-    wandererTimerRef.current = 0
+    setState(turnAwayWanderer)
   }, [])
 
   const acceptMilestone = useCallback(() => {
@@ -1120,8 +1040,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const devForceWanderer = useCallback(() => {
     if (!DEV_TOOLS_ENABLED) return
-    wandererTimerRef.current = 0
-    setState((prev) => ({ ...prev, pendingWanderer: rollWandererEncounter(getTotalSoldiers(prev.soldiers), getTotalForagers(prev.foragers)) }))
+    setState((prev) => ({ ...prev, pendingWanderer: rollWandererEncounter(prev, Math.random), nextWandererAt: 0 }))
   }, [])
 
   const resetGame = useCallback(() => {

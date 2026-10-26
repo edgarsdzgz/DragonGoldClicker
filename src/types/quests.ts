@@ -11,7 +11,7 @@ import { roundInsp } from './utils'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -42,6 +42,9 @@ export const FILL_THE_STORES_FOOD = 200
 
 /** Repairers the player directs to the wall (core-tap layer 6) */
 export const MEND_THE_WALLS_REPAIRERS = 3
+
+/** Newcomers the player takes in from the road (chapter 4) */
+export const OPEN_THE_GATES_PEOPLE = 3
 
 const done = (s: GameState, id: QuestId) => s.questsDone.includes(id)
 
@@ -84,6 +87,11 @@ export const QUESTS: QuestDef[] = [
     id: 'sharpen_your_claws', title: 'Sharpen Your Claws',
     goals: [{ label: 'Sharpen your claws', target: 1, progress: (s) => s.clawLevel }],
     offeredWhen: (s) => s.beatsSeen.includes('sharpen_claws'),
+  },
+  {
+    id: 'open_the_gates', title: 'Open the Gates',
+    goals: [{ label: 'Welcome 3 newcomers', target: OPEN_THE_GATES_PEOPLE, progress: (s) => s.wanderersWelcomed }],
+    offeredWhen: (s) => s.beatsSeen.includes('strangers_at_gate'),
   },
 ]
 

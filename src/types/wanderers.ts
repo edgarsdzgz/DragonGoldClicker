@@ -1,98 +1,58 @@
-import type { SoldierTier } from './soldiers'
-import type { ForagerTier } from './foragers'
-import { SOLDIER_TIERS } from './soldiers'
-import { FORAGER_TIERS } from './foragers'
-import { FOOD_CONSUMPTION } from './food'
-import { DISMISS_REFUND_RATE } from './reassignment'
+import type { GameState } from './state'
+import { isSystemOn } from './systems'
+import { getTotalForagers } from './foragers'
+import { NEWCOMER_FOOD_EACH } from './food'
 
 // =============================================================================
-// WANDERER ENCOUNTERS
+// WANDERERS (chapter 4, Strangers at the Gate; reworked 2026-10-26)
 // =============================================================================
+// People are the scarcest thing in Draconia: every fighter, repairer and gatherer comes out of
+// the villagers, and a Breach kills a third of them. Wanderers are how the city grows between
+// food events. Owner rulings (2026-10-26): newcomers are fed on arrival (the same rule as
+// Refugees at the Gate), one comes every 4-7 minutes of play (twice as often while the city is
+// short of idle villagers), and a rare veteran arrives as a fighter.
 
-/** Minimum gold refund for trained overflow (whichever is greater: 30% or this) */
-export const WANDERER_MIN_REFUND = 0.25
+/** Play seconds between wanderers: the shortest and longest gap */
+export const WANDERER_GAP_MIN_SEC = 240
+export const WANDERER_GAP_MAX_SEC = 420
 
-/** Seconds between wanderer eligibility checks */
-export const WANDERER_COOLDOWN = 300
+/** Below this many idle villagers the city is short-handed, and wanderers come twice as often */
+export const SHORT_HANDED_VILLAGERS = 5
 
-/** Base chance per check (0-1) */
-export const WANDERER_BASE_CHANCE = 0.15
-
-/** Chance bonus per active forager */
-export const WANDERER_FORAGER_BONUS = 0.02
-
-/** Chance bonus per active soldier */
-export const WANDERER_SOLDIER_BONUS = 0.01
-
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export type WandererType =
-  | 'lone_wanderer'
-  | 'traveling_couple'
-  | 'small_family'
-  | 'trained_refugee'
-
-export type TrainedRole =
-  | { type: 'soldier'; tier: SoldierTier }
-  | { type: 'forager'; tier: ForagerTier }
+export type WandererType = 'lone_wanderer' | 'traveling_couple' | 'small_family' | 'veteran'
 
 export interface WandererEncounter {
   encounterType: WandererType
-  villagerCount: number
-  trained: TrainedRole | null
+  /** How many people arrive */
+  people: number
+  /** A veteran arrives as a fighter, ready for the Gate (no Rally cost) */
+  veteran: boolean
   flavorText: string
-  /** Additional food per check if all accepted as idle villagers */
-  foodCostPerCheck: number
+  /** Food the stores pay when they are taken in (0 for the scripted first wanderer) */
+  foodOnArrival: number
 }
-
-// =============================================================================
-// ENCOUNTER TABLE
-// =============================================================================
 
 interface WandererDef {
   type: WandererType
+  name: string
   weight: number
-  villagerCount: number
-  trained: boolean
+  people: number
+  veteran: boolean
 }
 
-const WANDERER_TABLE: WandererDef[] = [
-  { type: 'lone_wanderer', weight: 60, villagerCount: 1, trained: false },
-  { type: 'traveling_couple', weight: 25, villagerCount: 2, trained: false },
-  { type: 'small_family', weight: 10, villagerCount: 3, trained: false },
-  { type: 'trained_refugee', weight: 5, villagerCount: 1, trained: true },
+export const WANDERER_TABLE: WandererDef[] = [
+  { type: 'lone_wanderer', name: 'Lone Wanderer', weight: 60, people: 1, veteran: false },
+  { type: 'traveling_couple', name: 'Traveling Couple', weight: 25, people: 2, veteran: false },
+  { type: 'small_family', name: 'Small Family', weight: 10, people: 3, veteran: false },
+  { type: 'veteran', name: 'Veteran', weight: 5, people: 1, veteran: true },
 ]
 
-// =============================================================================
-// DISPLAY HELPERS
-// =============================================================================
-
-const ENCOUNTER_NAMES: Record<WandererType, string> = {
-  lone_wanderer: 'Lone Wanderer',
-  traveling_couple: 'Traveling Couple',
-  small_family: 'Small Family',
-  trained_refugee: 'Trained Refugee',
-}
-
 export function getEncounterName(type: WandererType): string {
-  return ENCOUNTER_NAMES[type]
-}
-
-export function getTrainedRoleName(trained: TrainedRole): string {
-  if (trained.type === 'soldier') {
-    return SOLDIER_TIERS.find((t) => t.id === trained.tier)?.name ?? 'Soldier'
-  }
-  return FORAGER_TIERS.find((t) => t.id === trained.tier)?.name ?? 'Forager'
-}
-
-export function getTrainedBuildingName(trained: TrainedRole): string {
-  return trained.type === 'soldier' ? 'Barracks' : "Forager's Lodge"
+  return WANDERER_TABLE.find((w) => w.type === type)?.name ?? 'Wanderer'
 }
 
 // =============================================================================
-// FLAVOR TEXT
+// FLAVOR TEXT: where they were found depends on who is out there (the Gate or the valley)
 // =============================================================================
 
 type FlavorContext = 'fighting' | 'foraging' | 'generic'
@@ -100,169 +60,124 @@ type FlavorContext = 'fighting' | 'foraging' | 'generic'
 const FLAVOR_TEXT: Record<WandererType, Record<FlavorContext, string[]>> = {
   lone_wanderer: {
     fighting: [
-      'A lone traveler watched you and your warriors fend off a dragon and begs for shelter in Draconia.',
-      'Drawn by the clash of steel, a wanderer saw you leading the charge and approaches your gates seeking refuge.',
-      '"I saw you cut down that beast with my own eyes!" A wanderer kneels before you, pleading for shelter.',
+      'A lone traveler watched the dragon hold the Gate and begs for shelter in Draconia.',
+      'Drawn by the roar at the Gate, a wanderer approaches, seeking refuge behind your wall.',
     ],
     foraging: [
-      'While gathering herbs, your foragers discovered a lost wanderer hiding in the brush.',
-      'A starving soul stumbled into your foragers\' camp, pleading for a home.',
+      'Out in the valley, your gatherers found a lost wanderer hiding in the brush.',
+      "A starving soul stumbled into your gatherers' camp, pleading for a home.",
     ],
-    generic: [
-      'A weary traveler has arrived at the gates of Draconia, seeking shelter.',
-    ],
+    generic: ['A weary traveler has reached the gates of Draconia, seeking shelter.'],
   },
   traveling_couple: {
-    fighting: [
-      'A couple fleeing bandits watched you strike down their pursuers and asks to join Draconia.',
-      'Two travelers, awed by the sight of you leading your warriors into battle, seek a new life in your city.',
-    ],
+    fighting: ['A couple fleeing the horde saw your fighters hold the Gate and ask to join Draconia.'],
     foraging: [
-      'Your foragers found a couple sheltering in a hollow tree, barely surviving.',
-      'A pair of travelers followed your foragers\' trail back to Draconia.',
+      'Your gatherers found a couple sheltering in a hollow tree, barely surviving.',
+      "A pair of travelers followed your gatherers' trail back up the valley.",
     ],
-    generic: [
-      'A traveling couple has arrived, hoping Draconia will offer them safety.',
-    ],
+    generic: ['A traveling couple has arrived, hoping Draconia will keep them safe.'],
   },
   small_family: {
-    fighting: [
-      'A small family saw you and your soldiers drive back the monsters threatening their village and begs for sanctuary.',
-      '"We heard you slew a dragon with your bare hands!" A desperate family arrives, seeking your protection.',
-    ],
-    foraging: [
-      'Deep in the forest, your foragers stumbled upon a starving family hiding in a cave.',
-      'A family of three was discovered near the foraging grounds, weak but alive.',
-    ],
-    generic: [
-      'A small family arrives at your gates, their belongings on their backs, hoping for a fresh start.',
-    ],
+    fighting: ['A small family saw the horde thrown back from the Gate and begs for sanctuary.'],
+    foraging: ['Deep in the valley, your gatherers found a starving family hiding in a cave.'],
+    generic: ['A small family arrives at your gates, their belongings on their backs.'],
   },
-  trained_refugee: {
+  veteran: {
     fighting: [
-      'A battle-scarred veteran watched you fight alongside your warriors and offers their sword to you personally.',
-      '"I\'ve never seen anyone command a battlefield like you." A trained fighter kneels, pledging loyalty.',
+      'A battle-scarred veteran watched you fight at the Gate and offers their sword.',
+      '"I have never seen a dragon fight like that." A veteran kneels and asks to stand at the Gate.',
     ],
-    foraging: [
-      'Your foragers encountered a skilled survivor living off the land -- they wish to serve Draconia.',
-      'A former ranger from a destroyed settlement was found by your foraging party.',
-    ],
-    generic: [
-      'A skilled refugee arrives, offering their expertise in exchange for a home.',
-    ],
+    foraging: ['Your gatherers met a veteran of a fallen city in the valley. They will fight for Draconia.'],
+    generic: ['A veteran arrives with sword and shield, asking only for a place at the Gate.'],
   },
 }
 
-function pickFlavorText(type: WandererType, context: FlavorContext): string {
-  const pool = FLAVOR_TEXT[type][context]
-  return pool[Math.floor(Math.random() * pool.length)]
-}
-
-function getFlavorContext(totalSoldiers: number, totalForagers: number): FlavorContext {
-  if (totalForagers > 0 && totalForagers >= totalSoldiers) return 'foraging'
-  if (totalSoldiers > 0) return 'fighting'
+function flavorContext(s: Pick<GameState, 'fighters' | 'foragers'>): FlavorContext {
+  const gatherers = getTotalForagers(s.foragers)
+  if (gatherers > 0 && gatherers >= s.fighters) return 'foraging'
+  if (s.fighters > 0) return 'fighting'
   return 'generic'
 }
 
+function pickFlavor(type: WandererType, s: Pick<GameState, 'fighters' | 'foragers'>, rand: () => number): string {
+  const pool = FLAVOR_TEXT[type][flavorContext(s)]
+  return pool[Math.min(pool.length - 1, Math.floor(rand() * pool.length))]
+}
+
 // =============================================================================
-// ROLL LOGIC
+// ARRIVALS
 // =============================================================================
 
-function pickTrainedRole(): TrainedRole {
-  if (Math.random() < 0.5) {
-    return { type: 'soldier', tier: 'conscript' }
-  }
-  return { type: 'forager', tier: 'gatherer' }
-}
-
-/**
- * Roll for a wanderer encounter. Returns null if no encounter triggered.
- */
-export function rollWandererCheck(
-  totalSoldiers: number,
-  totalForagers: number,
-  villagers: number,
-  hasActiveExpeditions: boolean,
-  postLevel: number,
-): WandererEncounter | null {
-  let chance = WANDERER_BASE_CHANCE
-  chance += totalForagers * WANDERER_FORAGER_BONUS
-  chance += totalSoldiers * WANDERER_SOLDIER_BONUS
-
-  // Stuck pity: double chance when truly stuck
-  if (villagers === 0 && !hasActiveExpeditions && postLevel === 0) {
-    chance *= 2
-  }
-
-  if (Math.random() >= chance) return null
-
-  return rollWandererEncounter(totalSoldiers, totalForagers)
-}
-
-/**
- * Pick an encounter from the weighted table, skipping the chance roll.
- * Used by rollWandererCheck and by dev tools that force an arrival.
- */
-export function rollWandererEncounter(
-  totalSoldiers: number,
-  totalForagers: number,
-): WandererEncounter {
-  // Weighted random pick
-  const totalWeight = WANDERER_TABLE.reduce((sum, w) => sum + w.weight, 0)
-  let roll = Math.random() * totalWeight
-  let picked = WANDERER_TABLE[0]
-  for (const def of WANDERER_TABLE) {
-    roll -= def.weight
-    if (roll <= 0) {
-      picked = def
-      break
-    }
-  }
-
-  const context = getFlavorContext(totalSoldiers, totalForagers)
-  const trained = picked.trained ? pickTrainedRole() : null
-
-  // Calculate food cost per check
-  let foodCostPerCheck = 0
-  if (trained) {
-    foodCostPerCheck = FOOD_CONSUMPTION[trained.tier] ?? FOOD_CONSUMPTION.villager
-  } else {
-    foodCostPerCheck = picked.villagerCount * FOOD_CONSUMPTION.villager
-  }
-
+function encounterFrom(def: WandererDef, s: Pick<GameState, 'fighters' | 'foragers'>, rand: () => number): WandererEncounter {
   return {
-    encounterType: picked.type,
-    villagerCount: picked.villagerCount,
-    trained,
-    flavorText: pickFlavorText(picked.type, context),
-    foodCostPerCheck,
+    encounterType: def.type,
+    people: def.people,
+    veteran: def.veteran,
+    flavorText: pickFlavor(def.type, s, rand),
+    foodOnArrival: def.people * NEWCOMER_FOOD_EACH,
   }
 }
 
+/** Who arrives, from the weighted table */
+export function rollWandererEncounter(s: Pick<GameState, 'fighters' | 'foragers'>, rand: () => number): WandererEncounter {
+  const total = WANDERER_TABLE.reduce((sum, w) => sum + w.weight, 0)
+  let roll = rand() * total
+  const def = WANDERER_TABLE.find((w) => (roll -= w.weight) < 0) ?? WANDERER_TABLE[0]
+  return encounterFrom(def, s, rand)
+}
+
+/** The scripted first arrival after strangers_at_gate: one wanderer, fed from Mirael's own rations */
+export function makeLoneWanderer(s: Pick<GameState, 'fighters' | 'foragers'>, rand: () => number = Math.random): WandererEncounter {
+  return { ...encounterFrom(WANDERER_TABLE[0], s, rand), foodOnArrival: 0 }
+}
+
+/** Play seconds until the next wanderer: 4-7 minutes, halved while the city is short-handed */
+export function wandererGap(s: Pick<GameState, 'villagers'>, rand: () => number): number {
+  const gap = WANDERER_GAP_MIN_SEC + rand() * (WANDERER_GAP_MAX_SEC - WANDERER_GAP_MIN_SEC)
+  return Math.round(s.villagers < SHORT_HANDED_VILLAGERS ? gap / 2 : gap)
+}
+
 /**
- * A Lone Wanderer (1 villager, not trained), skipping the chance roll and the weighted pick.
- * Used by the scripted arrival after strangers_at_gate.
+ * One second of play (once the Wanderers system is on): schedule the next wanderer, and bring it
+ * when its time comes. Never while one is still waiting for an answer; the next is scheduled
+ * after the answer. Play time only, so nobody arrives while the app is closed.
  */
-export function makeLoneWanderer(totalSoldiers: number, totalForagers: number): WandererEncounter {
+export function stepWanderers(s: GameState, rand: () => number): GameState {
+  if (!isSystemOn(s, 'wanderers') || s.pendingWanderer) return s
+  if (s.nextWandererAt <= 0) return { ...s, nextWandererAt: s.playSeconds + wandererGap(s, rand) }
+  if (s.playSeconds < s.nextWandererAt) return s
+  return { ...s, pendingWanderer: rollWandererEncounter(s, rand), nextWandererAt: 0 }
+}
+
+// =============================================================================
+// THE ANSWER
+// =============================================================================
+
+/** Whether the stores can feed the waiting newcomers */
+export function canWelcome(s: Pick<GameState, 'pendingWanderer' | 'food'>): boolean {
+  return s.pendingWanderer !== null && s.food >= s.pendingWanderer.foodOnArrival
+}
+
+/** Take them in: the stores feed them, and they join as villagers (or a veteran as a fighter) */
+export function welcomeWanderer(s: GameState): GameState {
+  const e = s.pendingWanderer
+  if (!e || !canWelcome(s)) return s
   return {
-    encounterType: 'lone_wanderer',
-    villagerCount: 1,
-    trained: null,
-    flavorText: pickFlavorText('lone_wanderer', getFlavorContext(totalSoldiers, totalForagers)),
-    foodCostPerCheck: FOOD_CONSUMPTION.villager,
+    ...s,
+    pendingWanderer: null,
+    food: s.food - e.foodOnArrival,
+    villagers: e.veteran ? s.villagers : s.villagers + e.people,
+    fighters: e.veteran ? s.fighters + e.people : s.fighters,
+    wanderersWelcomed: s.wanderersWelcomed + e.people,
   }
 }
 
-/**
- * Calculate refund gold when a trained refugee overflows building capacity.
- * Returns max(floor(baseCost * DISMISS_REFUND_RATE), WANDERER_MIN_REFUND).
- */
-export function getTrainedOverflowRefund(trained: TrainedRole): number {
-  let baseCost = 0
-  if (trained.type === 'soldier') {
-    baseCost = SOLDIER_TIERS.find((t) => t.id === trained.tier)?.baseCost ?? 0.25
-  } else {
-    baseCost = FORAGER_TIERS.find((t) => t.id === trained.tier)?.baseCost ?? 0.25
-  }
-  return Math.max(parseFloat((baseCost * DISMISS_REFUND_RATE).toFixed(2)), WANDERER_MIN_REFUND)
+/** Turn them away: they move on down the road */
+export function turnAwayWanderer(s: GameState): GameState {
+  return s.pendingWanderer ? { ...s, pendingWanderer: null } : s
+}
+
+/** A waiting wanderer saved before the 2026-10-26 rework has the old shape; it is dropped on load */
+export function isCurrentEncounter(e: unknown): e is WandererEncounter {
+  return typeof e === 'object' && e !== null && typeof (e as WandererEncounter).people === 'number'
 }
