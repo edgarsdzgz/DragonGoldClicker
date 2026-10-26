@@ -33,11 +33,11 @@ awaiting a decision; **open** = not decided yet.
 | The player | Dragon, young adult | Steward of Draconia, defender of the gate ("my lord") | canon |
 | Elder Pyreth | Elder dragon, too old to fight | Advisor, narrator, keeper of the ledgers | canon |
 | Kael Ironwright | Human refugee | Smith; her father forged for the Dragon Council | canon |
-| Lirae the Ink-Wing | Small apprentice dragon, an Academy survivor | Archivist, keeper of the Journal's lore | proposed |
+| Lirae the Ink-Wing | Small apprentice dragon, an Academy survivor | Archivist, keeper of the Journal's lore | canon |
 | Varn, Dragon Recruit | Young dragon, barely fledged | Planned recruit | proposed |
 | Ashara, Elder Wyrm | Ancient dragon | Planned late recruit | proposed |
-| Captain Rodain | Any people | Leads the company of fifty | open |
-| Scout Mirael | Any people | Scouts, wanderers, expeditions | open |
+| Captain Rodain | Orc veteran: grey-green skin, tusks, a scar, steel pauldrons, red captain's sash | Leads the company of fifty | canon |
+| Scout Mirael | Wood elf: long ears, copper braid, teal ranger's cloak, brass compass | Scouts, wanderers, expeditions | canon |
 | Thornwick, the Exiled Mage | Any people | Planned; unlocks the Wizard's Tower | open |
 | Sera the Shieldmaiden | Any people | Planned recruit | open |
 | The Hollow Knight | Unknown, by design | Planned recruit; no one asks what is inside the armour | open |
@@ -57,6 +57,17 @@ awaiting a decision; **open** = not decided yet.
   and a heraldic sigil used on their dialogue name tag.
 - Dragons provide the most shape and colour variety. Example: Pyreth in ember-red and
   bone-white with long white whisker-barbels.
+
+| Character | Colour family | Sigil |
+|---|---|---|
+| Elder Pyreth | Ember red, bone white, plum mantle | The ember (gold diamond) |
+| Lirae | Ink blue, pale blue, spectacle gold | The quill |
+| Kael | Bandana red, leather brown, steel | The anvil |
+| Rodain | Orc green, captain's red, steel | Crossed spears |
+| Mirael | Ranger teal, copper, brass | The compass star |
+
+Mockups of all five busts and the townsfolk variants live on the Draconia UI Mockups design
+canvas (the "Cast" artboard).
 
 **Scale is part of the drama:** tiny townsfolk beside huge dragons. Keep that contrast in
 scenes such as the Warfront, where little fighters stand on the wall below the player's wings.
