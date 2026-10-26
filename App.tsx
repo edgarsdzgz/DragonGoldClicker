@@ -21,12 +21,21 @@ const BGM_PLAYLIST = [
   require('./assets/music/out/Refusing the Ultimatum.m4a'),
 ]
 
-function AppInner() {
+/**
+ * The music player's status updates every 500ms. Kept in a component of its own that renders
+ * nothing, so those updates re-render only this, not the whole game (they did, twice a second).
+ */
+function BgMusic() {
   useBgMusic(BGM_PLAYLIST)
+  return null
+}
+
+function AppInner() {
   useImmersiveMode()
 
   return (
     <GameProvider>
+      <BgMusic />
       <StoryProvider>
         <CoachProvider>
           <ShakeProvider>

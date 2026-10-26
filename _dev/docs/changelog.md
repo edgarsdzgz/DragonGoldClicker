@@ -2,6 +2,15 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Performance: taps that seemed ignored (2026-10-26)
+- Every Button, tab button, modal and sheet created its own audio player; opening the Dev tab built
+  about 50 at once, froze the app for seconds and ran Android out of audio tracks. Sounds now use
+  one shared player each (`hooks/sfxPlayers.ts`)
+- The music player's 500ms status updates re-rendered the whole app (and re-applied the status
+  bar) twice a second; the music now lives in its own component
+- On the A16: the Dev tab opens within 0.5s (was 4s+), 0 audio errors (was 160), worst frames 89ms
+  (was 450ms)
+
 ### Food, layer 3 phase C: food events (2026-10-26)
 - Once the stores have been filled by hand, a food event comes every 10-15 minutes of play,
   timed ones announced a meal ahead (toast and a badge with a clock on the Forage tab and Warfront)

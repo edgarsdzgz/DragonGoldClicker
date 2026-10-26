@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react'
-import { createAudioPlayer } from 'expo-audio'
+import { useCallback, useMemo, useRef } from 'react'
 import type { AudioSource } from 'expo-audio'
 import { useAudioSettings } from '../context/AudioSettingsContext'
+import { sharedSfxPlayer } from './sfxPlayers'
 
 interface RandomSfxOptions {
   /** Minimum ms between plays. 0 = no cooldown (default). */
@@ -11,8 +11,8 @@ interface RandomSfxOptions {
 }
 
 /**
- * Creates a pool of audio players and picks one at random on each `play()`.
- * Uses the imperative `createAudioPlayer` so the pool size is dynamic.
+ * Picks one of several sounds at random on each `play()`. The players are shared app-wide
+ * (one per sound, see sfxPlayers.ts) rather than created by each component that uses the pool.
  */
 export function useRandomSfx(sources: readonly AudioSource[], options?: RandomSfxOptions) {
   const { effectiveSfxVolume } = useAudioSettings()
@@ -22,18 +22,9 @@ export function useRandomSfx(sources: readonly AudioSource[], options?: RandomSf
   const cooldownMs = options?.cooldownMs ?? 0
   const pitchVariation = options?.pitchVariation ?? 0
   const lastPlayRef = useRef(0)
-  const playersRef = useRef<ReturnType<typeof createAudioPlayer>[]>([])
-
-  useEffect(() => {
-    const players = sources.map((src) => createAudioPlayer(src))
-    playersRef.current = players
-    return () => {
-      for (const p of players) p.remove()
-    }
-  }, [sources])
+  const players = useMemo(() => sources.map(sharedSfxPlayer), [sources])
 
   const play = useCallback(() => {
-    const players = playersRef.current
     if (players.length === 0 || volRef.current <= 0) return
     const now = Date.now()
     if (cooldownMs > 0 && now - lastPlayRef.current < cooldownMs) return
@@ -51,7 +42,7 @@ export function useRandomSfx(sources: readonly AudioSource[], options?: RandomSf
     }
     player.seekTo(0)
     player.play()
-  }, [cooldownMs, pitchVariation])
+  }, [players, cooldownMs, pitchVariation])
 
   return play
 }
