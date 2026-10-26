@@ -16,7 +16,7 @@ and add no new mechanics or screens until the tap is fun.
 | 0 | Pause the story after Rally; fix the Warfront layout | this pass |
 | 1 | Tap feel: floating numbers, squash, flash, kill haptic | this pass |
 | 2 | A monster with an HP bar in the SLAY spot; inspiration paid on kill | this pass |
-| 3 | Tap upgrades: one track (the dragon's claws), reusing `AVATAR_WEAPONS` | later |
+| 3 | Tap upgrades: one track (the dragon's claws) | proposed 2026-10-26 |
 | 4 | Rhythm: combo multiplier that decays, occasional crits | later |
 | 5 | Fighters damage the same monster (visible small hits) instead of a separate insp/s | done in 2e |
 | 6 | The wall: monsters not killed in time hit the wall; Repair matters; the Breach | approved 2026-10-26; phases A and B built |
@@ -552,6 +552,70 @@ The ration multiplies the fighters' upkeep and their damage. Fed states apply on
 | A | Honest warnings; army-only upkeep; meal bell 120s with the new numbers; horizon display; granary cap; the away rule. Story text that says villagers eat is adjusted. |
 | B | Fed states; rations (five levels, quarter and double locked, research nodes defined); ration UI. |
 | C | Pressure events. |
+
+---
+
+## Layer 3: the Dragon's Claws (proposed 2026-10-26)
+
+Why now: the wall made fast kills matter (a monster killed within 5s never strikes), but a tap
+does 1 damage forever, so as orcs take over the pool the player falls behind however well they
+play. The claws are the player's own power curve, and a second use for renown besides people.
+
+### 3c.1 The track
+
+The player is the dragon (visual direction, 2026-10-26), so the upgrade is the dragon's claws:
+one track, bought with renown, level by level.
+
+| Level | Name | Damage per tap | Cost (renown) |
+|-------|------|----------------|---------------|
+| 0 | Fledgling Claws | 1 | -- |
+| 1 | Sharpened Claws | 2 | 5 |
+| 2 | Hooked Claws | 3 | 12 |
+| 3 | Hardened Claws | 4 | 25 |
+| 4 | Serrated Claws | 6 | 50 |
+| 5 | Obsidian Claws | 8 | 100 |
+| 6 | Ember Claws | 11 | 200 |
+| 7 | Dragonsteel Claws | 15 | 400 |
+| 8 | Ancient Claws | 20 | 800 |
+
+- Every monster pays about 0.05 renown per HP, so renown per tap rises with damage. Level 1 pays
+  for itself in about 100 taps; later levels take longer (level 8: about 3,200 taps). Cost
+  roughly doubles, damage grows about a third: provisional, tuned in the balance pass.
+- At level 8 a tap kills an orc outright.
+- **Fighters do not use the claws.** Their hit stays as it is (a fraction of the player's at the
+  start); the Forge gives them their own upgrades later.
+- **The claws are never lost.** A Breach takes people, food and renown, never the dragon's
+  strength, so climbing back after a Breach is faster each time.
+- Nothing can be bought while renown is in debt (the existing checks).
+- **Seen on the battlefield:** the claw slash grows with the claws (more marks, a brighter edge
+  at the top levels), so an upgrade is felt on the next tap.
+
+### 3c.2 Where it lives
+
+The footer's "1 damage per tap" becomes a Claws chip ("Hooked Claws, 3 per tap") that opens a
+sheet: the current claws, the next level's damage and cost, and a Sharpen button (the shared
+Button; one tap, one purchase). A small dot on the chip when the next level is affordable.
+Recommended over a third orb beside RALLY and REPAIR, which would crowd the Warfront.
+
+### 3c.3 The story
+
+A short Pyreth scene after "The Wall Is Yours" (Pyreth is an elder dragon): the fight is yours
+now, and your claws are young. Quest: **Sharpen Your Claws** (buy the first level). The story
+pauses after it, ready for Strangers at the Gate. Later, Kael's Forge can extend the track
+past level 8.
+
+### 3c.4 Retired with it
+
+- The avatar weapons (one entry, the War Hammer) and `clickPower`: they fed the old siege
+  defence, which layer 6 removed, so they do nothing now. A dragon does not swing a hammer. The
+  save keeps the fields; the Armory stops showing them. Research effects that add click power
+  become tap-damage effects when the Librarium returns (balance pass).
+
+### Open questions
+
+1. The numbers above: OK as a starting point?
+2. Chip and sheet in the footer (recommended), or a third orb?
+3. Names: keep, or do you want your own?
 
 ---
 
