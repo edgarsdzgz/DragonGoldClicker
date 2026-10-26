@@ -8,8 +8,8 @@
 limits apply to all of it:
 - **Static images cannot show motion.** Animation notes describe what a frame shows (motion
   trails, echo copies, glow halos). Anything about timing is marked *(unverified: motion)*.
-- **Pressed and disabled button states** appear in almost none of the images. Where the report
-  suggests them, it says so.
+- **Pressed button states** appear in none of the images, and are marked where suggested.
+  **Disabled states** are documented in the owner's Dicero screens (section 2.1b).
 
 ---
 
@@ -110,6 +110,132 @@ saturated primary button; and colour roles held to strictly.
 **Do not take literally:** the pixel-art direction itself. It is Dicero's signature, and Dragon
 Gold's "Ember & Stone" direction is painted and torchlit. Take the *principles*: shape language,
 scene backdrop, layered buttons and colour roles.
+
+### 2.1b Dicero in depth: the owner's tour of 54 screens
+
+Images: [OWN-PROFILE], [OWN-SETTINGS], [OWN-GUILD-HUB], [OWN-GUILD-TASKS], [OWN-GUILD-BARGAIN],
+[OWN-GUILD-MEMBERS], [OWN-GUILD-BOSS], [OWN-BOSS-CHEST], [OWN-REWARD-REVEAL], [OWN-MESSAGES],
+[OWN-FRIENDS], [OWN-RECRUIT], [OWN-EVENT-7DAY-D1], [OWN-EVENT-7DAY-D2], [OWN-EVENT-7DAY-D3],
+[OWN-EVENT-7DAY-D7], [OWN-SHOP-GEAR-CHEST], [OWN-SHOP-SOJOURN-CHEST], [OWN-SHOP-DAILY],
+[OWN-SHOP-REWARD-REVEAL], [OWN-SHOP-GEMS-GOLD], [OWN-SUMMON-FLASH], [OWN-PET-SUMMON],
+[OWN-ASTERITE-SUMMON], [OWN-THUNDER-GOD-CUTIN-1], [OWN-THUNDER-GOD-CUTIN-2],
+[OWN-THUNDER-GOD-OFFER], [OWN-BRILLIANT-EXCHANGE], [OWN-DAILY-SELECTED], [OWN-GEAR],
+[OWN-GEAR-DETAIL], [OWN-GEAR-LEVELUP], [OWN-CURIOS-FOUNTAIN], [OWN-CURIO-DETAIL],
+[OWN-CURIOS-LOCKED-TOAST], [OWN-BLESSING-BEFORE], [OWN-BLESSING-AFTER], [OWN-SALVAGE],
+[OWN-FUSE-EMPTY], [OWN-FUSE-SELECTED], [OWN-HERO-FROST-PRINCESS], [OWN-HERO-WINTER-LORD],
+[OWN-ACCESSORY], [OWN-TALENTS], [OWN-TALENT-DETAIL], [OWN-ASTERITE-BOARD], [OWN-PETS],
+[OWN-PET-HAVEN], [OWN-VENTURE-EMPTY], [OWN-VENTURE-ASSIGN], [OWN-PET-HAVEN-RUNNING],
+[OWN-VENTURE-REWARD], [OWN-PET-HAVEN-UPGRADE], [OWN-VENTURE-SHOP].
+
+With this set, Dicero is the best-documented game in the study. These screens show the whole
+system behind the home screen, including the button states no store image showed.
+
+**1. A strict action-colour grammar, with real disabled states.**
+- **Blue** is the single or neutral action: Draw 1x, Summon, Unequip, Go Now, Speed Up, Normal
+  Venture, Replace ([OWN-SHOP-GEAR-CHEST], [OWN-GEAR-DETAIL], [OWN-PET-HAVEN-RUNNING]).
+- **Yellow** is the bigger commitment: Draw 10x, Level Up, Star Up, Upgrade, Claim, Salvage, Raid,
+  Advanced Venture ([OWN-HERO-FROST-PRINCESS], [OWN-PET-HAVEN-UPGRADE], [OWN-GUILD-BOSS]).
+  The home screen's "New Game" is the exception: it is blue.
+- **Grey with grey text** means disabled: Level Up when the scrolls run short, Replace before a
+  blessing exists, Equipped, Sold Out, Send All ([OWN-GEAR-LEVELUP], [OWN-BLESSING-BEFORE],
+  [OWN-CURIO-DETAIL], [OWN-FRIENDS]).
+- The disabled state always comes with **the reason in text.** The cost line shows "2/100" with
+  the shortfall in red [OWN-GEAR-LEVELUP]; a toast says "Unlocked when equipped with 1 legendary
+  treasures." [OWN-CURIOS-LOCKED-TOAST]. That is three cues (grey button, red number, words), so
+  colour is never the only signal.
+- When blue and yellow sit side by side, the yellow one is on the right.
+
+**2. "Have / need" cost lines.** Costs read "113038 / 1300" with the amount you have in green when
+it is enough, and in red when it is not ("2 / 100", "0 / 1") ([OWN-GEAR-DETAIL],
+[OWN-GEAR-LEVELUP], [OWN-HERO-FROST-PRINCESS], [OWN-PET-HAVEN-UPGRADE]).
+
+**3. Before-and-after on every upgrade.**
+- "Lv.3 -> Lv.4" with green arrows, and every stat row shows old -> new, with the new value in
+  green [OWN-PET-HAVEN-UPGRADE].
+- The forge shows "Max Level 80 -> 100" and "Max HP 1120 -> 1720" [OWN-FUSE-SELECTED].
+- Blessing puts Before and After panels side by side; the improved line gets a green up arrow
+  [OWN-BLESSING-AFTER].
+- After a level-up, a dark band crosses the modal with the new power "21.7K" and a green "24" up
+  arrow, and the changed stat row is highlighted [OWN-GEAR-LEVELUP].
+
+**4. One modal template everywhere.**
+- Pale-cyan body, a header bar coloured by meaning (blue for utility, purple for an Epic item), a
+  faint pixel-diamond pattern fading out in the header's right corner.
+- A square navy "X" close button sits **centred below** the modal, overlapping its bottom edge
+  ([OWN-PROFILE], [OWN-GUILD-TASKS], [OWN-GEAR-DETAIL], [OWN-SALVAGE], [OWN-VENTURE-SHOP]).
+- The backdrop is a plain dark dim with no blur.
+- In the building-upgrade modal, the building art **breaks out of the header** [OWN-PET-HAVEN-UPGRADE].
+
+**5. One reward reveal everywhere.** A wavy pale ribbon band crosses the dimmed screen, with
+"Congrats! You obtained" in gold outlined display type, a row of rarity-backed item tiles with
+counts, confetti shards, and "Tap to Close" at the bottom. The same component serves the shop,
+the guild boss and ventures ([OWN-REWARD-REVEAL], [OWN-SHOP-REWARD-REVEAL], [OWN-VENTURE-REWARD]).
+
+**6. Every feature has its own place.**
+- Fusing happens at a pixel **forge** with a fire arch, anvil and hammer [OWN-FUSE-EMPTY].
+- Curios sit on stone shelves in a **cathedral**. An angel statue pours water that falls from
+  shelf to shelf [OWN-CURIOS-FOUNTAIN].
+- Heroes stand on a red carpet dais in a **throne hall** with banners and light from tall windows
+  [OWN-HERO-FROST-PRINCESS].
+- Pets are summoned on a stone dais on a **floating island** [OWN-PET-SUMMON]. Asterites are
+  summoned under a night sky with constellations [OWN-ASTERITE-SUMMON].
+- The guild is a **painted town**. Its buildings are the navigation, each labelled with a dark
+  plate: Guild Boss, Member Lobby, Guild Shop, Supply Shop, Guild Tasks [OWN-GUILD-HUB].
+- The scene changes; the UI chrome around it does not. This is the single biggest reason the
+  menus feel like a world rather than a settings app.
+
+**7. Idle expeditions as scroll strips (Pet Haven).**
+- Each venture is a **parchment scroll** with wooden rollers. Inside is a small painted scene where
+  the assigned pets walk toward a treasure chest [OWN-PET-HAVEN].
+- While running: a timer bar "04:21:53" and a blue Speed Up [OWN-PET-HAVEN-RUNNING].
+- Empty: hex slots with a green "+", and a bouncing green arrow on the next slot to fill
+  [OWN-VENTURE-EMPTY], [OWN-VENTURE-ASSIGN].
+- Locked: the strip is dimmed, with a padlock and the reason, "Unlocks after Pet Haven reaches
+  Lv.4" [OWN-PET-HAVEN].
+- The building that runs it is drawn as the screen header, with a green up-arrow badge when an
+  upgrade is ready [OWN-PET-HAVEN-RUNNING].
+
+**8. Item tiles carry four cues at once.** Rarity tint (blue, purple, gold, green), a type glyph in
+a small diamond at the top-left, a pip or star diamond at the bottom, and "Lv.31" above. "S" rank
+letters, "Equipped" labels, green ticks for selected and padlocks for ineligible are added on top
+([OWN-GEAR], [OWN-SALVAGE], [OWN-FUSE-SELECTED]). Rarity is also written out in words in the
+detail view ("Epic+1", "Rare") [OWN-GEAR-DETAIL], [OWN-CURIO-DETAIL].
+
+**9. Unknown and locked things are drawn as things.** A grey hexagon with "?" [OWN-TALENTS], a card
+back with "?" [OWN-HERO-FROST-PRINCESS], a dark red card with a padlock [OWN-HERO-WINTER-LORD],
+"Sold Out" as a diamond stamp over a darkened card [OWN-SHOP-DAILY].
+
+**10. Smaller techniques worth noting.**
+- **Inspect in place:** tapping a talent hex enlarges it over the dimmed grid, with left and right
+  arrows and its effect ("2-Pip ATK +6") [OWN-TALENT-DETAIL].
+- **Selection by gold corner brackets** around the chosen item, not by colour alone
+  [OWN-ACCESSORY].
+- **Section bars:** lavender bars with a dot at each end title every shop section (Daily Shop,
+  Gems, Gold) [OWN-SHOP-DAILY], [OWN-SHOP-GEMS-GOLD].
+- **Two-level tabs:** sub-tabs (Gear, Pet, Asterite, Thunder God) sit as framed plates above the
+  main tab bar; the selected one gets a double outline [OWN-SHOP-GEAR-CHEST].
+- **Numbers emphasised inside sentences:** "Draw **15**x more for **Rare** Asterite" with the 15
+  set large and blue [OWN-ASTERITE-SUMMON]; "Guaranteed **S-rank Epic** gear in **50** draws" in
+  pink and yellow [OWN-SHOP-GEAR-CHEST].
+- **Milestone tracks** above task lists, with chests at thresholds and ticks on the ones reached
+  ([OWN-GUILD-TASKS], [OWN-EVENT-7DAY-D7]). The 7-day event highlights the current day's number in
+  gold [OWN-EVENT-7DAY-D2].
+- **Big numerals for totals:** "Total Level: 33" in large yellow numerals [OWN-PETS].
+- **Hero moments use painted animation, not pixel art.** The Thunder God cut-in is a smooth
+  painted frame wreathed in lightning [OWN-THUNDER-GOD-CUTIN-1], before the pixel hero appears
+  under a spiked halo [OWN-THUNDER-GOD-CUTIN-2]. The offer screen embeds a short preview video of
+  the skill in battle [OWN-THUNDER-GOD-OFFER].
+- **Shop art scales with value:** gem, pile, sack, crate, overflowing chest [OWN-SHOP-GEMS-GOLD].
+- **Social screens** stay calm: cream rows, hex-framed avatars, power chips, "Online" in green
+  ([OWN-GUILD-MEMBERS], [OWN-MESSAGES]).
+
+**What it adds to the "premium" list:** a place for every feature, one modal and one reward
+template reused everywhere, and an action-colour grammar so strict that you learn it within
+minutes.
+
+**Avoid from this set:** the sales stickers ("Great Value 500%", "20% OFF", "Bonus 680") and the red
+"!" on most tabs ([OWN-SHOP-GEAR-CHEST], [OWN-DAILY-SELECTED]). They are monetisation pressure, not
+polish.
 
 ### 2.2 Habby house style: Archero, Capybara Go!, Survivor!.io
 
@@ -482,6 +608,14 @@ and **Perf** flag conflicts with the project's accessibility and Galaxy A16 cons
 | 30 | **Carved display type for big moments** | Serif capitals in gold on a crest or over rays, used only for level up, victory and versus | AFK Arena, I Am Monster | [AFKA-G10], [AFKA-G09], [AFKA-G06], [IAM-10] |
 | 31 | **Rate chips** | Small dark chips reading "+87/m" with the currency icon, for income per time | AFK Arena | [AFKA-G02] |
 | 32 | **Portrait breaking the dialogue frame** | The speaker's bust rises out of the panel's top edge; the name sits on a tab at the corner | I Am Monster, Grow Castle (emblem) | [IAM-03], [GC-P4] |
+| 33 | **Action-colour grammar** | Blue = single or neutral action, yellow = the bigger commitment, grey = disabled, always with the reason in text | Dicero | [OWN-GEAR-DETAIL], [OWN-GEAR-LEVELUP], [OWN-BLESSING-BEFORE], [OWN-PET-HAVEN-UPGRADE] |
+| 34 | **Have / need cost line** | "113038 / 1300", the owned amount green when enough and red when short | Dicero | [OWN-GEAR-DETAIL], [OWN-GEAR-LEVELUP], [OWN-HERO-FROST-PRINCESS] |
+| 35 | **Before -> after upgrade preview** | Every stat row shows old -> new with green arrows; a power toast after the upgrade | Dicero | [OWN-PET-HAVEN-UPGRADE], [OWN-FUSE-SELECTED], [OWN-BLESSING-AFTER], [OWN-GEAR-LEVELUP] |
+| 36 | **One modal template, close below** | A shared modal shell with a meaning-coloured header and a square close button centred under it | Dicero | [OWN-PROFILE], [OWN-GUILD-TASKS], [OWN-SALVAGE], [OWN-VENTURE-SHOP] |
+| 37 | **Reward ribbon** | A wavy band across the dimmed screen with an outlined title, reward tiles and confetti; one component for every reward | Dicero | [OWN-REWARD-REVEAL], [OWN-SHOP-REWARD-REVEAL], [OWN-VENTURE-REWARD] |
+| 38 | **A place for every feature** | Each feature lives in its own painted location (forge, cathedral, throne hall, town); the chrome stays the same | Dicero, AFK Arena | [OWN-FUSE-EMPTY], [OWN-CURIOS-FOUNTAIN], [OWN-HERO-FROST-PRINCESS], [OWN-GUILD-HUB], [AFKA-G01] |
+| 39 | **Expedition scroll strips** | Each idle expedition is a scroll with a tiny scene of units walking to a chest, a timer bar, empty "+" slots and a reasoned lock | Dicero, AFK Journey | [OWN-PET-HAVEN], [OWN-PET-HAVEN-RUNNING], [OWN-VENTURE-EMPTY], [AFKJ-P7] |
+| 40 | **Selection by corner brackets** | Gold L-brackets at the four corners mark the chosen item | Dicero | [OWN-ACCESSORY] |
 
 **Flags:**
 - **A11y:**
@@ -586,16 +720,21 @@ Notes on the codebase as it stands:
    the action is available. Stop the pulse when the button is disabled, and respect
    reduce-motion. `component`. Evidence: [DIC-P1]. *(unverified: motion)*
 3. **Pressed and disabled states.**
-   - Pressed: scale to about 0.95, the face darkens one step, the shadow shrinks.
-   - Disabled: desaturate, add a lock or "need X" line in text (never colour alone).
-   - `component`. *(Not observable in the references; this is standard practice.)*
-4. **Rethink red.** Red RALLY competes with red HP and with alerts. Either:
-   - (a) make the primary a molten ember-gold, warm and on-theme, or
-   - (b) use a contrasting cool "dragon-steel" blue or pale cyan against the warm scene.
-   Option (b) is what both of the closest references do (catalogue #27): Dicero and AFK Arena,
-   whose world is the nearest to Ember & Stone [AFKA-G01]. Secondary buttons would then use a
-   warm material such as dark leather or bronze [AFKA-G02]. `token`. This is a question for the
-   owner; the evidence leans to (b).
+   - Pressed: scale to about 0.95, the face darkens one step, the shadow shrinks. *(Not
+     observable in stills; standard practice.)*
+   - Disabled: grey face and grey label, the cost shown as "have / need" with the shortfall in
+     red, and the reason in words. This is Dicero's exact pattern, now verified (catalogue #33,
+     #34): [OWN-GEAR-LEVELUP], [OWN-CURIOS-LOCKED-TOAST].
+   - `component`.
+4. **Rethink red.** Red RALLY competes with red HP and with alerts. The owner's Dicero screens
+   sharpen the choice into a two-colour grammar (catalogue #33):
+   - **Steel blue (cool) for repeatable, everyday actions:** RALLY, FORAGE, TRAIN, Go, Speed Up.
+     This matches AFK Arena's cyan [AFKA-G01] and Dicero's blue [OWN-SHOP-GEAR-CHEST].
+   - **Ember gold for one-off commitments:** Build, Upgrade, Claim, Continue. This matches
+     Dicero's yellow [OWN-PET-HAVEN-UPGRADE] and HSR's gold Claim [HSR-LV].
+   - **Grey for disabled,** always with the reason in text.
+   - Red goes back to meaning HP and danger only.
+   `token` + `component`. This is still the owner's call, but three references now agree on it.
 
 ### 4.4 ResourceBar (`src/components/ResourceBar.tsx`)
 
@@ -661,6 +800,31 @@ Notes on the codebase as it stands:
 3. **Attention badges.** A small red square with "!" for new content, at most one or two at once.
    `component`. Evidence: [OWN-HOME] (and its overuse).
 
+### 4.9 Beyond the Warfront (from the Dicero tour)
+
+These pieces are outside the brief's table, but the owner's screenshots map onto them directly.
+
+1. **Draconia as a place.** Draw the Draconia map as a painted town whose buildings are the
+   navigation, each with a name plate (Keep, Ranger's Lodge, Explorer's Outpost, Librarium). Show
+   a small up-arrow badge when one can be upgraded. `art` + `component`. Evidence:
+   [OWN-GUILD-HUB], [OWN-PET-HAVEN-RUNNING].
+2. **A place for each building's screen.** The Librarium as a candle-lit study, an armory or forge
+   for gear, the Keep as a great hall. Keep one shared chrome (header, close, buttons) over each
+   painted backdrop. `art`. Evidence: catalogue #38.
+3. **`BuildingCard` upgrade preview.** Show "Lv.2 -> Lv.3", each changed stat as old -> new with
+   the new value in green, then the cost as have / need. The building art breaks out of the card's
+   header. `component`. Evidence: [OWN-PET-HAVEN-UPGRADE], [OWN-FUSE-SELECTED].
+4. **Expeditions as scroll strips.** Explorers and foragers out on a run become parchment strips:
+   the units walking toward a sack or chest, a timer bar, a Speed Up or Recall button, and locked
+   strips that say what unlocks them. `component` + `art`. Evidence: catalogue #39.
+5. **One `RewardReveal` component.** A ribbon band, an outlined "Gained" title, reward tiles with
+   counts, a few ember sparks instead of confetti, and "Tap to close". Use it for offline earnings
+   (`OfflineModal`), quest claims and building completion. `component`. Evidence: catalogue #37.
+6. **One modal shell.** Extend `BottomSheet` and `ConfirmModal` to share one look: a stone header
+   coloured by meaning, a parchment body, and the close button in a consistent place.
+   `component`. Evidence: catalogue #36. *(Dicero's close button below the modal sits low on
+   tall phones. Keep it at least 48dp and keep the Android back button working.)*
+
 ---
 
 ## 5. Avoid
@@ -678,6 +842,8 @@ Notes on the codebase as it stands:
 - **Thin light-grey small text over art** (HSR secondary text). It fails AA contrast.
 - **Monetisation-style "juice" for ordinary information.** Reserve 3D display text, chests and
   bursts for real rewards, or they stop meaning anything [OWN-OFFER].
+- **Sales stickers** ("Great Value 500%", "20% OFF", "Bonus") on anything. They read as pressure,
+  not polish [OWN-DAILY-SELECTED], [OWN-SHOP-GEMS-GOLD].
 - **Mixing icon styles.** Ionicons line glyphs next to painted icons looks unfinished. Move a
   whole set at once.
 - **Skewed body text.** Tilt panels, never paragraphs.
@@ -692,8 +858,8 @@ Notes on the codebase as it stands:
   covers only AFK Arena (now fully covered), Arknights and Genshin Impact (console). It has no
   entry for Dicero, Star Rail, Zenless Zone Zero, Wuthering Waves, Blue Archive, Epic Seven,
   RAID, Cookie Clicker, Tap Titans 2, Grow Castle or the Habby games.
-- **Dicero:** no shop, Codex, bag or results screens are available online beyond the owner's
-  three. The store listings show battle, skill choice and talents only.
+- **Dicero:** now covered by 57 owner screenshots (section 2.1b). Still not seen: the Codex, the
+  bag and the end-of-run results screen.
 - **AFK Journey:** still only marketing composites with small in-game insets (AFK Arena is now
   covered in full).
 - **Zenless Zone Zero, Wuthering Waves, Blue Archive, Epic Seven:** in-game UI only as insets
@@ -794,9 +960,63 @@ Notes on the codebase as it stands:
 [IS-3]: https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/6e/70/84/6e708423-3039-d5b4-147c-a4ca91dd9563/AB_Mayo2026_Upgrades_IPHONE.png/600x0w.jpg
 [IS-4]: https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ca/41/73/ca4173d5-f2ba-27e7-71cd-fb8cc4a5d2dd/AB_Mayo2026_Offline_IPHONE.png/600x0w.jpg
 [IS-7]: https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/2b/66/8a/2b668ad2-bd90-6e64-b95f-98d8ee52537f/AB_Mayo2026_Village_IPHONE.png/600x0w.jpg
+[OWN-ACCESSORY]: owner-screenshots/dicero-accessory.png
+[OWN-ASTERITE-BOARD]: owner-screenshots/dicero-asterite-board.png
+[OWN-ASTERITE-SUMMON]: owner-screenshots/dicero-asterite-summon.png
+[OWN-BLESSING-AFTER]: owner-screenshots/dicero-blessing-after.png
+[OWN-BLESSING-BEFORE]: owner-screenshots/dicero-blessing-before.png
+[OWN-BOSS-CHEST]: owner-screenshots/dicero-boss-chest.png
+[OWN-BRILLIANT-EXCHANGE]: owner-screenshots/dicero-brilliant-exchange.png
+[OWN-CURIO-DETAIL]: owner-screenshots/dicero-curio-detail.png
+[OWN-CURIOS-FOUNTAIN]: owner-screenshots/dicero-curios-fountain.png
+[OWN-CURIOS-LOCKED-TOAST]: owner-screenshots/dicero-curios-locked-toast.png
+[OWN-DAILY-SELECTED]: owner-screenshots/dicero-daily-selected.png
+[OWN-EVENT-7DAY-D1]: owner-screenshots/dicero-event-7day-d1.png
+[OWN-EVENT-7DAY-D2]: owner-screenshots/dicero-event-7day-d2.png
+[OWN-EVENT-7DAY-D3]: owner-screenshots/dicero-event-7day-d3.png
+[OWN-EVENT-7DAY-D7]: owner-screenshots/dicero-event-7day-d7.png
+[OWN-FRIENDS]: owner-screenshots/dicero-friends.png
+[OWN-FUSE-EMPTY]: owner-screenshots/dicero-fuse-empty.png
+[OWN-FUSE-SELECTED]: owner-screenshots/dicero-fuse-selected.png
+[OWN-GEAR]: owner-screenshots/dicero-gear.png
+[OWN-GEAR-DETAIL]: owner-screenshots/dicero-gear-detail.png
+[OWN-GEAR-LEVELUP]: owner-screenshots/dicero-gear-levelup.png
+[OWN-GUILD-BARGAIN]: owner-screenshots/dicero-guild-bargain.png
+[OWN-GUILD-BOSS]: owner-screenshots/dicero-guild-boss.png
+[OWN-GUILD-HUB]: owner-screenshots/dicero-guild-hub.png
+[OWN-GUILD-MEMBERS]: owner-screenshots/dicero-guild-members.png
+[OWN-GUILD-TASKS]: owner-screenshots/dicero-guild-tasks.png
+[OWN-HERO-FROST-PRINCESS]: owner-screenshots/dicero-hero-frost-princess.png
+[OWN-HERO-WINTER-LORD]: owner-screenshots/dicero-hero-winter-lord.png
 [OWN-HOME]: owner-screenshots/dicero-home.png
+[OWN-MESSAGES]: owner-screenshots/dicero-messages.png
 [OWN-OFFER]: owner-screenshots/dicero-offer-popup.png
+[OWN-PET-HAVEN]: owner-screenshots/dicero-pet-haven.png
+[OWN-PET-HAVEN-RUNNING]: owner-screenshots/dicero-pet-haven-running.png
+[OWN-PET-HAVEN-UPGRADE]: owner-screenshots/dicero-pet-haven-upgrade.png
+[OWN-PET-SUMMON]: owner-screenshots/dicero-pet-summon.png
+[OWN-PETS]: owner-screenshots/dicero-pets.png
+[OWN-PROFILE]: owner-screenshots/dicero-profile.png
+[OWN-RECRUIT]: owner-screenshots/dicero-recruit.png
+[OWN-REWARD-REVEAL]: owner-screenshots/dicero-reward-reveal.png
+[OWN-SALVAGE]: owner-screenshots/dicero-salvage.png
+[OWN-SETTINGS]: owner-screenshots/dicero-settings.png
+[OWN-SHOP-DAILY]: owner-screenshots/dicero-shop-daily.png
+[OWN-SHOP-GEAR-CHEST]: owner-screenshots/dicero-shop-gear-chest.png
+[OWN-SHOP-GEMS-GOLD]: owner-screenshots/dicero-shop-gems-gold.png
+[OWN-SHOP-REWARD-REVEAL]: owner-screenshots/dicero-shop-reward-reveal.png
+[OWN-SHOP-SOJOURN-CHEST]: owner-screenshots/dicero-shop-sojourn-chest.png
+[OWN-SUMMON-FLASH]: owner-screenshots/dicero-summon-flash.png
+[OWN-TALENT-DETAIL]: owner-screenshots/dicero-talent-detail.png
+[OWN-TALENTS]: owner-screenshots/dicero-talents.png
+[OWN-THUNDER-GOD-CUTIN-1]: owner-screenshots/dicero-thunder-god-cutin-1.png
+[OWN-THUNDER-GOD-CUTIN-2]: owner-screenshots/dicero-thunder-god-cutin-2.png
+[OWN-THUNDER-GOD-OFFER]: owner-screenshots/dicero-thunder-god-offer.png
 [OWN-TITLE]: owner-screenshots/dicero-title.png
+[OWN-VENTURE-ASSIGN]: owner-screenshots/dicero-venture-assign.png
+[OWN-VENTURE-EMPTY]: owner-screenshots/dicero-venture-empty.png
+[OWN-VENTURE-REWARD]: owner-screenshots/dicero-venture-reward.png
+[OWN-VENTURE-SHOP]: owner-screenshots/dicero-venture-shop.png
 [RAID-1]: https://play-lh.googleusercontent.com/IX-JnMS84GYbUzx83DJLUX__uRIB5iSx63uAd712n8VCl_8N9KAJovnC3gOQoXGlARtttmjWYhwODKkzOgKXhh0=w2000
 [RAID-3]: https://play-lh.googleusercontent.com/pKG_cBw1aOkShwUP_0621-ThZzED50H7gN8XhlgFtLmeyVsSI3PXR9tiKD-2kv6z6ThIoTk6ISVXVTI-h2YCLPA=w2000
 [RAID-4]: https://play-lh.googleusercontent.com/nY3KwEgPGRaMMu40JaveCHD_zlPYQLnITefcxbI1GaEjF0W5UvLWbxvRWu6VNq6Q6-yPnJ6QHGtpWoKxSwOVe00=w2000
