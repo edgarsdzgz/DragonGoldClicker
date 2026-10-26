@@ -15,7 +15,7 @@ limits apply to all of it:
 
 ## 1. Summary: what the best-looking games do
 
-Across 20 games, the same seven moves account for most of the "premium" feel. Dragon Gold today
+Across 22 games, the same seven moves account for most of the "premium" feel. Dragon Gold today
 uses almost none of them [DG-RALLY]. It has flat panels, one system font, Ionicons glyphs and an
 empty black field.
 
@@ -217,21 +217,99 @@ Images: [EGG-2], [EGG-3], [EGG-8].
 - The look is clean, flat 3D with a toy feel. It is premium through **consistency and
   restraint,** not ornament.
 
-### 2.8 AFK Journey and AFK Arena
+### 2.8 AFK Arena and AFK Journey: the closest tonal match to Ember & Stone
 
-Images: [AFKJ-P3], [AFKJ-P7], [AFKA-P3], [AFKA-P5].
+Images: [AFKA-G01], [AFKA-G02], [AFKA-G06], [AFKA-G09], [AFKA-G10], [AFKA-G18], [AFKA-G22],
+[AFKA-G40] (41 in-game screens on Game UI Database), plus [AFKA-P3], [AFKA-P5], [AFKJ-P3],
+[AFKJ-P7] from the stores.
 
-The store images are mostly marketing compositions; the in-game parts are small insets. I relied
-only on those insets and on the frames, and the findings are thin as a result.
-- **Storybook idle battle:** a hand-painted battle strip sits inside a cream "page" frame, with
-  stage nodes along the top and a **treasure chest at the bottom** that holds the idle reward
-  [AFKJ-P7].
-- **Hero cards with ornate, scalloped frames** tinted by rarity (gold, silver-blue), star rows on
-  top, and a crest-topped title ribbon. Dividers are **dotted lines with small glyph marks**
-  [AFKJ-P3].
-- **AFK Arena's gothic arch frames,** coloured by faction (red, purple, teal), with braziers on the
-  pillars and a gem-set name plate [AFKA-P3], [AFKA-P5]. This is marketing art, but it states the
-  game's frame language. It is the most "medieval premium" frame in the study.
+AFK Arena is a portrait idle game in a painted dark-fantasy world. Its palette is warm brown, gold
+and parchment over dusky scenes, which is very close to where Ember & Stone wants to be. **It is
+the single most useful reference in this study for Dragon Gold.**
+
+- **The idle reward is a physical pile.**
+  - The campaign hub's backdrop is a painted world map.
+  - At the bottom, the party fights on top of a heap of open chests and gold coins that represents
+    the uncollected idle reward [AFKA-G01].
+  - You see the reward growing before you tap it. AFK Journey does the same, with a chest under
+    its storybook battle strip [AFKJ-P7].
+- **Cool primary on a warm world.**
+  - Every primary button ("Begin", "Collect", "Level Up", "Battle") is a **pale cyan glossy pill
+    with pointed hex ends** [AFKA-G01], [AFKA-G06], [AFKA-G18].
+  - Secondary buttons are **brown leather pills** ("Exit", "Go", "Remove Gear") [AFKA-G02],
+    [AFKA-G22].
+  - This is the same contrast Dicero uses (cool blue on a warm scene). Two strong references
+    agree, which makes it the safest call for Dragon Gold's primary action colour.
+- **Parchment and carved wood as materials.**
+  - The idle reward modal is a parchment scroll with curled edges [AFKA-G02].
+  - The Quests screen has a **carved wooden arch header**, parchment rows, and a **milestone chest
+    track on a red ribbon** (chests at 20/40/60/80/100) [AFKA-G22].
+  - Quest rows have three clear states: "Go" (brown), "Collect" (cyan) and locked. Locked rows are
+    dimmed, with the reason in text ("Unlock after stage 1-12").
+- **Rate chips:** the idle modal shows "+87/m", "+24/m", "+18/m" as small dark chips, each with
+  its currency icon, plus a green countdown "12:00:00" [AFKA-G02]. This is exactly what Dragon
+  Gold's `OfflineModal` and income readouts need.
+- **Event moments use carved display type and light.**
+  - "LEVEL UP" sits on a gold winged crest with radial rays over a dimmed screen [AFKA-G10].
+  - "VICTORY" is gold carved serif capitals with a star glint, over sepia rider silhouettes and
+    god-rays [AFKA-G09].
+  - The formation screen's "VS" is carved serif italic flanked by the two power figures
+    [AFKA-G06].
+- **Battle HUD.**
+  - The backdrop is a painted burning castle; the siege mood comes from the art alone.
+  - Damage numbers are white with a dark outline. Red "ATK" tags mark debuffs.
+  - Hits flare as white-gold star bursts with long radial streaks.
+  - Hero portraits sit in **arch-topped frames** with rarity-tinted borders and thin HP and energy
+    bars underneath [AFKA-G40].
+  - Pause, AUTO and x2 are small round translucent buttons, kept out of the way.
+- **Hero detail:**
+  - A rarity gem in a diamond at the top.
+  - The hero stands on a **glowing sigil platform** (spotlit stage).
+  - Gear sockets show "+" when empty and a padlock when locked.
+  - The power figure is flanked by small ornaments [AFKA-G18].
+- **Tab bar:** painted icons on a dark wood bar. **All five tabs keep their labels;** the selected
+  tab gets a warm lit tile behind it [AFKA-G01]. It is a more accessible version of Dicero's
+  rising tab.
+- **Frames:**
+  - Gothic arches coloured by faction, with braziers [AFKA-P3], [AFKA-P5].
+  - AFK Journey's hero cards have scalloped, rarity-tinted frames and dotted dividers with glyph
+    marks [AFKJ-P3].
+
+**Premium techniques:**
+- Physical materials (parchment, carved wood, gold).
+- Cool primary buttons against a warm world.
+- Rewards shown as objects (chests, coin piles) before they are collected.
+- Carved display type reserved for big moments.
+- Painted scenes behind every screen.
+
+**Watch-outs:** AFK Arena blurs the scene behind modals [AFKA-G02], which is costly on the A16; use
+a darkened image instead. Its red dots also appear on many icons at once [AFKA-G01].
+
+### 2.8a Extra idle titles found on Game UI Database
+
+**I Am Monster: Idle Destruction** (an idle tap brawler). Images: [IAM-03], [IAM-10], [IAM-22],
+[IAM-43], [IAM-44].
+- **Dialogue with a bust that breaks the frame.** The speaker's portrait rises out of the top edge
+  of a cream text panel. A coloured name tab sits on the panel's corner, with "TAP TO CONTINUE" in
+  small caps [IAM-03]. This is the layout recommended for `NpcDialog` in 4.6.
+- **Stage circles:** previous, current (large) and next wave, joined by an arc that reads "DEFEAT
+  13 ENEMIES" [IAM-43]. The same idea as Tap Titans 2, with the objective built in.
+- **Hexagonal ability tiles** along the bottom, each with a small cooldown pill ("38s")
+  [IAM-43], [IAM-44].
+- **"BOSS DEFEATED!"** in outlined gold display type, with the reward in a glowing triangular
+  frame and a "+1" [IAM-10].
+- **Upgrade bottom sheet:**
+  - Icon tabs carry small red arrows that mean "affordable".
+  - The gain is a big green "+112%".
+  - A locked upgrade shows a padlock and its requirement in words [IAM-22].
+  - This maps well onto the Build and Forage sheets.
+
+**Heroes of Rings: Dragons War.** Images: [HOR-10], [HOR-28].
+- HP bars capped with element and level badges. Round translucent x1, AUTO and pause buttons
+  [HOR-28].
+- "VICTORY" in italic condensed type between rules made of glyphs, with hero cards and EXP bars
+  [HOR-10].
+- A competent but generic look; useful only as more evidence for end-capped bars.
 
 ### 2.9 Honkai: Star Rail
 
@@ -283,7 +361,7 @@ button; rarity colour always paired with stars.
 
 ### 2.11 Arknights
 
-Images: [ARK-1], [ARK-3], [ARK-5].
+Images: [ARK-1], [ARK-3], [ARK-5], [ARK-G06], [ARK-G36].
 
 - **Home hub as perspective-tilted tiles.** The menu panels are skewed in 3D toward the character
   art. Each has a huge condensed label ("Squads", "Operator") and a faint watermark icon
@@ -291,6 +369,11 @@ Images: [ARK-1], [ARK-3], [ARK-5].
 - **One big functional number** ("185 Sanity / 210") gets display-size treatment [ARK-1].
 - **The battle HUD is almost bare:** counters in a thin top strip, a blue deploy-cost badge
   ("99"), and outlined red and blue cubes for spawn and goal [ARK-3].
+  The full-size battle screen confirms it: only two counters at the top, plus a deploy-cost figure
+  ("26") and unit limit beside the operator cards in the bottom-right corner [ARK-G36].
+- **Dialogue is understated:** a square portrait beside a dark translucent text box with a small
+  name label [ARK-G06]. It is functional but not premium. Dragon Gold should aim higher (see
+  4.6).
 - Industrial "flat 2.0": light grey, black and one accent colour per context (blue for the store
   and recruitment).
 
@@ -393,6 +476,12 @@ and **Perf** flag conflicts with the project's accessibility and Galaxy A16 cons
 | 24 | **Stage bubbles** | Previous / current / next stage as three linked circles, the current one larger | Tap Titans 2, Genshin node track | [TT-P16], [GI-AR] |
 | 25 | **Speaker name tag** | The speaker's name on a coloured tag or in an accent colour; key words highlighted | HSR, Genshin, Idle Slayer, Epic Seven | [HSR-EV], [GI-LOOT], [IS-7], [E7-3] |
 | 26 | **Perspective-tilted panels** | Flat menu tiles skewed in 3D toward the art | Arknights | [ARK-1] |
+| 27 | **Cool primary on a warm world** | Primary buttons in a cool hue (cyan or blue) against a warm brown, gold or lava scene; secondary buttons in the scene's own warm material | AFK Arena, Dicero | [AFKA-G01], [AFKA-G18], [OWN-HOME], [DIC-P1] |
+| 28 | **Reward pile you can see** | Uncollected idle income shown as a physical heap of chests and coins that grows before you collect it | AFK Arena, AFK Journey | [AFKA-G01], [AFKJ-P7] |
+| 29 | **Milestone chest track** | A ribbon of chests at point thresholds (20/40/60/80/100) above a task list | AFK Arena | [AFKA-G22] |
+| 30 | **Carved display type for big moments** | Serif capitals in gold on a crest or over rays, used only for level up, victory and versus | AFK Arena, I Am Monster | [AFKA-G10], [AFKA-G09], [AFKA-G06], [IAM-10] |
+| 31 | **Rate chips** | Small dark chips reading "+87/m" with the currency icon, for income per time | AFK Arena | [AFKA-G02] |
+| 32 | **Portrait breaking the dialogue frame** | The speaker's bust rises out of the panel's top edge; the name sits on a tab at the corner | I Am Monster, Grow Castle (emblem) | [IAM-03], [GC-P4] |
 
 **Flags:**
 - **A11y:**
@@ -502,9 +591,11 @@ Notes on the codebase as it stands:
    - `component`. *(Not observable in the references; this is standard practice.)*
 4. **Rethink red.** Red RALLY competes with red HP and with alerts. Either:
    - (a) make the primary a molten ember-gold, warm and on-theme, or
-   - (b) take Dicero's route and use a contrasting cool "dragon-steel" blue against the warm
-     scene.
-   `token`. This is a question for the owner.
+   - (b) use a contrasting cool "dragon-steel" blue or pale cyan against the warm scene.
+   Option (b) is what both of the closest references do (catalogue #27): Dicero and AFK Arena,
+   whose world is the nearest to Ember & Stone [AFKA-G01]. Secondary buttons would then use a
+   warm material such as dark leather or bronze [AFKA-G02]. `token`. This is a question for the
+   owner; the evidence leans to (b).
 
 ### 4.4 ResourceBar (`src/components/ResourceBar.tsx`)
 
@@ -517,7 +608,10 @@ Notes on the codebase as it stands:
    - `component` + `token`. Evidence: [IS-2] (static; *roll-up unverified: motion*).
 3. **A gain log** under renown on the Warfront: the last 2-3 "+0.25" lines, fading. `component`.
    Evidence: [IS-2].
-4. **Readable big numbers.** When values grow, write suffixes as small caps after the figure
+4. **Rate chips.** Show income as small dark chips with the currency icon (for example "+0.08/s"),
+   replacing the plain footer text "fighters 0.08 damage/s" [DG-RALLY]. The same chip works in
+   `OfflineModal`. `component`. Evidence: [AFKA-G02].
+5. **Readable big numbers.** When values grow, write suffixes as small caps after the figure
    ("1.29 thousand" style or "1.29K"). `token`. Evidence: [EGG-2].
 
 ### 4.5 ObjectiveStrip (`src/components/ObjectiveStrip.tsx`)
@@ -533,8 +627,8 @@ Notes on the codebase as it stands:
 ### 4.6 NpcDialog (`src/components/NpcDialog.tsx`)
 
 1. **A painted portrait that breaks the frame.** Replace the person glyph with a bust of Elder
-   Pyreth that overlaps the panel's top edge. `art` + `component`. Evidence: [GC-P4] (emblem
-   breaking the frame), [HSR-EV].
+   Pyreth that overlaps the panel's top edge. `art` + `component`. Evidence: [IAM-03] (exactly
+   this layout), [GC-P4] (emblem breaking the frame), [HSR-EV].
 2. **A name tag.** "ELDER PYRETH" on a gold-edged tab attached to the panel, instead of a centred
    caption. `component`. Evidence: [HSR-EV], [E7-3], [GI-LOOT].
 3. **The panel as material.**
@@ -559,8 +653,8 @@ Notes on the codebase as it stands:
 ### 4.8 Tab bar (`src/navigation/index.tsx`)
 
 1. **A rising selected tab.** The selected tab becomes a taller notched plate lifting above the
-   bar, with icon and label. **Keep labels visible on all tabs** (a11y). `component`. Evidence:
-   [OWN-HOME].
+   bar, with icon and label. **Keep labels visible on all tabs** (a11y), as AFK Arena does with a
+   warm lit tile behind the selected one. `component`. Evidence: [OWN-HOME], [AFKA-G01].
 2. **Icon sockets.** Put each icon in a shield- or diamond-shaped socket. Locked tabs show a
    padlock inside the socket in dimmed stone, with "Locked" as text. `component` (+ `art` for
    painted icons later). Evidence: [OWN-HOME], [RAID-5].
@@ -594,19 +688,22 @@ Notes on the codebase as it stands:
 
 ## 6. Gaps and limits
 
-- **Game UI Database was not used** because its terms forbid AI use. Its galleries would fill most
-  of the gaps below; the owner can browse them directly.
+- **Game UI Database** was used after the owner's decision (see `sources.md`). Of our list it
+  covers only AFK Arena (now fully covered), Arknights and Genshin Impact (console). It has no
+  entry for Dicero, Star Rail, Zenless Zone Zero, Wuthering Waves, Blue Archive, Epic Seven,
+  RAID, Cookie Clicker, Tap Titans 2, Grow Castle or the Habby games.
 - **Dicero:** no shop, Codex, bag or results screens are available online beyond the owner's
   three. The store listings show battle, skill choice and talents only.
-- **AFK Journey and AFK Arena:** only marketing composites with small in-game insets. I have no
-  full in-game screen.
-- **Zenless Zone Zero, Wuthering Waves, Arknights, Blue Archive, Epic Seven:** in-game UI only as
-  insets inside marketing frames. No menus or shop screens at full size.
+- **AFK Journey:** still only marketing composites with small in-game insets (AFK Arena is now
+  covered in full).
+- **Zenless Zone Zero, Wuthering Waves, Blue Archive, Epic Seven:** in-game UI only as insets
+  inside marketing frames. No menus or shop screens at full size.
 - **HSR:** no battle HUD in the Interface In Game set (field HUD only).
 - **Cookie Clicker:** the mobile build was examined; the web version was not.
-- **Group B coverage:** Tap Titans 2, Grow Castle, Idle Slayer, Egg, Inc. and AFK Journey/Arena (5
-  titles). Clicker Heroes, AdVenture Capitalist, Cell to Singularity, Melvor Idle, Realm Grinder
-  and Legends of Idleon were not covered.
+- **Group B coverage:** Tap Titans 2, Grow Castle, Idle Slayer, Egg, Inc. and AFK Arena/Journey (5
+  titles), plus two extras from Game UI Database (I Am Monster: Idle Destruction, Heroes of
+  Rings). Clicker Heroes, AdVenture Capitalist, Cell to Singularity, Melvor Idle, Realm Grinder
+  and Legends of Idleon were not covered; none of them is on Game UI Database.
 - **Motion and button states** cannot be verified from stills. They are marked where used.
 - **Moodboard:** not created. The store screenshots are copyrighted marketing material with no
   stated reference licence, and none of the titles offered a press kit in the sources found. The
@@ -615,6 +712,14 @@ Notes on the codebase as it stands:
 ---
 
 <!-- Image links: generated from sources.md -->
+[AFKA-G01]: https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014621-16907.jpg
+[AFKA-G02]: https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014758-16172.jpg
+[AFKA-G06]: https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014756-91981.jpg
+[AFKA-G09]: https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014757-26209.jpg
+[AFKA-G10]: https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014757-17982.jpg
+[AFKA-G18]: https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014624-80954.jpg
+[AFKA-G22]: https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014753-34565.jpg
+[AFKA-G40]: https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014756-18855.jpg
 [AFKA-P3]: https://play-lh.googleusercontent.com/ubw88E3NTApGQgd2mToC-VGXaA5XM3D0T79rlBKnVyGoGDNgi48UxihO0l8Ok29-kF9fmkbe5i3r4ERqfmFvb0I=w1400
 [AFKA-P5]: https://play-lh.googleusercontent.com/JUZn8gn55GuYBDyHB5L-059QCB6Kn1sPayZKeeUKM6KKt8iM5oYLNyV5ZSmOMxERQcy-OHRdtdozM48ZU0WyFMY=w1400
 [AFKJ-P3]: https://play-lh.googleusercontent.com/isFfJH7faXusqtc389oDQGPrrzuJxSC8DpOa9EjsRLE_HjuwblY8tROkUAndfAJn8Ok4aWTzlPkezENp_nnRt8U=w1400
@@ -626,6 +731,8 @@ Notes on the codebase as it stands:
 [ARK-1]: https://play-lh.googleusercontent.com/M7a4R60i1TrMxgqY3FvU-eZifRrSPFeQFC_pbEnjktbzwKUz_G72uxBHBqnAtbP6tycxhrLBs_Ht2UIlWKX-=w2000
 [ARK-3]: https://play-lh.googleusercontent.com/dIRo98UsCs97OACxqBZTC1a3BlyY_aut0d023r1ciWxt4QqiUG94zjxR5WBLTqO6rk21osLGmvCeq1QrqHKOWg=w2000
 [ARK-5]: https://play-lh.googleusercontent.com/HChTTXNO6GlyH7URY06fYDsT0KYTI7O0aRHrUcTtxBfoNT0xK4LprPUWRMfNn0jG3OQVwhFeNVSwYujnh5Gk4w=w2000
+[ARK-G06]: https://www.gameuidatabase.com/uploads/Arknights01252021-022419-39219.jpg
+[ARK-G36]: https://www.gameuidatabase.com/uploads/Arknights01252021-022520-37807.jpg
 [BA-2]: https://play-lh.googleusercontent.com/GQOHwrEP7RN9vQE9q2FC_kw5JRU57kvfYVSF99p0HUiBHvJ0ZAASROeDCBHqTJvE2UgBSPb_kfciq6pBjxVfaA0=w2000
 [BA-5]: https://play-lh.googleusercontent.com/mXKEht-25MHb33c59pBrWvk9wTXtez1ax-N1GxR2DJWv45-PCGMuCLoIfLhMpeHGGHWPKM-f_V3n-C3PYjWGsg=w2000
 [BA-6]: https://play-lh.googleusercontent.com/Mu_km_BH2cvPacXsPuyMK1UOs55dhsgRvBJva8RbNqlIWGx5s0TrdSrGHU8vDx0YYK4MrIYKiwMhqGwE7oBhCg=w2000
@@ -668,6 +775,8 @@ Notes on the codebase as it stands:
 [GI-REW]: https://interfaceingame.com/wp-content/uploads/genshin-impact-mobile/genshin-impact-mobile-rewards.png
 [GI-SHOP]: https://interfaceingame.com/wp-content/uploads/genshin-impact-mobile/genshin-impact-mobile-paimons-bargains.png
 [GI-WISH]: https://interfaceingame.com/wp-content/uploads/genshin-impact-mobile/genshin-impact-mobile-wish.png
+[HOR-10]: https://www.gameuidatabase.com/uploads/Heroes-of-Rings-Dragons-War01012021-050650-97389.jpg
+[HOR-28]: https://www.gameuidatabase.com/uploads/Heroes-of-Rings-Dragons-War01012021-050649-51871.jpg
 [HSR-BP]: https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-battle-pass.png
 [HSR-CD]: https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-character-details.png
 [HSR-CL]: https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-characters-list.png
@@ -676,6 +785,11 @@ Notes on the codebase as it stands:
 [HSR-LV]: https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-level-up-2.png
 [HSR-TIP]: https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-confirmation.png
 [HSR-TUT]: https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-celebration.png
+[IAM-03]: https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-114848-76839.jpg
+[IAM-10]: https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-114854-83409.jpg
+[IAM-22]: https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-114853-74175.jpg
+[IAM-43]: https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-115128-57099.jpg
+[IAM-44]: https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-115131-74844.jpg
 [IS-2]: https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/51/17/9e/51179ec9-3d70-fc46-0790-b2700e3b0d9d/AB_Mayo2026_Billions_IPHONE.png/600x0w.jpg
 [IS-3]: https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/6e/70/84/6e708423-3039-d5b4-147c-a4ca91dd9563/AB_Mayo2026_Upgrades_IPHONE.png/600x0w.jpg
 [IS-4]: https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ca/41/73/ca4173d5-f2ba-27e7-71cd-fb8cc4a5d2dd/AB_Mayo2026_Offline_IPHONE.png/600x0w.jpg

@@ -9,8 +9,15 @@ Notes on sources:
   (`=w1400`). Both are official store screenshots.
 - **Store screenshots are marketing composites.** Many add slogans, character art and frames around
   a smaller in-game capture. The report describes only the in-game part unless it says otherwise.
-- **Game UI Database (gameuidatabase.com) was not used.** Its site states that its content must not
-  be used for AI or machine-learning work, so it was skipped. The owner can browse it directly.
+- **Game UI Database (gameuidatabase.com):** its pages say content must not be used for "AI asset
+  generation, machine learning or cryptocurrency initiatives".
+  - The first pass skipped it. On 2026-10-26 the owner decided that viewing screens to describe them
+    in text, for design research, is outside that prohibition.
+  - Its pages were then read with ordinary browser requests. Images were viewed in a temporary
+    scratch folder only; none are stored in this repo. Nothing here is used to generate assets or
+    to train a model.
+  - Of our list it has only AFK Arena, Arknights and Genshin Impact (console). Two extra idle
+    titles were also examined.
 - Interface In Game (interfaceingame.com) covers only Honkai: Star Rail and Genshin Impact from our
   list. Fandom wikis refused automated requests (HTTP 403).
 
@@ -34,6 +41,10 @@ Notes on sources:
 | AFK Journey | Google Play listing | https://play.google.com/store/apps/details?id=com.farlightgames.igame.gp |
 | AFK Arena | App Store listing | https://apps.apple.com/us/app/afk-arena/id1375425432 |
 | AFK Arena | Google Play listing | https://play.google.com/store/apps/details?id=com.lilithgame.hgame.gp |
+| AFK Arena | Game UI Database (41 in-game screens) | https://www.gameuidatabase.com/gameData.php?id=1316 |
+| Arknights | Game UI Database (37 screens) | https://www.gameuidatabase.com/gameData.php?id=478 |
+| I Am Monster: Idle Destruction | Game UI Database | https://www.gameuidatabase.com/gameData.php?id=820 |
+| Heroes of Rings: Dragons War | Game UI Database | https://www.gameuidatabase.com/gameData.php?id=461 |
 | Honkai: Star Rail | App Store listing | https://apps.apple.com/us/app/honkai-star-rail/id1599719154 |
 | Honkai: Star Rail | Interface In Game gallery | https://interfaceingame.com/games/honkai-star-rail/ |
 | Genshin Impact | App Store listing | https://apps.apple.com/us/app/genshin-impact-6th-anniversary/id1517783697 |
@@ -97,6 +108,23 @@ Notes on sources:
 | AFKJ-P7 | AFK Journey | Idle battle | https://play-lh.googleusercontent.com/lSrznRj_r_Sf_Zho4cYfdAh-yuu34oxN3_zfAsCFWxH6ezQPj5W7p2EzWeR1Jtg7UhLHmhc_kt1GtKeHijQc9pQ=w1400 | Storybook battle strip in a cream page frame, stage nodes along the top, treasure chest at the bottom |
 | AFKA-P3 | AFK Arena | Frame art (marketing) | https://play-lh.googleusercontent.com/ubw88E3NTApGQgd2mToC-VGXaA5XM3D0T79rlBKnVyGoGDNgi48UxihO0l8Ok29-kF9fmkbe5i3r4ERqfmFvb0I=w1400 | Gothic arch frame with faction-coloured braziers and a name plate gem |
 | AFKA-P5 | AFK Arena | Frame art (marketing) | https://play-lh.googleusercontent.com/JUZn8gn55GuYBDyHB5L-059QCB6Kn1sPayZKeeUKM6KKt8iM5oYLNyV5ZSmOMxERQcy-OHRdtdozM48ZU0WyFMY=w1400 | Same arch in teal; battle capture with damage numbers inset |
+| AFKA-G01 | AFK Arena | Campaign hub | https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014621-16907.jpg | Painted world map as backdrop, idle battle on a heap of chests and gold at the bottom, cyan hex-ended "Begin" pill, labelled tab bar with a lit selected tile |
+| AFKA-G02 | AFK Arena | Idle reward modal | https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014758-16172.jpg | Parchment scroll with curled edges, rate chips "+87/m", rarity item tiles, brown Exit vs cyan Collect, blurred dark backdrop |
+| AFKA-G06 | AFK Arena | Formation | https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014756-91981.jpg | Carved-serif "VS" with power figures, hero tiles with green ticks, round faction filter medallions, cyan Battle pill |
+| AFKA-G09 | AFK Arena | Victory | https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014757-26209.jpg | Sepia silhouettes of riders with god-rays, gold serif "VICTORY" with a star glint, reward row, ticked objectives |
+| AFKA-G10 | AFK Arena | Level up | https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014757-17982.jpg | Gold winged crest with carved "LEVEL UP", radial rays, dimmed screen, reward tile |
+| AFKA-G18 | AFK Arena | Hero detail | https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014624-80954.jpg | Rarity gem, hero on a glowing sigil platform, gear sockets with "+" and padlocks, power figure flanked by ornaments, brown/cyan/brown button row |
+| AFKA-G22 | AFK Arena | Quests | https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014753-34565.jpg | Carved wooden header arch, milestone chest track on a red ribbon, parchment quest rows with shield badges, Go / Collect / locked states |
+| AFKA-G40 | AFK Arena | Battle HUD | https://www.gameuidatabase.com/uploads/AFK-Arena01032022-014756-18855.jpg | Burning-castle backdrop, white outlined damage numbers, red "ATK" debuff tags, star-burst hit sparks, arch-topped hero portraits with bars |
+| IAM-03 | I Am Monster: Idle Destruction | Dialogue | https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-114848-76839.jpg | Character bust breaking the top edge of a cream text panel, purple name tab, "TAP TO CONTINUE" |
+| IAM-10 | I Am Monster: Idle Destruction | Boss defeated | https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-114854-83409.jpg | Outlined gold "BOSS DEFEATED!" display text, reward in a glowing triangular frame, "+1" |
+| IAM-22 | I Am Monster: Idle Destruction | Upgrade sheet | https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-114853-74175.jpg | Bottom sheet with icon tabs and red "affordable" arrows, "+112%" in green, locked upgrade with padlock and text requirement |
+| IAM-43 | I Am Monster: Idle Destruction | Battle HUD | https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-115128-57099.jpg | Stage circles (8 / current / 10) with an arc, hexagonal ability tiles with cooldown pills, red damage numbers |
+| IAM-44 | I Am Monster: Idle Destruction | Battle HUD | https://www.gameuidatabase.com/uploads/I-Am-Monster-Idle-Destruction05292021-115131-74844.jpg | District title in outlined display caps, event portrait with timer, hex ability tiles |
+| HOR-10 | Heroes of Rings: Dragons War | Victory | https://www.gameuidatabase.com/uploads/Heroes-of-Rings-Dragons-War01012021-050650-97389.jpg | Italic condensed "VICTORY" flanked by glyph rules, hero cards with EXP bars, reward icons with counts |
+| HOR-28 | Heroes of Rings: Dragons War | Battle HUD | https://www.gameuidatabase.com/uploads/Heroes-of-Rings-Dragons-War01012021-050649-51871.jpg | HP bars capped by element and level badges, round translucent x1 / AUTO / pause buttons |
+| ARK-G06 | Arknights | Dialogue | https://www.gameuidatabase.com/uploads/Arknights01252021-022419-39219.jpg | Square portrait beside a dark translucent text box with a small name label |
+| ARK-G36 | Arknights | Battle HUD | https://www.gameuidatabase.com/uploads/Arknights01252021-022520-37807.jpg | Bare top counters, deploy cost "26" with unit limit, operator cards bottom right with cost badges |
 | HSR-BP | Honkai: Star Rail | Battle pass | https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-battle-pass.png | Cream reward columns, round level medallion, gold pill buttons, final tier highlighted gold |
 | HSR-CD | Honkai: Star Rail | Character detail | https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-character-details.png | Character on a lit stage platform, icon + label + value stat rows, white pill "Level Up" |
 | HSR-CL | Honkai: Star Rail | Roster | https://interfaceingame.com/wp-content/uploads/honkai-star-rail/honkai-star-rail-characters-list.png | Portrait cards with purple (4-star) or gold (5-star) gradient backs and star rows |
