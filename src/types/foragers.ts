@@ -18,10 +18,14 @@ export interface ForagerTierDef {
 /** Gatherers trainable from the Forage tab without a Lodge */
 export const BASE_GATHERER_CAP = 6
 
+/**
+ * Owner ruling (layer 3): one gatherer feeds two fighters, 8 food per 2-minute meal (was 0.2/s).
+ * Trappers and rangers scale the same way.
+ */
 export const FORAGER_TIERS: ForagerTierDef[] = [
-  { id: 'gatherer', name: 'Gatherer', baseRate: 0.2, baseCost: 0.25, unlocksAtLodgeLevel: 0 },
-  { id: 'trapper', name: 'Trapper', baseRate: 0.6, baseCost: 0.75, unlocksAtLodgeLevel: 3 },
-  { id: 'ranger', name: 'Ranger', baseRate: 1.5, baseCost: 2.0, unlocksAtLodgeLevel: 5 },
+  { id: 'gatherer', name: 'Gatherer', baseRate: 8 / 120, baseCost: 0.25, unlocksAtLodgeLevel: 0 },
+  { id: 'trapper', name: 'Trapper', baseRate: 0.2, baseCost: 0.75, unlocksAtLodgeLevel: 3 },
+  { id: 'ranger', name: 'Ranger', baseRate: 0.5, baseCost: 2.0, unlocksAtLodgeLevel: 5 },
 ]
 
 export interface ForagerCounts {

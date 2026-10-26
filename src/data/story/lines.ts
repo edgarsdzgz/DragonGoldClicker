@@ -86,8 +86,8 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     ...PYRETH,
     title: 'Our Stores Run Low',
     lines: [
-      'The line holds, my lord, but your fighters spend themselves at the gate, and they eat for it: twice what any villager does.',
-      'Our stores will not last forever. Every time the meal bell rings, Draconia eats, and the stores grow thinner.',
+      'The line holds, my lord, but your fighters spend themselves at the gate, and they eat from our stores. The villagers fend for themselves.',
+      'Our stores will not last forever. Every time the meal bell rings, the fighters eat, and the stores grow thinner.',
       'The horde is camped before the Gate, but our back is to the valley. A small gate opens onto forest and river the monsters have not found.',
       'Forage there with your own hands. But know the cost: every moment you spend in the valley is a moment you are not defending the Gate.',
       'Bring back 200 food, my lord, and our stores will hold a while longer.',

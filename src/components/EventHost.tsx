@@ -5,6 +5,7 @@ import { getScene, OFFLINE_FRAMING } from '../data/story/lines'
 import type { SceneTab } from '../data/story/lines'
 import type { BeatId } from '../types/story'
 import { markScripted, hasRun } from '../types/scripted'
+import { isSystemOn } from '../types/systems'
 import { OfflineModal } from './OfflineModal'
 import { NpcDialog } from './NpcDialog'
 import { FoodWarningModal } from './FoodWarningModal'
@@ -93,6 +94,7 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
         <FoodWarningModal
           visible={activeModal === 'foodWarning'}
           level={pendingFoodWarning as 3 | 1}
+          starvationOn={isSystemOn(state, 'starvation')}
           onGoToForage={handleFoodWarningGoForage}
           onDismiss={dismissFoodWarning}
         />

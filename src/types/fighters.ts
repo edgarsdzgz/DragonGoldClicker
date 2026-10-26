@@ -23,7 +23,7 @@ export const FIGHTER_SWING_MS = 6000
 export const FIGHTER_TICK_MS = 250
 
 /** Food consumed per fighter per food check */
-export const FIGHTER_FOOD_COST = 2
+export const FIGHTER_FOOD_COST = 4
 
 /** Number of fighters required to unlock the Repair action */
 export const REPAIR_UNLOCK_FIGHTERS = 3
@@ -35,7 +35,7 @@ export const REPAIRER_BASE_COST = 0.75
 export const REPAIRER_COST_EXPONENT = 1.4
 
 /** Food consumed per repairer per food check (75% of fighter) */
-export const REPAIRER_FOOD_COST = 1.5
+export const REPAIRER_FOOD_COST = 3
 
 // =============================================================================
 // HELPERS

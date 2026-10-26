@@ -70,6 +70,7 @@ import {
   SWORD_BONUS,
   SHIELD_BONUS,
   roundInsp,
+  granaryRoom,
   isSystemOn,
   isBuildingRevealed,
 } from '../types/game'
@@ -275,11 +276,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (gained <= 0) {
           return { ...prev, autoFoodProgress: newProgress }
         }
+        // Whatever does not fit in the granary is lost
+        const added = granaryRoom(prev.food, gained)
         return {
           ...prev,
           autoFoodProgress: newProgress - gained,
-          food: prev.food + gained,
-          totalFoodForaged: prev.totalFoodForaged + gained,
+          food: prev.food + added,
+          totalFoodForaged: prev.totalFoodForaged + added,
         }
       })
     }, [loaded, autoFoodRate])
@@ -376,13 +379,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const forage = useCallback(() => {
     setState((prev) => {
-      const yield_ = getForageYield(prev.foragePower, prev.forageBonus)
+      // A full granary takes nothing more
+      const added = granaryRoom(prev.food, getForageYield(prev.foragePower, prev.forageBonus))
+      if (added <= 0) return prev
       return {
         ...prev,
-        food: prev.food + yield_,
-        totalFoodForaged: prev.totalFoodForaged + yield_,
+        food: prev.food + added,
+        totalFoodForaged: prev.totalFoodForaged + added,
         forageClicks: prev.forageClicks + 1,
-        foodGatheredByHand: prev.foodGatheredByHand + yield_,
+        foodGatheredByHand: prev.foodGatheredByHand + added,
       }
     })
   }, [])

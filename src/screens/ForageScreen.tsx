@@ -13,7 +13,7 @@ import { FORAGE_LINES } from '../data/flavorText'
 import { forageReveal } from '../types/opening'
 import { forageOrbDiameter, FLAVOR_H } from '../types/warfrontLayout'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, formatCount, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap, isSystemOn } from '../types/game'
+import { formatNumber, formatCount, GRANARY_CAP, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap, isSystemOn } from '../types/game'
 
 // Earthy green palette for foraging
 const forage = {
@@ -87,6 +87,9 @@ export function ForageScreen() {
   // Only gathering while the player learns to forage (types/opening.ts)
   const reveal = forageReveal(state)
 
+  // A full granary takes no more food (layer 3)
+  const granaryFull = state.food >= GRANARY_CAP
+
   // The FORAGE orb is sized to the room it has, so its glow never covers the TRAIN row
   const [areaHeight, setAreaHeight] = useState(0)
   const orbDiameter = forageOrbDiameter(areaHeight)
@@ -108,7 +111,7 @@ export function ForageScreen() {
             {formatCount(state.food)}
           </Text>
         </View>
-        <Text variant="bodySmall" color="muted" center>food stores</Text>
+        <Text variant="bodySmall" color="muted" center>{`food stores (granary holds ${GRANARY_CAP})`}</Text>
 
         {autoFoodRate > 0 && (
           <Animated.View style={{ opacity: incomeFlash, marginTop: spacing[1] }}>
@@ -157,6 +160,7 @@ export function ForageScreen() {
           onAction={handleForage}
           repeatOnHold
           diameter={orbDiameter}
+          disabled={granaryFull}
           icon="leaf"
           label="FORAGE"
           coachId="forage"
@@ -214,7 +218,7 @@ export function ForageScreen() {
         </Text>
         <Badge icon="nutrition" iconSize={10} color={forage[400]} variant="ghost">
           <Text variant="caption" style={{ color: forage[400] }}>
-            +{yield_} per tap
+            {granaryFull ? 'Granary full' : `+${yield_} per tap`}
           </Text>
         </Badge>
         {/* Only once wanderers can actually arrive */}

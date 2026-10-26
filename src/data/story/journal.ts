@@ -33,7 +33,7 @@ const HOW_IT_WORKS: HowItWorksCard[] = [
   { system: 'rally', title: 'Rally', text: 'Rally turns an idle villager into a fighter, who strikes the enemy at the gate beside you. Every enemy fighters defeat adds its full renown to yours, even while you rest.' },
   { system: 'siege', title: 'The Siege', text: 'Monsters batter the wall and wear down the city’s health. Strong fighters keep the damage away.' },
   { system: 'repair', title: 'Repair', text: 'Repairers mend the wall a little every second. Send villagers to fix it faster than it breaks.' },
-  { system: 'hunger', title: 'Food', text: 'Everyone in Draconia eats at regular meals. Soldiers and fighters eat the most, so keep the stores full.' },
+  { system: 'hunger', title: 'Food', text: 'Only the army eats from the stores, at every meal bell; villagers fend for themselves. Gatherers bring food in, and one feeds about two fighters.' },
   { system: 'forageTab', title: 'Foraging', text: 'Tap FORAGE to gather food in the valley behind Draconia. While you forage, you are not defending the Gate.' },
   { system: 'wanderers', title: 'Wanderers', text: 'Travelers sometimes arrive at the gates. Take them in for more hands, at the cost of more mouths.' },
   { system: 'draconiaTab', title: 'Draconia', text: 'The city map. Build and restore places here, then open them to train people and buy upgrades.' },

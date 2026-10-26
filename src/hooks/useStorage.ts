@@ -7,7 +7,6 @@ import {
   STARTING_VILLAGERS,
   getEffectiveAutoRate,
   getOfflineMaxSeconds,
-  getFoodConsumption,
   FOOD_CHECK_INTERVAL,
   getResearchBonuses,
   getFighterDps,
@@ -18,6 +17,7 @@ import {
 } from '../types/game'
 import { migrateSave } from '../types/saveMigrations'
 import { currentMonster } from '../types/monsters'
+import { mealCost } from '../types/foodTick'
 
 const STORAGE_KEY = '@dragongold/gamestate'
 
@@ -151,22 +151,15 @@ export function useStorage() {
           const cappedSec = Math.min(elapsedSec, maxSec)
 
           if (autoRate > 0) {
-            // If food system is active, soldiers only earn while food lasts
-            let inspSeconds = cappedSec
+            // Time away is fair (core-tap layer 3): the army eats its meals, but the stores never drop
+            // below one meal's worth while the player is gone, so the army is still fed on return
+            const inspSeconds = cappedSec
             if (isSystemOn(gameState, 'hunger')) {
-              const baseConsumption = getFoodConsumption(gameState.villagers, gameState.soldiers, gameState.foragers, gameState.explorers, gameState.fighters, gameState.repairers)
-              const perCheck = Math.max(0, Math.ceil(baseConsumption * (1 - rb.foodConsumptionReduction)))
+              const perCheck = mealCost(gameState)
               const foodChecks = Math.floor(cappedSec / FOOD_CHECK_INTERVAL)
-
               if (perCheck > 0 && foodChecks > 0) {
-                const checksUntilEmpty = Math.ceil(gameState.food / perCheck)
-                const actualChecks = Math.min(foodChecks, checksUntilEmpty)
-                const totalConsumed = perCheck * actualChecks
-                gameState.food = Math.max(0, gameState.food - totalConsumed)
-
-                if (gameState.food === 0 && checksUntilEmpty < foodChecks) {
-                  inspSeconds = checksUntilEmpty * FOOD_CHECK_INTERVAL
-                }
+                const reserve = Math.min(gameState.food, perCheck)
+                gameState.food = Math.max(reserve, gameState.food - perCheck * foodChecks)
               }
             }
 

@@ -6,7 +6,8 @@ import { ProgressBar } from './ProgressBar'
 import { useGame } from '../context/GameContext'
 import { colors, spacing, radius } from '../theme'
 import { FOOD_CHECK_INTERVAL, isSystemOn, formatAmount } from '../types/game'
-import { mealBalance } from '../types/foodTick'
+import { mealBalance, storesOutlook } from '../types/foodTick'
+import type { StoresOutlook } from '../types/foodTick'
 
 // Warm amber palette for consumption (contrasts with green forage / red garrison)
 const meal = {
@@ -17,6 +18,20 @@ const meal = {
   200: '#fde68a',
 } as const
 
+/** What the stores are heading for, in words, and whether that is good news */
+export function outlookText(o: StoresOutlook): { text: string; good: boolean } {
+  switch (o.kind) {
+    case 'full': return { text: 'Granary full', good: true }
+    case 'growing': return { text: `Stores grow by ${formatAmount(o.perMeal)} each meal`, good: true }
+    case 'steady': return { text: 'Stores hold steady', good: true }
+    case 'shrinking': return { text: `Stores last about ${o.minutes} min`, good: false }
+    case 'emptyNextMeal': return { text: 'Stores run out at the next meal', good: false }
+  }
+}
+
+/** "1:23" */
+const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`
+
 interface MealCountdownProps {
   /** 'full' shows rate + countdown + bar; 'compact' is just countdown badge */
   variant?: 'full' | 'compact'
@@ -25,14 +40,14 @@ interface MealCountdownProps {
 export function MealCountdown({ variant = 'full' }: MealCountdownProps) {
   const { state } = useGame()
 
-  // The same cost the meal tick charges (every mouth, fighters too), and what foragers add meanwhile
-  const { eaten: consumption, gathered, net } = mealBalance(state)
+  // The same cost the meal tick charges (the army), and what foragers add meanwhile
+  const { eaten: consumption, gathered } = mealBalance(state)
+  const outlook = outlookText(storesOutlook(state))
 
   // Nothing to show if nobody eats
   if (!isSystemOn(state, 'hunger') || consumption <= 0) return null
 
   const secondsLeft = FOOD_CHECK_INTERVAL - state.foodTimer
-  const progress = secondsLeft / FOOD_CHECK_INTERVAL
   const isUrgent = secondsLeft <= 5
 
   if (variant === 'compact') {
@@ -41,44 +56,22 @@ export function MealCountdown({ variant = 'full' }: MealCountdownProps) {
 
   return (
     <View style={styles.container}>
-      {/* Each meal: what is eaten, what foragers bring in, and whether the stores grow or shrink */}
+      {/* The horizon (layer 3): where the stores are heading, not a bar that empties every meal */}
+      <Text variant="label" center style={{ color: outlook.good ? colors.status.success : colors.status.error }}>
+        {outlook.text}
+      </Text>
+      {/* Each meal: what the army eats and what foragers bring in meanwhile */}
       <View style={styles.rateRow}>
         <Ionicons name="restaurant" size={13} color={meal[400]} />
         <Text variant="caption" style={{ color: meal[300] }}>
           {`Each meal: -${formatAmount(consumption)} eaten${gathered > 0 ? `, +${formatAmount(gathered)} gathered` : ''}`}
         </Text>
       </View>
-      <Text
-        variant="label"
-        center
-        style={{ color: net < 0 ? colors.status.error : colors.status.success }}
-      >
-        {Math.abs(net) < 0.05
-          ? 'Stores hold steady'
-          : net < 0
-            ? `Stores shrink by ${formatAmount(-net)} each meal`
-            : `Stores grow by ${formatAmount(net)} each meal`}
-      </Text>
-
-      {/* Countdown bar */}
-      <View style={styles.countdownSection}>
-        <View style={styles.countdownHeader}>
-          <View style={styles.countdownLabel}>
-            <Ionicons name="timer-outline" size={12} color={isUrgent ? colors.status.error : meal[400]} />
-            <Text
-              variant="caption"
-              style={{ color: isUrgent ? colors.status.error : meal[300] }}
-            >
-              next meal
-            </Text>
-          </View>
-          <CountdownDigits seconds={secondsLeft} isUrgent={isUrgent} />
-        </View>
-        <ProgressBar
-          progress={progress}
-          height={3}
-          gradientColors={isUrgent ? ['#ef4444', '#f87171'] : [meal[600], meal[400]]}
-        />
+      {/* The meal bell, small */}
+      <View style={styles.bell} accessible accessibilityLabel={`Next meal in ${secondsLeft} seconds`}>
+        <Ionicons name="notifications-outline" size={12} color={isUrgent ? colors.status.error : meal[400]} />
+        <Text variant="caption" style={{ color: isUrgent ? colors.status.error : meal[300] }}>next meal</Text>
+        <CountdownDigits seconds={secondsLeft} isUrgent={isUrgent} />
       </View>
     </View>
   )
@@ -123,7 +116,7 @@ function CountdownDigits({ seconds, isUrgent }: { seconds: number; isUrgent: boo
         },
       ]}
     >
-      {seconds}s
+      {clock(seconds)}
     </Animated.Text>
   )
 }
@@ -150,7 +143,7 @@ function CompactCountdown({
         <View style={styles.compactDivider} />
         <Ionicons name="timer-outline" size={11} color={tint} />
         <Text variant="caption" style={{ color: isUrgent ? colors.status.error : meal[300], fontSize: 11 }}>
-          {secondsLeft}s
+          {clock(secondsLeft)}
         </Text>
       </View>
       <ProgressBar
@@ -173,17 +166,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 4,
   },
-  countdownSection: {
-    gap: 3,
-  },
-  countdownHeader: {
+  bell: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  countdownLabel: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'center',
     gap: 4,
   },
   digits: {

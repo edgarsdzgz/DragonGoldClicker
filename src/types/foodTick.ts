@@ -3,7 +3,7 @@ import type { SoldierCounts } from './soldiers'
 import type { ForagerCounts } from './foragers'
 import {
   FOOD_CHECK_INTERVAL,
-  STARVATION_DEATH_CHANCE,
+  GRANARY_CAP,
   PROFESSIONAL_STARVATION_CHANCE,
   getFoodConsumption,
 } from './food'
@@ -57,6 +57,27 @@ export interface MealBalance {
   net: number
 }
 
+export type StoresOutlook =
+  | { kind: 'full' }
+  | { kind: 'growing'; perMeal: number }
+  | { kind: 'steady' }
+  | { kind: 'shrinking'; minutes: number }
+  | { kind: 'emptyNextMeal' }
+
+/** Where the stores are heading: a horizon the player can plan around (layer 3) */
+export function storesOutlook(s: GameState): StoresOutlook {
+  const { eaten, gathered, net } = mealBalance(s)
+  // Foragers keep bringing food in until the bell, so count that against the meal
+  if (eaten > 0 && s.food + gathered < eaten) return { kind: 'emptyNextMeal' }
+  if (net < -0.05) {
+    const meals = s.food / -net
+    return { kind: 'shrinking', minutes: Math.max(1, Math.round((meals * FOOD_CHECK_INTERVAL) / 60)) }
+  }
+  if (s.food >= GRANARY_CAP) return { kind: 'full' }
+  if (net > 0.05) return { kind: 'growing', perMeal: net }
+  return { kind: 'steady' }
+}
+
 /** The stores' balance per meal, from what is eaten and what foragers bring in meanwhile */
 export function mealBalance(s: GameState): MealBalance {
   const eaten = mealCost(s)
@@ -100,22 +121,21 @@ export function resolveFoodTick(prev: GameState, starvationOn: boolean): FoodTic
   const eventsLeft = consumption > 0 ? Math.floor(newFood / consumption) : Infinity
   const warning: 0 | 3 | 1 = eventsLeft <= 1 ? 1 : eventsLeft <= 3 ? 3 : 0
 
-  if (newFood !== 0 || !starvationOn) {
+  // Only a meal that went unpaid can starve anyone (with nobody eating from the stores, empty
+  // stores harm no one)
+  if (newFood !== 0 || !starvationOn || consumed >= consumption) {
     return { tick: { timer: 0, consumed, ...noLoss }, warning, report: null }
   }
 
-  // Idle villagers die more often than trained units
-  const villagersLost = rollLosses(prev.villagers, STARVATION_DEATH_CHANCE)
+  // Layer 3: only the army eats from the stores, so only the army can starve. Villagers and
+  // foragers feed themselves.
+  const villagersLost = 0
   const soldiersLost = {
     conscripts: rollLosses(prev.soldiers.conscripts, PROFESSIONAL_STARVATION_CHANCE),
     footmen: rollLosses(prev.soldiers.footmen, PROFESSIONAL_STARVATION_CHANCE),
     knights: rollLosses(prev.soldiers.knights, PROFESSIONAL_STARVATION_CHANCE),
   }
-  const foragersLost = {
-    gatherers: rollLosses(prev.foragers.gatherers, PROFESSIONAL_STARVATION_CHANCE),
-    trappers: rollLosses(prev.foragers.trappers, PROFESSIONAL_STARVATION_CHANCE),
-    rangers: rollLosses(prev.foragers.rangers, PROFESSIONAL_STARVATION_CHANCE),
-  }
+  const foragersLost = { gatherers: 0, trappers: 0, rangers: 0 }
   const explorersLost = rollLosses(prev.explorers, PROFESSIONAL_STARVATION_CHANCE)
   const fightersLost = rollLosses(prev.fighters, PROFESSIONAL_STARVATION_CHANCE)
   const repairersLost = rollLosses(prev.repairers, PROFESSIONAL_STARVATION_CHANCE)

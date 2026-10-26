@@ -15,19 +15,34 @@ export const FOOD_ACTIVATE_CONSCRIPTS = 4
 /** Buildings purchased before food system activates */
 export const FOOD_ACTIVATE_BUILDINGS = 2
 
-/** Seconds between food consumption checks */
-export const FOOD_CHECK_INTERVAL = 30
+/**
+ * Seconds between meals. Owner ruling (2026-10-26, core-tap layer 3): the meal bell rings every
+ * 2 minutes (was 30s), so food pressure is felt without a constant drain.
+ */
+export const FOOD_CHECK_INTERVAL = 120
 
-/** Food consumed per unit per food check */
+/**
+ * Food each unit eats from the stores per meal. Owner ruling (layer 3): only the army eats from
+ * the stores; villagers and foragers feed themselves (foragers' output is already net).
+ * Fighters and repairers are in fighters.ts.
+ */
 export const FOOD_CONSUMPTION: Record<string, number> = {
-  villager: 1,
-  gatherer: 0.5,
-  trapper: 0.3,
-  ranger: 0.1,
-  conscript: 2,
-  footman: 3,
-  knight: 5,
-  explorer: 1,
+  villager: 0,
+  gatherer: 0,
+  trapper: 0,
+  ranger: 0,
+  conscript: 4,
+  footman: 6,
+  knight: 10,
+  explorer: 2,
+}
+
+/** The granary holds at most this much food (buildings raise it later) */
+export const GRANARY_CAP = 500
+
+/** How much of `amount` fits in the granary: food above the cap is lost (never negative) */
+export function granaryRoom(food: number, amount: number): number {
+  return Math.max(0, Math.min(amount, GRANARY_CAP - food))
 }
 
 /** Chance (0-1) each idle villager dies per food check when food is 0 */

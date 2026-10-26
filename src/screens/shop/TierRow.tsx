@@ -9,6 +9,8 @@ import { SFX } from '../../data/sfx'
 import { colors, spacing, radius, gold } from '../../theme'
 import {
   formatNumber,
+  formatAmount,
+  FOOD_CHECK_INTERVAL,
   SOLDIER_TIERS,
   FORAGER_TIERS,
   FOOD_CONSUMPTION,
@@ -176,7 +178,6 @@ export function ForagerTierRow({ tier, buildingColor }: { tier: ForagerTierDef; 
   const locked = state.lodgeLevel < tier.unlocksAtLodgeLevel
   const cost = getForagerCost(tier, lifetimeCount)
   const canAfford = state.inspiration >= cost && !atCap && !locked && !noVillagers
-  const foodCost = FOOD_CONSUMPTION[tier.id]
 
   const canUpgradeLodge = getLodgeUpgradeCost(state.lodgeLevel) !== null
   const buttonLabel = atCap ? 'FULL' : noVillagers ? 'NO POP' : `${formatNumber(cost)} g`
@@ -198,7 +199,7 @@ export function ForagerTierRow({ tier, buildingColor }: { tier: ForagerTierDef; 
   return (
     <ActionRow
       title={tier.name}
-      subtitle={locked ? undefined : `${tier.baseRate} food/s -- eats ${foodCost}/chk -- ${count} trained`}
+      subtitle={locked ? undefined : `${formatAmount(tier.baseRate * FOOD_CHECK_INTERVAL)} food per meal -- ${count} trained`}
       locked={locked}
       lockLabel={`Lodge Lv${tier.unlocksAtLodgeLevel}`}
       right={

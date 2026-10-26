@@ -2,6 +2,16 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Food, layer 3 phase A (2026-10-26)
+- Only the army eats from the stores (fighter 4, repairer 3, soldiers 4/6/10, explorer 2 per meal);
+  villagers and foragers feed themselves, and only an unfed army can starve
+- The meal bell rings every 2 minutes (was 30s); a gatherer brings 8 per meal and feeds two fighters
+- The Forage tab shows a horizon ("Stores last about 14 min", "Stores grow by 4 each meal",
+  "Granary full") and a small meal bell instead of a bar that empties every meal
+- A granary of 500: food that does not fit is lost; FORAGE rests when the granary is full
+- Food warnings no longer threaten deaths while starvation is off
+- Time away never drains the stores below one meal
+
 ### Forage tab fixes (2026-10-26)
 - The FORAGE orb sizes itself to its space; its glow no longer covers the TRAIN row
 - Food, trips and counts show as whole numbers; one meal's cost keeps a half when there is one
