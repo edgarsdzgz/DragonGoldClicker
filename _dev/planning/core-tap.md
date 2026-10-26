@@ -19,7 +19,7 @@ and add no new mechanics or screens until the tap is fun.
 | 3 | Tap upgrades: one track (the dragon's claws), reusing `AVATAR_WEAPONS` | later |
 | 4 | Rhythm: combo multiplier that decays, occasional crits | later |
 | 5 | Fighters damage the same monster (visible small hits) instead of a separate insp/s | done in 2e |
-| 6 | The wall: monsters not killed in time hit the wall; Repair matters | later |
+| 6 | The wall: monsters not killed in time hit the wall; Repair matters; the Breach | proposed 2026-10-26 |
 
 Food, foraging, Draconia, wanderers, milestones and the journal wait until layers 1-5 feel
 good. Story beats get re-pointed at these layers later ("your first kill", "Kael forges your
@@ -552,6 +552,95 @@ The ration multiplies the fighters' upkeep and their damage. Fed states apply on
 | A | Honest warnings; army-only upkeep; meal bell 120s with the new numbers; horizon display; granary cap; the away rule. Story text that says villagers eat is adjusted. |
 | B | Fed states; rations (five levels, quarter and double locked, research nodes defined); ration UI. |
 | C | Pressure events. |
+
+---
+
+## Layer 6: the wall, and the Breach (proposed 2026-10-26)
+
+Owner rulings (2026-10-26):
+- The player never dies or starts over. When the wall falls, that is the Breach: villagers fight
+  and die, renown takes a huge hit and can go negative, and every resource takes a huge hit.
+- The NPCs call on the ancient magic of Draconia to push the horde back, which gives the people
+  time to patch the wall. That is why everything costs so much.
+- The horde is pushed back several (or many) levels, so starting up again is easy.
+
+### 6.1 Monsters strike the wall
+
+- The monster at the gate strikes the wall on a timer while it lives. Its first strike comes one
+  interval after it arrives, so a monster killed fast never touches the wall.
+- Proposed strikes (every 5s): kobold 1, goblin 1.5, shadow crawler 2, orc 4. A raider does not
+  strike: it runs for the stores (the raid already punishes it).
+- The wall has 100 HP (existing `cityHp`). Repairers heal 0.5 HP/s each (existing).
+- **What this means:** a player who is tapping never takes damage. Idle, 5 fighters lose about
+  0.2 HP/s against kobolds and about 0.5 HP/s against the mid pool (anchor 53), so one repairer
+  per five fighters about holds the wall. Orcs alone outpace that: the player has to come back.
+- Replaces the old siege tick (`threat - defense` every 10s); `getThreatLevel` is retired.
+
+### 6.2 The horde's advance
+
+- New `hordeKills`: every kill adds one, and the spawn pool reads it instead of
+  `monstersDefeated`. Lifetime counters (`monstersDefeated`, `killsByMonster`) never go back, so
+  quests and debuts are untouched.
+- Shown as a **horde level**: 1 + one level per 25 kills.
+- Save migration v10: `hordeKills = monstersDefeated`.
+
+### 6.3 Warnings, so the Breach is never a surprise
+
+- The wall bar turns amber at 50% and red at 25%, and pulses red below 25%.
+- Toasts: at 50% "The wall is cracking", at 25% "The wall is failing!" with a haptic, and at 10%
+  Rodain: "It won't hold, Steward!"
+
+### 6.4 The Breach (wall reaches 0)
+
+| What | Lost |
+|------|------|
+| Fighters, repairers, idle villagers | 30% each, rounded down (at least 1 fighter if any) |
+| Foragers (out in the valley, they run back to help) | 15% |
+| Explorers (away) | none |
+| Food | 40% of the stores |
+| Renown | half of what you hold, then a blood price of 5 x horde level. It can go negative. |
+
+- **Negative renown:** shown in red with a minus sign. Nothing can be bought until it is back
+  above the price (the existing `inspiration < cost` checks already stop it), and kills pay it
+  down as normal. Example: 12 renown at horde level 3 becomes 6 - 15 = -9.
+- **Rebuilding costs what it did:** the rally and repairer price curves step back by the number
+  lost, so the player is not charged the higher price of a bigger army they no longer have.
+- **The ancient magic:** the horde's advance is pushed back by half (at least 2 levels, never
+  below 0). The wall is patched to 50%, and a ward holds for 90s with no wall strikes. The
+  monster at the gate is replaced from the pushed-back pool.
+- **Scene:** the first Breach is a full scene. Rodain calls it, people fight in the streets,
+  Pyreth calls on the old magic, and the horde is thrown back. Later Breaches play a short scene
+  (two lines). Both end on a summary card listing every loss and the new horde level. The Journal
+  counts Breaches.
+- **Away:** while the app is closed, wall damage stops at 25% and the wall never falls. A Breach
+  only happens while playing (matches the food away rule).
+
+### 6.5 The story
+
+- `the_breach` (Rodain) is re-pointed: it fires when Fill the Stores is done. The scripted opening
+  blow (15 HP) stays; from then on monsters strike the wall and the wall bar shows.
+- Mend the Walls becomes a quest: direct 3 repairers.
+- Rodain's company is the HP floor (50) until the wall is allowed to fall. **Open:** when that is
+  (see below). `threatUnfloored` keeps its name; "game over" wording in the journal and story
+  guide becomes "the wall can fall, and a Breach follows".
+
+### Phases
+
+| Phase | What |
+|-------|------|
+| A | Wall strikes, horde level and migration, warnings, re-pointed `the_breach`, Mend the Walls quest. The floor holds, so nothing can be lost yet. |
+| B | The Breach: losses, negative renown, ward and push-back, scenes and summary card, away rule. |
+
+### Open questions
+
+1. **When can the wall first fall?** (a) Right after Mend the Walls: Rodain's company is spent
+   holding the line while you learned to repair. (b) Chapter 11 (`the_horde_grows`), as the story
+   guide has it now. Recommended: (a), or chapters 4-10 have no danger at all.
+2. Are the loss sizes right (30% of people, 40% of food, half of renown plus the blood price)?
+3. Push back by half the horde's advance (at least 2 levels)?
+4. Should monsters also grow stronger with horde level (HP and strike x1.05 per level)? Without
+   it, the push-back only changes which monsters come. Recommended: build the hook now with the
+   multiplier at 1, and turn it on in the balance pass.
 
 ---
 
