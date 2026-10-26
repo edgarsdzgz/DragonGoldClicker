@@ -441,7 +441,7 @@ with checkmarks in the Journal).
 
 ---
 
-## Layer 3: food that creates urgency, not exhaustion (approved 2026-10-26; phases A and B built, C later)
+## Layer 3: food that creates urgency, not exhaustion (approved 2026-10-26; phases A, B and C built)
 
 **Why:** on the A16 the stores emptied while the game sat idle. A meal cost 31 every 30s (about
 3,700 food an hour), one gatherer brings 6 per meal, and even the full 6 gatherers barely break even.
@@ -531,9 +531,19 @@ The ration multiplies the fighters' upkeep and their damage. Fed states apply on
 
 - **Away:** consumption while the app is closed never takes the stores below one meal's worth, and
   no warning greets the player on return. The Keep's offline system later protects more.
-- **Pressure in waves** (phase C, designed later): occasional events to prepare for, with calm in
-  between. For example a lean season (gatherers at half for a while), a raid on the stores (lose a
-  share), or refugees at the gate (more hands, more mouths).
+- **Pressure in waves** (phase C, built 2026-10-26; `types/foodEvents.ts`):
+  - **Timing:** once Fill the Stores is done, one event every 10-15 minutes of play (play time,
+    so events pause while the app is closed). Never the same event twice in a row, and no raid on
+    empty stores.
+  - **Lean Season:** announced a meal (2 min) ahead; gatherers bring in half for 3 meals.
+  - **Bountiful Harvest:** announced a meal ahead; gatherers bring in double for 3 meals.
+  - **Raid on the Stores:** announced a meal ahead. Then a raider (HP 10, bounty 0.50, not in the
+    spawn pool) stands at the gate. Kill it within 30s and the stores are safe; if it escapes it
+    takes 20% of them.
+  - **Refugees at the Gate:** 3-5 refugees. Take them in (more villagers, 10 food each from the
+    stores on arrival; not possible if the stores cannot pay) or turn them away.
+  - **Shown as:** a toast for each step, and a badge with a clock on the Forage tab and the
+    Warfront. Dev buttons start each event.
 
 ### Phases
 

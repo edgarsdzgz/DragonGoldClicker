@@ -11,6 +11,7 @@ import type { StarvationResult } from './food'
 import { getResearchBonuses } from './research'
 import { getAutoFoodRate } from './foragers'
 import { rationDef } from './rations'
+import { gatherMultiplier } from './foodEvents'
 
 // =============================================================================
 // FOOD CHECK (decided from the latest state, applied by a pure updater)
@@ -84,7 +85,8 @@ export function storesOutlook(s: GameState): StoresOutlook {
 /** The stores' balance per meal, from what is eaten and what foragers bring in meanwhile */
 export function mealBalance(s: GameState): MealBalance {
   const eaten = mealCost(s)
-  const gathered = getAutoFoodRate(s.foragers) * FOOD_CHECK_INTERVAL
+  // A lean season or a bountiful harvest scales what the gatherers bring in
+  const gathered = getAutoFoodRate(s.foragers) * gatherMultiplier(s) * FOOD_CHECK_INTERVAL
   return { eaten, gathered, net: gathered - eaten }
 }
 

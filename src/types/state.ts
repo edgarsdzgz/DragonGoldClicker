@@ -1,5 +1,6 @@
 import type { SoldierCounts } from './soldiers'
 import type { RationId } from './rations'
+import type { FoodEventId, FoodEventState } from './foodEvents'
 import { DEFAULT_RATION } from './rations'
 import type { ForagerCounts } from './foragers'
 import { getTotalForagers } from './foragers'
@@ -176,6 +177,14 @@ export interface GameState {
   killsByMonster: Record<string, number>
   /** The fighters' rations (types/rations.ts); full by default */
   ration: RationId
+  /** The food event under way (types/foodEvents.ts), if any */
+  foodEvent: FoodEventState | null
+  /** Play second at which the next food event begins (0: not scheduled yet) */
+  nextFoodEventAt: number
+  /** The last food event, so the next one is never the same */
+  lastFoodEventId: FoodEventId | null
+  /** The latest food-event message; the UI toasts each new seq once */
+  foodEventNote: { seq: number; text: string } | null
   /** Fighter swings that have landed, lifetime (the Warfront floats a number for each new one) */
   allyStrikes: number
   /** Monsters killed by fighters rather than by a tap, lifetime */
@@ -262,6 +271,10 @@ export const DEFAULT_GAME_STATE: GameState = {
   monsterHp: FIRST_MONSTER_HP,
   killsByMonster: {},
   ration: DEFAULT_RATION,
+  foodEvent: null,
+  nextFoodEventAt: 0,
+  lastFoodEventId: null,
+  foodEventNote: null,
   allyStrikes: 0,
   allyKills: 0,
   waveNumber: 0,

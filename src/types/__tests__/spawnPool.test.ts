@@ -10,7 +10,7 @@ const MET_ALL = { kobold: 1, goblin: 1, shadow_crawler: 1, orc: 1 }
 
 describe('the spawn pool odds', () => {
   it('is all kobolds at first', () => {
-    for (const k of [0, 5, 12]) expect(spawnOdds(k)).toEqual([1, 0, 0, 0])
+    for (const k of [0, 5, 12]) expect(spawnOdds(k)).toEqual([1, 0, 0, 0, 0])
   })
 
   it('no monster has a chance before its debut', () => {
@@ -72,7 +72,7 @@ describe('picking the next monster', () => {
 
   it('matches the odds over many rolls', () => {
     const s = { monstersDefeated: 40, killsByMonster: MET_ALL }
-    const counts = [0, 0, 0, 0]
+    const counts = MONSTERS.map(() => 0)
     const N = 10000
     for (let i = 0; i < N; i++) counts[pickNextMonster(s, (i + 0.5) / N)]++
     spawnOdds(40).forEach((p, j) => expect(counts[j] / N).toBeCloseTo(p, 2))

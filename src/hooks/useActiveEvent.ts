@@ -3,17 +3,17 @@ import { useStory } from '../context/StoryContext'
 import { getScene } from '../data/story/lines'
 
 export type ActiveEvent =
-  | 'gameOver' | 'offline' | 'scene' | 'starvation' | 'foodWarning' | 'milestone' | 'wanderer'
+  | 'gameOver' | 'offline' | 'scene' | 'starvation' | 'foodWarning' | 'refugees' | 'milestone' | 'wanderer'
   | null
 
 /**
  * Which pop-up is on screen, highest priority first:
- * game over > offline > story scene > starvation > food warning > milestone > wanderer.
+ * game over > offline > story scene > starvation > food warning > refugees > milestone > wanderer.
  * Shared by EventHost (to show it) and the coach overlay (to stay out of its way).
  */
 export function useActiveEvent(): ActiveEvent {
   const {
-    isGameOver, pendingOfflineEarnings, pendingStarvationReport,
+    state, isGameOver, pendingOfflineEarnings, pendingStarvationReport,
     pendingFoodWarning, pendingMilestone, pendingWanderer,
   } = useGame()
   const { scenes } = useStory()
@@ -24,6 +24,7 @@ export function useActiveEvent(): ActiveEvent {
     hasScene ? 'scene' :
     pendingStarvationReport !== null ? 'starvation' :
     pendingFoodWarning > 0 ? 'foodWarning' :
+    state.foodEvent?.phase === 'choice' ? 'refugees' :
     pendingMilestone !== null ? 'milestone' :
     pendingWanderer !== null ? 'wanderer' :
     null

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, useWindowDimensions } from 'react-native'
-import { Text, Badge, FighterStatusBadge } from '../../components'
+import { Text, Badge, FighterStatusBadge, FoodEventBadge } from '../../components'
 import { useGame } from '../../context/GameContext'
 import { getTotalSoldiers, getTotalForagers, isSystemOn } from '../../types/game'
 import { colors, spacing, gold } from '../../theme'
@@ -56,6 +56,8 @@ export function PopulationChips() {
       </View>
       {/* How the fighters are doing on their rations and the stores (layer 3); villagers feed themselves */}
       {hungerOn && <FighterStatusBadge style={styles.warning} />}
+      {/* A food event under way: on the Warfront mostly for the raid, which is fought here */}
+      <FoodEventBadge style={styles.warning} />
     </View>
   )
 }

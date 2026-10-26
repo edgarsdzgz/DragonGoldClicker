@@ -9,6 +9,8 @@ import { isSystemOn } from '../types/systems'
 import { OfflineModal } from './OfflineModal'
 import { NpcDialog } from './NpcDialog'
 import { FoodWarningModal } from './FoodWarningModal'
+import { ConfirmModal } from './ConfirmModal'
+import { REFUGEE_FOOD_EACH } from '../types/foodEvents'
 import { useActiveEvent } from '../hooks/useActiveEvent'
 import { StarvationModal } from './StarvationModal'
 import { WandererModal } from './WandererModal'
@@ -32,7 +34,7 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
     state, applyScripted, dismissGameOver, resetGame,
     pendingOfflineEarnings, dismissOfflineEarnings,
     pendingStarvationReport, dismissStarvationReport,
-    pendingFoodWarning, dismissFoodWarning,
+    pendingFoodWarning, dismissFoodWarning, answerRefugees,
     pendingMilestone, acceptMilestone, rejectMilestone,
     pendingWanderer, acceptWanderer, rejectWanderer,
   } = useGame()
@@ -99,6 +101,15 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
           onDismiss={dismissFoodWarning}
         />
       )}
+      {/* Refugees at the Gate (layer 3, phase C): take them in, fed on arrival, or turn them away */}
+      {state.foodEvent?.phase === 'choice' && (
+        <RefugeesChoice
+          visible={activeModal === 'refugees'}
+          count={state.foodEvent.refugees ?? 0}
+          food={state.food}
+          onAnswer={answerRefugees}
+        />
+      )}
       {pendingStarvationReport !== null && (
         <StarvationModal
           visible={activeModal === 'starvation'}
@@ -128,5 +139,23 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
         onDismiss={dismissGameOver}
       />
     </>
+  )
+}
+
+function RefugeesChoice({ visible, count, food, onAnswer }: { visible: boolean; count: number; food: number; onAnswer: (takeIn: boolean) => void }) {
+  const cost = count * REFUGEE_FOOD_EACH
+  const affordable = food >= cost
+  return (
+    <ConfirmModal
+      visible={visible}
+      title="Refugees at the Gate"
+      message={`${count} refugees reach the gate, hungry and exhausted. Take them in: ${count} more villagers, who eat ${cost} food from the stores when they arrive.${affordable ? '' : ' The stores cannot feed them right now.'}`}
+      confirmLabel="Take them in"
+      cancelLabel="Turn them away"
+      confirmDisabled={!affordable}
+      icon="people"
+      onConfirm={() => onAnswer(true)}
+      onCancel={() => onAnswer(false)}
+    />
   )
 }

@@ -46,7 +46,8 @@ export function spawnWeights(kills: number): number[] {
       break
     }
   }
-  return weights.map((w, j) => (kills < MONSTERS[j].fromKills ? 0 : w))
+  // One weight per roster entry; monsters outside the anchors (the raider) are never rolled
+  return MONSTERS.map((m, j) => (kills < m.fromKills ? 0 : (weights[j] ?? 0)))
 }
 
 /** Each monster's chance of being next, as a share of 1 (for tests and tuning) */

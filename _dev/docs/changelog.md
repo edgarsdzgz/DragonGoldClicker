@@ -2,6 +2,16 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Food, layer 3 phase C: food events (2026-10-26)
+- Once the stores have been filled by hand, a food event comes every 10-15 minutes of play,
+  timed ones announced a meal ahead (toast and a badge with a clock on the Forage tab and Warfront)
+- Lean Season: gatherers bring in half for 3 meals. Bountiful Harvest: double for 3 meals
+- Raid on the Stores: a raider (new, never from the spawn pool) comes to the gate; kill it within
+  30s or it escapes with 20% of the stores
+- Refugees at the Gate: take 3-5 in (more villagers, 10 food each on arrival) or turn them away
+- Never the same event twice in a row; no raid on empty stores; events run on play time
+- Dev buttons start each event
+
 ### Food, layer 3 phase B: fed states and rations (2026-10-26)
 - Five rations for the fighters: none, quarter, half, full (default), double. They scale upkeep
   (0, 0.25, 0.5, 1, 2) and damage (0, 0.4, 0.7, 1, 1.4); none stands the fighters down

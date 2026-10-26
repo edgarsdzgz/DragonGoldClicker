@@ -79,6 +79,7 @@ import { applyCityDamage } from '../types/cityHp'
 import { strike, fighterStrike } from '../types/monsters'
 import { completeQuests, hasQuestToComplete } from '../types/quests'
 import { fighterDamageMultiplier } from '../types/fedState'
+import { stepFoodEvents, gatherMultiplier, answerRefugees as answerRefugeesState } from '../types/foodEvents'
 import { isRationAvailable } from '../types/rations'
 import type { RationId } from '../types/rations'
 import { firstExpeditionReward } from '../types/scripted'
@@ -136,6 +137,8 @@ interface GameContextType {
   isResearchAvailable: (id: string) => boolean
   /** Set the fighters' rations (only an available one) */
   setRation: (id: RationId) => void
+  /** Refugees at the gate: take them in, or turn them away */
+  answerRefugees: (takeIn: boolean) => void
   /** Story director: record a beat as seen and restart the dwell clock (at the game second it fired in) */
   markBeatSeen: (id: string, atPlaySec?: number) => void
   /** Story: apply a scripted state change (pure updater; scripted events and flags) */
@@ -225,7 +228,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const soldiersStarving = starving && getTotalSoldiers(state.soldiers) > 0
   const effectiveAutoRate = soldiersStarving ? 0 : potentialAutoRate
 
-  const autoFoodRate = getAutoFoodRate(state.foragers)
+  // A lean season or a bountiful harvest scales what the gatherers bring in (layer 3, phase C)
+  const autoFoodRate = getAutoFoodRate(state.foragers) * gatherMultiplier(state)
 
   const threatLevel = getThreatLevel(state.totalInspirationEarned)
   const defenseLevel = getDefenseLevel(state.clickPower, state.fighters)
@@ -234,7 +238,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      setState((prev) => ({ ...prev, playSeconds: prev.playSeconds + 1 }))
+      // Food events run on play time, so they pause while the app is closed
+      setState((prev) => stepFoodEvents({ ...prev, playSeconds: prev.playSeconds + 1 }, Math.random))
     }, [loaded])
   )
 
@@ -1122,6 +1127,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => (isRationAvailable(prev, id) && prev.ration !== id ? { ...prev, ration: id } : prev))
   }, [])
 
+  const answerRefugees = useCallback((takeIn: boolean) => {
+    setState((prev) => answerRefugeesState(prev, takeIn, Math.random))
+  }, [])
+
   const markBeatSeen = useCallback((id: string, atPlaySec?: number) => {
     setState((prev) => (prev.beatsSeen.includes(id)
       ? prev
@@ -1208,6 +1217,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         isResearchAvailable,
         markBeatSeen,
         setRation,
+        answerRefugees,
         completeTutorialStep,
         applyScripted,
         devApply,

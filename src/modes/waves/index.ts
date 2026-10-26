@@ -11,6 +11,10 @@
 // waveActive for this mode. To bring it back, give the mode its own screen built from these.
 //
 // Live code that still imports from here: the save migrations (old saves were made with waves).
+//
+// When bringing waves back: food events (types/foodEvents.ts) can put a raider at the gate.
+// waveStrike keeps the monster type until a wave clears, so it must re-pick after a raider (or
+// raids must wait while a wave is on), and decide whether a raider kill counts toward the wave.
 
 export * from './waves'
 export * from './waveStrike'

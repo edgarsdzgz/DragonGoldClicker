@@ -27,4 +27,6 @@ export const MONSTERS: MonsterDef[] = [
   { id: 'goblin', name: 'Goblin', plural: 'goblins', glyph: 'skull', hp: 8, bounty: 0.4, fromKills: 13 },
   { id: 'shadow_crawler', name: 'Shadow Crawler', plural: 'shadow crawlers', glyph: 'bug', hp: 12, bounty: 0.6, fromKills: 28 },
   { id: 'orc', name: 'Orc', plural: 'orcs', glyph: 'flame', hp: 20, bounty: 1.0, fromKills: 53 },
+  // Never from the spawn pool: only a Raid on the Stores brings it (types/foodEvents.ts)
+  { id: 'raider', name: 'Raider', plural: 'raiders', glyph: 'walk', hp: 10, bounty: 0.5, fromKills: Infinity },
 ]

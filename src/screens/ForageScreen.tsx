@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Badge, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge } from '../components'
+import { Text, Badge, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge, FoodEventBadge } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
@@ -105,6 +105,7 @@ export function ForageScreen() {
 
       {/* Meal consumption info */}
       <MealCountdown variant="full" />
+      <FoodEventBadge style={styles.status} />
 
       {/* The fighters' rations and how fed they are (layer 3), once there is an army to feed */}
       {isSystemOn(state, 'hunger') && state.fighters > 0 && (

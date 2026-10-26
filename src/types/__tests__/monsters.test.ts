@@ -7,12 +7,13 @@ import { ANNOUNCE_EVERY_MS } from '../../hooks/useKillEvents'
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
 describe('roster', () => {
-  it('has the four monsters from the plan, in order of appearance', () => {
+  it('has the four pool monsters in order of appearance, then the raider, which never spawns from the pool', () => {
     expect(MONSTERS.map((m) => [m.name, m.hp, m.bounty, m.fromKills])).toEqual([
       ['Kobold', 5, 0.25, 0],
       ['Goblin', 8, 0.4, 13],
       ['Shadow Crawler', 12, 0.6, 28],
       ['Orc', 20, 1, 53],
+      ['Raider', 10, 0.5, Infinity],
     ])
   })
 
@@ -106,7 +107,7 @@ describe('accessibility text', () => {
     expect(monsterLabel({ monsterIndex: 0, monsterHp: 3 })).toBe('Kobold, 3 of 5 HP. Tap to strike')
     // Fighter chip damage leaves fractions; the text rounds up so a standing monster never reads 0
     expect(monsterLabel({ monsterIndex: 0, monsterHp: 0.25 })).toBe('Kobold, 1 of 5 HP. Tap to strike')
-    expect(currentMonster({ monsterIndex: 99 }).name).toBe('Orc')
+    expect(currentMonster({ monsterIndex: 99 }).name).toBe(MONSTERS[MONSTERS.length - 1].name)
   })
 
   it('announces kills at most every two seconds', () => {
