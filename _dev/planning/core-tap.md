@@ -622,6 +622,65 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
+## Chapter 4: Strangers at the Gate, wanderers (proposed 2026-10-26)
+
+Why now: people are the scarcest thing in Draconia. Every fighter, repairer and gatherer comes
+out of the villagers, there is no other way to get more, and a Breach kills 30% of them. The
+wanderer system (`types/wanderers.ts`, `WandererModal`) exists but was built for rules that have
+changed, so it needs the same treatment the food and the wall got.
+
+### What no longer fits
+
+- **The choice is empty.** The modal weighs "another mouth to feed", but villagers eat nothing now
+  (only the army eats, layer 3). Nothing is lost by saying yes.
+- **Veterans have nowhere to go.** A "trained refugee" joins the Barracks or the Forager's Lodge,
+  both still behind paused beats, so every one overflows into an idle villager and a refund.
+- **The timing is loose.** A 15% roll every 5 minutes on a clock that restarts with the app:
+  about one wanderer every 18 minutes, unevenly.
+- **The beat's trigger** (`foragers.gatherers >= 2`) passed long ago for most saves.
+
+### The rework
+
+- **Newcomers are fed on arrival:** 10 food each, the same rule as Refugees at the Gate. Taking
+  them in is food now for hands later, and turning them away is a real choice. If the stores
+  cannot pay, they move on.
+- **When:** one wanderer every 4-7 minutes of play time (`nextWandererAt` on `playSeconds`, like
+  food events), never while one is waiting. **Faster when the city is short of people:** while
+  idle villagers are under 5 (after a Breach, say), the gap is halved.
+- **Who:**
+
+| Arrival | Chance | People | Food on arrival |
+|---------|--------|--------|-----------------|
+| Lone Wanderer | 60% | 1 villager | 10 |
+| Traveling Couple | 25% | 2 villagers | 20 |
+| Small Family | 10% | 3 villagers | 30 |
+| Veteran | 5% | 1 fighter, ready to fight (no Rally cost) | 10 |
+
+  The veteran replaces the old trained refugee: a fighter at the Gate rather than a Barracks or
+  Lodge place. When those buildings return, veterans can be soldiers or foragers again.
+- **No cap yet.** Housing (later) will cap the population.
+- **Away:** no wanderers while the app is closed (as today).
+- **The modal** shows who they are, the food they eat on arrival against the stores, and what
+  they become.
+
+### The story
+
+- `strangers_at_gate` (Mirael) fires once the Sharpen Your Claws quest is done, after 60s of play.
+  Her lines change: "Every soul we take in must be fed the day they arrive, and every one is
+  another pair of hands."
+- The scripted Lone Wanderer still follows the scene, and this first one is free (Mirael shares
+  her own rations), so the first choice is easy to say yes to.
+- Quest: **Open the Gates**, welcome 3 newcomers (`wanderersWelcomed`).
+- The story pauses after it, before A City to Build (the Draconia tab).
+
+### Open questions
+
+1. Fed on arrival at 10 food each (recommended), or free?
+2. One every 4-7 minutes, twice as often when idle villagers are under 5?
+3. Veterans arrive as fighters?
+
+---
+
 ## Layer 6: the wall, and the Breach (approved 2026-10-26; phases A and B built)
 
 Owner rulings (2026-10-26):
