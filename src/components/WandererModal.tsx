@@ -20,7 +20,6 @@ import {
   getTrainedRoleName,
   getTrainedBuildingName,
   getTrainedOverflowRefund,
-  getFoodConsumption,
   getTotalSoldiers,
   getTotalForagers,
   getSoldierCap,
@@ -29,6 +28,7 @@ import {
   FOOD_CHECK_INTERVAL,
 } from '../types/game'
 import { useGame } from '../context/GameContext'
+import { mealCost } from '../types/foodTick'
 
 // Warm amber palette for the wanderer theme
 const warm = {
@@ -235,9 +235,8 @@ export function WandererModal({
   ])
 
   // Compute food impact
-  const currentConsumption = getFoodConsumption(
-    state.villagers, state.soldiers, state.foragers, state.explorers,
-  )
+  // What a meal really costs now (every mouth, fighters too), as the meal tick charges it
+  const currentConsumption = mealCost(state)
   const newConsumption = currentConsumption + encounter.foodCostPerCheck
 
   // Compute trained overflow

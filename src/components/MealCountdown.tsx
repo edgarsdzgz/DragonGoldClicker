@@ -5,7 +5,8 @@ import { Text } from './Text'
 import { ProgressBar } from './ProgressBar'
 import { useGame } from '../context/GameContext'
 import { colors, spacing, radius } from '../theme'
-import { FOOD_CHECK_INTERVAL, getFoodConsumption, isSystemOn } from '../types/game'
+import { FOOD_CHECK_INTERVAL, isSystemOn, formatAmount } from '../types/game'
+import { mealBalance } from '../types/foodTick'
 
 // Warm amber palette for consumption (contrasts with green forage / red garrison)
 const meal = {
@@ -24,12 +25,8 @@ interface MealCountdownProps {
 export function MealCountdown({ variant = 'full' }: MealCountdownProps) {
   const { state } = useGame()
 
-  const consumption = getFoodConsumption(
-    state.villagers,
-    state.soldiers,
-    state.foragers,
-    state.explorers,
-  )
+  // The same cost the meal tick charges (every mouth, fighters too), and what foragers add meanwhile
+  const { eaten: consumption, gathered, net } = mealBalance(state)
 
   // Nothing to show if nobody eats
   if (!isSystemOn(state, 'hunger') || consumption <= 0) return null
@@ -44,13 +41,24 @@ export function MealCountdown({ variant = 'full' }: MealCountdownProps) {
 
   return (
     <View style={styles.container}>
-      {/* Consumption rate */}
+      {/* Each meal: what is eaten, what foragers bring in, and whether the stores grow or shrink */}
       <View style={styles.rateRow}>
-        <Ionicons name="flame" size={13} color={meal[400]} />
+        <Ionicons name="restaurant" size={13} color={meal[400]} />
         <Text variant="caption" style={{ color: meal[300] }}>
-          -{consumption} food consumed every {FOOD_CHECK_INTERVAL}s
+          {`Each meal: -${formatAmount(consumption)} eaten${gathered > 0 ? `, +${formatAmount(gathered)} gathered` : ''}`}
         </Text>
       </View>
+      <Text
+        variant="label"
+        center
+        style={{ color: net < 0 ? colors.status.error : colors.status.success }}
+      >
+        {Math.abs(net) < 0.05
+          ? 'Stores hold steady'
+          : net < 0
+            ? `Stores shrink by ${formatAmount(-net)} each meal`
+            : `Stores grow by ${formatAmount(net)} each meal`}
+      </Text>
 
       {/* Countdown bar */}
       <View style={styles.countdownSection}>
@@ -135,7 +143,7 @@ function CompactCountdown({
   return (
     <View style={styles.compactContainer}>
       <View style={[styles.compactBadge, { borderColor: `${tint}20`, backgroundColor: `${tint}0a` }]}>
-        <Ionicons name="flame" size={11} color={tint} />
+        <Ionicons name="restaurant" size={11} color={tint} />
         <Text variant="caption" style={{ color: isUrgent ? colors.status.error : meal[300], fontSize: 11 }}>
           -{consumption}
         </Text>

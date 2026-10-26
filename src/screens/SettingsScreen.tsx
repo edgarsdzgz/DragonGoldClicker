@@ -15,7 +15,8 @@ import { useAudioSettings } from '../context/AudioSettingsContext'
 import { DevPanel } from './settings/DevPanel'
 import { DEV_TOOLS_ENABLED } from '../config/devTools'
 import { colors, spacing } from '../theme'
-import { formatNumber, getTotalSoldiers, getFoodConsumption, FOOD_CHECK_INTERVAL, RESEARCH_NODES, isSystemOn } from '../types/game'
+import { formatNumber, formatCount, getTotalSoldiers, FOOD_CHECK_INTERVAL, RESEARCH_NODES, isSystemOn } from '../types/game'
+import { mealCost } from '../types/foodTick'
 
 const TABS: PillTab[] = [
   { key: 'settings', label: 'Settings', icon: 'settings-outline' },
@@ -143,7 +144,8 @@ function StatsContent() {
   const { state, effectiveAutoRate } = useGame()
 
   const totalTrained = getTotalSoldiers(state.soldiersTrained)
-  const foodPerCheck = getFoodConsumption(state.villagers, state.soldiers)
+  // What a meal really costs (every mouth, fighters too), as the meal tick charges it
+  const foodPerCheck = mealCost(state)
   const foodPerSec = foodPerCheck / FOOD_CHECK_INTERVAL
   const timePlayed = Math.floor((Date.now() - state.startedAt) / 1000)
   const hours = Math.floor(timePlayed / 3600)
@@ -194,7 +196,7 @@ function StatsContent() {
       {isSystemOn(state, 'hunger') && (
         <Surface style={styles.section}>
           <SectionLabel spacing={2}>DRACONIA</SectionLabel>
-          <StatRow icon="nutrition" label="Food" value={formatNumber(state.food)} accent />
+          <StatRow icon="nutrition" label="Food" value={formatCount(state.food)} accent />
           <StatRow icon="home" label="Villagers" value={String(state.villagers)} />
           <StatRow icon="trending-down" label="Food/check" value={`-${foodPerCheck} every ${FOOD_CHECK_INTERVAL}s`} />
           <StatRow icon="speedometer" label="Consumption" value={`${foodPerSec.toFixed(2)}/s`} />

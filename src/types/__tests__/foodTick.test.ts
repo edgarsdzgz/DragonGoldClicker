@@ -67,3 +67,47 @@ describe('stepFood (decides from prev)', () => {
     expect(next.foodTimer).toBe(4)
   })
 })
+
+describe('one meal, as the screen shows it', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { mealCost, mealBalance, foodPerCheck } = require('../foodTick')
+
+  it('charges every mouth: villagers 1, fighters 2, gatherers 0.5, rounded up', () => {
+    const s = make({ villagers: 18, fighters: 5, foragers: { gatherers: 1, trappers: 0, rangers: 0 }, food: 500 })
+    // 18 + 10 + 0.5 = 28.5, rounded up to 29
+    expect(mealCost(s)).toBe(29)
+    expect(foodPerCheck(s)).toBe(29)
+  })
+
+  it('the tick never takes more than the stores hold, but the cost shown is the full cost', () => {
+    const s = make({ villagers: 18, fighters: 5, food: 10 })
+    expect(foodPerCheck(s)).toBe(10)
+    expect(mealCost(s)).toBe(28)
+  })
+
+  it('nets what foragers bring in between meals against what is eaten', () => {
+    const s = make({ villagers: 18, fighters: 5, foragers: { gatherers: 1, trappers: 0, rangers: 0 } })
+    const b = mealBalance(s)
+    expect(b.eaten).toBe(29)
+    expect(b.gathered).toBeCloseTo(0.2 * FOOD_CHECK_INTERVAL, 5)
+    expect(b.net).toBeCloseTo(6 - 29, 5)
+  })
+})
+
+describe('number formats for food', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { formatCount, formatAmount } = require('../state')
+
+  it('counts are whole numbers', () => {
+    expect(formatCount(288)).toBe('288')
+    expect(formatCount(212.5)).toBe('212')
+    expect(formatCount(0)).toBe('0')
+    expect(formatCount(1500)).toBe('1.5K')
+  })
+
+  it('amounts keep a half when there is one', () => {
+    expect(formatAmount(18.5)).toBe('18.5')
+    expect(formatAmount(29)).toBe('29')
+    expect(formatAmount(6.0000001)).toBe('6')
+  })
+})

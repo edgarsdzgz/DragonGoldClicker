@@ -307,4 +307,16 @@ export function formatNumber(n: number): string {
   return n.toFixed(2)
 }
 
+/** Whole things (food, trips, people): no decimals below 1,000, then the same K/M/B as formatNumber */
+export function formatCount(n: number): string {
+  if (n >= 1_000) return formatNumber(n)
+  return String(Math.floor(n))
+}
+
+/** An amount that may have a half (18.5): whole numbers stay whole, others get one decimal */
+export function formatAmount(n: number): string {
+  const r = Math.round(n * 10) / 10
+  return Number.isInteger(r) ? String(r) : r.toFixed(1)
+}
+
 export { roundInsp, roundCost } from './utils'

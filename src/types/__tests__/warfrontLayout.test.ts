@@ -99,3 +99,20 @@ describe('campLayout', () => {
     expect(campLayout(CAMP_CORE_H + 8 + 10).showSilhouettes).toBe(false)
   })
 })
+
+describe('forageOrbDiameter', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { forageOrbDiameter, ORB_GLOW_RATIO, FORAGE_ORB_MAX, FORAGE_ORB_MIN } = require('../warfrontLayout')
+
+  it('keeps the orb and its glow inside the area (flavour row included)', () => {
+    for (const h of [250, 300, 360, 420]) {
+      const d = forageOrbDiameter(h)
+      if (d > FORAGE_ORB_MIN) expect(d * ORB_GLOW_RATIO + FLAVOR_H + FIELD_PAD * 2).toBeLessThanOrEqual(h)
+    }
+  })
+
+  it('stays between its limits', () => {
+    expect(forageOrbDiameter(2000)).toBe(FORAGE_ORB_MAX)
+    expect(forageOrbDiameter(0)).toBe(FORAGE_ORB_MIN)
+  })
+})

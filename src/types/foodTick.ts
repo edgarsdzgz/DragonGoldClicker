@@ -9,6 +9,7 @@ import {
 } from './food'
 import type { StarvationResult } from './food'
 import { getResearchBonuses } from './research'
+import { getAutoFoodRate } from './foragers'
 
 // =============================================================================
 // FOOD CHECK (decided from the latest state, applied by a pure updater)
@@ -37,9 +38,30 @@ export interface FoodTickResult {
 
 /** Food one check would eat from the current stores (after research reductions) */
 export function foodPerCheck(s: GameState): number {
+  return Math.min(s.food, mealCost(s))
+}
+
+/** What one meal costs: every mouth (fighters and repairers too), after research, rounded up */
+export function mealCost(s: GameState): number {
   const base = getFoodConsumption(s.villagers, s.soldiers, s.foragers, s.explorers, s.fighters, s.repairers)
   const rb = getResearchBonuses(s.completedResearch)
-  return Math.min(s.food, Math.max(0, Math.ceil(base * (1 - rb.foodConsumptionReduction))))
+  return Math.max(0, Math.ceil(base * (1 - rb.foodConsumptionReduction)))
+}
+
+export interface MealBalance {
+  /** Eaten at each meal */
+  eaten: number
+  /** Brought in by foragers between two meals */
+  gathered: number
+  /** gathered - eaten: below zero, the stores shrink */
+  net: number
+}
+
+/** The stores' balance per meal, from what is eaten and what foragers bring in meanwhile */
+export function mealBalance(s: GameState): MealBalance {
+  const eaten = mealCost(s)
+  const gathered = getAutoFoodRate(s.foragers) * FOOD_CHECK_INTERVAL
+  return { eaten, gathered, net: gathered - eaten }
 }
 
 const rollLosses = (count: number, chance: number): number => {

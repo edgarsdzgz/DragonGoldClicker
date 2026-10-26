@@ -104,3 +104,21 @@ export function campLayout(height: number): CampLayout {
     minHeight: CAMP_CORE_H,
   }
 }
+
+// =============================================================================
+// THE FORAGE TAB: the FORAGE orb fits the space it is given
+// =============================================================================
+
+/** The large orb's glow ring is this many times its diameter (260 around 200, see HarvestOrb) */
+export const ORB_GLOW_RATIO = 1.3
+export const FORAGE_ORB_MAX = 200
+export const FORAGE_ORB_MIN = 110
+
+/**
+ * The FORAGE orb's diameter for the height its area has (the flavour row above it included), so
+ * its glow never spills onto the TRAIN row below. Between FORAGE_ORB_MIN and FORAGE_ORB_MAX.
+ */
+export function forageOrbDiameter(areaHeight: number): number {
+  const room = (areaHeight - FLAVOR_H - FIELD_PAD * 2) / ORB_GLOW_RATIO
+  return Math.max(FORAGE_ORB_MIN, Math.min(FORAGE_ORB_MAX, Math.floor(room)))
+}

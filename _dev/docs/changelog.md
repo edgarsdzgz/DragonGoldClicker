@@ -2,6 +2,14 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Forage tab fixes (2026-10-26)
+- The FORAGE orb sizes itself to its space; its glow no longer covers the TRAIN row
+- Food, trips and counts show as whole numbers; one meal's cost keeps a half when there is one
+- The meal line shows the real cost (fighters and repairers were left out) and the net per meal:
+  "Stores shrink by 23 each meal". Settings stats and the wanderer pop-up had the same omission
+- The top bar hides its food figure on the Forage tab; "+1 per tap"; "1/6 gatherers"
+- "Foragers attract wandering survivors" shows only once wanderers can arrive
+
 ### The Forage tab starts with gathering only (2026-10-26)
 - TRAIN gatherer appears once Fill the Stores is done (or the save has trained a gatherer)
 - RECRUIT explorer appears once the Outpost is built; the locked "Build Outpost" slot is gone

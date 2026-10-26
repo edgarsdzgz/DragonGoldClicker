@@ -8,7 +8,7 @@ import { CoachTarget } from './CoachTarget'
 import { useJournal } from '../context/JournalContext'
 import { useCoinTarget } from '../context/CoinFlightContext'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber } from '../types/game'
+import { formatNumber, formatCount } from '../types/game'
 
 interface ResourceBarProps {
   inspiration: number
@@ -17,9 +17,11 @@ interface ResourceBarProps {
   autoInspPerSec: number
   /** Hide the inspiration figure where a bigger one is already on screen (the Warfront) */
   hideInspiration?: boolean
+  /** Hide the food figure where a bigger one is already on screen (the Forage tab) */
+  hideFood?: boolean
 }
 
-export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, autoInspPerSec, hideInspiration = false }: ResourceBarProps) {
+export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, autoInspPerSec, hideInspiration = false, hideFood = false }: ResourceBarProps) {
   const insets = useSafeAreaInsets()
   const journal = useJournal()
   const coin = useCoinTarget()
@@ -45,7 +47,7 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, a
           </Animated.View>
         </CoachTarget>
       )}
-      {foodSystemActive && (
+      {foodSystemActive && !hideFood && (
         <View style={styles.resource}>
           <Ionicons
             name="nutrition"
@@ -56,7 +58,7 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, a
             variant="label"
             style={{ color: foodEmpty ? colors.status.error : foodLow ? colors.status.warning : colors.text.secondary }}
           >
-            {formatNumber(foodAmount)}
+            {formatCount(foodAmount)}
           </Text>
         </View>
       )}

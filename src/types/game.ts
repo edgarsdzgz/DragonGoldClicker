@@ -111,6 +111,8 @@ export {
   getTotalAssigned,
   shouldRevealExplorerPost,
   formatNumber,
+  formatCount,
+  formatAmount,
 } from './state'
 
 export {

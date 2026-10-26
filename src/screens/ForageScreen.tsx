@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useRef, useEffect, useCallback, useState } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Text, Badge, MealCountdown, StoryObjective, CoachTarget } from '../components'
@@ -11,8 +11,9 @@ import { useRandomSfx } from '../hooks/useRandomSfx'
 import { SFX_HARVEST_POOL } from '../data/sfx'
 import { FORAGE_LINES } from '../data/flavorText'
 import { forageReveal } from '../types/opening'
+import { forageOrbDiameter, FLAVOR_H } from '../types/warfrontLayout'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap, isSystemOn } from '../types/game'
+import { formatNumber, formatCount, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap, isSystemOn } from '../types/game'
 
 // Earthy green palette for foraging
 const forage = {
@@ -86,12 +87,17 @@ export function ForageScreen() {
   // Only gathering while the player learns to forage (types/opening.ts)
   const reveal = forageReveal(state)
 
+  // The FORAGE orb is sized to the room it has, so its glow never covers the TRAIN row
+  const [areaHeight, setAreaHeight] = useState(0)
+  const orbDiameter = forageOrbDiameter(areaHeight)
+
   const explorerCap = getExplorerCap(state.postLevel)
   const canRecruitExplorer = state.postLevel > 0 && state.villagers > 0 && state.inspiration >= EXPLORER_COST && state.explorers < explorerCap
 
   return (
     <View style={styles.container}>
-      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} autoInspPerSec={effectiveAutoRate} />
+      {/* The big figure below shows the food, so the top bar does not repeat it */}
+      <ResourceBar inspiration={state.inspiration} food={state.food} foodSystemActive={isSystemOn(state, 'hunger')} autoInspPerSec={effectiveAutoRate} hideFood />
       <StoryObjective />
 
       {/* HERO: Food is the primary number */}
@@ -99,7 +105,7 @@ export function ForageScreen() {
         <View style={styles.foodRow}>
           <Ionicons name="nutrition" size={28} color={forage[400]} />
           <Text variant="display" style={{ color: forage[400] }}>
-            {formatNumber(state.food)}
+            {formatCount(state.food)}
           </Text>
         </View>
         <Text variant="bodySmall" color="muted" center>food stores</Text>
@@ -128,7 +134,7 @@ export function ForageScreen() {
         <View style={styles.statPillRow}>
           <Badge icon="leaf" color={forage[500]}>
             <Text variant="caption" style={{ color: forage[400] }}>
-              {formatNumber(state.totalFoodForaged)} gathered
+              {formatCount(state.totalFoodForaged)} gathered
             </Text>
           </Badge>
           {getTotalForagers(state.foragers) > 0 && (
@@ -145,11 +151,12 @@ export function ForageScreen() {
       <MealCountdown variant="full" />
 
       {/* Battle area: FORAGE dominates center */}
-      <View style={styles.battleArea}>
-        <FlavorText text={flavor.text} opacity={flavor.opacity} color={forage[300]} />
+      <View style={styles.battleArea} onLayout={(e) => setAreaHeight(Math.floor(e.nativeEvent.layout.height))}>
+        <FlavorText text={flavor.text} opacity={flavor.opacity} color={forage[300]} reserveHeight={FLAVOR_H} />
         <HarvestOrb
           onAction={handleForage}
           repeatOnHold
+          diameter={orbDiameter}
           icon="leaf"
           label="FORAGE"
           coachId="forage"
@@ -174,7 +181,7 @@ export function ForageScreen() {
                 {formatNumber(gathererCost)} renown
               </Text>
               <Text variant="caption" color="muted" center>
-                {gathererCount}/{gathererCap}
+                {`${gathererCount}/${gathererCap} gatherers`}
               </Text>
             </CoachTarget>
           )}
@@ -203,14 +210,15 @@ export function ForageScreen() {
       {/* Footer: forage yield hint */}
       <View style={styles.footer}>
         <Text variant="caption" color="muted" center>
-          {formatNumber(state.forageClicks)} foraging trips
+          {formatCount(state.forageClicks)} foraging trips
         </Text>
         <Badge icon="nutrition" iconSize={10} color={forage[400]} variant="ghost">
           <Text variant="caption" style={{ color: forage[400] }}>
-            +{yield_} per click
+            +{yield_} per tap
           </Text>
         </Badge>
-        {getTotalForagers(state.foragers) > 0 && (
+        {/* Only once wanderers can actually arrive */}
+        {getTotalForagers(state.foragers) > 0 && isSystemOn(state, 'wanderers') && (
           <Badge icon="footsteps" iconSize={10} color={colors.text.muted} variant="ghost">
             <Text variant="caption" color="muted">
               Foragers attract wandering survivors
