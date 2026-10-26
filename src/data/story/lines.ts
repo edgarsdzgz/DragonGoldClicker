@@ -65,10 +65,12 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   },
   call_to_arms: {
     ...PYRETH,
-    title: 'A Spark of Courage',
+    title: 'The Wall Holds',
     lines: [
-      'You have given them hope. Some of our villagers are ready to take up arms.',
-      'Rally them, and they will fight beside you, even while you rest.',
+      'The wall holds, my lord. Four of them lie before the gate, and all of Draconia saw who stood against them.',
+      'The people have noticed your bravery. Your renown is now enough to convince a villager to take up arms as a Fighter.',
+      'Fighters stand with you at the gate. They strike the same foe you do, slower than you, but they never tire, even while you rest.',
+      'You called them to arms, so their victories are yours: every enemy they defeat adds to your renown.',
     ],
   },
   the_breach: {

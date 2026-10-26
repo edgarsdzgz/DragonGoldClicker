@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 import { BottomSheet } from './BottomSheet'
 import { PillTabs } from './PillTabs'
 import type { PillTab } from './PillTabs'
@@ -8,31 +9,71 @@ import { Text } from './Text'
 import { useGame } from '../context/GameContext'
 import { useJournal } from '../context/JournalContext'
 import { getStoryEntries, getHowItWorks, isLoreUnlocked, getLoreLines } from '../data/story/journal'
+import { QUESTS, activeQuests, isQuestDone, questProgress } from '../types/quests'
 import { colors, spacing, gold } from '../theme'
 
+const TAB_QUESTS: PillTab = { key: 'quests', label: 'Quests', icon: 'flag-outline' }
 const TAB_STORY: PillTab = { key: 'story', label: 'Story', icon: 'book-outline' }
 const TAB_HOW: PillTab = { key: 'how', label: 'How It Works', icon: 'help-circle-outline' }
 const TAB_LORE: PillTab = { key: 'lore', label: 'Lore', icon: 'library-outline' }
 
-/** The Journal: every scene seen so far, how each system works, and (after Lirae) lore. */
+/** The Journal: quests, every scene seen so far, how each system works, and (after Lirae) lore. */
 export function JournalSheet() {
   const { state } = useGame()
   const { isOpen, close } = useJournal()
-  const [tab, setTab] = useState('story')
+  const [tab, setTab] = useState('quests')
 
-  const loreOn = isLoreUnlocked(state)
-  const tabs = loreOn ? [TAB_STORY, TAB_HOW, TAB_LORE] : [TAB_STORY, TAB_HOW]
-  const active = tabs.some((t) => t.key === tab) ? tab : 'story'
+  // Quests appear once the first one is offered; they open first, since they say what to do next
+  const questsOn = state.questsDone.length > 0 || activeQuests(state).length > 0
+  const tabs = [...(questsOn ? [TAB_QUESTS] : []), TAB_STORY, TAB_HOW, ...(isLoreUnlocked(state) ? [TAB_LORE] : [])]
+  const active = tabs.some((t) => t.key === tab) ? tab : tabs[0].key
 
   return (
     <BottomSheet visible={isOpen} onClose={close} title="Journal" subtitle="What Draconia has lived through" icon="book" iconColor={gold[400]}>
       <PillTabs tabs={tabs} activeKey={active} onSelect={setTab} />
       <View style={styles.list}>
+        {active === 'quests' && <QuestsTab />}
         {active === 'story' && <StoryTab />}
         {active === 'how' && <HowTab />}
         {active === 'lore' && <LoreTab />}
       </View>
     </BottomSheet>
+  )
+}
+
+/** The active quest(s) with progress, then the finished ones */
+function QuestsTab() {
+  const { state } = useGame()
+  const active = activeQuests(state)
+  const done = QUESTS.filter((q) => isQuestDone(state, q.id))
+  return (
+    <>
+      {active.map((q) => {
+        const progress = questProgress(q, state)
+        return (
+          <View key={q.id} accessible accessibilityLabel={`Current quest: ${q.title}. ${q.goal}, ${progress} of ${q.target}`}>
+            <Surface level={2} style={styles.card}>
+              <Text variant="caption" style={styles.speaker}>CURRENT QUEST</Text>
+              <Text variant="h3">{q.title}</Text>
+              <Text variant="bodySmall" color="secondary">{`${q.goal}: ${progress} / ${q.target}`}</Text>
+              {q.reward && <Text variant="caption" style={styles.reward}>{`Reward: ${q.reward.renown.toFixed(2)} renown`}</Text>}
+            </Surface>
+          </View>
+        )
+      })}
+      {done.map((q) => (
+        <View key={q.id} accessible accessibilityLabel={`Quest complete: ${q.title}`}>
+          <Surface level={1} style={styles.doneCard}>
+            <Ionicons name="checkmark-circle" size={18} color={colors.status.success} />
+            <View style={styles.doneText}>
+              <Text variant="label">{q.title}</Text>
+              <Text variant="caption" color="muted">{q.goal}</Text>
+            </View>
+          </Surface>
+        </View>
+      ))}
+      {active.length === 0 && done.length === 0 && <Empty text="No quests yet." />}
+    </>
   )
 }
 
@@ -101,6 +142,17 @@ const styles = StyleSheet.create({
   },
   line: {
     lineHeight: 20,
+  },
+  reward: {
+    color: gold[300],
+  },
+  doneCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[3],
+  },
+  doneText: {
+    flex: 1,
   },
   empty: {
     paddingVertical: spacing[3],

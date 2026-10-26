@@ -54,7 +54,7 @@ describe('findNextBeat', () => {
 
   it('never skips an unseen earlier beat', () => {
     // Trigger of the_breach passes, but call_to_arms is unseen: it must come first
-    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], monstersDefeated: 13, fighters: 5, playSeconds: 1000 })
+    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], questsDone: ['defend_the_wall'], fighters: 5, playSeconds: 1000 })
     expect(findNextBeat(s, 'live')?.id).toBe('call_to_arms')
   })
 
@@ -121,34 +121,36 @@ describe('first_renown', () => {
     expect(findNextBeat(make({ beatsSeen: ['prologue', 'elder_approaches'], playSeconds: 99 }), 'live')).toBeNull()
     const killed = make({ beatsSeen: ['prologue', 'elder_approaches'], monstersDefeated: 1, playSeconds: 99 })
     expect(findNextBeat(killed, 'live')?.id).toBe('first_renown')
-    const twelve = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], monstersDefeated: 12, playSeconds: 99 })
-    expect(findNextBeat(twelve, 'live')).toBeNull()
+    const three = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], monstersDefeated: 3, playSeconds: 99 })
+    expect(findNextBeat(three, 'live')).toBeNull()
   })
 
-  it('call_to_arms plays at once at the 13th kill, the one that brings the first goblin', () => {
+  it('call_to_arms plays at once when the Defend the Wall quest is done, not before', () => {
     const seen = ['prologue', 'elder_approaches', 'first_renown']
-    const thirteen = make({ beatsSeen: seen, monstersDefeated: 13, playSeconds: 0 })
-    expect(findNextBeat(thirteen, 'live')?.id).toBe('call_to_arms')
-    expect(findNextBeat({ ...thirteen, monstersDefeated: 12 }, 'live')).toBeNull()
-    // The old wave fields play no part any more
-    expect(findNextBeat({ ...thirteen, waveActive: true, waveNumber: 0 }, 'live')?.id).toBe('call_to_arms')
+    const done = make({ beatsSeen: seen, monstersDefeated: 4, questsDone: ['defend_the_wall'], playSeconds: 0 })
+    expect(findNextBeat(done, 'live')?.id).toBe('call_to_arms')
+    // Kills alone do not trigger it: the quest completing does
+    expect(findNextBeat({ ...done, questsDone: [] }, 'live')).toBeNull()
   })
 
-  it('a fresh game tapping alone reaches call_to_arms with 3.25 renown, enough for the first Rally', () => {
+  it('a fresh game tapping alone reaches call_to_arms after four kobolds, with exactly the first Rally', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { strike } = require('../monsters')
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { getFighterCost } = require('../fighters')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { completeQuests } = require('../quests')
     let s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], playSeconds: 999 })
     let taps = 0
     while (!findNextBeat(s, 'live')) {
-      s = strike(s).state
+      // The game completes quests as soon as their goal is met
+      s = completeQuests(strike(s).state).state
       taps++
     }
     expect(findNextBeat(s, 'live')?.id).toBe('call_to_arms')
-    expect(s.monstersDefeated).toBe(13)
-    expect(taps).toBe(65)
-    expect(s.inspiration).toBeCloseTo(3.25, 2)
+    expect(s.monstersDefeated).toBe(4)
+    expect(taps).toBe(20)
+    expect(s.inspiration).toBe(1)
     expect(s.inspiration).toBeGreaterThanOrEqual(getFighterCost(0))
   })
 

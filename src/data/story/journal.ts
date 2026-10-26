@@ -30,7 +30,7 @@ export interface HowItWorksCard {
 /** One short card per system, in plain player language, 1-2 sentences each */
 const HOW_IT_WORKS: HowItWorksCard[] = [
   { system: 'slay', title: 'Slay', text: 'Tap SLAY to strike monsters. Every kill earns renown, the currency that pays for everything.' },
-  { system: 'rally', title: 'Rally', text: 'Rally turns an idle villager into a fighter. Fighters earn renown for you, even while you rest.' },
+  { system: 'rally', title: 'Rally', text: 'Rally turns an idle villager into a fighter, who strikes the enemy at the gate beside you. Every enemy fighters defeat adds its full renown to yours, even while you rest.' },
   { system: 'siege', title: 'The Siege', text: 'Monsters batter the wall and wear down the city’s health. Strong fighters keep the damage away.' },
   { system: 'repair', title: 'Repair', text: 'Repairers mend the wall a little every second. Send villagers to fix it faster than it breaks.' },
   { system: 'hunger', title: 'Food', text: 'Everyone in Draconia eats at regular meals. Soldiers and fighters eat the most, so keep the stores full.' },

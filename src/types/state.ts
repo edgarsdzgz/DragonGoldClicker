@@ -144,6 +144,8 @@ export interface GameState {
   milestonesOffered: number[]
   /** Story beat ids already seen, in the order they fired. Systems are derived from this. */
   beatsSeen: string[]
+  /** Quests completed (types/quests.ts), in the order they were done */
+  questsDone: string[]
   /** Guided tutorial steps already completed (see types/tutorial.ts) */
   tutorialStepsDone: string[]
   /** Scripted first occurrences already run (see types/scripted.ts) */
@@ -237,6 +239,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   completedResearch: [],
   milestonesOffered: [],
   beatsSeen: [],
+  questsDone: [],
   tutorialStepsDone: [],
   scriptedDone: [],
   playSeconds: 0,

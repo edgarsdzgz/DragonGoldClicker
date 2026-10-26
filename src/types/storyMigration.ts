@@ -1,6 +1,7 @@
 import type { GameState } from './state'
 import type { BeatId } from './story'
-import { STORY_BEATS, RALLY_AT_KILLS } from './story'
+import { STORY_BEATS } from './story'
+import { DEFEND_THE_WALL_KILLS } from './quests'
 
 // =============================================================================
 // SAVE v1 -> v2: BACKFILL STORY PROGRESS
@@ -19,7 +20,7 @@ export function hasPlayed(s: GameState): boolean {
 /** Proof, from a v1 save, that the player already used what a beat turns on */
 const EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   first_renown: (s) => s.monstersDefeated > 0,
-  call_to_arms: (s) => s.fightersRallied > 0 || s.monstersDefeated >= RALLY_AT_KILLS,
+  call_to_arms: (s) => s.fightersRallied > 0 || s.monstersDefeated >= DEFEND_THE_WALL_KILLS,
   the_breach: (s) => s.hpUnlocked,
   mend_the_walls: (s) => s.repairersDirected > 0,
   empty_stores: (s) => s.foodSystemActive || s.foragers.gatherers > 0,

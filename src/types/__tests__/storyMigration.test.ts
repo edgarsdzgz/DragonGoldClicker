@@ -106,7 +106,7 @@ describe('backfillStory', () => {
 
 describe('first_renown backfill', () => {
   it('is marked seen for any save that has slain a monster', () => {
-    expect(backfillStory(v1({ monstersDefeated: 4 })).beatsSeen).toEqual(['prologue', 'elder_approaches', 'first_renown'])
+    expect(backfillStory(v1({ monstersDefeated: 3 })).beatsSeen).toEqual(['prologue', 'elder_approaches', 'first_renown'])
     expect(backfillStory(v1({})).beatsSeen).toEqual([])
   })
 
@@ -121,10 +121,10 @@ describe('call_to_arms backfill', () => {
     expect(backfillStory(v1({ fightersRallied: 1, fighters: 1 })).beatsSeen).toContain('call_to_arms')
   })
 
-  it('is seen for a save with 13 kills or more, whatever its old wave fields say', () => {
+  it('is seen for a save with 4 kills or more (Defend the Wall), whatever its old wave fields say', () => {
     const seen = (over: Partial<GameState>) => backfillStory(v1(over)).beatsSeen
-    expect(seen({ monstersDefeated: 13 })).toContain('call_to_arms')
+    expect(seen({ monstersDefeated: 4 })).toContain('call_to_arms')
     expect(seen({ monstersDefeated: 13, waveNumber: 3, waveActive: true })).toContain('call_to_arms')
-    expect(seen({ monstersDefeated: 12 })).not.toContain('call_to_arms')
+    expect(seen({ monstersDefeated: 3 })).not.toContain('call_to_arms')
   })
 })

@@ -337,6 +337,35 @@ and `WaveRow`. Nothing in the main game renders them; they compile and their tes
 
 ---
 
+## Layer 2f: quests guide the player (approved 2026-10-26)
+
+**Owner rulings:**
+- The game needs a way to guide players through the game and the story; later also daily and
+  weekly login incentives (part 2, not built yet).
+- First task: defeat four kobolds. Then congratulate the player on defending the wall, and
+  explain fighters: the people noticed your bravery, your renown can now convince a villager to
+  fight, fighters fight at the gate, and their victories add to your renown.
+- Fighters' kills pay the full bounty (no partial share). How fast fighters earn is set by their
+  damage (1/8 of a held strike). If the early game rewards generously, monsters growing stronger
+  later balances it.
+
+**Quests** (`src/types/quests.ts`): data entries with a goal, progress, an offer condition, an
+optional renown reward, and either a story beat they complete into (its scene congratulates) or
+a "Quest complete" toast. `questsDone` in the save. One quest at a time on the objective line,
+which now shows on the Warfront from the first kill. The Journal has a Quests tab (opens first).
+
+| Quest | Goal | Offered | On completion |
+|-------|------|---------|---------------|
+| Defend the Wall | Defeat 4 kobolds | after `first_renown` | `call_to_arms` scene ("The Wall Holds"), Rally unlocks |
+| Raise the Guard | Rally 2 fighters | after `call_to_arms` | toast, +1.00 renown |
+
+- Four kobolds pay 1.00 renown, exactly the first Rally, so "your renown is now enough" is true.
+- `call_to_arms` now fires at 4 kills (the quest), replacing the 13-kill ruling of layer 2e.
+- Beat objectives ("Slay 5 monsters", "Rally 2 fighters") were replaced by the quests. Later beats
+  keep their beat objectives until they become quests.
+
+---
+
 ## Known side effects to handle later
 
 - Research prerequisites that use `monstersDefeated` (Librarium) were sized for the old

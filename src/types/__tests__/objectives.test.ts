@@ -9,33 +9,33 @@ describe('getCurrentObjective', () => {
     expect(getCurrentObjective(make({ beatsSeen: ['prologue', 'elder_approaches'] }))).toBeNull()
   })
 
-  it('shows the latest unmet objective once the guided steps are done', () => {
-    const s = make({ beatsSeen: ['prologue', 'elder_approaches'], tutorialStepsDone: ['begin_wave', 'tap_slay'], monstersDefeated: 2 })
-    expect(getCurrentObjective(s)).toEqual({ label: 'Slay 5 monsters', current: 2, target: 5 })
+  it('nothing before the renown scene: the first quest is offered after first_renown', () => {
+    const s = make({ beatsSeen: ['prologue', 'elder_approaches'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 1 })
+    expect(getCurrentObjective(s)).toBeNull()
   })
 
-  it('prefers the most recently seen beat with an objective', () => {
+  it('shows the Defend the Wall quest after the first kill', () => {
+    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], tutorialStepsDone: ['tap_slay'], monstersDefeated: 1 })
+    expect(getCurrentObjective(s)).toEqual({ label: 'Defeat 4 kobolds', current: 1, target: 4 })
+  })
+
+  it('moves on to Raise the Guard once the wall is defended and call_to_arms is seen', () => {
     const s = make({
       beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms'],
-      tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'],
-      fighters: 1,
-      monstersDefeated: 2,
+      tutorialStepsDone: ['tap_slay', 'tap_rally'],
+      questsDone: ['defend_the_wall'],
+      fightersRallied: 1,
+      monstersDefeated: 6,
     })
-    expect(getCurrentObjective(s)?.label).toBe('Rally 2 fighters')
+    expect(getCurrentObjective(s)).toEqual({ label: 'Rally 2 fighters', current: 1, target: 2 })
   })
 
-  it('falls back to an earlier unmet objective when the latest is met', () => {
+  it('is null when every offered quest is done and no beat objective is left', () => {
     const s = make({
       beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms'],
-      tutorialStepsDone: ['begin_wave', 'tap_slay', 'tap_rally'],
-      fighters: 2,
-      monstersDefeated: 2,
+      tutorialStepsDone: ['tap_slay', 'tap_rally'],
+      questsDone: ['defend_the_wall', 'raise_the_guard'],
     })
-    expect(getCurrentObjective(s)?.label).toBe('Slay 5 monsters')
-  })
-
-  it('is null when every objective is met', () => {
-    const s = make({ beatsSeen: ['prologue', 'elder_approaches'], tutorialStepsDone: ['begin_wave', 'tap_slay'], monstersDefeated: 5 })
     expect(getCurrentObjective(s)).toBeNull()
   })
 })

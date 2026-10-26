@@ -76,6 +76,7 @@ import {
 import { stepFood } from '../types/foodTick'
 import { applyCityDamage } from '../types/cityHp'
 import { strike, fighterStrike } from '../types/monsters'
+import { completeQuests, hasQuestToComplete } from '../types/quests'
 import { firstExpeditionReward } from '../types/scripted'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -360,6 +361,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setPendingMilestone(next)
     }
   }, [loaded, state.totalInspirationEarned, state.milestonesOffered, state.beatsSeen, pendingMilestone])
+
+  // Quests: a goal that is met completes at once and pays its reward (the toast or the story
+  // beat that follows is the UI's job)
+  useEffect(() => {
+    if (loaded && hasQuestToComplete(state)) setState((prev) => completeQuests(prev).state)
+  }, [loaded, state])
 
   // One tap hits the monster; the bounty is paid and the kill counted on its death (types/monsters.ts)
   const click = useCallback(() => {

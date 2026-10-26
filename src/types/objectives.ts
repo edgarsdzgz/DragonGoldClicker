@@ -2,6 +2,7 @@ import type { GameState } from './state'
 import type { SpotlightTarget } from './story'
 import { STORY_BEATS } from './story'
 import { getActiveStep, TUTORIAL_STEPS } from './tutorial'
+import { currentQuest, questProgress } from './quests'
 
 // =============================================================================
 // LIGHTER GUIDANCE: the objective line and the spotlight ring (pure selection)
@@ -14,12 +15,14 @@ export interface CurrentObjective {
 }
 
 /**
- * The objective of the most recently seen beat whose objective is not yet met.
- * Null when there is none, or while a guided tutorial step is active (the coach mark
- * already says what to do).
+ * The current quest's goal; failing that, the objective of the most recently seen beat whose
+ * objective is not yet met (beats not yet turned into quests). Null when there is none, or
+ * while a guided tutorial step is active (the coach mark already says what to do).
  */
 export function getCurrentObjective(s: GameState): CurrentObjective | null {
   if (getActiveStep(s)) return null
+  const quest = currentQuest(s)
+  if (quest) return { label: quest.goal, current: questProgress(quest, s), target: quest.target }
   for (let i = s.beatsSeen.length - 1; i >= 0; i--) {
     const beat = STORY_BEATS.find((b) => b.id === s.beatsSeen[i])
     if (!beat?.objective) continue

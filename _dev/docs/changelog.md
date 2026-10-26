@@ -2,6 +2,12 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Quests (2026-10-26)
+- Quest system: one quest at a time on the objective line, rewards, completion into a story scene or a toast
+- Defend the Wall (defeat 4 kobolds) completes into "The Wall Holds", which explains fighters; Rally now at 4 kills
+- Raise the Guard (rally 2 fighters) pays +1.00 renown
+- Journal Quests tab; the objective line shows on the Warfront from the first kill
+
 ### Reset and the renown scene (2026-10-26)
 - Resetting the game (Settings or Game Over) returns to the Warfront tab
 - While Elder Pyreth explains renown, the renown figure shows through the dim with a pulsing gold box

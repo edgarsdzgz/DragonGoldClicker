@@ -105,7 +105,8 @@ export function GameScreen() {
           autoInspPerSec={effectiveAutoRate}
         />
       )}
-      {reveal.chrome && <StoryObjective />}
+      {/* The quest line shows from the first kill (the Defend the Wall quest) */}
+      {reveal.topBar && <StoryObjective />}
       {reveal.chrome && <PopulationChips />}
       {!reveal.chrome && <DevShortcut offsetTop={reveal.topBar ? 56 : 0} />}
 

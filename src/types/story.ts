@@ -1,6 +1,5 @@
 import type { GameState } from './state'
 import { shouldRevealExplorerPost } from './state'
-import { MONSTERS } from './monsters'
 // Type-only: systems.ts imports STORY_BEATS from this file at runtime
 import type { SystemId, BuildingRevealId } from './systems'
 
@@ -67,16 +66,13 @@ export interface BeatDef {
 
 const seen = (s: GameState, id: BeatId) => s.beatsSeen.includes(id)
 
-/** call_to_arms (Rally) arrives with the first goblin: 13 kills */
-export const RALLY_AT_KILLS = MONSTERS[1].fromKills
-
 export const STORY_BEATS: BeatDef[] = [
   {
     id: 'prologue', chapter: 0, dwellSec: 0,
     trigger: (s) => !seen(s, 'prologue'),
     unlocks: ['slay'],
-    // Owner's opening (2026-10-25): narration sets the scene at the gate, then the elder speaks
-    objective: { label: 'Slay 5 monsters', current: (s) => s.monstersDefeated, target: 5 },
+    // Owner's opening (2026-10-25): narration sets the scene at the gate, then the elder speaks.
+    // The first goal is the Defend the Wall quest (types/quests.ts), offered after first_renown.
   },
   {
     // Elder Pyreth approaches right after the narration; the first strike step follows her scene
@@ -91,13 +87,13 @@ export const STORY_BEATS: BeatDef[] = [
     unlocks: [],
   },
   {
-    // Owner ruling: some fighting first. It plays at the kill that brings the first goblin
-    // (13 kills, where Wave 2 used to clear before waves were put away).
+    // Owner ruling (2026-10-26): the Defend the Wall quest (4 kobolds) completes into this scene,
+    // which congratulates the player and explains fighters. Four kobolds pay the first Rally.
     id: 'call_to_arms', chapter: 1, dwellSec: 0,
-    trigger: (s) => s.monstersDefeated >= RALLY_AT_KILLS,
+    trigger: (s) => s.questsDone.includes('defend_the_wall'),
     unlocks: ['rally'],
     spotlight: 'rally',
-    objective: { label: 'Rally 2 fighters', current: (s) => s.fighters, target: 2 },
+    // Its goal is the Raise the Guard quest (types/quests.ts)
   },
   {
     id: 'the_breach', chapter: 2, dwellSec: 120,
