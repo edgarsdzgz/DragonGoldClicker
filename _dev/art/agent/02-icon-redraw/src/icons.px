@@ -1,0 +1,61 @@
+# Icon redraw, 2026-10-26: cog, wheat sheaf, hammer.
+# Replaces icon-cog, icon-wheat and icon-hammer, which read as a ring, a key and a scythe.
+# Research notes: ../README.md
+
+# Settings. Eight evenly spaced square teeth, a dark center hole, bevel lit from the upper left.
+@asset icon_cog
+size 12 12
+budget 6
+key a=ink h=steel5 m=steel3 s=steel2
+frame
+.....aa.....
+..aaahmaaa..
+.ahhammahma.
+.ahmhmmhmsa.
+.aahmssmsaa.
+ahhmsaahmhma
+amsmsaahmssa
+.aahmhhmsaa.
+.ahmsmmsmsa.
+.amsamsassa.
+..aaassaaa..
+.....aa.....
+
+# Foragers and the Forage tab. A heraldic garb: three ears on top, a red band, splayed stalk ends.
+@asset icon_sheaf
+size 12 12
+budget 8
+key a=ink E=gold5 e=gold4 d=gold2 t=gold3 u=gold1 b=clay2 c=clay1
+frame
+..a..aa..a..
+..a.aEea.a..
+.aEaaEdaaea.
+.aEeaEeaEda.
+.aedaEdaeda.
+..aedededa..
+...atutua...
+...abbbca...
+...atutua...
+..atututua..
+.atuatuatua.
+..aa.aa.aa..
+
+# Repairers. An upright claw hammer: blunt face block on the right, claw curving down on the left,
+# wooden handle under the eye. (A diagonal version read as a pickaxe at this size.)
+@asset icon_hammer
+size 12 12
+budget 6
+key a=ink h=steel5 m=steel3 s=steel2 w=wood4 v=wood2
+frame
+...aaaaaaaa.
+..ahhhhhhhma
+.ahmmmmmmmsa
+ahsaammsmmsa
+asa.awvasssa
+.a..awvaaaa.
+....awva....
+....awva....
+....awva....
+....awva....
+....awva....
+.....aa.....

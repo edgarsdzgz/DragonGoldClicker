@@ -1,0 +1,44 @@
+[
+ {
+  "name": "icon_cog",
+  "file": "icon_cog.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 3,3",
+   "single-pixel island at 8,8"
+  ]
+ },
+ {
+  "name": "icon_sheaf",
+  "file": "icon_sheaf.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_hammer",
+  "file": "icon_hammer.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]
