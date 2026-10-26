@@ -53,3 +53,22 @@ describe('the renown scene points at the renown figure', () => {
     expect(SCENES.first_renown.highlight).toBe('renown')
   })
 })
+
+describe('the Forage tab shows only gathering at first', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { forageReveal } = require('../opening')
+
+  it('hides training and explorers while the player learns to forage', () => {
+    expect(forageReveal(make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores'] }))).toEqual({ training: false, explorers: false })
+  })
+
+  it('shows training once the stores are filled by hand, or for a save that has trained a gatherer', () => {
+    expect(forageReveal(make({ questsDone: ['fill_the_stores'] })).training).toBe(true)
+    expect(forageReveal(make({ foragersTrained: { gatherers: 1, trappers: 0, rangers: 0 } })).training).toBe(true)
+  })
+
+  it('shows explorers only once the Outpost is built', () => {
+    expect(forageReveal(make({ questsDone: ['fill_the_stores'] })).explorers).toBe(false)
+    expect(forageReveal(make({ postLevel: 1 })).explorers).toBe(true)
+  })
+})

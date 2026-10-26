@@ -30,3 +30,23 @@ export function warfrontReveal(s: Pick<GameState, 'monstersDefeated' | 'beatsSee
     chrome: s.beatsSeen.includes('call_to_arms'),
   }
 }
+
+// =============================================================================
+// THE FORAGE TAB: only gathering at first
+// =============================================================================
+// Owner ruling (2026-10-26): while the player is learning to forage, the tab shows only that they
+// can gather. Training gatherers appears once the stores have been filled by hand.
+
+export interface ForageReveal {
+  /** The TRAIN gatherer orb (after Fill the Stores, or once the save has trained one) */
+  training: boolean
+  /** The RECRUIT explorer orb (once the Explorer's Outpost is built) */
+  explorers: boolean
+}
+
+export function forageReveal(s: Pick<GameState, 'questsDone' | 'foragersTrained' | 'postLevel'>): ForageReveal {
+  return {
+    training: s.questsDone.includes('fill_the_stores') || s.foragersTrained.gatherers > 0,
+    explorers: s.postLevel > 0,
+  }
+}

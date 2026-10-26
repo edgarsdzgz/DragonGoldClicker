@@ -10,6 +10,7 @@ import { useFlavorText } from '../hooks/useFlavorText'
 import { useRandomSfx } from '../hooks/useRandomSfx'
 import { SFX_HARVEST_POOL } from '../data/sfx'
 import { FORAGE_LINES } from '../data/flavorText'
+import { forageReveal } from '../types/opening'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap, isSystemOn } from '../types/game'
 
@@ -82,6 +83,9 @@ export function ForageScreen() {
   const totalForagers = getTotalForagers(state.foragers)
   const canTrainGatherer = state.villagers > 0 && state.inspiration >= gathererCost && totalForagers < gathererCap
 
+  // Only gathering while the player learns to forage (types/opening.ts)
+  const reveal = forageReveal(state)
+
   const explorerCap = getExplorerCap(state.postLevel)
   const canRecruitExplorer = state.postLevel > 0 && state.villagers > 0 && state.inspiration >= EXPLORER_COST && state.explorers < explorerCap
 
@@ -153,28 +157,30 @@ export function ForageScreen() {
         />
       </View>
 
-      {/* Command row: Train Gatherer + Recruit Explorer */}
-      <View style={styles.commandRow}>
-        <CoachTarget id="train" style={styles.commandSlot}>
-          <HarvestOrb
-            onAction={handleTrainGatherer}
-            icon="person-add"
-            label="TRAIN"
-            palette={TRAIN_PALETTE}
-            size="md"
-            disabled={!canTrainGatherer}
-          />
-          <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
-            {formatNumber(gathererCost)} renown
-          </Text>
-          <Text variant="caption" color="muted" center>
-            {gathererCount}/{gathererCap}
-          </Text>
-        </CoachTarget>
+      {/* Command row: Train Gatherer + Recruit Explorer, each once it has been introduced */}
+      {(reveal.training || reveal.explorers) && (
+        <View style={styles.commandRow}>
+          {reveal.training && (
+            <CoachTarget id="train" style={styles.commandSlot}>
+              <HarvestOrb
+                onAction={handleTrainGatherer}
+                icon="person-add"
+                label="TRAIN"
+                palette={TRAIN_PALETTE}
+                size="md"
+                disabled={!canTrainGatherer}
+              />
+              <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
+                {formatNumber(gathererCost)} renown
+              </Text>
+              <Text variant="caption" color="muted" center>
+                {gathererCount}/{gathererCap}
+              </Text>
+            </CoachTarget>
+          )}
 
-        <View style={styles.commandSlot}>
-          {state.postLevel > 0 ? (
-            <>
+          {reveal.explorers && (
+            <View style={styles.commandSlot}>
               <HarvestOrb
                 onAction={handleRecruitExplorer}
                 icon="compass"
@@ -189,17 +195,10 @@ export function ForageScreen() {
               <Text variant="caption" color="muted" center>
                 {state.explorers}/{explorerCap}
               </Text>
-            </>
-          ) : (
-            <View style={styles.lockedOrb}>
-              <Ionicons name="lock-closed" size={16} color={colors.text.muted} />
-              <Text variant="caption" color="muted" center>
-                Build Outpost
-              </Text>
             </View>
           )}
         </View>
-      </View>
+      )}
 
       {/* Footer: forage yield hint */}
       <View style={styles.footer}>
@@ -263,17 +262,6 @@ const styles = StyleSheet.create({
   commandSlot: {
     alignItems: 'center',
     gap: spacing[1],
-  },
-  lockedOrb: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 1.5,
-    borderColor: colors.border.subtle,
-    borderStyle: 'dashed',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 2,
   },
   footer: {
     alignItems: 'center',

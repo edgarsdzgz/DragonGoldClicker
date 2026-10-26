@@ -2,6 +2,11 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### The Forage tab starts with gathering only (2026-10-26)
+- TRAIN gatherer appears once Fill the Stores is done (or the save has trained a gatherer)
+- RECRUIT explorer appears once the Outpost is built; the locked "Build Outpost" slot is gone
+- The Foraging journal card no longer mentions gatherers
+
 ### One press for every main button (2026-10-26)
 - `useActionPress`: the battlefield and every orb (FORAGE, RALLY, REPAIR, TRAIN, RECRUIT) tap,
   hold, pulse and answer screen readers the same way
