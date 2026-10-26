@@ -179,3 +179,40 @@ The owner shared eight dragon portraits that look right and asked what separates
 7. A curved mouth line, open or ajar.
 8. A bright eye in a dark socket.
 9. A darker overall value with accents.
+
+## 5. V4 against the section 2 research (2026-10-26)
+
+Version names: V1 is the procedural studies, made before this research. V2 (head study 1) is the first sprite built from section 2. V3 is the lean-neck variant. V4 is rebuilt from the eight reference portraits (section 4).
+
+### What V4 keeps from the research
+
+| Rule | V4 |
+|---|---|
+| Flat clusters, no texture, no dithering | Kept |
+| One clear light, hue-shifted ramps, restrained palette | Upper-left light; shadows shift violet; 18 colours |
+| Silhouette reads in one colour | Passes |
+| At least 64 px for a dragon | 64×64 |
+| Skull as a box cranium plus a tapered snout | Kept, with the snout shortened |
+| Nostril at the snout tip; only its deepest part dark | Kept |
+| Raptor brow shelf over a small slit eye | Kept: a dark overhang, a 2-pixel slit, no white highlight |
+| Horns root behind and above the eye, sweep back, taper, lit top and shadow underside, far horn smaller | Kept; ridge bands are minimal (3 pixels) |
+| Teeth and spikes of varied size | Kept |
+
+### Where the research steered wrong
+
+| Research said | References show | Correction |
+|---|---|---|
+| Section 2.3: "long, blocky snout" reads grand; skull modelled on monitor lizard and crocodile | The eye sits near the middle of the head, and the muzzle is no longer than the cranium | The lizard skull gives the structure (cranium box, snout wedge, brow), not the proportions. For proportions, use a heavier, big-cat-like cranium with a lizard muzzle. |
+| Section 2.2: horns as a single ram pair | A crest of 3-7 horns and spikes fanning back on one diagonal | The ram horn stays the model for one horn. The crest needs several, of varied length, rooted along the brow and skull. |
+| Section 2.2: lizard jaws end behind the eye | The open mouth ends under or before the eye | Both hold: the jaw bone and muscle run behind the eye, but the mouth opening stops under it. V4 softens the seam behind the mouth corner to a hide shadow. |
+| Nothing on view angle | Mostly three-quarter | Default to three-quarter for portraits; profile flattens the face. |
+| Nothing on overall value | Dark overall, with bright accents | The darkest two hide tones cover most of the shadow side; the eye and fire are the brightest points. |
+| Nothing on head carriage | The head is held forward of the chest, tilted down | The neck leaves the jaw corner down and back. |
+| Section 2.1: no outline ring around the eye | Most references set the eye in a dark socket | A dark socket ring is fine; what reads badly is an outline-coloured ring with a highlight boxed inside. |
+
+### Research rules V4 does not apply yet
+
+- **Imply scales:** a few scale clusters on the shadow side, denser at the terminator. V4 has none. The Skulldon and blue-grey references do this.
+- **Selective outline:** the outline is mostly the darkest colour. Only a few lit edges take the warmer outline.
+- **Anti-aliasing on long curves:** none yet. The horn curves could use a few in-between pixels.
+- **Chest, wings and limbs:** not tested, since this is a head study. The perched body will test the bird chest, bat wing and lizard stance.
