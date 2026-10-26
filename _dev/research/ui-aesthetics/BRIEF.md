@@ -19,7 +19,8 @@ monetisation or economy design.
 ## 2. What Dragon Gold looks like now
 
 Four screenshots from the owner's phone (a Galaxy A16, 1080x2340) are in `current-app/` next to this
-brief. Look at them first:
+brief. Look at them first. (`owner-screenshots/` holds the owner's screenshots of Dicero, a reference
+game; see section 3a.)
 
 - `warfront-early.png`: the main screen early on. One monster in a circle, its HP bar, the gate.
 - `warfront-rally.png`: later. Quest line, villager and fighter chips, the RALLY orb, the footer.
@@ -52,15 +53,64 @@ Main UI pieces, so findings can be mapped onto them:
 ## 3. Games to study
 
 Cover every game in group A and group C. In group B, pick the 4-6 that are best documented online.
+Dicero is the owner's clearest single reference, so give it the deepest section.
 
 **A. The owner's named references (required)**
 - **Cookie Clicker** (web and mobile).
-- **"Dicero"**: the owner named this, but the exact title is not confirmed. Search for it, and if
-  you cannot identify it with confidence, say so in the report and ask the owner. Do not guess.
-  Possible meanings include a dice-based clicker or roguelike.
+- **Dicero**: confirmed by the owner. A pixel-art dice roguelike for mobile, published by **Habby**
+  and developed by **Lark Games** (version 1.9.x in the owner's screenshots).
+  - The owner plays it, and three of their screenshots are in `owner-screenshots/` (section 3a).
+  - Start there, then find more screens online: battle, dice, shop, upgrades, the Codex, results.
+  - Habby's other games share the same house polish and are worth a look: Archero,
+    Capybara Go! and Survivor.io.
 - **Honkai: Star Rail.** The owner has done this kind of study for Star Rail before, using online
   galleries of its whole UI. Find galleries like that again.
 - **Genshin Impact.**
+
+**3a. The owner's own Dicero screenshots** (in `owner-screenshots/`; examine them first)
+
+- `dicero-home.png`: the home and battle hub.
+- `dicero-offer-popup.png`: a store offer pop-up.
+- `dicero-title.png`: the title screen.
+
+First observations to verify and extend. Confirm each against the images; do not just repeat them.
+
+- **Everything is framed in pixel art.**
+  - Chunky stepped corners on panels and chips. Hand-drawn, outlined item icons. Pixel-art
+    characters and scene.
+  - The text, though, is a clean rounded sans with a dark outline or shadow. Pixel frames with
+    smooth type is a deliberate mix.
+- **The scene is the backdrop.**
+  - The home screen is a lit campfire scene (warm volcanic sky, two idle characters). The UI floats
+    around its edges.
+  - The middle stays open, so the art carries the mood.
+- **The current stage is the hero.** A large glowing hexagon card in the centre: a lava-scene
+  thumbnail, power requirement, name ("Wyrmfire Peak"), progress (0/20), and a huge "28".
+- **Currencies at the top** sit in dark angled chips, each with a big glossy icon and a small green
+  "+".
+- **The profile corner** has an avatar portrait with a level badge, a name, an XP bar and a
+  power figure.
+- **Feature icons sit in two vertical rails, left and right**, on dark pixel-framed strips.
+  - Each is a large colourful painted icon with a two-line outlined label under it.
+  - A red square "!" badge marks anything that needs attention. They are used a lot.
+- **There is one dominant primary button.** "New Game x10" is a wide, saturated blue rectangle
+  with diamond end-caps, a lighter top edge, a cost line under the label and a dark drop shadow. It
+  sits in the thumb zone.
+- **Secondary actions are smaller.** Guild and Mode use the same pixel frame, smaller, at the sides.
+- **Bottom navigation is five diamond-shaped icon tiles** on a dark blue bar. The selected tab
+  ("Battle") rises above the bar in a taller notched tab, with crossed swords and a label.
+- **Timers** are small dark pills with bold white digits (25:22:10, 10:57:35).
+- **The offer pop-up is all-in "juice":**
+  - Huge 3D gold display text ("10% BONUS") with a thick dark outline and an inner highlight.
+  - A purple ornate frame with pointed finials.
+  - A glowing open chest spilling blue dice, plus sparkles and radial light.
+  - A gold hexagon "GO" button. Highlight words are coloured gold and green inside the text.
+  - A dimmed backdrop, a "Don't remind me again today" checkbox, and a separate square close
+    button below the frame.
+- **The title screen is calm by contrast.** A soft pixel-art winter scene, a white logo with a
+  crown and sparkles, and a minimal "Start" flanked by thin lines and diamond marks.
+- **Colour strategy:** a warm scene, cool blue primary actions, gold for value and rewards, purple
+  for premium, red only for alerts.
 
 **B. Top clicker, idle and incremental games (pick 4-6)**
 - Tap Titans 2, Clicker Heroes, AdVenture Capitalist, Egg, Inc., Idle Slayer, Cell to Singularity,
@@ -158,8 +208,8 @@ purpose: this project keeps `_dev/` in git).
 
 ## 8. Done when
 
-- Every game in groups A and C has a section with at least 3 examined images cited. For "Dicero",
-  either identify it with confidence or record that it could not be identified, and ask the owner.
+- Every game in groups A and C has a section with at least 3 examined images cited. Dicero's
+  section builds on the owner's screenshots and the observations in section 3a.
 - The pattern catalogue has at least 12 named techniques, each with image evidence.
 - Every piece in the section 2 table has concrete suggestions.
 - `sources.md` lists every URL used.
