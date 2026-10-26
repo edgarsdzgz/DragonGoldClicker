@@ -1,0 +1,124 @@
+[
+ {
+  "name": "icon_hourglass",
+  "file": "icon_hourglass.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_flame",
+  "file": "icon_flame.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "ppl_fighter_idle",
+  "file": "ppl_fighter_idle.png",
+  "size": [
+   11,
+   20
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   19
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "ppl_fighter_attack",
+  "file": "ppl_fighter_attack_strip2.png",
+  "size": [
+   16,
+   20
+  ],
+  "frames": 2,
+  "fps": 6,
+  "anchor": [
+   5,
+   19
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "fx_spark",
+  "file": "fx_spark_strip4.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 4,
+  "fps": 12,
+  "anchor": [
+   5,
+   5
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "evt_granary_0",
+  "file": "evt_granary_0.png",
+  "size": [
+   32,
+   32
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   16,
+   31
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "evt_granary_50",
+  "file": "evt_granary_50.png",
+  "size": [
+   32,
+   32
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   16,
+   31
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "evt_granary_100",
+  "file": "evt_granary_100.png",
+  "size": [
+   32,
+   32
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   16,
+   31
+  ],
+  "errors": [],
+  "warnings": []
+ }
+]

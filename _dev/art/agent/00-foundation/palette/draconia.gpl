@@ -1,0 +1,42 @@
+GIMP Palette
+Name: Draconia (starter)
+Columns: 8
+#
+ 18  10  16	ink
+ 40  30  50	night1
+ 70  58  90	night2
+ 90  96 130	night3
+150 120 168	night4
+ 96 104 120	steel1
+120 128 140	steel2
+170 170 186	steel3
+210 218 230	steel4
+226 230 240	steel5
+150  96  50	gold1
+176 120  40	gold2
+214 150  72	gold3
+240 192  96	gold4
+255 220 120	gold5
+255 236 180	gold6
+ 70  50  40	wood1
+ 96  60  36	wood2
+110  70  40	wood3
+150  90  40	wood4
+150  64  44	clay1
+170  80  40	clay2
+180 100  50	clay3
+ 90  26  34	red1
+150  48  34	red2
+200  64  44	red3
+240 138  30	fire1
+255 214  60	fire2
+255 244 200	fire3
+214 160 120	skin1
+232 184 140	skin2
+240 214 184	skin3
+180 150 100	parch1
+200 160  90	parch2
+236 214 170	parch3
+ 36  64  46	green1
+ 60 120  90	green2
+106 160 112	green3
