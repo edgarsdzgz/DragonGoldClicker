@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bestiary</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+a{color:#f0c060}a:hover{color:#ffd97a}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+</style>
+</helmet>
+<div style="width: 1100px; height: 640px; box-sizing: border-box; padding: 28px 24px; background: linear-gradient(#1a1420, #0c0910); font-family: 'Nunito', system-ui, sans-serif; color: #3a2208;">
+  <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; height: 100%;">
+    <sc-for list="{{beasts}}" as="b" hint-placeholder-count="5">
+      <article class="step" style="background: #2a1608; padding: 3px; height: 100%; box-sizing: border-box;">
+        <div class="step" style="height: 100%; box-sizing: border-box; background: linear-gradient(#efdfb8, #e0caa0); padding: 14px 14px 16px; display: flex; flex-direction: column; box-shadow: inset 0 0 0 3px #e0caa0, inset 0 0 0 5px #8a6a40;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 0 4px; background: {{b.headBg}};">
+            <h2 style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 17px; letter-spacing: 1px; color: {{b.headInk}}; text-align: center;">{{b.name}}</h2>
+            <span style="font-family: 'Pixelify Sans', monospace; font-size: 12px; letter-spacing: 2px; color: {{b.subInk}};">{{b.kind}}</span>
+          </div>
+          <div aria-hidden="true" style="display: flex; align-items: center; gap: 6px; margin: 8px 6px;">
+            <span style="flex-grow: 1; height: 2px; background: #8a6a40;"></span>
+            <span style="width: 6px; height: 6px; background: #8a6a40; transform: rotate(45deg);"></span>
+            <span style="flex-grow: 1; height: 2px; background: #8a6a40;"></span>
+          </div>
+          <div style="position: relative; height: 200px; display: flex; align-items: flex-end; justify-content: center;">
+            <span style="position: absolute; bottom: 2px; left: 50%; width: 130px; height: 16px; transform: translateX(-50%); border-radius: 50%; background: rgba(90,60,30,0.35);"></span>
+            <img class="px" src="{{b.src}}" alt="{{b.name}}" style="position: relative; width: {{b.w}}; height: {{b.h}};">
+          </div>
+          <dl style="margin: 14px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; font-size: 13px;">
+            <dt style="font-weight: 900; color: #6a4a2a;">HP</dt>
+            <dd style="margin: 0; font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 15px; color: #3a2208;">{{b.hp}}</dd>
+            <dt style="font-weight: 900; color: #6a4a2a;">Bounty</dt>
+            <dd style="margin: 0; display: flex; align-items: center; gap: 4px; font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 15px; color: #3a2208;"><img class="px" src="images/mock_assets_icon-star.png" alt="" style="width: 16px; height: 16px;">{{b.bounty}}</dd>
+            <dt style="font-weight: 900; color: #6a4a2a;">Arrives</dt>
+            <dd style="margin: 0; font-weight: 800; color: #3a2208;">{{b.arrives}}</dd>
+          </dl>
+          <p style="margin: auto 0 0; padding-top: 12px; font-style: italic; font-weight: 800; font-size: 13px; line-height: 1.4; color: #5a3a1a;">{{b.note}}</p>
+        </div>
+      </article>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1100,"height":640}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const plain = { headBg: 'transparent', headInk: '#3a2208', subInk: '#6a4a2a' };
+    const boss = { headBg: '#7a1c18', headInk: '#fff0d0', subInk: '#f0c060' };
+    return {
+      beasts: [
+        Object.assign({ name: 'Kobold', kind: 'RAIDER', src: 'images/mock_bestiary_b-kobold.png', w: '114px', h: '153px', hp: '5', bounty: '0.25', arrives: 'From the first wave', note: 'Small, quick, and never alone.' }, plain),
+        Object.assign({ name: 'Goblin', kind: 'SKULKER', src: 'images/mock_bestiary_b-goblin.png', w: '108px', h: '120px', hp: '8', bounty: '0.40', arrives: 'After 13 kills', note: 'Cheap blades, worse manners.' }, plain),
+        Object.assign({ name: 'Shadow Crawler', kind: 'UNMADE BEAST', src: 'images/mock_bestiary_b-crawler.png', w: '150px', h: '102px', hp: '12', bounty: '0.60', arrives: 'After 28 kills', note: 'It comes where the torchlight thins.' }, plain),
+        Object.assign({ name: 'Ashen Orc', kind: 'UNMADE', src: 'images/mock_bestiary_b-ashen-orc.png', w: '138px', h: '162px', hp: '20', bounty: '1.00', arrives: 'After 53 kills', note: 'Once someone’s kin. The Unmaking took the rest.' }, plain),
+        Object.assign({ name: 'Gorrath', kind: 'BOSS: MINOTAUR', src: 'images/mock_bestiary_b-minotaur.png', w: '168px', h: '180px', hp: '270 (x3)', bounty: '12.50', arrives: 'Boss wave (concept)', note: 'A minotaur crashed through shattered ranks.' }, boss)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warden head studies</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.ol{text-shadow:2px 0 #12090f,-2px 0 #12090f,0 2px #12090f,0 -2px #12090f,2px 2px #12090f,-2px 2px #12090f,2px -2px #12090f,-2px -2px #12090f}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+</style>
+</helmet>
+<div style="width: 1480px; height: 880px; box-sizing: border-box; padding: 30px 28px; background: linear-gradient(#1a1420, #0c0910); font-family: 'Nunito', system-ui, sans-serif; color: #f5ecd8;">
+  <header style="margin-bottom: 18px;">
+    <h1 class="ol" style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 34px; letter-spacing: 4px; color: #ffd97a;">THE WARDEN'S HEAD, STUDY BY STUDY</h1>
+    <p style="margin: 8px 0 0; max-width: 1300px; font-weight: 800; font-size: 15px; line-height: 1.5; color: #c8bca8;">Every head study in the order it was drawn, at about the same size on screen: 64-pixel heads at 4×, 48-pixel heads at 5×. Each faces the way it was drawn.</p>
+  </header>
+  <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px 12px;">
+    <sc-for list="{{heads}}" as="t" hint-placeholder-count="10">
+      <figure class="step" style="margin: 0; background: #12090f; padding: 3px;">
+        <div class="step" style="box-sizing: border-box; height: 100%; background: {{t.bg}}; padding: 10px 8px 12px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div style="height: 256px; display: flex; align-items: center; justify-content: center;">
+            <img class="px" src="{{t.src}}" alt="{{t.alt}}" style="width: {{t.size}}; height: {{t.size}}; background: #2a2232;">
+          </div>
+          <figcaption style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;">
+            <span style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 15px; color: {{t.ink}};"><span style="font-family: 'Pixelify Sans', monospace; color: #f0c060;">{{t.n}}</span> · {{t.name}}</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #f0c060;">{{t.spec}}</span>
+            <span style="font-weight: 800; font-size: 12px; line-height: 1.35; color: #c8bca8;">{{t.note}}</span>
+          </figcaption>
+        </div>
+      </figure>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1480,"height":880}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dim = '#1e1824';
+    const glow = 'radial-gradient(ellipse at 50% 50%, rgba(220,90,40,0.22), #1e1824 70%)';
+    const list = [
+      ['V1', '651fac2d218b0ab6f61f8104946e235c', '256px', '64×64 · 4× · 35 col', 'Procedural portrait. Texture, dither, a dopey eye.'],
+      ['V2a', '0cdf0032961adfc75d80dab2e0651a2a', '240px', '48×48 · 5× · 16 col', 'First hand-placed head: flat colour, brow over a slit eye.'],
+      ['V2b', 'e4f675f63b1dd33c59e651800605edc9', '240px', '48×48 · 5× · 16 col', 'Deeper jaw, one fang, shorter cheek light.'],
+      ['V2c', '92d4e2873d352b7889ec9235e0ea9c3f', '240px', '48×48 · 5× · 16 col', 'Jaw line, fuller far horn. Neck bulges forward.'],
+      ['V3a', '70d8740233b70a607b2b299ada4cfdcc', '240px', '48×48 · 5× · 16 col', 'Neck slimmed to an S-curve, a muscle cord.'],
+      ['V3b', 'c7700104ffd5d410f758145bcbc69e6f', '240px', '48×48 · 5× · 16 col', 'Jaw frill removed.'],
+      ['V3c', 'b5600ca4aef1c1dcdaf324d074fe8675', '240px', '48×48 · 5× · 16 col', 'Shoulder shaped. Read as emaciated.'],
+      ['V4a', '24ab85119c09b11b33c6976420f43d4a', '256px', '64×64 · 4× · 18 col', 'From the references: three-quarter, crest, neck held back.'],
+      ['V4b', '0296dedbd2477517cfbad3093c0eea1c', '256px', '64×64 · 4× · 18 col', 'Jaw open, fire in the throat.'],
+      ['V4c', '1bc0228b792af5373e171bd4d122d76d', '256px', '64×64 · 4× · 18 col', 'Mouth ends under the eye. Current.']
+    ];
+    return {
+      heads: list.map((h, i) => ({
+        n: String(i + 1), name: h[0], src: '/_blob/' + h[1], size: h[2], spec: h[3], note: h[4],
+        alt: 'Head study ' + h[0], bg: i === list.length - 1 ? glow : dim,
+        ink: i === list.length - 1 ? '#ffd97a' : '#f5ecd8'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

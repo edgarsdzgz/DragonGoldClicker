@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hero dragon studies</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+a{color:#f0c060}a:hover{color:#ffd97a}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.ol{text-shadow:2px 0 #12090f,-2px 0 #12090f,0 2px #12090f,0 -2px #12090f,2px 2px #12090f,-2px 2px #12090f,2px -2px #12090f,-2px -2px #12090f}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+</style>
+</helmet>
+<div style="width: 1480px; height: 1520px; box-sizing: border-box; padding: 34px 28px; background: linear-gradient(#1a1420, #0c0910); font-family: 'Nunito', system-ui, sans-serif; color: #f5ecd8;">
+  <header style="margin-bottom: 22px;">
+    <h1 class="ol" style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 38px; letter-spacing: 4px; color: #ffd97a;">THE WARDEN · HERO STUDIES</h1>
+    <p style="margin: 8px 0 0; max-width: 1100px; font-weight: 800; font-size: 15px; line-height: 1.5; color: #c8bca8;">Every sprite sits on a fixed pixel grid, shown at a whole-number scale so each pixel stays square. Under each study: grid size, colour count, display scale. Shading: light from the top left, five-tone ramps with dithering, scale and belly-plate texture, a rim light on the shadow side, and outlines tinted by the material they wrap.</p>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 22px;">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+      <section style="display: flex; gap: 18px; align-items: stretch;">
+        <div style="width: 210px; flex-shrink: 0; padding-top: 6px;">
+          <h2 style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 19px; color: #ffd97a;">{{r.title}}</h2>
+          <p style="margin: 6px 0 0; font-family: 'Pixelify Sans', monospace; font-size: 14px; color: #f0c060;">{{r.spec}}</p>
+          <p style="margin: 8px 0 0; font-weight: 800; font-size: 13px; line-height: 1.45; color: #c8bca8;">{{r.use}}</p>
+        </div>
+        <div style="flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;">
+          <sc-for list="{{r.tiles}}" as="t" hint-placeholder-count="4">
+            <figure class="step" style="margin: 0; background: #12090f; padding: 3px;">
+              <div class="step" style="height: 100%; box-sizing: border-box; background: {{t.glow}}; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 10px; padding: 14px 8px 12px;">
+                <img class="px" src="{{t.src}}" alt="{{t.alt}}" style="width: {{t.w}}; height: {{t.h}};">
+                <figcaption style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                  <span style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 14px; color: #f5ecd8;">{{t.name}}</span>
+                  <span style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #c8bca8;">{{t.colours}} colours</span>
+                </figcaption>
+              </div>
+            </figure>
+          </sc-for>
+        </div>
+      </section>
+    </sc-for>
+
+    <!-- small sizes and the pixel grid inspection -->
+    <section style="display: flex; gap: 18px; align-items: stretch;">
+      <div style="width: 210px; flex-shrink: 0; padding-top: 6px;">
+        <h2 style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 19px; color: #ffd97a;">Small sizes</h2>
+        <p style="margin: 6px 0 0; font-family: 'Pixelify Sans', monospace; font-size: 14px; color: #f0c060;">32×32 token · 32×22 eye · shown 4×</p>
+        <p style="margin: 8px 0 0; font-weight: 800; font-size: 13px; line-height: 1.45; color: #c8bca8;">Token: the Draconia map, the profile corner, the tab bar. Eye: an ability or "Dragon's Gaze" icon, a renown emblem.</p>
+      </div>
+      <div style="flex: 1; display: flex; gap: 14px;">
+        <div class="step" style="flex: 1; background: #12090f; padding: 3px;">
+          <div class="step" style="height: 100%; box-sizing: border-box; background: #1e1824; padding: 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 10px; align-items: end; justify-items: center;">
+            <sc-for list="{{tokens}}" as="t" hint-placeholder-count="8">
+              <figure style="margin: 0; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <img class="px" src="{{t.src}}" alt="{{t.alt}}" style="width: {{t.w}}; height: {{t.h}};">
+                <figcaption style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #c8bca8;">{{t.caption}}</figcaption>
+              </figure>
+            </sc-for>
+          </div>
+        </div>
+        <figure class="step" style="margin: 0; background: #12090f; padding: 3px; width: 360px; flex-shrink: 0;">
+          <div class="step" style="height: 100%; box-sizing: border-box; background: #1e1824; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <div style="position: relative; width: 320px; height: 320px; background: #2a2232;">
+              <img class="px" src="images/mock_study_token-ember-x10.png" alt="The Ember token at 10 times scale" style="position: absolute; inset: 0; width: 320px; height: 320px;">
+              <div aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(to right, rgba(255,255,255,0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.14) 1px, transparent 1px); background-size: 10px 10px;"></div>
+              <div aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(to right, rgba(240,192,96,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(240,192,96,0.4) 1px, transparent 1px); background-size: 80px 80px;"></div>
+            </div>
+            <figcaption style="text-align: center; font-weight: 800; font-size: 13px; color: #c8bca8;">Ember token at 10×. One square is one pixel; gold lines every 8 pixels. 32×32, 29 colours.</figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1480,"height":1520}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const pal = [
+      { key: 'ember', name: 'Ember Sentinel', glow: 'radial-gradient(ellipse at 50% 55%, rgba(220,90,40,0.38), #1e1824 70%)' },
+      { key: 'azure', name: 'Azure Stormwing', glow: 'radial-gradient(ellipse at 50% 55%, rgba(70,140,230,0.38), #1e1824 70%)' },
+      { key: 'obsidian', name: 'Obsidian Nightwing', glow: 'radial-gradient(ellipse at 50% 55%, rgba(120,70,220,0.4), #1e1824 70%)' },
+      { key: 'verdant', name: 'Verdant Wyrm', glow: 'radial-gradient(ellipse at 50% 55%, rgba(60,170,130,0.38), #1e1824 70%)' }
+    ];
+    const src = {
+      rearing: ['images/mock_study_rearing-ember.png', 'images/mock_study_rearing-azure.png', 'images/mock_study_rearing-obsidian.png', 'images/mock_study_rearing-verdant.png'],
+      spread: ['images/mock_study_spread-ember.png', 'images/mock_study_spread-azure.png', 'images/mock_study_spread-obsidian.png', 'images/mock_study_spread-verdant.png'],
+      portrait: ['images/mock_study_portrait-ember.png', 'images/mock_study_portrait-azure.png', 'images/mock_study_portrait-obsidian.png', 'images/mock_study_portrait-verdant.png'],
+      token: ['images/mock_study_token-ember.png', 'images/mock_study_token-azure.png', 'images/mock_study_token-obsidian.png', 'images/mock_study_token-verdant.png'],
+      eye: ['images/mock_study_eye-ember.png', 'images/mock_study_eye-azure.png', 'images/mock_study_eye-obsidian.png', 'images/mock_study_eye-verdant.png']
+    };
+    const colours = { rearing: [33, 33, 33, 33], spread: [30, 30, 30, 30], portrait: [35, 34, 35, 35] };
+    const tiles = (pose, w, h, label) => pal.map((p, i) => ({
+      src: src[pose][i], w: w, h: h, name: p.name, glow: p.glow, colours: colours[pose][i], alt: p.name + ', ' + label
+    }));
+    const tokens = pal.map((p, i) => ({ src: src.token[i], w: '128px', h: '128px', caption: p.name.split(' ')[0] + ' · 29', alt: p.name + ' token' }))
+      .concat(pal.map((p, i) => ({ src: src.eye[i], w: '128px', h: '88px', caption: p.name.split(' ')[0] + ' eye · ' + (i === 1 ? 21 : 22), alt: p.name + ' eye icon' })));
+    return {
+      rows: [
+        { title: 'Rearing Sentinel', spec: '96×88 grid · shown 3×', use: 'The Warfront perch: side view on the gatehouse, wings raised, fire between the jaws, facing the horde.', tiles: tiles('rearing', '288px', '264px', 'rearing on the gate') },
+        { title: 'Wings of the Gate', spec: '96×80 grid · shown 3×', use: 'Front view, wings spread wide. For the title screen, VICTORY, THE GATE HOLDS and Spoils.', tiles: tiles('spread', '288px', '240px', 'wings spread') },
+        { title: 'Portrait', spec: '64×64 grid · shown 4×', use: 'Head and neck in three-quarter view, rim-lit over a dithered field. For the profile, the Journal and story chapter cards.', tiles: tiles('portrait', '256px', '256px', 'portrait') }
+      ],
+      tokens: tokens
+    };
+  }
+}
+</script>
+</body>
+</html>

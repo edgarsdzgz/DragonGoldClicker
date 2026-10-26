@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warfront</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+a{color:#f0c060}a:hover{color:#ffd97a}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.ol{text-shadow:2px 0 #12090f,-2px 0 #12090f,0 2px #12090f,0 -2px #12090f,2px 2px #12090f,-2px 2px #12090f,2px -2px #12090f,-2px -2px #12090f}
+.ol1{text-shadow:1px 0 #12090f,-1px 0 #12090f,0 1px #12090f,0 -1px #12090f,1px 1px #12090f}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+.scale{clip-path:polygon(8% 0,92% 0,100% 8%,100% 58%,50% 100%,0 58%,0 8%)}
+.hit{position:absolute;transform:translate(-50%,0);animation:floatUp .95s ease-out forwards;pointer-events:none;white-space:nowrap}
+@keyframes floatUp{0%{transform:translate(-50%,0) scale(.5);opacity:0}15%{transform:translate(-50%,-10px) scale(1.2);opacity:1}100%{transform:translate(-50%,-78px) scale(1);opacity:0}}
+@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes halo{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.85;transform:scale(1.07)}}
+@keyframes drop{0%{transform:translateY(-130%)}65%{transform:translateY(5%)}100%{transform:translateY(0)}}
+@keyframes rise{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes glint{0%,100%{opacity:.25}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #07050c; font-family: 'Nunito', system-ui, sans-serif; color: #f5ecd8;">
+
+  <img class="px" src="images/mock_assets_warfront-bg.png" alt="" style="position: absolute; left: 0; top: 0; width: 390px; height: 846px;">
+  <sc-if value="{{bossSky}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(160,30,20,0.28), rgba(40,0,10,0.55)); transition: opacity .6s;"></div>
+  </sc-if>
+
+  <!-- top bar: currencies and journal -->
+  <div style="position: absolute; left: 12px; top: 16px; right: 12px; display: flex; align-items: center; gap: 10px;">
+    <div style="position: relative; height: 34px; padding: 0 14px 0 40px; display: flex; align-items: center; background: rgba(14,9,18,0.86); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%); margin-left: 10px;">
+      <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 20px; color: #ffe2a0;">{{renownText}}</span>
+    </div>
+    <img class="px" src="images/mock_assets_icon-star.png" alt="Renown" style="position: absolute; left: 0; top: -6px; width: 48px; height: 48px;">
+    <div style="position: relative; height: 34px; padding: 0 14px 0 40px; display: flex; align-items: center; background: rgba(14,9,18,0.86); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%); margin-left: 18px;">
+      <img class="px" src="images/mock_assets_icon-food.png" alt="Food" style="position: absolute; left: -2px; top: -7px; width: 48px; height: 48px;">
+      <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 20px; color: #f5ecd8;">{{foodText}}</span>
+    </div>
+    <div style="flex-grow: 1;"></div>
+    <a href="Dialogue.dc.html" aria-label="Journal" class="step" style="width: 48px; height: 48px; background: #12090f; padding: 3px; box-sizing: border-box; display: block; text-decoration: none;">
+      <span class="step" style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: #3a3044; box-shadow: inset 0 3px 0 #574a63, inset 0 -4px 0 #241c2c;">
+        <img class="px" src="images/mock_assets_icon-scroll.png" alt="" style="width: 36px; height: 36px;">
+      </span>
+    </a>
+  </div>
+
+  <!-- quest ribbon -->
+  <div style="position: absolute; left: 14px; right: 14px; top: 74px; height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 14px 0 6px; background: linear-gradient(#3b2a1a, #2a1d14); clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%, 12px 50%); box-shadow: inset 0 2px 0 #6b4a2a;">
+    <div class="scale" style="width: 34px; height: 38px; margin-left: 12px; background: #12090f; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+      <img class="px" src="images/mock_assets_icon-helm.png" alt="" style="width: 24px; height: 24px; margin-top: -4px;">
+    </div>
+    <sc-if value="{{questOpen}}" hint-placeholder-val="{{true}}">
+      <span class="ol1" style="font-weight: 900; font-size: 15px; color: #f5ecd8; flex-grow: 1;">Rally 5 fighters</span>
+      <div style="display: flex; gap: 4px; align-items: center;" aria-hidden="true">
+        <sc-for list="{{pips}}" as="p" hint-placeholder-count="5">
+          <span style="width: 10px; height: 10px; background: {{p.bg}}; box-shadow: 0 0 0 2px #12090f;"></span>
+        </sc-for>
+      </div>
+      <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 16px; color: #ffe2a0; margin-left: 4px; margin-right: 6px;">{{questText}}</span>
+    </sc-if>
+    <sc-if value="{{questReady}}" hint-placeholder-val="{{false}}">
+      <span class="ol1" style="font-weight: 900; font-size: 15px; color: #f5ecd8; flex-grow: 1;">Rally 5 fighters: done</span>
+      <button onClick="{{claim}}" class="step" style="all: unset; cursor: pointer; background: #5a2f0c; padding: 3px; margin-right: 8px;">
+        <span class="step" style="display: block; padding: 5px 14px; background: linear-gradient(#ffe08a 0 5px, #e8ac36 5px); box-shadow: inset 0 -4px 0 #b06f1c; font-weight: 900; font-size: 14px; color: #3a1d06;">Claim +5.00</span>
+      </button>
+    </sc-if>
+    <sc-if value="{{questClaimed}}" hint-placeholder-val="{{false}}">
+      <span class="ol1" style="font-weight: 900; font-size: 15px; color: #f5ecd8; flex-grow: 1;">Hold the gate against the horde</span>
+    </sc-if>
+  </div>
+
+  <!-- wave bubbles -->
+  <div style="position: absolute; left: 0; right: 0; top: 128px; display: flex; justify-content: center; align-items: center; gap: 8px;" aria-label="{{waveLabel}}">
+    <span style="width: 22px; height: 22px; border-radius: 50%; background: #3a3044; box-shadow: 0 0 0 2px #12090f; font-family: 'Pixelify Sans', monospace; font-size: 13px; color: #b8ac98; display: flex; align-items: center; justify-content: center;">2</span>
+    <span style="width: 16px; height: 2px; background: #6b5a72;"></span>
+    <span style="width: 30px; height: 30px; border-radius: 50%; background: {{waveBg}}; box-shadow: 0 0 0 2px #12090f, 0 0 0 4px #f0c060; font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 16px; color: #12090f; display: flex; align-items: center; justify-content: center;">3</span>
+    <span style="width: 16px; height: 2px; background: #6b5a72;"></span>
+    <span style="width: 22px; height: 22px; border-radius: 50%; background: #5a1c1c; box-shadow: 0 0 0 2px #12090f; font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 11px; color: #ffb4a0; display: flex; align-items: center; justify-content: center;">B</span>
+  </div>
+
+  <!-- enemy name plate and HP bar with end caps -->
+  <div style="position: absolute; left: 34px; right: 34px; top: 168px;">
+    <div style="display: flex; justify-content: center; margin-bottom: 4px;">
+      <span class="ol" style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 17px; letter-spacing: 1px; color: {{nameColor}};">{{enemyName}}</span>
+    </div>
+    <div style="position: relative; height: 30px; display: flex; align-items: center;">
+      <div class="scale" style="position: absolute; left: -6px; top: -8px; width: 38px; height: 44px; background: #12090f; z-index: 2; display: flex; align-items: center; justify-content: center;">
+        <div class="scale" style="width: 32px; height: 38px; background: linear-gradient(#6b4a72, #3e2a46); display: flex; align-items: flex-start; justify-content: center;">
+          <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 16px; color: #f5ecd8; margin-top: 6px;">{{enemyLevel}}</span>
+        </div>
+      </div>
+      <div class="step" style="position: absolute; left: 22px; right: 26px; height: 22px; background: #12090f; padding: 3px; box-sizing: border-box;">
+        <div style="position: relative; width: 100%; height: 100%; background: #2a1418; overflow: hidden;">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: {{lagPct}}; background: #f5ecd8; transition: width .35s ease-out;"></div>
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: {{hpPct}}; background: linear-gradient({{hpTop}} 0 4px, {{hpFill}} 4px); transition: width .12s;"></div>
+          <sc-if value="{{isBossBar}}" hint-placeholder-val="{{false}}">
+            <div style="position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(18,9,15,0.85) 22px 24px);"></div>
+          </sc-if>
+          <span class="ol1" style="position: absolute; right: 6px; top: -1px; font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 13px; color: #fff;">{{hpText}}</span>
+        </div>
+      </div>
+      <img class="px" src="images/mock_assets_icon-star.png" alt="Renown reward" style="position: absolute; right: -10px; top: -10px; width: 48px; height: 48px; z-index: 2;">
+      <sc-if value="{{isBossBar}}" hint-placeholder-val="{{false}}">
+        <span class="ol" style="position: absolute; right: 30px; top: -22px; font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 18px; color: #ff9a6a;">{{layerText}}</span>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- the tap target -->
+  <button onClick="{{strike}}" aria-label="{{strikeLabel}}" style="all: unset; position: absolute; left: 50px; top: 210px; width: 290px; height: 270px; cursor: pointer; display: flex; align-items: flex-end; justify-content: center;">
+    <span style="position: absolute; left: 50%; bottom: 14px; width: 200px; height: 34px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(0,0,0,0.6), transparent 70%);"></span>
+    <sc-if value="{{showKobold}}" hint-placeholder-val="{{true}}">
+      <img class="px" src="images/mock_assets_kobold.png" alt="" style="position: relative; width: 190px; height: auto; transform: {{monsterTransform}}; filter: {{monsterFilter}}; transition: transform .08s, filter .08s; animation: bob 2.2s ease-in-out infinite;">
+    </sc-if>
+    <sc-if value="{{showBoss}}" hint-placeholder-val="{{false}}">
+      <img class="px" src="images/mock_assets_minotaur.png" alt="" style="position: relative; width: 280px; height: auto; transform: {{monsterTransform}}; filter: {{monsterFilter}}; transition: transform .08s, filter .08s; animation: rise .5s ease-out;">
+    </sc-if>
+  </button>
+
+  <!-- the dragon: you, on the gate -->
+  <span aria-hidden="true" style="position: absolute; left: 40px; top: 470px; width: 150px; height: 110px; background: radial-gradient(ellipse, rgba(255,140,50,0.35), transparent 65%);"></span>
+  <img class="px" src="images/mock_heroes_hero-dragon.png" alt="You, the dragon, rearing on the gate of Draconia" style="position: absolute; left: 62px; top: 436px; width: 320px; height: 288px; animation: breathe 3.2s ease-in-out infinite;">
+
+  <!-- army chips, left -->
+  <div style="position: absolute; left: 12px; top: 690px; display: flex; flex-direction: column; gap: 8px;">
+    <div style="position: relative; height: 30px; padding: 0 12px 0 34px; display: flex; align-items: center; gap: 6px; background: rgba(14,9,18,0.9); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);">
+      <img class="px" src="images/mock_assets_icon-helm.png" alt="" style="position: absolute; left: 2px; top: 3px; width: 24px; height: 24px;">
+      <span style="font-weight: 800; font-size: 13px; color: #b8ac98;">Fighters</span>
+      <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 17px; color: #9cc4ff;">{{fighters}}</span>
+    </div>
+    <div style="position: relative; height: 30px; padding: 0 12px 0 34px; display: flex; align-items: center; gap: 6px; background: rgba(14,9,18,0.9); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);">
+      <img class="px" src="images/mock_assets_icon-villager.png" alt="" style="position: absolute; left: 2px; top: 3px; width: 24px; height: 24px;">
+      <span style="font-weight: 800; font-size: 13px; color: #b8ac98;">Villagers</span>
+      <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 17px; color: #f5ecd8;">{{villagers}}</span>
+    </div>
+  </div>
+
+  <!-- RALLY: steel blue everyday action, grey when it cannot be afforded -->
+  <div style="position: absolute; right: 12px; top: 676px; width: 150px; height: 82px;">
+    <sc-if value="{{rallyReady}}" hint-placeholder-val="{{true}}">
+      <span style="position: absolute; inset: -10px; border-radius: 50%; background: radial-gradient(ellipse, rgba(120,170,255,0.55), transparent 65%); animation: halo 2s ease-in-out infinite;"></span>
+    </sc-if>
+    <button onClick="{{rally}}" disabled="{{rallyDisabled}}" aria-label="{{rallyLabel}}" class="step" style="all: unset; position: relative; display: block; width: 150px; height: 82px; box-sizing: border-box; padding: 3px; background: {{rallyRim}}; cursor: pointer;">
+      <span class="step" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; background: {{rallyFace}}; box-shadow: {{rallyShadow}};">
+        <span class="ol" style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 26px; letter-spacing: 2px; color: {{rallyText}};">RALLY</span>
+        <span style="display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+          <img class="px" src="images/mock_assets_icon-star.png" alt="" style="width: 16px; height: 16px; opacity: {{rallyIconOpacity}};">
+          <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 14px; color: {{rallyCostColor}};">{{rallyCost}}</span>
+        </span>
+      </span>
+    </button>
+  </div>
+
+  <!-- floating numbers -->
+  <sc-for list="{{hits}}" as="h" hint-placeholder-count="0">
+    <span class="hit ol" style="left: {{h.left}}; top: {{h.top}}; font-family: {{h.font}}; font-weight: 900; font-size: {{h.size}}; color: {{h.color}}; font-style: {{h.style}};">{{h.text}}</span>
+  </sc-for>
+
+  <!-- event banners -->
+  <sc-if value="{{showVictory}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 0; right: 0; top: 300px; display: flex; flex-direction: column; align-items: center; animation: rise .45s ease-out; pointer-events: none;">
+      <span class="ol" style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 44px; letter-spacing: 4px; color: #ffd97a;">VICTORY</span>
+      <span class="ol" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 20px; color: #ffe2a0;">+2.50 renown</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{showIntro}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; background: rgba(30,0,6,0.45); pointer-events: none;"></div>
+    <div style="position: absolute; left: 40px; right: 40px; top: 0; animation: drop .7s ease-out; pointer-events: none;">
+      <div style="background: linear-gradient(#7a1c18, #4a0e10); padding: 130px 20px 34px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 26px), 0 100%); box-shadow: inset 6px 0 0 #a8862a, inset -6px 0 0 #a8862a; text-align: center;">
+        <div style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 13px; letter-spacing: 3px; color: #f0c060;">BOSS WAVE</div>
+        <div class="ol" style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 30px; line-height: 1.1; color: #fff0d0; margin-top: 8px;">A minotaur</div>
+        <div style="font-family: 'Cinzel', serif; font-weight: 700; font-size: 17px; line-height: 1.3; color: #f5d8b0; margin-top: 6px;">crashed through shattered ranks.</div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{showWon}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 42%, rgba(255,200,100,0.28), rgba(7,5,12,0.75) 60%);"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 250px; display: flex; flex-direction: column; align-items: center; gap: 10px; animation: rise .5s ease-out;">
+      <span aria-hidden="true" style="width: 14px; height: 14px; background: #fff6d0; transform: rotate(45deg); animation: glint 1.4s infinite;"></span>
+      <span class="ol" style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 38px; letter-spacing: 3px; color: #ffd97a; text-align: center; line-height: 1.05;">THE GATE<br>HOLDS</span>
+      <span class="ol1" style="font-weight: 800; font-size: 15px; color: #f5ecd8;">Gorrath falls. Draconia cheers its dragon.</span>
+      <a href="Spoils.dc.html" class="step" style="display: block; margin-top: 10px; background: #5a2f0c; padding: 3px; text-decoration: none;">
+        <span class="step" style="display: block; padding: 12px 30px; background: linear-gradient(#ffe08a 0 6px, #e8ac36 6px); box-shadow: inset 0 -5px 0 #b06f1c; font-weight: 900; font-size: 18px; color: #3a1d06;">Collect spoils</span>
+      </a>
+    </div>
+  </sc-if>
+
+  <!-- tab bar: labels always visible, selected tab rises -->
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 78px; background: linear-gradient(#2a2330, #17121c); box-shadow: inset 0 4px 0 #463b50, inset 0 6px 0 #12090f; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; padding-bottom: 8px; box-sizing: border-box;">
+    <a href="Draconia.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; height: 64px; justify-content: flex-end;">
+      <span class="scale" style="width: 44px; height: 42px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 38px; height: 36px; background: #3a3044; display: flex; align-items: center; justify-content: center;"><img class="px" src="images/mock_assets_icon-castle.png" alt="" style="width: 24px; height: 24px; margin-top: -4px;"></span></span>
+      <span style="font-weight: 800; font-size: 12px; color: #c8bca8;">Draconia</span>
+    </a>
+    <a href="Main.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; height: 92px; justify-content: flex-end; transform: translateY(-4px);">
+      <span class="scale" style="width: 64px; height: 66px; background: #f0c060; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 56px; height: 58px; background: linear-gradient(#6b3a1a, #3a1d10); display: flex; align-items: center; justify-content: center;"><img class="px" src="images/mock_assets_icon-swords.png" alt="" style="width: 36px; height: 36px; margin-top: -6px;"></span></span>
+      <span class="ol1" style="font-weight: 900; font-size: 13px; color: #ffd97a;">Warfront</span>
+    </a>
+    <a href="Forage.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; height: 64px; justify-content: flex-end;">
+      <span class="scale" style="width: 44px; height: 42px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 38px; height: 36px; background: #3a3044; display: flex; align-items: center; justify-content: center;"><img class="px" src="images/mock_assets_icon-food.png" alt="" style="width: 24px; height: 24px; margin-top: -4px;"></span></span>
+      <span style="font-weight: 800; font-size: 12px; color: #c8bca8;">Forage</span>
+    </a>
+    <a href="Dialogue.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; height: 64px; justify-content: flex-end;">
+      <span class="scale" style="width: 44px; height: 42px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 38px; height: 36px; background: #3a3044; display: flex; align-items: center; justify-content: center;"><img class="px" src="images/mock_assets_icon-cog.png" alt="" style="width: 24px; height: 24px; margin-top: -4px;"></span></span>
+      <span style="font-weight: 800; font-size: 12px; color: #c8bca8;">Settings</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startWith":{"editor":"enum","options":["kobold","boss"],"default":"kobold"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const boss = props.startWith === 'boss';
+    this.state = {
+      phase: boss ? 'boss' : 'kobold',
+      hp: boss ? 270 : 60, lagHp: boss ? 270 : 60,
+      renown: 3.25, food: 186, fighters: 2, villagers: 23,
+      hits: [], nid: 1, struck: false, claimed: false
+    };
+    this.timers = [];
+  }
+  componentDidMount() {
+    this.volley = setInterval(() => this.fighterVolley(), 1600);
+  }
+  componentWillUnmount() {
+    clearInterval(this.volley);
+    this.timers.forEach((t) => clearTimeout(t));
+  }
+  later(ms, fn) { this.timers.push(setTimeout(fn, ms)); }
+  fighting() { return this.state.phase === 'kobold' || this.state.phase === 'boss'; }
+  addHit(hit) {
+    const id = this.state.nid;
+    this.setState((s) => ({ hits: s.hits.concat([Object.assign({ id: id }, hit)]), nid: s.nid + 1 }));
+    this.later(950, () => this.setState((s) => ({ hits: s.hits.filter((h) => h.id !== id) })));
+  }
+  damage(d) {
+    const hp = Math.max(0, this.state.hp - d);
+    this.setState({ hp: hp });
+    this.later(380, () => this.setState({ lagHp: this.state.hp }));
+    if (hp === 0) this.defeat();
+  }
+  defeat() {
+    if (this.state.phase === 'kobold') {
+      this.setState((s) => ({ phase: 'victory', renown: s.renown + 2.5 }));
+      this.later(1200, () => this.setState({ phase: 'intro' }));
+      this.later(3100, () => this.setState({ phase: 'boss', hp: 270, lagHp: 270 }));
+    } else if (this.state.phase === 'boss') {
+      this.setState((s) => ({ phase: 'won', renown: s.renown + 12.5 }));
+    }
+  }
+  strike() {
+    if (!this.fighting()) return;
+    const boss = this.state.phase === 'boss';
+    const crit = Math.random() < 0.22;
+    const base = boss ? 18 : 12;
+    const dmg = crit ? base * 3 : base;
+    const left = (130 + Math.random() * 130) + 'px';
+    const top = (240 + Math.random() * 70) + 'px';
+    this.addHit(crit
+      ? { text: 'DRAGONFIRE! ' + dmg, left: left, top: top, size: '30px', color: '#ff9a3c', font: "'Cinzel', serif", style: 'normal' }
+      : { text: String(dmg), left: left, top: top, size: '30px', color: '#fff3d6', font: "'Pixelify Sans', monospace", style: 'italic' });
+    this.setState({ struck: true });
+    this.later(110, () => this.setState({ struck: false }));
+    this.damage(dmg);
+  }
+  fighterVolley() {
+    if (!this.fighting() || this.state.fighters < 1) return;
+    const dmg = this.state.fighters * 2;
+    this.addHit({ text: String(dmg), left: (120 + Math.random() * 150) + 'px', top: (300 + Math.random() * 60) + 'px', size: '20px', color: '#9cc4ff', font: "'Pixelify Sans', monospace", style: 'italic' });
+    this.damage(dmg);
+  }
+  rally() {
+    if (this.state.renown < 1) return;
+    this.setState((s) => ({ renown: s.renown - 1, fighters: s.fighters + 1, villagers: s.villagers - 1 }));
+    this.addHit({ text: '+1 fighter', left: '300px', top: '640px', size: '18px', color: '#9cc4ff', font: "'Nunito', sans-serif", style: 'normal' });
+  }
+  claim() {
+    this.setState((s) => ({ claimed: true, renown: s.renown + 5 }));
+    this.addHit({ text: '+5.00', left: '300px', top: '120px', size: '22px', color: '#ffd97a', font: "'Pixelify Sans', monospace", style: 'normal' });
+  }
+  renderVals() {
+    const s = this.state;
+    const boss = s.phase === 'boss' || s.phase === 'won' || s.phase === 'intro';
+    const max = boss ? 270 : 60;
+    const hp = s.phase === 'intro' ? 270 : s.hp;
+    const lag = s.phase === 'intro' ? 270 : s.lagHp;
+    let pct, lagPct, layerText = '', hpTop = '#ff8a6a', hpFill = '#c8382c';
+    if (boss) {
+      const layer = Math.max(1, Math.ceil(hp / 90));
+      const within = hp === 0 ? 0 : (hp - (layer - 1) * 90) / 90;
+      const lagWithin = Math.min(1, Math.max(within, (lag - (layer - 1) * 90) / 90));
+      pct = within * 100; lagPct = lagWithin * 100;
+      layerText = 'x' + layer;
+      const tones = { 3: ['#ff8a6a', '#c8382c'], 2: ['#ffb070', '#d8641e'], 1: ['#ffd27a', '#c89020'] };
+      hpTop = tones[layer][0]; hpFill = tones[layer][1];
+    } else {
+      pct = hp / max * 100; lagPct = lag / max * 100;
+    }
+    const ready = s.fighters >= 5;
+    const rallyOk = s.renown >= 1 && this.fighting();
+    const canAfford = s.renown >= 1;
+    return {
+      renownText: s.renown.toFixed(2),
+      foodText: String(s.food),
+      fighters: s.fighters,
+      villagers: s.villagers,
+      pips: [0, 1, 2, 3, 4].map((i) => ({ bg: i < s.fighters ? '#f0c060' : '#3a3044' })),
+      questText: Math.min(s.fighters, 5) + '/5',
+      questOpen: !ready && !s.claimed,
+      questReady: ready && !s.claimed,
+      questClaimed: s.claimed,
+      claim: () => this.claim(),
+      waveBg: boss ? '#ff8a6a' : '#f0c060',
+      waveLabel: boss ? 'Boss wave' : 'Wave 3 of 3, boss next',
+      bossSky: boss,
+      enemyName: boss ? 'Gorrath the Minotaur' : 'Kobold Raider',
+      nameColor: boss ? '#ffb4a0' : '#f5ecd8',
+      enemyLevel: boss ? '12' : '3',
+      hpPct: pct.toFixed(1) + '%',
+      lagPct: lagPct.toFixed(1) + '%',
+      hpTop: hpTop, hpFill: hpFill,
+      hpText: hp + ' / ' + max,
+      isBossBar: boss,
+      layerText: layerText,
+      showKobold: s.phase === 'kobold' || s.phase === 'victory',
+      showBoss: s.phase === 'boss',
+      monsterTransform: s.struck ? 'scale(0.92, 1.06) translateY(4px)' : (s.phase === 'victory' ? 'translateY(30px) rotate(-80deg)' : 'none'),
+      monsterFilter: s.struck ? 'brightness(2.2)' : (s.phase === 'victory' ? 'grayscale(1) brightness(0.5)' : 'none'),
+      strike: () => this.strike(),
+      strikeLabel: boss ? 'Strike the minotaur' : 'Strike the kobold',
+      rally: () => this.rally(),
+      rallyReady: rallyOk,
+      rallyDisabled: !canAfford,
+      rallyLabel: canAfford ? 'Rally a fighter for 1.00 renown' : 'Rally unavailable: need 1.00 renown',
+      rallyRim: canAfford ? '#102544' : '#2a2830',
+      rallyFace: canAfford ? 'linear-gradient(#9cc4ff 0 6px, #4f86d0 6px)' : 'linear-gradient(#85828c 0 6px, #66636e 6px)',
+      rallyShadow: canAfford ? 'inset 0 -6px 0 #2c5a9c' : 'inset 0 -6px 0 #4a4852',
+      rallyText: canAfford ? '#ffffff' : '#d6d3dc',
+      rallyCost: canAfford ? '1.00' : 'Need 1.00',
+      rallyCostColor: canAfford ? '#ffe2a0' : '#ff9a8a',
+      rallyIconOpacity: canAfford ? '1' : '0.5',
+      hits: s.hits,
+      showVictory: s.phase === 'victory',
+      showIntro: s.phase === 'intro',
+      showWon: s.phase === 'won'
+    };
+  }
+}
+</script>
+</body>
+</html>

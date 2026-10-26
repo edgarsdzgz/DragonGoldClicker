@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Keep upgrade</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+a{color:#f0c060}a:hover{color:#ffd97a}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.ol{text-shadow:2px 0 #12090f,-2px 0 #12090f,0 2px #12090f,0 -2px #12090f,2px 2px #12090f,-2px 2px #12090f,2px -2px #12090f,-2px -2px #12090f}
+.ol1{text-shadow:1px 0 #12090f,-1px 0 #12090f,0 1px #12090f,0 -1px #12090f,1px 1px #12090f}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #07050c; font-family: 'Nunito', system-ui, sans-serif; color: #f5ecd8;">
+  <img class="px" src="images/mock_assets_city-bg.png" alt="" style="position: absolute; left: 0; top: 0; width: 390px; height: 846px;">
+  <div style="position: absolute; inset: 0; background: rgba(7,5,12,0.78);"></div>
+
+  <!-- modal -->
+  <section aria-labelledby="keep-title" style="position: absolute; left: 18px; right: 18px; top: 178px;">
+    <!-- the building breaks out of the header -->
+    <div aria-hidden="true" style="position: absolute; left: 50%; top: -128px; width: 150px; height: 214px; transform: translateX(-50%); overflow: hidden; z-index: 2;">
+      <img class="px" src="images/mock_assets_city-bg.png" alt="" style="position: absolute; left: -120px; top: -52px; width: 390px; height: 846px;">
+    </div>
+    <div class="step" style="background: #12090f; padding: 3px;">
+      <div class="step" style="background: linear-gradient(#2e2634, #1e1824); padding-bottom: 16px;">
+        <div style="height: 96px; background: linear-gradient(#4a3a2a, #2e2218); box-shadow: inset 0 3px 0 #f0c060, inset 0 -3px 0 #12090f; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 16px 10px;">
+          <h1 id="keep-title" class="ol" style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 24px; color: #ffd97a;">The Keep</h1>
+          <span style="display: flex; align-items: center; gap: 6px; font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 20px;">
+            <span style="color: #c8bca8;">Lv 2</span>
+            <svg aria-hidden="true" width="20" height="14" viewBox="0 0 10 7" style="shape-rendering: crispEdges;"><path fill="#7ad86a" d="M0 2h5V0h1v1h1v1h1v1h1v1H8v1H7v1H6v1H5V5H0z"/></svg>
+            <span class="ol1" style="color: #9ee08a;">Lv 3</span>
+          </span>
+        </div>
+
+        <div style="padding: 14px 14px 0; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: center; padding: 9px 12px; background: rgba(255,255,255,0.05); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);">
+            <span style="flex-grow: 1; font-weight: 800; font-size: 14px; color: #e8dcc6;">Fighters housed</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-size: 17px; color: #c8bca8;">10</span>
+            <span style="margin: 0 8px; color: #7ad86a; font-weight: 900;">&#8594;</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 17px; color: #9ee08a;">15</span>
+          </div>
+          <div style="display: flex; align-items: center; padding: 9px 12px; background: rgba(255,255,255,0.05); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);">
+            <span style="flex-grow: 1; font-weight: 800; font-size: 14px; color: #e8dcc6;">Watch while you sleep</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-size: 17px; color: #c8bca8;">4h</span>
+            <span style="margin: 0 8px; color: #7ad86a; font-weight: 900;">&#8594;</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 17px; color: #9ee08a;">6h</span>
+          </div>
+          <div style="display: flex; align-items: center; padding: 9px 12px; background: rgba(255,255,255,0.05); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);">
+            <span style="flex-grow: 1; font-weight: 800; font-size: 14px; color: #e8dcc6;">City light</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-size: 17px; color: #c8bca8;">34%</span>
+            <span style="margin: 0 8px; color: #7ad86a; font-weight: 900;">&#8594;</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 17px; color: #9ee08a;">41%</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: rgba(240,192,96,0.08); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);">
+            <span style="flex-grow: 1; font-weight: 800; font-size: 14px; color: #e8dcc6;">Unlocks the Librarium</span>
+            <span class="step" style="background: #f0c060; padding: 3px 8px; font-weight: 900; font-size: 11px; color: #3a1d06;">NEW</span>
+          </div>
+        </div>
+
+        <!-- divider with a flame diamond -->
+        <div aria-hidden="true" style="display: flex; align-items: center; gap: 8px; margin: 16px 18px 10px;">
+          <span style="flex-grow: 1; height: 2px; background: #4a3e56;"></span>
+          <span style="width: 8px; height: 8px; background: #ff9a3c; transform: rotate(45deg);"></span>
+          <span style="font-weight: 800; font-size: 12px; letter-spacing: 2px; color: #b8ac98;">COST</span>
+          <span style="width: 8px; height: 8px; background: #ff9a3c; transform: rotate(45deg);"></span>
+          <span style="flex-grow: 1; height: 2px; background: #4a3e56;"></span>
+        </div>
+
+        <!-- have / need -->
+        <div style="display: flex; justify-content: center; gap: 22px;">
+          <span style="display: flex; align-items: center; gap: 4px;">
+            <img class="px" src="images/mock_assets_icon-star.png" alt="Renown" style="width: 28px; height: 28px;">
+            <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 18px; color: #9ee08a;">312.50</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-size: 18px; color: #e8dcc6;">/ 250</span>
+          </span>
+          <span style="display: flex; align-items: center; gap: 4px;">
+            <img class="px" src="images/mock_assets_icon-food.png" alt="Food" style="width: 28px; height: 28px;">
+            <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 18px; color: {{foodColor}};">{{foodHave}}</span>
+            <span style="font-family: 'Pixelify Sans', monospace; font-size: 18px; color: #e8dcc6;">/ 200</span>
+          </span>
+        </div>
+        <sc-if value="{{short}}" hint-placeholder-val="{{true}}">
+          <p style="margin: 8px 0 0; text-align: center; font-weight: 800; font-size: 13px; color: #ff9a8a;">Need 60 more food to begin.</p>
+        </sc-if>
+
+        <!-- actions: blue everyday, gold commitment, grey when unavailable -->
+        <div style="display: flex; gap: 12px; padding: 14px 16px 0;">
+          <a href="Forage.dc.html" class="step" style="flex: 1; display: block; background: #102544; padding: 3px; text-decoration: none;">
+            <span class="step" style="display: flex; align-items: center; justify-content: center; height: 52px; background: linear-gradient(#9cc4ff 0 5px, #4f86d0 5px); box-shadow: inset 0 -5px 0 #2c5a9c;">
+              <span class="ol" style="font-weight: 900; font-size: 16px; color: #ffffff;">Gather food</span>
+            </span>
+          </a>
+          <sc-if value="{{short}}" hint-placeholder-val="{{true}}">
+            <button disabled aria-label="Upgrade unavailable: need 60 more food" class="step" style="all: unset; flex: 1; display: block; background: #2a2830; padding: 3px;">
+              <span class="step" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 52px; background: linear-gradient(#85828c 0 5px, #66636e 5px); box-shadow: inset 0 -5px 0 #4a4852;">
+                <span style="font-weight: 900; font-size: 16px; color: #e2dfe8;">Upgrade</span>
+                <span style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #e2dfe8;">3h build</span>
+              </span>
+            </button>
+          </sc-if>
+          <sc-if value="{{ready}}" hint-placeholder-val="{{false}}">
+            <a href="Spoils.dc.html" class="step" style="flex: 1; display: block; background: #5a2f0c; padding: 3px; text-decoration: none;">
+              <span class="step" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 52px; background: linear-gradient(#ffe08a 0 5px, #e8ac36 5px); box-shadow: inset 0 -5px 0 #b06f1c;">
+                <span style="font-weight: 900; font-size: 16px; color: #3a1d06;">Upgrade</span>
+                <span style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #5a2f0c;">3h build</span>
+              </span>
+            </a>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+    <!-- close, centred under the modal -->
+    <div style="display: flex; justify-content: center; margin-top: 14px;">
+      <a href="Draconia.dc.html" aria-label="Close" class="step" style="display: block; width: 52px; height: 52px; background: #12090f; padding: 3px; box-sizing: border-box;">
+        <span class="step" style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(#4a3e56 0 4px, #2e2634 4px); box-shadow: inset 0 -4px 0 #1a1420;">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 10 10" style="shape-rendering: crispEdges;"><path fill="#f5ecd8" d="M0 0h2v1h1v1h1v1h2V2h1V1h1V0h2v2H9v1H8v1H7v2h1v1h1v1h1v2H8V9H7V8H6V7H4v1H3v1H2v1H0V8h1V7h1V6h1V4H2V3H1V2H0z"/></svg>
+        </span>
+      </a>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"affordable":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ok = this.props.affordable ?? false;
+    return {
+      ready: ok,
+      short: !ok,
+      foodHave: ok ? '220' : '140',
+      foodColor: ok ? '#9ee08a' : '#ff8a7a'
+    };
+  }
+}
+</script>
+</body>
+</html>

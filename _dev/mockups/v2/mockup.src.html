@@ -1,0 +1,632 @@
+<title>Draconia Mockup V2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@600;700;800;900&family=Pixelify+Sans:wght@500;700&display=swap">
+<style>
+/* Layout: a screen list on the left, the phone in the middle, notes on what the code has on the right.
+   One dark, fireside look on purpose: it is a mockup of a night-time game, so it stays dark in both themes. */
+:root {
+  color-scheme: dark;
+  --night: #07050c;      /* page and screen ground */
+  --ink: #12090f;        /* pixel outlines and frames */
+  --panel: #1e1824;      /* raised panels */
+  --stone: #3a3044;      /* buttons at rest, bars */
+  --gold: #f0c060;       /* renown, rewards, key actions */
+  --gold-hi: #ffd97a;
+  --ember: #ff9a3c;      /* fire and light */
+  --cream: #f5ecd8;      /* body text on dark */
+  --muted: #b8ac98;
+  --steel: #9cc4ff;      /* everyday actions (rally, train) */
+  --danger: #ff6b6b;     /* health and danger only */
+  --ok: #8ee07a;
+  --warn: #fbbf24;
+  --f-display: 'Cinzel', Georgia, serif;
+  --f-body: 'Nunito', system-ui, sans-serif;
+  --f-num: 'Pixelify Sans', ui-monospace, monospace;
+}
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--night); color: var(--cream); font-family: var(--f-body);
+  background-image: radial-gradient(ellipse 60% 40% at 50% 100%, rgba(255,140,50,0.10), transparent 70%);
+  background-attachment: fixed;
+}
+.page {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 32px;
+  display: grid; grid-template-columns: 230px minmax(0, 420px) minmax(0, 320px); gap: 28px;
+  justify-content: center; align-items: start;
+}
+header.top { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+header.top h1 { margin: 0; font-family: var(--f-display); font-weight: 900; font-size: 26px; letter-spacing: 3px; color: var(--gold-hi); text-wrap: balance; }
+header.top p { margin: 0; color: var(--muted); font-weight: 700; font-size: 14px; }
+nav.screens { position: sticky; top: calc(16px + env(safe-area-inset-top, 0px)); display: flex; flex-direction: column; gap: 14px; }
+nav.screens h2 { margin: 0 0 6px; font-family: var(--f-num); font-weight: 500; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+nav.screens ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+nav.screens button { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; padding: 6px 10px; font-weight: 800; font-size: 14px; color: var(--cream); border-left: 3px solid transparent; }
+nav.screens button:hover { background: var(--panel); }
+nav.screens button[aria-current="true"] { background: var(--panel); border-left-color: var(--gold); color: var(--gold-hi); }
+nav.screens button:focus-visible, .phone button:focus-visible, select:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
+.picker { display: none; }
+.picker label { display: block; font-family: var(--f-num); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.picker select { width: 100%; font: 800 16px var(--f-body); color: var(--cream); background: var(--panel); border: 2px solid var(--stone); padding: 8px; }
+.stage { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.phone-wrap { width: 100%; max-width: 390px; position: relative; }
+.phone {
+  position: absolute; left: 0; top: 0; width: 390px; height: 844px; transform-origin: top left;
+  overflow: hidden; border-radius: 28px; box-shadow: 0 0 0 3px var(--ink), 0 0 0 6px #2a2232, 0 20px 50px rgba(0,0,0,0.6);
+  background: var(--night);
+}
+.caption { font-family: var(--f-num); font-size: 13px; color: var(--muted); }
+aside.notes { min-width: 0; display: flex; flex-direction: column; gap: 12px; position: sticky; top: calc(16px + env(safe-area-inset-top, 0px)); }
+aside.notes h2 { margin: 0; font-family: var(--f-display); font-weight: 900; font-size: 20px; color: var(--gold-hi); text-wrap: balance; }
+aside.notes .src { font-family: var(--f-num); font-size: 13px; color: var(--steel); word-break: break-word; }
+aside.notes ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px; line-height: 1.45; color: var(--cream); }
+aside.notes .tag { display: inline-block; font-family: var(--f-num); font-size: 12px; padding: 1px 6px; background: var(--panel); color: var(--gold); margin-right: 4px; }
+@media (max-width: 1100px) {
+  .page { grid-template-columns: 200px minmax(0, 420px); }
+  aside.notes { grid-column: 2; position: static; }
+}
+@media (max-width: 720px) {
+  .page { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  nav.screens { display: none; }
+  .picker { display: block; }
+  aside.notes { grid-column: 1; }
+}
+
+/* ---- in-game pixel kit (from mockup v1) ---- */
+.phone * { box-sizing: border-box; }
+.px { image-rendering: pixelated; image-rendering: crisp-edges; }
+.ol { text-shadow: 2px 0 var(--ink), -2px 0 var(--ink), 0 2px var(--ink), 0 -2px var(--ink), 2px 2px var(--ink), -2px 2px var(--ink), 2px -2px var(--ink), -2px -2px var(--ink); }
+.ol1 { text-shadow: 1px 0 var(--ink), -1px 0 var(--ink), 0 1px var(--ink), 0 -1px var(--ink), 1px 1px var(--ink); }
+.step { clip-path: polygon(4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px), 0 4px, 4px 4px); }
+.scale { clip-path: polygon(8% 0, 92% 0, 100% 8%, 100% 58%, 50% 100%, 0 58%, 0 8%); }
+.abs { position: absolute; }
+.num { font-family: var(--f-num); font-weight: 700; }
+.bg { position: absolute; left: 0; top: 0; width: 390px; height: 846px; }
+
+.res { position: relative; height: 34px; padding: 0 14px 0 40px; display: flex; align-items: center; background: rgba(14,9,18,0.86); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%); }
+.res img { position: absolute; left: -4px; top: -7px; width: 48px; height: 48px; }
+.res span { font-family: var(--f-num); font-weight: 700; font-size: 20px; }
+.topbar { position: absolute; left: 14px; right: 12px; top: 16px; display: flex; align-items: center; gap: 14px; }
+.iconbtn { all: unset; cursor: pointer; width: 48px; height: 48px; background: var(--ink); padding: 3px; }
+.iconbtn > span { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--stone); box-shadow: inset 0 3px 0 #574a63, inset 0 -4px 0 #241c2c; }
+.ribbon { position: absolute; left: 14px; right: 14px; height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 22px 0 18px; background: linear-gradient(#3b2a1a, #2a1d14); clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%, 12px 50%); box-shadow: inset 0 2px 0 #6b4a2a; }
+.ribbon b { flex: 1; font-weight: 900; font-size: 15px; }
+.ribbon .num { color: #ffe2a0; font-size: 16px; }
+
+.chip { position: relative; height: 28px; padding: 0 12px 0 32px; display: inline-flex; align-items: center; gap: 6px; background: rgba(14,9,18,0.9); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%); }
+.chip img { position: absolute; left: 3px; top: 2px; width: 24px; height: 24px; }
+.chip span { font-weight: 800; font-size: 13px; color: var(--muted); }
+.chip .num { font-size: 16px; color: var(--cream); }
+
+.bar { background: var(--ink); padding: 3px; }
+.bar > div { height: 100%; background: #2a1418; position: relative; overflow: hidden; }
+.bar > div > i { position: absolute; left: 0; top: 0; bottom: 0; }
+
+.orb { all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.orb .disc { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3px var(--ink), inset 0 4px 0 rgba(255,255,255,0.25), inset 0 -6px 0 rgba(0,0,0,0.3); }
+.orb .disc img { width: 40px; height: 40px; }
+.orb .lbl { font-family: var(--f-display); font-weight: 900; font-size: 15px; letter-spacing: 1px; }
+.orb .cost { font-family: var(--f-num); font-size: 13px; color: var(--gold); }
+.orb[disabled] .disc { filter: grayscale(1) brightness(0.6); }
+
+.gbtn { all: unset; cursor: pointer; display: inline-block; background: #5a2f0c; padding: 3px; }
+.gbtn > span { display: block; padding: 7px 14px; background: linear-gradient(#ffe08a 0 5px, #e8ac36 5px); box-shadow: inset 0 -4px 0 #b06f1c; font-weight: 900; font-size: 14px; color: #3a1d06; text-align: center; }
+.sbtn { all: unset; cursor: pointer; display: inline-block; background: #1c2a40; padding: 3px; }
+.sbtn > span { display: block; padding: 7px 14px; background: linear-gradient(#cfe2ff 0 5px, #7aa6e0 5px); box-shadow: inset 0 -4px 0 #4a74ac; font-weight: 900; font-size: 14px; color: #0d1a2c; text-align: center; }
+.qbtn { all: unset; cursor: pointer; display: inline-block; background: var(--ink); padding: 3px; }
+.qbtn > span { display: block; padding: 7px 14px; background: var(--stone); box-shadow: inset 0 3px 0 #574a63, inset 0 -4px 0 #241c2c; font-weight: 900; font-size: 14px; color: var(--cream); text-align: center; }
+.full { display: block; width: 100%; }
+.lockbtn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; background: #26222c; font-family: var(--f-num); font-size: 12px; color: var(--muted); }
+
+/* tab bar */
+.tabs { position: absolute; left: 0; right: 0; bottom: 0; height: 78px; background: linear-gradient(#2a2330, #17121c); box-shadow: inset 0 4px 0 #463b50, inset 0 6px 0 var(--ink); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; padding-bottom: 8px; z-index: 5; }
+.tab { all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
+.tab .gem { width: 44px; height: 42px; background: var(--ink); display: flex; align-items: center; justify-content: center; }
+.tab .gem > span { width: 38px; height: 36px; background: var(--stone); display: flex; align-items: center; justify-content: center; }
+.tab .gem img { width: 24px; height: 24px; margin-top: -4px; }
+.tab b { font-weight: 800; font-size: 12px; color: #c8bca8; }
+.tab.on .gem { width: 60px; height: 62px; background: var(--gold); transform: translateY(-6px); }
+.tab.on .gem > span { width: 52px; height: 54px; background: linear-gradient(#6b3a1a, #3a1d10); }
+.tab.on .gem img { width: 34px; height: 34px; }
+.tab.on b { color: var(--gold-hi); font-weight: 900; font-size: 13px; }
+.tab .dot { position: absolute; top: 2px; right: calc(50% - 26px); width: 12px; height: 12px; background: var(--gold); box-shadow: 0 0 0 2px var(--ink); transform: rotate(45deg); }
+.tab .bang { position: absolute; top: 0; right: calc(50% - 28px); min-width: 18px; height: 18px; background: var(--danger); box-shadow: 0 0 0 2px var(--ink); font: 900 12px var(--f-body); color: #fff; display: flex; align-items: center; justify-content: center; }
+
+/* sheets and modals */
+.dim { position: absolute; inset: 0; background: rgba(5,3,8,0.72); z-index: 10; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 86%; z-index: 11; background: var(--ink); padding: 3px 3px 0; }
+.sheet > .in { height: 100%; max-height: calc(844px * 0.86 - 3px); overflow-y: auto; background: linear-gradient(#2a2230, #1a141f); box-shadow: inset 0 3px 0 #574a63; padding: 14px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+.sheet h3, .modal h3 { margin: 0; font-family: var(--f-display); font-weight: 900; font-size: 22px; color: var(--gold-hi); }
+.sub { font-weight: 800; font-size: 13px; color: var(--muted); }
+.shead { display: flex; align-items: center; gap: 12px; }
+.shead .x { margin-left: auto; }
+.modal { position: absolute; left: 22px; right: 22px; z-index: 11; background: var(--ink); padding: 3px; }
+.modal > .in { background: linear-gradient(#2e2534, #1c1622); box-shadow: inset 0 3px 0 var(--gold); padding: 18px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.modal p, .sheet p { margin: 0; font-weight: 700; font-size: 15px; line-height: 1.45; color: var(--cream); }
+.row2 { display: flex; gap: 10px; }
+.row2 > * { flex: 1; }
+.stats { display: flex; background: rgba(0,0,0,0.25); padding: 8px 4px; }
+.stats > div { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.stats > div + div { border-left: 2px solid var(--stone); }
+.stats .num { font-size: 20px; color: var(--cream); }
+.stats small { font-weight: 800; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.slabel { font-family: var(--f-num); font-size: 12px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+.card { background: rgba(0,0,0,0.28); box-shadow: inset 0 2px 0 rgba(255,255,255,0.05); padding: 10px 12px; display: flex; align-items: center; gap: 12px; }
+.card .t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.card .t b { font-weight: 900; font-size: 15px; }
+.card .t span { font-weight: 700; font-size: 12px; color: var(--muted); line-height: 1.35; }
+.card img { width: 32px; height: 32px; flex-shrink: 0; }
+.banner { background: linear-gradient(90deg, rgba(240,192,96,0.18), rgba(240,192,96,0.02)); box-shadow: inset 3px 0 0 var(--gold); padding: 8px 12px; font-weight: 700; font-size: 13px; line-height: 1.4; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { padding: 5px 10px; background: var(--stone); font-weight: 800; font-size: 12px; color: var(--cream); }
+.pill.on { background: var(--gold); color: #3a1d06; }
+.readout { font-weight: 700; font-size: 13px; color: var(--steel); line-height: 1.4; }
+
+.coach { position: absolute; z-index: 9; box-shadow: 0 0 0 2000px rgba(5,3,8,0.66); border: 3px solid var(--gold-hi); animation: pulse 1.4s ease-in-out infinite; }
+.hint { position: absolute; z-index: 9; left: 30px; right: 30px; text-align: center; font-weight: 900; font-size: 17px; }
+.float { position: absolute; z-index: 6; font-family: var(--f-num); font-weight: 700; font-size: 24px; color: #fff; pointer-events: none; animation: floatUp .9s ease-out forwards; }
+@keyframes floatUp { 0% { transform: translate(-50%, 0) scale(.6); opacity: 0 } 15% { transform: translate(-50%, -10px) scale(1.15); opacity: 1 } 100% { transform: translate(-50%, -70px); opacity: 0 } }
+@keyframes breathe { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+@keyframes bob { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+@keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .55 } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="page">
+  <header class="top">
+    <h1>Draconia Chronicles · Mockup V2</h1>
+    <p>Every screen the game has today, in the pixel look. The dragon is a stand-in until the commissioned art arrives.</p>
+  </header>
+  <nav class="screens" id="nav" aria-label="Screens"></nav>
+  <div class="stage">
+    <div class="picker"><label for="pick">Screen</label><select id="pick"></select></div>
+    <div class="phone-wrap" id="wrap"><div class="phone" id="phone" role="region" aria-label="Phone screen"></div></div>
+    <span class="caption">390 × 844 points · tap the tab bar, buildings and buttons</span>
+  </div>
+  <aside class="notes" id="notes" aria-live="polite"></aside>
+</div>
+
+<script>
+const IMG = {
+  bgWar: 'images/warfront-bg.png', bgCity: 'images/city-bg.png', bgValley: 'images/valley-bg.png',
+  dragon: 'images/dragon-standin.png', portrait: 'images/dragon-portrait-standin.png',
+  kobold: 'images/kobold.png', minotaur: 'images/minotaur.png', chest: 'images/chest.png',
+  star: 'images/icon-star.png', food: 'images/icon-food.png', villager: 'images/icon-villager.png',
+  swords: 'images/icon-swords.png', helm: 'images/icon-helm.png', hammer: 'images/icon-hammer.png',
+  wheat: 'images/icon-wheat.png', scroll: 'images/icon-scroll.png', castle: 'images/icon-castle.png',
+  cog: 'images/icon-cog.png', pyreth: 'images/bust-pyreth.png', rodain: 'images/bust-rodain.png',
+  mirael: 'images/bust-mirael.png', kael: 'images/bust-kael.png', lirae: 'images/bust-lirae.png',
+  folk: 'images/folk-human.png', folkCarry: 'images/folk-human-carry.png', dwarf: 'images/folk-dwarf.png',
+  elf: 'images/folk-elf.png', stripForest: 'images/strip-forest.png', goblin: 'images/b-goblin.png',
+};
+const img = (k, alt, style) => `<img class="px" src="${IMG[k]}" alt="${alt || ''}" style="${style || ''}">`;
+
+// ---- shared pieces --------------------------------------------------------------------------
+const topbar = (o = {}) => `
+  <div class="topbar">
+    <div class="res">${img('star', 'Renown')}<span style="color:#ffe2a0">${o.renown || '48.25'}</span></div>
+    ${o.noFood ? '' : `<div class="res">${img('food', 'Food')}<span>${o.food || '140'}</span></div>`}
+    <span style="flex:1"></span>
+    <button class="iconbtn step" data-go="journal" aria-label="Open journal"><span class="step">${img('scroll', '', 'width:34px;height:34px')}</span></button>
+  </div>`;
+const objective = (text, prog, top = 72) => `
+  <div class="ribbon" style="top:${top}px">
+    <span class="scale" style="width:28px;height:32px;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0">${img('swords', '', 'width:20px;height:20px;margin-top:-4px')}</span>
+    <b class="ol1">${text}</b><span class="num">${prog}</span>
+  </div>`;
+const tabs = (on, o = {}) => {
+  const t = [['draconia', 'Draconia', 'castle'], ['warfront', 'Warfront', 'swords'], ['forage', 'Forage', 'wheat'], ['settings', 'Settings', 'cog']];
+  return `<nav class="tabs" aria-label="Main tabs">${t.map(([id, label, icon]) => {
+    const locked = o.locked && (id === 'draconia' || id === 'forage');
+    return `<button class="tab ${on === id ? 'on' : ''}" data-go="${locked ? 'locked' : id}" ${on === id ? 'aria-current="page"' : ''}>
+      <span class="gem scale"><span class="scale">${locked ? '<svg aria-hidden="true" width="18" height="20" viewBox="0 0 9 10" style="shape-rendering:crispEdges"><path fill="#b8ac98" d="M2 0h5v1h1v3h1v6H0V4h1V1h1zm1 1v3h3V1z"/></svg>' : img(icon)}</span></span>
+      <b>${locked ? 'Locked' : label}</b>
+      ${!locked && id === 'draconia' && o.dot ? '<i class="dot" aria-label="Something to build"></i>' : ''}
+      ${!locked && id === 'forage' && o.bang ? '<i class="bang" aria-label="Food warning">!</i>' : ''}
+    </button>`;
+  }).join('')}</nav>`;
+};
+const bar = (pct, fill, h = 16, txt = '') => `<div class="bar step" style="height:${h}px"><div><i style="width:${pct}%;background:${fill}"></i>${txt}</div></div>`;
+const gbtn = (label, go, cls = '') => `<button class="gbtn step ${cls}" ${go ? `data-go="${go}"` : ''}><span class="step">${label}</span></button>`;
+const sbtn = (label, go, cls = '') => `<button class="sbtn step ${cls}" ${go ? `data-go="${go}"` : ''}><span class="step">${label}</span></button>`;
+const qbtn = (label, go, cls = '') => `<button class="qbtn step ${cls}" ${go ? `data-go="${go}"` : ''}><span class="step">${label}</span></button>`;
+const lock = (txt) => `<span class="lockbtn step">LOCKED · ${txt}</span>`;
+const stats = (items) => `<div class="stats step">${items.map(([v, l]) => `<div><span class="num">${v}</span><small>${l}</small></div>`).join('')}</div>`;
+const card = (icon, title, sub, right) => `<div class="card step">${icon ? img(icon) : ''}<div class="t"><b>${title}</b><span>${sub}</span></div>${right || ''}</div>`;
+const sheet = (title, sub, body, icon) => `<div class="dim" data-go="back"></div>
+  <div class="sheet step"><div class="in step">
+    <div class="shead">${icon ? img(icon, '', 'width:40px;height:40px') : ''}<div><h3>${title}</h3>${sub ? `<div class="sub">${sub}</div>` : ''}</div>
+      <button class="iconbtn step x" data-go="back" aria-label="Close" style="width:40px;height:40px"><span class="step"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 7 7" style="shape-rendering:crispEdges"><path fill="#f5ecd8" d="M0 0h2v1h1v1h1V1h1V0h2v2H6v1H5v1h1v1h1v2H5V6H4V5H3v1H2v1H0V5h1V4h1V3H1V2H0z"/></svg></span></button></div>
+    ${body}</div></div>`;
+const sheetRes = () => `<div class="pills"><span class="pill">${'48.25'} renown</span><span class="pill">140 food</span><span class="pill">18 idle</span></div>`;
+const modal = (top, inner) => `<div class="dim"></div><div class="modal step" style="top:${top}px"><div class="in step">${inner}</div></div>`;
+
+// ---- the Warfront scene (reused by overlays) --------------------------------------------------
+function warfront(o = {}) {
+  const chrome = !o.opening;
+  return `
+  <div class="bg" style="background:linear-gradient(#2a2230,#120d16)"></div>
+  ${img('bgWar', '', 'position:absolute;left:0;top:-128px;width:390px;height:846px')}
+  ${chrome ? topbar() + objective('Forge 2 swords', '1/2') : ''}
+  ${chrome ? `<div class="abs" style="left:14px;right:14px;top:122px;display:flex;flex-wrap:wrap;gap:6px">
+     <div class="chip">${img('villager')}<span class="num">18</span><span>villagers</span></div>
+     <div class="chip">${img('swords')}<span class="num" style="color:var(--danger)">6</span><span>fighters</span></div>
+     <div class="chip">${img('hammer')}<span class="num">2</span><span>repairing</span></div>
+     <div class="chip">${img('helm')}<span class="num" style="color:var(--steel)">4</span><span>fighting</span></div>
+   </div>` : ''}
+  ${chrome ? `<p class="abs ol1" style="left:24px;right:24px;top:196px;margin:0;text-align:center;font-weight:800;font-style:italic;font-size:14px;color:var(--gold)">"The dark has teeth tonight. So do we."</p>` : ''}
+  <div class="abs" style="left:150px;right:20px;top:${chrome ? 226 : 150}px">
+    ${chrome ? `<div class="ol" style="text-align:center;font-family:var(--f-display);font-weight:900;font-size:18px;letter-spacing:1px;margin-bottom:4px">Kobold</div>` : ''}
+    ${bar(60, 'linear-gradient(#ff8a7a 0 4px,#d43a3a 4px)', 22, '<span class="ol1 num" style="position:absolute;right:6px;top:-1px;font-size:13px">3 / 5</span>')}
+  </div>
+  <button class="abs" data-strike aria-label="Strike the kobold" style="all:unset;position:absolute;cursor:pointer;left:170px;top:${chrome ? 270 : 194}px;width:200px;height:220px;display:flex;align-items:flex-end;justify-content:center">
+    <span style="position:absolute;left:50%;bottom:6px;width:140px;height:26px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,0.6),transparent 70%)"></span>
+    ${img('kobold', '', 'position:relative;width:140px;animation:bob 2.2s ease-in-out infinite')}
+  </button>
+  <span aria-hidden="true" class="abs" style="left:0;top:440px;width:260px;height:140px;background:radial-gradient(ellipse,rgba(255,140,50,0.28),transparent 65%)"></span>
+  ${img('dragon', 'You, the dragon, perched on the gate (stand-in art)', 'position:absolute;left:-8px;top:316px;width:256px;height:256px;animation:breathe 3.2s ease-in-out infinite')}
+  <div class="abs" style="left:14px;right:14px;top:578px;display:flex;align-items:center;gap:8px">
+    <span class="ol1" style="font-family:var(--f-display);font-weight:900;font-size:14px;letter-spacing:2px;color:var(--gold-hi)">GATE</span>
+    <div style="flex:1">${bar(64, 'linear-gradient(#ffe08a 0 4px,#e8ac36 4px)', 18)}</div>
+  </div>
+  ${chrome ? `
+  <div class="abs" style="left:14px;right:14px;top:602px;display:flex;align-items:baseline;gap:8px;justify-content:center">
+    <span class="ol1 num" style="font-size:15px">Wall 64/100</span>
+    <span class="ol1" style="font-weight:900;font-size:14px;color:var(--warn)">cracking</span>
+    <span class="ol1 num" style="font-size:13px;color:var(--muted)">Horde level 3</span>
+  </div>
+  <div class="abs" style="left:0;right:0;top:630px;display:flex;justify-content:center;gap:44px">
+    <button class="orb" data-go="rally"><span class="disc" style="width:60px;height:60px;background:radial-gradient(circle at 40% 30%,#cfe2ff,#5a86c0)">${img('swords', '', 'width:34px;height:34px')}</span><span class="lbl ol1">RALLY</span><span class="cost num">1.85 renown</span></button>
+    <button class="orb"><span class="disc" style="width:60px;height:60px;background:radial-gradient(circle at 40% 30%,#e8e0c8,#8a8270)">${img('hammer', '', 'width:34px;height:34px')}</span><span class="lbl ol1">REPAIR</span><span class="cost num">0.95 renown</span></button>
+  </div>
+  <div class="abs" style="left:6px;right:6px;top:732px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:4px;white-space:nowrap;font-size:11px">
+    <span class="ol1 num" style="font-size:11px;color:var(--muted)">37 monsters slain</span>
+    <button data-go="claws" style="all:unset;cursor:pointer" aria-label="Your claws: Hooked, 3 per tap. Can sharpen."><span class="chip" style="padding-right:14px">${img('hammer')}<span style="color:var(--gold)">Hooked, <b class="num" style="color:var(--cream)">3</b> per tap +</span></span></button>
+    <span class="ol1 num" style="font-size:11px;color:var(--steel);text-align:right">army 2.40 dmg/s</span>
+  </div>` : ''}
+  ${chrome ? tabs('warfront', { dot: true }) : ''}`;
+}
+
+// ---- Draconia map -------------------------------------------------------------------------------
+function node(x, y, name, status, opts = {}) {
+  const fog = opts.fog;
+  return `<button class="abs" data-go="${fog ? '' : opts.go || ''}" ${fog ? 'aria-disabled="true"' : ''} aria-label="${fog ? 'Undiscovered building' : name + ', ' + status}" style="all:unset;position:absolute;left:${x}px;top:${y}px;cursor:${fog ? 'default' : 'pointer'};transform:translateX(-50%);${fog ? 'opacity:0.4' : ''}">
+    <span class="step" style="display:block;background:var(--ink);padding:2px;white-space:nowrap;position:relative">
+      <span class="step" style="display:flex;flex-direction:column;align-items:center;padding:4px 10px;background:linear-gradient(#4a3a2a,#2a1e16);box-shadow:inset 0 2px 0 ${opts.edge || 'var(--gold)'}">
+        <span style="font-weight:900;font-size:13px;color:${fog ? 'var(--muted)' : '#ffe2a0'}">${fog ? '???' : name}</span>
+        <span class="num" style="font-size:11px;color:${opts.statusColor || 'var(--muted)'}">${fog ? (opts.soon ? 'Coming soon' : 'Undiscovered') : status}</span>
+      </span>
+    </span>
+    ${opts.badge ? '<i class="abs" style="right:-4px;top:-4px;width:12px;height:12px;background:var(--danger);box-shadow:0 0 0 2px var(--ink);transform:rotate(45deg)" aria-hidden="true"></i>' : ''}
+  </button>`;
+}
+const zone = (x, y, t) => `<span class="abs ol1" style="left:${x}px;top:${y}px;font-family:var(--f-num);font-size:11px;letter-spacing:2px;color:var(--muted)">◆ ${t}</span>`;
+function draconia() {
+  return `${img('bgCity').replace('class="px"', 'class="px bg"')}
+  ${topbar()}${objective('Forge 2 swords', '1/2')}
+  <div class="abs" style="left:0;right:0;top:118px;text-align:center"><span class="ol" style="font-family:var(--f-display);font-weight:900;font-size:26px;letter-spacing:6px;color:var(--gold-hi)">DRACONIA</span></div>
+  ${zone(150, 162, 'THE KEEP')}
+  ${node(196, 278, 'Draconia Keep', 'Offline: 5 hours', { go: 'keep' })}
+  ${zone(20, 308, 'INNER WARD')}
+  ${node(258, 320, 'The Librarium', '4/15 researched', { go: 'librarium', edge: '#38bdf8' })}
+  ${node(130, 352, 'Housing', '', { fog: true, soon: true })}
+  ${zone(20, 410, 'CRAFT WARD')}
+  ${node(80, 444, "Ranger's Lodge", 'Lv2 · 3/6 rangers', { go: 'lodge', edge: '#4ade80' })}
+  ${node(312, 498, 'The Forge', '1 swords, 0 shields', { go: 'forge', edge: '#f59e0b' })}
+  ${zone(20, 540, 'OUTER WARD')}
+  ${node(84, 600, 'The Garrison', 'Lv2 · 4/8 soldiers', { go: 'garrison', edge: '#f87171', badge: true })}
+  ${node(250, 610, "Wayfinder's Outpost", 'Lv1 · 2/4 wayfinders', { go: 'outpost', edge: '#60a5fa' })}
+  ${node(170, 506, "Wizard's Tower", '', { fog: true, soon: true })}
+  ${zone(20, 668, 'CITY EDGE')}
+  ${node(120, 696, 'Tower West', '', { fog: true, soon: true })}
+  ${node(270, 696, 'Tower East', '', { fog: true, soon: true })}
+  ${tabs('draconia', { dot: true })}`;
+}
+
+// ---- Forage -----------------------------------------------------------------------------------
+function forage() {
+  return `<div class="bg" style="background:linear-gradient(#0d1410,#07050c 60%)"></div>
+  ${img('bgValley', '', 'position:absolute;left:0;top:60px;width:390px;height:288px;opacity:0.85')}
+  ${topbar({ noFood: true })}${objective('Fill the stores', '140/200')}
+  <div class="abs" style="left:0;right:0;top:124px;display:flex;flex-direction:column;align-items:center;gap:2px">
+    <span style="display:flex;align-items:center;gap:8px">${img('food', '', 'width:48px;height:48px')}<span class="ol num" style="font-size:44px">140</span></span>
+    <span class="ol1" style="font-weight:800;font-size:13px;color:var(--muted)">food stores (granary holds 500)</span>
+    <span class="pill" style="background:#1f3a24;color:#86efac;margin-top:4px">+10% forage bonus</span>
+  </div>
+  <div class="abs step" style="left:16px;right:16px;top:236px;background:rgba(14,9,18,0.9);padding:10px 12px;display:flex;flex-direction:column;gap:4px">
+    <span style="font-weight:900;font-size:14px;color:var(--danger)">Stores are falling</span>
+    <span class="num" style="font-size:13px;color:var(--cream)">Each meal: -12 eaten, +9 gathered</span>
+    <span class="num" style="font-size:13px;color:var(--gold)">Next meal in 0:42</span>
+  </div>
+  <div class="abs" style="left:16px;right:16px;top:330px;display:flex;flex-direction:column;gap:6px">
+    <span class="slabel ol1">FIGHTERS' RATIONS</span>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
+      ${['None', 'Quarter', 'Half', 'Full', 'Double'].map((r, i) => `<span class="step" style="padding:7px 0;text-align:center;font-weight:900;font-size:12px;background:${i === 3 ? 'var(--gold)' : 'var(--stone)'};color:${i === 3 ? '#3a1d06' : (i === 1 || i === 4 ? 'var(--muted)' : 'var(--cream)')}">${r}${(i === 1 || i === 4) ? ' (locked)' : ''}</span>`).join('')}
+    </div>
+    <span class="ol1" style="font-weight:700;font-size:12px;color:var(--muted)">Quarter rations: research Lean Rations in the Librarium.</span>
+  </div>
+  <button class="orb abs" style="left:50%;top:430px;transform:translateX(-50%)" data-forage aria-label="Forage for food">
+    <span class="disc" style="width:150px;height:150px;background:radial-gradient(circle at 40% 30%,#bff5c8,#2f8a44)">${img('wheat', '', 'width:80px;height:80px')}</span>
+    <span class="lbl ol1" style="font-size:20px">FORAGE</span>
+  </button>
+  <div class="abs" style="left:0;right:0;top:622px;display:flex;justify-content:center;gap:40px">
+    <button class="orb"><span class="disc" style="width:60px;height:60px;background:radial-gradient(circle at 40% 30%,#cfe2ff,#5a86c0)">${img('villager', '', 'width:34px;height:34px')}</span><span class="lbl ol1" style="font-size:13px">TRAIN</span><span class="cost num">0.80 renown · 3/6</span></button>
+    <button class="orb"><span class="disc" style="width:60px;height:60px;background:radial-gradient(circle at 40% 30%,#cfe2ff,#5a86c0)">${img('scroll', '', 'width:34px;height:34px')}</span><span class="lbl ol1" style="font-size:13px">RECRUIT</span><span class="cost num">1.5 renown · 2/4</span></button>
+  </div>
+  <div class="abs" style="left:14px;right:14px;top:730px;display:flex;justify-content:space-between;align-items:center">
+    <span class="ol1 num" style="font-size:12px;color:var(--muted)">212 foraging trips, 1,840 food gathered in all</span>
+    <span class="pill" style="background:#1f3a24;color:#86efac">+2 per tap</span>
+  </div>
+  ${tabs('forage', { dot: true, bang: true })}`;
+}
+
+// ---- Settings ---------------------------------------------------------------------------------
+function settings(tab = 'Settings') {
+  const body = tab === 'Settings' ? `
+    <span class="slabel">SOUND &amp; VIBRATION</span>
+    ${card('', 'Music', 'Volume 70%', '<span class="pill">Mute</span>')}
+    ${card('', 'Sound Effects', 'Volume 85%', '<span class="pill">Mute</span>')}
+    ${card('', 'Vibration', 'Buzz on taps, purchases and events', '<span class="pill on">On</span>')}
+    <span class="slabel">CREDITS</span>
+    ${card('scroll', 'Refusing The Ultimatum', 'Main theme · Arthur Vyncke · CC BY-SA 3.0')}
+    <span class="slabel">DANGER ZONE</span>
+    ${qbtn('Reset Game', 'reset', 'full')}
+    <span class="sub" style="text-align:center">This will erase all progress</span>` : `
+    <span class="slabel">ECONOMY</span>${card('star', 'Renown 48.25', 'Total Earned 612.40 · Total Spent 564.15')}
+    <span class="slabel">COMBAT</span>${card('swords', 'Monsters Defeated 37', 'Total Clicks 1,204 · Tap Damage 3')}
+    <span class="slabel">ARMY</span>${card('helm', 'Active Soldiers 4', 'Soldiers Trained 5 · Conscripts Trained 5 · Barracks Level 2')}
+    <span class="slabel">DRACONIA</span>${card('food', 'Food 140', 'Villagers 18 · Food/check -12 every 60s')}
+    <span class="slabel">SESSION</span>${card('', 'Time Played', '3h 12m')}`;
+  return `<div class="bg" style="background:linear-gradient(#1a1420,#0c0910)"></div>
+  ${topbar()}${objective('Forge 2 swords', '1/2')}
+  <div class="abs" style="left:16px;right:16px;top:124px;bottom:86px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:12px">
+    <div class="pills">${['Settings', 'Stats'].map((t) => `<button class="pill ${t === tab ? 'on' : ''}" style="all:unset;cursor:pointer" data-go="${t === 'Settings' ? 'settings' : 'stats'}"><span class="pill ${t === tab ? 'on' : ''}">${t}</span></button>`).join('')}</div>
+    ${body}
+  </div>
+  ${tabs('settings', { dot: true })}`;
+}
+
+// ---- building interiors (bottom sheets over the map) ------------------------------------------
+const interiors = {
+  garrison: () => sheet('The Garrison', 'Lv2 · 4/8 soldiers', `${sheetRes()}
+    ${stats([['4/8', 'Soldiers'], ['6', 'Fighters']])}
+    <p class="readout">Your army kills a Kobold in about 3 seconds.<br>A Kobold strikes the wall every 6s.</p>
+    <span class="slabel">Capacity</span>${bar(50, 'linear-gradient(#ffe08a 0 3px,#e8ac36 3px)', 14)}
+    ${card('helm', 'Conscript (4)', 'Train a fighter. 0.5 damage per volley, eats 1 a meal', gbtn('12.50 renown'))}
+    ${card('helm', 'Footman (0)', 'Promote a conscript. 1 damage per volley, eats 2 a meal', lock('Garrison Lv3'))}
+    ${card('helm', 'Knight (0)', 'Promote a footman. 2 damage per volley, eats 3 a meal', lock('Garrison Lv5'))}
+    ${gbtn('Upgrade to Lv3 - 45 renown', '', 'full')}`, 'helm'),
+  forge: () => sheet('The Forge', '1 swords, 0 shields', `${sheetRes()}
+    ${stats([['1/4', 'Armed'], ['0/4', 'Shielded']])}
+    <p class="readout">Your army kills a Kobold in about 3 seconds.</p>
+    <span class="slabel">SOLDIER GEAR</span>
+    ${card('swords', 'Swords (1/4)', 'An armed soldier hits harder. The next goes to a Conscript.', gbtn('15 renown'))}
+    ${card('helm', 'Shields (0/4)', 'A shielded soldier never falls in a Breach', gbtn('20 renown'))}`, 'hammer'),
+  keep: () => sheet('Draconia Keep', 'Offline: 5 hours', `${sheetRes()}
+    ${stats([['9', 'Assigned'], ['18', 'Idle'], ['27', 'Total Pop']])}
+    <span class="slabel">REASSIGN ROLES</span>
+    <div class="banner">Reassign villagers to a new role with a partial refund, or dismiss to idle.</div>
+    ${card('helm', 'Soldiers', '4 assigned', qbtn('REASSIGN'))}
+    ${card('wheat', 'Foragers', '3 assigned', qbtn('REASSIGN'))}
+    ${card('scroll', 'Explorer', '2 assigned', qbtn('REASSIGN'))}
+    <span class="slabel">OFFLINE PROGRESS</span>
+    <div class="banner">Your army earns about 0.6 renown a minute while you rest.</div>
+    ${card('', '3 hours', 'free', '<span class="pill">Done</span>')}
+    ${card('', '5 hours', '25 renown', '<span class="pill on">ACTIVE</span>')}
+    ${card('', '7 hours', 'next step', gbtn('100 renown'))}
+    ${card('', '9 hours', '250 renown', '')}
+    ${card('', '12 hours', '400 renown', '')}`, 'castle'),
+  lodge: () => sheet("Ranger's Lodge", 'Lv2 · 3/6 rangers', `${sheetRes()}
+    ${stats([['3/6', 'Foragers'], ['18', 'Villagers'], ['12', 'food a meal']])}
+    <span class="num" style="font-size:13px;color:var(--gold)">Next meal in 0:42</span>
+    <span class="slabel">Capacity</span>${bar(50, 'linear-gradient(#bff5c8 0 3px,#4ade80 3px)', 14)}
+    ${card('wheat', 'Gatherer (3)', 'Forages food for the city', gbtn('0.80 renown'))}
+    ${card('wheat', 'Trapper (0)', 'Forages more food a meal', gbtn('15 renown'))}
+    ${card('wheat', 'Ranger (0)', 'Forages the most food a meal', lock('Lodge Lv3'))}
+    ${gbtn('Upgrade to Lv3 - 60 renown', '', 'full')}`, 'wheat'),
+  outpost: () => sheet("Wayfinder's Outpost", 'Lv1 · 2/4 wayfinders', `${sheetRes()}
+    ${stats([['2/4', 'Explorers'], ['1', 'Available'], ['7', 'Rescued']])}
+    <span class="slabel">Explorer Capacity</span>${bar(50, 'linear-gradient(#cfe2ff 0 3px,#60a5fa 3px)', 14)}
+    <div class="banner">Send explorers into the wasteland to find lost villagers.</div>
+    <div class="pills"><span class="pill">60s</span><span class="pill">2.5 renown</span><span class="pill">30 food</span><span class="pill">Luck streak: ◆◆◇ 2/3</span></div>
+    ${card('scroll', 'Train Explorer', '2/4 trained -- consumes 1 villager', gbtn('1.5 renown'))}
+    ${sbtn('Send Expedition', 'expedition', 'full')}
+    <span class="slabel">ACTIVE EXPEDITIONS</span>
+    ${card('', 'Expedition #4', '38s remaining · 37%')}
+    ${card('', 'Expedition #3', 'Returned! Ready to claim.', gbtn('CLAIM', 'expedition'))}`, 'scroll'),
+  librarium: () => sheet('The Librarium', '4/15 researched', `${sheetRes()}
+    <div class="banner">4 of 15 researched. Research upgrades to strengthen every aspect of Draconia.</div>
+    <div class="pills"><span class="pill on">Economy</span><span class="pill">Military</span><span class="pill">Survival</span><span class="pill">Exploration</span><span class="pill">???</span></div>
+    <span class="sub">Renown generation and click power</span>
+    ${card('star', 'Keen Eye', 'Your strikes find the weak points.', '<span class="pill" style="color:var(--ok)">COMPLETE</span>')}
+    ${card('star', 'Golden Harvest', 'More renown from every kill.', gbtn('30 renown'))}
+    ${card('star', 'Efficient Patrols', 'Prereq: Garrison Lv3', lock('Garrison Lv3'))}
+    ${card('', '???', 'Requirements not yet met...', '')}`, 'scroll'),
+};
+
+// ---- overlays ---------------------------------------------------------------------------------
+const overlays = {
+  claws: () => warfront() + sheet('Your Claws', 'Hooked: 3 damage per tap', `
+    <p>Next: Hardened, 4 damage per tap.</p>
+    <span class="sub">Harder strikes kill faster and earn more renown with every tap.</span>
+    ${gbtn('Sharpen for 25 renown', '', 'full')}
+    ${[['Fledgling', 1, 0], ['Sharpened', 2, 5], ['Hooked', 3, 12], ['Hardened', 4, 25], ['Serrated', 6, 50], ['Obsidian', 8, 100], ['Ember', 11, 200], ['Dragonsteel', 15, 400], ['Ancient', 20, 800]].map(([n, d, c], i) =>
+      `<div style="display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;color:${i <= 2 ? 'var(--cream)' : 'var(--muted)'}"><span aria-label="${i <= 2 ? 'owned' : 'not yet'}" style="width:10px;height:10px;transform:rotate(45deg);background:${i <= 2 ? 'var(--ok)' : 'transparent'};box-shadow:0 0 0 2px ${i <= 2 ? 'var(--ok)' : 'var(--muted)'}"></span><span style="flex:1">${n}</span><span class="num">${d} per tap</span><span class="num" style="width:70px;text-align:right;color:var(--gold)">${c}</span></div>`).join('')}`, 'hammer'),
+  journal: () => warfront() + sheet('Journal', 'What Draconia has lived through', `
+    <div class="pills"><span class="pill on">Quests</span><span class="pill">Story</span><span class="pill">How It Works</span><span class="pill">Lore</span></div>
+    <span class="slabel">CURRENT QUEST</span>
+    ${card('swords', 'Forge 2 swords', '1/2 · Arm your soldiers at Kael\'s forge.')}
+    <span class="slabel">COMPLETED</span>
+    ${card('', 'Build the Forge', 'Done')}${card('', 'Train 2 conscripts', 'Done')}${card('', 'Build the Garrison', 'Done')}${card('', 'Welcome 3 newcomers', 'Done')}`, 'scroll'),
+  prologue: () => warfront({ opening: true }) + `<div class="dim" style="background:rgba(5,3,8,0.5)"></div>
+    <div class="modal step" style="top:auto;bottom:24px"><div class="in step">
+      <div style="display:flex;align-items:center;gap:10px">${img('castle', '', 'width:40px;height:40px')}<div><div class="sub" style="color:var(--gold)">The Last Bastion</div><h3 style="font-size:19px">The Gate of Draconia</h3></div></div>
+      <p>You are one of the last lines of defense in Draconia.</p>
+      <p>The lone dragon standing upon its gate. Beyond the walls, the masses of the apocalypse lie camped, seeking to snuff out the last bastion of light.</p>
+      <div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:12px;color:var(--muted)">Page 1 of 2</span><span style="flex:1"></span>${qbtn('Skip', 'opening')}${gbtn('Continue', 'opening')}</div>
+    </div></div>`,
+  opening: () => warfront({ opening: true }) + `<div class="coach" style="left:174px;top:186px;width:192px;height:232px"></div>
+    <div class="hint ol" style="top:120px">Tap the kobold to strike it.</div>`,
+  dialogue: () => warfront() + `<div class="dim" style="background:rgba(5,3,8,0.5)"></div>
+    <div class="modal step" style="top:auto;bottom:96px"><div class="in step">
+      <div style="display:flex;align-items:center;gap:12px">${img('pyreth', 'Elder Pyreth', 'width:64px;height:64px;background:#2a2232')}<div><div class="sub" style="color:var(--gold)">Offline</div><h3 style="font-size:19px">Elder Pyreth</h3></div></div>
+      <p>While you slept, the Keep kept the ledgers. Here is what the city earned.</p>
+      <div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:12px;color:var(--muted)">Page 1 of 1</span><span style="flex:1"></span>${gbtn('Continue', 'offline')}</div>
+    </div></div>`,
+  offline: () => warfront() + modal(210, `
+    <h3 style="text-align:center">Welcome Back</h3>
+    <span class="sub" style="text-align:center">5h 12m away</span>
+    <div style="display:flex;justify-content:center;align-items:center;gap:8px">${img('star', '', 'width:44px;height:44px')}<span class="ol num" style="font-size:36px;color:#ffe2a0">+186.40</span></div>
+    <p style="text-align:center">Your fighters held the line</p>
+    ${gbtn('Collect', 'warfront', 'full')}`),
+  rally: () => warfront() + `<span class="float" style="left:150px;top:640px;color:var(--steel)">+1 fighter</span>`,
+  wanderer: () => warfront() + modal(170, `
+    <div style="display:flex;justify-content:center;gap:6px">${img('dwarf', '', 'width:44px;height:64px')}</div>
+    <h3 style="text-align:center">Veteran</h3>
+    <p>A scarred soldier limps up to the gate, sword still on their back. They ask for a meal and a place on the wall.</p>
+    <div class="pills" style="justify-content:center"><span class="pill">Joins as 1 fighter</span><span class="pill">-6 food on arrival</span></div>
+    <div class="row2">${qbtn('Turn Away', 'warfront')}${gbtn('Welcome them', 'warfront')}</div>`),
+  refugees: () => warfront() + modal(180, `
+    <div style="display:flex;justify-content:center;gap:4px">${img('folk', '', 'width:33px;height:48px')}${img('elf', '', 'width:33px;height:48px')}${img('folkCarry', '', 'width:33px;height:48px')}</div>
+    <h3 style="text-align:center">Refugees Approach</h3>
+    <p>Word of Draconia's resilience has spread. A group of 3 displaced villagers seeks shelter within your walls.</p>
+    <div class="pills" style="justify-content:center"><span class="pill on">+3 villagers</span></div>
+    <div class="row2">${qbtn('Turn them away', 'warfront')}${gbtn('Welcome Them', 'warfront')}</div>`),
+  breach: () => warfront() + `<div class="dim" style="background:rgba(60,0,10,0.6)"></div>
+    <div class="modal step" style="top:200px"><div class="in step" style="box-shadow:inset 0 3px 0 var(--danger)">
+      <h3 style="text-align:center;color:#ffb4a0">The Breach</h3>
+      <p>The wall fell, and Draconia paid to survive it.</p>
+      ${card('swords', '2 fighters fell', 'Shielded soldiers never fall')}
+      ${card('food', '40 food lost', 'Stores now 100')}
+      ${gbtn('Rebuild', 'warfront', 'full')}
+    </div></div>`,
+  expedition: () => draconia() + modal(200, `
+    <h3 style="text-align:center">Survivors Spotted</h3>
+    <p>Smoke from a cellar fire led your wayfinders to a family hiding in the ruins of a mill.</p>
+    <div class="pills" style="justify-content:center"><span class="pill on">+3 villagers</span></div>
+    ${gbtn('Continue', 'outpost', 'full')}`),
+  foodwarn: () => forage() + modal(220, `
+    <h3 style="text-align:center;color:var(--warn)">Food Running Low</h3>
+    <p>The stores will not last many more meals. Fighters go hungry first, and then your people start to die.</p>
+    <div class="row2">${qbtn('Later', 'forage')}${gbtn('Go to Forage', 'forage')}</div>`),
+  build: () => draconia() + modal(250, `
+    <h3 style="text-align:center">The Forge</h3>
+    <p>Kael's smithy. Swords make your soldiers hit harder; shields keep them standing when the wall falls.</p>
+    <div class="row2">${qbtn('Cancel', 'draconia')}${gbtn('Build - 75 renown', 'forge')}</div>`),
+  reset: () => settings() + modal(250, `
+    <h3 style="text-align:center;color:#ffb4a0">Reset Game</h3>
+    <p>All renown, soldiers, buildings, and progress will be permanently erased. This cannot be undone.</p>
+    <div class="row2">${qbtn('Cancel', 'settings')}<button class="qbtn step" data-go="settings"><span class="step" style="background:#7a1e1e;box-shadow:inset 0 3px 0 #b03a3a,inset 0 -4px 0 #4a1010">Reset</span></button></div>`),
+  locked: () => warfront() + `<div class="abs step" style="left:60px;right:60px;top:590px;z-index:8;background:var(--ink);padding:3px"><div class="step" style="background:var(--stone);padding:10px;text-align:center;font-weight:900">Not yet discovered</div></div>`,
+};
+
+// ---- the screen list ------------------------------------------------------------------------------
+const SCREENS = [
+  { group: 'Main tabs', id: 'warfront', title: 'Warfront', src: 'src/screens/GameScreen.tsx', render: () => warfront(), notes: [
+    'The gold line under the chips is a combat flavor line; its wording here is a placeholder.',
+    'Mid-game state: renown and food, the quest ribbon, population chips, the wall, RALLY and REPAIR, the claws chip and the army readout.',
+    'The stand-in dragon perches on the gate facing the horde; tap the kobold to strike.',
+    'Code today: RALLY is red (#dc4444). The mock moves it to steel blue so red means only HP and danger, per the UI research.',
+    'There is no TRAIN on the Warfront: soldiers train in the Garrison, gatherers on Forage.'] },
+  { group: 'Main tabs', id: 'draconia', title: 'Draconia (city map)', src: 'src/screens/ShopScreen.tsx', render: draconia, notes: [
+    'Five zones from the code: The Keep, Inner Ward, Craft Ward, Outer Ward, City Edge.',
+    'Built buildings show their status line; Housing, the Wizard\'s Tower and both towers are "Coming soon".',
+    'Code today: a scrolling list of nodes in zones. The mock places them on the painted city.',
+    'Tap a building to open its interior.'] },
+  { group: 'Main tabs', id: 'forage', title: 'Forage', src: 'src/screens/ForageScreen.tsx', render: forage, notes: [
+    'The granary number, the meal countdown, fighters\' rations, the big FORAGE orb, then TRAIN (gatherers) and RECRUIT (explorers, once the Outpost is built).',
+    'The "!" on the Forage tab is the food warning badge.'] },
+  { group: 'Main tabs', id: 'settings', title: 'Settings', src: 'src/screens/SettingsScreen.tsx', render: () => settings('Settings'), notes: [
+    'Sound and vibration, credits, and the danger zone.', 'A Dev tab exists in dev builds only and is left out here.'] },
+  { group: 'Main tabs', id: 'stats', title: 'Stats', src: 'src/screens/SettingsScreen.tsx', render: () => settings('Stats'), notes: ['The Stats tab inside Settings: economy, combat, army, Draconia and session figures.'] },
+  { group: 'Draconia buildings', id: 'keep', title: 'Draconia Keep', src: 'src/screens/shop/DraconiaHallInterior.tsx', render: () => draconia() + interiors.keep(), notes: ['Reassign roles and the offline-progress ladder (3, 5, 7, 9, 12 hours).'] },
+  { group: 'Draconia buildings', id: 'garrison', title: 'The Garrison', src: 'src/screens/shop/BarracksInterior.tsx', render: () => draconia() + interiors.garrison(), notes: ['Conscript, Footman and Knight tiers, the army readout, capacity and the level upgrade.'] },
+  { group: 'Draconia buildings', id: 'forge', title: 'The Forge', src: 'src/screens/shop/ArmoryInterior.tsx', render: () => draconia() + interiors.forge(), notes: ['Swords and shields for soldiers. The player\'s own upgrade, the claws, lives on the Warfront.'] },
+  { group: 'Draconia buildings', id: 'lodge', title: "Ranger's Lodge", src: 'src/screens/shop/LodgeInterior.tsx', render: () => draconia() + interiors.lodge(), notes: ['Gatherer, Trapper and Ranger tiers and the meal countdown.'] },
+  { group: 'Draconia buildings', id: 'outpost', title: "Wayfinder's Outpost", src: 'src/screens/shop/PostInterior.tsx', render: () => draconia() + interiors.outpost(), notes: ['Explorers, the luck streak, Send Expedition and active expeditions.'] },
+  { group: 'Draconia buildings', id: 'librarium', title: 'The Librarium', src: 'src/screens/shop/LibrariumInterior.tsx', render: () => draconia() + interiors.librarium(), notes: ['Research by category: Economy, Military, Survival, Exploration and a hidden "???".', 'Research names are real; the one-line effects here are placeholders.'] },
+  { group: 'Sheets and events', id: 'claws', title: 'Your Claws', src: 'src/components/ClawsSheet.tsx', render: overlays.claws, notes: ['The dragon\'s own upgrade track: Fledgling 1 to Ancient 20 damage per tap.'] },
+  { group: 'Sheets and events', id: 'journal', title: 'Journal', src: 'src/components/JournalSheet.tsx', render: overlays.journal, notes: ['Quests, Story, How It Works and Lore tabs.'] },
+  { group: 'Sheets and events', id: 'dialogue', title: 'Character dialogue', src: 'src/components/NpcDialog.tsx', render: overlays.dialogue, notes: ['Speakers: Elder Pyreth, Captain Rodain, Scout Mirael, Kael Ironwright, Lirae the Ink-Wing.', 'Shown: Pyreth\'s framing of the first offline report, as written in the code.'] },
+  { group: 'Sheets and events', id: 'offline', title: 'Welcome Back', src: 'src/components/OfflineModal.tsx', render: overlays.offline, notes: ['Renown earned while away and the wall line.'] },
+  { group: 'Sheets and events', id: 'wanderer', title: 'Wanderer at the gate', src: 'src/components/WandererModal.tsx', render: overlays.wanderer, notes: ['Encounters: Lone Wanderer, Traveling Couple, Small Family, Veteran.', 'The flavor text and the welcome button wording here are placeholders.'] },
+  { group: 'Sheets and events', id: 'refugees', title: 'Refugees Approach', src: 'src/components/MilestoneModal.tsx', render: overlays.refugees, notes: ['Triggered at total renown 25, 50, 125 and 175.'] },
+  { group: 'Sheets and events', id: 'breach', title: 'The Breach', src: 'src/components/BreachEvent.tsx', render: overlays.breach, notes: ['After the Rodain and Pyreth scenes, the losses report and Rebuild.'] },
+  { group: 'Sheets and events', id: 'expedition', title: 'Expedition report', src: 'src/components/ExpeditionReportModal.tsx', render: overlays.expedition, notes: ['Titles vary, such as "The Wasteland Was Silent" and "Survivors Spotted". The flavor line here is a placeholder.'] },
+  { group: 'Sheets and events', id: 'foodwarn', title: 'Food Running Low', src: 'src/components/FoodWarningModal.tsx', render: overlays.foodwarn, notes: ['The urgent version reads "Food Nearly Gone!". Starvation has its own "A Villager Has Died" report.'] },
+  { group: 'Sheets and events', id: 'build', title: 'Build a building', src: 'src/components/ConfirmModal.tsx', render: overlays.build, notes: ['Tapping an unbuilt building asks to build it, with the description from the code.'] },
+  { group: 'Sheets and events', id: 'reset', title: 'Reset Game', src: 'src/screens/SettingsScreen.tsx', render: overlays.reset, notes: ['The destructive confirm from the danger zone.'] },
+  { group: 'First launch', id: 'prologue', title: 'Prologue', src: 'src/types/opening.ts', render: overlays.prologue, notes: ['A fresh install shows only the monster, the dragon and the GATE bar: no top bar, no tabs.', 'The prologue text is the real line from the code.'] },
+  { group: 'First launch', id: 'opening', title: 'First strike (coach mark)', src: 'src/types/tutorial.ts', render: overlays.opening, notes: ['The coach mark points at the kobold. The top bar appears after the first kill; the tabs after four.'] },
+];
+const byId = Object.fromEntries(SCREENS.map((s) => [s.id, s]));
+const EXTRA = { rally: { render: overlays.rally, back: 'warfront' }, locked: { render: overlays.locked, back: 'warfront' } };
+
+// ---- rendering and navigation -----------------------------------------------------------------
+const phone = document.getElementById('phone');
+const nav = document.getElementById('nav');
+const pick = document.getElementById('pick');
+const notes = document.getElementById('notes');
+let current = 'warfront';
+let base = 'warfront';
+
+function buildNav() {
+  const groups = [...new Set(SCREENS.map((s) => s.group))];
+  nav.innerHTML = groups.map((g) => `<div><h2>${g}</h2><ul>${SCREENS.filter((s) => s.group === g).map((s) => `<li><button data-nav="${s.id}">${s.title}</button></li>`).join('')}</ul></div>`).join('');
+  pick.innerHTML = groups.map((g) => `<optgroup label="${g}">${SCREENS.filter((s) => s.group === g).map((s) => `<option value="${s.id}">${s.title}</option>`).join('')}</optgroup>`).join('');
+}
+function show(id) {
+  const s = byId[id] || EXTRA[id];
+  if (!s) return;
+  if (byId[id]) { current = id; if (!['claws', 'journal'].includes(id)) base = id; }
+  phone.innerHTML = s.render();
+  if (byId[id]) {
+    nav.querySelectorAll('button').forEach((b) => b.setAttribute('aria-current', b.dataset.nav === id ? 'true' : 'false'));
+    pick.value = id;
+    notes.innerHTML = `<h2>${s.title}</h2><span class="src">${s.src}</span><ul>${s.notes.map((n) => `<li>${n}</li>`).join('')}</ul>`;
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+  }
+}
+phone.addEventListener('click', (e) => {
+  const strike = e.target.closest('[data-strike]');
+  if (strike) {
+    const r = phone.getBoundingClientRect();
+    const k = r.width / 390;
+    const f = document.createElement('span');
+    f.className = 'float';
+    f.textContent = '-3';
+    f.style.left = (e.clientX - r.left) / k + 'px';
+    f.style.top = (e.clientY - r.top) / k - 20 + 'px';
+    phone.appendChild(f);
+    setTimeout(() => f.remove(), 900);
+    return;
+  }
+  const fg = e.target.closest('[data-forage]');
+  if (fg) {
+    const f = document.createElement('span');
+    f.className = 'float'; f.textContent = '+2'; f.style.color = '#86efac'; f.style.left = '195px'; f.style.top = '440px';
+    phone.appendChild(f); setTimeout(() => f.remove(), 900); return;
+  }
+  const go = e.target.closest('[data-go]');
+  if (!go || !go.dataset.go) return;
+  const to = go.dataset.go;
+  if (to === 'back') { show(['claws', 'journal'].includes(current) ? 'warfront' : (byId[current] && byId[current].group === 'Draconia buildings' ? 'draconia' : base)); return; }
+  show(to);
+});
+nav.addEventListener('click', (e) => { const b = e.target.closest('[data-nav]'); if (b) show(b.dataset.nav); });
+pick.addEventListener('change', () => show(pick.value));
+
+function fit() {
+  const wrap = document.getElementById('wrap');
+  const k = Math.min(1, wrap.clientWidth / 390);
+  phone.style.transform = `scale(${k})`;
+  wrap.style.height = 844 * k + 'px';
+}
+window.addEventListener('resize', fit);
+buildNav();
+const start = (location.hash || '').slice(1);
+show(byId[start] ? start : 'warfront');
+fit();
+</script>

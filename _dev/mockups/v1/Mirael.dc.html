@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Scout Mirael: beyond the walls</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+a{color:#f0c060}a:hover{color:#ffd97a}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.ol{text-shadow:2px 0 #12090f,-2px 0 #12090f,0 2px #12090f,0 -2px #12090f,2px 2px #12090f,-2px 2px #12090f,2px -2px #12090f,-2px -2px #12090f}
+.ol1{text-shadow:1px 0 #12090f,-1px 0 #12090f,0 1px #12090f,0 -1px #12090f,1px 1px #12090f}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes spin{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #10140f; font-family: 'Nunito', system-ui, sans-serif; color: #f5ecd8;">
+  <img class="px" src="images/mock_assets_valley-bg.png" alt="" style="position: absolute; left: 0; top: 0; width: 390px; height: 288px;">
+  <div style="position: absolute; left: 0; right: 0; top: 0; height: 844px; background: linear-gradient(rgba(16,20,15,0.25) 0, rgba(16,20,15,0.6) 200px, #10140f 300px);"></div>
+
+  <header style="position: absolute; left: 0; right: 0; top: 214px; display: flex; flex-direction: column; align-items: center; gap: 10px; animation: fadeUp .7s ease-out;">
+    <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 14px; letter-spacing: 6px; color: #8ee0c8;">THE FRONTIER</span>
+    <div aria-hidden="true" style="display: flex; align-items: center; gap: 10px;">
+      <span style="width: 70px; height: 2px; background: linear-gradient(90deg, transparent, #8ee0c8);"></span>
+      <svg width="16" height="16" viewBox="0 0 10 10" style="shape-rendering: crispEdges; animation: spin 3s ease-in-out infinite;"><path fill="#d6aa46" d="M4 0h2v3h1v1h3v2H7v1H6v3H4V7H3V6H0V4h3V3h1z"/><path fill="#12090f" d="M4 4h2v2H4z"/></svg>
+      <span style="width: 70px; height: 2px; background: linear-gradient(90deg, #8ee0c8, transparent);"></span>
+    </div>
+    <h1 class="ol" style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 34px; line-height: 1.1; color: #e8fff4; text-align: center;">Beyond<br>the Walls</h1>
+  </header>
+
+  <section aria-label="Scout Mirael speaks" style="position: absolute; left: 12px; right: 12px; bottom: 28px;">
+    <img class="px" src="images/mock_cast_bust-mirael.png" alt="Scout Mirael, a wood elf" style="position: absolute; left: 6px; top: -150px; width: 176px; height: 184px; z-index: 2;">
+    <div class="step" style="background: #12090f; padding: 3px;">
+      <div class="step" style="background: linear-gradient(#22302c, #161e1c); box-shadow: inset 0 3px 0 #3e5a52; padding: 46px 18px 18px;">
+        <p style="margin: 0; font-weight: 800; font-size: 16px; line-height: 1.5; color: #f5ecd8;">Warden, our scouts have spotted something troubling. The wilderness beyond Draconia grows wilder by the day, and our villagers are stretched thin.</p>
+        <p style="margin: 10px 0 0; font-weight: 800; font-size: 16px; line-height: 1.5; color: #f5ecd8;"><span style="color: #8ee0c8;">Wayfinders</span> trained there can venture out and rescue lost souls: villagers stranded beyond our borders.</p>
+        <div style="display: flex; align-items: center; margin-top: 18px; gap: 12px;">
+          <div aria-label="Line 3 of 4" style="display: flex; gap: 6px; flex-grow: 1;">
+            <span style="width: 8px; height: 8px; background: #4a5a56;"></span>
+            <span style="width: 8px; height: 8px; background: #4a5a56;"></span>
+            <span style="width: 8px; height: 8px; background: #8ee0c8;"></span>
+            <span style="width: 8px; height: 8px; background: #4a5a56;"></span>
+          </div>
+          <a href="Draconia.dc.html" class="step" style="display: block; background: #5a2f0c; padding: 3px; text-decoration: none;">
+            <span class="step" style="display: block; padding: 11px 20px; background: linear-gradient(#ffe08a 0 5px, #e8ac36 5px); box-shadow: inset 0 -5px 0 #b06f1c; font-weight: 900; font-size: 16px; color: #3a1d06;">View the outpost</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="step" style="position: absolute; left: 160px; top: -16px; background: #12090f; padding: 3px; z-index: 3;">
+      <div class="step" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 10px; background: linear-gradient(#2a7a6c, #164a42); box-shadow: inset 0 2px 0 #8ee0c8;">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 10 10" style="shape-rendering: crispEdges;"><path fill="#ffd97a" d="M4 0h2v3h1v1h3v2H7v1H6v3H4V7H3V6H0V4h3V3h1z"/></svg>
+        <span class="ol1" style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; color: #f0fff8;">SCOUT MIRAEL</span>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
