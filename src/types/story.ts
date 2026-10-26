@@ -1,5 +1,6 @@
 import type { GameState } from './state'
 import { shouldRevealExplorerPost } from './state'
+import { MONSTERS } from './monsters'
 // Type-only: systems.ts imports STORY_BEATS from this file at runtime
 import type { SystemId, BuildingRevealId } from './systems'
 
@@ -66,6 +67,9 @@ export interface BeatDef {
 
 const seen = (s: GameState, id: BeatId) => s.beatsSeen.includes(id)
 
+/** call_to_arms (Rally) arrives with the first goblin: 13 kills */
+export const RALLY_AT_KILLS = MONSTERS[1].fromKills
+
 export const STORY_BEATS: BeatDef[] = [
   {
     id: 'prologue', chapter: 0, dwellSec: 0,
@@ -75,21 +79,22 @@ export const STORY_BEATS: BeatDef[] = [
     objective: { label: 'Slay 5 monsters', current: (s) => s.monstersDefeated, target: 5 },
   },
   {
-    // Elder Pyreth approaches right after the narration; the Begin Wave 0 step follows her scene
+    // Elder Pyreth approaches right after the narration; the first strike step follows her scene
     id: 'elder_approaches', chapter: 0, dwellSec: 0,
     trigger: (s) => seen(s, 'prologue'),
     unlocks: [],
   },
   {
-    // The first kill explains renown; the wave continues after the scene
+    // The first kill explains renown; the fight continues after the scene
     id: 'first_renown', chapter: 0, dwellSec: 0,
     trigger: (s) => s.monstersDefeated >= 1,
     unlocks: [],
   },
   {
-    // Owner ruling: some waves first. It plays in the camp after Wave 2 is cleared, before the first goblin wave.
+    // Owner ruling: some fighting first. It plays at the kill that brings the first goblin
+    // (13 kills, where Wave 2 used to clear before waves were put away).
     id: 'call_to_arms', chapter: 1, dwellSec: 0,
-    trigger: (s) => s.waveNumber >= 3 && !s.waveActive,
+    trigger: (s) => s.monstersDefeated >= RALLY_AT_KILLS,
     unlocks: ['rally'],
     spotlight: 'rally',
     objective: { label: 'Rally 2 fighters', current: (s) => s.fighters, target: 2 },

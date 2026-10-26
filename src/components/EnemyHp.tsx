@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, Animated, LayoutChangeEvent } from 'react-native'
 import { Text } from './Text'
 import { useReduceMotion } from '../hooks/useReduceMotion'
+import { shownHp } from '../types/monsters'
 import { colors, gold } from '../theme'
 
-/** One pip per HP up to this many; above it the HP is a bar with "cur/max" text */
-export const PIP_MAX_HP = 12
 /** How long the lost chunk stays white before it drains */
 const TRAIL_HOLD_MS = 400
 const TRAIL_DRAIN_MS = 250
@@ -18,37 +17,12 @@ interface EnemyHpProps {
 }
 
 /**
- * The enemy's HP, readable at a glance: pips for small monsters, a bar with "cur/max" for big
- * ones. Screen readers get the HP from the battlefield's label, so this stays hidden from them.
+ * The enemy's HP: one long bar that drains in proportion to the damage taken, so a tap takes a
+ * big bite and a fighter's swing a sliver. The HP just lost shows white for a moment, then
+ * drains. "cur / max" sits above it (rounded up). Screen readers get the HP from the
+ * battlefield's label, so this stays hidden from them.
  */
 export function EnemyHp({ hp, max, width }: EnemyHpProps) {
-  return (
-    <View
-      style={[styles.root, { width }]}
-      importantForAccessibility="no-hide-descendants"
-      accessibilityElementsHidden
-    >
-      {max <= PIP_MAX_HP ? <Pips hp={hp} max={max} width={width} /> : <HpBar hp={hp} max={max} width={width} />}
-    </View>
-  )
-}
-
-function Pips({ hp, max, width }: EnemyHpProps) {
-  const gap = 4
-  const pip = Math.max(8, Math.min(22, Math.floor((width - gap * (max - 1)) / max)))
-  return (
-    <View style={styles.pips}>
-      {Array.from({ length: max }, (_, i) => (
-        <View
-          key={i}
-          style={[styles.pip, { width: pip, marginRight: i < max - 1 ? gap : 0 }, i < hp ? styles.pipFull : styles.pipEmpty]}
-        />
-      ))}
-    </View>
-  )
-}
-
-function HpBar({ hp, max, width }: EnemyHpProps) {
   const reduceMotion = useReduceMotion()
   const [trackW, setTrackW] = useState(width)
   const fraction = Math.max(0, Math.min(1, hp / max))
@@ -80,8 +54,12 @@ function HpBar({ hp, max, width }: EnemyHpProps) {
   })
 
   return (
-    <View>
-      <Text variant="caption" center style={styles.hpText}>{`${hp} / ${max}`}</Text>
+    <View
+      style={[styles.root, { width }]}
+      importantForAccessibility="no-hide-descendants"
+      accessibilityElementsHidden
+    >
+      <Text variant="caption" center style={styles.hpText}>{`${shownHp(hp)} / ${max}`}</Text>
       <View style={styles.track} onLayout={(e: LayoutChangeEvent) => setTrackW(e.nativeEvent.layout.width)}>
         <Animated.View style={[styles.fill, styles.trail, anchored(trail)]} />
         <View style={[styles.fill, styles.hpFill, { width: `${fraction * 100}%` }]} />
@@ -92,41 +70,25 @@ function HpBar({ hp, max, width }: EnemyHpProps) {
 
 const styles = StyleSheet.create({
   root: {
-    alignItems: 'center',
     justifyContent: 'center',
     minHeight: 30,
-  },
-  pips: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  pip: {
-    height: 10,
-    borderRadius: 3,
-    borderWidth: 1,
-  },
-  pipFull: {
-    backgroundColor: '#ef4444',
-    borderColor: '#fca5a5',
-  },
-  pipEmpty: {
-    backgroundColor: colors.bg.surface3,
-    borderColor: colors.border.subtle,
   },
   hpText: {
     color: gold[300],
     marginBottom: 2,
   },
   track: {
-    height: 8,
+    height: 10,
     width: '100%',
-    borderRadius: 4,
+    borderRadius: 5,
     overflow: 'hidden',
     backgroundColor: colors.bg.surface3,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
   },
   fill: {
     ...StyleSheet.absoluteFillObject,
-    borderRadius: 4,
+    borderRadius: 5,
   },
   trail: {
     backgroundColor: '#ffffff',

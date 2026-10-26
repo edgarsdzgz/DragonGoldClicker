@@ -51,6 +51,8 @@ export interface BattlefieldHandle {
   showBounty: (amount: string) => void
   /** The monster that was just killed falls away and a coin flies to the inspiration figure */
   showKill: (monster: MonsterDef) => void
+  /** A fighter's swing landed: a small number in the ally colour and a faint flash, no slash */
+  showAllyHit: (amount: string) => void
 }
 
 /** The monster's art box as a share of the sprite circle (fits inside the circle) */
@@ -170,7 +172,14 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       }
       spriteRef.current?.measureInWindow((x, y, w, h) => coinFlight.fly({ x: x + w / 2, y: y + h / 2 }))
     },
-  }), [size, fall, nudge, coinFlight, reduceMotion])
+    showAllyHit: (amount) => {
+      // Spread across the monster so several fighters read as several small hits
+      const x = size * (0.25 + Math.random() * 0.5)
+      numbers.current?.spawn({ x, y: size * 0.45, text: amount, color: colors.warfront.ally })
+      flash.setValue(0.12)
+      Animated.timing(flash, { toValue: 0, duration: 120, useNativeDriver: true }).start()
+    },
+  }), [size, fall, nudge, flash, coinFlight, reduceMotion])
 
   useEffect(() => {
     if (!holding || reduceMotion) {

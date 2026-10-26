@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
-import { Text } from './Text'
-import { MonsterIcon } from './MonsterIcon'
-import { useCoachTarget } from '../hooks/useCoachTarget'
-import type { CampView } from '../types/monsters'
-import type { CampLayout } from '../types/warfrontLayout'
-import { BEGIN_BUTTON_H } from '../types/warfrontLayout'
-import { colors, spacing, radius, gold, dark } from '../theme'
+import { Text } from '../../components/Text'
+import { MonsterIcon } from '../../components/MonsterIcon'
+import { useCoachTarget } from '../../hooks/useCoachTarget'
+import type { CampView } from './waveStrike'
+import type { CampLayout } from '../../types/warfrontLayout'
+import { BEGIN_BUTTON_H } from '../../types/warfrontLayout'
+import { colors, spacing, radius, gold, dark } from '../../theme'
 
 interface EnemyCampProps {
   view: CampView

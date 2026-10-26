@@ -111,6 +111,8 @@ export const colors = {
     rally: '#dc4444',
     repair: '#b0a890',
     slay: gold[400],
+    /** Fighters' hits on the monster */
+    ally: '#93c5fd',
   },
 
   dark,

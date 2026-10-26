@@ -28,7 +28,7 @@ describe('story pause', () => {
 
   it('still fires the live beats', () => {
     expect(findNextBeat(make({}), 'live')?.id).toBe('prologue')
-    expect(findNextBeat(make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], waveNumber: 3, waveActive: false, playSeconds: 99 }), 'live')?.id).toBe('call_to_arms')
+    expect(findNextBeat(make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], monstersDefeated: 13, playSeconds: 99 }), 'live')?.id).toBe('call_to_arms')
   })
 
   it('backfill still covers the whole table: the pause only limits the director', () => {

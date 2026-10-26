@@ -1,13 +1,15 @@
-import { DEFAULT_GAME_STATE } from '../state'
-import type { GameState } from '../state'
-import { strike, waveView, beginWave, endWave, campView, MONSTERS } from '../monsters'
+import { DEFAULT_GAME_STATE } from '../../../types/state'
+import type { GameState } from '../../../types/state'
+import { MONSTERS } from '../../../types/monsters'
+import { waveStrike as strike, waveView, beginWave, endWave, campView } from '../waveStrike'
 import {
   progressWave, waveActiveOnLoad, waveBonus, waveSize, monsterIndexForWave,
   WAVE_SIZE, OPENING_WAVE_SIZE, WAVE_BANNER_MS,
 } from '../waves'
-import { migrateToV4, migrateToV5, migrateToV7 } from '../waveMigration'
-import { getFighterCost } from '../fighters'
+import { migrateToV4, migrateToV5, migrateToV7 } from '../../../types/waveMigration'
+import { getFighterCost } from '../../../types/fighters'
 
+// Cold storage (2026-10-26): the wave mode's rules, kept tested until the mode returns.
 // Most tests fight, so they start with the wave already begun
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, waveActive: true, ...over })
 
@@ -196,29 +198,5 @@ describe('save migrations', () => {
     expect(waveActiveOnLoad({ ...base, monsterHp: 5 }, 7)).toBe(false)
     // An older save with a hurt monster and no kills in the wave also resumes mid-wave
     expect(waveActiveOnLoad({ ...base, waveActive: undefined, monsterHp: 2 }, 5)).toBe(true)
-  })
-})
-
-describe('a fresh game reaches call_to_arms in the Wave 3 camp', () => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { findNextBeat } = require('../storyDirector')
-
-  it('plays it exactly there, with about 4.75 renown', () => {
-    let s: GameState = { ...DEFAULT_GAME_STATE, beatsSeen: ['prologue', 'elder_approaches', 'first_renown'] }
-    const firedIn: string[] = []
-    for (let wave = 0; wave <= 3; wave++) {
-      // In camp: does the director offer call_to_arms here?
-      const beat = findNextBeat({ ...s, playSeconds: 999 }, 'live')
-      if (beat) firedIn.push(`camp${s.waveNumber}:${beat.id}`)
-      if (wave === 3) break
-      s = beginWave(s)
-      const mid = findNextBeat({ ...s, playSeconds: 999 }, 'live')
-      expect(mid).toBeNull()
-      s = killN(s, waveSize(s.waveNumber)).state
-      s = endWave(s)
-    }
-    expect(firedIn).toEqual(['camp3:call_to_arms'])
-    expect(s.waveNumber).toBe(3)
-    expect(s.inspiration).toBeCloseTo(4.75, 2)
   })
 })

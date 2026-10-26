@@ -57,7 +57,9 @@ import {
   getResearchBonuses,
   getFighterCost,
   getRepairerCost,
-  getFighterAutoRate,
+  stepFighterSwings,
+  FIGHTER_HIT_DAMAGE,
+  FIGHTER_TICK_MS,
   SIEGE_TICK_INTERVAL,
   MAX_CITY_HP,
   getThreatLevel,
@@ -73,7 +75,7 @@ import {
 } from '../types/game'
 import { stepFood } from '../types/foodTick'
 import { applyCityDamage } from '../types/cityHp'
-import { strike, beginWave as beginWaveState, endWave as endWaveState } from '../types/monsters'
+import { strike, fighterStrike } from '../types/monsters'
 import { firstExpeditionReward } from '../types/scripted'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -129,10 +131,6 @@ interface GameContextType {
   isResearchAvailable: (id: string) => boolean
   /** Story director: record a beat as seen and restart the dwell clock (at the game second it fired in) */
   markBeatSeen: (id: string, atPlaySec?: number) => void
-  /** Send the next wave in from the camp */
-  beginWave: () => void
-  /** The wave-cleared banner is over: back to camp */
-  endWave: () => void
   /** Story: apply a scripted state change (pure updater; scripted events and flags) */
   applyScripted: (updater: (s: GameState) => GameState) => void
   /** Guided tutorial: record a step as done */
@@ -213,11 +211,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // Apply research: gear bonus multiplier boosts the gear portion, auto rate multiplier boosts all
   const gearRate = (state.armoryGear.swords * SWORD_BONUS + state.armoryGear.shields * SHIELD_BONUS) * researchBonuses.gearBonusMultiplier
   const soldierAutoRate = (baseAutoRate + gearRate) * (1 + researchBonuses.autoRateMultiplier)
-  const fighterAutoRate = getFighterAutoRate(state.fighters)
-  const potentialAutoRate = soldierAutoRate + fighterAutoRate
-  // Soldiers/fighters stop earning when starving
-  const combatantsExist = getTotalSoldiers(state.soldiers) > 0 || state.fighters > 0
-  const soldiersStarving = isSystemOn(state, 'hunger') && state.food <= 0 && combatantsExist
+  // Fighters earn nothing per second: they wear down the monster, and renown comes from its kill
+  const potentialAutoRate = soldierAutoRate
+  // Soldiers and fighters stop when starving
+  const starving = isSystemOn(state, 'hunger') && state.food <= 0
+  const soldiersStarving = starving && getTotalSoldiers(state.soldiers) > 0
   const effectiveAutoRate = soldiersStarving ? 0 : potentialAutoRate
 
   const autoFoodRate = getAutoFoodRate(state.foragers)
@@ -249,6 +247,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
       })
     }, [loaded, effectiveAutoRate])
+  )
+
+  // Fighters' swings at the monster, staggered and counted every FIGHTER_TICK_MS. The part of a
+  // swing still to come lives in a ref, so a tick in which nothing lands does not re-render.
+  const fighterSwing = useRef(0)
+  const fighters = loaded && !starving ? state.fighters : 0
+  useGameLoop(
+    useCallback(() => {
+      const { swings, progress } = stepFighterSwings(fighterSwing.current, fighters)
+      fighterSwing.current = progress
+      if (swings <= 0) return
+      setState((prev) => (prev.fighters > 0 ? fighterStrike(prev, swings * FIGHTER_HIT_DAMAGE, swings).state : prev))
+    }, [fighters]),
+    FIGHTER_TICK_MS,
   )
 
   // Auto food accumulator (foragers gather food automatically)
@@ -1091,8 +1103,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       : { ...prev, beatsSeen: [...prev.beatsSeen, id], lastBeatAtPlaySec: atPlaySec ?? prev.playSeconds }))
   }, [])
 
-  const beginWave = useCallback(() => setState(beginWaveState), [])
-  const endWave = useCallback(() => setState(endWaveState), [])
 
   const applyScripted = useCallback((updater: (s: GameState) => GameState) => setState(updater), [])
 
@@ -1173,8 +1183,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         isResearchAvailable,
         markBeatSeen,
         completeTutorialStep,
-        beginWave,
-        endWave,
         applyScripted,
         devApply,
         devForceWanderer,

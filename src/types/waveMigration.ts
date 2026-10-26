@@ -1,9 +1,10 @@
 import type { GameState } from './state'
-import { MONSTERS } from './monsters'
-import { monsterIndexForWave } from './waves'
+import { MONSTERS, monsterIndexForKills } from './monsters'
+// Old saves were made with waves, so their migrations still read the wave rules in cold storage
+import { monsterIndexForWave } from '../modes/waves/waves'
 
 // =============================================================================
-// SAVE MIGRATIONS FOR WAVES (v4 -> v7)
+// SAVE MIGRATIONS FOR WAVES (v4 -> v8)
 // =============================================================================
 // Waves were numbered from 1 in groups of five, and a monster's type followed the kill count.
 // Wave 0 (3 kobolds) now opens the game and the type follows the wave number.
@@ -52,4 +53,15 @@ export function migrateToV7(s: GameState): GameState {
     monsterIndex,
     monsterHp: sameType && s.monsterHp > 0 ? s.monsterHp : MONSTERS[monsterIndex].hp,
   }
+}
+
+/**
+ * v8: waves put away (layer 2e). The monster type follows lifetime kills. The kill thresholds are
+ * the old wave boundaries, so a save keeps the monster it is facing, damage and all; only one whose
+ * type disagrees starts on a fresh monster. The wave fields are left as they are (cold storage).
+ */
+export function migrateToV8(s: GameState): GameState {
+  const monsterIndex = monsterIndexForKills(Math.floor(s.monstersDefeated))
+  if (monsterIndex === s.monsterIndex && s.monsterHp > 0) return s
+  return { ...s, monsterIndex, monsterHp: MONSTERS[monsterIndex].hp }
 }

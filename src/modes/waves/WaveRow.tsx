@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from '../../components/Text'
 import { useGame } from '../../context/GameContext'
-import { waveView } from '../../types/monsters'
+import { waveView } from './waveStrike'
 import { colors, spacing, gold } from '../../theme'
 
 /** "WAVE 3" on the left, "4 kobolds left" on the right. One line. */

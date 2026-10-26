@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { MonsterIcon } from './MonsterIcon'
-import type { MonsterDef } from '../types/monsters'
-import { QUEUE_H } from '../types/warfrontLayout'
-import { colors, spacing } from '../theme'
+import { MonsterIcon } from '../../components/MonsterIcon'
+import type { MonsterDef } from '../../types/monsters'
+import { QUEUE_H } from '../../types/warfrontLayout'
+import { colors, spacing } from '../../theme'
 
 /** Icon box for a queued monster (glyph-only monsters draw at about 18dp inside it) */
 const QUEUE_ICON = 25

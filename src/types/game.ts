@@ -69,7 +69,9 @@ export {
 export {
   FIGHTER_BASE_COST,
   FIGHTER_COST_EXPONENT,
-  FIGHTER_INSP_RATE,
+  FIGHTER_HIT_DAMAGE,
+  FIGHTER_SWING_MS,
+  FIGHTER_TICK_MS,
   FIGHTER_FOOD_COST,
   REPAIR_UNLOCK_FIGHTERS,
   REPAIRER_BASE_COST,
@@ -77,7 +79,8 @@ export {
   REPAIRER_FOOD_COST,
   getFighterCost,
   getRepairerCost,
-  getFighterAutoRate,
+  getFighterDps,
+  stepFighterSwings,
 } from './fighters'
 
 export type { StarvationResult } from './food'

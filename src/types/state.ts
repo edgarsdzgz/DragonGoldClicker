@@ -164,9 +164,16 @@ export interface GameState {
   tapDamage: number
   /** Which MONSTERS entry the player is facing */
   monsterIndex: number
-  /** Hit points the current monster has left */
+  /** Hit points the current monster has left (fractional: fighters chip it a quarter at a time) */
   monsterHp: number
-  /** Current wave. Wave 0 is the 3-kobold opening; Wave 1 onward have 5 monsters of one type. */
+  /** Fighter swings that have landed, lifetime (the Warfront floats a number for each new one) */
+  allyStrikes: number
+  /** Monsters killed by fighters rather than by a tap, lifetime */
+  allyKills: number
+  /**
+   * Wave fields: in cold storage for a later wave mode (src/modes/waves). The main game no
+   * longer reads or writes them; they stay in the save so that mode has them when it returns.
+   * Current wave. Wave 0 is the 3-kobold opening; Wave 1 onward have 5 monsters of one type. */
   waveNumber: number
   /** Monsters already killed in the current wave (0-4) */
   waveKills: number
@@ -241,10 +248,12 @@ export const DEFAULT_GAME_STATE: GameState = {
   tapDamage: STARTING_TAP_DAMAGE,
   monsterIndex: 0,
   monsterHp: FIRST_MONSTER_HP,
+  allyStrikes: 0,
+  allyKills: 0,
   waveNumber: 0,
   waveKills: 0,
   waveActive: false,
-  saveMigrationVersion: 7,
+  saveMigrationVersion: 8,
 }
 
 // =============================================================================

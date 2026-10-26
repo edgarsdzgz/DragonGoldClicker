@@ -10,13 +10,14 @@ import {
   getFoodConsumption,
   FOOD_CHECK_INTERVAL,
   getResearchBonuses,
-  getFighterAutoRate,
+  getFighterDps,
   SWORD_BONUS,
   SHIELD_BONUS,
   roundInsp,
   isSystemOn,
 } from '../types/game'
 import { migrateSave } from '../types/saveMigrations'
+import { currentMonster } from '../types/monsters'
 
 const STORAGE_KEY = '@dragongold/gamestate'
 
@@ -141,7 +142,11 @@ export function useStorage() {
           )
           const gearBoost = (gameState.armoryGear.swords * SWORD_BONUS + gameState.armoryGear.shields * SHIELD_BONUS) * rb.gearBonusMultiplier
           const soldierRate = (baseAutoRate + gearBoost) * (1 + rb.autoRateMultiplier)
-          const autoRate = soldierRate + getFighterAutoRate(gameState.fighters)
+          // Fighters earn only through kills: their damage over the time away, paid at the bounty
+          // per HP of the monster they face (no kills are counted offline)
+          const facing = currentMonster(gameState)
+          const fighterRate = getFighterDps(gameState.fighters) * (facing.bounty / facing.hp)
+          const autoRate = soldierRate + fighterRate
           const maxSec = getOfflineMaxSeconds(gameState.offlineLevel)
           const cappedSec = Math.min(elapsedSec, maxSec)
 

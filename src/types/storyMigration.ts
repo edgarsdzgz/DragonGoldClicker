@@ -1,6 +1,6 @@
 import type { GameState } from './state'
 import type { BeatId } from './story'
-import { STORY_BEATS } from './story'
+import { STORY_BEATS, RALLY_AT_KILLS } from './story'
 
 // =============================================================================
 // SAVE v1 -> v2: BACKFILL STORY PROGRESS
@@ -10,6 +10,7 @@ import { STORY_BEATS } from './story'
 
 /** Whether the save has played at all (so the opening scenes are not replayed for it) */
 export function hasPlayed(s: GameState): boolean {
+  // waveActive is only ever set by saves from before waves were put away: one that began a wave has played
   if (s.totalClicks > 0 || s.monstersDefeated > 0 || s.waveActive || s.totalInspirationEarned > 0) return true
   // Anything a later beat turns on counts too
   return Object.values(EVIDENCE).some((proof) => proof?.(s)) || Object.values(SIDE_EVIDENCE).some((proof) => proof?.(s))
@@ -18,7 +19,7 @@ export function hasPlayed(s: GameState): boolean {
 /** Proof, from a v1 save, that the player already used what a beat turns on */
 const EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   first_renown: (s) => s.monstersDefeated > 0,
-  call_to_arms: (s) => s.fightersRallied > 0 || (s.waveNumber >= 3 && !s.waveActive),
+  call_to_arms: (s) => s.fightersRallied > 0 || s.monstersDefeated >= RALLY_AT_KILLS,
   the_breach: (s) => s.hpUnlocked,
   mend_the_walls: (s) => s.repairersDirected > 0,
   empty_stores: (s) => s.foodSystemActive || s.foragers.gatherers > 0,
@@ -88,7 +89,8 @@ const OPENING_BEATS: BeatId[] = ['prologue', 'elder_approaches']
  * beatsSeen before the first seen beat that follows it in the table, so the order stays sensible.
  */
 export function catchUpBeats(save: GameState): GameState {
-  // A save that has fought never gets the opening replayed, whatever its beatsSeen says
+  // A save that has fought (or, from before waves were put away, began one) never gets the
+  // opening replayed, whatever its beatsSeen says
   if (save.monstersDefeated > 0 || save.waveActive) {
     let seenNow = save.beatsSeen
     for (const id of OPENING_BEATS) if (!seenNow.includes(id)) seenNow = insertInOrder(seenNow, id)

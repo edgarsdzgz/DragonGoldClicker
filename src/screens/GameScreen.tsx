@@ -1,5 +1,6 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react'
-import { View, StyleSheet, Animated, AccessibilityInfo, useWindowDimensions, LayoutChangeEvent } from 'react-native'
+import { View, StyleSheet, Animated, useWindowDimensions, LayoutChangeEvent } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
 import { Text, StoryObjective, StorySpotlight, CoachTarget } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
@@ -17,28 +18,21 @@ import { SFX, SFX_WEAPON_POOL } from '../data/sfx'
 import { useRandomSfx } from '../hooks/useRandomSfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, getFighterCost, getRepairerCost, isSystemOn } from '../types/game'
+import { formatNumber, getFighterCost, getRepairerCost, getFighterDps, isSystemOn, FIGHTER_HIT_DAMAGE } from '../types/game'
 import { battlefieldLayout, TALL_WINDOW, FLAVOR_H } from '../types/warfrontLayout'
 import { DevShortcut } from '../components/DevShortcut'
 import { warfrontReveal } from '../types/opening'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
-import { WaveRow } from './warfront/WaveRow'
-import { MonsterQueue } from '../components/MonsterQueue'
-import { WaveBanner } from '../components/WaveBanner'
-import { EnemyCamp } from '../components/EnemyCamp'
-import { campView } from '../types/monsters'
-import { campLayout } from '../types/warfrontLayout'
-import { waveView } from '../types/monsters'
-import { waveBonus, WAVE_BANNER_MS } from '../types/waves'
 import { Gate } from './warfront/Gate'
 
 const RALLY_PALETTE = { accent: colors.warfront.rally, glow: colors.warfront.rally }
 const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.repair }
 
 /**
- * The Warfront is a scene read top to bottom along the monsters' path: they come from the
- * top, the whole battlefield is the tap target, and the gate sits by the thumb at the bottom.
+ * The Warfront is a scene read top to bottom along the monsters' path: there is always a monster
+ * at the gate, the whole battlefield is the tap target, and the gate sits by the thumb at the
+ * bottom. Fighters wear the same monster down. (Waves are in cold storage: src/modes/waves.)
  */
 const killsText = (kills: number) => {
   const n = Math.floor(kills)
@@ -46,7 +40,7 @@ const killsText = (kills: number) => {
 }
 
 export function GameScreen() {
-  const { state, click, rallyFighter, directRepairer, effectiveAutoRate, beginWave, endWave } = useGame()
+  const { state, click, rallyFighter, directRepairer, effectiveAutoRate } = useGame()
   const { shakeNonce } = useShakeRequest()
   const shakeStyle = useScreenShake(shakeNonce)
   const flavor = useFlavorText(COMBAT_LINES)
@@ -58,16 +52,8 @@ export function GameScreen() {
   // The battlefield takes whatever height is left; its contents are sized to fit it
   const [fieldHeight, setFieldHeight] = useState(0)
   const onFieldLayout = (e: LayoutChangeEvent) => setFieldHeight(Math.floor(e.nativeEvent.layout.height))
-  const field = battlefieldLayout(fieldHeight, { queue: true })
-  const queue = waveView(state).queue
-  const camp = campView(state)
-
-  // Clearing a wave: a banner for a moment, during which taps are ignored
-  const [banner, setBanner] = useState<string | null>(null)
-  const bannerTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  useEffect(() => () => {
-    if (bannerTimer.current) clearTimeout(bannerTimer.current)
-  }, [])
+  const field = battlefieldLayout(fieldHeight)
+  const focused = useIsFocused()
 
   // Each hit is a claw swing (a random one from the weapon pool, slightly varied in pitch)
   const playSwing = useRandomSfx(SFX_WEAPON_POOL, { cooldownMs: 90, pitchVariation: 0.06 })
@@ -75,43 +61,32 @@ export function GameScreen() {
   const haptics = useHaptics()
   const battlefieldRef = useRef<BattlefieldHandle>(null)
 
-  // A fast double press begins one wave: one haptic, one announcement
-  const lastBegin = useRef(0)
-  const handleBegin = useCallback(() => {
-    const now = Date.now()
-    if (now - lastBegin.current < 600) return
-    lastBegin.current = now
-    haptics.medium()
-    beginWave()
-    AccessibilityInfo.announceForAccessibility(`Wave ${camp.waveNumber} begins`)
-  }, [haptics, beginWave, camp.waveNumber])
-
   const handleStrike = useCallback(() => {
     click()
     playSwing()
     haptics.light()
   }, [click, playSwing, haptics])
 
-  // A kill: medium haptic, coin sound, the bounty floats up, and about one in four brings a flavour line
+  // Fighters' swings that landed: one small number per tick's worth (only while the Warfront shows)
+  const allyStrikesSeen = useRef(state.allyStrikes)
+  useEffect(() => {
+    const landed = state.allyStrikes - allyStrikesSeen.current
+    allyStrikesSeen.current = state.allyStrikes
+    if (landed > 0 && focused) battlefieldRef.current?.showAllyHit(`-${(landed * FIGHTER_HIT_DAMAGE).toFixed(2)}`)
+  }, [state.allyStrikes, focused])
+
+  // A kill: coin sound, the bounty floats up, and about one in four brings a flavour line. Only
+  // the player's own kills get the haptic; fighters' kills away from the Warfront stay quiet.
+  const allyKillsSeen = useRef(state.allyKills)
   useKillEvents(state.monstersDefeated, state.monsterIndex, (monster) => {
-    haptics.medium()
+    const byFighters = state.allyKills > allyKillsSeen.current
+    allyKillsSeen.current = state.allyKills
+    if (!focused) return { silent: true }
+    if (!byFighters) haptics.medium()
     playKill()
     battlefieldRef.current?.showBounty(`+${monster.bounty.toFixed(2)}`)
     battlefieldRef.current?.showKill(monster)
-    if (state.waveKills === 0) {
-      // The kill finished the wave (the state here is already the new one)
-      setBanner(`Wave cleared +${waveBonus(monster.bounty).toFixed(2)}`)
-      if (bannerTimer.current) clearTimeout(bannerTimer.current)
-      // When the banner ends the view returns to camp (the bonus was already paid at the kill)
-      bannerTimer.current = setTimeout(() => {
-        setBanner(null)
-        endWave()
-      }, WAVE_BANNER_MS)
-      // One announcement for the kill and the wave, so the two never collide
-      return { text: `${monster.name} slain. Wave cleared, +${waveBonus(monster.bounty).toFixed(2)}`, force: true }
-    } else if (Math.random() < 0.25) {
-      flavor.show()
-    }
+    if (Math.random() < 0.25) flavor.show()
   })
 
   const rallyOn = isSystemOn(state, 'rally')
@@ -130,7 +105,6 @@ export function GameScreen() {
           autoInspPerSec={effectiveAutoRate}
         />
       )}
-      {reveal.waveRow && <WaveRow />}
       {reveal.chrome && <StoryObjective />}
       {reveal.chrome && <PopulationChips />}
       {!reveal.chrome && <DevShortcut offsetTop={reveal.topBar ? 56 : 0} />}
@@ -146,22 +120,16 @@ export function GameScreen() {
             kills={state.monstersDefeated}
             damage={state.tapDamage}
             onStrike={handleStrike}
-            locked={banner !== null}
             showName={reveal.monsterName}
-            camp={state.waveActive ? undefined : (
-              <EnemyCamp view={camp} layout={campLayout(fieldHeight)} onBegin={handleBegin} minimal={reveal.buttonOnly} coachId="begin_wave" />
-            )}
             coachId="slay"
-            queue={field.showQueue && reveal.waveRow ? <MonsterQueue monsters={queue} /> : undefined}
-            header={field.showFlavor && reveal.waveRow ? (
+            header={field.showFlavor && reveal.details ? (
               <FlavorText text={flavor.text} opacity={flavor.opacity} color={gold[300]} reserveHeight={FLAVOR_H} />
             ) : undefined}
           />
         )}
-        <WaveBanner text={banner} />
       </View>
 
-      {reveal.gate && <Gate />}
+      <Gate />
 
       {/* Command row: Rally + Repair below the gate, near the thumb */}
       {(rallyOn || repairOn) && (
@@ -204,13 +172,16 @@ export function GameScreen() {
         </View>
       )}
 
-      {/* Footer: one line, kills and damage per tap (only on tall windows) */}
-      {showFooter && reveal.waveRow && (
+      {/* Footer: kills, damage per tap and the fighters' damage (only on tall windows) */}
+      {showFooter && reveal.details && (
         <View style={styles.footer}>
           <Text variant="caption" color="muted">
             {killsText(state.monstersDefeated)}
           </Text>
           <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
+          {state.fighters > 0 && (
+            <Text variant="caption" style={styles.allyDps}>fighters {getFighterDps(state.fighters).toFixed(2)} damage/s</Text>
+          )}
         </View>
       )}
     </Animated.View>
@@ -244,10 +215,15 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing[3],
     paddingBottom: spacing[2],
     paddingTop: spacing[1],
+    paddingHorizontal: spacing[4],
+  },
+  allyDps: {
+    color: colors.warfront.ally,
   },
 })

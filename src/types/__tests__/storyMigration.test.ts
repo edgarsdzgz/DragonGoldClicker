@@ -121,10 +121,10 @@ describe('call_to_arms backfill', () => {
     expect(backfillStory(v1({ fightersRallied: 1, fighters: 1 })).beatsSeen).toContain('call_to_arms')
   })
 
-  it('is seen for a save in the camp of Wave 3 or later, and not mid-wave or earlier', () => {
-    const camp = (over: Partial<GameState>) => backfillStory(v1({ monstersDefeated: 13, ...over })).beatsSeen
-    expect(camp({ waveNumber: 3, waveActive: false })).toContain('call_to_arms')
-    expect(camp({ waveNumber: 3, waveActive: true })).not.toContain('call_to_arms')
-    expect(camp({ waveNumber: 2, waveActive: false })).not.toContain('call_to_arms')
+  it('is seen for a save with 13 kills or more, whatever its old wave fields say', () => {
+    const seen = (over: Partial<GameState>) => backfillStory(v1(over)).beatsSeen
+    expect(seen({ monstersDefeated: 13 })).toContain('call_to_arms')
+    expect(seen({ monstersDefeated: 13, waveNumber: 3, waveActive: true })).toContain('call_to_arms')
+    expect(seen({ monstersDefeated: 12 })).not.toContain('call_to_arms')
   })
 })

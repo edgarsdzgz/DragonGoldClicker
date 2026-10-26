@@ -1,13 +1,13 @@
 import type { GameState } from './state'
 import { MONSTERS } from './monsters'
-import { migrateToV4, migrateToV5, migrateToV7 } from './waveMigration'
-import { waveActiveOnLoad } from './waves'
+import { migrateToV4, migrateToV5, migrateToV7, migrateToV8 } from './waveMigration'
+import { waveActiveOnLoad } from '../modes/waves/waves'
 import { backfillStory, backfillScripted, catchUpBeats } from './storyMigration'
 import { backfillTutorial } from './tutorial'
 import { catchUpScripted } from './scripted'
 
 /** The newest save format. Every load ends here, whichever version it started from. */
-export const LATEST_SAVE_VERSION = 7
+export const LATEST_SAVE_VERSION = 8
 
 /**
  * Bring a loaded save up to the latest version. Each step runs only for saves older than it, so a
@@ -28,6 +28,7 @@ export function migrateSave(input: GameState, from: number): GameState {
   s = { ...s, waveActive: waveActiveOnLoad({ ...s, monsterMaxHp: monster.hp }, from) }
 
   if (from < 7) s = migrateToV7(s)
+  if (from < 8) s = migrateToV8(s)
 
   // Beats added before ones this save has already seen must not play their scene for it
   s = catchUpBeats(s)

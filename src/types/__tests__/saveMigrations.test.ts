@@ -7,15 +7,15 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 
 describe('migrateSave', () => {
   it('always ends at the latest version', () => {
-    for (const from of [0, 1, 2, 3, 4, 5, 6, 7]) {
+    for (const from of [0, 1, 2, 3, 4, 5, 6, 7, 8]) {
       expect(migrateSave(make({ saveMigrationVersion: from }), from).saveMigrationVersion).toBe(LATEST_SAVE_VERSION)
     }
     expect(LATEST_SAVE_VERSION).toBe(DEFAULT_GAME_STATE.saveMigrationVersion)
   })
 
-  it('a v7 save loads as v7 and no numbered migration re-runs', () => {
+  it('a v8 save loads as v8 and no numbered migration re-runs', () => {
     const save = make({
-      saveMigrationVersion: 7,
+      saveMigrationVersion: 8,
       beatsSeen: ['prologue'],
       tutorialStepsDone: ['custom_step'],
       scriptedDone: [],
@@ -27,8 +27,8 @@ describe('migrateSave', () => {
       monsterHp: 3,
       playSeconds: 500,
     })
-    const out = migrateSave(save, 7)
-    expect(out.saveMigrationVersion).toBe(7)
+    const out = migrateSave(save, 8)
+    expect(out.saveMigrationVersion).toBe(8)
     // v2 backfill would have rewritten beatsSeen and reset playSeconds; v3 the tutorial; v5/v7 the wave
     expect(out.playSeconds).toBe(500)
     expect(out.tutorialStepsDone).toEqual(['custom_step'])
@@ -37,14 +37,39 @@ describe('migrateSave', () => {
     expect(out.monsterHp).toBe(3)
     expect(out.waveActive).toBe(true)
     // Loading twice changes nothing
-    expect(migrateSave(out, 7)).toEqual(out)
+    expect(migrateSave(out, 8)).toEqual(out)
   })
 
-  it('a v6 save moves to v7 exactly once', () => {
+  it('a v6 save moves to v8 exactly once', () => {
     const out = migrateSave(make({ saveMigrationVersion: 6, waveNumber: 1, monstersDefeated: 0, waveActive: false }), 6)
-    expect(out.saveMigrationVersion).toBe(7)
+    expect(out.saveMigrationVersion).toBe(8)
     expect(out.waveNumber).toBe(0)
-    expect(migrateSave(out, 7).waveNumber).toBe(0)
+    expect(migrateSave(out, 8).waveNumber).toBe(0)
+  })
+
+  it('v8 (waves put away): a save keeps the monster it faces and its damage, wave fields untouched', () => {
+    // Mid-wave 4 (goblins), 22 kills: goblins by kills too
+    const mid = migrateSave(make({ saveMigrationVersion: 7, waveNumber: 4, waveKills: 2, waveActive: true, monstersDefeated: 22, monsterIndex: 1, monsterHp: 3 }), 7)
+    expect(mid).toMatchObject({ monsterIndex: 1, monsterHp: 3, waveNumber: 4, waveKills: 2, saveMigrationVersion: 8 })
+    // In the Wave 3 camp (13 kills): the goblin waiting there stays
+    const camp = migrateSave(make({ saveMigrationVersion: 7, waveNumber: 3, waveActive: false, monstersDefeated: 13, monsterIndex: 1, monsterHp: 8 }), 7)
+    expect(camp).toMatchObject({ monsterIndex: 1, monsterHp: 8 })
+    // A type that disagrees with the kills starts on a fresh monster of the right type
+    const odd = migrateSave(make({ saveMigrationVersion: 7, monstersDefeated: 30, monsterIndex: 1, monsterHp: 2 }), 7)
+    expect(odd).toMatchObject({ monsterIndex: 2, monsterHp: 12 })
+  })
+
+  it('v8 never changes the monster type of a save made by playing waves', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { monsterIndexForWave, waveSize } = require('../../modes/waves/waves')
+    let kills = 0
+    for (let wave = 0; wave <= 20; wave++) {
+      for (let k = 0; k < waveSize(wave); k++) {
+        const s = make({ saveMigrationVersion: 7, waveNumber: wave, waveKills: k, waveActive: true, monstersDefeated: kills, monsterIndex: monsterIndexForWave(wave), monsterHp: 1 })
+        expect(migrateSave(s, 7).monsterIndex).toBe(monsterIndexForWave(wave))
+        kills++
+      }
+    }
   })
 })
 

@@ -4,9 +4,11 @@ import { MONSTERS } from '../types/monsters'
 import type { MonsterDef } from '../types/monsters'
 
 export interface KillAnnouncement {
-  text: string
+  text?: string
   /** Say it even if something was announced in the last 2s */
   force?: boolean
+  /** Say nothing (the kill happened away from the Warfront) */
+  silent?: boolean
 }
 
 /** Screen-reader announcements for kills are rate-limited to one per this many ms */
@@ -34,6 +36,7 @@ export function useKillEvents(
 
     const monster = MONSTERS[Math.max(0, Math.min(MONSTERS.length - 1, before.monsterIndex))]
     const custom = onKillRef.current(monster)
+    if (custom?.silent) return
 
     // One announcement per kill; a wave clear is worth saying even inside the 2s window
     const now = Date.now()

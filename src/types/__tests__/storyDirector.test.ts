@@ -54,7 +54,7 @@ describe('findNextBeat', () => {
 
   it('never skips an unseen earlier beat', () => {
     // Trigger of the_breach passes, but call_to_arms is unseen: it must come first
-    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], waveNumber: 3, fighters: 5, playSeconds: 1000 })
+    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], monstersDefeated: 13, fighters: 5, playSeconds: 1000 })
     expect(findNextBeat(s, 'live')?.id).toBe('call_to_arms')
   })
 
@@ -121,16 +121,35 @@ describe('first_renown', () => {
     expect(findNextBeat(make({ beatsSeen: ['prologue', 'elder_approaches'], playSeconds: 99 }), 'live')).toBeNull()
     const killed = make({ beatsSeen: ['prologue', 'elder_approaches'], monstersDefeated: 1, playSeconds: 99 })
     expect(findNextBeat(killed, 'live')?.id).toBe('first_renown')
-    const wave2Cleared = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], waveNumber: 2, waveActive: false, playSeconds: 99 })
-    expect(findNextBeat(wave2Cleared, 'live')).toBeNull()
+    const twelve = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], monstersDefeated: 12, playSeconds: 99 })
+    expect(findNextBeat(twelve, 'live')).toBeNull()
   })
 
-  it('call_to_arms plays at once in the camp after Wave 2 is cleared, not mid-wave', () => {
+  it('call_to_arms plays at once at the 13th kill, the one that brings the first goblin', () => {
     const seen = ['prologue', 'elder_approaches', 'first_renown']
-    const camp3 = make({ beatsSeen: seen, waveNumber: 3, waveActive: false, playSeconds: 0 })
-    expect(findNextBeat(camp3, 'live')?.id).toBe('call_to_arms')
-    expect(findNextBeat({ ...camp3, waveActive: true }, 'live')).toBeNull()
-    expect(findNextBeat({ ...camp3, waveNumber: 2 }, 'live')).toBeNull()
+    const thirteen = make({ beatsSeen: seen, monstersDefeated: 13, playSeconds: 0 })
+    expect(findNextBeat(thirteen, 'live')?.id).toBe('call_to_arms')
+    expect(findNextBeat({ ...thirteen, monstersDefeated: 12 }, 'live')).toBeNull()
+    // The old wave fields play no part any more
+    expect(findNextBeat({ ...thirteen, waveActive: true, waveNumber: 0 }, 'live')?.id).toBe('call_to_arms')
+  })
+
+  it('a fresh game tapping alone reaches call_to_arms with 3.25 renown, enough for the first Rally', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { strike } = require('../monsters')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { getFighterCost } = require('../fighters')
+    let s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], playSeconds: 999 })
+    let taps = 0
+    while (!findNextBeat(s, 'live')) {
+      s = strike(s).state
+      taps++
+    }
+    expect(findNextBeat(s, 'live')?.id).toBe('call_to_arms')
+    expect(s.monstersDefeated).toBe(13)
+    expect(taps).toBe(65)
+    expect(s.inspiration).toBeCloseTo(3.25, 2)
+    expect(s.inspiration).toBeGreaterThanOrEqual(getFighterCost(0))
   })
 
   it('the opening is two scenes: prologue, then elder_approaches, then nothing until the player acts', () => {

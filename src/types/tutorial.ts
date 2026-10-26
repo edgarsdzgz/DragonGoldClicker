@@ -9,7 +9,6 @@ import { BARRACKS_LEVELS } from './soldiers'
 // =============================================================================
 
 export type TutorialStepId =
-  | 'begin_wave'
   | 'tap_slay'
   | 'tap_rally'
   | 'tap_repair'
@@ -54,13 +53,8 @@ export const HINT_RETURN_TO_SLAY = 'Return to the Warfront and slay monsters to 
 
 export const TUTORIAL_STEPS: TutorialStep[] = [
   {
-    id: 'begin_wave', afterBeat: 'elder_approaches', target: 'begin_wave',
-    hint: 'The first wave is coming. Tap when you are ready to confront them.',
-    isDone: (s) => s.waveActive || s.monstersDefeated > 0,
-  },
-  {
+    // The monster is at the gate from the start (waves are in cold storage, so no Begin wave step)
     id: 'tap_slay', afterBeat: 'elder_approaches', target: 'slay',
-    requires: (s) => s.waveActive,
     hint: 'Tap the kobold to strike it.',
     isDone: (s) => s.totalClicks >= 1,
   },

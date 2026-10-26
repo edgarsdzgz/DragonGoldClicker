@@ -18,7 +18,7 @@ and add no new mechanics or screens until the tap is fun.
 | 2 | A monster with an HP bar in the SLAY spot; inspiration paid on kill | this pass |
 | 3 | Tap upgrades: one track (the dragon's claws), reusing `AVATAR_WEAPONS` | later |
 | 4 | Rhythm: combo multiplier that decays, occasional crits | later |
-| 5 | Fighters damage the same monster (visible small hits) instead of a separate insp/s | later |
+| 5 | Fighters damage the same monster (visible small hits) instead of a separate insp/s | done in 2e |
 | 6 | The wall: monsters not killed in time hit the wall; Repair matters | later |
 
 Food, foraging, Draconia, wanderers, milestones and the journal wait until layers 1-5 feel
@@ -273,6 +273,67 @@ white on transparency, tinted at render time, same 600px footprint for every pos
 - Hold at 4 taps per second must stay smooth.
 - Effects live in their own pooled layer components (like `FloatingNumbers`), so a tap does
   not re-render the whole screen.
+
+---
+
+## Layer 2e: one monster at the gate; fighters chip it (approved 2026-10-26)
+
+**Owner rulings:**
+- "Put away the wave system for now." Waves come back later as a side mode, so they go into
+  cold storage, not the bin.
+- Back to one thing to smash: the button is an enemy with a health bar, always there at the gate.
+- Fighters slowly damage the same enemy. Renown comes only when an enemy is defeated, never
+  from a click.
+- No pips: one long health bar where the pips were, losing HP in proportion to the damage. Taps
+  take big bites, fighters slivers; more fighters means more small chunks.
+- Fighters deal a fraction of a held strike. Chosen: 1/8.
+- The player's strike keeps the claw slash, sparks, hit-stop and knockback (layer 1b).
+
+**Combat:**
+- A monster is always on the field. No camp, no Begin wave button, no wave-cleared banner, so
+  taps are never ignored. After a kill the next monster enters as before (about 250ms).
+- `applyDamage` is the one damage path; `strike` (a tap, counted as a click) and `fighterStrike`
+  (counted in `allyStrikes`, a kill in `allyKills`) both use it. A kill pays the bounty.
+- The monster type follows lifetime kills. The thresholds are the old wave boundaries, so the
+  pace is unchanged and no save changes type:
+
+| Monster | HP | Bounty | Kills |
+|---------|----|--------|-------|
+| Kobold | 5 | 0.25 | 0-12 |
+| Goblin | 8 | 0.40 | 13-27 |
+| Shadow Crawler | 12 | 0.60 | 28-52 |
+| Orc | 20 | 1.00 | 53+ |
+
+- HP is fractional, rounded to 2 decimals. The HP text and the screen-reader label round up,
+  so a standing monster never reads 0.
+
+**Fighters:**
+- A held strike is 1 damage every 750ms (1.33 DPS). Each fighter swings for 0.25 every 1.5s
+  (0.17 DPS, 1/8 of holding). Eight fighters match a held button.
+- Swings are staggered (n fighters land n swings per 1.5s, spread evenly), counted every 250ms
+  of game time; swings landing in the same 250ms are grouped into one number.
+- Fighters earn nothing per second. One fighter on kobolds earns about 0.008 renown/s through
+  kills. They stop while starving. Offline (behind the Keep) they earn their DPS times the
+  bounty per HP of the monster they face; no kills are counted offline.
+- Feedback: a small blue number at a random spot on the monster and a faint flash. No slash,
+  knockback or haptic. A fighter kill plays the coin, star flight and embers but no haptic.
+  Away from the Warfront nothing plays and nothing is announced.
+- The footer adds "fighters X damage/s" once there are fighters.
+
+**Opening:** a fresh install plays the narration and Pyreth's scene, then the kobold is simply
+there. The first guided step is `tap_slay` ("Tap the kobold to strike it."); `begin_wave` is
+gone. The flavour line and footer arrive at 3 kills (where Wave 0 cleared). `call_to_arms`
+fires at 13 kills (`RALLY_AT_KILLS`, the first goblin), which is where the Wave 2 camp was.
+Tapping alone gets there in 65 taps with 3.25 renown (Rally costs 1.00).
+
+**Cold storage:** `src/modes/waves/` holds the wave rules, `waveStrike` (built on `strike`),
+`beginWave`/`endWave`, the camp and wave views, and `EnemyCamp`, `WaveBanner`, `MonsterQueue`
+and `WaveRow`. Nothing in the main game renders them; they compile and their tests run.
+`waveNumber`, `waveKills` and `waveActive` stay in the save, untouched. `Battlefield` keeps its
+`camp`, `queue` and `locked` slots for the mode.
+
+**Save v8:** the monster type is set from kills; a save facing the right type keeps its damage.
+`allyStrikes` and `allyKills` default to 0.
 
 ---
 

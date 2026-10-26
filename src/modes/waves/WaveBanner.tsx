@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet } from 'react-native'
-import { Text } from './Text'
-import { useReduceMotion } from '../hooks/useReduceMotion'
-import { colors, spacing, radius, gold } from '../theme'
+import { Text } from '../../components/Text'
+import { useReduceMotion } from '../../hooks/useReduceMotion'
+import { colors, spacing, radius, gold } from '../../theme'
 
 interface WaveBannerProps {
   /** E.g. "Wave cleared +0.50". Null hides the banner. */

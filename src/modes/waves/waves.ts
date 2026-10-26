@@ -1,8 +1,10 @@
-import type { GameState } from './state'
+import type { GameState } from '../../types/state'
 
 // =============================================================================
 // WAVES (layer 2b): five monsters of one type, then a bonus
 // =============================================================================
+// COLD STORAGE (2026-10-26): the main game has one monster at the gate and no waves. This is
+// kept, compiled and tested, for a later wave side mode. See ./index.ts.
 
 /** Monsters in a normal wave (Wave 1 onward) */
 export const WAVE_SIZE = 5

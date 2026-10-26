@@ -2,6 +2,16 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Core tap layer 2e: one monster at the gate (2026-10-26)
+- Waves put away into cold storage (`src/modes/waves/`) for a later side mode; still compiled and tested
+- A monster is always at the gate; its type follows lifetime kills (13 / 28 / 53)
+- Fighters deal damage (0.25 every 1.5s each, staggered) instead of earning renown per second
+- Renown only from kills, by the player or by fighters; no wave bonus
+- Pips replaced by one long health bar that drains in proportion to damage
+- Fighter hits show as small blue numbers; the player's slash and knockback are unchanged
+- `begin_wave` guided step removed; `call_to_arms` fires at 13 kills
+- Save v8: monster type from kills; new `allyStrikes` and `allyKills` counters
+
 ### Phase 0: Currency Rename (COMPLETE)
 - Renamed "gold" to "inspiration" across the entire codebase
 - Renamed `CoinIcon` component to `InspirationIcon`
