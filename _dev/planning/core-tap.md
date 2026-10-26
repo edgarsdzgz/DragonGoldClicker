@@ -85,7 +85,7 @@ first claws").
     "Slay 5 monsters" so it fits the new pace.
 - **Fighters (until layer 5):** keep earning inspiration per second as today. They do not
   damage the monster yet.
-- **Flavour lines:** show one on some kills (about 1 in 4), instead of every 40-80 taps.
+- **Flavor lines:** show one on some kills (about 1 in 4), instead of every 40-80 taps.
 - **Accessibility.**
   - The circle's label includes the monster name and HP ("Kobold, 3 of 5 HP. Tap to strike").
   - Kills are announced politely, at most once every 2 seconds.
@@ -152,7 +152,7 @@ now) until the player begins the next wave.
   - The next wave as a row of dim silhouettes of its monster type (5, using `MonsterIcon`),
     with the line "The horde waits beyond the walls."
   - A preview: "Wave N: 5 <plural>" and "+X when cleared" (the wave bonus).
-  - A large primary **Begin wave** button, centred where the monster stands. It must be at
+  - A large primary **Begin wave** button, centered where the monster stands. It must be at
     least 48dp tall and is the only tappable thing in the camp view.
   - Taps elsewhere on the battlefield do nothing: no damage, no effects, no sound.
   - The wave row reads "WAVE N" with "Ready" in place of "K left".
@@ -215,7 +215,7 @@ Owner rulings, from their direction for a fresh install:
      - Until then, Waves 0-2 show only the battlefield, the gate, renown, the wave row and the
        footer.
 8. **Testing:** with the UI hidden, playtest builds (`DEV_TOOLS_ENABLED`) keep a small,
-   labelled Dev button in a top corner that opens Settings > Dev. Player builds do not have it.
+   labeled Dev button in a top corner that opens Settings > Dev. Player builds do not have it.
 
 **Guided steps:** `begin_wave` is now the first step (target: the Begin Wave 0 button, hint
 "Begin the first wave."). `tap_slay` (hint "Tap the kobold to strike it.") follows once a
@@ -323,7 +323,7 @@ white on transparency, tinted at render time, same 600px footprint for every pos
 
 **Opening:** a fresh install plays the narration and Pyreth's scene, then the kobold is simply
 there. The first guided step is `tap_slay` ("Tap the kobold to strike it."); `begin_wave` is
-gone. The flavour line and footer arrive at 3 kills (where Wave 0 cleared). `call_to_arms`
+gone. The flavor line and footer arrive at 3 kills (where Wave 0 cleared). `call_to_arms`
 fires at 13 kills (`RALLY_AT_KILLS`, the first goblin), which is where the Wave 2 camp was.
 Tapping alone gets there in 65 taps with 3.25 renown (Rally costs 1.00).
 
@@ -513,7 +513,7 @@ The ration multiplies the fighters' upkeep and their damage. Fed states apply on
 
 | Ration | Upkeep | Damage | Available |
 |--------|--------|--------|-----------|
-| None | 0x | none: fighters stand down (defend passively: still count for the wall's defence) | always |
+| None | 0x | none: fighters stand down (defend passively: still count for the wall's defense) | always |
 | Quarter | 0.25x | 0.4x | Librarium research "Lean Rations" |
 | Half | 0.5x | 0.7x | always |
 | Full | 1x | 1x | default |
@@ -607,7 +607,7 @@ past level 8.
 ### 3c.4 Retired with it
 
 - The avatar weapons (one entry, the War Hammer) and `clickPower`: they fed the old siege
-  defence, which layer 6 removed, so they do nothing now. A dragon does not swing a hammer. The
+  defense, which layer 6 removed, so they do nothing now. A dragon does not swing a hammer. The
   save keeps the fields; the Armory stops showing them. Research effects that add click power
   become tap-damage effects when the Librarium returns (balance pass).
 

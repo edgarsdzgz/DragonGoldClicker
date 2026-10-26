@@ -24,9 +24,9 @@ export function useScreenShake(trigger: number, { amplitude = 9, duration = 420 
       first.current = false
       return
     }
-    let cancelled = false
+    let canceled = false
     AccessibilityInfo.isReduceMotionEnabled().then((reduce) => {
-      if (cancelled || reduce) return
+      if (canceled || reduce) return
       const step = duration / 6
       const hop = (to: number) => Animated.timing(x, { toValue: to, duration: step, useNativeDriver: true })
       Animated.sequence([
@@ -34,7 +34,7 @@ export function useScreenShake(trigger: number, { amplitude = 9, duration = 420 
       ]).start()
     })
     return () => {
-      cancelled = true
+      canceled = true
     }
   }, [trigger, amplitude, duration, x])
 

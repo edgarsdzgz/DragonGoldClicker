@@ -23,7 +23,7 @@ empty black field.
    behind the UI.
    - Dicero's campfire [OWN-HOME], Cookie Clicker's lit backdrop [CC-1], Grow Castle's field
      [GC-P2] and HSR's starfield stage [HSR-CD] all do this.
-   - The UI sits at the edges, and the centre stays open for the art.
+   - The UI sits at the edges, and the center stays open for the art.
 2. **Everything you interact with is a shaped object, not a box.**
    - Buttons are diamonds, hexagons, ribbons and notched plates ([DIC-P1], [OWN-HOME], [TT-P16],
      [CAP-2]).
@@ -31,21 +31,21 @@ empty black field.
      shadow.
 3. **A display typeface with a dark outline for every number and title.** All the mobile games
    outline or shadow text over art.
-   - Damage numbers are italic, hand-lettered and coloured by element ([DIC-A3], [DIC-P1],
+   - Damage numbers are italic, hand-lettered and colored by element ([DIC-A3], [DIC-P1],
      [CAP-5]).
    - Body text stays a clean sans.
-4. **One dominant primary action per screen,** placed in the thumb zone and coloured to contrast
+4. **One dominant primary action per screen,** placed in the thumb zone and colored to contrast
    with the scene.
    - Examples: Dicero's blue "New Game" [OWN-HOME] and diamond "Attack" [DIC-P1], Egg, Inc.'s red
      hold button [EGG-2], HSR's gold "Claim" [HSR-LV].
    - Secondary buttons are smaller, quieter and often neutral (white or cream pills in HSR and
      Genshin, [HSR-CD], [GI-BUY]).
-5. **Strict colour roles.**
+5. **Strict color roles.**
    - Gold means value and reward.
    - Purple means rare or premium (HSR 4-star cards [HSR-CL], Genshin shop [GI-SHOP], Dicero's
      offer [OWN-OFFER]).
    - Red means danger, HP and alerts.
-   - The primary action colour is reserved for actions.
+   - The primary action color is reserved for actions.
 6. **HP bars with character.** End caps (a level badge on the left, a reward icon on the right), a
    white trailing chunk, layer counts on bosses ("x13", "x5") and a name plate
    ([DIC-A4], [CAP-5], [BA-7], [ARC-6]).
@@ -70,7 +70,7 @@ Images: [OWN-HOME], [OWN-OFFER], [OWN-TITLE], [DIC-A1] to [DIC-A5], [DIC-P1], [D
 | Stage card is the hero | **Confirmed, corrected** | It is an elongated hexagon with a **white** outer glow, not a gold one. The lava thumbnail fills the card. A dark pill holds the power figure (17310); a skull badge in the corner shows difficulty; "28" is large white numerals. |
 | Currency chips at the top | **Confirmed, refined** | Each chip is dark, with a stepped or torn right edge. A big glossy icon **overlaps** the chip's left edge, and a small green "+" sits at the icon's foot. |
 | Profile corner | **Confirmed** | Portrait in an ornate frame, level "20" in a black square, name, green XP bar, power figure with a shield icon. |
-| Two vertical icon rails | **Confirmed, corrected** | Only the **left** rail (events, packs) has large colourful painted icons. The **right** rail (Tasks, Codex, Bag, Friends, Mail) uses muted grey-blue pixel icons. Saturation separates "offers and events" from "utility". |
+| Two vertical icon rails | **Confirmed, corrected** | Only the **left** rail (events, packs) has large colorful painted icons. The **right** rail (Tasks, Codex, Bag, Friends, Mail) uses muted gray-blue pixel icons. Saturation separates "offers and events" from "utility". |
 | Red square "!" badges | **Confirmed** | Square, red, white "!", on 9 elements of one screen. This is busy; see the avoid list. |
 | One dominant primary button | **Confirmed** | "New Game" is a cyan rectangle with stepped corners, a lighter inner border, a faint diamond pattern on its face and diamond end-caps outside each side. The cost line ("meat x10") sits under the label, with a dark shadow beneath. |
 | Secondary actions smaller | **Confirmed** | Guild and Mode are half-tiles tucked into the screen edges, with a sawtooth inner edge. |
@@ -78,13 +78,13 @@ Images: [OWN-HOME], [OWN-OFFER], [OWN-TITLE], [DIC-A1] to [DIC-A5], [DIC-P1], [D
 | Timers as dark pills | **Partly** | "25:22:10" is in a dark pill. "10:57:35" is bare outlined text over the scene. |
 | Offer pop-up is all juice | **Confirmed** | Gold 3D display text with a thick purple outline and inner highlight. A purple frame with pagoda-like finials. A chest spilling dice, four-point sparkles at the frame corners, and a faint dice pattern in the body. Gold and green highlight words. A gold hex GO button with a dark outline. A separate square close button below the frame [OWN-OFFER]. |
 | Calm title screen | **Confirmed** | Soft winter scene, white logo with a crown and sparkles, "Start" between thin lines with diamond marks [OWN-TITLE]. |
-| Colour strategy | **Confirmed** | Warm scene; cool blue for the primary action and the tab bar; gold for currency and rewards; purple for premium; red only for "!" and HP. |
+| Color strategy | **Confirmed** | Warm scene; cool blue for the primary action and the tab bar; gold for currency and rewards; purple for premium; red only for "!" and HP. |
 
 **New findings from the store screens:**
 - **The main combat button is a diamond.** "Attack" is a pale-blue diamond with chevron wings,
   crossed swords and an outlined label. It sits on a soft circular halo ring [DIC-P1]. The same
   diamond language appears in the power badge ("657", [DIC-A3]) and the tab bar.
-- **Damage numbers take their element's colour and style.**
+- **Damage numbers take their element's color and style.**
   - Fire hits are italic, red-orange with a lighter gradient and a dark outline [DIC-A3].
   - Magic hits are white-lilac; ice hits are pale blue with a navy outline [DIC-P1].
   - Bigger hits are bigger.
@@ -95,21 +95,21 @@ Images: [OWN-HOME], [OWN-OFFER], [OWN-TITLE], [DIC-A1] to [DIC-A5], [DIC-P1], [D
   - A hexagon level badge caps the left end.
   - The boss bar adds "x13" for the bar layers left [DIC-A4].
   - Under the player bar sits a row of five orange shield pips [DIC-P1].
-- **Choice cards are colour-coded** (orange, red, blue). The picked card gets a **radial light
+- **Choice cards are color-coded** (orange, red, blue). The picked card gets a **radial light
   burst** behind it, while the others stay flat [DIC-A2].
 - **Talent hexagons:** the unlocked one glows gold with sparkles and the rest are dimmed to
   near-silhouette [DIC-A5]. Locked versus unlocked is shown by brightness *and* by a "?" glyph,
-  not colour alone.
+  not color alone.
 - **Dice glow** with vertical light shafts rising from them [DIC-P1], which reads as "charged and
   ready".
 
 **What makes it read as premium:** one consistent shape language (stepped pixel corners plus
 diamonds) on every element; a lit scene behind everything; outlined, chunky type; a single
-saturated primary button; and colour roles held to strictly.
+saturated primary button; and color roles held to strictly.
 
 **Do not take literally:** the pixel-art direction itself. It is Dicero's signature, and Dragon
 Gold's "Ember & Stone" direction is painted and torchlit. Take the *principles*: shape language,
-scene backdrop, layered buttons and colour roles.
+scene backdrop, layered buttons and color roles.
 
 ### 2.1b Dicero in depth: the owner's tour of 54 screens
 
@@ -130,19 +130,19 @@ Images: [OWN-PROFILE], [OWN-SETTINGS], [OWN-GUILD-HUB], [OWN-GUILD-TASKS], [OWN-
 With this set, Dicero is the best-documented game in the study. These screens show the whole
 system behind the home screen, including the button states no store image showed.
 
-**1. A strict action-colour grammar, with real disabled states.**
+**1. A strict action-color grammar, with real disabled states.**
 - **Blue** is the single or neutral action: Draw 1x, Summon, Unequip, Go Now, Speed Up, Normal
   Venture, Replace ([OWN-SHOP-GEAR-CHEST], [OWN-GEAR-DETAIL], [OWN-PET-HAVEN-RUNNING]).
 - **Yellow** is the bigger commitment: Draw 10x, Level Up, Star Up, Upgrade, Claim, Salvage, Raid,
   Advanced Venture ([OWN-HERO-FROST-PRINCESS], [OWN-PET-HAVEN-UPGRADE], [OWN-GUILD-BOSS]).
   The home screen's "New Game" is the exception: it is blue.
-- **Grey with grey text** means disabled: Level Up when the scrolls run short, Replace before a
+- **Gray with gray text** means disabled: Level Up when the scrolls run short, Replace before a
   blessing exists, Equipped, Sold Out, Send All ([OWN-GEAR-LEVELUP], [OWN-BLESSING-BEFORE],
   [OWN-CURIO-DETAIL], [OWN-FRIENDS]).
 - The disabled state always comes with **the reason in text.** The cost line shows "2/100" with
   the shortfall in red [OWN-GEAR-LEVELUP]; a toast says "Unlocked when equipped with 1 legendary
-  treasures." [OWN-CURIOS-LOCKED-TOAST]. That is three cues (grey button, red number, words), so
-  colour is never the only signal.
+  treasures." [OWN-CURIOS-LOCKED-TOAST]. That is three cues (gray button, red number, words), so
+  color is never the only signal.
 - When blue and yellow sit side by side, the yellow one is on the right.
 
 **2. "Have / need" cost lines.** Costs read "113038 / 1300" with the amount you have in green when
@@ -159,9 +159,9 @@ it is enough, and in red when it is not ("2 / 100", "0 / 1") ([OWN-GEAR-DETAIL],
   arrow, and the changed stat row is highlighted [OWN-GEAR-LEVELUP].
 
 **4. One modal template everywhere.**
-- Pale-cyan body, a header bar coloured by meaning (blue for utility, purple for an Epic item), a
+- Pale-cyan body, a header bar colored by meaning (blue for utility, purple for an Epic item), a
   faint pixel-diamond pattern fading out in the header's right corner.
-- A square navy "X" close button sits **centred below** the modal, overlapping its bottom edge
+- A square navy "X" close button sits **centered below** the modal, overlapping its bottom edge
   ([OWN-PROFILE], [OWN-GUILD-TASKS], [OWN-GEAR-DETAIL], [OWN-SALVAGE], [OWN-VENTURE-SHOP]).
 - The backdrop is a plain dark dim with no blur.
 - In the building-upgrade modal, the building art **breaks out of the header** [OWN-PET-HAVEN-UPGRADE].
@@ -179,7 +179,7 @@ the guild boss and ventures ([OWN-REWARD-REVEAL], [OWN-SHOP-REWARD-REVEAL], [OWN
   [OWN-HERO-FROST-PRINCESS].
 - Pets are summoned on a stone dais on a **floating island** [OWN-PET-SUMMON]. Asterites are
   summoned under a night sky with constellations [OWN-ASTERITE-SUMMON].
-- The guild is a **painted town**. Its buildings are the navigation, each labelled with a dark
+- The guild is a **painted town**. Its buildings are the navigation, each labeled with a dark
   plate: Guild Boss, Member Lobby, Guild Shop, Supply Shop, Guild Tasks [OWN-GUILD-HUB].
 - The scene changes; the UI chrome around it does not. This is the single biggest reason the
   menus feel like a world rather than a settings app.
@@ -201,20 +201,20 @@ letters, "Equipped" labels, green ticks for selected and padlocks for ineligible
 ([OWN-GEAR], [OWN-SALVAGE], [OWN-FUSE-SELECTED]). Rarity is also written out in words in the
 detail view ("Epic+1", "Rare") [OWN-GEAR-DETAIL], [OWN-CURIO-DETAIL].
 
-**9. Unknown and locked things are drawn as things.** A grey hexagon with "?" [OWN-TALENTS], a card
+**9. Unknown and locked things are drawn as things.** A gray hexagon with "?" [OWN-TALENTS], a card
 back with "?" [OWN-HERO-FROST-PRINCESS], a dark red card with a padlock [OWN-HERO-WINTER-LORD],
 "Sold Out" as a diamond stamp over a darkened card [OWN-SHOP-DAILY].
 
 **10. Smaller techniques worth noting.**
 - **Inspect in place:** tapping a talent hex enlarges it over the dimmed grid, with left and right
   arrows and its effect ("2-Pip ATK +6") [OWN-TALENT-DETAIL].
-- **Selection by gold corner brackets** around the chosen item, not by colour alone
+- **Selection by gold corner brackets** around the chosen item, not by color alone
   [OWN-ACCESSORY].
 - **Section bars:** lavender bars with a dot at each end title every shop section (Daily Shop,
   Gems, Gold) [OWN-SHOP-DAILY], [OWN-SHOP-GEMS-GOLD].
 - **Two-level tabs:** sub-tabs (Gear, Pet, Asterite, Thunder God) sit as framed plates above the
   main tab bar; the selected one gets a double outline [OWN-SHOP-GEAR-CHEST].
-- **Numbers emphasised inside sentences:** "Draw **15**x more for **Rare** Asterite" with the 15
+- **Numbers emphasized inside sentences:** "Draw **15**x more for **Rare** Asterite" with the 15
   set large and blue [OWN-ASTERITE-SUMMON]; "Guaranteed **S-rank Epic** gear in **50** draws" in
   pink and yellow [OWN-SHOP-GEAR-CHEST].
 - **Milestone tracks** above task lists, with chests at thresholds and ticks on the ones reached
@@ -230,11 +230,11 @@ back with "?" [OWN-HERO-FROST-PRINCESS], a dark red card with a padlock [OWN-HER
   ([OWN-GUILD-MEMBERS], [OWN-MESSAGES]).
 
 **What it adds to the "premium" list:** a place for every feature, one modal and one reward
-template reused everywhere, and an action-colour grammar so strict that you learn it within
+template reused everywhere, and an action-color grammar so strict that you learn it within
 minutes.
 
 **Avoid from this set:** the sales stickers ("Great Value 500%", "20% OFF", "Bonus 680") and the red
-"!" on most tabs ([OWN-SHOP-GEAR-CHEST], [OWN-DAILY-SELECTED]). They are monetisation pressure, not
+"!" on most tabs ([OWN-SHOP-GEAR-CHEST], [OWN-DAILY-SELECTED]). They are monetization pressure, not
 polish.
 
 ### 2.2 Habby house style: Archero, Capybara Go!, Survivor!.io
@@ -247,14 +247,14 @@ Images: [ARC-3], [ARC-5], [ARC-6], [ARC-7], [CAP-1], [CAP-2], [CAP-5], [SUR-2], 
   - "SELECT SKILL" sits on a gold ribbon with folded ends [CAP-2].
   - "Skill Selection" is a yellow plate with hexagonal ends [SUR-2].
   - Archero labels buildings with small blue ribbon plates and a round level badge [ARC-5].
-- **Cards with coloured header tabs** show rarity or type. Icons sit in square tiles with a thick
+- **Cards with colored header tabs** show rarity or type. Icons sit in square tiles with a thick
   outline [CAP-2], [SUR-2].
 - **Stat pills whose icon breaks the pill edge** (heart, sword, shield bigger than the pill)
   [CAP-1]. This is the same trick as Dicero's currency chips.
 - **HP bars with meaningful end caps:**
   - Capybara puts a flame at the left and a **treasure chest at the right** ("reward at the end of
     this bar") [CAP-5].
-  - Archero's boss bar has a horned emblem sitting on top of its centre [ARC-6].
+  - Archero's boss bar has a horned emblem sitting on top of its center [ARC-6].
 - **Damage numbers stack downward,** with older ones fading above (-13200 three times, three
   opacities) [CAP-5].
 - **Parchment-cream text cards** with a dark border carry story and log text [CAP-1]. Cream on a
@@ -270,7 +270,7 @@ icons that break their containers; end caps that tell you what the bar leads to.
 Images: [CC-1], [CC-2], [CC-4], [CC-5], [CC-6].
 
 - **The tap target is a big, detailed, painted object** (the cookie) on a backdrop lit like a
-  stage: a blue patterned curtain, brighter at the centre, with a vignette [CC-1].
+  stage: a blue patterned curtain, brighter at the center, with a vignette [CC-1].
 - **Hit feedback:** small "+1" pops in an outlined serif, and **mini cookies falling** from the
   tap point [CC-1]. *(unverified: motion speed)*
 - **Progress changes the scene.** Late in the game a ring of cursors orbits the cookie and the
@@ -278,7 +278,7 @@ Images: [CC-1], [CC-2], [CC-4], [CC-5], [CC-6].
 - **Typography:** a chunky serif display face with a dark outline for the cookie count, and a
   smaller "per second" line beneath [CC-1].
 - **Panels:** bevelled dark wood and stone with an ornate border [CC-4]. Locked buildings appear
-  as dark silhouettes marked "???" [CC-2]. That builds curiosity without colour-only meaning.
+  as dark silhouettes marked "???" [CC-2]. That builds curiosity without color-only meaning.
 - **Prestige tree** as a constellation of round nodes on a starfield [CC-6].
 
 **Premium techniques:** a lit stage behind the tap target; the target's surroundings evolve with
@@ -296,8 +296,8 @@ Images: [TT-P16], [TT-A2], [TT-A3], [TT-A4].
   and a direction [TT-P16].
 - **Gold total in italic, outlined numerals** next to a coin [TT-P16].
 - **Skill buttons are round medallions,** each with its own hue, a thick white inner ring and a
-  dark outer ring [TT-P16]. All six are identical in structure and differ only in colour and icon.
-  That makes a strong set, though it is colour-led (the icons do carry the meaning).
+  dark outer ring [TT-P16]. All six are identical in structure and differ only in color and icon.
+  That makes a strong set, though it is color-led (the icons do carry the meaning).
 - **Menus** are dark slate modals with an angled header tab and a close "X". Your own row is
   highlighted [TT-A2]. Skill tree icons are painted in one orange family [TT-A3].
 
@@ -314,7 +314,7 @@ Images: [GC-P1], [GC-P2], [GC-P4], [GC-P5].
 - Pop-ups use dark framed panels. A **heraldic banner emblem breaks the frame edge** at top-left
   [GC-P4], which is the one decorative move and an effective one.
 
-**Lesson for Dragon Gold:** show the gate and the defences changing as the player invests. That
+**Lesson for Dragon Gold:** show the gate and the defenses changing as the player invests. That
 fits our premise and does more than any chrome.
 
 ### 2.6 Idle Slayer
@@ -325,20 +325,20 @@ Images: [IS-2], [IS-3], [IS-4], [IS-7].
   **gain log** stacks below it ("+97,236", "+7,447", ...) [IS-2].
 - **The offline reward is a parchment card:** "While you were away", with icon + count pairs
   [IS-4]. It maps directly onto Dragon Gold's `OfflineModal`.
-- Pixel-framed item slots, and tooltips with colour-coded stat lines [IS-3].
-- **Dialogue:** a dark box with the speaker's name in a colour, and a requirement card with a green
+- Pixel-framed item slots, and tooltips with color-coded stat lines [IS-3].
+- **Dialogue:** a dark box with the speaker's name in a color, and a requirement card with a green
   action button [IS-7].
 
 ### 2.7 Egg, Inc.
 
 Images: [EGG-2], [EGG-3], [EGG-8].
 
-- **One giant primary button,** a red circle centred at the bottom that you hold. The four
+- **One giant primary button,** a red circle centered at the bottom that you hold. The four
   secondary buttons are small white circles around it [EGG-2]. This is the clearest
   primary-versus-secondary split in the set.
 - **Big numbers written as words** with a small-caps suffix ("1.287 sextillion") [EGG-2]. It reads
   better than "1.287e21".
-- **Modals take the colour of their category** (blue research, purple artifacts, green vehicles)
+- **Modals take the color of their category** (blue research, purple artifacts, green vehicles)
   and sit over a blurred farm [EGG-3], [EGG-8]. *Blur cost: see the performance notes.*
 - The look is clean, flat 3D with a toy feel. It is premium through **consistency and
   restraint,** not ornament.
@@ -365,7 +365,7 @@ the single most useful reference in this study for Dragon Gold.**
   - Secondary buttons are **brown leather pills** ("Exit", "Go", "Remove Gear") [AFKA-G02],
     [AFKA-G22].
   - This is the same contrast Dicero uses (cool blue on a warm scene). Two strong references
-    agree, which makes it the safest call for Dragon Gold's primary action colour.
+    agree, which makes it the safest call for Dragon Gold's primary action color.
 - **Parchment and carved wood as materials.**
   - The idle reward modal is a parchment scroll with curled edges [AFKA-G02].
   - The Quests screen has a **carved wooden arch header**, parchment rows, and a **milestone chest
@@ -397,7 +397,7 @@ the single most useful reference in this study for Dragon Gold.**
   tab gets a warm lit tile behind it [AFKA-G01]. It is a more accessible version of Dicero's
   rising tab.
 - **Frames:**
-  - Gothic arches coloured by faction, with braziers [AFKA-P3], [AFKA-P5].
+  - Gothic arches colored by faction, with braziers [AFKA-P3], [AFKA-P5].
   - AFK Journey's hero cards have scalloped, rarity-tinted frames and dotted dividers with glyph
     marks [AFKJ-P3].
 
@@ -416,7 +416,7 @@ a darkened image instead. Its red dots also appear on many icons at once [AFKA-G
 **I Am Monster: Idle Destruction** (an idle tap brawler). Images: [IAM-03], [IAM-10], [IAM-22],
 [IAM-43], [IAM-44].
 - **Dialogue with a bust that breaks the frame.** The speaker's portrait rises out of the top edge
-  of a cream text panel. A coloured name tab sits on the panel's corner, with "TAP TO CONTINUE" in
+  of a cream text panel. A colored name tab sits on the panel's corner, with "TAP TO CONTINUE" in
   small caps [IAM-03]. This is the layout recommended for `NpcDialog` in 4.6.
 - **Stage circles:** previous, current (large) and next wave, joined by an arc that reads "DEFEAT
   13 ENEMIES" [IAM-43]. The same idea as Tap Titans 2, with the objective built in.
@@ -444,13 +444,13 @@ Images: [HSR-BP], [HSR-CD], [HSR-CL], [HSR-TIP], [HSR-EV], [HSR-HUD], [HSR-LV], 
 - **Buttons are fully rounded pills.**
   - The primary is **warm gold with dark text** ("Claim", "Purchase Level", "Unlock")
     [HSR-LV], [HSR-BP].
-  - The secondary is **white or light grey** ("Level Up", "Confirm" with a check icon)
+  - The secondary is **white or light gray** ("Level Up", "Confirm" with a check icon)
     [HSR-CD], [HSR-TIP].
   - Usually one gold button per screen.
 - **Hairline ornament.** Dividers are 1px lines with tiny end marks [HSR-TIP]. The tutorial icon
   sits inside thin orbit circles [HSR-TUT]. The ornament is delicate, never heavy.
 - **Rarity is the card's back:** purple gradient for 4-star, gold for 5-star, plus a star row
-  [HSR-CL]. Colour is backed up by the star count.
+  [HSR-CL]. Color is backed up by the star count.
 - **Characters on a lit stage platform,** with stats as icon + label + value rows and a lot of
   empty space [HSR-CD].
 - **Dialogue:** big art on the left and a text column on the right over a darkened panel. The
@@ -461,7 +461,7 @@ Images: [HSR-BP], [HSR-CD], [HSR-CL], [HSR-TIP], [HSR-EV], [HSR-HUD], [HSR-LV], 
 **Premium techniques:** restraint (few elements, generous spacing); a gold pill reserved for the
 one key action; delicate line ornament; translucent dark panels over a lit scene.
 
-**Accessibility flag:** HSR's small, light-grey secondary text on busy art is often below WCAG AA
+**Accessibility flag:** HSR's small, light-gray secondary text on busy art is often below WCAG AA
 contrast. Do not copy its text sizes.
 
 ### 2.10 Genshin Impact (mobile)
@@ -471,19 +471,19 @@ Images: [GI-AR], [GI-AT], [GI-LOOT], [GI-ING], [GI-SHOP], [GI-BUY], [GI-REW], [G
 - **Signature button: a cream pill with a dark circular "socket" at its left end** holding an
   icon ("Claim Rewards", "Purchase", [GI-AR], [GI-BUY]). The close button is a round "X" in a
   cream ring [GI-SHOP].
-- **Rarity-coloured reward tiles:** gold, purple, blue and green backgrounds, each with a cream
+- **Rarity-colored reward tiles:** gold, purple, blue and green backgrounds, each with a cream
   quantity strip underneath [GI-AR].
 - **Progress as a node track:** finished nodes carry green ticks; the current node is larger, blue
   and glowing [GI-AR].
 - **Wish results** come as tall cards with pointed ends. The rarest card has a **glow halo** and
   stars sit at each base [GI-REW].
-- **Loot log:** translucent dark strips whose text is coloured by rarity [GI-LOOT]. **Subtitle
+- **Loot log:** translucent dark strips whose text is colored by rarity [GI-LOOT]. **Subtitle
   dialogue:** the speaker's name in gold above white text [GI-LOOT].
 - **"New" toasts** pair an icon tile with a short description [GI-ING].
 - Red dots mark things that need attention, used sparingly [GI-AT].
 
 **Premium techniques:** a warm cream-and-slate palette; an icon socket built into every key
-button; rarity colour always paired with stars.
+button; rarity color always paired with stars.
 
 ### 2.11 Arknights
 
@@ -500,7 +500,7 @@ Images: [ARK-1], [ARK-3], [ARK-5], [ARK-G06], [ARK-G36].
 - **Dialogue is understated:** a square portrait beside a dark translucent text box with a small
   name label [ARK-G06]. It is functional but not premium. Dragon Gold should aim higher (see
   4.6).
-- Industrial "flat 2.0": light grey, black and one accent colour per context (blue for the store
+- Industrial "flat 2.0": light gray, black and one accent color per context (blue for the store
   and recruitment).
 
 **Premium techniques:** bold typographic hierarchy; a 3D tilt to flat panels; ruthless minimalism
@@ -545,11 +545,11 @@ Images: [BA-2], [BA-5], [BA-6], [BA-7].
 
 Images: [E7-3], [E7-4], [E7-5], [E7-7].
 
-- **Thin coloured frames with small corner ornaments** around full-bleed art [E7-3]. The ornament
+- **Thin colored frames with small corner ornaments** around full-bleed art [E7-3]. The ornament
   is concentrated at the corners, leaving the edges clean.
 - **A speaker name plate with a portrait** at top-left during skill cut-ins [E7-3]. The story
-  shows the speaker's name centred over a dim scene [E7-5].
-- **Team colour coding:** blue cards for your side, red for the enemy's. The cards are slanted,
+  shows the speaker's name centered over a dim scene [E7-5].
+- **Team color coding:** blue cards for your side, red for the enemy's. The cards are slanted,
   with level and star rows [E7-7].
 
 ### 2.16 RAID: Shadow Legends: the medieval benchmark
@@ -569,28 +569,28 @@ dark-fantasy palette with warm torchlight. This is the closest tonal match to Em
 
 ---
 
-## 3. Pattern catalogue
+## 3. Pattern catalog
 
 Each technique below has a name, a description, the games that use it, and image evidence. **A11y**
 and **Perf** flag conflicts with the project's accessibility and Galaxy A16 constraints.
 
 | # | Technique | What it looks like | Used by | Evidence |
 |---|---|---|---|---|
-| 1 | **Scene as backdrop** | A painted or lit scene fills the screen; the UI sits at the edges and the centre stays open | Dicero, Cookie Clicker, Grow Castle, HSR, WuWa | [OWN-HOME], [CC-1], [GC-P2], [HSR-CD], [WW-2] |
+| 1 | **Scene as backdrop** | A painted or lit scene fills the screen; the UI sits at the edges and the center stays open | Dicero, Cookie Clicker, Grow Castle, HSR, WuWa | [OWN-HOME], [CC-1], [GC-P2], [HSR-CD], [WW-2] |
 | 2 | **Spotlit stage** | A radial light or lit platform behind the hero object or character; edges vignetted | Cookie Clicker, Archero, HSR, Raid | [CC-1], [ARC-7], [HSR-CD], [RAID-3] |
 | 3 | **Layered shaped primary button** | Diamond, hexagon or notched plate built as rim + bevel highlight + saturated face + drop shadow, with outlined label and a cost line | Dicero, Tap Titans 2, Survivor!.io | [OWN-HOME], [DIC-P1], [TT-P16], [SUR-2] |
 | 4 | **Halo ring on the call to action** | A soft circular glow or ring behind the main button *(unverified: whether it pulses)* | Dicero | [DIC-P1] |
 | 5 | **Pill with icon socket** | A cream or gold pill whose left end is a dark circle holding an icon | Genshin, HSR (check icon) | [GI-AR], [GI-BUY], [HSR-TIP] |
 | 6 | **Container-breaking icon** | An icon larger than its chip or pill, overlapping the edge | Dicero, Capybara Go!, Grow Castle | [OWN-HOME], [CAP-1], [GC-P4] |
 | 7 | **Outlined display numerals** | A chunky display face with a 2-4px dark outline or hard shadow, for any number over art | All mobile games in the set | [IS-2], [TT-P16], [CC-1], [DIC-A3] |
-| 8 | **Elemental damage numbers with echoes** | Italic numerals coloured by damage source; size scales with damage; older hits stack and fade | Dicero, Capybara Go!, Blue Archive | [DIC-A3], [DIC-P1], [CAP-5], [BA-7] |
+| 8 | **Elemental damage numbers with echoes** | Italic numerals colored by damage source; size scales with damage; older hits stack and fade | Dicero, Capybara Go!, Blue Archive | [DIC-A3], [DIC-P1], [CAP-5], [BA-7] |
 | 9 | **HP bar with end caps** | A level or tier badge on the left; a reward icon or emblem on the right or on top | Dicero, Capybara Go!, Archero, Raid | [DIC-A3], [CAP-5], [ARC-6], [RAID-1] |
 | 10 | **Trailing damage chunk** | A white segment shows the HP just lost, then drains | Dicero (Dragon Gold has this already) | [DIC-A3], [DG-HIT] |
 | 11 | **Boss layer counter** | "x13" / "x5" beside the bar for remaining bar layers | Dicero, Blue Archive | [DIC-A4], [BA-7] |
 | 12 | **Segmented bar** | The bar is split into countable blocks | Raid | [RAID-1] |
 | 13 | **Ribbon or plate title** | Section titles on a gold ribbon with folded ends, or a hex-ended plate | Capybara Go!, Survivor!.io, Archero, AFK Journey | [CAP-2], [SUR-2], [ARC-5], [AFKJ-P3] |
 | 14 | **Heraldic stage marker** | Stages as shield banners with stars; a padlock in the shield when locked | Raid, HSR (shield level badges) | [RAID-5], [HSR-LV] |
-| 15 | **Rarity colour plus a second cue** | Gold/purple/blue card backs or tiles, always paired with star rows or labels | HSR, Genshin, AFK Journey, Epic Seven | [HSR-CL], [GI-AR], [AFKJ-P3], [E7-7] |
+| 15 | **Rarity color plus a second cue** | Gold/purple/blue card backs or tiles, always paired with star rows or labels | HSR, Genshin, AFK Journey, Epic Seven | [HSR-CL], [GI-AR], [AFKJ-P3], [E7-7] |
 | 16 | **Light burst on the chosen or earned item** | Radial rays or a halo behind the picked card or newest reward; the rest stay flat or dim | Dicero, Genshin, Survivor!.io | [DIC-A2], [DIC-A5], [GI-REW], [SUR-5] |
 | 17 | **Hairline ornament** | 1px dividers with tiny diamond or dot end marks; thin orbit circles | HSR, AFK Journey, Dicero title | [HSR-TIP], [HSR-TUT], [AFKJ-P3], [OWN-TITLE] |
 | 18 | **Corner-ornament frame** | A thin border with small ornaments only at the corners or finials | Epic Seven, Dicero pop-up, AFK Arena | [E7-3], [OWN-OFFER], [AFKA-P3] |
@@ -600,7 +600,7 @@ and **Perf** flag conflicts with the project's accessibility and Galaxy A16 cons
 | 22 | **World that changes with progress** | The tap target's surroundings or the base visibly upgrade | Grow Castle, Cookie Clicker | [GC-P2], [GC-P5], [GC-P1], [CC-1], [CC-5] |
 | 23 | **Gain log under the total** | A short stack of "+X" lines under the main currency | Idle Slayer | [IS-2] |
 | 24 | **Stage bubbles** | Previous / current / next stage as three linked circles, the current one larger | Tap Titans 2, Genshin node track | [TT-P16], [GI-AR] |
-| 25 | **Speaker name tag** | The speaker's name on a coloured tag or in an accent colour; key words highlighted | HSR, Genshin, Idle Slayer, Epic Seven | [HSR-EV], [GI-LOOT], [IS-7], [E7-3] |
+| 25 | **Speaker name tag** | The speaker's name on a colored tag or in an accent color; key words highlighted | HSR, Genshin, Idle Slayer, Epic Seven | [HSR-EV], [GI-LOOT], [IS-7], [E7-3] |
 | 26 | **Perspective-tilted panels** | Flat menu tiles skewed in 3D toward the art | Arknights | [ARK-1] |
 | 27 | **Cool primary on a warm world** | Primary buttons in a cool hue (cyan or blue) against a warm brown, gold or lava scene; secondary buttons in the scene's own warm material | AFK Arena, Dicero | [AFKA-G01], [AFKA-G18], [OWN-HOME], [DIC-P1] |
 | 28 | **Reward pile you can see** | Uncollected idle income shown as a physical heap of chests and coins that grows before you collect it | AFK Arena, AFK Journey | [AFKA-G01], [AFKJ-P7] |
@@ -608,10 +608,10 @@ and **Perf** flag conflicts with the project's accessibility and Galaxy A16 cons
 | 30 | **Carved display type for big moments** | Serif capitals in gold on a crest or over rays, used only for level up, victory and versus | AFK Arena, I Am Monster | [AFKA-G10], [AFKA-G09], [AFKA-G06], [IAM-10] |
 | 31 | **Rate chips** | Small dark chips reading "+87/m" with the currency icon, for income per time | AFK Arena | [AFKA-G02] |
 | 32 | **Portrait breaking the dialogue frame** | The speaker's bust rises out of the panel's top edge; the name sits on a tab at the corner | I Am Monster, Grow Castle (emblem) | [IAM-03], [GC-P4] |
-| 33 | **Action-colour grammar** | Blue = single or neutral action, yellow = the bigger commitment, grey = disabled, always with the reason in text | Dicero | [OWN-GEAR-DETAIL], [OWN-GEAR-LEVELUP], [OWN-BLESSING-BEFORE], [OWN-PET-HAVEN-UPGRADE] |
+| 33 | **Action-color grammar** | Blue = single or neutral action, yellow = the bigger commitment, gray = disabled, always with the reason in text | Dicero | [OWN-GEAR-DETAIL], [OWN-GEAR-LEVELUP], [OWN-BLESSING-BEFORE], [OWN-PET-HAVEN-UPGRADE] |
 | 34 | **Have / need cost line** | "113038 / 1300", the owned amount green when enough and red when short | Dicero | [OWN-GEAR-DETAIL], [OWN-GEAR-LEVELUP], [OWN-HERO-FROST-PRINCESS] |
 | 35 | **Before -> after upgrade preview** | Every stat row shows old -> new with green arrows; a power toast after the upgrade | Dicero | [OWN-PET-HAVEN-UPGRADE], [OWN-FUSE-SELECTED], [OWN-BLESSING-AFTER], [OWN-GEAR-LEVELUP] |
-| 36 | **One modal template, close below** | A shared modal shell with a meaning-coloured header and a square close button centred under it | Dicero | [OWN-PROFILE], [OWN-GUILD-TASKS], [OWN-SALVAGE], [OWN-VENTURE-SHOP] |
+| 36 | **One modal template, close below** | A shared modal shell with a meaning-colored header and a square close button centered under it | Dicero | [OWN-PROFILE], [OWN-GUILD-TASKS], [OWN-SALVAGE], [OWN-VENTURE-SHOP] |
 | 37 | **Reward ribbon** | A wavy band across the dimmed screen with an outlined title, reward tiles and confetti; one component for every reward | Dicero | [OWN-REWARD-REVEAL], [OWN-SHOP-REWARD-REVEAL], [OWN-VENTURE-REWARD] |
 | 38 | **A place for every feature** | Each feature lives in its own painted location (forge, cathedral, throne hall, town); the chrome stays the same | Dicero, AFK Arena | [OWN-FUSE-EMPTY], [OWN-CURIOS-FOUNTAIN], [OWN-HERO-FROST-PRINCESS], [OWN-GUILD-HUB], [AFKA-G01] |
 | 39 | **Expedition scroll strips** | Each idle expedition is a scroll with a tiny scene of units walking to a chest, a timer bar, empty "+" slots and a reasoned lock | Dicero, AFK Journey | [OWN-PET-HAVEN], [OWN-PET-HAVEN-RUNNING], [OWN-VENTURE-EMPTY], [AFKJ-P7] |
@@ -620,7 +620,7 @@ and **Perf** flag conflicts with the project's accessibility and Galaxy A16 cons
 **Flags:**
 - **A11y:**
   - #7 helps contrast; adopt it.
-  - #15 and #21 must keep their second cue (stars, labels, glyphs). Never rely on colour alone.
+  - #15 and #21 must keep their second cue (stars, labels, glyphs). Never rely on color alone.
   - #20 hides labels on unselected tabs. **Keep visible labels** in Dragon Gold, or at least
     keep `accessibilityLabel` and a clear icon; the locked tabs especially need the word "Locked".
   - #26 skews text, which hurts legibility. Skew the panel, not the text.
@@ -639,7 +639,7 @@ and **Perf** flag conflicts with the project's accessibility and Galaxy A16 cons
 ## 4. For Dragon Gold
 
 Effort tags:
-- `token`: only colours, sizes or fonts change in `src/theme/index.ts`.
+- `token`: only colors, sizes or fonts change in `src/theme/index.ts`.
 - `component`: a reusable component changes.
 - `art`: new art is needed.
 
@@ -656,10 +656,10 @@ Notes on the codebase as it stands:
     a chunky face for numbers.
   - The owner should pick; see the questions at the end.
   - Evidence: [CC-1], [IS-2], [DIC-A3].
-- **Add a text-outline token** (`textShadow` with a dark colour, zero blur, 0-2px offset; or a
-  stroke via stacked shadows) for any text drawn over art. `token`. Evidence: catalogue #7.
-- **Fix the colour roles:** gold = renown and rewards; red = HP, danger and alerts only; one
-  primary action colour; purple = rare, reserved for later. `token`. Evidence: section 1, point 5.
+- **Add a text-outline token** (`textShadow` with a dark color, zero blur, 0-2px offset; or a
+  stroke via stacked shadows) for any text drawn over art. `token`. Evidence: catalog #7.
+- **Fix the color roles:** gold = renown and rewards; red = HP, danger and alerts only; one
+  primary action color; purple = rare, reserved for later. `token`. Evidence: section 1, point 5.
 - **Replace the flat `#0f0d0b` field** with a vertical gradient (warm umber at the bottom fading to
   near-black at the top) and a vignette image. `token` + `component` (a `SceneBackdrop` that takes
   a skin prop). Evidence: [OWN-HOME], [CC-1].
@@ -676,7 +676,7 @@ Notes on the codebase as it stands:
    Evidence: [CC-1], [ARC-7], [RAID-3].
 2. **Damage numbers with a voice.**
    - Display font, italic, dark outline, size scaled to the hit.
-   - Colour by source: tap = gold-white, fighters = steel blue with a navy outline (today's
+   - Color by source: tap = gold-white, fighters = steel blue with a navy outline (today's
      "-0.50" is small, unoutlined and lost against the glyph [DG-HIT]), crit = ember orange and
      larger.
    - Stack and fade older numbers upward.
@@ -722,17 +722,17 @@ Notes on the codebase as it stands:
 3. **Pressed and disabled states.**
    - Pressed: scale to about 0.95, the face darkens one step, the shadow shrinks. *(Not
      observable in stills; standard practice.)*
-   - Disabled: grey face and grey label, the cost shown as "have / need" with the shortfall in
-     red, and the reason in words. This is Dicero's exact pattern, now verified (catalogue #33,
+   - Disabled: gray face and gray label, the cost shown as "have / need" with the shortfall in
+     red, and the reason in words. This is Dicero's exact pattern, now verified (catalog #33,
      #34): [OWN-GEAR-LEVELUP], [OWN-CURIOS-LOCKED-TOAST].
    - `component`.
 4. **Rethink red.** Red RALLY competes with red HP and with alerts. The owner's Dicero screens
-   sharpen the choice into a two-colour grammar (catalogue #33):
+   sharpen the choice into a two-color grammar (catalog #33):
    - **Steel blue (cool) for repeatable, everyday actions:** RALLY, FORAGE, TRAIN, Go, Speed Up.
      This matches AFK Arena's cyan [AFKA-G01] and Dicero's blue [OWN-SHOP-GEAR-CHEST].
    - **Ember gold for one-off commitments:** Build, Upgrade, Claim, Continue. This matches
      Dicero's yellow [OWN-PET-HAVEN-UPGRADE] and HSR's gold Claim [HSR-LV].
-   - **Grey for disabled,** always with the reason in text.
+   - **Gray for disabled,** always with the reason in text.
    - Red goes back to meaning HP and danger only.
    `token` + `component`. This is still the owner's call, but three references now agree on it.
 
@@ -768,7 +768,7 @@ Notes on the codebase as it stands:
 1. **A painted portrait that breaks the frame.** Replace the person glyph with a bust of Elder
    Pyreth that overlaps the panel's top edge. `art` + `component`. Evidence: [IAM-03] (exactly
    this layout), [GC-P4] (emblem breaking the frame), [HSR-EV].
-2. **A name tag.** "ELDER PYRETH" on a gold-edged tab attached to the panel, instead of a centred
+2. **A name tag.** "ELDER PYRETH" on a gold-edged tab attached to the panel, instead of a centered
    caption. `component`. Evidence: [HSR-EV], [E7-3], [GI-LOOT].
 3. **The panel as material.**
    - A dark stone or vellum texture.
@@ -810,19 +810,19 @@ These pieces are outside the brief's table, but the owner's screenshots map onto
    [OWN-GUILD-HUB], [OWN-PET-HAVEN-RUNNING].
 2. **A place for each building's screen.** The Librarium as a candle-lit study, an armory or forge
    for gear, the Keep as a great hall. Keep one shared chrome (header, close, buttons) over each
-   painted backdrop. `art`. Evidence: catalogue #38.
+   painted backdrop. `art`. Evidence: catalog #38.
 3. **`BuildingCard` upgrade preview.** Show "Lv.2 -> Lv.3", each changed stat as old -> new with
    the new value in green, then the cost as have / need. The building art breaks out of the card's
    header. `component`. Evidence: [OWN-PET-HAVEN-UPGRADE], [OWN-FUSE-SELECTED].
 4. **Expeditions as scroll strips.** Explorers and foragers out on a run become parchment strips:
    the units walking toward a sack or chest, a timer bar, a Speed Up or Recall button, and locked
-   strips that say what unlocks them. `component` + `art`. Evidence: catalogue #39.
+   strips that say what unlocks them. `component` + `art`. Evidence: catalog #39.
 5. **One `RewardReveal` component.** A ribbon band, an outlined "Gained" title, reward tiles with
    counts, a few ember sparks instead of confetti, and "Tap to close". Use it for offline earnings
-   (`OfflineModal`), quest claims and building completion. `component`. Evidence: catalogue #37.
+   (`OfflineModal`), quest claims and building completion. `component`. Evidence: catalog #37.
 6. **One modal shell.** Extend `BottomSheet` and `ConfirmModal` to share one look: a stone header
-   coloured by meaning, a parchment body, and the close button in a consistent place.
-   `component`. Evidence: catalogue #36. *(Dicero's close button below the modal sits low on
+   colored by meaning, a parchment body, and the close button in a consistent place.
+   `component`. Evidence: catalog #36. *(Dicero's close button below the modal sits low on
    tall phones. Keep it at least 48dp and keep the Android back button working.)*
 
 ---
@@ -838,9 +838,9 @@ These pieces are outside the brief's table, but the owner's screenshots map onto
 - **Full-screen blur and frosted glass** (Egg, Inc. modals, HSR panels). Costly on the A16, and
   off-theme for stone and iron.
 - **Neon cyan sci-fi** (Blue Archive, ZZZ, Arknights accents). Off-theme for a torchlit siege.
-- **Rarity colour as the only signal.** Always pair it with stars, labels or shapes.
-- **Thin light-grey small text over art** (HSR secondary text). It fails AA contrast.
-- **Monetisation-style "juice" for ordinary information.** Reserve 3D display text, chests and
+- **Rarity color as the only signal.** Always pair it with stars, labels or shapes.
+- **Thin light-gray small text over art** (HSR secondary text). It fails AA contrast.
+- **Monetization-style "juice" for ordinary information.** Reserve 3D display text, chests and
   bursts for real rewards, or they stop meaning anything [OWN-OFFER].
 - **Sales stickers** ("Great Value 500%", "20% OFF", "Bonus") on anything. They read as pressure,
   not polish [OWN-DAILY-SELECTED], [OWN-SHOP-GEMS-GOLD].
@@ -872,7 +872,7 @@ These pieces are outside the brief's table, but the owner's screenshots map onto
   and Legends of Idleon were not covered; none of them is on Game UI Database.
 - **Motion and button states** cannot be verified from stills. They are marked where used.
 - **Moodboard:** not created. The store screenshots are copyrighted marketing material with no
-  stated reference licence, and none of the titles offered a press kit in the sources found. The
+  stated reference license, and none of the titles offered a press kit in the sources found. The
   URLs in `sources.md` serve the same purpose.
 
 ---

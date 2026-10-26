@@ -23,7 +23,7 @@
   clock, so nobody arrives while the app is closed
 - Every newcomer eats 10 food on arrival (the same rule as refugees); Welcome is disabled when
   the stores cannot pay. A rare Veteran (5%) arrives as a fighter with no Rally cost
-- The wanderer card shows the stores before and after, and a veteran's meal cost; flavour lines
+- The wanderer card shows the stores before and after, and a veteran's meal cost; flavor lines
   rewritten for a dragon at the Gate. The old trained refugee and its overflow refund are gone
 
 ### The Dragon's Claws, layer 3 (2026-10-26)

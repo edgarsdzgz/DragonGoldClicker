@@ -2,7 +2,7 @@
 
 **For:** a Claude session picking this up cold.
 **Requested by:** the project owner, 2026-10-26.
-**Project:** Dragon Gold (`R:\Coding_Projects\_dragonGold`), a React Native (Expo 54) siege-defence
+**Project:** Dragon Gold (`R:\Coding_Projects\_dragonGold`), a React Native (Expo 54) siege-defense
 clicker for phones.
 
 ---
@@ -14,7 +14,7 @@ Find out how successful clicker and idle games, and polished gacha RPGs, make th
 so the owner can redesign Dragon Gold to look modern and attractive.
 
 This is **visual research only**: how things look and feel. It is not about game mechanics,
-monetisation or economy design.
+monetization or economy design.
 
 ## 2. What Dragon Gold looks like now
 
@@ -28,7 +28,7 @@ game; see section 3a.)
   chunk on the HP bar.
 - `scene-dialog-highlight.png`: a story scene (Elder Pyreth) with the renown figure boxed in gold.
 
-The design system is called **"Ember & Stone: torchlit medieval siege defence"**:
+The design system is called **"Ember & Stone: torchlit medieval siege defense"**:
 - Near-black backgrounds (`#0a0a0f` to `#252530`) with gold accents (`#d4922c` to `#f0c060`).
 - Tokens live in `src/theme/index.ts`.
 - Monsters are flat gold silhouettes; only the kobold has custom art.
@@ -86,14 +86,14 @@ First observations to verify and extend. Confirm each against the images; do not
   - The home screen is a lit campfire scene (warm volcanic sky, two idle characters). The UI floats
     around its edges.
   - The middle stays open, so the art carries the mood.
-- **The current stage is the hero.** A large glowing hexagon card in the centre: a lava-scene
+- **The current stage is the hero.** A large glowing hexagon card in the center: a lava-scene
   thumbnail, power requirement, name ("Wyrmfire Peak"), progress (0/20), and a huge "28".
 - **Currencies at the top** sit in dark angled chips, each with a big glossy icon and a small green
   "+".
 - **The profile corner** has an avatar portrait with a level badge, a name, an XP bar and a
   power figure.
 - **Feature icons sit in two vertical rails, left and right**, on dark pixel-framed strips.
-  - Each is a large colourful painted icon with a two-line outlined label under it.
+  - Each is a large colorful painted icon with a two-line outlined label under it.
   - A red square "!" badge marks anything that needs attention. They are used a lot.
 - **There is one dominant primary button.** "New Game x10" is a wide, saturated blue rectangle
   with diamond end-caps, a lighter top edge, a cost line under the label and a dark drop shadow. It
@@ -106,12 +106,12 @@ First observations to verify and extend. Confirm each against the images; do not
   - Huge 3D gold display text ("10% BONUS") with a thick dark outline and an inner highlight.
   - A purple ornate frame with pointed finials.
   - A glowing open chest spilling blue dice, plus sparkles and radial light.
-  - A gold hexagon "GO" button. Highlight words are coloured gold and green inside the text.
+  - A gold hexagon "GO" button. Highlight words are colored gold and green inside the text.
   - A dimmed backdrop, a "Don't remind me again today" checkbox, and a separate square close
     button below the frame.
 - **The title screen is calm by contrast.** A soft pixel-art winter scene, a white logo with a
   crown and sparkles, and a minimal "Start" flanked by thin lines and diamond marks.
-- **Colour strategy:** a warm scene, cool blue primary actions, gold for value and rewards, purple
+- **Color strategy:** a warm scene, cool blue primary actions, gold for value and rewards, purple
   for premium, red only for alerts.
 
 **B. Top clicker, idle and incremental games (pick 4-6)**
@@ -148,8 +148,8 @@ finding with no image you examined behind it is a guess: mark it as one, or drop
    - Shape (pill, rounded rectangle, circle, angled or cut corners).
    - Fills (flat, gradient, glossy, textured), borders and outer glow.
    - Pressed and disabled states, and how the primary button differs from the secondary ones.
-2. **Accent colour**: what the accent is, and where it is used versus withheld. How rarity or
-   importance colours (gold, purple, blue) are layered.
+2. **Accent color**: what the accent is, and where it is used versus withheld. How rarity or
+   importance colors (gold, purple, blue) are layered.
 3. **Panels and frames**: card backgrounds (blur, glass, parchment, metal), corner ornaments,
    dividers, inner shadows and borders. How they avoid looking like flat boxes.
 4. **Typography**: title faces (serif, display, stylised) versus body text, number fonts, letter
@@ -178,18 +178,18 @@ purpose: this project keeps `_dev/` in git).
 1. **`report.md`**, the main document:
    - A one-page summary of the techniques that recur across the best-looking games.
    - One section per game, covering the points in section 5 that apply (short, specific, no filler).
-   - A **pattern catalogue**: each reusable technique with a name, what it looks like, which games
+   - A **pattern catalog**: each reusable technique with a name, what it looks like, which games
      use it, and the image URLs that show it.
    - A **"for Dragon Gold" section**: for each piece in the table in section 2, 2-4 concrete
      suggestions in the "Ember & Stone" direction, each tagged with its effort:
-     - `token`: only colours, sizes or fonts change.
+     - `token`: only colors, sizes or fonts change.
      - `component`: a reusable component changes.
      - `art`: needs new art.
    - A short **"avoid"** list: things that look busy, cheap or off-theme.
 2. **`sources.md`**: every image and page used, as a table: game, screen type, URL, what it shows,
    date checked.
 3. Optional: **`moodboard/`** with a small number of reference images saved for local study.
-   - Before saving any image, check its licence. Official press kits are usually fine for
+   - Before saving any image, check its license. Official press kits are usually fine for
      reference.
    - These are for study only, never for shipping. Name files `<game>-<screen>.png`.
    - Keep the total under about 30 images. Do not save copyrighted art into `src/` or `assets/`.
@@ -199,7 +199,7 @@ purpose: this project keeps `_dev/` in git).
 - **Inspiration, not copying.** Describe techniques and principles. Never propose copying a
   game's art, logo, character, icon set or distinctive layout one-to-one.
 - The redesign must stay **accessible**: WCAG 2.2 AA text contrast, touch targets of at least
-  48dp, and nothing that only colour communicates. Flag any technique that fights these rules.
+  48dp, and nothing that only color communicates. Flag any technique that fights these rules.
 - It must stay **cheap on a mid-range phone** (the Galaxy A16): flag heavy blur, big particle
   counts or full-screen shaders as costly.
 - No code changes in this task. This is research and writing only.
@@ -212,7 +212,7 @@ purpose: this project keeps `_dev/` in git).
 
 - Every game in groups A and C has a section with at least 3 examined images cited. Dicero's
   section builds on the owner's screenshots and the observations in section 3a.
-- The pattern catalogue has at least 12 named techniques, each with image evidence.
+- The pattern catalog has at least 12 named techniques, each with image evidence.
 - Every piece in the section 2 table has concrete suggestions.
 - `sources.md` lists every URL used.
 - You end with a short message to the owner covering:

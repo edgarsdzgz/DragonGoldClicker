@@ -15,7 +15,7 @@ interface ArmyReadoutProps {
 
 /**
  * Can the army hold the Gate while the player is away? The army's kill time against the
- * monster's strike timer, in words, with a verdict that does not rest on colour alone.
+ * monster's strike timer, in words, with a verdict that does not rest on color alone.
  */
 export function ArmyReadout({ monsterName, killSec, strikeSec }: ArmyReadoutProps) {
   const holds = killSec < strikeSec

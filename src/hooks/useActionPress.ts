@@ -19,7 +19,7 @@ interface ActionPressOptions {
 }
 
 /**
- * The shared press behaviour of every main button (the battlefield, FORAGE, RALLY, REPAIR, TRAIN):
+ * The shared press behavior of every main button (the battlefield, FORAGE, RALLY, REPAIR, TRAIN):
  * - A touch fires the action at once (on press-in, so rapid taps are never lost).
  * - Holding (when `repeatOnHold`) repeats it every HOLD_REPEAT_MS, and `holding` turns on for
  *   the hold pulse.

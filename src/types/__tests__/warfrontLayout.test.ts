@@ -16,13 +16,13 @@ const stack = (h: number, queue = false) => {
 }
 
 describe('battlefieldLayout', () => {
-  it('caps the monster at 200 on a tall screen and keeps the flavour row', () => {
+  it('caps the monster at 200 on a tall screen and keeps the flavor row', () => {
     const l = battlefieldLayout(WORST_411x891)
     expect(l.monster).toBe(MAX_MONSTER)
     expect(l.showFlavor).toBe(true)
   })
 
-  it('keeps the queue and drops the flavour row on the typical 360x640 screen', () => {
+  it('keeps the queue and drops the flavor row on the typical 360x640 screen', () => {
     const l = battlefieldLayout(TYPICAL_360x640, { queue: true })
     expect(l).toMatchObject({ showFlavor: false, showQueue: true })
     expect(l.monster).toBeGreaterThanOrEqual(MIN_MONSTER)
@@ -39,7 +39,7 @@ describe('battlefieldLayout', () => {
     expect(stack(WORST_360x640, true)).toBeLessThanOrEqual(WORST_360x640)
   })
 
-  it('drops the queue after the flavour row, then shrinks the monster', () => {
+  it('drops the queue after the flavor row, then shrinks the monster', () => {
     const noFlavor = battlefieldLayout(NAME_H + HP_H + FIELD_PAD * 2 + QUEUE_H + MIN_MONSTER, { queue: true })
     expect(noFlavor).toMatchObject({ showFlavor: false, showQueue: true })
     const tight = battlefieldLayout(NAME_H + HP_H + FIELD_PAD * 2 + MIN_MONSTER + 5, { queue: true })
@@ -104,7 +104,7 @@ describe('forageOrbDiameter', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { forageOrbDiameter, ORB_GLOW_RATIO, FORAGE_ORB_MAX, FORAGE_ORB_MIN } = require('../warfrontLayout')
 
-  it('keeps the orb and its glow inside the area (flavour row included)', () => {
+  it('keeps the orb and its glow inside the area (flavor row included)', () => {
     for (const h of [250, 300, 360, 420]) {
       const d = forageOrbDiameter(h)
       if (d > FORAGE_ORB_MIN) expect(d * ORB_GLOW_RATIO + FLAVOR_H + FIELD_PAD * 2).toBeLessThanOrEqual(h)

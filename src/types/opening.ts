@@ -6,7 +6,7 @@ import type { GameState } from './state'
 // Everything here is derived from beats and kills, never from a stored flag, so a save that is
 // already past the opening shows everything it has reached.
 
-/** The flavour line and footer arrive after this many kills (where Wave 0 used to clear) */
+/** The flavor line and footer arrive after this many kills (where Wave 0 used to clear) */
 export const OPENING_KILLS = 3
 
 export interface WarfrontReveal {
@@ -14,7 +14,7 @@ export interface WarfrontReveal {
   topBar: boolean
   /** The monster's name under it */
   monsterName: boolean
-  /** Flavour line and footer (after the opening kills) */
+  /** Flavor line and footer (after the opening kills) */
   details: boolean
   /** Objective line, chips and the tab bar (with call_to_arms) */
   chrome: boolean

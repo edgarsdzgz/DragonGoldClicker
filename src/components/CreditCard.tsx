@@ -20,7 +20,7 @@ function CreditLink({ label, url, spoken }: { label: string; url: string; spoken
   )
 }
 
-/** One third-party asset's attribution, in the form its licence asks for. */
+/** One third-party asset's attribution, in the form its license asks for. */
 export function CreditCard({ credit }: { credit: CreditEntry }) {
   return (
     <View style={styles.root}>
@@ -28,7 +28,7 @@ export function CreditCard({ credit }: { credit: CreditEntry }) {
       <Text variant="label">{`${credit.title} by ${credit.author}`}</Text>
       <CreditLink label={credit.authorUrl} url={credit.authorUrl} spoken={`${credit.author}'s page`} />
       <CreditLink label={credit.source} url={credit.sourceUrl} spoken={`Source: ${credit.source}`} />
-      <CreditLink label={credit.license} url={credit.licenseUrl} spoken={`Licence: ${credit.license}`} />
+      <CreditLink label={credit.license} url={credit.licenseUrl} spoken={`License: ${credit.license}`} />
       {credit.changes && <Text variant="caption" color="muted">{credit.changes}</Text>}
     </View>
   )

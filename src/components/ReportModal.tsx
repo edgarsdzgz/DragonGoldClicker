@@ -9,14 +9,14 @@ type IconName = keyof typeof Ionicons.glyphMap
 export interface ReportRow {
   icon: IconName
   text: string
-  /** Defaults to the report's accent colour */
+  /** Defaults to the report's accent color */
   color?: string
 }
 
 interface ReportModalProps {
   visible: boolean
   icon: IconName
-  /** The accent bar, the icon and the rows' default colour */
+  /** The accent bar, the icon and the rows' default color */
   accent: string
   title: string
   message: string

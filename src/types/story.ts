@@ -28,7 +28,7 @@ export type BeatId =
   | 'the_scholar'
   | 'the_horde_grows'
 
-/** One-time scripted first occurrences a beat can run (behaviour arrives in later groups) */
+/** One-time scripted first occurrences a beat can run (behavior arrives in later groups) */
 export type ScriptedEventId =
   | 'breachHit'
   | 'firstMeal'
@@ -225,7 +225,7 @@ export const STORY_PAUSED_AFTER: BeatId = 'a_city_to_build'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 
-/** Tests only: move the pause so full-story behaviour can still be exercised. Pass nothing to restore. */
+/** Tests only: move the pause so full-story behavior can still be exercised. Pass nothing to restore. */
 export function setStoryPauseForTests(id: BeatId = STORY_PAUSED_AFTER) {
   pausedAfter = id
 }

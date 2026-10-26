@@ -46,7 +46,7 @@ export function CityHpMeter({ hp, max, hordeLevel, wardSec = 0, compact = false 
     return () => loop.stop()
   }, [tone, reduceMotion, pulse])
 
-  // The word carries the state too, so it never rests on colour alone
+  // The word carries the state too, so it never rests on color alone
   const ward = wardSec > 0 ? `warded ${Math.ceil(wardSec)}s` : null
   const label = `Wall ${hp.toFixed(0)} of ${max} health, ${word}${ward ? `, ${ward}` : ''}`
 

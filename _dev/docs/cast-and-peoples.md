@@ -36,11 +36,11 @@ awaiting a decision; **open** = not decided yet.
 | Lirae the Ink-Wing | Small apprentice dragon, an Academy survivor | Archivist, keeper of the Journal's lore | canon |
 | Varn, Dragon Recruit | Young dragon, barely fledged | Planned recruit | proposed |
 | Ashara, Elder Wyrm | Ancient dragon | Planned late recruit | proposed |
-| Captain Rodain | Orc veteran: grey-green skin, tusks, a scar, steel pauldrons, red captain's sash | Leads the company of fifty | canon |
+| Captain Rodain | Orc veteran: gray-green skin, tusks, a scar, steel pauldrons, red captain's sash | Leads the company of fifty | canon |
 | Scout Mirael | Wood elf: long ears, copper braid, teal ranger's cloak, brass compass | Scouts, wanderers, expeditions | canon |
 | Thornwick, the Exiled Mage | Any people | Planned; unlocks the Wizard's Tower | open |
 | Sera the Shieldmaiden | Any people | Planned recruit | open |
-| The Hollow Knight | Unknown, by design | Planned recruit; no one asks what is inside the armour | open |
+| The Hollow Knight | Unknown, by design | Planned recruit; no one asks what is inside the armor | open |
 
 ## How each is drawn
 
@@ -49,16 +49,16 @@ awaiting a decision; **open** = not decided yet.
 - Show different peoples with cheap details: skin and hair palettes, a beard, pointed ears, small
   horns, a tail.
 - **Never let a townsperson read as an enemy.** The kobold is a small reptile, so small
-  townsfolk avoid lizard-like silhouettes and the enemies' colours.
+  townsfolk avoid lizard-like silhouettes and the enemies' colors.
 
 **Busts and named characters:**
 - Full race traits and a defined personality.
-- Each named character gets its own silhouette (horns, frills, ears, armour), a colour family,
+- Each named character gets its own silhouette (horns, frills, ears, armor), a color family,
   and a heraldic sigil used on their dialogue name tag.
-- Dragons provide the most shape and colour variety. Example: Pyreth in ember-red and
+- Dragons provide the most shape and color variety. Example: Pyreth in ember-red and
   bone-white with long white whisker-barbels.
 
-| Character | Colour family | Sigil |
+| Character | Color family | Sigil |
 |---|---|---|
 | Elder Pyreth | Ember red, bone white, plum mantle | The ember (gold diamond) |
 | Lirae | Ink blue, pale blue, spectacle gold | The quill |

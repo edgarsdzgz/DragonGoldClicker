@@ -14,7 +14,7 @@ describe('warfrontReveal', () => {
     expect(r).toEqual({ topBar: true, monsterName: true, details: false, chrome: false, claws: false })
   })
 
-  it('flavour line and footer arrive at the third kill (where Wave 0 used to clear)', () => {
+  it('flavor line and footer arrive at the third kill (where Wave 0 used to clear)', () => {
     expect(OPENING_KILLS).toBe(3)
     expect(warfrontReveal(make({ monstersDefeated: 2 })).details).toBe(false)
     const r = warfrontReveal(make({ monstersDefeated: 3, beatsSeen: ['prologue', 'elder_approaches', 'first_renown'] }))

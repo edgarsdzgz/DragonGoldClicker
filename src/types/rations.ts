@@ -6,7 +6,7 @@ import type { GameState } from './state'
 // Owner ruling (2026-10-26): five rations. Full is the default; half and none are always there;
 // quarter and double are unlocked by Librarium research. A ration multiplies the fighters' upkeep
 // and their damage. No rations: the fighters stand down. They eat nothing and deal no damage, but
-// still guard the wall (they count for its defence) and come back at once, with no new Rally.
+// still guard the wall (they count for its defense) and come back at once, with no new Rally.
 
 export type RationId = 'none' | 'quarter' | 'half' | 'full' | 'double'
 

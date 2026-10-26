@@ -14,7 +14,7 @@ interface DevShortcutProps {
 }
 
 /**
- * A small labelled button in the top-right corner that opens Settings > Dev, for playtest builds
+ * A small labeled button in the top-right corner that opens Settings > Dev, for playtest builds
  * while the opening hides the rest of the UI. Player builds render nothing.
  */
 export function DevShortcut({ offsetTop = 0 }: DevShortcutProps) {

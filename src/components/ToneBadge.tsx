@@ -20,7 +20,7 @@ interface ToneBadgeProps {
   style?: ViewStyle
 }
 
-/** A one-line status pill coloured by how good or bad the news is; read out as its text */
+/** A one-line status pill colored by how good or bad the news is; read out as its text */
 export function ToneBadge({ text, tone, icon, style }: ToneBadgeProps) {
   const color = TONE_COLOR[tone]
   return (

@@ -2,12 +2,12 @@
 
 /** Monster sprite diameter limits in dp */
 export const MAX_MONSTER = 200
-/** The sprite is kept at least this big while the flavour line or queue row can still be dropped */
+/** The sprite is kept at least this big while the flavor line or queue row can still be dropped */
 export const MIN_MONSTER = 120
 /** Smallest sprite we will ever draw, when even dropping the optional rows is not enough */
 export const FLOOR_MONSTER = 80
 
-/** Height of the flavour row: always rendered at this height, one line with ellipsis */
+/** Height of the flavor row: always rendered at this height, one line with ellipsis */
 export const FLAVOR_H = 36
 /** The dim queue of next monsters */
 export const QUEUE_H = 28
@@ -30,7 +30,7 @@ export interface BattlefieldLayout {
 
 /**
  * Lay out the battlefield (the tap area between the wave row and the gate) in its measured
- * height. The stack is [flavour][queue][monster][name][HP]. The flavour line goes first when
+ * height. The stack is [flavor][queue][monster][name][HP]. The flavor line goes first when
  * space is short, then the queue, and only then does the monster shrink (down to 80dp),
  * so nothing ever overlaps the gate below.
  */
@@ -115,7 +115,7 @@ export const FORAGE_ORB_MAX = 200
 export const FORAGE_ORB_MIN = 90
 
 /**
- * The FORAGE orb's diameter for the height its area has (the flavour row above it included), so
+ * The FORAGE orb's diameter for the height its area has (the flavor row above it included), so
  * its glow never spills onto the TRAIN row below. Between FORAGE_ORB_MIN and FORAGE_ORB_MAX.
  */
 export function forageOrbDiameter(areaHeight: number): number {

@@ -42,7 +42,7 @@ interface BattlefieldProps {
   clawLevel?: number
   /** Called for every hit: the first press, then once per HOLD_REPEAT_MS while held */
   onStrike: () => void
-  /** Flavour line row, above the stack */
+  /** Flavor line row, above the stack */
   header?: React.ReactNode
   /** Dim queue of the next monsters, above the sprite */
   queue?: React.ReactNode
@@ -61,7 +61,7 @@ export interface BattlefieldHandle {
   showBounty: (amount: string) => void
   /** The monster that was just killed falls away and a coin flies to the inspiration figure */
   showKill: (monster: MonsterDef) => void
-  /** A fighter's swing landed: a small number in the ally colour and a faint flash, no slash */
+  /** A fighter's swing landed: a small number in the ally color and a faint flash, no slash */
   showAllyHit: (amount: string) => void
 }
 

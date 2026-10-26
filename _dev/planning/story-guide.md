@@ -12,7 +12,7 @@ A first-time player sees one button. Every other system is **off** and arrives a
 **story beat**: a short scene from a character, a pulse on the new control, and a one-line
 objective. Systems that are random or timed (siege damage, hunger, starvation, wanderers,
 expeditions, offline earnings) happen **once, scripted**, as part of their beat. Only after
-that first scripted occurrence do they switch to their normal random behaviour.
+that first scripted occurrence do they switch to their normal random behavior.
 
 The arc runs roughly 3-4 hours of play to the end of current content.
 
@@ -260,7 +260,7 @@ later, lighter guidance.
 | `tap_garrison` | `open_draconia` | Garrison node | Tap the Garrison. | its purchase sheet opens |
 | `build_garrison` | `tap_garrison` | Build button in the sheet | Build the Garrison. | `barracksLevel >= 1` |
 
-**Behaviour:**
+**Behavior:**
 - **Targets register themselves.** A control opts in with a `useCoachTarget(id)` hook that
   reports its on-screen rectangle (`measureInWindow`, re-measured on layout and scroll). A step
   shows only once its target is registered and visible; until then nothing dims.

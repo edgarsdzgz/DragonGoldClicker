@@ -102,7 +102,7 @@ function Slot({ handleRef, reduceMotion }: { handleRef: (h: SlotHandle | null) =
 const styles = StyleSheet.create({
   slot: {
     position: 'absolute',
-    // Centre the text on the spawn point
+    // Center the text on the spawn point
     marginLeft: -20,
     minWidth: 40,
     alignItems: 'center',

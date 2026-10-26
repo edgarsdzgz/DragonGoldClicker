@@ -85,7 +85,7 @@ export function GameScreen() {
     if (landed > 0 && focused) battlefieldRef.current?.showAllyHit(`-${(volleys * volleyNow).toFixed(2)}`)
   }, [state.allyStrikes, focused, army, volleyNow])
 
-  // A kill: coin sound, the bounty floats up, and about one in four brings a flavour line. Only
+  // A kill: coin sound, the bounty floats up, and about one in four brings a flavor line. Only
   // the player's own kills get the haptic; fighters' kills away from the Warfront stay quiet.
   const allyKillsSeen = useRef(state.allyKills)
   useKillEvents(state.monstersDefeated, state.monsterIndex, (monster) => {

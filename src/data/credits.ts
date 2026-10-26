@@ -1,5 +1,5 @@
 /**
- * Third-party assets shipped in the game, with the attribution their licences require.
+ * Third-party assets shipped in the game, with the attribution their licenses require.
  * Shown in Settings > Credits and mirrored in CREDITS.md at the repo root. Keep both in sync.
  */
 export interface CreditEntry {
@@ -12,7 +12,7 @@ export interface CreditEntry {
   sourceUrl: string
   license: string
   licenseUrl: string
-  /** Changes made for the game, if any (CC licences ask that changes be indicated) */
+  /** Changes made for the game, if any (CC licenses ask that changes be indicated) */
   changes?: string
 }
 

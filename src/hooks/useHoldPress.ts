@@ -19,7 +19,7 @@ interface HoldPressOptions {
  *
  * Returns pressIn/pressOut handlers for use with Pressable. The repeat also stops when the
  * component unmounts, its screen loses focus, or the app leaves the foreground, so a
- * cancelled press can never keep striking.
+ * canceled press can never keep striking.
  */
 export function useHoldPress(
   onTap: () => void,

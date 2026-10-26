@@ -19,7 +19,7 @@ export const APP_ROOT_TARGET = 'app_root'
 interface HighlightBackdropProps {
   /** Coach target id to light up and box (e.g. 'renown'); none gives a plain dim */
   targetId?: string
-  /** The dim colour */
+  /** The dim color */
   dim: string
 }
 

@@ -6,7 +6,7 @@
 - The horns don't read as horns.
 - The eyes look out of focus, which gives a dopey look.
 - The bodies are lean.
-- There is a strange "3D effect" on everything, instead of colours alone making the shading.
+- There is a strange "3D effect" on everything, instead of colors alone making the shading.
 
 This note gathers what tutorials and anatomy references say, maps each complaint to a cause, and sets the rules for the redraw.
 
@@ -15,7 +15,7 @@ This note gathers what tutorials and anatomy references say, maps each complaint
 | Complaint | Cause in the studies | What the sources say |
 |---|---|---|
 | "Strange 3D effect" | A scale-dot pattern and belly-plate lines stamped over every surface, plus ordered dithering between every tone. The surface reads as a printed texture or a render filter, not as pixel art. | A uniform texture "can appear unnatural and too busy" [SLY-2]. Use dithering "sparingly" [ARNE]. "Drawing each scale reads as static" [SAI]. "Good pixel art eliminates all unnecessary detail" [S11-4]. |
-| Eyes out of focus, dopey | The eye was a small iris ellipse surrounded by outline pixels and dithered skin. Neighbouring noise of the same value smears the edge, so the eye has no crisp shape. It also sat on the side of the head with no brow over it, so it looked open and blank. | Keep eyes to very few pixels: one for the pupil and a couple for the shape [EYE]. A highlight boxed by outline reads as "panda eyes" [EYE]. A small eye under a heavy brow is what makes a dragon threatening; "the eyelids, brow, and surrounding scales often contribute more to the expression than the eyeball does" [MUU]. Raptors look fierce because a bony shelf over the eye shades it [BROW]. |
+| Eyes out of focus, dopey | The eye was a small iris ellipse surrounded by outline pixels and dithered skin. Neighboring noise of the same value smears the edge, so the eye has no crisp shape. It also sat on the side of the head with no brow over it, so it looked open and blank. | Keep eyes to very few pixels: one for the pupil and a couple for the shape [EYE]. A highlight boxed by outline reads as "panda eyes" [EYE]. A small eye under a heavy brow is what makes a dragon threatening; "the eyelids, brow, and surrounding scales often contribute more to the expression than the eyeball does" [MUU]. Raptors look fierce because a bony shelf over the eye shades it [BROW]. |
 | Horns don't read | Thin, pale, straight lines of 1-2 pixels, the same value as the spines, starting anywhere on the head. At 3x they read as sticks or hair. | "A horn should appear to grow from the skull" [MUU]. Attach horns to the upper skull [TUTS]. The far horn is foreshortened, shorter and thicker [INST]. Horns need a lit edge and a shadow edge so they read as a cone. |
 | Silly | Cartoon proportions: a big round head, big eye, thin neck and a short muzzle. Teeth and spines were identical rows. | A smaller eye relative to the head makes a dragon look bigger and more threatening [SKB]. A "perfectly identical row of spikes" and a round white eye highlight read cartoonish [MUU]. Two or three light pixels on the jaw say teeth; six say confusion [SAI]. |
 | Lean | A narrow chest and a thin neck base, with small limbs under large wings. | Flight needs "massive pectoral muscles and a reinforced sternum" [ANAT]: think of a bird's keel chest scaled up. The lizard chest is longer than head and neck combined [DES]. |
@@ -26,7 +26,7 @@ This note gathers what tutorials and anatomy references say, maps each complaint
 
 1. **Flat clusters, not texture.**
    - Every material is a few solid clusters of 3-5 tones.
-   - Flat faces take one colour. Curved forms change colour only along the direction of the curve [S11-4].
+   - Flat faces take one color. Curved forms change color only along the direction of the curve [S11-4].
    - No noise layer, no dithering on the body.
    - Avoid "too many small scattered clusters" [SLY-57] and orphan pixels [SLY-2].
 2. **Imply scales, don't draw them.**
@@ -38,7 +38,7 @@ This note gathers what tutorials and anatomy references say, maps each complaint
 4. **Hue-shifted ramps.**
    - Shadows go cooler, highlights warmer [LOS-HUE].
    - Avoid ramps that run to pure black or white [ARNE] and long fully saturated ramps [ARNE].
-   - Keep the palette restrained: about 16-24 colours for the whole hero.
+   - Keep the palette restrained: about 16-24 colors for the whole hero.
 5. **Selective outlines.**
    - The outline is darker than both the sprite and the background.
    - It is lighter on lit edges and black only where no light reaches [LOS-OUT].
@@ -49,7 +49,7 @@ This note gathers what tutorials and anatomy references say, maps each complaint
    - If it hurts more than it helps, remove it [S11-5].
 7. **Silhouette first.**
    - "Most failed dragon sprites are failed silhouettes" [SAI].
-   - The silhouette in one flat colour has to read as a powerful dragon before any shading goes on.
+   - The silhouette in one flat color has to read as a powerful dragon before any shading goes on.
 8. **Size.**
    - A dragon needs at least 64x64. Neck, wings and tail compete for pixels below that [SAI].
    - At 32x32 you must choose head or wings, so the token should be a head or bust, not the whole body.
@@ -107,14 +107,14 @@ This note gathers what tutorials and anatomy references say, maps each complaint
 | Big round eye | Small, narrowed eye under a heavy brow |
 | Round head, short muzzle | Long, blocky snout |
 | Thin neck | Thick neck base and a deep chest |
-| Identical spikes | Spikes and teeth of varied size in an organised rhythm [MUU] |
+| Identical spikes | Spikes and teeth of varied size in an organized rhythm [MUU] |
 | Round white highlight | Lit by a clean rim on the upper edge of the form |
 | Head raised like a puppy | Head lower than the shoulders, or level, gaze forward; for rearing, the chest leads |
 
 ## 3. Plan for the next studies
 
 1. **One pose, one palette, hand-placed.** Draw a perched Warden on a 64x80 grid in the Ember palette.
-   - Start with the silhouette and check it in a single flat colour.
+   - Start with the silhouette and check it in a single flat color.
    - Then do the flat clusters, then the selective outline.
 2. **A head study at 48x48** to prove the eye, brow and horns before anything else. It doubles as the profile portrait.
 3. **Count and limit the palette:**
@@ -189,8 +189,8 @@ Version names: V1 is the procedural studies, made before this research. V2 (head
 | Rule | V4 |
 |---|---|
 | Flat clusters, no texture, no dithering | Kept |
-| One clear light, hue-shifted ramps, restrained palette | Upper-left light; shadows shift violet; 18 colours |
-| Silhouette reads in one colour | Passes |
+| One clear light, hue-shifted ramps, restrained palette | Upper-left light; shadows shift violet; 18 colors |
+| Silhouette reads in one color | Passes |
 | At least 64 px for a dragon | 64×64 |
 | Skull as a box cranium plus a tapered snout | Kept, with the snout shortened |
 | Nostril at the snout tip; only its deepest part dark | Kept |
@@ -202,17 +202,17 @@ Version names: V1 is the procedural studies, made before this research. V2 (head
 
 | Research said | References show | Correction |
 |---|---|---|
-| Section 2.3: "long, blocky snout" reads grand; skull modelled on monitor lizard and crocodile | The eye sits near the middle of the head, and the muzzle is no longer than the cranium | The lizard skull gives the structure (cranium box, snout wedge, brow), not the proportions. For proportions, use a heavier, big-cat-like cranium with a lizard muzzle. |
+| Section 2.3: "long, blocky snout" reads grand; skull modeled on monitor lizard and crocodile | The eye sits near the middle of the head, and the muzzle is no longer than the cranium | The lizard skull gives the structure (cranium box, snout wedge, brow), not the proportions. For proportions, use a heavier, big-cat-like cranium with a lizard muzzle. |
 | Section 2.2: horns as a single ram pair | A crest of 3-7 horns and spikes fanning back on one diagonal | The ram horn stays the model for one horn. The crest needs several, of varied length, rooted along the brow and skull. |
 | Section 2.2: lizard jaws end behind the eye | The open mouth ends under or before the eye | Both hold: the jaw bone and muscle run behind the eye, but the mouth opening stops under it. V4 softens the seam behind the mouth corner to a hide shadow. |
 | Nothing on view angle | Mostly three-quarter | Default to three-quarter for portraits; profile flattens the face. |
 | Nothing on overall value | Dark overall, with bright accents | The darkest two hide tones cover most of the shadow side; the eye and fire are the brightest points. |
 | Nothing on head carriage | The head is held forward of the chest, tilted down | The neck leaves the jaw corner down and back. |
-| Section 2.1: no outline ring around the eye | Most references set the eye in a dark socket | A dark socket ring is fine; what reads badly is an outline-coloured ring with a highlight boxed inside. |
+| Section 2.1: no outline ring around the eye | Most references set the eye in a dark socket | A dark socket ring is fine; what reads badly is an outline-colored ring with a highlight boxed inside. |
 
 ### Research rules V4 does not apply yet
 
-- **Imply scales:** a few scale clusters on the shadow side, denser at the terminator. V4 has none. The Skulldon and blue-grey references do this.
-- **Selective outline:** the outline is mostly the darkest colour. Only a few lit edges take the warmer outline.
+- **Imply scales:** a few scale clusters on the shadow side, denser at the terminator. V4 has none. The Skulldon and blue-gray references do this.
+- **Selective outline:** the outline is mostly the darkest color. Only a few lit edges take the warmer outline.
 - **Anti-aliasing on long curves:** none yet. The horn curves could use a few in-between pixels.
 - **Chest, wings and limbs:** not tested, since this is a head study. The perched body will test the bird chest, bat wing and lizard stance.

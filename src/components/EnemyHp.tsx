@@ -45,7 +45,7 @@ export function EnemyHp({ hp, max, width }: EnemyHpProps) {
     last.current = fraction
   }, [fraction, trail, reduceMotion])
 
-  // Anchor a scaled bar to its left edge (scaleX pivots on the centre)
+  // Anchor a scaled bar to its left edge (scaleX pivots on the center)
   const anchored = (value: Animated.Value | Animated.AnimatedInterpolation<number>) => ({
     transform: [
       { translateX: Animated.multiply(Animated.subtract(1, value), -trackW / 2) },
