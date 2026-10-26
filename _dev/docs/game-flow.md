@@ -66,9 +66,11 @@ Locked tabs are always visible with a lock icon. Tapping shows the unlock requir
 - **Repair rate** = 0.5 HP/sec per repairer
 - **Horde level** = 1 + one per 25 kills of the horde's advance (`hordeKills`), which drives the
   spawn pool
-- Rodain's company holds the wall at 50 HP until the floor is lifted. The player never loses the
-  game: when the wall falls it is a Breach (losses, the horde pushed back), planned as layer 6
-  phase B in `_dev/planning/core-tap.md`
+- Rodain's company holds the wall at 50 HP until the Mend the Walls quest is done
+  (`the_wall_is_yours`). The player never loses the game: when the wall falls it is a Breach
+  (`types/breach.ts`): 30% of fighters, repairers and idle villagers and 15% of foragers die, 40%
+  of the food burns, renown is halved then pays 5 per horde level (can go negative). The horde
+  is pushed back by half (at least 2 levels), the wall is patched to 50 and a 90s ward holds
 
 ---
 

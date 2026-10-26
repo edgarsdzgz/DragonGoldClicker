@@ -19,7 +19,7 @@ and add no new mechanics or screens until the tap is fun.
 | 3 | Tap upgrades: one track (the dragon's claws), reusing `AVATAR_WEAPONS` | later |
 | 4 | Rhythm: combo multiplier that decays, occasional crits | later |
 | 5 | Fighters damage the same monster (visible small hits) instead of a separate insp/s | done in 2e |
-| 6 | The wall: monsters not killed in time hit the wall; Repair matters; the Breach | approved 2026-10-26; phase A built |
+| 6 | The wall: monsters not killed in time hit the wall; Repair matters; the Breach | approved 2026-10-26; phases A and B built |
 
 Food, foraging, Draconia, wanderers, milestones and the journal wait until layers 1-5 feel
 good. Story beats get re-pointed at these layers later ("your first kill", "Kael forges your
@@ -555,7 +555,7 @@ The ration multiplies the fighters' upkeep and their damage. Fed states apply on
 
 ---
 
-## Layer 6: the wall, and the Breach (approved 2026-10-26; phase A built)
+## Layer 6: the wall, and the Breach (approved 2026-10-26; phases A and B built)
 
 Owner rulings (2026-10-26):
 - The player never dies or starts over. When the wall falls, that is the Breach: villagers fight
@@ -628,8 +628,11 @@ Owner rulings (2026-10-26):
   and the first gatherer is trained, so the Forage lesson (the train-gatherer step) finishes
   first. Its scene sends the player back to the Gate. The scripted opening blow (15 HP) stays;
   from then on monsters strike the wall and the wall bar shows.
-- Mend the Walls becomes a quest: direct 3 repairers (lifetime directed). The story pauses after
-  `mend_the_walls` until phase B.
+- Mend the Walls becomes a quest: direct 3 repairers (lifetime directed). It completes into a
+  new beat, `the_wall_is_yours` (Rodain): his company stands down, the floor is lifted
+  (`threatUnfloored`), and he says plainly what a Breach costs. The story pauses after it.
+- `the_horde_grows` no longer unlocks anything; its scene needs new words before the story
+  reaches it ("from here, the wall is yours" has been said).
 - Rodain's company is the HP floor (50) until the wall is allowed to fall. **Open:** when that is
   (see below). `threatUnfloored` keeps its name; "game over" wording in the journal and story
   guide becomes "the wall can fall, and a Breach follows".
@@ -639,7 +642,7 @@ Owner rulings (2026-10-26):
 | Phase | What |
 |-------|------|
 | A | Wall strikes, horde level and migration, warnings, re-pointed `the_breach`, Mend the Walls quest. The floor holds, so nothing can be lost yet. Built 2026-10-26. |
-| B | The Breach: losses, negative renown, ward and push-back, scenes and summary card, away rule. |
+| B | The Breach: losses, negative renown, ward and push-back, scenes and summary card, away rule. Built 2026-10-26: `types/breach.ts`, `types/horde.ts`, `BreachEvent` (scenes, then a `ReportModal`). Game over is removed. |
 
 ### Open questions (settled 2026-10-26 on the recommendations)
 

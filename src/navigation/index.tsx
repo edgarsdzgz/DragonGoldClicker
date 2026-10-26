@@ -214,7 +214,7 @@ function TabNavigator() {
   useWallWarnings(toastRef)
   // The app's root view: scenes place their highlight box relative to it (see HighlightBackdrop)
   const appRoot = useCoachTarget(APP_ROOT_TARGET, undefined, { skipFocusGate: true })
-  // A reset (from Settings or Game Over) stamps a new startedAt: the new game opens on the Warfront
+  // A reset (from Settings) stamps a new startedAt: the new game opens on the Warfront
   const startedAt = useRef(state.startedAt)
   useEffect(() => {
     if (state.startedAt === startedAt.current) return

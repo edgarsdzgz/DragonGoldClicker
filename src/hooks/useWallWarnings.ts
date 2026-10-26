@@ -11,7 +11,7 @@ import type { UnlockToastHandle } from '../components/UnlockToast'
  */
 export function useWallWarnings(toastRef: React.MutableRefObject<UnlockToastHandle | null>) {
   const { state } = useGame()
-  const { warning } = useHaptics()
+  const { warning, error } = useHaptics()
   const hp = state.cityHp
   const last = useRef(hp)
   // Loading a save or starting a new game moves the HP without a strike: no warning for that
@@ -30,4 +30,11 @@ export function useWallWarnings(toastRef: React.MutableRefObject<UnlockToastHand
     AccessibilityInfo.announceForAccessibility(crossed.text)
     if (crossed.id !== 'cracking') warning()
   }, [hp, state.startedAt, toastRef, warning])
+
+  // The wall fell: the Breach's own scenes say the rest
+  const breaches = useRef(state.breaches)
+  useEffect(() => {
+    if (state.breaches > breaches.current) error()
+    breaches.current = state.breaches
+  }, [state.breaches, error])
 }

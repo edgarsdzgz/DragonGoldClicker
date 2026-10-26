@@ -56,6 +56,7 @@ so a fast tapper cannot outrun the story. Target times assume a normal player.
 | `call_to_arms` | 1 | ~0:30 | `inspiration >= FIGHTER_BASE_COST` | 20 | Pyreth | Spotlight Rally | `rally` | Rally 2 fighters |
 | `the_breach` | 3 | after Fill the Stores | `fill_the_stores` done and a gatherer trained | 0 | Rodain | Screen shake; one fixed hit of 15 HP; the wall bar appears; monsters strike the wall from now (core-tap layer 6) | `siege` (floored at 50) | -- |
 | `mend_the_walls` | 3 | right after | `the_breach` seen | 0 | *silent* | Spotlight Repair | `repair` | Mend the Walls quest: direct 3 repairers |
+| `the_wall_is_yours` | 3 | Mend the Walls done | quest completes into it | 0 | Rodain | Says what a Breach costs | `threatUnfloored` (the wall can fall; a Breach follows) | -- |
 | `empty_stores` | 3 | ~15:00 | `repairers >= 3` | 180 | Pyreth | First meal check fires 10 s after dismiss and shows the food drop | `hunger`, `forageTab`, food in ResourceBar, food warnings | Train 2 gatherers |
 | `strangers_at_gate` | 4 | ~25:00 | `foragers.gatherers >= 2` | 240 | Mirael | A **Lone Wanderer** arrives right after the scene | `wanderers` | -- |
 | `a_city_to_build` | 5 | ~40:00 | `foragers.gatherers >= 3` | 120 | Pyreth | Draconia shows **only the Garrison**; everything else is fog | `draconiaTab` | Build the Garrison |
@@ -66,7 +67,7 @@ so a fast tapper cannot outrun the story. Target times assume a normal player.
 | `beyond_the_walls` | 8 | ~1:30 | `shouldRevealExplorerPost(state)` | 300 | Mirael | **First expedition always succeeds** (at least 1 villager) | `expeditions`, reveal `outpost` | Send an expedition |
 | `the_keep` | 9 | ~2:00 | `draconiaHallBuilt` | 0 | Pyreth | The first return after 60 s or more away shows a framed OfflineModal | `offline`, `reassignment` | -- |
 | `the_scholar` | 10 | ~2:30 | `the_keep` seen | 600 | Lirae | Arrives as a scripted **Trained Refugee** | reveal `librarium`; Journal gains the Lore tab | Build the Librarium |
-| `the_horde_grows` | 11 | ~3:00 | `completedResearch.length >= 1` | 300 | Rodain | -- | `threatUnfloored` (HP floor removed; game over possible) | -- |
+| `the_horde_grows` | 11 | ~3:00 | `completedResearch.length >= 1` | 300 | Rodain | -- | none (the floor is lifted by `the_wall_is_yours`; this scene needs new words) | -- |
 | *later* | 12+ | 3:00+ | expedition finds / refugees | -- | Thornwick and others | Same pattern | Wizard's Tower, Housing, Towers | -- |
 
 **Side beats** fire whenever their own trigger passes and never block later beats:

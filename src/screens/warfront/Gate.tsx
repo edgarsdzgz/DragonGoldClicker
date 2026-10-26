@@ -5,6 +5,7 @@ import { Text } from '../../components/Text'
 import { CityHpMeter } from '../../components/CityHpMeter'
 import { useGame } from '../../context/GameContext'
 import { MAX_CITY_HP, isSystemOn, hordeLevel } from '../../types/game'
+import { wardLeft } from '../../types/breach'
 import { colors, spacing, gold, dark } from '../../theme'
 
 /** The gate at the bottom of the battlefield. The wall's HP shows only once the siege has begun. */
@@ -14,7 +15,7 @@ export function Gate() {
 
   return (
     <View style={styles.root}>
-      {siege && <CityHpMeter hp={state.cityHp} max={MAX_CITY_HP} hordeLevel={hordeLevel(state.hordeKills)} />}
+      {siege && <CityHpMeter hp={state.cityHp} max={MAX_CITY_HP} hordeLevel={hordeLevel(state.hordeKills)} wardSec={wardLeft(state)} />}
       <View style={styles.gate} accessible accessibilityLabel="Gate">
         <Ionicons name="log-in" size={14} color={gold[400]} />
         <Text variant="caption" style={styles.label}>GATE</Text>

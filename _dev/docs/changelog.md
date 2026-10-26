@@ -2,6 +2,20 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### The wall, layer 6 phase B: the Breach (2026-10-26)
+- Mend the Walls completes into Rodain's "The Wall Is Yours": his company stands down, the wall
+  can now fall, and he says what it costs
+- When the wall falls: 30% of fighters (at least 1), repairers and idle villagers die, 15% of
+  foragers, 40% of the stores burn, renown is halved and then pays 5 per horde level (it can go
+  negative, shown in red). Rally, repair and forager prices step back by the people lost
+- The ancient magic pushes the horde back by half (at least 2 levels), the wall is patched to 50
+  and a 90s ward stops all strikes (shown as "warded" on the wall bar). A fresh monster comes
+- The first Breach plays a full scene (Rodain, then Pyreth); later ones a short one. Then a
+  report lists every loss. A strong buzz when the wall falls
+- Game over is gone: the player never loses the game. New reusable `ReportModal`; the
+  starvation report uses it too
+- Dev: Breach now
+
 ### The wall, layer 6 phase A: monsters strike the wall (2026-10-26)
 - The monster at the gate strikes the wall every 5s while it stands: kobold 1, goblin 1.5,
   shadow crawler 2, orc 4. Its first strike comes 5s after it arrives, so a fast kill never

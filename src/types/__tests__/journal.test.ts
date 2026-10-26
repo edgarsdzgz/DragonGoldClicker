@@ -22,7 +22,7 @@ describe('journal', () => {
   it('keeps each card to one or two short sentences', () => {
     const all = getHowItWorks(make({ beatsSeen: [
       'prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate',
-      'a_city_to_build', 'word_spreads', 'lean_times', 'beyond_the_walls', 'the_keep', 'the_horde_grows',
+      'a_city_to_build', 'word_spreads', 'lean_times', 'beyond_the_walls', 'the_keep', 'the_horde_grows', 'the_wall_is_yours',
     ] }))
     expect(all.length).toBe(14)
     for (const c of all) expect((c.text.match(/\./g) ?? []).length).toBeLessThanOrEqual(2)

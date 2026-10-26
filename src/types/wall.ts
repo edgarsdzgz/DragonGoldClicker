@@ -2,6 +2,10 @@ import type { GameState } from './state'
 import { currentMonster } from './monsters'
 import { applyCityDamage } from './cityHp'
 import { isSystemOn } from './systems'
+import { hordeStrength } from './horde'
+import { resolveBreach, wardLeft } from './breach'
+
+export { HORDE_LEVEL_KILLS, HORDE_STRENGTH_PER_LEVEL, hordeLevel, hordeStrength } from './horde'
 
 // =============================================================================
 // THE WALL (core-tap layer 6): the monster at the gate strikes it while it lives
@@ -9,25 +13,6 @@ import { isSystemOn } from './systems'
 
 /** Seconds between a monster's strikes. Its first comes this long after it arrives. */
 export const WALL_STRIKE_SEC = 5
-
-/** Kills per horde level */
-export const HORDE_LEVEL_KILLS = 25
-
-/**
- * How much stronger the horde's strikes get per level above 1. Off (0) until the balance pass,
- * which may turn it on (0.05 was proposed).
- */
-export const HORDE_STRENGTH_PER_LEVEL = 0
-
-/** The horde's level: 1, then one more for every HORDE_LEVEL_KILLS of its advance */
-export function hordeLevel(hordeKills: number): number {
-  return 1 + Math.floor(Math.max(0, hordeKills) / HORDE_LEVEL_KILLS)
-}
-
-/** The multiplier on the horde's strikes at its current level (1 while the hook is off) */
-export function hordeStrength(hordeKills: number): number {
-  return 1 + HORDE_STRENGTH_PER_LEVEL * (hordeLevel(hordeKills) - 1)
-}
 
 /** Wall damage of one strike by the monster at the gate */
 export function wallStrikeDamage(s: GameState): number {
@@ -37,13 +22,16 @@ export function wallStrikeDamage(s: GameState): number {
 /**
  * One second at the gate (once the siege is on): the monster's clock runs, and every
  * WALL_STRIKE_SEC it strikes the wall. A kill restarts the clock (types/monsters.ts), so a monster
- * killed fast never strikes. Nothing strikes while the app is closed.
+ * killed fast never strikes. Nothing strikes while the app is closed, or while the ward from a
+ * Breach holds. A strike that brings the wall to 0 is a Breach (types/breach.ts).
  */
-export function stepWall(s: GameState): GameState {
+export function stepWall(s: GameState, rand: number = Math.random()): GameState {
   if (!isSystemOn(s, 'siege') || s.cityHp <= 0) return s
+  if (wardLeft(s) > 0) return s.siegeTimer === 0 ? s : { ...s, siegeTimer: 0 }
   const timer = s.siegeTimer + 1
   if (timer < WALL_STRIKE_SEC) return { ...s, siegeTimer: timer }
-  return { ...applyCityDamage(s, wallStrikeDamage(s)), siegeTimer: 0 }
+  const struck = { ...applyCityDamage(s, wallStrikeDamage(s)), siegeTimer: 0 }
+  return struck.cityHp <= 0 ? resolveBreach(struck, rand) : struck
 }
 
 // =============================================================================

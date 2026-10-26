@@ -15,7 +15,7 @@ import { useActiveEvent } from '../hooks/useActiveEvent'
 import { StarvationModal } from './StarvationModal'
 import { WandererModal } from './WandererModal'
 import { MilestoneModal } from './MilestoneModal'
-import { GameOverModal } from './GameOverModal'
+import { BreachEvent } from './BreachEvent'
 
 interface EventHostProps {
   /** Switches the visible tab (the host lives above the tab navigator) */
@@ -27,11 +27,11 @@ interface EventHostProps {
 /**
  * The only place pop-ups are shown, mounted once above the tabs so events appear on
  * every screen. One at a time, highest priority first:
- * game over > offline > story scene > starvation > food warning > milestone > wanderer.
+ * the Breach > offline > story scene > starvation > food warning > milestone > wanderer.
  */
 export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
   const {
-    state, applyScripted, dismissGameOver, resetGame,
+    state, applyScripted, dismissBreach,
     pendingOfflineEarnings, dismissOfflineEarnings,
     pendingStarvationReport, dismissStarvationReport,
     pendingFoodWarning, dismissFoodWarning, answerRefugees,
@@ -133,11 +133,14 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
           onReject={rejectMilestone}
         />
       )}
-      <GameOverModal
-        visible={activeModal === 'gameOver'}
-        onReset={resetGame}
-        onDismiss={dismissGameOver}
-      />
+      {state.pendingBreach !== null && (
+        <BreachEvent
+          key={state.pendingBreach.count}
+          visible={activeModal === 'breach'}
+          report={state.pendingBreach}
+          onDone={dismissBreach}
+        />
+      )}
     </>
   )
 }

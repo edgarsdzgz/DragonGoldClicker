@@ -42,7 +42,7 @@ const HOW_IT_WORKS: HowItWorksCard[] = [
   { system: 'expeditions', title: 'Expeditions', text: 'Wayfinders travel beyond the walls to rescue lost villagers. An expedition costs renown and food, and takes time.' },
   { system: 'offline', title: 'While You Are Away', text: 'The Keep gathers renown while you are gone, for a few hours. Upgrade it to extend how long.' },
   { system: 'reassignment', title: 'Changing Roles', text: 'The Keep lets you send people back to being idle villagers or move them to new work. You get part of their training cost back.' },
-  { system: 'threatUnfloored', title: 'The Wall Can Fall', text: 'Captain Rodain’s company no longer holds the line for you. If the city’s health reaches zero, the game is over.' },
+  { system: 'threatUnfloored', title: 'The Wall Can Fall', text: 'Captain Rodain’s company no longer holds the line for you. If the wall falls, people die, the stores burn and your renown pays for the ancient magic that drives the horde back weaker.' },
 ]
 
 export function getHowItWorks(s: GameState): HowItWorksCard[] {

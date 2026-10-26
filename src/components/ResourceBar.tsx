@@ -41,7 +41,8 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, a
             style={[styles.resource, coin.style]}
           >
             <InspirationIcon size={12} />
-            <Text variant="label" color="link">
+            {/* A Breach can leave renown in debt: shown in red, with its minus sign */}
+            <Text variant="label" color="link" style={inspiration < 0 ? { color: colors.status.error } : undefined}>
               {formatNumber(inspiration)}
             </Text>
           </Animated.View>

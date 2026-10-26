@@ -25,8 +25,8 @@ describe('applyCityDamage (HP floor)', () => {
     expect(applyCityDamage(make({ cityHp: 30 }), 10).cityHp).toBe(30)
   })
 
-  it('lets HP reach 0 once the horde grows', () => {
-    const s = make({ cityHp: 20, beatsSeen: ['the_horde_grows'] })
+  it("lets HP reach 0 once Rodain hands the wall over (the_wall_is_yours)", () => {
+    const s = make({ cityHp: 20, beatsSeen: ['the_wall_is_yours'] })
     expect(applyCityDamage(s, 50).cityHp).toBe(0)
   })
 

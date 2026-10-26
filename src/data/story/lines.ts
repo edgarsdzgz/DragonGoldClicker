@@ -85,6 +85,16 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     dismissLabel: 'To the Gate',
     navigateTo: 'GameTab',
   },
+  the_wall_is_yours: {
+    ...RODAIN,
+    title: 'The Wall Is Yours',
+    lines: [
+      'The wall stands mended, Steward. You learn quickly.',
+      'My company is spent. We held the stone while you learned to mend it. From here, the wall is yours to keep.',
+      'Hear me. If it falls, the horde pours into the streets. Our people will fight, and many will die. The stores will burn.',
+      'Draconia will not end. The elders keep an ancient magic for that day, but it is paid for dearly, your renown most of all. Do not let it fall.',
+    ],
+  },
   empty_stores: {
     ...PYRETH,
     title: 'Our Stores Run Low',
@@ -185,4 +195,44 @@ export function getScene(id: string): SceneDef | undefined {
 export const OFFLINE_FRAMING = {
   speaker: 'Elder Pyreth',
   text: 'While you slept, the Keep kept the ledgers. Here is what the city earned.',
+}
+
+/**
+ * The Breach (core-tap layer 6, phase B): played when the wall falls, in order, before the loss
+ * report. The first Breach gets the full scene; later ones a short one.
+ */
+export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
+  first: [
+    {
+      ...RODAIN,
+      title: 'The Wall Falls',
+      lines: [
+        'The wall is down! They are in the streets!',
+        'Every hand that can hold a blade is fighting: villagers, fighters, menders. We are losing them, Steward.',
+      ],
+    },
+    {
+      ...PYRETH,
+      title: 'The Ancient Magic',
+      lines: [
+        'My lord, there is one thing left. The elders keep the ancient magic of Draconia for this hour, and this hour only.',
+        'It is woken with what we hold dear: our stores, our standing, and your renown.',
+        'The horde breaks before it and flees far down the valley road. They will come again, but weaker, and the people have time to patch the wall.',
+      ],
+      dismissLabel: 'Count the cost',
+    },
+  ],
+  again: [
+    {
+      ...RODAIN,
+      title: 'The Wall Falls',
+      lines: ['The wall is down again! They are in the streets!'],
+    },
+    {
+      ...PYRETH,
+      title: 'The Ancient Magic',
+      lines: ['Once more the ancient magic answers, my lord, and once more Draconia pays for it.'],
+      dismissLabel: 'Count the cost',
+    },
+  ],
 }

@@ -78,6 +78,7 @@ export const QUESTS: QuestDef[] = [
     id: 'mend_the_walls', title: 'Mend the Walls',
     goals: [{ label: 'Direct 3 repairers', target: MEND_THE_WALLS_REPAIRERS, progress: (s) => s.repairersDirected }],
     offeredWhen: (s) => s.beatsSeen.includes('mend_the_walls'),
+    completesInto: 'the_wall_is_yours',
   },
 ]
 

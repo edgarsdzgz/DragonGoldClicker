@@ -14,6 +14,7 @@ export type BeatId =
   | 'call_to_arms'
   | 'the_breach'
   | 'mend_the_walls'
+  | 'the_wall_is_yours'
   | 'empty_stores'
   | 'strangers_at_gate'
   | 'a_city_to_build'
@@ -124,6 +125,13 @@ export const STORY_BEATS: BeatDef[] = [
     spotlight: 'repair',
   },
   {
+    // Layer 6 phase B: the Mend the Walls quest completes into this scene. Rodain's company stands
+    // down, the HP floor is lifted, and he says plainly what a Breach costs (types/breach.ts).
+    id: 'the_wall_is_yours', chapter: 3, dwellSec: 0,
+    trigger: (s) => s.questsDone.includes('mend_the_walls'),
+    unlocks: ['threatUnfloored'],
+  },
+  {
     id: 'strangers_at_gate', chapter: 4, dwellSec: 240,
     trigger: (s) => s.foragers.gatherers >= 2,
     unlocks: ['wanderers'],
@@ -190,7 +198,9 @@ export const STORY_BEATS: BeatDef[] = [
   {
     id: 'the_horde_grows', chapter: 11, dwellSec: 300,
     trigger: (s) => s.completedResearch.length >= 1,
-    unlocks: ['threatUnfloored'],
+    // The floor is lifted by the_wall_is_yours now (layer 6); this scene needs new words before
+    // the story reaches it ("from here, the wall is yours" has already been said)
+    unlocks: [],
   },
 ]
 
@@ -199,7 +209,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'mend_the_walls'
+export const STORY_PAUSED_AFTER: BeatId = 'the_wall_is_yours'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

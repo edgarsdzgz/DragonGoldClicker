@@ -1,3 +1,4 @@
+import type { BreachReport } from './breach'
 import type { SoldierCounts } from './soldiers'
 import type { RationId } from './rations'
 import type { FoodEventId, FoodEventState } from './foodEvents'
@@ -177,6 +178,12 @@ export interface GameState {
   killsByMonster: Record<string, number>
   /** The horde's advance: every kill adds one, a Breach pushes it back. The spawn pool reads it. */
   hordeKills: number
+  /** playSeconds until which the ward from the last Breach holds (no strikes on the wall) */
+  wardUntil: number
+  /** How many times the wall has fallen */
+  breaches: number
+  /** The last Breach's losses, until the player has read them */
+  pendingBreach: BreachReport | null
   /** The fighters' rations (types/rations.ts); full by default */
   ration: RationId
   /** The food event under way (types/foodEvents.ts), if any */
@@ -273,6 +280,9 @@ export const DEFAULT_GAME_STATE: GameState = {
   monsterHp: FIRST_MONSTER_HP,
   killsByMonster: {},
   hordeKills: 0,
+  wardUntil: 0,
+  breaches: 0,
+  pendingBreach: null,
   ration: DEFAULT_RATION,
   foodEvent: null,
   nextFoodEventAt: 0,

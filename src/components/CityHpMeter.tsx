@@ -12,6 +12,8 @@ interface CityHpMeterProps {
   max: number
   /** The horde's level, shown beside the wall's HP (omit to hide) */
   hordeLevel?: number
+  /** Seconds the ward from a Breach still holds (no strikes); 0 or omitted when there is none */
+  wardSec?: number
   /** One tight block (HP + thin bar) for sharing a row with the objective */
   compact?: boolean
 }
@@ -23,7 +25,7 @@ const TONES = {
 }
 
 /** The wall's health: green while sound, amber at half, red and pulsing at a quarter (layer 6). */
-export function CityHpMeter({ hp, max, hordeLevel, compact = false }: CityHpMeterProps) {
+export function CityHpMeter({ hp, max, hordeLevel, wardSec = 0, compact = false }: CityHpMeterProps) {
   const tone = wallTone(hp)
   const { tint, bar, word } = TONES[tone]
   const reduceMotion = useReduceMotion()
@@ -45,7 +47,8 @@ export function CityHpMeter({ hp, max, hordeLevel, compact = false }: CityHpMete
   }, [tone, reduceMotion, pulse])
 
   // The word carries the state too, so it never rests on colour alone
-  const label = `Wall ${hp.toFixed(0)} of ${max} health, ${word}`
+  const ward = wardSec > 0 ? `warded ${Math.ceil(wardSec)}s` : null
+  const label = `Wall ${hp.toFixed(0)} of ${max} health, ${word}${ward ? `, ${ward}` : ''}`
 
   if (compact) {
     return (
@@ -71,7 +74,11 @@ export function CityHpMeter({ hp, max, hordeLevel, compact = false }: CityHpMete
         <View style={styles.label}>
           <Ionicons name="shield-checkmark" size={14} color={tint} />
           <Text variant="caption" style={{ color: tint }}>{`Wall ${hp.toFixed(0)}/${max}`}</Text>
-          {tone !== 'sound' && <Text variant="caption" style={{ color: tint }}>{word}</Text>}
+          {ward ? (
+            <Text variant="caption" style={styles.ward}>{ward}</Text>
+          ) : (
+            tone !== 'sound' && <Text variant="caption" style={{ color: tint }}>{word}</Text>
+          )}
         </View>
         {hordeLevel !== undefined && (
           <Text variant="caption" style={styles.horde}>{`Horde level ${hordeLevel}`}</Text>
@@ -106,5 +113,8 @@ const styles = StyleSheet.create({
   },
   horde: {
     color: colors.text.secondary,
+  },
+  ward: {
+    color: colors.status.info,
   },
 })

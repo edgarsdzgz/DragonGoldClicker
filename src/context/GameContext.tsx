@@ -121,8 +121,8 @@ interface GameContextType {
   rejectWanderer: () => void
   rallyFighter: () => boolean
   directRepairer: () => boolean
-  isGameOver: boolean
-  dismissGameOver: () => void
+  /** Clears the last Breach's report once the player has read it (layer 6) */
+  dismissBreach: () => void
   pendingMilestone: MilestoneDef | null
   acceptMilestone: () => void
   rejectMilestone: () => void
@@ -151,7 +151,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(DEFAULT_GAME_STATE)
   const [loaded, setLoaded] = useState(false)
   const [pendingOfflineEarnings, setPendingOfflineEarnings] = useState<OfflineEarnings | null>(null)
-  const [gameOverDismissed, setGameOverDismissed] = useState(false)
   const [pendingMilestone, setPendingMilestone] = useState<MilestoneDef | null>(null)
   const wandererTimerRef = useRef(0)
   const { save, load, clear } = useStorage()
@@ -199,11 +198,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [loaded, save])
 
   const { pendingStarvationReport, pendingFoodWarning, pendingWanderer } = state
-  // Derived, so it can never disagree with the HP that caused it
-  const isGameOver = isSystemOn(state, 'siege') && state.cityHp <= 0 && !gameOverDismissed
-  useEffect(() => {
-    if (state.cityHp > 0) setGameOverDismissed(false)
-  }, [state.cityHp])
 
   const researchBonuses = getResearchBonuses(state.completedResearch)
 
@@ -910,8 +904,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => ({ ...prev, pendingStarvationReport: null }))
   }, [])
 
-  const dismissGameOver = useCallback(() => {
-    setGameOverDismissed(true)
+  const dismissBreach = useCallback(() => {
+    setState((prev) => ({ ...prev, pendingBreach: null }))
   }, [])
 
   const dismissFoodWarning = useCallback(() => {
@@ -1185,8 +1179,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         rejectWanderer,
         rallyFighter,
         directRepairer,
-        isGameOver,
-        dismissGameOver,
+        dismissBreach,
         pendingMilestone,
         acceptMilestone,
         rejectMilestone,
