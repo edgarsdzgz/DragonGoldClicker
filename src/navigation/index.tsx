@@ -20,6 +20,7 @@ import { warfrontReveal } from '../types/opening'
 import { useScriptedEvents } from '../hooks/useScriptedEvents'
 import { useQuestToasts } from '../hooks/useQuestToasts'
 import { useFoodEventToasts } from '../hooks/useFoodEventToasts'
+import { useWallWarnings } from '../hooks/useWallWarnings'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useCoach } from '../context/CoachContext'
 import { CoachMark } from '../components/CoachMark'
@@ -210,6 +211,7 @@ function TabNavigator() {
   const onSceneClosed = useScriptedEvents({ onNavigate: goToTab, toastRef })
   useQuestToasts(toastRef)
   useFoodEventToasts(toastRef)
+  useWallWarnings(toastRef)
   // The app's root view: scenes place their highlight box relative to it (see HighlightBackdrop)
   const appRoot = useCoachTarget(APP_ROOT_TARGET, undefined, { skipFocusGate: true })
   // A reset (from Settings or Game Over) stamps a new startedAt: the new game opens on the Warfront

@@ -2,6 +2,20 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### The wall, layer 6 phase A: monsters strike the wall (2026-10-26)
+- The monster at the gate strikes the wall every 5s while it stands: kobold 1, goblin 1.5,
+  shadow crawler 2, orc 4. Its first strike comes 5s after it arrives, so a fast kill never
+  touches the wall. Raiders run for the stores and never strike. Nothing strikes while away
+- Replaces the old siege tick (threat minus defense every 10s)
+- The horde's advance (`hordeKills`, save v10) drives the spawn pool instead of lifetime kills,
+  so a Breach can push it back. Shown as a horde level (one per 25 kills) beside the wall's HP
+- The wall bar is green, amber at half and red (pulsing) at a quarter, with the word beside it.
+  Toasts warn at 50%, 25% (with a buzz) and 10% (Rodain, with a buzz)
+- Story: Rodain's scene ("The Wall Shakes") follows Fill the Stores once the first gatherer is
+  trained and sends the player to the Gate; then a new quest, Mend the Walls (direct 3
+  repairers). Rodain's company still holds the wall at 50 HP; the story pauses after it
+- Dev: Horde +1 level
+
 ### Performance: taps that seemed ignored (2026-10-26)
 - Every Button, tab button, modal and sheet created its own audio player; opening the Dev tab built
   about 50 at once, froze the app for seconds and ran Android out of audio tracks. Sounds now use

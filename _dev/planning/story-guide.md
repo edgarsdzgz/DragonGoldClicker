@@ -54,8 +54,8 @@ so a fast tapper cannot outrun the story. Target times assume a normal player.
 |----|----|--------|---------|-------|---------|---------------------------|----------|-----------|
 | `prologue` | 0 | 0:00 | `beatsSeen` empty | 0 | Pyreth | -- | `slay` | Slay 20 monsters |
 | `call_to_arms` | 1 | ~0:30 | `inspiration >= FIGHTER_BASE_COST` | 20 | Pyreth | Spotlight Rally | `rally` | Rally 2 fighters |
-| `the_breach` | 2 | ~5:00 | `fighters >= 2` | 120 | Rodain | Screen shake; one fixed hit of 15 HP; HP bar appears | `siege` (floored at 50) | -- |
-| `mend_the_walls` | 2 | right after | `the_breach` seen | 0 | *silent* | Spotlight Repair | `repair` | Direct 3 repairers |
+| `the_breach` | 3 | after Fill the Stores | `fill_the_stores` done and a gatherer trained | 0 | Rodain | Screen shake; one fixed hit of 15 HP; the wall bar appears; monsters strike the wall from now (core-tap layer 6) | `siege` (floored at 50) | -- |
+| `mend_the_walls` | 3 | right after | `the_breach` seen | 0 | *silent* | Spotlight Repair | `repair` | Mend the Walls quest: direct 3 repairers |
 | `empty_stores` | 3 | ~15:00 | `repairers >= 3` | 180 | Pyreth | First meal check fires 10 s after dismiss and shows the food drop | `hunger`, `forageTab`, food in ResourceBar, food warnings | Train 2 gatherers |
 | `strangers_at_gate` | 4 | ~25:00 | `foragers.gatherers >= 2` | 240 | Mirael | A **Lone Wanderer** arrives right after the scene | `wanderers` | -- |
 | `a_city_to_build` | 5 | ~40:00 | `foragers.gatherers >= 3` | 120 | Pyreth | Draconia shows **only the Garrison**; everything else is fog | `draconiaTab` | Build the Garrison |
@@ -90,10 +90,12 @@ One to three lines per scene. These are drafts for the owner to edit.
 1. You have given them hope. Some of our villagers are ready to take up arms.
 2. Rally them, and they will fight beside you, even while you rest.
 
-**the_breach** (Rodain, "The Wall Breaks")
-1. The east wall is breached! Hold fast, Steward. We are here.
+**the_breach** (Rodain, "The Wall Shakes"; superseded 2026-10-26 by layer 6, live text in
+`data/story/lines.ts`)
+1. The stores are full, Steward, and none too soon. The horde has stopped waiting at the Gate.
 2. Captain Rodain, and fifty swords behind me. Where do you want us?
-3. My company will hold the line. The wall will not fall while we stand, but it must be mended.
+3. Every monster left standing at the Gate strikes the wall. Kill them fast and they never touch the stone.
+4. Its strength shows above the Gate. My company will hold it for now, but the wall must be mended.
 
 **empty_stores** (Pyreth, "Our Stores Run Low"): a shortened version of the existing food speech
 at `GameScreen.tsx:103-109`; keep its last line.

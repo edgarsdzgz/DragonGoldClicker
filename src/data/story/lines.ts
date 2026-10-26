@@ -75,12 +75,15 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   },
   the_breach: {
     ...RODAIN,
-    title: 'The Wall Breaks',
+    title: 'The Wall Shakes',
     lines: [
-      'The east wall is breached! Hold fast, Steward. We are here.',
+      'The stores are full, Steward, and none too soon. The horde has stopped waiting at the Gate.',
       'Captain Rodain, and fifty swords behind me. Where do you want us?',
-      'My company will hold the line. The wall will not fall while we stand, but it must be mended.',
+      'Every monster left standing at the Gate strikes the wall. Kill them fast and they never touch the stone.',
+      'Its strength shows above the Gate. My company will hold it for now, but the wall must be mended.',
     ],
+    dismissLabel: 'To the Gate',
+    navigateTo: 'GameTab',
   },
   empty_stores: {
     ...PYRETH,

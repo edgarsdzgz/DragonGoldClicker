@@ -12,12 +12,13 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 const AFTER_RENOWN = ['prologue', 'elder_approaches', 'first_renown']
 
 describe('the quest line', () => {
-  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores', () => {
+  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls', () => {
     expect(QUESTS.map((q) => [q.id, q.title, q.goals.map((g) => g.label)])).toEqual([
       ['defend_the_wall', 'Defend the Wall', ['Defeat 4 kobolds']],
       ['raise_the_guard', 'Raise the Guard', ['Rally 2 fighters']],
       ['hold_the_line', 'Hold the Line', ['Rally 5 fighters', 'Defeat a Shadow Crawler']],
       ['fill_the_stores', 'Fill the Stores', ['Gather 200 food by hand']],
+      ['mend_the_walls', 'Mend the Walls', ['Direct 3 repairers']],
     ])
   })
 
@@ -123,5 +124,18 @@ describe('Fill the Stores: food gathered by hand', () => {
     // Food from gatherers (totalFoodForaged) does not count
     expect(hasQuestToComplete({ ...offered, totalFoodForaged: 500, foodGatheredByHand: 199 })).toBe(false)
     expect(completeQuests({ ...offered, foodGatheredByHand: 200 }).completed.map((q) => q.id)).toEqual(['fill_the_stores'])
+  })
+})
+
+describe('Mend the Walls (layer 6)', () => {
+  const BEFORE = [...AFTER_RENOWN, 'call_to_arms', 'empty_stores', 'the_breach']
+  const DONE = ['defend_the_wall', 'raise_the_guard', 'hold_the_line', 'fill_the_stores'] as const
+
+  it('is offered once the mend_the_walls beat is seen, and completes at the third repairer directed', () => {
+    expect(currentQuest(make({ beatsSeen: BEFORE, questsDone: [...DONE] }))).toBeNull()
+    const offered = make({ beatsSeen: [...BEFORE, 'mend_the_walls'], questsDone: [...DONE], repairersDirected: 2 })
+    expect(currentQuest(offered)?.id).toBe('mend_the_walls')
+    expect(hasQuestToComplete(offered)).toBe(false)
+    expect(completeQuests({ ...offered, repairersDirected: 3 }).completed.map((q) => q.id)).toEqual(['mend_the_walls'])
   })
 })

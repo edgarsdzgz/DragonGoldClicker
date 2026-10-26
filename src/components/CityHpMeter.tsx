@@ -1,56 +1,85 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { View, StyleSheet, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
 import { ProgressBar } from './ProgressBar'
+import { useReduceMotion } from '../hooks/useReduceMotion'
+import { wallTone } from '../types/wall'
 import { colors, spacing } from '../theme'
 
 interface CityHpMeterProps {
   hp: number
   max: number
-  threat: number
-  defense: number
+  /** The horde's level, shown beside the wall's HP (omit to hide) */
+  hordeLevel?: number
   /** One tight block (HP + thin bar) for sharing a row with the objective */
   compact?: boolean
 }
 
-/** The city's health: label, threat state and a bar. */
-export function CityHpMeter({ hp, max, threat, defense, compact = false }: CityHpMeterProps) {
-  const ok = hp > 30
-  const tint = ok ? colors.status.success : colors.status.error
-  const barColors: [string, string] = ok ? ['#4ade80', '#22c55e'] : ['#ff6b6b', '#ef4444']
+const TONES = {
+  sound: { tint: colors.status.success, bar: ['#4ade80', '#22c55e'] as [string, string], word: 'holding' },
+  cracking: { tint: colors.status.warning, bar: ['#fbbf24', '#f59e0b'] as [string, string], word: 'cracking' },
+  failing: { tint: colors.status.error, bar: ['#ff6b6b', '#ef4444'] as [string, string], word: 'failing' },
+}
+
+/** The wall's health: green while sound, amber at half, red and pulsing at a quarter (layer 6). */
+export function CityHpMeter({ hp, max, hordeLevel, compact = false }: CityHpMeterProps) {
+  const tone = wallTone(hp)
+  const { tint, bar, word } = TONES[tone]
+  const reduceMotion = useReduceMotion()
+  const pulse = useRef(new Animated.Value(1)).current
+
+  useEffect(() => {
+    if (tone !== 'failing' || reduceMotion) {
+      pulse.setValue(1)
+      return
+    }
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, { toValue: 0.45, duration: 500, useNativeDriver: true }),
+        Animated.timing(pulse, { toValue: 1, duration: 500, useNativeDriver: true }),
+      ]),
+    )
+    loop.start()
+    return () => loop.stop()
+  }, [tone, reduceMotion, pulse])
+
+  // The word carries the state too, so it never rests on colour alone
+  const label = `Wall ${hp.toFixed(0)} of ${max} health, ${word}`
 
   if (compact) {
     return (
-      <View
-        style={styles.compact}
-        accessible
-        accessibilityLabel={`Draconia ${hp.toFixed(0)} of ${max} health`}
-      >
+      <View style={styles.compact} accessible accessibilityLabel={label}>
         <View style={styles.label}>
           <Ionicons name="shield-checkmark" size={12} color={tint} />
           <Text variant="caption" style={{ color: tint }}>{`${hp.toFixed(0)}/${max}`}</Text>
         </View>
-        <ProgressBar progress={hp / max} height={4} gradientColors={barColors} />
+        <Animated.View style={{ opacity: pulse }}>
+          <ProgressBar progress={hp / max} height={4} gradientColors={bar} />
+        </Animated.View>
       </View>
     )
   }
 
   return (
-    <View style={styles.full}>
+    <View
+      style={styles.full}
+      accessible
+      accessibilityLabel={hordeLevel ? `${label}. Horde level ${hordeLevel}` : label}
+    >
       <View style={styles.header}>
         <View style={styles.label}>
           <Ionicons name="shield-checkmark" size={14} color={tint} />
-          <Text variant="caption" style={{ color: tint }}>{`Draconia ${hp.toFixed(2)}/${max} HP`}</Text>
+          <Text variant="caption" style={{ color: tint }}>{`Wall ${hp.toFixed(0)}/${max}`}</Text>
+          {tone !== 'sound' && <Text variant="caption" style={{ color: tint }}>{word}</Text>}
         </View>
-        {threat > defense && (
-          <Text variant="caption" style={{ color: colors.status.error }}>{`Threat ${threat} / Def ${defense}`}</Text>
-        )}
-        {threat <= defense && threat > 0 && (
-          <Text variant="caption" style={{ color: colors.status.success }}>Defended</Text>
+        {hordeLevel !== undefined && (
+          <Text variant="caption" style={styles.horde}>{`Horde level ${hordeLevel}`}</Text>
         )}
       </View>
-      <ProgressBar progress={hp / max} height={6} gradientColors={barColors} />
+      <Animated.View style={{ opacity: pulse }}>
+        <ProgressBar progress={hp / max} height={6} gradientColors={bar} />
+      </Animated.View>
     </View>
   )
 }
@@ -74,5 +103,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing[1],
+  },
+  horde: {
+    color: colors.text.secondary,
   },
 })

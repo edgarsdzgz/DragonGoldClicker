@@ -19,7 +19,7 @@ and add no new mechanics or screens until the tap is fun.
 | 3 | Tap upgrades: one track (the dragon's claws), reusing `AVATAR_WEAPONS` | later |
 | 4 | Rhythm: combo multiplier that decays, occasional crits | later |
 | 5 | Fighters damage the same monster (visible small hits) instead of a separate insp/s | done in 2e |
-| 6 | The wall: monsters not killed in time hit the wall; Repair matters; the Breach | proposed 2026-10-26 |
+| 6 | The wall: monsters not killed in time hit the wall; Repair matters; the Breach | approved 2026-10-26; phase A built |
 
 Food, foraging, Draconia, wanderers, milestones and the journal wait until layers 1-5 feel
 good. Story beats get re-pointed at these layers later ("your first kill", "Kael forges your
@@ -555,7 +555,7 @@ The ration multiplies the fighters' upkeep and their damage. Fed states apply on
 
 ---
 
-## Layer 6: the wall, and the Breach (proposed 2026-10-26)
+## Layer 6: the wall, and the Breach (approved 2026-10-26; phase A built)
 
 Owner rulings (2026-10-26):
 - The player never dies or starts over. When the wall falls, that is the Breach: villagers fight
@@ -563,6 +563,9 @@ Owner rulings (2026-10-26):
 - The NPCs call on the ancient magic of Draconia to push the horde back, which gives the people
   time to patch the wall. That is why everything costs so much.
 - The horde is pushed back several (or many) levels, so starting up again is easy.
+- The open questions below were settled on the recommendations (2026-10-26): the wall can fall
+  right after Mend the Walls; the loss sizes stand (tune on the A16); push back by half, at least
+  2 levels; the strength hook is built and left off.
 
 ### 6.1 Monsters strike the wall
 
@@ -581,7 +584,10 @@ Owner rulings (2026-10-26):
 - New `hordeKills`: every kill adds one, and the spawn pool reads it instead of
   `monstersDefeated`. Lifetime counters (`monstersDefeated`, `killsByMonster`) never go back, so
   quests and debuts are untouched.
-- Shown as a **horde level**: 1 + one level per 25 kills.
+- Shown as a **horde level**: 1 + one level per 25 kills, beside the wall's HP above the Gate.
+- **Strength hook:** `HORDE_STRENGTH_PER_LEVEL` (types/wall.ts) scales wall strikes per level and
+  is 0 (off). Scaling monster HP as well needs the max HP stored per monster (today the roster's
+  `hp` is the max everywhere); that is for the balance pass.
 - Save migration v10: `hordeKills = monstersDefeated`.
 
 ### 6.3 Warnings, so the Breach is never a surprise
@@ -612,14 +618,18 @@ Owner rulings (2026-10-26):
   Pyreth calls on the old magic, and the horde is thrown back. Later Breaches play a short scene
   (two lines). Both end on a summary card listing every loss and the new horde level. The Journal
   counts Breaches.
-- **Away:** while the app is closed, wall damage stops at 25% and the wall never falls. A Breach
-  only happens while playing (matches the food away rule).
+- **Away:** as built in phase A, nothing strikes the wall while the app is closed (offline
+  progress does not simulate monsters), so the wall never falls while away. A Breach only happens
+  while playing.
 
 ### 6.5 The story
 
-- `the_breach` (Rodain) is re-pointed: it fires when Fill the Stores is done. The scripted opening
-  blow (15 HP) stays; from then on monsters strike the wall and the wall bar shows.
-- Mend the Walls becomes a quest: direct 3 repairers.
+- `the_breach` (Rodain, "The Wall Shakes") is re-pointed: it fires once Fill the Stores is done
+  and the first gatherer is trained, so the Forage lesson (the train-gatherer step) finishes
+  first. Its scene sends the player back to the Gate. The scripted opening blow (15 HP) stays;
+  from then on monsters strike the wall and the wall bar shows.
+- Mend the Walls becomes a quest: direct 3 repairers (lifetime directed). The story pauses after
+  `mend_the_walls` until phase B.
 - Rodain's company is the HP floor (50) until the wall is allowed to fall. **Open:** when that is
   (see below). `threatUnfloored` keeps its name; "game over" wording in the journal and story
   guide becomes "the wall can fall, and a Breach follows".
@@ -628,10 +638,10 @@ Owner rulings (2026-10-26):
 
 | Phase | What |
 |-------|------|
-| A | Wall strikes, horde level and migration, warnings, re-pointed `the_breach`, Mend the Walls quest. The floor holds, so nothing can be lost yet. |
+| A | Wall strikes, horde level and migration, warnings, re-pointed `the_breach`, Mend the Walls quest. The floor holds, so nothing can be lost yet. Built 2026-10-26. |
 | B | The Breach: losses, negative renown, ward and push-back, scenes and summary card, away rule. |
 
-### Open questions
+### Open questions (settled 2026-10-26 on the recommendations)
 
 1. **When can the wall first fall?** (a) Right after Mend the Walls: Rodain's company is spent
    holding the line while you learned to repair. (b) Chapter 11 (`the_horde_grows`), as the story

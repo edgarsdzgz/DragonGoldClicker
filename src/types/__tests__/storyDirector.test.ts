@@ -10,18 +10,20 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 beforeAll(() => setStoryPauseForTests('the_horde_grows'))
 afterAll(() => setStoryPauseForTests())
 
-// Everything up to empty_stores seen and 2 fighters in place: the_breach (dwell 120) is next
+// Everything up to mend_the_walls seen and 2 gatherers out: strangers_at_gate (dwell 240) is next
+const MAIN_TO_MEND = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores', 'the_breach', 'mend_the_walls']
 const DWELL_BASE = {
-  beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores'],
-  fighters: 2,
+  beatsSeen: MAIN_TO_MEND,
+  foragers: { gatherers: 2, trappers: 0, rangers: 0 },
   lastBeatAtPlaySec: 0,
 }
 
 describe('effectiveDwell', () => {
   it('caps dwell at 5 seconds in test pacing and keeps it in live', () => {
-    const breach = getBeat('the_breach')!
-    expect(effectiveDwell(breach, 'test')).toBe(5)
-    expect(effectiveDwell(breach, 'live')).toBe(120)
+    const strangers = getBeat('strangers_at_gate')!
+    expect(effectiveDwell(strangers, 'test')).toBe(5)
+    expect(effectiveDwell(strangers, 'live')).toBe(240)
+    expect(effectiveDwell(getBeat('the_breach')!, 'live')).toBe(0)
     expect(effectiveDwell(getBeat('empty_stores')!, 'live')).toBe(0)
     expect(effectiveDwell(getBeat('call_to_arms')!, 'live')).toBe(0)
     expect(effectiveDwell(getBeat('prologue')!, 'test')).toBe(0)
@@ -39,17 +41,17 @@ describe('findNextBeat', () => {
   })
 
   it('waits for the live dwell, then fires', () => {
-    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 119 }), 'live')).toBeNull()
-    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 120 }), 'live')?.id).toBe('the_breach')
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 239 }), 'live')).toBeNull()
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 240 }), 'live')?.id).toBe('strangers_at_gate')
   })
 
   it('uses the capped dwell in test pacing', () => {
     expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 4 }), 'test')).toBeNull()
-    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 5 }), 'test')?.id).toBe('the_breach')
+    expect(findNextBeat(make({ ...DWELL_BASE, playSeconds: 5 }), 'test')?.id).toBe('strangers_at_gate')
   })
 
   it('measures dwell from the last beat, not from zero', () => {
-    const s = make({ ...DWELL_BASE, playSeconds: 110, lastBeatAtPlaySec: 100 })
+    const s = make({ ...DWELL_BASE, playSeconds: 300, lastBeatAtPlaySec: 100 })
     expect(findNextBeat(s, 'live')).toBeNull()
   })
 
@@ -82,8 +84,20 @@ describe('findNextBeat', () => {
   })
 
   it('does not wait for a side beat that has not triggered', () => {
-    const s = make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores'], fighters: 2, playSeconds: 200, lastBeatAtPlaySec: 0 })
+    const s = make({
+      beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores'],
+      questsDone: ['fill_the_stores'], foragersTrained: { gatherers: 1, trappers: 0, rangers: 0 },
+      playSeconds: 200, lastBeatAtPlaySec: 0,
+    })
     expect(findNextBeat(s, 'live')?.id).toBe('the_breach')
+  })
+
+  it('the_breach waits for the stores to be filled and the first gatherer trained', () => {
+    const base = { beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores'], playSeconds: 200 }
+    const trained = { gatherers: 1, trappers: 0, rangers: 0 }
+    expect(findNextBeat(make({ ...base, foragersTrained: trained }), 'live')).toBeNull()
+    expect(findNextBeat(make({ ...base, questsDone: ['fill_the_stores'] }), 'live')).toBeNull()
+    expect(findNextBeat(make({ ...base, questsDone: ['fill_the_stores'], foragersTrained: trained }), 'live')?.id).toBe('the_breach')
   })
 
   it('fires lean_times only when hunger is on and food is empty', () => {

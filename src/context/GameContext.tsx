@@ -60,12 +60,8 @@ import {
   stepFighterVolley,
   FIGHTER_HIT_DAMAGE,
   FIGHTER_TICK_MS,
-  SIEGE_TICK_INTERVAL,
   MAX_CITY_HP,
-  getThreatLevel,
   getNextMilestone,
-  getDefenseLevel,
-  getSiegeDamage,
   getRepairRate,
   SWORD_BONUS,
   SHIELD_BONUS,
@@ -75,7 +71,7 @@ import {
   isBuildingRevealed,
 } from '../types/game'
 import { stepFood } from '../types/foodTick'
-import { applyCityDamage } from '../types/cityHp'
+import { stepWall } from '../types/wall'
 import { strike, fighterStrike } from '../types/monsters'
 import { completeQuests, hasQuestToComplete } from '../types/quests'
 import { fighterDamageMultiplier } from '../types/fedState'
@@ -125,8 +121,6 @@ interface GameContextType {
   rejectWanderer: () => void
   rallyFighter: () => boolean
   directRepairer: () => boolean
-  threatLevel: number
-  defenseLevel: number
   isGameOver: boolean
   dismissGameOver: () => void
   pendingMilestone: MilestoneDef | null
@@ -231,9 +225,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // A lean season or a bountiful harvest scales what the gatherers bring in (layer 3, phase C)
   const autoFoodRate = getAutoFoodRate(state.foragers) * gatherMultiplier(state)
 
-  const threatLevel = getThreatLevel(state.totalInspirationEarned)
-  const defenseLevel = getDefenseLevel(state.clickPower, state.fighters)
-
   // Active play clock for the story director's dwell timer (game seconds, follows dev speed)
   useGameLoop(
     useCallback(() => {
@@ -309,22 +300,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }, [loaded])
   )
 
-  // Siege damage tick (every SIEGE_TICK_INTERVAL seconds, once the Siege system is on)
+  // The monster at the gate strikes the wall (layer 6; once the Siege system is on)
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      setState((prev) => {
-        if (!isSystemOn(prev, 'siege') || prev.cityHp <= 0) return prev
-        const timer = prev.siegeTimer + 1
-        if (timer < SIEGE_TICK_INTERVAL) return { ...prev, siegeTimer: timer }
-        // Siege tick fires
-        const threat = getThreatLevel(prev.totalInspirationEarned)
-        const defense = getDefenseLevel(prev.clickPower, prev.fighters)
-        const damage = getSiegeDamage(threat, defense)
-        if (damage <= 0) return { ...prev, siegeTimer: 0 }
-        // HP floor: no damage path drops the city below HP_FLOOR until threatUnfloored
-        return { ...applyCityDamage(prev, damage), siegeTimer: 0 }
-      })
+      setState(stepWall)
     }, [loaded])
   )
 
@@ -1205,8 +1185,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         rejectWanderer,
         rallyFighter,
         directRepairer,
-        threatLevel,
-        defenseLevel,
         isGameOver,
         dismissGameOver,
         pendingMilestone,

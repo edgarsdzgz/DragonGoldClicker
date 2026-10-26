@@ -8,7 +8,7 @@ import { catchUpScripted } from './scripted'
 import { backfillKillsByMonster } from './spawnPool'
 
 /** The newest save format. Every load ends here, whichever version it started from. */
-export const LATEST_SAVE_VERSION = 9
+export const LATEST_SAVE_VERSION = 10
 
 /**
  * Bring a loaded save up to the latest version. Each step runs only for saves older than it, so a
@@ -32,6 +32,8 @@ export function migrateSave(input: GameState, from: number): GameState {
   if (from < 8) s = migrateToV8(s)
   // v9: the spawn pool counts kills per monster; rebuild them from the old fixed rule
   if (from < 9) s = { ...s, killsByMonster: backfillKillsByMonster(s.monstersDefeated) }
+  // v10: the spawn pool reads the horde's advance; until a first Breach it is every kill
+  if (from < 10) s = { ...s, hordeKills: Math.floor(s.monstersDefeated) }
 
   // Beats added before ones this save has already seen must not play their scene for it
   s = catchUpBeats(s)

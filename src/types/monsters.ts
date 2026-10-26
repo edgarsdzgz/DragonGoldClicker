@@ -58,7 +58,7 @@ export interface StrikeResult {
 
 /**
  * Damage the monster on the field. A kill pays the bounty (renown comes only from kills),
- * counts the kill (in total and per monster) and brings in the next monster from the spawn pool
+ * counts the kill (in total, per monster and toward the horde's advance) and brings in the next monster from the spawn pool
  * at once, so a hit that lands during the visual spawn pause hits the new one. `rand` picks the
  * next monster (types/spawnPool.ts).
  */
@@ -73,8 +73,9 @@ export function applyDamage(s: GameState, damage: number, rand: number = Math.ra
   }
 
   const kills = Math.floor(s.monstersDefeated) + 1
+  const hordeKills = Math.floor(s.hordeKills) + 1
   const killsByMonster = { ...s.killsByMonster, [monster.id]: (s.killsByMonster[monster.id] ?? 0) + 1 }
-  const monsterIndex = pickNextMonster({ monstersDefeated: kills, killsByMonster }, rand)
+  const monsterIndex = pickNextMonster({ hordeKills, killsByMonster }, rand)
   return {
     state: {
       ...s,
@@ -82,8 +83,11 @@ export function applyDamage(s: GameState, damage: number, rand: number = Math.ra
       totalInspirationEarned: roundInsp(s.totalInspirationEarned + monster.bounty),
       monstersDefeated: kills,
       killsByMonster,
+      hordeKills,
       monsterIndex,
       monsterHp: MONSTERS[monsterIndex].hp,
+      // The new monster's wall-strike clock starts from its arrival
+      siegeTimer: 0,
     },
     monster,
     dealt,

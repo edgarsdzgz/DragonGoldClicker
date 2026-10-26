@@ -53,7 +53,7 @@ describe('the spawn pool odds', () => {
 
 describe('picking the next monster', () => {
   it('follows the roll: a low roll is a kobold, a high roll a goblin, at 13 kills', () => {
-    const s = { monstersDefeated: 13, killsByMonster: { kobold: 13, goblin: 1 } }
+    const s = { hordeKills: 13, killsByMonster: { kobold: 13, goblin: 1 } }
     expect(pickNextMonster(s, 0)).toBe(idx('kobold'))
     expect(pickNextMonster(s, 0.84)).toBe(idx('kobold'))
     expect(pickNextMonster(s, 0.86)).toBe(idx('goblin'))
@@ -61,17 +61,24 @@ describe('picking the next monster', () => {
   })
 
   it('guarantees a debut: the first monster after a threshold is the new type, whatever the roll', () => {
-    expect(pickNextMonster({ monstersDefeated: 13, killsByMonster: { kobold: 13 } }, 0)).toBe(idx('goblin'))
-    expect(pickNextMonster({ monstersDefeated: 28, killsByMonster: { kobold: 20, goblin: 8 } }, 0)).toBe(idx('shadow_crawler'))
-    expect(pickNextMonster({ monstersDefeated: 53, killsByMonster: { kobold: 20, goblin: 20, shadow_crawler: 13 } }, 0)).toBe(idx('orc'))
+    expect(pickNextMonster({ hordeKills: 13, killsByMonster: { kobold: 13 } }, 0)).toBe(idx('goblin'))
+    expect(pickNextMonster({ hordeKills: 28, killsByMonster: { kobold: 20, goblin: 8 } }, 0)).toBe(idx('shadow_crawler'))
+    expect(pickNextMonster({ hordeKills: 53, killsByMonster: { kobold: 20, goblin: 20, shadow_crawler: 13 } }, 0)).toBe(idx('orc'))
   })
 
   it('a phased-out monster never gets a debut', () => {
-    expect(pickNextMonster({ monstersDefeated: 60, killsByMonster: { goblin: 30, shadow_crawler: 20, orc: 10 } }, 0)).not.toBe(idx('kobold'))
+    expect(pickNextMonster({ hordeKills: 60, killsByMonster: { goblin: 30, shadow_crawler: 20, orc: 10 } }, 0)).not.toBe(idx('kobold'))
+  })
+
+  it("reads the horde's advance, not lifetime kills: a pushed-back horde sends weaker monsters", () => {
+    const met = { kobold: 40, goblin: 30, shadow_crawler: 20, orc: 10 }
+    // 100 kills would be 40% orcs; pushed back to 5, it is kobolds only
+    const pushedBack = { hordeKills: 5, monstersDefeated: 100, killsByMonster: met }
+    for (const r of [0, 0.5, 0.9999]) expect(pickNextMonster(pushedBack, r)).toBe(idx('kobold'))
   })
 
   it('matches the odds over many rolls', () => {
-    const s = { monstersDefeated: 40, killsByMonster: MET_ALL }
+    const s = { hordeKills: 40, killsByMonster: MET_ALL }
     const counts = MONSTERS.map(() => 0)
     const N = 10000
     for (let i = 0; i < N; i++) counts[pickNextMonster(s, (i + 0.5) / N)]++
@@ -81,14 +88,14 @@ describe('picking the next monster', () => {
 
 describe('kills feed the pool', () => {
   it('a kill counts per monster, and the 13th kobold brings the first goblin', () => {
-    const r = strike(make({ monstersDefeated: 12, killsByMonster: { kobold: 12 }, monsterHp: 1 }), 1, 0)
+    const r = strike(make({ hordeKills: 12, killsByMonster: { kobold: 12 }, monsterHp: 1 }), 1, 0)
     expect(r.state.killsByMonster).toEqual({ kobold: 13 })
     expect(r.state.monsterIndex).toBe(idx('goblin'))
     expect(r.state.monsterHp).toBe(MONSTERS[idx('goblin')].hp)
   })
 
   it('after the goblin debut the next monster is a roll again', () => {
-    const met = make({ monstersDefeated: 14, killsByMonster: { kobold: 13, goblin: 1 }, monsterIndex: idx('goblin'), monsterHp: 1 })
+    const met = make({ hordeKills: 14, killsByMonster: { kobold: 13, goblin: 1 }, monsterIndex: idx('goblin'), monsterHp: 1 })
     expect(strike(met, 1, 0).state.monsterIndex).toBe(idx('kobold'))
     expect(strike(met, 1, 0.99).state.monsterIndex).toBe(idx('goblin'))
   })

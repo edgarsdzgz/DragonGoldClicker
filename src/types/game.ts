@@ -169,14 +169,18 @@ export {
 export {
   STARTING_CITY_HP,
   MAX_CITY_HP,
-  SIEGE_TICK_INTERVAL,
-  SIEGE_DAMAGE_FACTOR,
   REPAIR_RATE_PER_REPAIRER,
-  getThreatLevel,
-  getDefenseLevel,
-  getSiegeDamage,
   getRepairRate,
 } from './siege'
+export {
+  WALL_STRIKE_SEC,
+  HORDE_LEVEL_KILLS,
+  hordeLevel,
+  wallStrikeDamage,
+  wallWarningCrossed,
+  wallTone,
+} from './wall'
+export type { WallWarning } from './wall'
 
 export type { MilestoneDef } from './milestones'
 export {

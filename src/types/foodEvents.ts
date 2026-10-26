@@ -129,7 +129,7 @@ export function stepFoodEvents(s: GameState, rand: () => number): GameState {
     if (e.id === 'raid') {
       // The raider pushes in front of whatever was at the gate
       const raider = MONSTERS[RAIDER_INDEX]
-      return note({ ...active, monsterIndex: RAIDER_INDEX, monsterHp: raider.hp }, 'A raider is at the gate! Kill it within 30 seconds.')
+      return note({ ...active, monsterIndex: RAIDER_INDEX, monsterHp: raider.hp, siegeTimer: 0 }, 'A raider is at the gate! Kill it within 30 seconds.')
     }
     return note(active, e.id === 'lean_season' ? 'The lean season begins.' : 'The harvest is in.')
   }
@@ -142,7 +142,7 @@ export function stepFoodEvents(s: GameState, rand: () => number): GameState {
       food: s.food - stolen,
       monsterIndex: pickNextMonster(s, rand()),
     }
-    const next = { ...escaped, monsterHp: MONSTERS[escaped.monsterIndex].hp }
+    const next = { ...escaped, monsterHp: MONSTERS[escaped.monsterIndex].hp, siegeTimer: 0 }
     return note(endFoodEvent(next, rand), stolen > 0 ? `The raider escaped with ${stolen} food.` : 'The raider escaped, but found nothing to take.')
   }
   return note(endFoodEvent(s, rand), e.id === 'lean_season' ? 'The lean season is over.' : 'The harvest is gathered in.')

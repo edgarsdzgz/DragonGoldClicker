@@ -107,19 +107,21 @@ export const STORY_BEATS: BeatDef[] = [
     spotlight: 'forageTab',
   },
   {
-    // Waits for monsters that can hurt the wall (core-tap layer 6); paused until then
-    id: 'the_breach', chapter: 3, dwellSec: 120,
-    trigger: (s) => s.fighters >= 2,
+    // Core-tap layer 6: from here the monster at the gate strikes the wall. It waits for the
+    // stores to be filled and the first gatherer trained, so the Forage lesson finishes first.
+    // The id predates the rename: the Breach proper is the wall falling (types/wall.ts).
+    id: 'the_breach', chapter: 3, dwellSec: 0,
+    trigger: (s) => s.questsDone.includes('fill_the_stores') && s.foragersTrained.gatherers >= 1,
     unlocks: ['siege'],
     scripted: 'breachHit',
   },
   {
+    // Its goal is the Mend the Walls quest (types/quests.ts)
     id: 'mend_the_walls', chapter: 3, dwellSec: 0,
     trigger: (s) => seen(s, 'the_breach'),
     unlocks: ['repair'],
     silent: true,
     spotlight: 'repair',
-    objective: { label: 'Direct 3 repairers', current: (s) => s.repairers, target: 3 },
   },
   {
     id: 'strangers_at_gate', chapter: 4, dwellSec: 240,
@@ -197,7 +199,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'empty_stores'
+export const STORY_PAUSED_AFTER: BeatId = 'mend_the_walls'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

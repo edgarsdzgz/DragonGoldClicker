@@ -8,7 +8,8 @@ import { MONSTERS } from './monsterRoster'
 // arrive, each next monster is a kobold OR a goblin by chance, not kobold, kobold, goblin,
 // goblin. The odds move with progress and can phase a monster out.
 //
-// - Driven by lifetime kills. The odds blend smoothly between the anchors below.
+// - Driven by the horde's advance (`hordeKills`: every kill, pushed back by a Breach). The odds
+//   blend smoothly between the anchors below.
 // - A monster has no chance before its debut (MonsterDef.fromKills).
 // - Debut: the first monster after a type's fromKills is guaranteed to be that type, so a new
 //   enemy always arrives at a dependable moment (a scene or a quest can introduce it later).
@@ -61,8 +62,9 @@ export function spawnOdds(kills: number): number[] {
  * The next monster after a kill. `rand` is a number in [0, 1) (Math.random in the game, fixed in
  * tests). A type that has reached its debut but never been fought comes first, guaranteed.
  */
-export function pickNextMonster(s: Pick<GameState, 'monstersDefeated' | 'killsByMonster'>, rand: number): number {
-  const kills = Math.floor(s.monstersDefeated)
+export function pickNextMonster(s: Pick<GameState, 'hordeKills' | 'killsByMonster'>, rand: number): number {
+  // The horde's advance, not lifetime kills: a Breach pushes it back (core-tap layer 6)
+  const kills = Math.floor(s.hordeKills)
   const weights = spawnWeights(kills)
   const debut = MONSTERS.findIndex((m, j) => weights[j] > 0 && !((s.killsByMonster[m.id] ?? 0) > 0))
   if (debut >= 0) return debut

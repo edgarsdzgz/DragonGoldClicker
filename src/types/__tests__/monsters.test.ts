@@ -50,12 +50,19 @@ describe('strike', () => {
   })
 
   it('the 13th kill brings the first goblin; the kill that does it is still paid as a kobold', () => {
-    const clear = strike(make({ monstersDefeated: 12, monsterHp: 1 }))
+    const clear = strike(make({ monstersDefeated: 12, hordeKills: 12, monsterHp: 1 }))
     expect(clear.monster.name).toBe('Kobold')
     expect(clear.state.monsterIndex).toBe(1)
     expect(clear.state.monsterHp).toBe(8)
-    const before = strike(make({ monstersDefeated: 11, monsterHp: 1 }))
+    const before = strike(make({ monstersDefeated: 11, hordeKills: 11, monsterHp: 1 }))
     expect(before.state.monsterIndex).toBe(0)
+  })
+
+  it("a kill moves the horde's advance with the lifetime count, and restarts the wall-strike clock", () => {
+    const r = strike(make({ monstersDefeated: 40, hordeKills: 7, monsterHp: 1, siegeTimer: 4 }))
+    expect(r.state.monstersDefeated).toBe(41)
+    expect(r.state.hordeKills).toBe(8)
+    expect(r.state.siegeTimer).toBe(0)
   })
 
   it('there is always a monster: a fresh game can strike at once, and nothing is ever ignored', () => {

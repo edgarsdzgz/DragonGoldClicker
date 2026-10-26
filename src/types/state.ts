@@ -133,9 +133,9 @@ export interface GameState {
   repairers: number
   /** Lifetime repairers directed (for cost curve, never decreases) */
   repairersDirected: number
-  /** Current city HP (0 = game over) */
+  /** The wall's HP (types/wall.ts). At 0 the wall is breached; the player never loses the game. */
   cityHp: number
-  /** Accumulator for siege damage ticks (seconds) */
+  /** Seconds the monster at the gate has stood since it arrived or last struck the wall */
   siegeTimer: number
   /** Fractional accumulator for repair HP */
   repairProgress: number
@@ -175,6 +175,8 @@ export interface GameState {
   monsterHp: number
   /** Lifetime kills per monster id (the spawn pool's debuts and per-type quests read it) */
   killsByMonster: Record<string, number>
+  /** The horde's advance: every kill adds one, a Breach pushes it back. The spawn pool reads it. */
+  hordeKills: number
   /** The fighters' rations (types/rations.ts); full by default */
   ration: RationId
   /** The food event under way (types/foodEvents.ts), if any */
@@ -270,6 +272,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   monsterIndex: 0,
   monsterHp: FIRST_MONSTER_HP,
   killsByMonster: {},
+  hordeKills: 0,
   ration: DEFAULT_RATION,
   foodEvent: null,
   nextFoodEventAt: 0,
@@ -280,7 +283,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   waveNumber: 0,
   waveKills: 0,
   waveActive: false,
-  saveMigrationVersion: 9,
+  saveMigrationVersion: 10,
 }
 
 // =============================================================================

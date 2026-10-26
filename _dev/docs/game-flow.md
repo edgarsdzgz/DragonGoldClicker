@@ -58,14 +58,17 @@ Locked tabs are always visible with a lock icon. Tapping shows the unlock requir
 
 ---
 
-## Siege Mechanics
+## Siege Mechanics (the wall, core-tap layer 6)
 
-- **Threat Level** increases at inspiration milestones (0->1, 200->3, 750->6, 1500->10, 3000->15, 5000->22)
-- **Defense Level** = click power + fighters + tower bonuses
-- When threat > defense, city takes damage every 10 seconds
-- **Damage** = max(0, threat - defense) * 0.5
+- The wall has 100 HP. The monster at the gate strikes it every 5 seconds while it stands
+  (kobold 1, goblin 1.5, shadow crawler 2, orc 4; raiders never strike). A monster killed within
+  5 seconds of arriving never touches the wall. Nothing strikes while the app is closed
 - **Repair rate** = 0.5 HP/sec per repairer
-- If city HP reaches 0, game over
+- **Horde level** = 1 + one per 25 kills of the horde's advance (`hordeKills`), which drives the
+  spawn pool
+- Rodain's company holds the wall at 50 HP until the floor is lifted. The player never loses the
+  game: when the wall falls it is a Breach (losses, the horde pushed back), planned as layer 6
+  phase B in `_dev/planning/core-tap.md`
 
 ---
 

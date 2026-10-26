@@ -5,7 +5,7 @@ import type { PillTab } from '../../components'
 import { useGame } from '../../context/GameContext'
 import { useDevSettings, GAME_SPEEDS } from '../../context/DevSettingsContext'
 import type { GameSpeed, Pacing } from '../../context/DevSettingsContext'
-import { FOOD_CHECK_INTERVAL, MAX_CITY_HP, MILESTONES, roundInsp, isSystemOn } from '../../types/game'
+import { FOOD_CHECK_INTERVAL, MAX_CITY_HP, HORDE_LEVEL_KILLS, MILESTONES, roundInsp, isSystemOn } from '../../types/game'
 import { startFoodEvent } from '../../types/foodEvents'
 import type { GameState } from '../../types/game'
 import { spacing } from '../../theme'
@@ -61,6 +61,7 @@ export function DevPanel() {
           <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ food: s.food + 100 }))}>+100 food</Button>
           <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ villagers: s.villagers + 5 }))}>+5 villagers</Button>
           <Button size="sm" variant="secondary" onPress={() => grant(() => ({ cityHp: MAX_CITY_HP }))}>Repair wall</Button>
+          <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ hordeKills: s.hordeKills + HORDE_LEVEL_KILLS }))}>Horde +1 level</Button>
           <Button size="sm" variant="secondary" onPress={() => grant((s) => ({ completedResearch: [...new Set([...s.completedResearch, 'lean_rations', 'feast_hall'])] }))}>All rations</Button>
           <Button size="sm" variant="secondary" onPress={() => grant((s) => startFoodEvent(s, 'lean_season', Math.random))}>Lean season</Button>
           <Button size="sm" variant="secondary" onPress={() => grant((s) => startFoodEvent(s, 'bountiful_harvest', Math.random))}>Harvest</Button>

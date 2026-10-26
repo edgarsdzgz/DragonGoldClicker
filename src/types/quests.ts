@@ -11,7 +11,7 @@ import { roundInsp } from './utils'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -39,6 +39,9 @@ export const DEFEND_THE_WALL_KILLS = 4
 
 /** Food the player must gather by hand to fill the stores */
 export const FILL_THE_STORES_FOOD = 200
+
+/** Repairers the player directs to the wall (core-tap layer 6) */
+export const MEND_THE_WALLS_REPAIRERS = 3
 
 const done = (s: GameState, id: QuestId) => s.questsDone.includes(id)
 
@@ -70,6 +73,11 @@ export const QUESTS: QuestDef[] = [
     id: 'fill_the_stores', title: 'Fill the Stores',
     goals: [{ label: 'Gather 200 food by hand', target: FILL_THE_STORES_FOOD, progress: (s) => s.foodGatheredByHand }],
     offeredWhen: (s) => s.beatsSeen.includes('empty_stores'),
+  },
+  {
+    id: 'mend_the_walls', title: 'Mend the Walls',
+    goals: [{ label: 'Direct 3 repairers', target: MEND_THE_WALLS_REPAIRERS, progress: (s) => s.repairersDirected }],
+    offeredWhen: (s) => s.beatsSeen.includes('mend_the_walls'),
   },
 ]
 
