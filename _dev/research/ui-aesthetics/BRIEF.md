@@ -59,6 +59,8 @@ Dicero is the owner's clearest single reference, so give it the deepest section.
 - **Cookie Clicker** (web and mobile).
 - **Dicero**: confirmed by the owner. A pixel-art dice roguelike for mobile, published by **Habby**
   and developed by **Lark Games** (version 1.9.x in the owner's screenshots).
+  - App Store listing (owner-provided): https://apps.apple.com/us/app/dicero/id6740966864. Its
+    official screenshots are a ready source; find the matching Google Play listing too.
   - The owner plays it, and three of their screenshots are in `owner-screenshots/` (section 3a).
   - Start there, then find more screens online: battle, dice, shop, upgrades, the Codex, results.
   - Habby's other games share the same house polish and are worth a look: Archero,
