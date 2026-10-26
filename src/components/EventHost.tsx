@@ -86,6 +86,7 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
           onDismiss={handleSceneClose}
           onSkip={handleSceneClose}
           cutscene={scene.cutscene}
+          highlight={scene.highlight}
         />
       )}
       {pendingFoodWarning > 0 && (

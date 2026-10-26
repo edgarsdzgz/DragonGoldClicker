@@ -22,6 +22,8 @@ export interface SceneDef {
   navigateTo?: SceneTab
   /** A cutscene can be skipped; ordinary scenes never show Skip. No scene is a cutscene yet. */
   cutscene?: boolean
+  /** Coach target the scene talks about: it shows through the dim with a box around it */
+  highlight?: string
 }
 
 const PYRETH = { speaker: 'Elder Pyreth', icon: 'person' } as const
@@ -54,6 +56,8 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   first_renown: {
     ...PYRETH,
     title: 'Renown',
+    // Point at the renown figure in the top bar while the elder explains it
+    highlight: 'renown',
     lines: [
       'Your victory echoes through Draconia, my lord. Defeating our enemies in battle earns you renown.',
       'The more foes you defeat, the more renown you gain, and the more the people and the elders of Draconia will listen to you.',

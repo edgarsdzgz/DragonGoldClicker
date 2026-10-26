@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
+import { CoachTarget } from './CoachTarget'
 import { useJournal } from '../context/JournalContext'
 import { useCoinTarget } from '../context/CoinFlightContext'
 import { colors, spacing, gold } from '../theme'
@@ -28,18 +29,21 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, a
   return (
     <View style={[styles.container, { paddingTop: insets.top + spacing[2] }]}>
       {!hideInspiration && (
-        <Animated.View
-          ref={coin.ref}
-          collapsable={false}
-          accessible
-          accessibilityLabel={`${formatNumber(inspiration)} renown`}
-          style={[styles.resource, coin.style]}
-        >
-          <InspirationIcon size={12} />
-          <Text variant="label" color="link">
-            {formatNumber(inspiration)}
-          </Text>
-        </Animated.View>
+        // 'renown' lets a scene point at this figure (the first_renown scene boxes it)
+        <CoachTarget id="renown">
+          <Animated.View
+            ref={coin.ref}
+            collapsable={false}
+            accessible
+            accessibilityLabel={`${formatNumber(inspiration)} renown`}
+            style={[styles.resource, coin.style]}
+          >
+            <InspirationIcon size={12} />
+            <Text variant="label" color="link">
+              {formatNumber(inspiration)}
+            </Text>
+          </Animated.View>
+        </CoachTarget>
       )}
       {foodSystemActive && (
         <View style={styles.resource}>

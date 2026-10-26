@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
+import { HighlightBackdrop } from './HighlightBackdrop'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { useHaptics, useSfx } from '../hooks'
 import { SFX } from '../data/sfx'
@@ -17,6 +18,8 @@ import { dialogPaging } from '../types/dialogPaging'
 
 /** Ignore a second press on Continue this soon after the first */
 const PRESS_GUARD_MS = 250
+
+const BACKDROP_DIM = 'rgba(2, 2, 6, 0.85)'
 
 interface NpcDialogProps {
   visible: boolean
@@ -30,6 +33,8 @@ interface NpcDialogProps {
   onSkip?: () => void
   /** Only cutscenes offer Skip (and only with 2+ pages) */
   cutscene?: boolean
+  /** Coach target the scene is about: it shows through the dim, boxed (e.g. 'renown') */
+  highlight?: string
 }
 
 export function NpcDialog({
@@ -42,6 +47,7 @@ export function NpcDialog({
   onDismiss,
   onSkip,
   cutscene = false,
+  highlight,
 }: NpcDialogProps) {
   const haptics = useHaptics()
   const playNpc = useSfx(SFX.NPC)
@@ -124,7 +130,9 @@ export function NpcDialog({
       onRequestClose={onDismiss}
       statusBarTranslucent
     >
-      <Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
+      <Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]}>
+        <HighlightBackdrop targetId={highlight} dim={BACKDROP_DIM} />
+      </Animated.View>
 
       <View style={styles.centerer} pointerEvents="box-none">
         <Animated.View
@@ -208,7 +216,6 @@ export function NpcDialog({
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(2, 2, 6, 0.85)',
   },
   centerer: {
     flex: 1,

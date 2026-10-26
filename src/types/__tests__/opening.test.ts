@@ -45,3 +45,11 @@ describe('the first kills stay plain', () => {
     }
   })
 })
+
+describe('the renown scene points at the renown figure', () => {
+  it('first_renown boxes the top-bar figure registered as the renown coach target', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { SCENES } = require('../../data/story/lines')
+    expect(SCENES.first_renown.highlight).toBe('renown')
+  })
+})

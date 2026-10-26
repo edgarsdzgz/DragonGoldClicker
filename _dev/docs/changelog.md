@@ -2,6 +2,11 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Reset and the renown scene (2026-10-26)
+- Resetting the game (Settings or Game Over) returns to the Warfront tab
+- While Elder Pyreth explains renown, the renown figure shows through the dim with a pulsing gold box
+  (`HighlightBackdrop`; any scene can point at a coach target with `highlight`)
+
 ### Core tap layer 2e: one monster at the gate (2026-10-26)
 - Waves put away into cold storage (`src/modes/waves/`) for a later side mode; still compiled and tested
 - A monster is always at the gate; its type follows lifetime kills (13 / 28 / 53)

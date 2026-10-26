@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -205,6 +205,13 @@ function TabNavigator() {
   const { setFocusedTab } = useCoach()
   const goToTab = useCallback((tab: SceneTab) => navigation.navigate('Main', { screen: tab }), [navigation])
   const onSceneClosed = useScriptedEvents({ onNavigate: goToTab, toastRef })
+  // A reset (from Settings or Game Over) stamps a new startedAt: the new game opens on the Warfront
+  const startedAt = useRef(state.startedAt)
+  useEffect(() => {
+    if (state.startedAt === startedAt.current) return
+    startedAt.current = state.startedAt
+    navigation.navigate('Main', { screen: 'GameTab' })
+  }, [state.startedAt, navigation])
   // Fallback for when the system nav bar is visible (immersive refused, or swiped in)
   const insets = useSafeAreaInsets()
 
