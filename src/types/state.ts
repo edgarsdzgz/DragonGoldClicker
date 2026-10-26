@@ -90,6 +90,8 @@ export interface GameState {
   totalFoodForaged: number
   /** Lifetime forage click count */
   forageClicks: number
+  /** Food the player gathered with the FORAGE button (not gatherers), lifetime */
+  foodGatheredByHand: number
   /** Forager's Lodge level (0 = not built) */
   lodgeLevel: number
   /** Current forager counts by tier */
@@ -214,6 +216,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   forageBonus: 0,
   totalFoodForaged: 0,
   forageClicks: 0,
+  foodGatheredByHand: 0,
   lodgeLevel: 0,
   foragers: { gatherers: 0, trappers: 0, rangers: 0 },
   foragersTrained: { gatherers: 0, trappers: 0, rangers: 0 },

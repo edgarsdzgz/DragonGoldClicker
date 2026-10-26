@@ -65,12 +65,6 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     cost: (s) => getFighterCost(s.fightersRallied),
   },
   {
-    id: 'tap_repair', afterBeat: 'mend_the_walls', target: 'repair',
-    hint: 'Send a villager to mend the wall.',
-    isDone: (s) => s.repairers >= 1 || s.repairersDirected >= 1,
-    cost: (s) => getRepairerCost(s.repairersDirected),
-  },
-  {
     id: 'open_forage', afterBeat: 'empty_stores', target: 'tab_forage',
     hint: 'Open the Forage tab.',
     isDone: (s) => s.forageClicks >= 1 || s.foragersTrained.gatherers >= 1,
@@ -83,9 +77,17 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: 'train_gatherer', afterBeat: 'empty_stores', target: 'train',
+    // The player forages freely first; the Train step waits until the stores are filled by hand
+    requires: (s) => s.questsDone.includes('fill_the_stores'),
     hint: 'Train a gatherer to forage for you.',
     isDone: (s) => s.foragers.gatherers >= 1 || s.foragersTrained.gatherers >= 1,
     cost: (s) => getForagerCost(FORAGER_TIERS[0], getForagerCount(s.foragersTrained, 'gatherer')),
+  },
+  {
+    id: 'tap_repair', afterBeat: 'mend_the_walls', target: 'repair',
+    hint: 'Send a villager to mend the wall.',
+    isDone: (s) => s.repairers >= 1 || s.repairersDirected >= 1,
+    cost: (s) => getRepairerCost(s.repairersDirected),
   },
   {
     id: 'open_draconia', afterBeat: 'a_city_to_build', target: 'tab_draconia',

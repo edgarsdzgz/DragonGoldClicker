@@ -5,21 +5,27 @@ import { roundInsp } from './utils'
 // =============================================================================
 // QUESTS: the guided path through the game and the story
 // =============================================================================
-// One quest at a time shows on the objective line. A quest is offered when its condition holds
-// (usually a story beat seen), completes when its goal is met, pays its reward, and either hands
-// off to a story beat (whose scene does the congratulating) or shows a "Quest complete" toast.
-// Daily and weekly quests will use the same shape later.
+// One quest at a time shows on the objective line (its next unfinished goal). A quest is offered
+// when its condition holds (usually a story beat seen or the previous quest done), completes when
+// all its goals are met, pays its reward, and either hands off to a story beat (whose scene does
+// the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
+// shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores'
+
+export interface QuestGoal {
+  /** What to do, shown on the objective line: "Defeat 4 kobolds" */
+  label: string
+  target: number
+  progress: (s: GameState) => number
+}
 
 export interface QuestDef {
   id: QuestId
   /** "Defend the Wall" */
   title: string
-  /** What to do, shown on the objective line: "Defeat 4 kobolds" */
-  goal: string
-  target: number
-  progress: (s: GameState) => number
+  /** Every goal must be met; they can be done in any order */
+  goals: QuestGoal[]
   /** The quest is offered once this holds */
   offeredWhen: (s: GameState) => boolean
   /** Paid once, on completion. Provisional: tougher monsters later balance a generous start. */
@@ -31,26 +37,63 @@ export interface QuestDef {
 /** Kills that complete the first quest: four kobolds pay 1.00 renown, the first Rally's cost */
 export const DEFEND_THE_WALL_KILLS = 4
 
+/** Food the player must gather by hand to fill the stores */
+export const FILL_THE_STORES_FOOD = 200
+
+const done = (s: GameState, id: QuestId) => s.questsDone.includes(id)
+
 export const QUESTS: QuestDef[] = [
   {
-    id: 'defend_the_wall', title: 'Defend the Wall', goal: 'Defeat 4 kobolds',
-    target: DEFEND_THE_WALL_KILLS,
-    progress: (s) => s.killsByMonster.kobold ?? 0,
+    id: 'defend_the_wall', title: 'Defend the Wall',
+    goals: [{ label: 'Defeat 4 kobolds', target: DEFEND_THE_WALL_KILLS, progress: (s) => s.killsByMonster.kobold ?? 0 }],
     // Offered once the renown scene after the first kill has been seen
     offeredWhen: (s) => s.beatsSeen.includes('first_renown'),
     completesInto: 'call_to_arms',
   },
   {
-    id: 'raise_the_guard', title: 'Raise the Guard', goal: 'Rally 2 fighters',
-    target: 2,
-    progress: (s) => s.fightersRallied,
+    id: 'raise_the_guard', title: 'Raise the Guard',
+    goals: [{ label: 'Rally 2 fighters', target: 2, progress: (s) => s.fightersRallied }],
     offeredWhen: (s) => s.beatsSeen.includes('call_to_arms'),
     reward: { renown: 1 },
+  },
+  {
+    id: 'hold_the_line', title: 'Hold the Line',
+    goals: [
+      { label: 'Rally 5 fighters', target: 5, progress: (s) => s.fightersRallied },
+      { label: 'Defeat a Shadow Crawler', target: 1, progress: (s) => s.killsByMonster.shadow_crawler ?? 0 },
+    ],
+    offeredWhen: (s) => done(s, 'raise_the_guard'),
+    completesInto: 'empty_stores',
+  },
+  {
+    // Counts only the FORAGE button: gatherers may be trained, but the stores are filled by hand
+    id: 'fill_the_stores', title: 'Fill the Stores',
+    goals: [{ label: 'Gather 200 food by hand', target: FILL_THE_STORES_FOOD, progress: (s) => s.foodGatheredByHand }],
+    offeredWhen: (s) => s.beatsSeen.includes('empty_stores'),
   },
 ]
 
 export function isQuestDone(s: Pick<GameState, 'questsDone'>, id: QuestId): boolean {
   return s.questsDone.includes(id)
+}
+
+/** Progress for display, capped at the target */
+export function goalProgress(g: QuestGoal, s: GameState): number {
+  return Math.min(g.target, Math.max(0, Math.floor(g.progress(s))))
+}
+
+export function isGoalMet(g: QuestGoal, s: GameState): boolean {
+  return g.progress(s) >= g.target
+}
+
+/** All of the quest's goals are met */
+export function isQuestMet(q: QuestDef, s: GameState): boolean {
+  return q.goals.every((g) => isGoalMet(g, s))
+}
+
+/** The goal the objective line shows: the first one not yet met (the last one if all are) */
+export function currentGoal(q: QuestDef, s: GameState): QuestGoal {
+  return q.goals.find((g) => !isGoalMet(g, s)) ?? q.goals[q.goals.length - 1]
 }
 
 /** Quests offered and not yet done, in order */
@@ -63,19 +106,14 @@ export function currentQuest(s: GameState): QuestDef | null {
   return activeQuests(s)[0] ?? null
 }
 
-/** Progress for display, capped at the target */
-export function questProgress(q: QuestDef, s: GameState): number {
-  return Math.min(q.target, Math.max(0, Math.floor(q.progress(s))))
-}
-
-/** Whether any active quest has met its goal (cheap check before completing) */
+/** Whether any active quest has met all its goals (cheap check before completing) */
 export function hasQuestToComplete(s: GameState): boolean {
-  return activeQuests(s).some((q) => q.progress(s) >= q.target)
+  return activeQuests(s).some((q) => isQuestMet(q, s))
 }
 
-/** Mark every active quest whose goal is met as done and pay its reward */
+/** Mark every active quest whose goals are all met as done and pay its reward */
 export function completeQuests(s: GameState): { state: GameState; completed: QuestDef[] } {
-  const completed = activeQuests(s).filter((q) => q.progress(s) >= q.target)
+  const completed = activeQuests(s).filter((q) => isQuestMet(q, s))
   if (completed.length === 0) return { state: s, completed }
   const renown = completed.reduce((sum, q) => sum + (q.reward?.renown ?? 0), 0)
   return {

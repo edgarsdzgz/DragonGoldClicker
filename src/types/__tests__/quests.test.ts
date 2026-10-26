@@ -1,8 +1,8 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import {
-  QUESTS, activeQuests, currentQuest, completeQuests, hasQuestToComplete, questProgress, questCompleteText,
-  DEFEND_THE_WALL_KILLS,
+  QUESTS, activeQuests, currentQuest, currentGoal, completeQuests, hasQuestToComplete, goalProgress, questCompleteText,
+  DEFEND_THE_WALL_KILLS, FILL_THE_STORES_FOOD,
 } from '../quests'
 import { getFighterCost } from '../fighters'
 import { MONSTERS } from '../monsters'
@@ -12,10 +12,12 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 const AFTER_RENOWN = ['prologue', 'elder_approaches', 'first_renown']
 
 describe('the quest line', () => {
-  it('starts with Defend the Wall, then Raise the Guard', () => {
-    expect(QUESTS.map((q) => [q.id, q.title, q.goal])).toEqual([
-      ['defend_the_wall', 'Defend the Wall', 'Defeat 4 kobolds'],
-      ['raise_the_guard', 'Raise the Guard', 'Rally 2 fighters'],
+  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores', () => {
+    expect(QUESTS.map((q) => [q.id, q.title, q.goals.map((g) => g.label)])).toEqual([
+      ['defend_the_wall', 'Defend the Wall', ['Defeat 4 kobolds']],
+      ['raise_the_guard', 'Raise the Guard', ['Rally 2 fighters']],
+      ['hold_the_line', 'Hold the Line', ['Rally 5 fighters', 'Defeat a Shadow Crawler']],
+      ['fill_the_stores', 'Fill the Stores', ['Gather 200 food by hand']],
     ])
   })
 
@@ -30,11 +32,11 @@ describe('the quest line', () => {
   })
 
   it('shows progress capped at the target', () => {
-    const q = QUESTS[0]
-    expect(questProgress(q, make({ killsByMonster: { kobold: 2 } }))).toBe(2)
-    expect(questProgress(q, make({ killsByMonster: { kobold: 9 } }))).toBe(4)
+    const g = QUESTS[0].goals[0]
+    expect(goalProgress(g, make({ killsByMonster: { kobold: 2 } }))).toBe(2)
+    expect(goalProgress(g, make({ killsByMonster: { kobold: 9 } }))).toBe(4)
     // Only kobolds count
-    expect(questProgress(q, make({ monstersDefeated: 9, killsByMonster: { kobold: 3, goblin: 6 } }))).toBe(3)
+    expect(goalProgress(g, make({ monstersDefeated: 9, killsByMonster: { kobold: 3, goblin: 6 } }))).toBe(3)
   })
 })
 
@@ -86,5 +88,40 @@ describe('the scene that follows Defend the Wall', () => {
     expect(lines).toMatch(/renown is now enough/i)
     expect(lines).toMatch(/at the gate/i)
     expect(lines).toMatch(/adds to your renown/i)
+  })
+})
+
+describe('Hold the Line: two goals', () => {
+  const offered = make({ beatsSeen: [...AFTER_RENOWN, 'call_to_arms'], questsDone: ['defend_the_wall', 'raise_the_guard'] })
+
+  it('is offered once Raise the Guard is done', () => {
+    expect(currentQuest(offered)?.id).toBe('hold_the_line')
+    expect(currentQuest({ ...offered, questsDone: ['defend_the_wall'] })?.id).toBe('raise_the_guard')
+  })
+
+  it('shows the next unfinished goal, in either order', () => {
+    const q = QUESTS[2]
+    expect(currentGoal(q, { ...offered, fightersRallied: 3 }).label).toBe('Rally 5 fighters')
+    expect(currentGoal(q, { ...offered, fightersRallied: 5 }).label).toBe('Defeat a Shadow Crawler')
+  })
+
+  it('completes only when both are met, into the food scene', () => {
+    expect(hasQuestToComplete({ ...offered, fightersRallied: 5 })).toBe(false)
+    expect(hasQuestToComplete({ ...offered, killsByMonster: { shadow_crawler: 1 } })).toBe(false)
+    const r = completeQuests({ ...offered, fightersRallied: 5, killsByMonster: { shadow_crawler: 1 } })
+    expect(r.completed.map((q) => q.id)).toEqual(['hold_the_line'])
+    expect(QUESTS[2].completesInto).toBe('empty_stores')
+  })
+})
+
+describe('Fill the Stores: food gathered by hand', () => {
+  const offered = make({ beatsSeen: [...AFTER_RENOWN, 'call_to_arms', 'empty_stores'], questsDone: ['defend_the_wall', 'raise_the_guard', 'hold_the_line'] })
+
+  it('is offered with the food scene and counts only the FORAGE button', () => {
+    expect(currentQuest(offered)?.id).toBe('fill_the_stores')
+    expect(FILL_THE_STORES_FOOD).toBe(200)
+    // Food from gatherers (totalFoodForaged) does not count
+    expect(hasQuestToComplete({ ...offered, totalFoodForaged: 500, foodGatheredByHand: 199 })).toBe(false)
+    expect(completeQuests({ ...offered, foodGatheredByHand: 200 }).completed.map((q) => q.id)).toEqual(['fill_the_stores'])
   })
 })

@@ -397,6 +397,39 @@ which now shows on the Warfront from the first kill. The Journal has a Quests ta
 
 ---
 
+## Layer 2h: food before the Breach; the valley (approved 2026-10-26)
+
+**Owner rulings:**
+- Next goal: rally 5 fighters in total and defeat a Shadow Crawler. Then the player is told
+  fighters spend a lot of energy and eat more than villagers, and food reserves and gathering
+  are introduced.
+- Foraging comes before the Breach and Repair. The Breach waits for monsters that can hurt the
+  wall (layer 6); until then it would have nothing to do (threat 1 is below any defense).
+- Gathering happens in **the valley**: the horde is camped before the Gate, but Draconia's back
+  is to a sheltered valley (forest and river) reached by a small rear gate.
+- The trade-off of foraging: while you forage, you are not defending the Gate.
+- Then: gather 200 food. The player may do as they like (train gatherers or not), but the game
+  advances only when they have personally gathered 200 by tapping FORAGE.
+
+**Quests:** a quest can now have several goals (shown one at a time on the objective line, all
+with checkmarks in the Journal).
+
+| Quest | Goals | Offered | On completion |
+|-------|-------|---------|---------------|
+| Hold the Line | Rally 5 fighters (total); defeat a Shadow Crawler | Raise the Guard done | `empty_stores` scene, hunger and the Forage tab |
+| Fill the Stores | Gather 200 food by hand (`foodGatheredByHand`) | `empty_stores` seen | toast; the story pauses here |
+
+- `empty_stores` moved ahead of `the_breach` and now fires on Hold the Line; the story pause
+  moved to just after it. Its "Train 2 gatherers" objective became Fill the Stores.
+- Guided steps: Open the Forage tab, then tap FORAGE. The Train gatherer step waits until Fill
+  the Stores is done, so nothing pushes the player to train before then. Repair's step moved
+  after the forage steps.
+- Starvation stays off (it arrives with `lean_times`, paused). The first meal comes 10s after
+  the scene. One hand forage is 1 food, so 200 is 200 taps or about 50s of holding.
+- Next after Fill the Stores: not decided yet.
+
+---
+
 ## Known side effects to handle later
 
 - Research prerequisites that use `monstersDefeated` (Librarium) were sized for the old

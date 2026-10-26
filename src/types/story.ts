@@ -96,26 +96,30 @@ export const STORY_BEATS: BeatDef[] = [
     // Its goal is the Raise the Guard quest (types/quests.ts)
   },
   {
-    id: 'the_breach', chapter: 2, dwellSec: 120,
+    // Owner ruling (2026-10-26): food before the Breach. The Hold the Line quest (5 fighters
+    // rallied, a shadow crawler defeated) completes into this scene: fighters eat twice what a
+    // villager does, the stores, the valley behind Draconia, and the cost of foraging (you are
+    // not defending). Its goal is the Fill the Stores quest.
+    id: 'empty_stores', chapter: 2, dwellSec: 0,
+    trigger: (s) => s.questsDone.includes('hold_the_line'),
+    unlocks: ['hunger', 'forageTab'],
+    scripted: 'firstMeal',
+    spotlight: 'forageTab',
+  },
+  {
+    // Waits for monsters that can hurt the wall (core-tap layer 6); paused until then
+    id: 'the_breach', chapter: 3, dwellSec: 120,
     trigger: (s) => s.fighters >= 2,
     unlocks: ['siege'],
     scripted: 'breachHit',
   },
   {
-    id: 'mend_the_walls', chapter: 2, dwellSec: 0,
+    id: 'mend_the_walls', chapter: 3, dwellSec: 0,
     trigger: (s) => seen(s, 'the_breach'),
     unlocks: ['repair'],
     silent: true,
     spotlight: 'repair',
     objective: { label: 'Direct 3 repairers', current: (s) => s.repairers, target: 3 },
-  },
-  {
-    id: 'empty_stores', chapter: 3, dwellSec: 180,
-    trigger: (s) => s.repairers >= 3,
-    unlocks: ['hunger', 'forageTab'],
-    scripted: 'firstMeal',
-    spotlight: 'forageTab',
-    objective: { label: 'Train 2 gatherers', current: (s) => s.foragers.gatherers, target: 2 },
   },
   {
     id: 'strangers_at_gate', chapter: 4, dwellSec: 240,
@@ -193,7 +197,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'call_to_arms'
+export const STORY_PAUSED_AFTER: BeatId = 'empty_stores'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

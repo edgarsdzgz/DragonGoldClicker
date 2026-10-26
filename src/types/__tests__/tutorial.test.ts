@@ -36,11 +36,21 @@ describe('getActiveStep', () => {
     expect(getActiveStep(s)?.id).toBe('tap_slay')
   })
 
-  it('has the nine steps in order', () => {
+  it('has the nine steps in order: foraging before Repair', () => {
     expect(TUTORIAL_STEPS.map((t) => t.id)).toEqual([
-      'tap_slay', 'tap_rally', 'tap_repair', 'open_forage', 'tap_forage',
-      'train_gatherer', 'open_draconia', 'tap_garrison', 'build_garrison',
+      'tap_slay', 'tap_rally', 'open_forage', 'tap_forage', 'train_gatherer',
+      'tap_repair', 'open_draconia', 'tap_garrison', 'build_garrison',
     ])
+  })
+
+  it('training a gatherer waits until the stores are filled by hand (the player forages freely)', () => {
+    const s = make({
+      beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'empty_stores'],
+      tutorialStepsDone: ['tap_slay', 'tap_rally', 'open_forage', 'tap_forage'],
+      questsDone: ['defend_the_wall', 'raise_the_guard', 'hold_the_line'],
+    })
+    expect(getActiveStep(s)).toBeNull()
+    expect(getActiveStep({ ...s, questsDone: [...s.questsDone, 'fill_the_stores'] })?.id).toBe('train_gatherer')
   })
 })
 
@@ -73,7 +83,7 @@ describe('backfillTutorial', () => {
       foragersTrained: { gatherers: 3, trappers: 0, rangers: 0 },
       forageClicks: 4,
     }))
-    expect(done).toEqual(['tap_slay', 'tap_rally', 'tap_repair', 'open_forage', 'tap_forage', 'train_gatherer'])
+    expect(done).toEqual(['tap_slay', 'tap_rally', 'open_forage', 'tap_forage', 'train_gatherer', 'tap_repair'])
   })
 
   it('leaves steps pending when their beat is unseen', () => {

@@ -34,7 +34,7 @@ describe('getCurrentObjective', () => {
     const s = make({
       beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms'],
       tutorialStepsDone: ['tap_slay', 'tap_rally'],
-      questsDone: ['defend_the_wall', 'raise_the_guard'],
+      questsDone: ['defend_the_wall', 'raise_the_guard', 'hold_the_line', 'fill_the_stores'],
     })
     expect(getCurrentObjective(s)).toBeNull()
   })

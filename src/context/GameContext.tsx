@@ -382,6 +382,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         food: prev.food + yield_,
         totalFoodForaged: prev.totalFoodForaged + yield_,
         forageClicks: prev.forageClicks + 1,
+        foodGatheredByHand: prev.foodGatheredByHand + yield_,
       }
     })
   }, [])

@@ -10,11 +10,12 @@ import { getCurrentObjective } from '../objectives'
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
 describe('story pause', () => {
-  it('pauses everything after call_to_arms and nothing up to it', () => {
-    expect(STORY_PAUSED_AFTER).toBe('call_to_arms')
+  it('pauses everything after empty_stores (the food scene) and nothing up to it', () => {
+    expect(STORY_PAUSED_AFTER).toBe('empty_stores')
     expect(isBeatPaused('prologue')).toBe(false)
     expect(isBeatPaused('call_to_arms')).toBe(false)
-    for (const b of STORY_BEATS.slice(4)) expect(isBeatPaused(b.id)).toBe(true)
+    expect(isBeatPaused('empty_stores')).toBe(false)
+    for (const b of STORY_BEATS.slice(5)) expect(isBeatPaused(b.id)).toBe(true)
   })
 
   it('the director never offers a paused beat, main or side', () => {

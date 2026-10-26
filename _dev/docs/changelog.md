@@ -2,6 +2,13 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Food before the Breach (2026-10-26)
+- Quests can have several goals; Hold the Line: rally 5 fighters and defeat a Shadow Crawler
+- It completes into the rewritten "Our Stores Run Low": fighters eat twice what villagers do,
+  the valley behind Draconia, and foraging means not defending the Gate
+- Fill the Stores: gather 200 food by hand (gatherers do not count)
+- Food now comes before the Breach and Repair; the story pause moved to after the food scene
+
 ### Monster pool and slower fighters (2026-10-26)
 - Monsters come from a spawn pool: odds blend with kills, each new type's first appearance is
   guaranteed at its threshold, kobolds phase out when orcs arrive (`types/spawnPool.ts`)

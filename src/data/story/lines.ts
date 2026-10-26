@@ -86,11 +86,13 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     ...PYRETH,
     title: 'Our Stores Run Low',
     lines: [
-      'My lord, I bring troubling news. Our food stores in Draconia are dwindling.',
-      'We have no farms yet, but the wilderness around Draconia is rich with wild plants and game. I have opened a foraging path for you.',
-      'Go to the Forage tab and gather what you can. It is humble work, but it will keep our people alive.',
+      'The line holds, my lord, but your fighters spend themselves at the gate, and they eat for it: twice what any villager does.',
+      'Our stores will not last forever. Every time the meal bell rings, Draconia eats, and the stores grow thinner.',
+      'The horde is camped before the Gate, but our back is to the valley. A small gate opens onto forest and river the monsters have not found.',
+      'Forage there with your own hands. But know the cost: every moment you spend in the valley is a moment you are not defending the Gate.',
+      'Bring back 200 food, my lord, and our stores will hold a while longer.',
     ],
-    dismissLabel: 'Begin foraging',
+    dismissLabel: 'Go to the valley',
     navigateTo: 'ForageTab',
   },
   strangers_at_gate: {

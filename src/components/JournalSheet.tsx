@@ -9,7 +9,7 @@ import { Text } from './Text'
 import { useGame } from '../context/GameContext'
 import { useJournal } from '../context/JournalContext'
 import { getStoryEntries, getHowItWorks, isLoreUnlocked, getLoreLines } from '../data/story/journal'
-import { QUESTS, activeQuests, isQuestDone, questProgress } from '../types/quests'
+import { QUESTS, activeQuests, isQuestDone, goalProgress, isGoalMet } from '../types/quests'
 import { colors, spacing, gold } from '../theme'
 
 const TAB_QUESTS: PillTab = { key: 'quests', label: 'Quests', icon: 'flag-outline' }
@@ -49,13 +49,19 @@ function QuestsTab() {
   return (
     <>
       {active.map((q) => {
-        const progress = questProgress(q, state)
+        const goals = q.goals.map((g) => ({ g, progress: goalProgress(g, state), met: isGoalMet(g, state) }))
+        const spoken = goals.map(({ g, progress, met }) => `${g.label}, ${met ? 'done' : `${progress} of ${g.target}`}`).join('. ')
         return (
-          <View key={q.id} accessible accessibilityLabel={`Current quest: ${q.title}. ${q.goal}, ${progress} of ${q.target}`}>
+          <View key={q.id} accessible accessibilityLabel={`Current quest: ${q.title}. ${spoken}`}>
             <Surface level={2} style={styles.card}>
               <Text variant="caption" style={styles.speaker}>CURRENT QUEST</Text>
               <Text variant="h3">{q.title}</Text>
-              <Text variant="bodySmall" color="secondary">{`${q.goal}: ${progress} / ${q.target}`}</Text>
+              {goals.map(({ g, progress, met }) => (
+                <View key={g.label} style={styles.goal}>
+                  <Ionicons name={met ? 'checkmark-circle' : 'ellipse-outline'} size={16} color={met ? colors.status.success : colors.text.muted} />
+                  <Text variant="bodySmall" color="secondary">{`${g.label}: ${progress} / ${g.target}`}</Text>
+                </View>
+              ))}
               {q.reward && <Text variant="caption" style={styles.reward}>{`Reward: ${q.reward.renown.toFixed(2)} renown`}</Text>}
             </Surface>
           </View>
@@ -67,7 +73,7 @@ function QuestsTab() {
             <Ionicons name="checkmark-circle" size={18} color={colors.status.success} />
             <View style={styles.doneText}>
               <Text variant="label">{q.title}</Text>
-              <Text variant="caption" color="muted">{q.goal}</Text>
+              <Text variant="caption" color="muted">{q.goals.map((g) => g.label).join(', ')}</Text>
             </View>
           </Surface>
         </View>
@@ -145,6 +151,11 @@ const styles = StyleSheet.create({
   },
   reward: {
     color: gold[300],
+  },
+  goal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[2],
   },
   doneCard: {
     flexDirection: 'row',
