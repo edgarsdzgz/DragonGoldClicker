@@ -10,6 +10,7 @@ import type { MonsterDef } from './monsterRoster'
 import { spawnWeights } from './spawnPool'
 import { WALL_STRIKE_SEC } from './wall'
 import { roundInsp } from './utils'
+import { swordVolleyBonus } from './forge'
 
 // =============================================================================
 // THE ARMY (chapter 5): fighters and the soldiers trained from them, one volley at the Gate
@@ -24,11 +25,11 @@ export function armySize(s: Pick<GameState, 'fighters' | 'soldiers'>): number {
   return s.fighters + getTotalSoldiers(s.soldiers)
 }
 
-/** The volley's damage before rations and hunger: fighters plus every soldier by rank */
-export function armyVolleyDamage(s: Pick<GameState, 'fighters' | 'soldiers'>): number {
+/** The volley's damage before rations and hunger: fighters, every soldier by rank, and their swords */
+export function armyVolleyDamage(s: Pick<GameState, 'fighters' | 'soldiers' | 'armoryGear'>): number {
   return SOLDIER_TIERS.reduce(
     (sum, t) => sum + getSoldierCount(s.soldiers, t.id) * t.damage,
-    s.fighters * FIGHTER_HIT_DAMAGE,
+    s.fighters * FIGHTER_HIT_DAMAGE + swordVolleyBonus(s),
   )
 }
 

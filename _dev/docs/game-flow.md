@@ -82,7 +82,8 @@ monster the horde sends now, against that monster's 5s strike on the wall.
   (`the_wall_is_yours`). The player never loses the game: when the wall falls it is a Breach
   (`types/breach.ts`): 30% of fighters, repairers and idle villagers and 15% of foragers die, 40%
   of the food burns, renown is halved then pays 5 per horde level (can go negative). The horde
-  is pushed back by half (at least 2 levels), the wall is patched to 50 and a 90s ward holds
+  is pushed back by half (at least 2 levels), the wall is patched to 50 and a 90s ward holds.
+  Soldiers lose 30% of each rank's unshielded; a shielded soldier never falls (Kael's Forge)
 
 ---
 
@@ -112,7 +113,7 @@ Buildings are organized in wards, top to bottom:
 - **Wizard's Tower** -- Enchantments (requires finding a Wizard)
 
 ### CRAFT WARD
-- **The Armory** -- Forge weapons (requires training a Forger)
+- **The Forge** (Kael, 75 renown) -- Swords (from 15): an armed soldier hits 50% harder. Shields (from 20): a shielded soldier never falls in a Breach. Best ranks first, one of each per soldier
 - **Ranger's Lodge** -- Upgrade gatherers to trappers/rangers
 
 ### OUTER WARD

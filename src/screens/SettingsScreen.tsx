@@ -208,7 +208,7 @@ function StatsContent() {
 
       {state.armoryBuilt && (
         <Surface style={styles.section}>
-          <SectionLabel spacing={2}>ARMORY</SectionLabel>
+          <SectionLabel spacing={2}>THE FORGE</SectionLabel>
           <StatRow icon="flash" label="Swords" value={String(state.armoryGear.swords)} />
           <StatRow icon="shield" label="Shields" value={String(state.armoryGear.shields)} />
           <StatRow icon="flash" label="Claws" value={clawDef(state.clawLevel).name} />

@@ -24,6 +24,7 @@ import { useWallWarnings } from '../hooks/useWallWarnings'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useCoach } from '../context/CoachContext'
 import { CoachMark } from '../components/CoachMark'
+import { rankBlock } from '../types/army'
 import { JournalSheet } from '../components/JournalSheet'
 import type { SceneTab } from '../data/story/lines'
 import type { UnlockToastHandle } from '../components/UnlockToast'
@@ -32,8 +33,7 @@ import {
   ARMORY_COST,
   DRACONIA_HALL_COST,
   SOLDIER_TIERS,
-  SWORD_COST,
-  SHIELD_COST,
+  gearBlock,
   LODGE_LEVELS,
   FORAGER_TIERS,
   POST_LEVELS,
@@ -41,10 +41,6 @@ import {
   EXPEDITION_INSPIRATION_COST,
   EXPEDITION_FOOD_COST,
   isBuildingRevealed,
-  getTotalSoldiers,
-  getSoldierCap,
-  getSoldierCost,
-  getSoldierCount,
   getBarracksUpgradeCost,
   getTotalForagers,
   getForagerCap,
@@ -56,7 +52,6 @@ import {
   getOfflineUpgradeCost,
   LIBRARIUM_COST,
   RESEARCH_NODES,
-  getResearchBonuses,
 } from '../types/game'
 
 import { GameScreen } from '../screens/GameScreen'
@@ -111,30 +106,16 @@ function useBuildTabBadge(): boolean {
     if (state.postLevel === 0 && isBuildingRevealed(state, 'outpost') && g >= POST_LEVELS[0].cost) return true
 
     // -- Built buildings with affordable actions --
-    const rb = getResearchBonuses(state.completedResearch)
 
     // Garrison: upgrade or train
     if (state.barracksLevel > 0) {
       const upgCost = getBarracksUpgradeCost(state.barracksLevel)
       if (upgCost !== null && g >= upgCost) return true
-      const total = getTotalSoldiers(state.soldiers)
-      const cap = getSoldierCap(state.barracksLevel)
-      if (total < cap && state.villagers > 0) {
-        for (const tier of SOLDIER_TIERS) {
-          if (tier.unlocksAtBarracksLevel <= state.barracksLevel) {
-            const baseCost = getSoldierCost(tier, getSoldierCount(state.soldiersTrained, tier.id))
-            if (g >= parseFloat((baseCost * (1 - rb.soldierCostDiscount)).toFixed(2))) return true
-          }
-        }
-      }
+      if (SOLDIER_TIERS.some((tier) => rankBlock(state, tier.id) === null)) return true
     }
 
     // Forge: sword or shield (the player's own upgrade is the claws, on the Warfront)
-    if (state.armoryBuilt) {
-      const totalSoldiers = getTotalSoldiers(state.soldiers)
-      if (state.armoryGear.swords < totalSoldiers && g >= SWORD_COST) return true
-      if (state.armoryGear.shields < totalSoldiers && g >= SHIELD_COST) return true
-    }
+    if (gearBlock(state, 'sword') === null || gearBlock(state, 'shield') === null) return true
 
     // Lodge: upgrade or train forager
     if (state.lodgeLevel > 0) {

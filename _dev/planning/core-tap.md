@@ -622,7 +622,7 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
-## Chapter 5 phase B: Kael's Forge (proposed 2026-10-26)
+## Chapter 5 phase B: Kael's Forge (approved and built 2026-10-26)
 
 Kael Ironwright's "The Forge Is Cold" reveals the Forge on the Draconia map. The Forge exists
 (`ArmoryInterior`, `buySword`, `buyShield`, `armoryGear`) but its swords and shields only added
@@ -661,12 +661,11 @@ way to raise damage at the Gate that competes with the claws.
 - Quest **Light the Forge**: build it. Quest **Arm the Ranks**: forge 2 swords.
 - The story pauses after it, before The Keep Stands.
 
-### Open questions
+### Owner ruling (2026-10-26)
 
-1. Swords: +50% to an armed soldier's hit, best ranks first?
-2. Shields: a shielded soldier never falls in a Breach (recommended), or something else (for
-   example softening monster strikes on the wall, which overlaps repairers)?
-3. The prices: Forge 75, sword 15, shield 20?
+All three as recommended: swords +50% best ranks first; shields mean a shielded soldier never
+falls in a Breach; Forge 75, sword 15, shield 20. Built in `types/forge.ts`. The fallen in a
+Breach are those without a sword first, so a sword is lost only when the bare ones run out.
 
 ---
 

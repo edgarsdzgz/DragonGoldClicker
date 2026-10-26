@@ -11,7 +11,7 @@ import { roundInsp } from './utils'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -48,6 +48,9 @@ export const OPEN_THE_GATES_PEOPLE = 3
 
 /** Conscripts the player trains from fighters at the new Garrison (chapter 5) */
 export const FIRST_SOLDIERS_CONSCRIPTS = 2
+
+/** Swords the player has Kael forge for the soldiers (chapter 5 phase B) */
+export const ARM_THE_RANKS_SWORDS = 2
 
 const done = (s: GameState, id: QuestId) => s.questsDone.includes(id)
 
@@ -105,6 +108,16 @@ export const QUESTS: QuestDef[] = [
     id: 'first_soldiers', title: 'First Soldiers',
     goals: [{ label: 'Train 2 conscripts', target: FIRST_SOLDIERS_CONSCRIPTS, progress: (s) => s.soldiersTrained.conscripts }],
     offeredWhen: (s) => done(s, 'raise_the_garrison'),
+  },
+  {
+    id: 'light_the_forge', title: 'Light the Forge',
+    goals: [{ label: 'Build the Forge', target: 1, progress: (s) => (s.armoryBuilt ? 1 : 0) }],
+    offeredWhen: (s) => s.beatsSeen.includes('the_smith'),
+  },
+  {
+    id: 'arm_the_ranks', title: 'Arm the Ranks',
+    goals: [{ label: 'Forge 2 swords', target: ARM_THE_RANKS_SWORDS, progress: (s) => s.armoryGear.swords }],
+    offeredWhen: (s) => done(s, 'light_the_forge'),
   },
 ]
 

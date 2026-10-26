@@ -56,16 +56,6 @@ export const BARRACKS_LEVELS: BarracksLevelDef[] = [
 export const MAX_BARRACKS_LEVEL = BARRACKS_LEVELS.length
 
 // =============================================================================
-// ARMORY GEAR (soldier equipment -- capped at total soldiers)
-// =============================================================================
-
-export const ARMORY_COST = 5
-export const SWORD_COST = 0.75
-export const SHIELD_COST = 1.0
-export const SWORD_BONUS = 0.005
-export const SHIELD_BONUS = 0.0025
-
-// =============================================================================
 // SOLDIER HELPERS
 // =============================================================================
 

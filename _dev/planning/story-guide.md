@@ -61,7 +61,7 @@ so a fast tapper cannot outrun the story. Target times assume a normal player.
 | `empty_stores` | 3 | ~15:00 | `repairers >= 3` | 180 | Pyreth | First meal check fires 10 s after dismiss and shows the food drop | `hunger`, `forageTab`, food in ResourceBar, food warnings | Train 2 gatherers |
 | `strangers_at_gate` | 4 | after the claws | Sharpen Your Claws done | 60 | Mirael | A free **Lone Wanderer** (Mirael's rations) arrives right after the scene | `wanderers` | Open the Gates quest: welcome 3 newcomers |
 | `a_city_to_build` | 5 | after Open the Gates | Open the Gates done | 60 | Pyreth | Draconia shows **only the Garrison**; everything else is fog | `draconiaTab` | Quests Raise the Garrison, then First Soldiers (train 2 conscripts) |
-| `the_smith` | 5 | ~45:00 | `barracksLevel >= 1` | 60 | Kael | Forge revealed | reveal `forge` | Build the Forge |
+| `the_smith` | 5 | after First Soldiers | First Soldiers done | 60 | Kael | Forge revealed; spotlight the Draconia tab | reveal `forge` | Quests Light the Forge, then Arm the Ranks (forge 2 swords). The story pauses after it |
 | `the_keep_stands` | 5 | ~55:00 | `armoryBuilt` | 60 | *silent* | Keep and Ranger's Lodge revealed | reveal `keep`, `lodge` | Restore the Keep |
 | `word_spreads` | 6 | varies | `totalInspirationEarned >= 25` | 0 | Pyreth | The existing MilestoneModal follows the scene | `milestones` | -- |
 | `lean_times` | 7 | ~1:00 | first time `food <= 0` while `hunger` is on | 0 | Pyreth | **No deaths.** The scene replaces the StarvationModal | `starvation` | Get food above 0 |
@@ -113,7 +113,8 @@ at `GameScreen.tsx:103-109`; keep its last line.
 **the_smith** (Kael, "The Forge Is Cold")
 1. Kael Ironwright. My father kept the forge here.
 2. Look, I can hit metal with a hammer. That's about where we're at.
-3. Give me a roof and some coal, and your fighters will have something better than sticks.
+3. Give me a roof and some coal, and your soldiers will have something better than sticks.
+4. A sword makes a soldier hit harder. A shield keeps one standing when the wall comes down.
 
 **word_spreads** (Pyreth, "Word Spreads")
 1. Word of Draconia's stand has reached the villages beyond the hills. People are coming.

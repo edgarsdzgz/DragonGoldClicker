@@ -21,15 +21,12 @@ import {
   isSystemOn,
   SOLDIER_TIERS,
   FORAGER_TIERS,
-  SWORD_COST,
-  SHIELD_COST,
+  gearBlock,
   EXPLORER_COST,
   EXPEDITION_INSPIRATION_COST,
   EXPEDITION_FOOD_COST,
   getTotalSoldiers,
   getSoldierCap,
-  getSoldierCost,
-  getSoldierCount,
   getBarracksUpgradeCost,
   getTotalForagers,
   getForagerCap,
@@ -48,6 +45,7 @@ import { PostInterior } from './shop/PostInterior'
 import { DraconiaHallInterior } from './shop/DraconiaHallInterior'
 import { LibrariumInterior } from './shop/LibrariumInterior'
 import { mapStyles } from './shop/mapStyles'
+import { rankBlock } from '../types/army'
 
 // =============================================================================
 // BUILDING INTERIOR ROUTER
@@ -291,23 +289,10 @@ export function ShopScreen() {
   const garrisonHasAction = barracksBuilt && (() => {
     const upgCost = getBarracksUpgradeCost(state.barracksLevel)
     if (upgCost !== null && state.inspiration >= upgCost) return true
-    if (total < cap && state.villagers > 0) {
-      for (const tier of SOLDIER_TIERS) {
-        if (tier.unlocksAtBarracksLevel <= state.barracksLevel) {
-          const cost = getSoldierCost(tier, getSoldierCount(state.soldiersTrained, tier.id))
-          if (state.inspiration >= cost) return true
-        }
-      }
-    }
-    return false
+    return SOLDIER_TIERS.some((tier) => rankBlock(state, tier.id) === null)
   })()
 
-  const forgeHasAction = state.armoryBuilt && (() => {
-    const totalSoldiers = getTotalSoldiers(state.soldiers)
-    if (state.armoryGear.swords < totalSoldiers && state.inspiration >= SWORD_COST) return true
-    if (state.armoryGear.shields < totalSoldiers && state.inspiration >= SHIELD_COST) return true
-    return false
-  })()
+  const forgeHasAction = gearBlock(state, 'sword') === null || gearBlock(state, 'shield') === null
 
   const lodgeHasAction = lodgeBuilt && (() => {
     const upgCost = getLodgeUpgradeCost(state.lodgeLevel)
@@ -388,7 +373,7 @@ export function ShopScreen() {
       id: 'forge',
       name: 'The Forge',
       icon: 'construct',
-      description: 'A blazing smithy where weapons and armor are hammered into shape. Equip soldiers with swords and shields, or arm yourself.',
+      description: "Kael's smithy. Swords make your soldiers hit harder; shields keep them standing when the wall falls.",
       accentColor: colors.building.forge,
       isBuilt: state.armoryBuilt,
       visible: revealed('forge', state.armoryBuilt),

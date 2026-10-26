@@ -10,8 +10,8 @@ import { getCurrentObjective } from '../objectives'
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
 describe('story pause', () => {
-  it('pauses everything after a_city_to_build (the Garrison, chapter 5) and nothing up to it', () => {
-    expect(STORY_PAUSED_AFTER).toBe('a_city_to_build')
+  it('pauses everything after the_smith (the Forge, chapter 5 phase B) and nothing up to it', () => {
+    expect(STORY_PAUSED_AFTER).toBe('the_smith')
     expect(isBeatPaused('prologue')).toBe(false)
     expect(isBeatPaused('call_to_arms')).toBe(false)
     expect(isBeatPaused('empty_stores')).toBe(false)
@@ -21,7 +21,8 @@ describe('story pause', () => {
     expect(isBeatPaused('sharpen_claws')).toBe(false)
     expect(isBeatPaused('strangers_at_gate')).toBe(false)
     expect(isBeatPaused('a_city_to_build')).toBe(false)
-    for (const b of STORY_BEATS.slice(11)) expect(isBeatPaused(b.id)).toBe(true)
+    expect(isBeatPaused('the_smith')).toBe(false)
+    for (const b of STORY_BEATS.slice(12)) expect(isBeatPaused(b.id)).toBe(true)
   })
 
   it('the director never offers a paused beat, main or side', () => {

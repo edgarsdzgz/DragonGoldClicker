@@ -141,7 +141,8 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     lines: [
       'Kael Ironwright. My father kept the forge here.',
       "Look, I can hit metal with a hammer. That's about where we're at.",
-      'Give me a roof and some coal, and your fighters will have something better than sticks.',
+      'Give me a roof and some coal, and your soldiers will have something better than sticks.',
+      'A sword makes a soldier hit harder. A shield keeps one standing when the wall comes down.',
     ],
   },
   word_spreads: {

@@ -1,73 +1,84 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import { ActionRow, Button, SectionLabel } from '../../components'
+import type { Ionicons } from '@expo/vector-icons'
+import { ActionRow, Button, SectionLabel, StatBox } from '../../components'
+import { ArmyReadout } from '../../components/ArmyReadout'
 import { REJECT_GOLD } from '../../components/Button'
 import { useGame } from '../../context/GameContext'
 import { useHaptics, useSfx } from '../../hooks'
 import { SFX } from '../../data/sfx'
 import { colors, gold } from '../../theme'
 import {
-  SWORD_COST,
-  SHIELD_COST,
-  SWORD_BONUS,
-  SHIELD_BONUS,
+  SOLDIER_TIERS,
+  SWORD_DAMAGE_BONUS,
+  WALL_STRIKE_SEC,
+  formatNumber,
+  gearBlock,
+  gearCost,
   getTotalSoldiers,
+  nextGearRank,
 } from '../../types/game'
+import type { Gear, GearBlock } from '../../types/game'
+import { armyKillSeconds, toughestInPool } from '../../types/army'
+import { SummaryBar } from './SummaryBar'
 import { styles } from './interiorStyles'
 
 // =============================================================================
-// GEAR ROW
+// GEAR ROW (Kael's Forge, chapter 5 phase B): one sword or shield for the next soldier in line
 // =============================================================================
 
-function GearRow({
-  label,
-  icon,
-  owned,
-  max,
-  cost,
-  bonus,
-  canAfford,
-  onBuy,
-}: {
-  label: string
-  icon: keyof typeof Ionicons.glyphMap
-  owned: number
-  max: number
-  cost: number
-  bonus: number
-  canAfford: boolean
-  onBuy: () => void
-}) {
+const GEAR: Record<Gear, { title: string; icon: keyof typeof Ionicons.glyphMap; does: string }> = {
+  sword: { title: 'Swords', icon: 'flash', does: `An armed soldier hits ${SWORD_DAMAGE_BONUS * 100}% harder` },
+  shield: { title: 'Shields', icon: 'shield', does: 'A shielded soldier never falls in a Breach' },
+}
+
+const BLOCK_LABEL: Record<Exclude<GearBlock, null | 'renown'>, string> = {
+  noForge: 'BUILD FIRST',
+  nobody: 'NO SOLDIERS',
+  full: 'ALL EQUIPPED',
+}
+
+const BLOCK_PHRASES: Record<Exclude<GearBlock, null | 'renown'>, string[]> = {
+  noForge: ['Build the Forge first'],
+  nobody: ['Train soldiers at the Garrison first', 'No soldiers to equip yet', 'The racks stand empty'],
+  full: ['Every soldier is equipped', 'Train more soldiers to arm them', 'The forge rests'],
+}
+
+function GearRow({ gear }: { gear: Gear }) {
+  const { state, buySword, buyShield } = useGame()
   const haptics = useHaptics()
   const playPurchase = useSfx(SFX.PURCHASE)
-  const atMax = owned >= max
-  const canBuy = canAfford && !atMax && max > 0
+  const def = GEAR[gear]
+  const block = gearBlock(state, gear)
+  const cost = gearCost(state, gear)
+  const held = gear === 'sword' ? state.armoryGear.swords : state.armoryGear.shields
+  const soldiers = getTotalSoldiers(state.soldiers)
+  const nextRank = nextGearRank(state, gear)
+  const nextName = nextRank ? SOLDIER_TIERS.find((t) => t.id === nextRank)!.name.toLowerCase() : null
 
-  const handleBuy = () => {
-    if (!canBuy) return
+  const handleForge = () => {
     haptics.medium()
     playPurchase()
-    onBuy()
+    if (gear === 'sword') buySword()
+    else buyShield()
   }
-
-  const buttonLabel = max === 0 ? 'NO SOLDIERS' : atMax ? 'MAX' : `${cost} g`
-
-  const rejectPhrases = max === 0
-    ? ['Train soldiers at the Garrison first', 'No soldiers to equip yet', 'The racks stand empty']
-    : atMax
-      ? ['All soldiers are fully equipped', 'Everyone is armed and ready', 'The armory rests']
-      : REJECT_GOLD
 
   return (
     <ActionRow
-      icon={icon}
+      icon={def.icon}
       iconColor={gold[400]}
-      title={label}
-      subtitle={`${owned}/${max} owned -- +${bonus} renown/s each`}
+      title={`${def.title} (${Math.min(held, soldiers)}/${soldiers})`}
+      subtitle={nextName ? `${def.does}. The next goes to a ${nextName}.` : `${def.does}.`}
       right={
-        <Button size="xs" onPress={handleBuy} disabled={!canBuy} accentColor={colors.building.forge} rejectPhrases={rejectPhrases}>
-          {buttonLabel}
+        <Button
+          size="xs"
+          onPress={handleForge}
+          disabled={block !== null}
+          accentColor={colors.building.forge}
+          rejectPhrases={block !== null && block !== 'renown' ? BLOCK_PHRASES[block] : REJECT_GOLD}
+          accessibilityLabel={`Forge a ${gear} for ${formatNumber(cost)} renown`}
+        >
+          {block !== null && block !== 'renown' ? BLOCK_LABEL[block] : `${formatNumber(cost)} renown`}
         </Button>
       }
     />
@@ -75,37 +86,27 @@ function GearRow({
 }
 
 // =============================================================================
-// ARMORY INTERIOR
+// THE FORGE
 // =============================================================================
 
 export function ArmoryInterior() {
-  const { state, buySword, buyShield } = useGame()
-  const totalSoldiers = getTotalSoldiers(state.soldiers)
+  const { state } = useGame()
+  const soldiers = getTotalSoldiers(state.soldiers)
+  const toughest = toughestInPool(state)
 
   return (
     <View style={styles.interiorContainer}>
-      {/* Soldier gear */}
+      <SummaryBar>
+        <StatBox value={`${Math.min(state.armoryGear.swords, soldiers)}/${soldiers}`} label="Armed" valueColor={gold[400]} />
+        <StatBox value={`${Math.min(state.armoryGear.shields, soldiers)}/${soldiers}`} label="Shielded" valueColor={gold[400]} />
+      </SummaryBar>
+
+      {/* Swords move this: can the army hold the Gate while the player is away? */}
+      <ArmyReadout monsterName={toughest.name} killSec={armyKillSeconds(state, toughest)} strikeSec={WALL_STRIKE_SEC} />
+
       <SectionLabel>SOLDIER GEAR</SectionLabel>
-      <GearRow
-        label="Swords"
-        icon="flash"
-        owned={state.armoryGear.swords}
-        max={totalSoldiers}
-        cost={SWORD_COST}
-        bonus={SWORD_BONUS}
-        canAfford={state.inspiration >= SWORD_COST}
-        onBuy={buySword}
-      />
-      <GearRow
-        label="Shields"
-        icon="shield"
-        owned={state.armoryGear.shields}
-        max={totalSoldiers}
-        cost={SHIELD_COST}
-        bonus={SHIELD_BONUS}
-        canAfford={state.inspiration >= SHIELD_COST}
-        onBuy={buyShield}
-      />
+      <GearRow gear="sword" />
+      <GearRow gear="shield" />
     </View>
   )
 }

@@ -11,11 +11,6 @@ export {
   SOLDIER_TIERS,
   BARRACKS_LEVELS,
   MAX_BARRACKS_LEVEL,
-  ARMORY_COST,
-  SWORD_COST,
-  SHIELD_COST,
-  SWORD_BONUS,
-  SHIELD_BONUS,
   getTotalSoldiers,
   getSoldierCap,
   getBarracksUpgradeCost,
@@ -23,6 +18,17 @@ export {
   getSoldierCount,
   getTierIndex,
 } from './soldiers'
+
+export type { Gear, GearBlock } from './forge'
+export {
+  ARMORY_COST,
+  SWORD_BASE_COST,
+  SHIELD_BASE_COST,
+  SWORD_DAMAGE_BONUS,
+  gearCost,
+  gearBlock,
+  nextGearRank,
+} from './forge'
 
 export type {
   ForagerTier,

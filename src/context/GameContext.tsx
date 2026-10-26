@@ -7,8 +7,6 @@ import {
   ARMORY_COST,
   BARRACKS_LEVELS,
   SOLDIER_TIERS,
-  SWORD_COST,
-  SHIELD_COST,
   OFFLINE_LEVELS,
   MAX_OFFLINE_LEVEL,
   getSoldierCount,
@@ -72,6 +70,8 @@ import type { RationId } from '../types/rations'
 import { firstExpeditionReward } from '../types/scripted'
 import { sharpenClaws as sharpenClawsState } from '../types/claws'
 import { armySize, armyVolleyNow, makeRank as makeRankState } from '../types/army'
+import { forgeGear } from '../types/forge'
+import type { Gear } from '../types/forge'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
@@ -404,41 +404,19 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return made
   }, [])
 
-  const buySword = useCallback((): boolean => {
-    let bought = false
+  // Kael's Forge (chapter 5 phase B): gear for the next soldier in line, best ranks first
+  const forge = useCallback((gear: Gear): boolean => {
+    let forged = false
     setState((prev) => {
-      if (!prev.armoryBuilt) return prev
-      const total = getTotalSoldiers(prev.soldiers)
-      if (prev.armoryGear.swords >= total) return prev
-      if (prev.inspiration < SWORD_COST) return prev
-      bought = true
-      return {
-        ...prev,
-        inspiration: prev.inspiration - SWORD_COST,
-        totalInspirationSpent: prev.totalInspirationSpent + SWORD_COST,
-        armoryGear: { ...prev.armoryGear, swords: prev.armoryGear.swords + 1 },
-      }
+      const next = forgeGear(prev, gear)
+      forged = next !== prev
+      return next
     })
-    return bought
+    return forged
   }, [])
 
-  const buyShield = useCallback((): boolean => {
-    let bought = false
-    setState((prev) => {
-      if (!prev.armoryBuilt) return prev
-      const total = getTotalSoldiers(prev.soldiers)
-      if (prev.armoryGear.shields >= total) return prev
-      if (prev.inspiration < SHIELD_COST) return prev
-      bought = true
-      return {
-        ...prev,
-        inspiration: prev.inspiration - SHIELD_COST,
-        totalInspirationSpent: prev.totalInspirationSpent + SHIELD_COST,
-        armoryGear: { ...prev.armoryGear, shields: prev.armoryGear.shields + 1 },
-      }
-    })
-    return bought
-  }, [])
+  const buySword = useCallback((): boolean => forge('sword'), [forge])
+  const buyShield = useCallback((): boolean => forge('shield'), [forge])
 
   const buildOrUpgradeLodge = useCallback((): boolean => {
     let success = false

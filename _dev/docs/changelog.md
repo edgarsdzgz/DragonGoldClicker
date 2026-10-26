@@ -2,6 +2,19 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Chapter 5 phase B: Kael's Forge (2026-10-26)
+- Swords: an armed soldier hits 50% harder (a knight 3 instead of 2). Shields: a shielded soldier
+  never falls in a Breach. Gear is for soldiers only, one of each, and goes to the best ranks
+  first; fighters carry none
+- Prices: the Forge 75 renown (was 5); a sword from 15 and a shield from 20, each rising on the
+  ^1.15 curve by how many the soldiers hold. The old renown-per-second gear values are gone
+- In a Breach only the unshielded are counted for losses; the fallen are those without a sword
+  first, and any swords they carried are lost. The report says how many shielded soldiers stood
+- The Forge screen: armed and shielded counts, the army readout, and which rank the next piece
+  goes to. The Draconia tab badge now follows the Garrison's real train and promote rules
+- Story: Kael's "The Forge Is Cold" plays a minute after First Soldiers and reveals the Forge;
+  quests Light the Forge and Arm the Ranks (forge 2 swords). The story pauses after it
+
 ### Chapter 5 phase A: A City to Build, the Garrison (2026-10-26)
 - Soldiers are trained fighters: the Garrison trains a fighter into a conscript (10 renown) and
   promotes conscripts to footmen (30, Garrison Lv3) and footmen to knights (80, Lv5). They strike

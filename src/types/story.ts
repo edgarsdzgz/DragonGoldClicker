@@ -157,11 +157,13 @@ export const STORY_BEATS: BeatDef[] = [
     spotlight: 'draconiaTab',
   },
   {
+    // Chapter 5 phase B: a minute of play after First Soldiers. Kael reveals the Forge; its goals
+    // are the Light the Forge and Arm the Ranks quests (swords and shields, types/forge.ts).
     id: 'the_smith', chapter: 5, dwellSec: 60,
-    trigger: (s) => s.barracksLevel >= 1,
+    trigger: (s) => s.questsDone.includes('first_soldiers'),
     unlocks: [],
     reveals: ['forge'],
-    objective: { label: 'Build the Forge', current: (s) => (s.armoryBuilt ? 1 : 0), target: 1 },
+    spotlight: 'draconiaTab',
   },
   {
     id: 'the_keep_stands', chapter: 5, dwellSec: 60,
@@ -221,7 +223,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'a_city_to_build'
+export const STORY_PAUSED_AFTER: BeatId = 'the_smith'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

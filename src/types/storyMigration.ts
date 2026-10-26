@@ -28,7 +28,7 @@ const EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   strangers_at_gate: (s) => s.wanderersWelcomed > 0,
   a_city_to_build: (s) => s.wanderersWelcomed >= OPEN_THE_GATES_PEOPLE,
   empty_stores: (s) => s.foodSystemActive || s.foragers.gatherers > 0,
-  the_smith: (s) => s.barracksLevel > 0,
+  the_smith: (s) => s.armoryBuilt,
   the_keep_stands: (s) => s.armoryBuilt || s.lodgeLevel > 0 || s.foodSystemActive,
   the_keep: (s) => s.draconiaHallBuilt,
   the_scholar: (s) => s.librariumBuilt,

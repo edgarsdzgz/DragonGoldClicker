@@ -5,6 +5,7 @@ import { MONSTERS } from './monsterRoster'
 import { pickNextMonster } from './spawnPool'
 import { hordeLevel, pushedBackHorde } from './horde'
 import { roundInsp } from './utils'
+import { gearByRank, swordsLostWith } from './forge'
 
 // =============================================================================
 // THE BREACH (core-tap layer 6, phase B): the wall falls, and Draconia pays to survive it
@@ -14,7 +15,10 @@ import { roundInsp } from './utils'
 // and the player's renown (it can go negative), and throws the horde back so starting again is
 // easy.
 
-/** Share of fighters, each rank of soldiers, repairers and idle villagers who die (at least 1 fighter, if any) */
+/**
+ * Share of fighters, each rank of unshielded soldiers, repairers and idle villagers who die (at
+ * least 1 fighter, if any). A shielded soldier never falls (Kael's Forge, chapter 5 phase B).
+ */
 export const BREACH_PEOPLE_LOSS = 0.3
 /** Share of foragers who die: they are out in the valley and run back to help */
 export const BREACH_FORAGER_LOSS = 0.15
@@ -33,6 +37,9 @@ export interface BreachReport {
   fightersLost: number
   /** Soldiers lost by rank (chapter 5); absent in reports saved before it */
   soldiersLost?: SoldierCounts
+  /** Swords that fell with them, and shielded soldiers who stood (the Forge); absent before it */
+  swordsLost?: number
+  shieldedStood?: number
   repairersLost: number
   villagersLost: number
   foragersLost: ForagerCounts
@@ -57,11 +64,14 @@ const minusSoldiers = (a: SoldierCounts, b: SoldierCounts): SoldierCounts => ({
  */
 export function resolveBreach(s: GameState, rand: number = Math.random()): GameState {
   const fightersLost = s.fighters > 0 ? Math.max(1, share(s.fighters, BREACH_PEOPLE_LOSS)) : 0
+  const shielded = gearByRank(s.soldiers, s.armoryGear.shields)
   const soldiersLost: SoldierCounts = {
-    conscripts: share(s.soldiers.conscripts, BREACH_PEOPLE_LOSS),
-    footmen: share(s.soldiers.footmen, BREACH_PEOPLE_LOSS),
-    knights: share(s.soldiers.knights, BREACH_PEOPLE_LOSS),
+    conscripts: share(s.soldiers.conscripts - shielded.conscripts, BREACH_PEOPLE_LOSS),
+    footmen: share(s.soldiers.footmen - shielded.footmen, BREACH_PEOPLE_LOSS),
+    knights: share(s.soldiers.knights - shielded.knights, BREACH_PEOPLE_LOSS),
   }
+  const swordsLost = swordsLostWith(s, soldiersLost)
+  const shieldedStood = shielded.conscripts + shielded.footmen + shielded.knights
   const repairersLost = share(s.repairers, BREACH_PEOPLE_LOSS)
   const villagersLost = share(s.villagers, BREACH_PEOPLE_LOSS)
   const foragersLost: ForagerCounts = {
@@ -83,6 +93,8 @@ export function resolveBreach(s: GameState, rand: number = Math.random()): GameS
     count,
     fightersLost,
     soldiersLost,
+    swordsLost,
+    shieldedStood,
     repairersLost,
     villagersLost,
     foragersLost,
@@ -104,6 +116,7 @@ export function resolveBreach(s: GameState, rand: number = Math.random()): GameS
     fighters: s.fighters - fightersLost,
     soldiers: minusSoldiers(s.soldiers, soldiersLost),
     soldiersTrained: minusSoldiers(s.soldiersTrained, soldiersLost),
+    armoryGear: { ...s.armoryGear, swords: s.armoryGear.swords - swordsLost },
     repairers: s.repairers - repairersLost,
     villagers: s.villagers - villagersLost,
     foragers: minus(s.foragers, foragersLost),
@@ -151,8 +164,12 @@ export function breachLines(r: BreachReport): BreachLine[] {
     ...fell(r.foragersLost.gatherers, 'gatherer', 'gatherers'),
     ...fell(r.foragersLost.trappers, 'trapper', 'trappers'),
     ...fell(r.foragersLost.rangers, 'ranger', 'rangers'),
+    ...((r.swordsLost ?? 0) > 0 ? [{ text: `${r.swordsLost} ${r.swordsLost === 1 ? 'sword' : 'swords'} lost with them`, kind: 'loss' as const }] : []),
     ...(r.foodLost > 0 ? [{ text: `${r.foodLost} food burned`, kind: 'loss' as const }] : []),
     { text: `Renown ${r.renownBefore.toFixed(2)} to ${r.renownAfter.toFixed(2)}`, kind: 'loss' },
+    ...((r.shieldedStood ?? 0) > 0
+      ? [{ text: `${r.shieldedStood} shielded ${r.shieldedStood === 1 ? 'soldier' : 'soldiers'} stood their ground`, kind: 'relief' as const }]
+      : []),
     { text: `The horde driven back: level ${r.hordeLevelBefore} to level ${r.hordeLevelAfter}`, kind: 'relief' },
     { text: `The wall patched to ${BREACH_WALL_PATCH}; the ward holds for ${BREACH_WARD_SEC} seconds`, kind: 'relief' },
   ]
