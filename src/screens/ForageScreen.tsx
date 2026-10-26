@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react'
-import { View, StyleSheet, Animated } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { View, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Text, Badge, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge } from '../components'
 import { FlavorText } from '../components/FlavorText'
@@ -36,8 +36,7 @@ const TRAIN_PALETTE = { accent: forage[300], glow: forage[400] }
 const RECRUIT_PALETTE = { accent: explorer.accent, glow: explorer.glow }
 
 export function ForageScreen() {
-  const { state, forage: doForage, trainForager, trainExplorer, effectiveAutoRate, autoFoodRate } = useGame()
-  const incomeFlash = useRef(new Animated.Value(1)).current
+  const { state, forage: doForage, trainForager, trainExplorer, effectiveAutoRate } = useGame()
   const flavor = useFlavorText(FORAGE_LINES)
   const playHarvest = useRandomSfx(SFX_HARVEST_POOL, { cooldownMs: 2000 })
 
@@ -47,25 +46,6 @@ export function ForageScreen() {
     flavor.onTick()
   }, [doForage, playHarvest, flavor.onTick])
 
-  useEffect(() => {
-    if (autoFoodRate <= 0) return
-    const pulse = Animated.loop(
-      Animated.sequence([
-        Animated.timing(incomeFlash, {
-          toValue: 0.5,
-          duration: 1500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(incomeFlash, {
-          toValue: 1,
-          duration: 1500,
-          useNativeDriver: true,
-        }),
-      ])
-    )
-    pulse.start()
-    return () => pulse.stop()
-  }, [autoFoodRate, incomeFlash])
 
   const handleTrainGatherer = useCallback(() => {
     trainForager('gatherer')
@@ -113,15 +93,6 @@ export function ForageScreen() {
         </View>
         <Text variant="bodySmall" color="muted" center>{`food stores (granary holds ${GRANARY_CAP})`}</Text>
 
-        {autoFoodRate > 0 && (
-          <Animated.View style={{ opacity: incomeFlash, marginTop: spacing[1] }}>
-            <Badge icon="trending-up" color={forage[400]}>
-              <Text variant="caption" style={{ color: forage[300] }}>
-                +{autoFoodRate.toFixed(2)} food/s
-              </Text>
-            </Badge>
-          </Animated.View>
-        )}
 
         {hasBonusPercent && (
           <Badge icon="arrow-up" color={forage[400]} style={{ marginTop: spacing[1] }}>
@@ -130,24 +101,6 @@ export function ForageScreen() {
             </Text>
           </Badge>
         )}
-      </View>
-
-      {/* Foraging stats */}
-      <View style={styles.statsRow}>
-        <View style={styles.statPillRow}>
-          <Badge icon="leaf" color={forage[500]}>
-            <Text variant="caption" style={{ color: forage[400] }}>
-              {formatCount(state.totalFoodForaged)} gathered
-            </Text>
-          </Badge>
-          {getTotalForagers(state.foragers) > 0 && (
-            <Badge icon="people" color={forage[500]}>
-              <Text variant="caption" style={{ color: forage[400] }}>
-                {getTotalForagers(state.foragers)} forager{getTotalForagers(state.foragers) !== 1 ? 's' : ''}
-              </Text>
-            </Badge>
-          )}
-        </View>
       </View>
 
       {/* Meal consumption info */}
@@ -222,7 +175,7 @@ export function ForageScreen() {
       {/* Footer: forage yield hint */}
       <View style={styles.footer}>
         <Text variant="caption" color="muted" center>
-          {formatCount(state.forageClicks)} foraging trips
+          {`${formatCount(state.forageClicks)} foraging trips, ${formatCount(state.totalFoodForaged)} food gathered in all`}
         </Text>
         <Badge icon="nutrition" iconSize={10} color={forage[400]} variant="ghost">
           <Text variant="caption" style={{ color: forage[400] }}>
@@ -253,15 +206,6 @@ const styles = StyleSheet.create({
     gap: spacing[1],
   },
   foodRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing[2],
-  },
-  statsRow: {
-    alignItems: 'center',
-    paddingTop: spacing[2],
-  },
-  statPillRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing[2],

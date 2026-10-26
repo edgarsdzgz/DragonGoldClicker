@@ -112,7 +112,7 @@ export function campLayout(height: number): CampLayout {
 /** The large orb's glow ring is this many times its diameter (260 around 200, see HarvestOrb) */
 export const ORB_GLOW_RATIO = 1.3
 export const FORAGE_ORB_MAX = 200
-export const FORAGE_ORB_MIN = 110
+export const FORAGE_ORB_MIN = 90
 
 /**
  * The FORAGE orb's diameter for the height its area has (the flavour row above it included), so
