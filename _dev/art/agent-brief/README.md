@@ -168,10 +168,9 @@ never over an earlier one. A board shows the batch's contact sheet at x4 and eac
 on its real backdrop at display scale, beside the existing art it must match. The main session
 makes the boards; a builder agent supplies the `preview/` images.
 
-### 6.5 Figma: only if the owner asks
+### 6.5 Figma: not used
 
-Figma is not used to draw sprites. If the owner wants the interface kit (Batch 9) as a Figma
-library, upload the finished PNGs and lay out their 9-slice specs there. Otherwise skip it.
+Figma is not used to draw sprites, and the interface kit stays as code, so no batch needs it.
 
 ## 7. Checks before you report
 
@@ -209,7 +208,7 @@ failed or was skipped, and the questions for the owner.
 | Builder, one per batch, continued through pilot, rest and fix | Sonnet | 1 per batch |
 | Reviewer, one per batch, at the end | Sonnet | 1 per batch |
 
-Batches 1 to 9 are about 18 agents in total. Run them one or two at a time, in the order on the
+Batches 1 to 8 are about 16 agents in total. Run them one or two at a time, in the order on the
 batch list. A workflow that runs several batches needs the owner's OK first, with the agent count
 and models stated.
 
@@ -218,7 +217,7 @@ and models stated.
 1. **Pixel scale.** Backdrops show at x3 and the commissioned protagonist (128x128) at x2, so its
    pixels will look smaller than the world's. Accept the mix, or redraw backdrops at a different
    size later?
-2. **Interface kit.** Keep panels, buttons and bars as code (CSS-like styles in React Native), or
-   draw them as 9-slice pixel images (Batch 9)?
+2. **Interface kit.** Decided 2026-10-26: panels, buttons, bars and frames stay as code. Agents make
+   icons, sprites and scene art only.
 3. **Palette lock.** Lock the master palette now, or wait for the artist's dragon and fold its
    colors in? Indexed PNGs make a later palette change cheap either way.

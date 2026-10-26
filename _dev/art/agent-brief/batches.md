@@ -4,8 +4,8 @@ One card per batch. An agent gets the core brief ([README.md](README.md)) plus i
 pasted into its prompt; it does not read the other cards. Sizes are native pixels. "Match" names the
 existing art (native copies in `_dev/art/reference/` after Batch 0) the batch must sit beside.
 
-Order: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. Batch 2 must come before 3 (plots). Batch 9 waits on the
-owner's interface-kit decision. The last section lists what no agent makes yet.
+Order: 0, 1, 2, 3, 4, 5, 6, 7, 8. Batch 2 must come before 3 (plots). There is no Batch 9: the
+owner decided the interface kit stays as code. The last section lists what no agent makes yet.
 
 ---
 
@@ -255,30 +255,9 @@ Anchor every person at the bottom center (the feet).
 
 ---
 
-## Batch 9: Interface kit (only if the owner chose images)
+## Interface kit: stays as code
 
-**Goal:** the interface pieces as 9-slice pixel images. **Match:** mockup v2's styles
-(`_dev/mockups/v2/mockup.src.html`): stepped corners, heraldic shapes. Fonts are not drawn; the game
-uses Cinzel, Pixelify Sans and Nunito. **Tool:** code; Figma only if the owner asks (README 6.5).
-**Pilot:** `ui_plate`, `ui_btn-gold`, `ui_orb-rally`.
-
-| File | Notes |
-| --- | --- |
-| ui_plate | 9-slice, 4 px stepped corners: cards, sheets, modals |
-| ui_ribbon | 9-slice with notched ends: objective strip, titles |
-| ui_divider | 3-slice with diamond ends |
-| ui_socket | 14x16, the heraldic scale shape that holds an icon |
-| ui_btn-gold, -steel, -stone, -red | 9-slice each, states: normal, pressed, disabled |
-| ui_orb-rally, -repair, -forage, -train, -recruit | 20x20, normal and pressed; holds the matching icon |
-| ui_bar-frame, ui_bar-fill-hp, -gate, -capacity, -progress | 3-slice frame, 1 px wide repeatable fills |
-| ui_chip | 9-slice for resource and population chips |
-| ui_tab-gem | 16x16: on, off, locked, badge |
-| ui_sheet, ui_modal, ui_toast, ui_coach | 9-slice frames for each overlay |
-| ui_rations-segment | 3 states: off, on, warning |
-
-Record each 9-slice's insets (left, top, right, bottom) in the manifest.
-
-**Done when:** a mock screen built only from these pieces matches mockup v2's look.
+Decided by the owner on 2026-10-26. Panels, ribbons, dividers, buttons, bars, chips, tab gems and overlay frames stay as styles in code, as drawn in mockup v2. Only the icons that sit inside them (Batch 1) are pixel art.
 
 ---
 
