@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { SPRITES, MAP_PLOTS, MAP_GATE } from '../manifest'
 import type { SpriteId } from '../manifest'
-import { snapScale, spriteBox, stripFrame } from '../pixel'
+import { snapScale, spriteBox, stripFrame, fitScale } from '../pixel'
 
 const ROOT = path.resolve(__dirname, '../../..')
 
@@ -56,5 +56,18 @@ describe('the manifest', () => {
   it('has the city plots and the gate layout', () => {
     expect(MAP_PLOTS.plots.length).toBe(10)
     expect(MAP_GATE.gate.states).toEqual(['sound', 'cracking', 'failing', 'breached'])
+  })
+})
+
+describe('icons in a box', () => {
+  it('take the nearest whole screen pixels, spilling at most a quarter past the box', () => {
+    // A 12x12 icon on the A16 (2.625): a 12pt box rounds up to 3 screen pixels (13.7pt)
+    expect(fitScale(12, 12, 2.625) * 2.625).toBe(3)
+    // A 16pt box: 3.5 rounds to 4 (18.3pt, within 20pt)
+    expect(fitScale(16, 12, 2.625) * 2.625).toBe(4)
+    // 1.5 would round up to 2, a third past the box, so it rounds down to 1
+    expect(fitScale(6, 12, 3) * 3).toBe(1)
+    expect(fitScale(24, 12, 2)).toBe(2)
+    expect(fitScale(1, 12, 2) * 2).toBe(1)
   })
 })

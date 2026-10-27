@@ -1,10 +1,11 @@
 import React from 'react'
 import { View, Modal, Pressable, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, radius, elevation, dark } from '../theme'
 
-type IconName = keyof typeof Ionicons.glyphMap
+type IconName = GameIconName
 
 export interface ReportRow {
   icon: IconName
@@ -45,7 +46,7 @@ export function ReportModal({ visible, icon, accent, title, message, rows, dismi
 
           <View style={styles.iconContainer}>
             <View style={[styles.iconCircle, { borderColor: accent + '80', shadowColor: accent }]}>
-              <Ionicons name={icon} size={26} color={accent} />
+              <GameIcon name={icon} size={26} color={accent} />
             </View>
           </View>
 
@@ -55,7 +56,7 @@ export function ReportModal({ visible, icon, accent, title, message, rows, dismi
             <View style={styles.rows}>
               {rows.map((row, i) => (
                 <View key={i} style={styles.row}>
-                  <Ionicons name={row.icon} size={14} color={row.color ?? accent} />
+                  <GameIcon name={row.icon} size={14} color={row.color ?? accent} />
                   <Text variant="bodySmall" style={{ ...styles.rowText, color: row.color ?? accent }}>{row.text}</Text>
                 </View>
               ))}

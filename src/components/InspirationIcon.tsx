@@ -1,5 +1,5 @@
 import React from 'react'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { gold } from '../theme'
 
 interface InspirationIconProps {
@@ -14,5 +14,5 @@ interface InspirationIconProps {
  */
 export function InspirationIcon({ size = 14, color = gold[400] }: InspirationIconProps) {
   // A star fills its box less than a disc does, so it is drawn a little larger
-  return <Ionicons name="star" size={Math.round(size * 1.25)} color={color} />
+  return <GameIcon name="star" size={Math.round(size * 1.25)} color={color} />
 }

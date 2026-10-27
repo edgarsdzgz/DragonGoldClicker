@@ -1,4 +1,4 @@
-import type { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../../art'
 
 export type BuildingId = 'keep' | 'garrison' | 'forge' | 'lodge' | 'outpost' | 'librarium' | 'housing' | 'wizard' | 'tower_east' | 'tower_west'
 
@@ -9,7 +9,7 @@ export type ResourceKey = 'inspiration' | 'food' | 'villagers'
 export type BuildingInfo = {
   id: BuildingId
   name: string
-  icon: keyof typeof Ionicons.glyphMap
+  icon: GameIconName
   description: string
   accentColor: string
   isBuilt: boolean

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from '../../components/GameIcon'
 import { Text } from '../../components/Text'
 import { CityHpMeter } from '../../components/CityHpMeter'
 import { useGame } from '../../context/GameContext'
@@ -17,7 +17,7 @@ export function Gate() {
     <View style={styles.root}>
       {siege && <CityHpMeter hp={state.cityHp} max={MAX_CITY_HP} hordeLevel={hordeLevel(state.hordeKills)} wardSec={wardLeft(state)} />}
       <View style={styles.gate} accessible accessibilityLabel="Gate">
-        <Ionicons name="log-in" size={14} color={gold[400]} />
+        <GameIcon name="log-in" size={14} color={gold[400]} />
         <Text variant="caption" style={styles.label}>GATE</Text>
       </View>
     </View>

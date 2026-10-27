@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Text } from './Text'
 import { DEV_TOOLS_ENABLED } from '../config/devTools'
@@ -28,7 +28,7 @@ export function DevShortcut({ offsetTop = 0 }: DevShortcutProps) {
       accessibilityRole="button"
       accessibilityLabel="Open developer tools"
     >
-      <Ionicons name="construct-outline" size={16} color={gold[400]} />
+      <GameIcon name="construct-outline" size={16} color={gold[400]} />
       <Text variant="caption" style={styles.label}>Dev</Text>
     </Pressable>
   )

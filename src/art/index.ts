@@ -1,4 +1,6 @@
 export { SPRITES, MAP_GATE, MAP_PLOTS } from './manifest'
 export type { SpriteId, SpriteDef } from './manifest'
-export { snapScale, spriteBox, stripFrame } from './pixel'
+export { snapScale, spriteBox, stripFrame, fitScale } from './pixel'
+export { ICON_ART, iconArt, isSpriteId, artOr, buildingIcon, studyIcon, clawIcon } from './icons'
+export type { GameIconName, IoniconName } from './icons'
 export { useSpriteImage } from './useSpriteImage'

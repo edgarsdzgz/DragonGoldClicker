@@ -1,10 +1,13 @@
 import React from 'react'
 import { Pressable, View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
+import { clawIcon } from '../art'
 import { Text } from './Text'
 import { colors, spacing, radius, gold } from '../theme'
 
 interface ClawsChipProps {
+  /** Claw level: picks the tier icon */
+  level: number
   name: string
   damage: number
   /** The next level can be bought now: a dot says so */
@@ -13,7 +16,7 @@ interface ClawsChipProps {
 }
 
 /** The dragon's claws on the Warfront footer (layer 3): name and damage; opens the Claws sheet. */
-export function ClawsChip({ name, damage, canSharpen, onPress }: ClawsChipProps) {
+export function ClawsChip({ level, name, damage, canSharpen, onPress }: ClawsChipProps) {
   return (
     <Pressable
       onPress={onPress}
@@ -23,7 +26,7 @@ export function ClawsChip({ name, damage, canSharpen, onPress }: ClawsChipProps)
       hitSlop={8}
       style={({ pressed }) => [styles.chip, pressed && styles.pressed]}
     >
-      <Ionicons name="flash" size={12} color={gold[400]} />
+      <GameIcon name={clawIcon(level)} size={16} color={gold[400]} />
       <Text variant="caption" color="link">{`${name}, ${damage} per tap`}</Text>
       {canSharpen && <View style={styles.dot} />}
     </Pressable>

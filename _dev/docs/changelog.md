@@ -2,6 +2,12 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Pixel art in the game, step 2: icons (2026-10-27)
+- Pixel icons replace the stock icons across the game: the tab bar, resource bar, objective,
+  buttons, badges, sheets, cards and stats. Icons with no pixel art yet keep the old glyph
+- Each building, study and claw tier shows its own icon; soldiers show the helm
+- Disabled buttons, locked or unfocused tabs and unaffordable cards fade their icon
+
 ### Pixel art in the game, step 1: import and gallery (2026-10-27)
 - The official pixel art is imported by `scripts/import-art.py` into `assets/art/` with a typed
   manifest (`src/art/manifest.ts`); rerun it after an approved art change

@@ -1,11 +1,12 @@
 import React from 'react'
 import { View, StyleSheet, ViewStyle } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, radius } from '../theme'
 
 interface ActionRowProps {
-  icon?: keyof typeof Ionicons.glyphMap
+  icon?: GameIconName
   iconColor?: string
   title: string
   subtitle?: string
@@ -34,7 +35,7 @@ export function ActionRow({
       <View style={[styles.container, styles.locked, style]}>
         <View style={styles.mainRow}>
           <View style={styles.infoRow}>
-            <Ionicons name="lock-closed" size={14} color={colors.text.muted} />
+            <GameIcon name="lock-closed" size={14} color={colors.text.muted} />
             <Text variant="label" color="muted">{title}</Text>
           </View>
           {lockLabel && (
@@ -51,7 +52,7 @@ export function ActionRow({
         <View style={styles.left}>
           <View style={styles.header}>
             {icon && (
-              <Ionicons
+              <GameIcon
                 name={icon}
                 size={14}
                 color={iconColor ?? colors.text.secondary}

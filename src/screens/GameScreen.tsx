@@ -223,6 +223,7 @@ export function GameScreen() {
           {reveal.claws ? (
             <CoachTarget id="claws">
               <ClawsChip
+                level={state.clawLevel}
                 name={claws.name}
                 damage={tapDamageNow(state)}
                 canSharpen={canSharpen(state)}

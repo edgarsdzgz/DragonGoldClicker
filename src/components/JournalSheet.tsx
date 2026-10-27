@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { BottomSheet } from './BottomSheet'
 import { PillTabs } from './PillTabs'
 import type { PillTab } from './PillTabs'
@@ -13,9 +13,9 @@ import { QUESTS, activeQuests, isQuestDone, goalProgress, isGoalMet } from '../t
 import { colors, spacing, gold } from '../theme'
 
 const TAB_QUESTS: PillTab = { key: 'quests', label: 'Quests', icon: 'flag-outline' }
-const TAB_STORY: PillTab = { key: 'story', label: 'Story', icon: 'book-outline' }
+const TAB_STORY: PillTab = { key: 'story', label: 'Story', icon: 'icon_scroll' }
 const TAB_HOW: PillTab = { key: 'how', label: 'How It Works', icon: 'help-circle-outline' }
-const TAB_LORE: PillTab = { key: 'lore', label: 'Lore', icon: 'library-outline' }
+const TAB_LORE: PillTab = { key: 'lore', label: 'Lore', icon: 'icon_book' }
 
 /** The Journal: quests, every scene seen so far, how each system works, and (after Lirae) lore. */
 export function JournalSheet() {
@@ -58,7 +58,7 @@ function QuestsTab() {
               <Text variant="h3">{q.title}</Text>
               {goals.map(({ g, progress, met }) => (
                 <View key={g.label} style={styles.goal}>
-                  <Ionicons name={met ? 'checkmark-circle' : 'ellipse-outline'} size={16} color={met ? colors.status.success : colors.text.muted} />
+                  <GameIcon name={met ? 'checkmark-circle' : 'ellipse-outline'} size={16} color={met ? colors.status.success : colors.text.muted} />
                   <Text variant="bodySmall" color="secondary">{`${g.label}: ${progress} / ${g.target}`}</Text>
                 </View>
               ))}
@@ -70,7 +70,7 @@ function QuestsTab() {
       {done.map((q) => (
         <View key={q.id} accessible accessibilityLabel={`Quest complete: ${q.title}`}>
           <Surface level={1} style={styles.doneCard}>
-            <Ionicons name="checkmark-circle" size={18} color={colors.status.success} />
+            <GameIcon name="checkmark-circle" size={18} color={colors.status.success} />
             <View style={styles.doneText}>
               <Text variant="label">{q.title}</Text>
               <Text variant="caption" color="muted">{q.goals.map((g) => g.label).join(', ')}</Text>

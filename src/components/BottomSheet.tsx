@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { View, Pressable, ScrollView, StyleSheet, Animated, Dimensions } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { formatNumber } from '../types/game'
 import { useSfx } from '../hooks/useSfx'
@@ -10,7 +11,7 @@ import { colors, spacing, radius, dark, animation } from '../theme'
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 export interface ResourceItem {
-  icon: keyof typeof Ionicons.glyphMap
+  icon: GameIconName
   /** Custom icon element -- takes precedence over icon string */
   iconElement?: React.ReactNode
   value: number
@@ -23,7 +24,7 @@ interface BottomSheetProps {
   onClose: () => void
   title: string
   subtitle?: string
-  icon?: keyof typeof Ionicons.glyphMap
+  icon?: GameIconName
   iconColor?: string
   /** Contextual resources relevant to this building */
   resources?: ResourceItem[]
@@ -115,7 +116,7 @@ export function BottomSheet({
           <View style={styles.header}>
             {icon && (
               <View style={[styles.iconBox, iconColor ? { backgroundColor: `${iconColor}15` } : undefined]}>
-                <Ionicons name={icon} size={22} color={iconColor ?? colors.text.secondary} />
+                <GameIcon name={icon} size={22} color={iconColor ?? colors.text.secondary} />
               </View>
             )}
             <View style={{ flex: 1 }}>
@@ -130,7 +131,7 @@ export function BottomSheet({
               accessibilityRole="button"
               accessibilityLabel="Close"
             >
-              <Ionicons name="close" size={20} color={colors.text.secondary} />
+              <GameIcon name="close" size={20} color={colors.text.secondary} />
             </Pressable>
           </View>
 
@@ -139,7 +140,7 @@ export function BottomSheet({
             <View style={styles.resourceStrip}>
               {resources.map((r, i) => (
                 <View key={i} style={styles.resourceChip}>
-                  {r.iconElement ?? <Ionicons name={r.icon} size={12} color={r.color} />}
+                  {r.iconElement ?? <GameIcon name={r.icon} size={12} color={r.color} />}
                   <Text variant="caption" bold style={{ color: r.color }}>
                     {formatNumber(r.value)}
                   </Text>

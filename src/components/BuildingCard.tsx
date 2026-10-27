@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react'
 import { View, StyleSheet, Pressable, Animated, LayoutAnimation, Platform, UIManager } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Text } from './Text'
 import { useHaptics } from '../hooks'
@@ -12,7 +13,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 interface BuildingCardProps {
   name: string
-  icon: keyof typeof Ionicons.glyphMap
+  icon: GameIconName
   description: string
   isBuilt: boolean
   cost?: number
@@ -59,7 +60,7 @@ export function BuildingCard({
       <Animated.View style={[styles.card, styles.unbuildCard, { transform: [{ scale: scaleAnim }] }]}>
         <View style={styles.cardHeader}>
           <View style={styles.iconContainer}>
-            <Ionicons name={icon} size={24} color={colors.text.muted} />
+            <GameIcon name={icon} size={24} color={colors.text.muted} dim />
           </View>
           <View style={styles.headerText}>
             <Text variant="h3" color="muted">{name}</Text>
@@ -86,10 +87,11 @@ export function BuildingCard({
             end={{ x: 1, y: 1 }}
             style={styles.buildButtonGradient}
           >
-            <Ionicons
+            <GameIcon
               name="hammer"
               size={16}
               color={canAffordCost ? '#ffffff' : colors.text.muted}
+              dim={!canAffordCost}
             />
             <Text
               variant="button"
@@ -107,7 +109,7 @@ export function BuildingCard({
     <View style={[styles.card, styles.builtCard]}>
       <Pressable onPress={toggleExpand} style={styles.builtHeader}>
         <View style={styles.builtIconContainer}>
-          <Ionicons name={icon} size={22} color={gold[400]} />
+          <GameIcon name={icon} size={22} color={gold[400]} />
         </View>
         <View style={styles.headerText}>
           <Text variant="h3">{name}</Text>
@@ -115,7 +117,7 @@ export function BuildingCard({
             <Text variant="caption" color="secondary">{statusLabel}</Text>
           )}
         </View>
-        <Ionicons
+        <GameIcon
           name={expanded ? 'chevron-up' : 'chevron-down'}
           size={20}
           color={colors.text.muted}

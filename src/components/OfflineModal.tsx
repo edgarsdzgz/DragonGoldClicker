@@ -8,7 +8,7 @@ import {
   Easing,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
@@ -433,7 +433,7 @@ export function OfflineModal({
                 colors={[dark[700], dark[800]]}
                 style={styles.iconGradient}
               >
-                <Ionicons name="moon" size={28} color={gold[300]} />
+                <GameIcon name="moon" size={28} color={gold[300]} />
               </LinearGradient>
             </Animated.View>
           </View>
@@ -459,7 +459,7 @@ export function OfflineModal({
                 { opacity: titleOpacity },
               ]}
             >
-              <Ionicons name="time-outline" size={11} color={dark[300]} />
+              <GameIcon name="time-outline" size={11} color={dark[300]} />
               <Text variant="caption" style={{ color: dark[300] }}>
                 {formatDuration(secondsAway)} away
               </Text>

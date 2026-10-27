@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Switch, Pressable } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, gold, dark } from '../theme'
 
@@ -10,7 +11,7 @@ interface ToggleRowProps {
   onValueChange: (next: boolean) => void
   /** Optional second line under the label */
   description?: string
-  icon?: keyof typeof Ionicons.glyphMap
+  icon?: GameIconName
   /** Track color when on (default: gold[500]) */
   accentColor?: string
   disabled?: boolean
@@ -41,7 +42,7 @@ export function ToggleRow({
     >
       <View style={styles.labelSide}>
         {icon && (
-          <Ionicons name={icon} size={18} color={value ? accentColor : colors.text.muted} />
+          <GameIcon name={icon} size={18} color={value ? accentColor : colors.text.muted} dim={!value} />
         )}
         <View style={styles.labelText}>
           <Text variant="label" color={disabled ? 'muted' : 'primary'}>{label}</Text>

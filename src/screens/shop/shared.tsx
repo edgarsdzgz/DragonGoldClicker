@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../../art'
+import { GameIcon } from '../../components/GameIcon'
 import { Text } from '../../components'
 import { ProgressBar } from '../../components/ProgressBar'
 import { colors, spacing, radius } from '../../theme'
@@ -15,7 +16,7 @@ export function DescriptionBanner({
   color,
   children,
 }: {
-  icon: keyof typeof Ionicons.glyphMap
+  icon: GameIconName
   color: string
   children: React.ReactNode
 }) {
@@ -27,7 +28,7 @@ export function DescriptionBanner({
         end={{ x: 1, y: 1 }}
         style={bannerStyles.gradient}
       >
-        <Ionicons name={icon} size={16} color={color} style={{ opacity: 0.7 }} />
+        <GameIcon name={icon} size={16} color={color} style={{ opacity: 0.7 }} />
         <View style={{ flex: 1 }}>
           {children}
         </View>

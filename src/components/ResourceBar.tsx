@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Pressable, Animated } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
 import { CoachTarget } from './CoachTarget'
@@ -49,7 +49,7 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, h
       )}
       {foodSystemActive && !hideFood && (
         <View style={styles.resource}>
-          <Ionicons
+          <GameIcon
             name="nutrition"
             size={14}
             color={foodEmpty ? colors.status.error : foodLow ? colors.status.warning : colors.text.secondary}
@@ -69,7 +69,7 @@ export function ResourceBar({ inspiration, food: foodAmount, foodSystemActive, h
           accessibilityRole="button"
           accessibilityLabel="Open journal"
         >
-          <Ionicons name="book" size={20} color={gold[400]} />
+          <GameIcon name="icon_scroll" size={20} color={gold[400]} />
         </Pressable>
       )}
     </View>

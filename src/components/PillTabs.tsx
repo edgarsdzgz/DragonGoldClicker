@@ -1,13 +1,14 @@
 import React from 'react'
 import { View, Pressable, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, radius, gold, dark } from '../theme'
 
 export interface PillTab {
   key: string
   label: string
-  icon?: keyof typeof Ionicons.glyphMap
+  icon?: GameIconName
 }
 
 interface PillTabsProps {
@@ -31,10 +32,11 @@ export function PillTabs({ tabs, activeKey, onSelect }: PillTabsProps) {
             accessibilityLabel={tab.label}
           >
             {tab.icon && (
-              <Ionicons
+              <GameIcon
                 name={tab.icon}
                 size={14}
                 color={active ? gold[500] : colors.text.muted}
+                dim={!active}
               />
             )}
             <Text

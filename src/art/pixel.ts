@@ -26,3 +26,18 @@ export function stripFrame(ticks: number, frames: number, loop: boolean): number
   if (frames <= 1) return 0
   return loop ? ticks % frames : Math.min(ticks, frames - 1)
 }
+
+/** How far an icon may spill past its box when rounding up keeps small icons legible */
+export const ICON_OVERFLOW = 1.25
+
+/**
+ * The snapped scale for `artPx` art pixels in a box of `boxPts` points (icons): the nearest whole
+ * number of screen pixels per art pixel, rounded down only if rounding up would spill more than
+ * ICON_OVERFLOW past the box.
+ */
+export function fitScale(boxPts: number, artPx: number, pixelRatio: number): number {
+  const exact = (boxPts / artPx) * pixelRatio
+  let px = Math.round(exact)
+  if ((px * artPx) / pixelRatio > boxPts * ICON_OVERFLOW) px = Math.floor(exact)
+  return Math.max(1, px) / pixelRatio
+}

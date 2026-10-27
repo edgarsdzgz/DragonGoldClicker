@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { ProgressBar } from './ProgressBar'
 import { useReduceMotion } from '../hooks/useReduceMotion'
@@ -54,7 +54,7 @@ export function CityHpMeter({ hp, max, hordeLevel, wardSec = 0, compact = false 
     return (
       <View style={styles.compact} accessible accessibilityLabel={label}>
         <View style={styles.label}>
-          <Ionicons name="shield-checkmark" size={12} color={tint} />
+          <GameIcon name="shield-checkmark" size={12} color={tint} />
           <Text variant="caption" style={{ color: tint }}>{`${hp.toFixed(0)}/${max}`}</Text>
         </View>
         <Animated.View style={{ opacity: pulse }}>
@@ -72,7 +72,7 @@ export function CityHpMeter({ hp, max, hordeLevel, wardSec = 0, compact = false 
     >
       <View style={styles.header}>
         <View style={styles.label}>
-          <Ionicons name="shield-checkmark" size={14} color={tint} />
+          <GameIcon name="shield-checkmark" size={14} color={tint} />
           <Text variant="caption" style={{ color: tint }}>{`Wall ${hp.toFixed(0)}/${max}`}</Text>
           {ward ? (
             <Text variant="caption" style={styles.ward}>{ward}</Text>

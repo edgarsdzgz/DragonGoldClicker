@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, ScrollView, Pressable, Animated, Easing } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from '../components/GameIcon'
+import { buildingIcon } from '../art'
 import { Text, Badge, ZoneHeader, BottomSheet, ConfirmModal, InspirationIcon, StoryObjective, type ResourceItem } from '../components'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
@@ -52,7 +53,7 @@ import { outpostHasAction } from '../types/outpost'
 function ComingSoonInterior() {
   return (
     <View style={{ alignItems: 'center', paddingVertical: 32 }}>
-      <Ionicons name="hammer" size={32} color={colors.text.muted} />
+      <GameIcon name="hammer" size={32} color={colors.text.muted} />
       <Text variant="body" color="muted" center style={{ marginTop: 8 }}>
         Under construction
       </Text>
@@ -135,7 +136,7 @@ function BuildingNode({
         accessibilityLabel="Undiscovered building"
       >
         <View style={[mapStyles.nodeCircle, mapStyles.nodeCircleUnbuilt, { opacity: 0.35 }]}>
-          <Ionicons name={building.icon} size={24} color={colors.text.muted} />
+          <GameIcon name={buildingIcon(building.id, building.icon)} size={24} color={colors.text.muted} dim />
         </View>
       </View>
     )
@@ -197,10 +198,11 @@ function BuildingNode({
             ]}
           />
         )}
-        <Ionicons
-          name={building.icon}
+        <GameIcon
+          name={buildingIcon(building.id, building.icon)}
           size={24}
           color={building.isBuilt || canBuildNow ? building.accentColor : colors.text.muted}
+          dim={!building.isBuilt && !canBuildNow}
         />
       </Animated.View>
       <Text

@@ -10,7 +10,8 @@ import {
   PressableStateCallbackType,
   Animated,
 } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { colors, spacing, radius, touchTarget, typography, gold, dark } from '../theme'
 import { useHaptics, useHoldPress } from '../hooks'
 import { HOLD_REPEAT_MS } from '../hooks/useActionPress'
@@ -65,7 +66,7 @@ interface ButtonProps {
   disabled?: boolean
   loading?: boolean
   fullWidth?: boolean
-  icon?: keyof typeof Ionicons.glyphMap
+  icon?: GameIconName
   /** Custom icon element -- takes precedence over icon string */
   iconElement?: React.ReactNode
   iconSize?: number
@@ -305,7 +306,7 @@ export function Button({
       ) : (
         <View style={styles.content}>
           {iconElement ?? (icon && (
-            <Ionicons name={icon} size={resolvedIconSize} color={textColor} />
+            <GameIcon name={icon} size={resolvedIconSize} color={textColor} dim={disabled} />
           ))}
           <Text style={getTextStyle()}>{children}</Text>
         </View>

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, radius, elevation } from '../theme'
 
@@ -9,7 +10,7 @@ import { colors, spacing, radius, elevation } from '../theme'
 // =============================================================================
 
 export interface UnlockToastHandle {
-  show: (message: string, icon?: keyof typeof Ionicons.glyphMap) => void
+  show: (message: string, icon?: GameIconName) => void
 }
 
 interface Props {
@@ -22,10 +23,10 @@ const FADE_MS = 200
 export function UnlockToast({ toastRef }: Props) {
   const opacity = useRef(new Animated.Value(0)).current
   const [message, setMessage] = useState('')
-  const [icon, setIcon] = useState<keyof typeof Ionicons.glyphMap>('lock-closed')
+  const [icon, setIcon] = useState<GameIconName>('lock-closed')
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const show = useCallback((msg: string, iconName: keyof typeof Ionicons.glyphMap = 'lock-closed') => {
+  const show = useCallback((msg: string, iconName: GameIconName = 'lock-closed') => {
     // Clear any existing timer
     if (timerRef.current) clearTimeout(timerRef.current)
 
@@ -59,7 +60,7 @@ export function UnlockToast({ toastRef }: Props) {
   return (
     <Animated.View style={[styles.container, { opacity }]} pointerEvents="none">
       <View style={styles.pill}>
-        <Ionicons name={icon} size={14} color={colors.text.secondary} />
+        <GameIcon name={icon} size={14} color={colors.text.secondary} />
         <Text variant="bodySmall" style={styles.text}>{message}</Text>
       </View>
     </Animated.View>

@@ -1,11 +1,12 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, gold } from '../theme'
 
 interface StatRowProps {
-  icon: keyof typeof Ionicons.glyphMap
+  icon: GameIconName
   /** Custom icon element -- takes precedence over icon string */
   iconElement?: React.ReactNode
   label: string
@@ -18,7 +19,7 @@ export function StatRow({ icon, iconElement, label, value, accent = false }: Sta
     <View style={styles.row}>
       <View style={styles.labelSide}>
         {iconElement ?? (
-          <Ionicons
+          <GameIcon
             name={icon}
             size={16}
             color={accent ? gold[400] : colors.text.muted}

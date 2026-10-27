@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Animated,
 } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
@@ -19,7 +20,7 @@ import type { ReassignOption, RoleId } from '../types/game'
 // ROLE OPTION ROW
 // =============================================================================
 
-export function getRoleIcon(target: RoleId): keyof typeof Ionicons.glyphMap {
+export function getRoleIcon(target: RoleId): GameIconName {
   if (target.type === 'fighter') return 'shield'
   if (target.type === 'repairer') return 'construct'
   if (target.type === 'soldier') return 'people'
@@ -88,10 +89,11 @@ function RoleOptionRow({
       accessibilityLabel={`Move to ${option.label}, ${costLabel}`}
     >
       <View style={rowStyles.left}>
-        <Ionicons
+        <GameIcon
           name={option.locked ? 'lock-closed' : iconName}
           size={14}
           color={isDisabled ? dark[500] : accentColor}
+          dim={isDisabled}
         />
         <Text
           variant="label"
@@ -167,7 +169,7 @@ const rowStyles = StyleSheet.create({
 interface ReassignModalProps {
   visible: boolean
   fromLabel: string
-  fromIcon: keyof typeof Ionicons.glyphMap
+  fromIcon: GameIconName
   fromColor: string
   fromCount: number
   options: ReassignOption[]
@@ -262,7 +264,7 @@ export function ReassignModal({
           {/* Header */}
           <View style={modalStyles.header}>
             <View style={[modalStyles.headerIcon, { borderColor: `${fromColor}50` }]}>
-              <Ionicons name={fromIcon} size={18} color={fromColor} />
+              <GameIcon name={fromIcon} size={18} color={fromColor} />
             </View>
             <Text variant="h3" center>Reassign {fromLabel}</Text>
             <Text variant="bodySmall" color="secondary" center>
@@ -287,7 +289,7 @@ export function ReassignModal({
                 reassignAll && { backgroundColor: fromColor, borderColor: fromColor },
               ]}>
                 {reassignAll && (
-                  <Ionicons name="checkmark" size={12} color={dark[900]} />
+                  <GameIcon name="checkmark" size={12} color={dark[900]} />
                 )}
               </View>
               <Text variant="label" style={{ color: reassignAll ? colors.text.primary : dark[300] }}>

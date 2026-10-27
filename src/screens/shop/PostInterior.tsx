@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Pressable } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from '../../components/GameIcon'
 import { Text, ActionRow, Button, StatBox, Badge, SectionLabel, InspirationIcon, ExpeditionReportModal } from '../../components'
 import { REJECT_GOLD, REJECT_MAXED, REJECT_NO_POP } from '../../components/Button'
 import { ProgressBar } from '../../components/ProgressBar'
@@ -180,13 +180,13 @@ export function PostInterior() {
           end={{ x: 1, y: 1 }}
           style={expStyles.sendBtnGradient}
         >
-          <Ionicons name="compass" size={16} color={canSend ? '#ffffff' : colors.text.muted} />
+          <GameIcon name="compass" size={16} color={canSend ? '#ffffff' : colors.text.muted} dim={!canSend} />
           <Text variant="button" style={{ color: canSend ? '#ffffff' : colors.text.muted }}>
             {sendLabel}
           </Text>
           <View style={expStyles.sendCostPills}>
             <View style={expStyles.sendCostPill}>
-              <Ionicons name="nutrition" size={10} color={canSend ? 'rgba(255,255,255,0.8)' : colors.text.muted} />
+              <GameIcon name="nutrition" size={10} color={canSend ? 'rgba(255,255,255,0.8)' : colors.text.muted} dim={!canSend} />
               <Text variant="caption" style={{ color: canSend ? 'rgba(255,255,255,0.9)' : colors.text.muted }}>
                 {EXPEDITION_FOOD_COST}
               </Text>

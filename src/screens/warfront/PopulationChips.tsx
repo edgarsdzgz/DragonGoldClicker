@@ -51,7 +51,7 @@ export function PopulationChips() {
         <Chip icon="home" color={gold[500]} count={state.villagers} words={words} noun="villager" textColor={colors.text.secondary} />
         <Chip icon="shield" color={colors.warfront.rally} count={state.fighters} words={words} noun="fighter" />
         <Chip icon="construct" color={colors.warfront.repair} count={state.repairers} words={words} noun="repairer" />
-        <Chip icon="people" color={gold[300]} count={soldiers} words={words} noun="soldier" suffix={foodOut ? ' (idle)' : ' fighting'} />
+        <Chip icon="icon_helm" color={gold[300]} count={soldiers} words={words} noun="soldier" suffix={foodOut ? ' (idle)' : ' fighting'} />
         <Chip icon="leaf" color={colors.status.success} count={foragers} words={words} noun="forager" />
       </View>
       {/* How the fighters are doing on their rations and the stores (layer 3); villagers feed themselves */}

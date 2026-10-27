@@ -119,3 +119,8 @@ the rest; swap art in as it arrives; the city map replaces the card list.
 - **Step 1, import and gallery: built 2026-10-27.** Skia 2.2.12; `scripts/import-art.py` writes
   `assets/art/` and `src/art/manifest.ts`; `PixelSprite` draws any sprite or strip; the dev Art
   Gallery (Settings, Dev) shows every sprite. Checked on the A16: sharp, whole-pixel art.
+- **Step 2, icons: built 2026-10-27.** `GameIcon` replaces Ionicons everywhere but the monster
+  glyphs (step 3) and waves mode. `src/art/icons.ts` maps each glyph name to its pixel icon;
+  screens name the sprite where one name means different things (claw tiers, each building, each
+  study, swords, the journal, the Draconia tab). Glyphs with no pixel icon yet stay as they are.
+  Disabled and unfocused icons are faded, since pixel icons keep their own colors.

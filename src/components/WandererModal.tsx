@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { Badge } from './Badge'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
@@ -100,7 +101,7 @@ function EncounterIcon({ type }: { type: WandererEncounter['encounterType'] }) {
     small_family: 'people',
     veteran: 'shield-half',
   }
-  return <Ionicons name={iconMap[type] ?? 'person'} size={28} color={warm.accent} />
+  return <GameIcon name={iconMap[type] ?? 'person'} size={28} color={warm.accent} />
 }
 
 export function WandererModal({
@@ -349,7 +350,7 @@ export function WandererModal({
             {/* Food: what the stores pay when they arrive (and, for a veteran, each meal after) */}
             <View style={styles.foodImpact}>
               <View style={styles.foodHeader}>
-                <Ionicons name="restaurant" size={13} color={colors.status.warning} />
+                <GameIcon name="restaurant" size={13} color={colors.status.warning} />
                 <Text variant="caption" bold style={{ color: colors.status.warning }}>
                   Fed on arrival
                 </Text>
@@ -359,7 +360,7 @@ export function WandererModal({
                   <Text variant="caption" color="secondary">Stores:</Text>
                   <View style={styles.foodDelta}>
                     <Text variant="caption" color="secondary">{formatCount(state.food)}</Text>
-                    <Ionicons name="arrow-forward" size={10} color={dark[400]} />
+                    <GameIcon name="arrow-forward" size={10} color={dark[400]} />
                     <Text variant="caption" bold style={{ color: affordable ? colors.status.warning : colors.status.error }}>
                       {affordable ? formatCount(storesAfter) : `needs ${formatCount(encounter.foodOnArrival)}`}
                     </Text>
@@ -380,7 +381,7 @@ export function WandererModal({
 
             {!affordable && (
               <View style={styles.overflowNotice}>
-                <Ionicons name="information-circle" size={14} color={colors.status.info} />
+                <GameIcon name="information-circle" size={14} color={colors.status.info} />
                 <Text variant="caption" style={{ color: colors.status.info, flex: 1 }}>
                   The stores cannot feed them. Gather food, or they move on.
                 </Text>
@@ -430,7 +431,7 @@ export function WandererModal({
                 end={{ x: 1, y: 1 }}
                 style={styles.acceptGradient}
               >
-                <Ionicons name="hand-left" size={14} color={dark[900]} />
+                <GameIcon name="hand-left" size={14} color={dark[900]} />
                 <Text variant="label" bold style={{ color: dark[900] }}>
                   Welcome
                 </Text>

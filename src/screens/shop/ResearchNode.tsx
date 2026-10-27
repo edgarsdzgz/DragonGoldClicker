@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { View, StyleSheet, Animated, Easing } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from '../../components/GameIcon'
+import { studyIcon } from '../../art'
 import { Text, Button, InspirationIcon } from '../../components'
 import { REJECT_GOLD } from '../../components/Button'
 import { useGame } from '../../context/GameContext'
@@ -70,12 +71,12 @@ export function ResearchNode({ node, color, onStudy }: { node: ResearchNodeDef; 
             },
           ]}
         >
-          <Ionicons name={node.icon} size={18} color={completed ? color : open ? `${color}cc` : dark[500]} />
+          <GameIcon name={studyIcon(node.id, node.icon)} size={18} color={completed ? color : open ? `${color}cc` : dark[500]} dim={!completed && !open} />
         </View>
         <View style={styles.spacer} />
         {completed ? (
           <View style={[styles.pill, { backgroundColor: `${color}18`, borderColor: `${color}30` }]}>
-            <Ionicons name="checkmark" size={10} color={color} />
+            <GameIcon name="checkmark" size={10} color={color} />
             <Text variant="caption" style={{ ...styles.pillText, color, fontWeight: 'bold' }}>COMPLETE</Text>
           </View>
         ) : open ? (
@@ -92,7 +93,7 @@ export function ResearchNode({ node, color, onStudy }: { node: ResearchNodeDef; 
           </Button>
         ) : (
           <View style={[styles.pill, styles.lockedPill]}>
-            <Ionicons name="lock-closed" size={9} color={dark[500]} />
+            <GameIcon name="lock-closed" size={9} color={dark[500]} />
             <Text variant="caption" style={{ ...styles.pillText, color: dark[500] }}>LOCKED</Text>
           </View>
         )}
@@ -124,7 +125,7 @@ function PrereqChip({ prereq, state }: { prereq: ResearchPrereq; state: GameStat
   const label = prereq.type === 'research' ? getResearchNode(prereq.id)?.name ?? prereq.id : BUILDING_NAMES[prereq.building]
   return (
     <View style={[styles.prereqChip, met && styles.prereqChipMet]} accessibilityLabel={`Needs ${label}${met ? ', done' : ''}`}>
-      <Ionicons name={met ? 'checkmark-circle' : 'ellipse-outline'} size={9} color={met ? colors.status.success : dark[500]} />
+      <GameIcon name={met ? 'checkmark-circle' : 'ellipse-outline'} size={9} color={met ? colors.status.success : dark[500]} />
       <Text variant="caption" style={{ fontSize: 9, color: met ? colors.text.secondary : dark[500] }}>
         {label}
       </Text>

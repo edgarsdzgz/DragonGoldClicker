@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../../art'
+import { GameIcon } from '../../components/GameIcon'
 import { Text, ActionRow, Button, StatBox, Badge, SectionLabel, ReassignModal, InspirationIcon } from '../../components'
 import { REJECT_GOLD } from '../../components/Button'
 import { useGame } from '../../context/GameContext'
@@ -67,7 +68,7 @@ function OfflineTierStep({
           ]}
         >
           {isCompleted && !isActive && (
-            <Ionicons name="checkmark" size={8} color={dark[900]} />
+            <GameIcon name="checkmark" size={8} color={dark[900]} />
           )}
           {isActive && (
             <View style={offStyles.stepDotInner} />
@@ -124,7 +125,7 @@ function ReassignRow({
   onReassign,
 }: {
   label: string
-  icon: keyof typeof Ionicons.glyphMap
+  icon: GameIconName
   accentColor: string
   count: number
   onReassign: () => void
@@ -213,7 +214,7 @@ export function DraconiaHallInterior() {
 
       {rows.length === 0 && (
         <View style={draconiaStyles.emptyState}>
-          <Ionicons name="people-outline" size={24} color={dark[500]} />
+          <GameIcon name="people-outline" size={24} color={dark[500]} />
           <Text variant="caption" color="muted">
             Nobody is at work yet.
           </Text>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { View, StyleSheet, Animated, Easing } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { ProgressBar } from './ProgressBar'
 import { useGame } from '../context/GameContext'
@@ -62,14 +62,14 @@ export function MealCountdown({ variant = 'full' }: MealCountdownProps) {
       </Text>
       {/* Each meal: what the army eats and what foragers bring in meanwhile */}
       <View style={styles.rateRow}>
-        <Ionicons name="restaurant" size={13} color={meal[400]} />
+        <GameIcon name="restaurant" size={13} color={meal[400]} />
         <Text variant="caption" style={{ color: meal[300] }}>
           {`Each meal: -${formatAmount(consumption)} eaten${gathered > 0 ? `, +${formatAmount(gathered)} gathered` : ''}`}
         </Text>
       </View>
       {/* The meal bell, small */}
       <View style={styles.bell} accessible accessibilityLabel={`Next meal in ${secondsLeft} seconds`}>
-        <Ionicons name="notifications-outline" size={12} color={isUrgent ? colors.status.error : meal[400]} />
+        <GameIcon name="notifications-outline" size={12} color={isUrgent ? colors.status.error : meal[400]} />
         <Text variant="caption" style={{ color: isUrgent ? colors.status.error : meal[300] }}>next meal</Text>
         <CountdownDigits seconds={secondsLeft} isUrgent={isUrgent} />
       </View>
@@ -136,12 +136,12 @@ function CompactCountdown({
   return (
     <View style={styles.compactContainer}>
       <View style={[styles.compactBadge, { borderColor: `${tint}20`, backgroundColor: `${tint}0a` }]}>
-        <Ionicons name="restaurant" size={11} color={tint} />
+        <GameIcon name="restaurant" size={11} color={tint} />
         <Text variant="caption" style={{ color: isUrgent ? colors.status.error : meal[300], fontSize: 11 }}>
           -{consumption}
         </Text>
         <View style={styles.compactDivider} />
-        <Ionicons name="timer-outline" size={11} color={tint} />
+        <GameIcon name="timer-outline" size={11} color={tint} />
         <Text variant="caption" style={{ color: isUrgent ? colors.status.error : meal[300], fontSize: 11 }}>
           {clock(secondsLeft)}
         </Text>

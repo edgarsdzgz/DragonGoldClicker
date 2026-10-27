@@ -190,7 +190,7 @@ function StatsContent() {
           <StatRow icon="arrow-up-circle" label="Promotions" value={String(state.soldiersPromoted)} />
         )}
         {state.barracksLevel > 0 && (
-          <StatRow icon="home" label="Barracks Level" value={String(state.barracksLevel)} />
+          <StatRow icon="icon_bld-garrison" label="Barracks Level" value={String(state.barracksLevel)} />
         )}
       </Surface>
 
@@ -210,9 +210,9 @@ function StatsContent() {
       {state.armoryBuilt && (
         <Surface style={styles.section}>
           <SectionLabel spacing={2}>THE FORGE</SectionLabel>
-          <StatRow icon="flash" label="Swords" value={String(state.armoryGear.swords)} />
+          <StatRow icon="icon_swords" label="Swords" value={String(state.armoryGear.swords)} />
           <StatRow icon="shield" label="Shields" value={String(state.armoryGear.shields)} />
-          <StatRow icon="flash" label="Claws" value={clawDef(state.clawLevel).name} />
+          <StatRow icon="icon_claws" label="Claws" value={clawDef(state.clawLevel).name} />
         </Surface>
       )}
 

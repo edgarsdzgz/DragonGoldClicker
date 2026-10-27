@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Pressable, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from '../../components/GameIcon'
 import { Text } from '../../components'
 import { spacing, radius, dark } from '../../theme'
 import { RESEARCH_CATEGORIES } from '../../types/game'
@@ -36,7 +36,7 @@ export function ResearchTabs({
             accessibilityState={{ selected: isActive }}
             accessibilityLabel={`${cat.name}: ${done} of ${total} studied`}
           >
-            <Ionicons name={cat.icon} size={16} color={isActive ? color : dark[400]} />
+            <GameIcon name={cat.icon} size={16} color={isActive ? color : dark[400]} dim={!isActive} />
             <Text
               variant="caption"
               style={{ ...styles.name, color: isActive ? color : dark[400], fontWeight: isActive ? 'bold' : 'normal' }}

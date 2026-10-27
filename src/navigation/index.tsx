@@ -3,7 +3,7 @@ import { TouchableOpacity, View } from 'react-native'
 import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from '../components/GameIcon'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { RootStackParamList, RootStackNavProp, TabParamList } from './types'
 import { colors, spacing, gold } from '../theme'
@@ -203,10 +203,10 @@ function TabNavigator() {
             headerShown: false,
             tabBarButton: (props) => <HapticTabButton {...props} coachId="tab_draconia" />,
             tabBarLabel: locks.DraconiaTab.locked ? 'Locked' : 'Draconia',
-            tabBarIcon: ({ color, size }) => (
+            tabBarIcon: ({ color, size, focused }) => (
               locks.DraconiaTab.locked
-                ? <Ionicons name="lock-closed" size={size} color={colors.text.muted} />
-                : <Ionicons name="hammer" size={size} color={color} />
+                ? <GameIcon name="lock-closed" size={size} color={colors.text.muted} dim />
+                : <GameIcon name="icon_castle" size={size} color={color} dim={!focused} />
             ),
             tabBarAccessibilityLabel: locks.DraconiaTab.locked
               ? 'Draconia tab - locked'
@@ -236,8 +236,8 @@ function TabNavigator() {
           options={{
             headerShown: false,
             tabBarLabel: 'Warfront',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="flame" size={size} color={color} />
+            tabBarIcon: ({ color, size, focused }) => (
+              <GameIcon name="flame" size={size} color={color} dim={!focused} />
             ),
             tabBarAccessibilityLabel: 'Warfront tab',
           }}
@@ -249,10 +249,10 @@ function TabNavigator() {
             headerShown: false,
             tabBarButton: (props) => <HapticTabButton {...props} coachId="tab_forage" />,
             tabBarLabel: locks.ForageTab.locked ? 'Locked' : 'Forage',
-            tabBarIcon: ({ color, size }) => (
+            tabBarIcon: ({ color, size, focused }) => (
               locks.ForageTab.locked
-                ? <Ionicons name="lock-closed" size={size} color={colors.text.muted} />
-                : <Ionicons name="leaf" size={size} color={color} />
+                ? <GameIcon name="lock-closed" size={size} color={colors.text.muted} dim />
+                : <GameIcon name="leaf" size={size} color={color} dim={!focused} />
             ),
             tabBarAccessibilityLabel: locks.ForageTab.locked
               ? 'Forage tab - locked'
@@ -285,8 +285,8 @@ function TabNavigator() {
           options={{
             headerShown: false,
             tabBarLabel: 'Settings',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="settings-outline" size={size} color={color} />
+            tabBarIcon: ({ color, size, focused }) => (
+              <GameIcon name="settings-outline" size={size} color={color} dim={!focused} />
             ),
             tabBarAccessibilityLabel: 'Settings tab',
           }}

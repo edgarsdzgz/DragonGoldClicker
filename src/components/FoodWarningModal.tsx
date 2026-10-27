@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Modal, Pressable, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { Button } from './Button'
 import { colors, spacing, radius, elevation, dark } from '../theme'
@@ -51,7 +51,7 @@ export function FoodWarningModal({
                 },
               ]}
             >
-              <Ionicons
+              <GameIcon
                 name={urgent ? 'alert-circle' : 'warning'}
                 size={26}
                 color={accentColor}

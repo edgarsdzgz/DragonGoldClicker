@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import type { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../../art'
 import { ActionRow, Button, SectionLabel, StatBox } from '../../components'
 import { ArmyReadout } from '../../components/ArmyReadout'
 import { REJECT_GOLD } from '../../components/Button'
@@ -27,9 +27,9 @@ import { styles } from './interiorStyles'
 // GEAR ROW (Kael's Forge, chapter 5 phase B): one sword or shield for the next soldier in line
 // =============================================================================
 
-const GEAR: Record<Gear, { title: string; icon: keyof typeof Ionicons.glyphMap; does: (s: GameState) => string }> = {
+const GEAR: Record<Gear, { title: string; icon: GameIconName; does: (s: GameState) => string }> = {
   // Tempered Steel (the Librarium) raises it
-  sword: { title: 'Swords', icon: 'flash', does: (s) => `An armed soldier hits ${Math.round(swordBonusNow(s) * 100)}% harder` },
+  sword: { title: 'Swords', icon: 'icon_swords', does: (s) => `An armed soldier hits ${Math.round(swordBonusNow(s) * 100)}% harder` },
   shield: { title: 'Shields', icon: 'shield', does: () => 'A shielded soldier never falls in a Breach' },
 }
 

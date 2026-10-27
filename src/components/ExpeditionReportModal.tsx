@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import type { ExpeditionReport } from '../types/outpost'
 import { Badge } from './Badge'
@@ -346,7 +347,7 @@ export function ExpeditionReportModal({
                 colors={[dark[700], dark[800]]}
                 style={styles.iconGradient}
               >
-                <Ionicons name={iconName} size={28} color={accentColor} />
+                <GameIcon name={iconName} size={28} color={accentColor} />
               </LinearGradient>
             </Animated.View>
           </View>

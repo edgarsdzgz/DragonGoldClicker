@@ -8,7 +8,8 @@ import {
   AccessibilityInfo,
   Platform,
 } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { HighlightBackdrop } from './HighlightBackdrop'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
@@ -24,7 +25,7 @@ const BACKDROP_DIM = 'rgba(2, 2, 6, 0.85)'
 interface NpcDialogProps {
   visible: boolean
   npcName: string
-  icon: keyof typeof Ionicons.glyphMap
+  icon: GameIconName
   title: string
   lines: string[]
   dismissLabel?: string
@@ -150,7 +151,7 @@ export function NpcDialog({
           {/* NPC identity */}
           <View style={styles.npcHeader}>
             <View style={styles.npcIcon}>
-              <Ionicons name={icon} size={22} color={gold[400]} />
+              <GameIcon name={icon} size={22} color={gold[400]} />
             </View>
             <Text variant="caption" style={styles.npcName}>
               {npcName}

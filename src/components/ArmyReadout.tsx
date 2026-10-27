@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, radius } from '../theme'
 
@@ -29,7 +29,7 @@ export function ArmyReadout({ monsterName, killSec, strikeSec }: ArmyReadoutProp
 
   return (
     <View style={[styles.box, { borderColor: tint + '66' }]} accessible accessibilityLabel={`${kills} It strikes the wall every ${strikeSec}. ${verdict}`}>
-      <Ionicons name={holds ? 'shield-checkmark' : 'warning'} size={16} color={tint} />
+      <GameIcon name={holds ? 'shield-checkmark' : 'warning'} size={16} color={tint} />
       <View style={styles.text}>
         <Text variant="bodySmall">{kills}</Text>
         <Text variant="caption" color="secondary">{`${article(monsterName, true)} ${monsterName} strikes the wall every ${strikeSec}.`}</Text>

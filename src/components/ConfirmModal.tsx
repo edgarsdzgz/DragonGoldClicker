@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Animated,
 } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { REJECT_PHRASES } from './Button'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
@@ -27,7 +28,7 @@ interface ConfirmModalProps {
   confirmDisabled?: boolean
   /** Override the default gold accent with a building/context color */
   accentColor?: string
-  icon?: keyof typeof Ionicons.glyphMap
+  icon?: GameIconName
   /** Opt the confirm button into the guided tutorial under this target id */
   confirmCoachId?: string
   onConfirm: () => void
@@ -208,7 +209,7 @@ export function ConfirmModal({
                 },
               ]}
             >
-              <Ionicons name={icon} size={26} color={accentColor} />
+              <GameIcon name={icon} size={26} color={accentColor} />
             </View>
           </View>
 

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from '../components/GameIcon'
 import { Text, Badge, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge, FoodEventBadge } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
@@ -87,7 +87,7 @@ export function ForageScreen() {
       {/* HERO: Food is the primary number */}
       <View style={styles.heroSection}>
         <View style={styles.foodRow}>
-          <Ionicons name="nutrition" size={28} color={forage[400]} />
+          <GameIcon name="nutrition" size={28} color={forage[400]} />
           <Text variant="display" style={{ color: forage[400] }}>
             {formatCount(state.food)}
           </Text>

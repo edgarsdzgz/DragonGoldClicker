@@ -1,7 +1,8 @@
 import React, { useRef, useCallback } from 'react'
 import { View, StyleSheet, Pressable, Animated, ViewStyle } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { useHaptics } from '../hooks'
 import { colors, spacing } from '../theme'
@@ -13,7 +14,7 @@ interface ActionOrbColors {
 
 interface ActionOrbProps {
   onAction: () => void
-  icon: keyof typeof Ionicons.glyphMap
+  icon: GameIconName
   label: string
   palette: ActionOrbColors
   disabled?: boolean
@@ -62,7 +63,7 @@ export function ActionOrb({ onAction, icon, label, palette, disabled, style }: A
             colors={[colors.bg.surface2, colors.bg.surface1]}
             style={styles.gradient}
           >
-            <Ionicons name={icon} size={16} color={accentColor} />
+            <GameIcon name={icon} size={16} color={accentColor} />
             <Text variant="caption" center style={{ ...styles.label, color: accentColor }}>
               {label}
             </Text>

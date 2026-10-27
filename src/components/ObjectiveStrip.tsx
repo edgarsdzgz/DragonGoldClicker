@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { useGame } from '../context/GameContext'
 import { getCurrentObjective } from '../types/objectives'
@@ -24,7 +24,7 @@ export function ObjectiveStrip({ label, current, target, right }: ObjectiveStrip
         accessible
         accessibilityLabel={`Objective: ${label}, ${shown} of ${target}`}
       >
-        <Ionicons name="flag" size={12} color={gold[400]} />
+        <GameIcon name="flag" size={12} color={gold[400]} />
         <Text variant="caption" style={styles.label} numberOfLines={1}>{label}</Text>
       </View>
       <Text variant="caption" style={styles.count} importantForAccessibility="no" accessibilityElementsHidden>{`${shown}/${target}`}</Text>

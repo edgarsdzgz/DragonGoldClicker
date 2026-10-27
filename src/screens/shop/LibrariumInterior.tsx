@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from '../../components/GameIcon'
 import { Text, Badge } from '../../components'
 import { useGame } from '../../context/GameContext'
 import { spacing, radius } from '../../theme'
@@ -43,7 +43,7 @@ export function LibrariumInterior() {
           style={styles.bannerGradient}
         >
           <View style={styles.bannerLeft}>
-            <Ionicons name="book" size={14} color={LIB.accent} style={styles.bannerIcon} />
+            <GameIcon name="book" size={14} color={LIB.accent} style={styles.bannerIcon} />
             <Text variant="bodySmall" color="secondary">
               Lirae's studies take effect at once.
             </Text>

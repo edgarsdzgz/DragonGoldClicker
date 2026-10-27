@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { BottomSheet } from './BottomSheet'
 import { Button } from './Button'
 import { Text } from './Text'
@@ -42,7 +42,7 @@ export function ClawsSheet({ visible, onClose, level, renown, reforge, onSharpen
       onClose={onClose}
       title="Your Claws"
       subtitle={`${now.name}: ${now.damage} damage per tap`}
-      icon="flash"
+      icon="icon_claws"
       iconColor={gold[400]}
       heightPercent={70}
     >
@@ -55,7 +55,7 @@ export function ClawsSheet({ visible, onClose, level, renown, reforge, onSharpen
               : `Needs ${formatNumber(next.cost)} renown. You have ${formatNumber(renown)}.`}
           </Text>
           <CoachTarget id="claws_sharpen">
-            <Button onPress={onSharpen} disabled={!affordable} icon={reforging ? 'hammer' : 'flash'} fullWidth>
+            <Button onPress={onSharpen} disabled={!affordable} icon={reforging ? 'hammer' : 'icon_claws'} fullWidth>
               {`${reforging ? 'Reforge' : 'Sharpen'} for ${formatNumber(next.cost)} renown`}
             </Button>
           </CoachTarget>
@@ -75,7 +75,7 @@ export function ClawsSheet({ visible, onClose, level, renown, reforge, onSharpen
               accessible
               accessibilityLabel={`${c.name}, ${c.damage} damage per tap${isNow ? ', yours now' : owned ? ', passed' : `, ${formatNumber(c.cost)} renown`}`}
             >
-              <Ionicons
+              <GameIcon
                 name={owned ? 'checkmark-circle' : 'ellipse-outline'}
                 size={16}
                 color={owned ? gold[400] : colors.text.muted}

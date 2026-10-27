@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, ViewStyle } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { spacing, radius } from '../theme'
 
 type BadgeVariant = 'subtle' | 'filled' | 'ghost'
@@ -10,7 +11,7 @@ interface BadgeProps {
   children: React.ReactNode
   /** Base color -- background/border computed as rgba derivatives */
   color: string
-  icon?: keyof typeof Ionicons.glyphMap
+  icon?: GameIconName
   /** Custom icon element -- takes precedence over icon string */
   iconElement?: React.ReactNode
   iconSize?: number
@@ -76,7 +77,7 @@ export function Badge({
         style,
       ]}
     >
-      {iconElement ?? (icon && <Ionicons name={icon} size={resolvedIconSize} color={color} />)}
+      {iconElement ?? (icon && <GameIcon name={icon} size={resolvedIconSize} color={color} />)}
       {children}
     </View>
   )

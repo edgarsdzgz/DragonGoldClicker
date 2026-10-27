@@ -1,7 +1,8 @@
 import React, { useRef, useCallback, useEffect } from 'react'
 import { View, StyleSheet, Pressable, Animated, ViewStyle } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { useHaptics } from '../hooks'
 import { useActionPress, HOLD_REPEAT_MS } from '../hooks/useActionPress'
@@ -48,8 +49,8 @@ interface HarvestOrbProps {
    * buttons that spend renown: one tap, one purchase.
    */
   repeatOnHold?: boolean
-  /** Ionicons icon name */
-  icon: keyof typeof Ionicons.glyphMap
+  /** Icon: an Ionicons name (drawn as pixel art when there is one) or a sprite id */
+  icon: GameIconName
   /** Button label (e.g. "SLAY", "FORAGE") */
   label: string
   /** Color palette */
@@ -182,7 +183,7 @@ export function HarvestOrb({ onAction, repeatOnHold = false, icon, label, palett
             colors={[colors.bg.surface2, colors.bg.surface1]}
             style={[styles.gradient, { gap: dim.gap }]}
           >
-            <Ionicons name={icon} size={dim.icon} color={accentColor} />
+            <GameIcon name={icon} size={dim.icon} color={accentColor} />
             <Text
               variant="h2"
               center

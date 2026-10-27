@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { useGame } from '../context/GameContext'
 import { useHaptics } from '../hooks'
@@ -56,7 +56,7 @@ export function RationSelector() {
               accessibilityLabel={`${r.label} rations${available ? '' : ', locked'}`}
               hitSlop={{ top: 6, bottom: 6 }}
             >
-              {!available && <Ionicons name="lock-closed" size={10} color={colors.text.muted} />}
+              {!available && <GameIcon name="lock-closed" size={10} color={colors.text.muted} />}
               <Text
                 variant="caption"
                 style={{ color: selected ? gold[300] : available ? colors.text.secondary : colors.text.muted, fontWeight: selected ? '700' : '500' }}

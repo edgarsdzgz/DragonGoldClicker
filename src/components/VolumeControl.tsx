@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
 import Slider from '@react-native-community/slider'
-import { Ionicons } from '@expo/vector-icons'
+import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, gold, dark } from '../theme'
 
@@ -49,10 +49,11 @@ export function VolumeControl({
           accessibilityLabel={muted ? `Unmute ${label}` : `Mute ${label}`}
           hitSlop={8}
         >
-          <Ionicons
+          <GameIcon
             name={iconName}
             size={20}
             color={muted ? colors.text.muted : accentColor}
+            dim={muted}
           />
         </Pressable>
         <Slider
