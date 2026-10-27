@@ -16,6 +16,7 @@ import { DevArtGallery } from './DevArtGallery'
 import { DevCityPreview } from './DevCityPreview'
 import { DevWallPreview } from './DevWallPreview'
 import { DevTitlePreview } from './DevTitlePreview'
+import { DevWalkUpPreview } from './DevWalkUpPreview'
 
 /**
  * Dev-only test panel (Settings > Dev). Rendered only when DEV_TOOLS_ENABLED (src/config/devTools.ts).
@@ -79,6 +80,7 @@ export function DevPanel() {
       <DevArtGallery />
       <DevCityPreview />
       <DevWallPreview />
+      <DevWalkUpPreview />
       <DevTitlePreview />
 
       <Surface style={styles.section}>
