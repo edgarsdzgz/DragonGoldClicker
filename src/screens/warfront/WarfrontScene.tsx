@@ -40,6 +40,8 @@ interface WarfrontSceneProps {
   army: number
   /** Repairers are at work on the wall */
   repairing: boolean
+  /** Told where the map's top edge is drawn, in this scene's space, whenever it moves */
+  onMapTop?: (top: number) => void
 }
 
 /**
@@ -51,7 +53,7 @@ interface WarfrontSceneProps {
  * Motion, off screen and in the background. Decorative: the gate's state is read out by the Gate.
  */
 export const WarfrontScene = forwardRef<WarfrontSceneHandle, WarfrontSceneProps>(function WarfrontScene(
-  { unit, wallTop, gate, army, repairing },
+  { unit, wallTop, gate, army, repairing, onMapTop },
   ref,
 ) {
   const [size, setSize] = useState({ w: 0, h: 0 })
@@ -72,6 +74,9 @@ export const WarfrontScene = forwardRef<WarfrontSceneHandle, WarfrontSceneProps>
   const g = MAP_GATE.gate
   const wall = size.h > 0 ? Math.min(wallTop, size.h - g.height * unit) : wallTop
   const top = snap(wall - g.y * unit)
+  useEffect(() => {
+    if (size.w > 0) onMapTop?.(top)
+  }, [top, size.w, onMapTop])
   const at = (p: { x: number; y: number }) => ({ position: 'absolute' as const, left: left + p.x * unit, top: top + p.y * unit })
 
   // A volley: every fighter on the wall jabs once (a new key restarts the strip)

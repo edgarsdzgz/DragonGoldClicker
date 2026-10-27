@@ -5,7 +5,10 @@ export { ICON_ART, iconArt, isSpriteId, artOr, buildingIcon, studyIcon, clawIcon
 export type { GameIconName, IoniconName } from './icons'
 export { useSpriteImage, preloadSprites } from './useSpriteImage'
 export { MAP_W, MOB_SCALE, mapUnit, mobScale, gateState, gateSprite, mobSprites, mobDeathSprite, slashSprite, stripMs,
-  DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, WALK_IN_DELAY_MS, WALK_IN_MS, WALK_IN_FROM } from './warfront'
+  DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, STRONG_FROM_LEVEL, STRONGER_FROM_LEVEL, mobTier, tierSprite } from './warfront'
+export type { MobTier } from './warfront'
+export { ROAD_TOP_Y, growScales, walkStepMs, walkUpAt, walkUpMs, bodyMs, walkDelayMs, bodyState } from './walkUp'
+export type { WalkUpPose } from './walkUp'
 export type { GateState, MobSprites } from './warfront'
 export { cityUnit, plotFor, plotName, plotSprite, plotMarker, plotLabel } from './city'
 export type { CityBuildingId, Plot, PlotLook } from './city'

@@ -20,7 +20,7 @@ import { useRandomSfx } from '../hooks/useRandomSfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, getFighterCost, getRepairerCost, isSystemOn, MAX_CITY_HP } from '../types/game'
-import { mapUnit, gateState, repairing, wallChange } from '../art'
+import { ROAD_TOP_Y, mapUnit, gateState, repairing, wallChange } from '../art'
 import type { WallReading } from '../art'
 import { WarfrontScene } from './warfront/WarfrontScene'
 import type { WarfrontSceneHandle } from './warfront/WarfrontScene'
@@ -64,7 +64,14 @@ export function GameScreen() {
 
   // The battlefield takes whatever height is left; its contents are sized to fit it
   const [fieldHeight, setFieldHeight] = useState(0)
-  const onFieldLayout = (e: LayoutChangeEvent) => setFieldHeight(Math.floor(e.nativeEvent.layout.height))
+  const [fieldY, setFieldY] = useState(0)
+  const onFieldLayout = (e: LayoutChangeEvent) => {
+    setFieldHeight(Math.floor(e.nativeEvent.layout.height))
+    setFieldY(e.nativeEvent.layout.y)
+  }
+  // Where the road leaves the camps on the map, in the battlefield's space: monsters walk down from there
+  const [mapTop, setMapTop] = useState<number | null>(null)
+  const roadTop = mapTop === null ? undefined : mapTop + ROAD_TOP_Y * unit - fieldY
   const field = battlefieldLayout(fieldHeight)
   const focused = useIsFocused()
 
@@ -165,6 +172,7 @@ export function GameScreen() {
           gate={siegeOn ? gateState(state.cityHp, MAX_CITY_HP) : 'sound'}
           army={army}
           repairing={repairing(siegeOn, state.repairers, state.cityHp, MAX_CITY_HP)}
+          onMapTop={setMapTop}
         />
       )}
       {reveal.topBar && (
@@ -192,6 +200,7 @@ export function GameScreen() {
             damage={tapDamageNow(state)}
             clawLevel={state.clawLevel}
             unit={unit}
+            roadTop={roadTop}
             onStrike={handleStrike}
             showName={reveal.monsterName}
             coachId="slay"

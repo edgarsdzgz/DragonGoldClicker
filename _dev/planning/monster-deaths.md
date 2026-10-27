@@ -74,3 +74,12 @@ ship with the deaths or as its own step.
 ## Progress
 
 - 2026-10-27: plan written; awaiting the owner.
+- 2026-10-27: owner, after the preview: the bob is the walking speed (a step and a size per bob
+  frame, about 2 s on the A16); strikes are drawn at the monster's size; build as recommended,
+  tiers by horde level as suggested.
+- 2026-10-27: built on the art session's fda8bdf. The walk, the bodies and the tier are in the fight
+  (hooks/useWalkUp, hooks/useMonsterRoad, components/FallenBody). Device findings: the walk's offset
+  had to leave the native-driven knockback transform (it kept the old place while a hit animated),
+  and the walk and the body start in the kill's own render (an effect left the new monster at the
+  old place for a quarter second). Under 14 taps a second new pictures draw late; at a human pace
+  they are on time. Not done: unit tests for the two hooks (no hook test library here).

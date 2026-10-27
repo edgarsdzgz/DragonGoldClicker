@@ -7,14 +7,8 @@ import { BLINK_STEPS, BLINK_STEP_MS, DEATH_HOLD_MS } from './warfront'
 // own scale to its full size in whole screen pixels per art pixel, so it is sharp at every size
 // =============================================================================
 
-/** The Unmaking's marks on a monster: none, dark cracks, glowing cracks */
-export type MobTier = 'weak' | 'strong' | 'stronger'
-
-/** A monster's sprite at a tier (`walk_anim`, `death_anim`, `hit`, `hurt`), or null when it has none */
-export function tierSprite(name: string, tier: MobTier, state: string): SpriteId | null {
-  const id = `mob_${name}${tier === 'weak' ? '' : `-${tier}`}_${state}`
-  return Object.prototype.hasOwnProperty.call(SPRITES, id) ? (id as SpriteId) : null
-}
+/** The Warfront map's row where the road leaves the camps: monsters start their walk with their feet here */
+export const ROAD_TOP_Y = 124
 
 /**
  * Every size the walk passes through, in display points per art pixel: one more screen pixel per
@@ -58,6 +52,19 @@ export function walkUpAt(ms: number, scales: number[], stepMs: number): WalkUpPo
 /** How long the whole walk-up takes */
 export function walkUpMs(scales: number[], stepMs: number): number {
   return Math.max(0, scales.length - 1) * stepMs
+}
+
+/** How long a body stays on the road: its death, the hold on its last frame, and the blink */
+export function bodyMs(deathMs: number): number {
+  return deathMs + DEATH_HOLD_MS + BLINK_STEPS * BLINK_STEP_MS
+}
+
+/**
+ * How long the next monster waits at the camps before it walks, so it never reaches its place before
+ * the body there is gone (a short walk: a screen where it barely grows). Usually nothing.
+ */
+export function walkDelayMs(walkMs: number, bodyGoneMs: number): number {
+  return Math.max(0, bodyGoneMs - walkMs)
 }
 
 /**

@@ -3,11 +3,13 @@ import { PixelRatio, Pressable, StyleSheet, View, useWindowDimensions } from 're
 import { Text, Surface, SectionLabel, PillTabs, Button, PixelSprite, PixelBurst } from '../../components'
 import type { PixelBurstHandle } from '../../components'
 import type { PillTab } from '../../components'
-import { MAP_GATE, MAP_W, MOB_SCALE, SPRITES, mapUnit, slashSprite, spriteBox, stripMs } from '../../art'
-import type { SpriteId } from '../../art'
-import { bodyState, growScales, tierSprite, walkStepMs, walkUpAt, walkUpMs } from '../../art/walkUp'
-import type { MobTier } from '../../art/walkUp'
+import {
+  MAP_GATE, MAP_W, MOB_SCALE, ROAD_TOP_Y, SPRITES, mapUnit, slashSprite, spriteBox, stripMs,
+  bodyState, growScales, tierSprite, walkStepMs, walkUpAt, walkUpMs,
+} from '../../art'
+import type { MobTier, SpriteId } from '../../art'
 import { useReduceMotion } from '../../hooks/useReduceMotion'
+import { MAX_BODIES } from '../../hooks/useMonsterRoad'
 import { WarfrontScene } from '../warfront/WarfrontScene'
 import { spacing } from '../../theme'
 
@@ -18,12 +20,9 @@ const SPEED_TABS: PillTab[] = [{ key: '1', label: 'Normal' }, { key: '3', label:
 /** Map rows above this are sky and hills, left out so the road fits the panel */
 const CROP_TOP = 100
 const MAP_H = SPRITES.map_warfront_base.h
-/** The road's middle, and its feet rows: where it leaves the camps, and the monster's place */
+/** The road's middle, and the row of the monster's feet at its place (it starts at ROAD_TOP_Y) */
 const ROAD_X = 66
-const ROAD_TOP_Y = 124
 const PLACE_Y = 180
-/** Bodies on the road at once; a fourth drops the oldest */
-const MAX_BODIES = 3
 
 interface Body {
   key: number

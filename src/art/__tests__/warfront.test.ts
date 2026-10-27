@@ -1,8 +1,10 @@
 import { SPRITES } from '../manifest'
 import {
   mapUnit, mobScale, gateState, gateSprite, mobSprites, mobDeathSprite, slashSprite, stripMs, MAP_W,
-  DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, WALK_IN_DELAY_MS, WALK_IN_MS,
+  DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, STRONG_FROM_LEVEL, STRONGER_FROM_LEVEL, mobTier,
 } from '../warfront'
+import { bodyMs, growScales, walkDelayMs, walkStepMs, walkUpMs } from '../walkUp'
+import { HORDE_LEVEL_KILLS, pushedBackHorde } from '../../types/horde'
 import { MONSTERS } from '../../types/monsterRoster'
 
 describe('the Warfront map', () => {
@@ -56,15 +58,43 @@ describe('the monsters', () => {
   it('a kill reads in order: the death, the hold, the blink, while the next one walks up', () => {
     const death = stripMs('mob_kobold_death_anim')
     expect(death).toBe(500)
-    // The next monster starts walking before the body is gone and arrives about as it vanishes
-    expect(WALK_IN_DELAY_MS).toBeLessThan(death + DEATH_HOLD_MS)
-    const gone = death + DEATH_HOLD_MS + BLINK_STEPS * BLINK_STEP_MS
-    // It arrives after the death has played and no later than the body vanishing
-    const arrives = WALK_IN_DELAY_MS + WALK_IN_MS
-    expect(arrives).toBeGreaterThanOrEqual(death)
-    expect(arrives).toBeLessThanOrEqual(gone)
+    // The last frame holds a moment before the blink (the monster-deaths plan, approved 2026-10-27)
+    expect(DEATH_HOLD_MS).toBe(400)
+    const gone = bodyMs(death)
+    expect(gone).toBe(death + DEATH_HOLD_MS + BLINK_STEPS * BLINK_STEP_MS)
+    // The A16: the walk (8 steps of the bob) takes longer than the body lasts, so it starts at once
+    // and the body is gone before the next monster reaches its place
+    const walk = walkUpMs(growScales(8 / 2.625, 16 / 2.625, 2.625), walkStepMs('mob_kobold_walk_anim'))
+    expect(walk).toBeGreaterThan(gone)
+    expect(walkDelayMs(walk, gone)).toBe(0)
+    // A screen where it barely grows waits at the camps, arriving just as the body vanishes
+    expect(walkDelayMs(250, gone)).toBe(gone - 250)
+    expect(250 + walkDelayMs(250, gone)).toBe(gone)
     // An odd number of steps ends on "off"
     expect(BLINK_STEPS % 2).toBe(1)
+  })
+
+  it('the Unmaking marks the horde deeper as it advances, and a Breach pushes it back', () => {
+    const atLevel = (level: number) => (level - 1) * HORDE_LEVEL_KILLS
+    expect(mobTier(0)).toBe('weak')
+    expect(mobTier(atLevel(STRONG_FROM_LEVEL) - 1)).toBe('weak')
+    expect(mobTier(atLevel(STRONG_FROM_LEVEL))).toBe('strong')
+    expect(mobTier(atLevel(STRONGER_FROM_LEVEL) - 1)).toBe('strong')
+    expect(mobTier(atLevel(STRONGER_FROM_LEVEL))).toBe('stronger')
+    // The owner's levels: 1-4 none, 5-9 dark cracks, 10 and up glowing
+    expect([STRONG_FROM_LEVEL, STRONGER_FROM_LEVEL]).toEqual([5, 10])
+    // A Breach at level 10 pushes it back to dark cracks
+    expect(mobTier(pushedBackHorde(atLevel(10)))).toBe('strong')
+  })
+
+  it('every monster in the roster walks, is struck and dies at every tier', () => {
+    for (const m of MONSTERS) {
+      for (const tier of ['weak', 'strong', 'stronger'] as const) {
+        expect([m.id, tier, mobSprites(m.id, tier) !== null, mobDeathSprite(m.id, tier) !== null]).toEqual([m.id, tier, true, true])
+      }
+    }
+    expect(mobSprites('shadow_crawler', 'stronger')?.idle).toBe('mob_crawler-stronger_walk_anim')
+    expect(mobDeathSprite('orc', 'strong')).toBe('mob_orc-strong_death_anim')
   })
 
   it('the slash follows the claws tier, and strips report how long they play', () => {

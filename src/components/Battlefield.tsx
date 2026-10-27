@@ -4,7 +4,6 @@ import { useIsFocused } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { PosedMonster } from './PosedMonster'
 import type { PosedMonsterHandle } from './PosedMonster'
-import { MonsterIcon } from './MonsterIcon'
 import { useAppActive } from '../hooks/useAppActive'
 import type { MonsterDef } from '../types/monsters'
 import { Text } from './Text'
@@ -15,18 +14,15 @@ import { clawLook } from '../types/claws'
 import { PixelMonster } from './PixelMonster'
 import { PixelBurst } from './PixelBurst'
 import type { PixelBurstHandle } from './PixelBurst'
-import { PixelSprite } from './PixelSprite'
-import {
-  SPRITES, mobScale, mobSprites, mobDeathSprite, slashSprite, stripMs,
-  DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, WALK_IN_DELAY_MS, WALK_IN_MS, WALK_IN_FROM,
-} from '../art'
-import type { SpriteId } from '../art'
+import { FallenBody } from './FallenBody'
+import { SPRITES, mobScale, mobSprites, mobTier, slashSprite } from '../art'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
 import { useActionPress, HOLD_REPEAT_MS } from '../hooks/useActionPress'
 import { useCoinFlight } from '../context/CoinFlightContext'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useReduceMotion } from '../hooks/useReduceMotion'
+import { useMonsterRoad } from '../hooks/useMonsterRoad'
 import { SPAWN_DELAY_MS, monsterLabel, currentMonster } from '../types/monsters'
 import { restingPose } from '../data/monsterArt'
 import { colors, spacing, gold } from '../theme'
@@ -46,6 +42,8 @@ interface BattlefieldProps {
   clawLevel?: number
   /** Points per Warfront map pixel; monsters and strikes are drawn at MOB_SCALE times it (art/warfront.ts) */
   unit?: number
+  /** Where the road leaves the camps, in this field's own space: the next monster walks down from there */
+  roadTop?: number
   /**
    * Called for every hit: the first press, then once per HOLD_REPEAT_MS while held. May return
    * what the hit dealt (a double strike shows larger, in gold); otherwise `damage` is shown.
@@ -81,14 +79,6 @@ export interface BattlefieldHandle {
   showAllyHit: (amount: string) => void
 }
 
-/** A monster just killed: its death strip (null without one), whether it blinks out, and its kill's token */
-interface Fallen {
-  monster: MonsterDef
-  death: SpriteId | null
-  blink: boolean
-  token: number
-}
-
 /** The monster's art box as a share of the sprite circle (fits inside the circle) */
 const ART_SCALE = 0.68
 
@@ -107,13 +97,14 @@ const KNOCKBACK = 0.06
  * (one strike every HOLD_REPEAT_MS, shared by every main button) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
-  { monster: size, monsterIndex, monsterHp, hordeKills = 0, kills, damage, clawLevel = 0, unit = 3, onStrike, header, queue, camp, showName = true, locked = false, coachId },
+  { monster: size, monsterIndex, monsterHp, hordeKills = 0, kills, damage, clawLevel = 0, unit = 3, roadTop, onStrike, header, queue, camp, showName = true, locked = false, coachId },
   ref,
 ) {
   const coach = useCoachTarget(coachId)
   const def = currentMonster({ monsterIndex, hordeKills })
-  // Pixel art for this monster, when it has some; otherwise it keeps the old circle and silhouette
-  const mob = mobSprites(def.id)
+  // Pixel art for this monster, marked as deep as the horde's Unmaking; otherwise the old circle and silhouette
+  const tier = mobTier(hordeKills)
+  const mob = mobSprites(def.id, tier)
   const mobArt = mob ? SPRITES[mob.idle] : null
   const pixelScale = mobScale(unit, size, mobArt ? Math.max(mobArt.w, mobArt.h) : 1, PixelRatio.get())
   const reduceMotion = useReduceMotion()
@@ -124,13 +115,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const coinFlight = useCoinFlight()
   const spriteRef = useRef<View>(null)
   const spawn = useRef(new Animated.Value(1)).current
-  // The fallen monster. With a death strip it plays its death, holds, then blinks out (`fall` is its
-  // visibility); without one (or with Reduce Motion) it fades out in place. Embers rise from it either way.
-  const fall = useRef(new Animated.Value(1)).current
-  const [fallen, setFallen] = React.useState<Fallen | null>(null)
   // A steady pulse on the battlefield while the press is held
   const holdPulse = useRef(new Animated.Value(0)).current
-  const killToken = useRef(0)
   const squash = useRef(new Animated.Value(1)).current
   const shake = useRef(new Animated.Value(0)).current
   const flash = useRef(new Animated.Value(0)).current
@@ -146,8 +132,20 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const tapPoint = useRef({ x: size / 2, y: size / 2 })
   // The sprite's offset inside the press area; both are measured in the press area's own space
   const spriteOffset = useRef({ x: 0, y: 0 })
+  const [spriteY, setSpriteY] = React.useState(0)
   const focused = useIsFocused()
   const appActive = useAppActive()
+
+  // The road: bodies where monsters fell, and the next one walking down from the camps (hooks/useMonsterRoad)
+  const road = useMonsterRoad({
+    kills, def, tier, mob, fullScale: pixelScale, unit, size,
+    distance: roadTop === undefined ? 0 : Math.max(0, spriteY + size - roadTop),
+    live: focused && appActive, reduceMotion,
+  })
+  // Strikes land on the monster where it is on the road, at its size of the moment
+  const walker = useRef(road.walker)
+  walker.current = road.walker
+  const fellTop = road.fellTop
 
   // Pose: the hit frame for ~120ms on each strike, else idle (or hurt at 1/3 HP or less)
   const posed = useRef<PosedMonsterHandle>(null)
@@ -180,31 +178,13 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   }, [reduceMotion, resting, breath, focused, appActive, pixelMob])
 
   useImperativeHandle(ref, () => ({
+    // The bounty rises from where the monster fell
     showBounty: (amount) =>
-      numbers.current?.spawn({ x: size / 2, y: size * 0.25, text: amount, color: gold[300], large: true }),
+      numbers.current?.spawn({ x: size / 2, y: fellTop.current ?? size * 0.25, text: amount, color: gold[300], large: true }),
     showKill: (monster) => {
-      // Each kill gets a token, so an older fade finishing can never remove a newer ghost
-      const token = ++killToken.current
-      const death = mobDeathSprite(monster.id)
-      const blink = death !== null && !reduceMotion
-      setFallen({ monster, death, blink, token })
-      fall.stopAnimation()
-      const done = ({ finished }: { finished: boolean }) => {
-        if (finished && killToken.current === token) setFallen(null)
-      }
-      if (blink) {
-        // The death plays, its last frame holds, then off, on, off... it is gone
-        fall.setValue(1)
-        const steps: Animated.CompositeAnimation[] = [Animated.delay(stripMs(death) + DEATH_HOLD_MS)]
-        for (let i = 0; i < BLINK_STEPS; i++) {
-          steps.push(Animated.timing(fall, { toValue: i % 2, duration: 0, useNativeDriver: true }), Animated.delay(BLINK_STEP_MS))
-        }
-        Animated.sequence(steps).start(done)
-      } else {
-        fall.setValue(0)
-        Animated.timing(fall, { toValue: 1, duration: reduceMotion ? 300 : 700, useNativeDriver: true }).start(done)
-      }
-      embers.current?.dissolve(size / 2, size / 2, size)
+      // The body itself is the road's (it lies where the monster fell); one that left no body
+      // (no death of its own) dissolves in embers instead
+      if (fellTop.current === null) embers.current?.dissolve(size / 2, size / 2, size)
       // Kill punch: ~80ms hit-stop, then a 2-3px nudge of the battlefield
       if (!reduceMotion) {
         nudge.stopAnimation()
@@ -219,16 +199,19 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     },
     showAllyHit: (amount) => {
       // Spread across the monster so several fighters read as several small hits
-      const x = size * (0.25 + Math.random() * 0.5)
-      numbers.current?.spawn({ x, y: size * 0.45, text: amount, color: colors.warfront.ally })
-      fx.current?.play('fx_ally-hit_anim', x, size * 0.6)
+      const w = walker.current
+      const top = w.walking ? w.feet - w.height : 0
+      const tall = w.walking ? w.height : size
+      const x = size / 2 + (Math.random() - 0.5) * (w.walking ? w.width : size) * 0.5
+      numbers.current?.spawn({ x, y: top + tall * 0.45, text: amount, color: colors.warfront.ally })
+      fx.current?.play('fx_ally-hit_anim', x, top + tall * 0.6, 0, w.walking ? w.scale : undefined)
       flash.setValue(0.12)
       Animated.timing(flash, { toValue: 0, duration: 120, useNativeDriver: true }).start()
     },
-  }), [size, fall, nudge, flash, coinFlight, reduceMotion])
+  }), [size, nudge, flash, coinFlight, reduceMotion, fellTop])
 
-  // After a kill the next monster eases in (taps meanwhile already hit it); a pixel monster walks up the
-  // road instead, starting as the last one's death ends
+  // After a kill the next monster eases in (taps meanwhile already hit it); a pixel monster walks down
+  // the road instead (the road's walker)
   const firstRender = useRef(true)
   useEffect(() => {
     if (firstRender.current) {
@@ -240,15 +223,12 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       spawn.setValue(1)
       return
     }
-    spawn.setValue(0)
     if (pixelMob) {
-      Animated.sequence([
-        Animated.delay(WALK_IN_DELAY_MS),
-        Animated.timing(spawn, { toValue: 1, duration: WALK_IN_MS, useNativeDriver: true }),
-      ]).start()
-    } else {
-      Animated.timing(spawn, { toValue: 1, duration: SPAWN_DELAY_MS, useNativeDriver: true }).start()
+      spawn.setValue(1)
+      return
     }
+    spawn.setValue(0)
+    Animated.timing(spawn, { toValue: 1, duration: SPAWN_DELAY_MS, useNativeDriver: true }).start()
   }, [kills, spawn, reduceMotion, pixelMob])
 
   // Every hit: flash and shake the monster, float the damage up from it
@@ -262,15 +242,19 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     if (lockedRef.current || campRef.current) return
     const shown = onStrike()
     posed.current?.hit()
-    const point = tapPoint.current
+    // At its place the strike lands where the finger did; on the road, on the monster at its size
+    const w = walker.current
+    const point = w.walking ? { x: size / 2, y: w.feet - w.height / 2 } : tapPoint.current
+    const numberY = w.walking ? w.feet - w.height : size * 0.3
+    const at = w.walking ? w.scale : undefined
     if (shown?.double) {
-      numbers.current?.spawn({ x: point.x, y: size * 0.3, text: `-${shown.damage}!`, color: gold[300], large: true })
+      numbers.current?.spawn({ x: point.x, y: numberY, text: `-${shown.damage}!`, color: gold[300], large: true })
     } else {
-      numbers.current?.spawn({ x: point.x, y: size * 0.3, text: `-${shown?.damage ?? damage}`, color: colors.text.primary })
+      numbers.current?.spawn({ x: point.x, y: numberY, text: `-${shown?.damage ?? damage}`, color: colors.text.primary })
     }
-    fx.current?.play(slashSprite(clawLook(clawLevel).tier), point.x, point.y)
-    if (shown?.double) fx.current?.play('fx_crit_anim', point.x, point.y)
-    else if (!reduceMotion) fx.current?.play('fx_spark_anim', point.x, point.y)
+    fx.current?.play(slashSprite(clawLook(clawLevel).tier), point.x, point.y, 0, at)
+    if (shown?.double) fx.current?.play('fx_crit_anim', point.x, point.y, 0, at)
+    else if (!reduceMotion) fx.current?.play('fx_spark_anim', point.x, point.y, 0, at)
     // Hit-stop: the monster holds still ~50ms, then the knockback runs
     if (!reduceMotion) {
       tiltSide.current = -tiltSide.current
@@ -359,7 +343,10 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
         <View
           ref={spriteRef}
           collapsable={false}
-          onLayout={(e) => { spriteOffset.current = { x: e.nativeEvent.layout.x, y: e.nativeEvent.layout.y } }}
+          onLayout={(e) => {
+            spriteOffset.current = { x: e.nativeEvent.layout.x, y: e.nativeEvent.layout.y }
+            setSpriteY(e.nativeEvent.layout.y)
+          }}
           style={{ width: size, height: size }}
         >
           {holding && !reduceMotion && (
@@ -377,25 +364,19 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
               ]}
             />
           )}
-          {fallen && (
-            <Animated.View
-              pointerEvents="none"
-              style={[
-                mob ? styles.ghostPixel : styles.ghost,
-                {
-                  opacity: fallen.blink ? fall : fall.interpolate({ inputRange: [0, 1], outputRange: [0.9, 0] }),
-                },
-              ]}
-            >
-              {fallen.death ? (
-                // Played once and held; with Reduce Motion only the last frame, the body on the ground
-                <PixelSprite key={fallen.token} id={fallen.death} scale={pixelScale} loop={false}
-                  frame={fallen.blink ? undefined : SPRITES[fallen.death].frames - 1} />
-              ) : mobSprites(fallen.monster.id)
-                ? <PixelSprite id={mobSprites(fallen.monster.id)!.hurt} scale={pixelScale} />
-                : <MonsterIcon monster={fallen.monster} size={Math.round(size * ART_SCALE)} color={gold[400]} />}
-            </Animated.View>
-          )}
+          {/*
+            Bodies and the walker are drawn by where their feet are, nearer the wall in front, by their order
+            in one keyed list (a moved element keeps its state). The walker wins a tie.
+          */}
+          {[
+            ...road.bodies.map((b) => ({ feet: b.feet, node: (
+              <FallenBody key={b.key} death={b.death} scale={b.scale} x={size / 2} feet={b.feet} blink={b.blink}
+                onGone={() => road.dropBody(b.key)} />
+            ) })),
+            { feet: road.walker.feet + 0.5, node: (
+          // Its place on the road is its own layer: the strike's native-driven knockback below would keep
+          // the old place until it finished
+          <View key="walker" pointerEvents="none" style={[StyleSheet.absoluteFill, { transform: [{ translateY: road.walker.offsetY }] }]}>
           <Animated.View
             pointerEvents="none"
             style={[
@@ -404,12 +385,9 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
                 width: size,
                 height: size,
                 borderRadius: mob ? 0 : size / 2,
-                // A pixel monster is hidden until it starts walking up; the old circle fades in from 0.3
-                opacity: mob
-                  ? spawn.interpolate({ inputRange: [0, 0.01, 1], outputRange: [0, 1, 1] })
-                  : spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
+                // The old circle fades in from 0.3; a pixel monster walks down the road instead
+                opacity: mob ? 1 : spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
                 transform: [
-                  { translateY: mob ? spawn.interpolate({ inputRange: [0, 1], outputRange: [-size * WALK_IN_FROM, 0] }) : 0 },
                   { translateX: shake },
                   { translateY: knock.interpolate({ inputRange: [0, 1], outputRange: [0, -size * KNOCKBACK] }) },
                   { rotate: Animated.multiply(knock, tilt).interpolate({ inputRange: [-5, 5], outputRange: ['-5deg', '5deg'] }) },
@@ -422,7 +400,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
             ]}
           >
             {mob ? (
-              <PixelMonster ref={posed} sprites={mob} scale={pixelScale} resting={resting} spawnKey={kills} paused={!focused || !appActive} />
+              <PixelMonster ref={posed} sprites={mob} scale={road.walker.scale} resting={resting} spawnKey={kills}
+                paused={!focused || !appActive} frame={road.walker.frame} />
             ) : (
               <>
                 <LinearGradient colors={[colors.bg.surface2, colors.bg.surface1]} style={styles.inner}>
@@ -432,9 +411,14 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
               </>
             )}
           </Animated.View>
-          <PixelBurst ref={fx} scale={pixelScale} max={4} />
-          <EmberDissolve ref={embers} unit={size} />
-          <FloatingNumbers ref={numbers} />
+          </View>
+            ) },
+          ].sort((a, b) => a.feet - b.feet).map((d) => d.node)}
+          <View pointerEvents="none" style={styles.effects}>
+            <PixelBurst ref={fx} scale={pixelScale} max={4} />
+            <EmberDissolve ref={embers} unit={size} />
+            <FloatingNumbers ref={numbers} />
+          </View>
         </View>
         {showName ? <Text variant="label" center style={styles.name}>{def.name}</Text> : <View style={styles.name} />}
         <EnemyHp hp={monsterHp} max={def.hp} width={Math.min(fieldW - spacing[6] * 2, 260)} />
@@ -483,15 +467,9 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: gold[400],
   },
-  ghost: {
+  // Strikes, embers and numbers, drawn last: over everything on the road
+  effects: {
     ...StyleSheet.absoluteFillObject,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ghostPixel: {
-    ...StyleSheet.absoluteFillObject,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
   },
   flash: {
     ...StyleSheet.absoluteFillObject,

@@ -2,6 +2,19 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Monster deaths and the walk down the road (2026-10-27)
+- The killing blow plays the monster's own death where it stood; the last frame holds a moment,
+  then blinks out
+- The next monster walks down the road from the camps: a step with each frame of its walk bob,
+  growing a size per step from the map's scale to full size, sharp at every size (about 2 s on
+  the A16). It can be struck on the way; the slash, spark and numbers land on it at its size
+- A monster killed on the road falls there; up to three bodies can lie on the road, drawn far to
+  near. Leaving the screen or the app clears the road and the next monster is at its place
+- Monsters carry the Unmaking's cracks by horde level: none at 1-4, dark at 5-9, glowing from 10;
+  a Breach pushes them back with the horde
+- Reduce Motion: no walk; the body shows its last frame and fades
+- Dev: the Walk-up Preview in Settings plays any monster's death and walk-up at any crack level
+
 ### Title screen: Tap to Start (2026-10-27)
 - After the studio seal and the Draconia Chronicles gate, the gate stays as the title: a loading
   bar says what is loading (your save, the art, the music), then "Tap to start"

@@ -1,6 +1,7 @@
 import { SPRITES } from '../manifest'
 import { BLINK_STEPS, BLINK_STEP_MS, DEATH_HOLD_MS } from '../warfront'
-import { bodyState, growScales, tierSprite, walkStepMs, walkUpAt, walkUpMs } from '../walkUp'
+import { bodyState, growScales, walkStepMs, walkUpAt, walkUpMs } from '../walkUp'
+import { tierSprite } from '../warfront'
 
 const A16 = 2.625
 

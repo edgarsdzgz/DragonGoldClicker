@@ -19,6 +19,8 @@ interface PixelMonsterProps {
   spawnKey: number
   /** Hold the walk still (the screen is hidden or the app is in the background) */
   paused?: boolean
+  /** Show this frame of the walk instead of playing it (walking up the road, its steps are its bob) */
+  frame?: number
 }
 
 /**
@@ -27,7 +29,7 @@ interface PixelMonsterProps {
  * PosedMonster. Decorative: the battlefield labels the monster.
  */
 export const PixelMonster = forwardRef<PosedMonsterHandle, PixelMonsterProps>(function PixelMonster(
-  { sprites, scale, resting, spawnKey, paused = false },
+  { sprites, scale, resting, spawnKey, paused = false, frame },
   ref,
 ) {
   const opacity = useRef<Record<Pose, Animated.Value>>({
@@ -76,7 +78,7 @@ export const PixelMonster = forwardRef<PosedMonsterHandle, PixelMonsterProps>(fu
     <View style={box}>
       {POSES.map((pose) => (
         <Animated.View key={pose} style={[StyleSheet.absoluteFill, { opacity: opacity[pose] }]}>
-          <PixelSprite id={sprites[pose]} scale={scale} frame={paused ? 0 : undefined} />
+          <PixelSprite id={sprites[pose]} scale={scale} frame={paused ? 0 : frame} />
         </Animated.View>
       ))}
     </View>
