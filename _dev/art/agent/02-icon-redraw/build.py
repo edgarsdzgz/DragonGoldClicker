@@ -24,7 +24,7 @@ def load(p):
 
 ref = HERE.parents[1] / "reference"
 out = HERE / "out"
-pairs = [("cog", "cog"), ("wheat", "sheaf"), ("hammer", "hammer"), ("helm", "helm")]
+pairs = [("cog", "cog"), ("wheat", "wheat"), ("hammer", "hammer"), ("helm", "helm")]
 rows = [("Old", [load(ref / f"icon-{old}.png") for old, _ in pairs]),
         ("New", [load(out / f"icon_{new}.png") for _, new in pairs]),
         ("New beside the set", [load(out / f"icon_{new}.png") for _, new in pairs]

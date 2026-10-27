@@ -29,6 +29,19 @@
   "warnings": []
  },
  {
+  "name": "icon_wheat",
+  "file": "icon_wheat.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
   "name": "icon_helm",
   "file": "icon_helm.png",
   "size": [

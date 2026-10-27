@@ -40,6 +40,28 @@ frame
 .atuatuatua.
 ..aa.aa.aa..
 
+# Foragers and the Forage tab, version 2 (owner's references, 2026-10-26). One ear of wheat:
+# a pointed tip kernel, plump kernels in alternating pairs either side of a brown stem
+# (herringbone), lit on top and shaded below, tapering to a bare stem. Replaces icon_sheaf,
+# whose three thin ears read as flames.
+@asset icon_wheat
+size 12 12
+budget 6
+key a=ink H=gold5 K=gold4 k=gold3 s=gold1
+frame
+......a.....
+.....aHa....
+...aaHKkaa..
+..aHKKsKkka.
+..aKkksHKka.
+..aHKKsKkka.
+..aKkksHKka.
+..aHKKsKkka.
+..aKkksHKka.
+...aKksKka..
+....aasaa...
+......a.....
+
 # Soldiers. A great helm from the front: flat-topped cylinder, eye slit across the face, a brass
 # strip down the middle (the cross), breathing holes, a red crest on top.
 @asset icon_helm
