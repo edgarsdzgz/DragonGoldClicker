@@ -1,0 +1,191 @@
+# Research options, round 2, 2026-10-26. Written by make_options.py.
+
+# Dragon Anatomy A: a bone cracked through: where a strike does the most harm
+@asset icon_res_anatomy_bone
+size 12 12
+budget 8
+key a=ink H=parch3 m=skin3 d=parch1
+frame
+.......aa...
+......aHma..
+......aHdaa.
+......aHmHma
+.....aHmddda
+....aaadaaa.
+.aaaHmaa....
+aHHHmda.....
+amdmda......
+.aaHda......
+..amda......
+...aa.......
+
+# Dragon Anatomy B: a faceted crystal shard: the strike, sharpened by magic
+@asset icon_res_anatomy_crystal
+size 12 12
+budget 8
+key a=ink W=steel5 L=night4 m=night3 d=night2
+frame
+.....aa.....
+....aWLa....
+...aWLmda...
+...aLLmda...
+..aLLLmdda..
+..aLWLmdda..
+..aLLLmdda..
+..aLLmmdda..
+...aLmmda...
+....aLda....
+.....aa.....
+............
+
+# Dragon Anatomy C: an alchemist's flask of glowing ember draught
+@asset icon_res_anatomy_flask
+size 12 12
+budget 8
+key a=ink q=night3 c=wood3 W=steel5 Y=fire2 O=fire1
+frame
+.....aa.....
+....acca....
+....aqqa....
+....aqqa....
+...aqqqqa...
+..aqWqqqqa..
+..aqqqqqqa..
+.aYWYYYYYYa.
+..aOOOOOOa..
+..aOOOWOOa..
+...aOOOOa...
+....aaaa....
+
+# Mortar Craft A: a mason's trowel after the reference: pointed blade, bent neck, wooden handle
+@asset icon_res_mortar_trowel2
+size 12 12
+budget 8
+key a=ink h=steel4 s=steel3 m=steel2 W=parch2 w=parch1
+frame
+.........aa.
+........aWwa
+.......aWwwa
+......aWwwa.
+...a..amwa..
+..ahaamaa...
+..assma.....
+..asssa.....
+.ahhsssa....
+.ahhaaa.....
+ahaa........
+.a..........
+
+# Mortar Craft B: a stone wall, the joints thick with pale lime mortar
+@asset icon_res_mortar_wall2
+size 12 12
+budget 8
+key a=ink S=steel4 s=steel3 d=steel2 M=parch3
+frame
+aaaaaaaaaaaa
+aSSSMSSSSMSa
+asssMssssMsa
+adddMddddMda
+aMMMMMMMMMMa
+aSSMSSSSMSSa
+assMssssMssa
+addMddddMdda
+aMMMMMMMMMMa
+aSSSSMSSSSSa
+addddMddddda
+aaaaaaaaaaaa
+
+# Mortar Craft C: the trowel laid across a freshly mortared wall
+@asset icon_res_mortar_wall_trowel
+size 12 12
+budget 8
+key a=ink S=steel4 s=steel3 d=steel2 M=parch3 h=steel5 m=steel1 W=parch2 w=parch1
+frame
+aaaaaaaaaaaa
+aSSSMSSSaWwa
+asssMssaWwwa
+adddMdaWwwaa
+aMMaMMamwaMa
+aSahaamaaSSa
+asassmasMssa
+adasssadMdda
+aahhsssaMMMa
+aahhaaaSSSSa
+ahaadMddddda
+aaaaaaaaaaaa
+
+# Mortar Craft D: a mortar and pestle: the other mortar, where the mix is ground
+@asset icon_res_mortar_pestle
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel3 s=steel2 k=steel1 W=wood4 w=wood3
+frame
+.........a..
+........awa.
+.......aWwa.
+......aWwa..
+.....aWwa...
+.aaaawwwaaa.
+ahkkkkkkkkma
+ammmmmmmmmsa
+.ammmmmmmsa.
+..ammmmmsa..
+...amsssa...
+....aaaa....
+
+# Tempered Steel B: the smith's hammer resting on Kael's anvil
+@asset icon_res_steel_hammer_rest
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 w=wood4
+frame
+.........aa.
+.......aawwa
+..aaaaawwwa.
+.aHHHwwwaa..
+.aMMMwaaaaa.
+ahhhhhhhhhha
+.aammmmmmsa.
+...ammmsaa..
+...ammmsaa..
+..ammmmmmsa.
+..asssssssa.
+...aaaaaaa..
+
+# Tempered Steel C: the hammer raised over a glowing blade, sparks flying
+@asset icon_res_steel_strike
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 H=steel5 w=wood4 W=fire3 Y=fire2 O=fire1
+frame
+.aaaaaaaa...
+aHHHwwwwwaa.
+ahhhaaYaaaWa
+.aaaaaaaaYa.
+.aaWWYYOOaa.
+ahhhhhhhhhha
+.aammmmmmsa.
+...ammmsaa..
+...ammmsaa..
+..ammmmmmsa.
+..asssssssa.
+...aaaaaaa..
+
+# Tempered Steel D: Kael's anvil with a burst of sparks above it
+@asset icon_res_steel_anvil_sparks
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 W=fire3 Y=fire2 O=fire1
+frame
+.....aa.....
+....aYYa....
+..aaYWWYaa..
+.aOaaYYaaOa.
+.aaaaaaaaaa.
+ahhhhhhhhhha
+.aammmmmmsa.
+...ammmsaa..
+...ammmsaa..
+..ammmmmmsa.
+..asssssssa.
+...aaaaaaa..

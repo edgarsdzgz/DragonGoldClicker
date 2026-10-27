@@ -1,0 +1,149 @@
+[
+ {
+  "name": "icon_res_anatomy_bone",
+  "file": "icon_res_anatomy_bone.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_anatomy_crystal",
+  "file": "icon_res_anatomy_crystal.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,5"
+  ]
+ },
+ {
+  "name": "icon_res_anatomy_flask",
+  "file": "icon_res_anatomy_flask.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,5",
+   "single-pixel island at 6,9"
+  ]
+ },
+ {
+  "name": "icon_res_mortar_trowel2",
+  "file": "icon_res_mortar_trowel2.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 6,5",
+   "single-pixel island at 1,10"
+  ]
+ },
+ {
+  "name": "icon_res_mortar_wall2",
+  "file": "icon_res_mortar_wall2.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_mortar_wall_trowel",
+  "file": "icon_res_mortar_wall_trowel.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 6,5",
+   "single-pixel island at 1,10"
+  ]
+ },
+ {
+  "name": "icon_res_mortar_pestle",
+  "file": "icon_res_mortar_pestle.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_steel_hammer_rest",
+  "file": "icon_res_steel_hammer_rest.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_steel_strike",
+  "file": "icon_res_steel_strike.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,2",
+   "single-pixel island at 9,3"
+  ]
+ },
+ {
+  "name": "icon_res_steel_anvil_sparks",
+  "file": "icon_res_steel_anvil_sparks.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 2,3",
+   "single-pixel island at 9,3"
+  ]
+ }
+]

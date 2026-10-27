@@ -31,7 +31,7 @@ PENDING = ("The thirteen research studies, and Villagers and Train as townsfolk 
     ('13-research/out/icon_res_feast_hall.png', 'Feast Hall'),
     ('13-research/out/icon_res_mortar_craft.png', 'Mortar Craft'),
     ('13-research/out/icon_res_night_ledgers.png', 'Night Ledgers'),
-    ('13-research/out/icon_res_evacuation_drills.png', 'Evacuation Drills'),
+    ('15-research-options/out/icon_res_evac_door.png', 'Evacuation Drills (the way out)'),
     ('14-busts/out/icon_villager_bust.png', 'Villagers (townsfolk bust)'),
     ('14-busts/out/icon_train_bust.png', 'Train (townsfolk bust)')])
 MOTION = [
