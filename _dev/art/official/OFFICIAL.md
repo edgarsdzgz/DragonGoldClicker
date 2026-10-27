@@ -145,3 +145,30 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_bld-wizard-tower.png` | 16x16 | Building: Wizard's Tower | batch 3 building icons |
 | `icons/icon_bld-tower-west.png` | 16x16 | Building: Tower West | batch 3 building icons |
 | `icons/icon_bld-tower-east.png` | 16x16 | Building: Tower East | batch 3 building icons |
+| `warfront/map_warfront_base.png` | 130x282 | Warfront base map, the gate and wall removed | batch 4 |
+| `warfront/map_gate.json` |  | Gate box and torch positions on the Warfront | batch 4 |
+| `warfront/map_gate_sound.png` | 130x60 | The gate and wall: sound | batch 4 |
+| `warfront/map_gate_cracking.png` | 130x60 | The gate and wall: cracking | batch 4 |
+| `warfront/map_gate_failing.png` | 130x60 | The gate and wall: failing | batch 4 |
+| `warfront/map_gate_breached.png` | 130x60 | The gate and wall: breached | batch 4 |
+| `warfront/map_torch_strip3.png` | 18x12 | Gate torch, flickering (3 frames, 6 fps) | batch 4 |
+| `mobs/mob_kobold_idle.png` | 13x16 | Kobold: idle | simple mobs |
+| `mobs/mob_kobold_hit.png` | 13x16 | Kobold: hit, the red flash | simple mobs |
+| `mobs/mob_kobold_hurt.png` | 13x16 | Kobold: hurt | simple mobs |
+| `mobs/mob_kobold_walk_strip2.png` | 26x16 | Kobold: walk bob (2 frames, 4 fps) | simple mobs |
+| `mobs/mob_goblin_idle.png` | 13x16 | Goblin: idle | simple mobs |
+| `mobs/mob_goblin_hit.png` | 13x16 | Goblin: hit, the red flash | simple mobs |
+| `mobs/mob_goblin_hurt.png` | 13x16 | Goblin: hurt | simple mobs |
+| `mobs/mob_goblin_walk_strip2.png` | 26x16 | Goblin: walk bob (2 frames, 4 fps) | simple mobs |
+| `mobs/mob_crawler_idle.png` | 15x11 | Shadow Crawler: idle | simple mobs |
+| `mobs/mob_crawler_hit.png` | 15x11 | Shadow Crawler: hit, the red flash | simple mobs |
+| `mobs/mob_crawler_hurt.png` | 15x11 | Shadow Crawler: hurt | simple mobs |
+| `mobs/mob_crawler_walk_strip2.png` | 30x11 | Shadow Crawler: walk bob (2 frames, 4 fps) | simple mobs |
+| `mobs/mob_orc_idle.png` | 14x19 | Orc: idle | simple mobs |
+| `mobs/mob_orc_hit.png` | 14x19 | Orc: hit, the red flash | simple mobs |
+| `mobs/mob_orc_hurt.png` | 14x19 | Orc: hurt | simple mobs |
+| `mobs/mob_orc_walk_strip2.png` | 28x19 | Orc: walk bob (2 frames, 4 fps) | simple mobs |
+| `mobs/mob_raider_idle.png` | 13x19 | Raider: idle | simple mobs |
+| `mobs/mob_raider_hit.png` | 13x19 | Raider: hit, the red flash | simple mobs |
+| `mobs/mob_raider_hurt.png` | 13x19 | Raider: hurt | simple mobs |
+| `mobs/mob_raider_walk_strip2.png` | 26x19 | Raider: walk bob (2 frames, 4 fps) | simple mobs |
