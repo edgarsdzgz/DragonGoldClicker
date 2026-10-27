@@ -57,12 +57,21 @@ chosen = (f'<figure><img src="data:image/gif;base64,{base64.b64encode(gif.read_b
 for name, cap in (("app_icon_1024", "The app icon (A), shown at 256"), ("app_adaptive_1024", "Android adaptive foreground (A), shown at 256")):
     im = Image.open(OUT / f"{name}.png")
     chosen += (f'<figure><img src="{uri(im)}" width="256" height="256" alt="{cap}"><figcaption>{cap}</figcaption></figure>')
+intro = HERE / "preview" / "studio_intro.gif"
+si = Image.open(intro)
+studio = (f'<figure><img src="data:image/gif;base64,{base64.b64encode(intro.read_bytes()).decode()}" '
+          f'width="{si.width}" height="{si.height}" alt="The Raxdeg Studios intro"><figcaption>The studio intro, x3: '
+          f'the slam and the slash, then RAXDEG STUDIOS fades in</figcaption></figure>')
 anim = HERE / "preview" / "logo_anim.gif"
 a = Image.open(anim)
 chosen = (f'<figure><img src="data:image/gif;base64,{base64.b64encode(anim.read_bytes()).decode()}" '
           f'width="{a.width}" height="{a.height}" alt="Logo A in motion"><figcaption>A in motion, x4: the slam, '
           f'the claws, the debris</figcaption></figure>') + chosen
-cards = ('<h3>Chosen: A is the logo and app icon, B is the splash</h3><p class="muted">The splash fades in from '
+cards = ('<h3>The studio intro: RAXDEG STUDIOS</h3><p class="muted">Logo A&rsquo;s slam and slash with the studio&rsquo;s '
+         'name as a supertitle. Once the shield is whole, the name fades in out of the dark, then holds; about '
+         '3.9 seconds. It would play before the game&rsquo;s splash.</p>'
+         f'<div class="tiles">{studio}</div>')
+cards += ('<h3>Chosen: A is the logo and app icon, B is the splash</h3><p class="muted">The splash fades in from '
          'the dark one piece at a time in palette steps (silhouette, dusk, lit), 5.8 seconds in all, ending on a hold. A also has an intro of its own: the shield slams in from the foreground, the claws rip upward, the debris settles, about 3 seconds.</p>'
          f'<div class="tiles">{chosen}</div>')
 for cid, title, note in CONCEPTS:

@@ -1,0 +1,32 @@
+{
+  "frame_width": 88,
+  "frame_height": 83,
+  "frames": 22,
+  "background": "#281e32",
+  "ms": [
+    300,
+    50,
+    50,
+    50,
+    50,
+    50,
+    70,
+    70,
+    80,
+    90,
+    260,
+    55,
+    55,
+    55,
+    55,
+    55,
+    55,
+    70,
+    300,
+    140,
+    140,
+    1800
+  ],
+  "loop": false,
+  "note": "Hold the last frame (studio_card.png). Plays before the game's splash."
+}
