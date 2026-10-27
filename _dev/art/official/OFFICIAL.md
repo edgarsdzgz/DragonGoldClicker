@@ -451,6 +451,7 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_warning.png` | 12x12 | Warning (confirm dialog): a gold triangle | icons v1 |
 | `icons/icon_hand.png` | 12x12 | Total clicks: an open hand | icons v1 |
 | `icons/icon_phone.png` | 12x12 | Vibration: a phone | icons v1 |
+| `icons/icon_todo.png` | 12x12 | Not done yet: the empty ring beside an unmet requirement (the check mark's counterpart) | icon todo v1 |
 | `icons/icon_consumption.png` | 12x12 | Consumption (food eaten per second): a leaking grain sack | icons v2a |
 | `mobs/mob_minotaur_idle.png` | 20x25 | Minotaur: idle | shaded v2 (Minotaur v1) |
 | `mobs/mob_minotaur_hit.png` | 20x25 | Minotaur: hit, the red flash | shaded v2 (Minotaur v1) |

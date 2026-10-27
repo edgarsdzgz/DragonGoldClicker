@@ -392,6 +392,7 @@ ASSETS += [
     ("icons/icon_warning.png", AGENT / "40-icons-sigils/out/icon_warning_v1.png", "Warning (confirm dialog): a gold triangle", "icons v1"),
     ("icons/icon_hand.png", AGENT / "40-icons-sigils/out/icon_hand_v1.png", "Total clicks: an open hand", "icons v1"),
     ("icons/icon_phone.png", AGENT / "40-icons-sigils/out/icon_phone_v1.png", "Vibration: a phone", "icons v1"),
+    ("icons/icon_todo.png", AGENT / "49-icon-todo/out/icon_todo.png", "Not done yet: the empty ring beside an unmet requirement (the check mark's counterpart)", "icon todo v1"),
     ("icons/icon_consumption.png", AGENT / "40-icons-sigils/out/icon_consumption_v2a.png", "Consumption (food eaten per second): a leaking grain sack", "icons v2a"),
 ]
 
