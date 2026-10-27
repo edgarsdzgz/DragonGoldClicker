@@ -1,0 +1,42 @@
+# Villagers and Train as busts of the official townsfolk human, 2026-10-26.
+# The owner asked for the person icons to look like the townsfolk human, cut at the chest: its
+# rows 0-9 (flat brown hair, the 5-wide face with two dark eyes, the 7-wide red tunic), outlined.
+# Colors are the human's own: hair wood3, skin skin2, tunic clay1.
+
+# Villagers. The townsfolk human, cut at the chest, centered.
+@asset icon_villager_bust
+size 12 12
+budget 8
+key a=ink B=wood3 C=skin2 D=clay1
+frame
+....aaaaa...
+...aBBBBBa..
+...aBBBBBa..
+...aCCCCCa..
+...aCaCaCa..
+...aCCCCCa..
+...aCCCCCa..
+..aDDDDDDDa.
+..aDDDDDDDa.
+..aDDDDDDDa.
+..aDDDDDDDa.
+..aaaaaaaaa.
+
+# Train. The same bust, moved left, with the gold plus at its shoulder.
+@asset icon_train_bust
+size 12 12
+budget 8
+key a=ink B=wood3 C=skin2 D=clay1 g=gold4
+frame
+..aaaaa..a..
+.aBBBBBaaga.
+.aBBBBBaggga
+.aCCCCCaaga.
+.aCaCaCa.a..
+.aCCCCCa....
+.aCCCCCa....
+aDDDDDDDa...
+aDDDDDDDa...
+aDDDDDDDa...
+aDDDDDDDa...
+aaaaaaaaa...

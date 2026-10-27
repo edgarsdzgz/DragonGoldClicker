@@ -1,0 +1,28 @@
+[
+ {
+  "name": "icon_villager_bust",
+  "file": "icon_villager_bust.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_train_bust",
+  "file": "icon_train_bust.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]

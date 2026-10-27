@@ -18,7 +18,22 @@ OFFICIAL = ART / "official"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "review.html"
 
 # The batch awaiting the owner's approval: (title, [(path under agent/, label), ...]), or None.
-PENDING = None
+PENDING = ("The thirteen research studies, and Villagers and Train as townsfolk busts", [
+    ('13-research/out/icon_res_dragon_anatomy.png', 'Dragon Anatomy'),
+    ('13-research/out/icon_res_weak_points.png', 'Weak Points'),
+    ('13-research/out/icon_res_wyrms_fury.png', "Wyrm's Fury"),
+    ('13-research/out/icon_res_drill_tactics.png', 'Drill Tactics'),
+    ('13-research/out/icon_res_tempered_steel.png', 'Tempered Steel'),
+    ('13-research/out/icon_res_battle_drill.png', 'Battle Drill'),
+    ('13-research/out/icon_res_rationing.png', 'Rationing'),
+    ('13-research/out/icon_res_lean_rations.png', 'Lean Rations'),
+    ('13-research/out/icon_res_snares_and_nets.png', 'Snares and Nets'),
+    ('13-research/out/icon_res_feast_hall.png', 'Feast Hall'),
+    ('13-research/out/icon_res_mortar_craft.png', 'Mortar Craft'),
+    ('13-research/out/icon_res_night_ledgers.png', 'Night Ledgers'),
+    ('13-research/out/icon_res_evacuation_drills.png', 'Evacuation Drills'),
+    ('14-busts/out/icon_villager_bust.png', 'Villagers (townsfolk bust)'),
+    ('14-busts/out/icon_train_bust.png', 'Train (townsfolk bust)')])
 MOTION = [
     (AGENT / "01-test-run/preview/scene_warfront.gif", "The fighter's jab and the hit spark on the Warfront wall"),
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),

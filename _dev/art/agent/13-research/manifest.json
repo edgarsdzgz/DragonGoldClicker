@@ -1,0 +1,187 @@
+[
+ {
+  "name": "icon_res_dragon_anatomy",
+  "file": "icon_res_dragon_anatomy.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 6,6",
+   "single-pixel island at 8,6",
+   "single-pixel island at 7,7",
+   "single-pixel island at 8,8"
+  ]
+ },
+ {
+  "name": "icon_res_weak_points",
+  "file": "icon_res_weak_points.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_wyrms_fury",
+  "file": "icon_res_wyrms_fury.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 3,5"
+  ]
+ },
+ {
+  "name": "icon_res_drill_tactics",
+  "file": "icon_res_drill_tactics.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_tempered_steel",
+  "file": "icon_res_tempered_steel.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_battle_drill",
+  "file": "icon_res_battle_drill.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_rationing",
+  "file": "icon_res_rationing.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_lean_rations",
+  "file": "icon_res_lean_rations.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,4",
+   "single-pixel island at 6,4",
+   "single-pixel island at 4,6",
+   "single-pixel island at 6,6"
+  ]
+ },
+ {
+  "name": "icon_res_snares_and_nets",
+  "file": "icon_res_snares_and_nets.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 6,3",
+   "single-pixel island at 3,6",
+   "single-pixel island at 6,6"
+  ]
+ },
+ {
+  "name": "icon_res_feast_hall",
+  "file": "icon_res_feast_hall.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_mortar_craft",
+  "file": "icon_res_mortar_craft.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_night_ledgers",
+  "file": "icon_res_night_ledgers.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_evacuation_drills",
+  "file": "icon_res_evacuation_drills.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]

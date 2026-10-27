@@ -1,0 +1,249 @@
+# Research study icons, 2026-10-26. Written by make_icons.py.
+# 12x12, ink outline, light from the upper left. Notes: ../README.md
+
+# Dragon Anatomy. Lirae's sketch of a claw on parchment, the weak spot marked.
+@asset icon_res_dragon_anatomy
+size 12 12
+budget 8
+key a=ink P=parch3 D=parch1 k=wood1 x=clay2
+frame
+.aaaaaaaaaa.
+.aPPPPPPPPa.
+.aPPPkkkPPa.
+.aPPkkPPkPa.
+.aPkkPPPkPa.
+.aPkkPPPPPa.
+.aPkkPxPxPa.
+.akkkPPxPPa.
+.akkkkxPxPa.
+.aPPPPPPPPa.
+.aDDDDDDDDa.
+.aaaaaaaaaa.
+
+# Weak Points. A target: one strike in ten finds the seam.
+@asset icon_res_weak_points
+size 12 12
+budget 8
+key a=ink H=gold5 r=clay2 R=clay1 P=parch3
+frame
+....aaaa....
+...aRRRRa...
+..aRRRRRRa..
+.aRRPPPPRRa.
+aRRPrrrrPRRa
+aRRPrHHrPRRa
+aRRPrHHrPRRa
+aRRPrrrrPRRa
+.aRRPPPPRRa.
+..aRRRRRRa..
+...aRRRRa...
+....aaaa....
+
+# Wyrm's Fury. An old wyrm's eye, fire in the iris.
+@asset icon_res_wyrms_fury
+size 12 12
+budget 8
+key a=ink W=fire3 Y=fire2 O=fire1
+frame
+............
+............
+...aaaaaa...
+..aOOYYOOa..
+.aOYYaaYYOa.
+aOYWYaaYYYOa
+aOYYYaaYYYOa
+.aOYYaaYYOa.
+..aOOYYOOa..
+...aaaaaa...
+............
+............
+
+# Drill Tactics. A straw training dummy on its post.
+@asset icon_res_drill_tactics
+size 12 12
+budget 8
+key a=ink S=parch2 s=parch1 k=wood2 W=wood4 D=wood2
+frame
+....aaaa....
+...aSSSsa...
+...aSSSsa...
+.aaaaWDaaaa.
+aWWWWWWWWWDa
+.aaaSSSsaaa.
+...aSSSsa...
+...akkkka...
+...aSSSsa...
+...aaWDaa...
+..aWWWWWDa..
+..aaaaaaaa..
+
+# Tempered Steel. A sword fresh from the quench, its point still glowing.
+@asset icon_res_tempered_steel
+size 12 12
+budget 8
+key a=ink W=fire3 Y=fire2 O=fire1 h=steel5 s=steel3 H=gold5 G=gold3 d=wood2
+frame
+.....aa.....
+....aWYa....
+....aYOa....
+....aYOa....
+....ahsa....
+....ahsa....
+....ahsa....
+..aaahsaaa..
+.aHHHHHHHGa.
+..aaaddaaa..
+....aHGa....
+....aaaa....
+
+# Battle Drill. Three spears in a rank, striking as one.
+@asset icon_res_battle_drill
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel4 s=steel2 w=wood4
+frame
+......a.....
+.....aha....
+...aahmsaa..
+..ahahmsaha.
+.ahmsawahmsa
+.ahmsawahmsa
+..awaawaawa.
+..awaawaawa.
+..awaawaawa.
+..awaawaawa.
+..awaawaawa.
+...a..a..a..
+
+# Rationing. A brass balance on gold chains: every meal weighed.
+@asset icon_res_rationing
+size 12 12
+budget 8
+key a=ink H=gold5 G=gold3 g=gold4
+frame
+.....aa.....
+....aHGa....
+.aaaaHGaaaa.
+aHHHHHHHHHGa
+.agaaHGaaga.
+.agaaHGaaga.
+aHHHaHGaHHHa
+aGGGaHGaGGGa
+.aaaaHGaaaa.
+...aaHGaa...
+..aHHHHHGa..
+..aaaaaaaa..
+
+# Lean Rations. A broken square of hardtack: marching on little.
+@asset icon_res_lean_rations
+size 12 12
+budget 8
+key a=ink H=gold4 g=gold3 G=gold2 p=gold1
+frame
+............
+.aaaaaaa....
+.aHHHHHa....
+.aHgggggaa..
+.aHgpgpgga..
+.aHggggggGa.
+.aHgpgpgpGa.
+.aHggggggGa.
+.aHgpgpgpGa.
+.aGGGGGGGGa.
+.aaaaaaaaaa.
+............
+
+# Snares and Nets. A round rope net.
+@asset icon_res_snares_and_nets
+size 12 12
+budget 8
+key a=ink W=wood4 w=wood3 k=night1
+frame
+....aaaa....
+...aWWWWa...
+..aWWwkWWa..
+.aWWkkWkkwa.
+aWWkwWkwWkwa
+aWwkWwkWwkwa
+aWkWkkWkkWwa
+aWWkwWkwWkwa
+.aWkWwkWwwa.
+..awkkWkwa..
+...awwwwa...
+....aaaa....
+
+# Feast Hall. A tankard of ale with a head of foam.
+@asset icon_res_feast_hall
+size 12 12
+budget 8
+key a=ink F=parch3 f=parch2 W=wood4 w=wood3 D=wood2 S=steel3 s=steel2
+frame
+............
+.aaaaaaa....
+aFFFFFFFa...
+aFfFFFfFaa..
+aWwwwwwDWWa.
+aSSSSSSsaWa.
+aWwwwwwDaWa.
+aWwwwwwDaWa.
+aSSSSSSsWWa.
+aWwwwwwDaa..
+aDDDDDDDa...
+.aaaaaaa....
+
+# Mortar Craft. A mason's trowel with a dab of mortar.
+@asset icon_res_mortar_craft
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 s=steel2 w=wood4 M=parch1
+frame
+.........aa.
+........awwa
+.......awwa.
+......awwa..
+....aawwa...
+.aaahmaa....
+ahhhmsa.....
+ahmmmsa.....
+ahMMmsa.....
+ahMMMsa.....
+amssssa.....
+.aaaaa......
+
+# Night Ledgers. A candle burning late over the count.
+@asset icon_res_night_ledgers
+size 12 12
+budget 8
+key a=ink Y=fire2 W=fire3 O=fire1 k=night1 P=parch3 p=parch1 H=gold5 G=gold3
+frame
+.....aa.....
+....aYYa....
+...aYWWYa...
+....aWOa....
+....akaa....
+...aPPPpa...
+...aPPPpa...
+...aPPPpa...
+...aPPPpa...
+.aaaPPPpaaa.
+aHHHHHHHHHGa
+.aaaaaaaaaa.
+
+# Evacuation Drills. A war horn: when it sounds, everyone knows where to run.
+@asset icon_res_evacuation_drills
+size 12 12
+budget 8
+key a=ink H=parch3 m=skin3 d=parch1 g=gold4 k=wood1
+frame
+............
+............
+.a......aaa.
+ama....aHHma
+amma..agmkka
+.amaaaHgkkka
+.amHggmgkkda
+..amggmgmdda
+...aggdgdaa.
+....aaaaa...
+............
+............
