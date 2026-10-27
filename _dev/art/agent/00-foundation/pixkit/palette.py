@@ -34,6 +34,9 @@ RAMPS = {
 # Colors that keep their value at night (README section 4).
 GLOW = {"fire1", "fire2", "fire3", "gold5", "gold6"}
 
+# The cool, dark colors the night map falls back to.
+COOL = ["ink", "night1", "night2", "night3", "night4", "steel1", "steel2"]
+
 
 def _names():
     """Ordered {name: (r, g, b)}; a one-color ramp drops the number ("ink")."""
@@ -46,6 +49,50 @@ def _names():
 
 
 PALETTE = _names()
+
+
+def _lum(rgb):
+    r, g, b = rgb
+    return 0.299 * r + 0.587 * g + 0.114 * b
+
+
+def _nearest(target, names):
+    return min(names, key=lambda n: abs(_lum(PALETTE[n]) - target))
+
+
+def _light_maps():
+    """The night and dusk maps (README section 4): every master color to a darker master color.
+
+    Night: the nearest cool color at about 42% of the brightness. Dusk: one step down the color's
+    own ramp (the darkest step falls to the nearest cool color at 75%). Glow colors keep their
+    value in both, so windows, torches and fire stay lit.
+    """
+    night, dusk = {}, {}
+    for ramp, hexes in RAMPS.items():
+        names = [ramp] if len(hexes) == 1 else [f"{ramp}{i}" for i in range(1, len(hexes) + 1)]
+        for i, n in enumerate(names):
+            if n in GLOW:
+                night[n] = dusk[n] = n
+                continue
+            night[n] = _nearest(_lum(PALETTE[n]) * 0.42, COOL)
+            dusk[n] = names[i - 1] if i > 0 else _nearest(_lum(PALETTE[n]) * 0.75, COOL)
+    return night, dusk
+
+
+NIGHT, DUSK = _light_maps()
+
+
+def relight(img, mapping):
+    """Return a copy of an RGBA image with every master color swapped through a light map."""
+    by_rgb = {PALETTE[k]: PALETTE[v] for k, v in mapping.items()}
+    out = img.copy()
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            r, g, b, a = px[x, y]
+            if a and (r, g, b) in by_rgb:
+                px[x, y] = by_rgb[(r, g, b)] + (a,)
+    return out
 
 
 def write_files(folder):

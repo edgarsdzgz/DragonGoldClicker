@@ -1,0 +1,119 @@
+{
+  "map": "map_city_base.png",
+  "size": [
+    130,
+    282
+  ],
+  "plots": [
+    {
+      "id": "keep",
+      "x": 40,
+      "y": 16,
+      "width": 50,
+      "height": 82,
+      "anchor": [
+        65,
+        98
+      ]
+    },
+    {
+      "id": "outpost",
+      "x": 8,
+      "y": 58,
+      "width": 32,
+      "height": 32,
+      "anchor": [
+        24,
+        90
+      ]
+    },
+    {
+      "id": "wizard-tower",
+      "x": 96,
+      "y": 52,
+      "width": 24,
+      "height": 40,
+      "anchor": [
+        108,
+        92
+      ]
+    },
+    {
+      "id": "housing",
+      "x": 72,
+      "y": 100,
+      "width": 32,
+      "height": 32,
+      "anchor": [
+        88,
+        132
+      ]
+    },
+    {
+      "id": "lodge",
+      "x": 10,
+      "y": 112,
+      "width": 32,
+      "height": 32,
+      "anchor": [
+        26,
+        144
+      ]
+    },
+    {
+      "id": "forge",
+      "x": 88,
+      "y": 142,
+      "width": 32,
+      "height": 32,
+      "anchor": [
+        104,
+        174
+      ]
+    },
+    {
+      "id": "librarium",
+      "x": 10,
+      "y": 180,
+      "width": 32,
+      "height": 32,
+      "anchor": [
+        26,
+        212
+      ]
+    },
+    {
+      "id": "garrison",
+      "x": 86,
+      "y": 182,
+      "width": 32,
+      "height": 32,
+      "anchor": [
+        102,
+        214
+      ]
+    },
+    {
+      "id": "tower-west",
+      "x": 34,
+      "y": 214,
+      "width": 20,
+      "height": 32,
+      "anchor": [
+        44,
+        246
+      ]
+    },
+    {
+      "id": "tower-east",
+      "x": 76,
+      "y": 214,
+      "width": 20,
+      "height": 32,
+      "anchor": [
+        86,
+        246
+      ]
+    }
+  ]
+}
