@@ -27,7 +27,8 @@ Thornwick, Sera and the Hollow Knight.
 - [x] **Sound effects, batch 1** (locked 2026-10-27, `official/sound/`, imported to `assets/sound/`): the
       studio splash beats, a monster's death, the wall struck, the Breach, a building finished, the
       heartstone. Not wired to anything yet.
-- [ ] **Sound effects, batch 2** (list locked by the owner 2026-10-27; no monster yips, grunts or roars):
+- [x] **Sound effects, batch 2** (locked 2026-10-27, imported to `assets/sound/`, not wired yet; no monster
+      voices. The night wind is mastered loud: mix it well under the rest):
       - Warfront: critical hit, ember-claw whoosh, the next monster's footfalls, the gate cracking,
         the Unmaking rising, the rally horn, mending the wall.
       - City: construction starting, the city brightening, research done, an expedition leaving, an
