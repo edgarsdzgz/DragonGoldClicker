@@ -1,13 +1,13 @@
 import React from 'react'
-import { View, ScrollView, Pressable, Animated, Easing } from 'react-native'
+import { View, ScrollView, PixelRatio, useWindowDimensions } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { GameIcon } from '../components/GameIcon'
-import { buildingIcon } from '../art'
-import { Text, Badge, ZoneHeader, BottomSheet, ConfirmModal, InspirationIcon, StoryObjective, type ResourceItem } from '../components'
+import { cityUnit } from '../art'
+import type { CityBuildingId } from '../art'
+import { Text, BottomSheet, ConfirmModal, InspirationIcon, StoryObjective, type ResourceItem } from '../components'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
 import { useHaptics, useSfx } from '../hooks'
-import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useCoach } from '../context/CoachContext'
 import type { Rect } from '../context/coachRegistry'
 import { SFX } from '../data/sfx'
@@ -17,6 +17,7 @@ import {
   DRACONIA_HALL_COST,
   LIBRARIUM_COST,
   OFFLINE_LEVELS,
+  MAX_OFFLINE_LEVEL,
   RESEARCH_NODES,
   isBuildingRevealed,
   isSystemOn,
@@ -41,6 +42,8 @@ import { PostInterior } from './shop/PostInterior'
 import { DraconiaHallInterior } from './shop/DraconiaHallInterior'
 import { LibrariumInterior } from './shop/LibrariumInterior'
 import { mapStyles } from './shop/mapStyles'
+import { CityMap } from './shop/CityMap'
+import type { CityPlot } from './shop/CityMap'
 import { rankBlock } from '../types/army'
 import { foragerBlock } from '../types/lodge'
 import { canStudyAny, studiesDone } from '../types/library'
@@ -81,177 +84,12 @@ function BuildingInterior({ id }: { id: BuildingId }) {
 }
 
 // =============================================================================
-// BUILDING NODE
-// =============================================================================
-
-function BuildingNode({
-  building,
-  onPress,
-  coachId,
-  scrollIntoView,
-}: {
-  building: BuildingInfo
-  onPress: () => void
-  /** Opt into the guided tutorial under this target id */
-  coachId?: string
-  scrollIntoView?: (rect: Rect) => void
-}) {
-  const coach = useCoachTarget(coachId, scrollIntoView)
-  const canBuildNow = !building.isBuilt && building.canAfford
-
-  // Breathing pulse for affordable nodes
-  const pulse = React.useRef(new Animated.Value(0)).current
-
-  React.useEffect(() => {
-    if (canBuildNow) {
-      const animation = Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulse, {
-            toValue: 1,
-            duration: 2000,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.timing(pulse, {
-            toValue: 0,
-            duration: 2000,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-        ]),
-      )
-      animation.start()
-      return () => animation.stop()
-    } else {
-      pulse.setValue(0)
-    }
-  }, [canBuildNow, pulse])
-
-  // Unrevealed buildings show as fog: a silhouette with no name and no cost
-  if (!building.visible) {
-    return (
-      <View
-        style={mapStyles.nodeContainer}
-        accessible
-        accessibilityLabel="Undiscovered building"
-      >
-        <View style={[mapStyles.nodeCircle, mapStyles.nodeCircleUnbuilt, { opacity: 0.35 }]}>
-          <GameIcon name={buildingIcon(building.id, building.icon)} size={24} color={colors.text.muted} dim />
-        </View>
-      </View>
-    )
-  }
-
-  return (
-    <Pressable
-      ref={coach.ref}
-      onLayout={coach.onLayout}
-      onPress={onPress}
-      style={({ pressed }) => [
-        mapStyles.nodeContainer,
-        pressed && { opacity: 0.7 },
-      ]}
-      accessibilityRole="button"
-      accessibilityLabel={`Open ${building.name}`}
-    >
-      <Animated.View
-        style={[
-          mapStyles.nodeCircle,
-          building.isBuilt
-            ? [
-                mapStyles.nodeCircleBuilt,
-                {
-                  borderColor: building.accentColor,
-                  backgroundColor: `${building.accentColor}30`,
-                  shadowColor: building.accentColor,
-                },
-              ]
-            : canBuildNow
-              ? [
-                  mapStyles.nodeCircleAffordable,
-                  {
-                    borderColor: building.accentColor,
-                    backgroundColor: `${building.accentColor}18`,
-                    shadowColor: building.accentColor,
-                  },
-                ]
-              : mapStyles.nodeCircleUnbuilt,
-          canBuildNow && {
-            opacity: pulse.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0.5, 1],
-            }),
-            transform: [{
-              scale: pulse.interpolate({
-                inputRange: [0, 1],
-                outputRange: [1, 1.04],
-              }),
-            }],
-          },
-        ]}
-      >
-        {building.isBuilt && building.hasAction && (
-          <View
-            style={[
-              mapStyles.actionBadge,
-              { backgroundColor: building.accentColor },
-            ]}
-          />
-        )}
-        <GameIcon
-          name={buildingIcon(building.id, building.icon)}
-          size={24}
-          color={building.isBuilt || canBuildNow ? building.accentColor : colors.text.muted}
-          dim={!building.isBuilt && !canBuildNow}
-        />
-      </Animated.View>
-      <Text
-        variant="caption"
-        color={building.isBuilt || canBuildNow ? 'primary' : 'muted'}
-        style={mapStyles.nodeLabel}
-      >
-        {building.name}
-      </Text>
-      {building.isBuilt && building.statusLabel ? (
-        <Text variant="caption" color="muted" style={mapStyles.nodeStatus}>
-          {building.statusLabel}
-        </Text>
-      ) : !building.isBuilt && building.cost !== null ? (
-        <Badge
-          iconElement={<InspirationIcon size={7} />}
-          color={gold[400]}
-          size="sm"
-          variant={canBuildNow ? 'subtle' : 'ghost'}
-        >
-          <Text variant="caption" style={{ color: gold[400], fontSize: 10 }}>
-            {building.cost}
-          </Text>
-        </Badge>
-      ) : null}
-    </Pressable>
-  )
-}
-
-// =============================================================================
-// ZONE PATH CONNECTOR
-// =============================================================================
-
-function ZonePath() {
-  return (
-    <View style={mapStyles.pathContainer}>
-      <View style={mapStyles.pathLine} />
-      <View style={mapStyles.pathDot} />
-      <View style={mapStyles.pathLine} />
-    </View>
-  )
-}
-
-// =============================================================================
 // MAIN SHOP SCREEN - CITY MAP
 // =============================================================================
 
 export function ShopScreen() {
   const [selected, setSelected] = React.useState<BuildingId | null>(null)
+  const windowWidth = useWindowDimensions().width
   const {
     state,
     buildOrUpgradeBarracks,
@@ -507,7 +345,41 @@ export function ShopScreen() {
     scrollRef.current?.scrollTo({ y: Math.max(0, scrollY.current + rect.y - 220), animated: true })
   }
 
-  const handleNodePress = (id: BuildingId) => {
+  // The city map: each building's plot, drawn by its state (art/city.ts)
+  const unit = cityUnit(windowWidth, PixelRatio.get())
+  const LEVELS: Record<BuildingId, number> = {
+    keep: state.offlineLevel,
+    garrison: state.barracksLevel,
+    forge: 0,
+    lodge: state.lodgeLevel,
+    outpost: state.postLevel,
+    librarium: 0,
+    housing: 0,
+    wizard: 0,
+    tower_east: 0,
+    tower_west: 0,
+  }
+  const plots: CityPlot[] = (Object.keys(LEVELS) as BuildingId[]).map((id) => {
+    const b = buildings[id]
+    const comingSoon = comingSoonIds.includes(id)
+    return {
+      id,
+      name: b.name,
+      detail: !b.isBuilt && !comingSoon && b.cost !== null ? `${b.cost} renown` : undefined,
+      look: {
+        visible: b.visible,
+        built: b.isBuilt,
+        level: LEVELS[id],
+        maxed: id === 'keep' && state.offlineLevel >= MAX_OFFLINE_LEVEL,
+        lit: id === 'forge' && state.armoryGear.swords + state.armoryGear.shields > 0,
+        canAfford: !b.isBuilt && b.canAfford,
+        hasAction: b.hasAction,
+        comingSoon,
+      },
+    }
+  })
+
+  const handleNodePress = (id: CityBuildingId) => {
     const b = buildings[id]
     if (!b?.visible) return // fog: nothing to open yet
     haptics.selection()
@@ -541,93 +413,13 @@ export function ShopScreen() {
         contentContainerStyle={mapStyles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* City title */}
-        <Text variant="h2" style={mapStyles.cityTitle}>Draconia</Text>
-
-        {/* === ZONE: THE KEEP === */}
-        <View style={mapStyles.zone}>
-          <ZoneHeader label="THE KEEP" />
-          <View style={mapStyles.zoneNodesCenter}>
-            <BuildingNode
-              building={buildings.keep}
-              onPress={() => handleNodePress('keep')}
-            />
-          </View>
-        </View>
-
-        <ZonePath />
-
-        {/* === ZONE: INNER WARD === */}
-        <View style={mapStyles.zone}>
-          <ZoneHeader label="INNER WARD" />
-          <View style={mapStyles.zoneNodesRow}>
-            <BuildingNode
-              building={buildings.housing}
-              onPress={() => handleNodePress('housing')}
-            />
-            <BuildingNode
-              building={buildings.librarium}
-              onPress={() => handleNodePress('librarium')}
-            />
-            <BuildingNode
-              building={buildings.wizard}
-              onPress={() => handleNodePress('wizard')}
-            />
-          </View>
-        </View>
-
-        <ZonePath />
-
-        {/* === ZONE: CRAFT WARD === */}
-        <View style={mapStyles.zone}>
-          <ZoneHeader label="CRAFT WARD" />
-          <View style={mapStyles.zoneNodesRow}>
-            <BuildingNode
-              building={buildings.forge}
-              onPress={() => handleNodePress('forge')}
-            />
-            <BuildingNode
-              building={buildings.lodge}
-              onPress={() => handleNodePress('lodge')}
-            />
-          </View>
-        </View>
-
-        <ZonePath />
-
-        {/* === ZONE: OUTER WARD === */}
-        <View style={mapStyles.zone}>
-          <ZoneHeader label="OUTER WARD" />
-          <View style={mapStyles.zoneNodesRow}>
-            <BuildingNode
-              building={buildings.garrison}
-              onPress={() => handleNodePress('garrison')}
-              coachId="garrison"
-              scrollIntoView={scrollTargetIntoView}
-            />
-            <BuildingNode
-              building={buildings.outpost}
-              onPress={() => handleNodePress('outpost')}
-            />
-          </View>
-        </View>
-
-        <ZonePath />
-
-        {/* === ZONE: CITY EDGE === */}
-        <View style={mapStyles.zone}>
-          <ZoneHeader label="CITY EDGE" />
-          <View style={mapStyles.zoneNodesRow}>
-            <BuildingNode
-              building={buildings.tower_east}
-              onPress={() => handleNodePress('tower_east')}
-            />
-            <BuildingNode
-              building={buildings.tower_west}
-              onPress={() => handleNodePress('tower_west')}
-            />
-          </View>
-        </View>
+        <CityMap
+          plots={plots}
+          unit={unit}
+          onPress={handleNodePress}
+          coachIds={{ garrison: 'garrison' }}
+          scrollIntoView={scrollTargetIntoView}
+        />
       </ScrollView>
 
       {/* Purchase confirmation for unbuilt buildings */}

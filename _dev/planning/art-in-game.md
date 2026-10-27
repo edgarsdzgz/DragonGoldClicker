@@ -132,3 +132,10 @@ the rest; swap art in as it arrives; the city map replaces the card list.
   mobs batch settled: double scale. A16, idle Warfront, 20 s: frames drawn 1,209 -> 201 (the old
   breathing animation is gone), median frame 9 -> 12 ms, 90th 11 -> 17 ms; the performance pass
   looks into the per-frame cost.
+- **Step 4, Draconia: built 2026-10-27.** The city map replaces the ward column: the base map at
+  the screen's width (scrolling), each building on its plot as fog until revealed, its ruin (or
+  cleared ground) until built, then its drawn tier for its level; the Keep is restored at its last
+  offline tier and the Forge's fire is lit once it has made gear. Markers: ready to build, or
+  something to do inside, also spoken. Names and costs under the plots. A dev-only City Preview
+  shows the map at three moments. `ZoneHeader` and `BuildingCard` are gone. Known: three labels
+  touch a neighbor's plot (Forge, Librarium, Garrison); cosmetic only.

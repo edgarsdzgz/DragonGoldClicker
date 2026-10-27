@@ -2,6 +2,15 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Pixel art in the game, step 4: Draconia (2026-10-27)
+- Draconia is the city map: the Keep at the top, buildings along the road, the city wall at the
+  bottom. Undiscovered plots are fog; revealed buildings stand in ruins until built, then show
+  their level (the Garrison at levels 1, 3 and 5, the Lodge at 1 and 3, the Outpost upgraded)
+- The Keep is restored at its last offline tier; the Forge's fire burns once it has made gear
+- A marker shows a building you can afford to build, or one with something to do inside; screen
+  readers hear both. Names and costs sit under the plots; tap a plot to open it as before
+- Dev: a City Preview in Settings shows the map at the start, middle and end of the game
+
 ### Pixel art in the game, step 3: the Warfront (2026-10-27)
 - The Warfront is the night map: blood moon, the horde's camp, the road, and the wall at the
   bottom with flickering torches. The gate shows the wall's HP: sound, cracking, failing, breached
