@@ -12,10 +12,14 @@ import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { HighlightBackdrop } from './HighlightBackdrop'
+import { SpeakerPortrait } from './SpeakerPortrait'
+import { SpeakerTag } from './SpeakerTag'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { useHaptics, useSfx } from '../hooks'
 import { SFX } from '../data/sfx'
 import { dialogPaging } from '../types/dialogPaging'
+import { lineMood } from '../types/cast'
+import type { CastId, Mood } from '../types/cast'
 
 /** Ignore a second press on Continue this soon after the first */
 const PRESS_GUARD_MS = 250
@@ -26,6 +30,12 @@ interface NpcDialogProps {
   visible: boolean
   npcName: string
   icon: GameIconName
+  /** Who speaks: their bust (in the line's mood) and sigil replace the icon */
+  who?: CastId
+  /** The speaker's face for the scene */
+  mood?: Mood
+  /** A face for one line, by its index */
+  lineMoods?: Partial<Record<number, Mood>>
   title: string
   lines: string[]
   dismissLabel?: string
@@ -42,6 +52,9 @@ export function NpcDialog({
   visible,
   npcName,
   icon,
+  who,
+  mood,
+  lineMoods,
   title,
   lines,
   dismissLabel = 'Continue',
@@ -148,14 +161,23 @@ export function NpcDialog({
           {/* Accent bar */}
           <View style={styles.accentBar} />
 
-          {/* NPC identity */}
+          {/* Who speaks: their bust and sigil, or an icon for a speaker without one */}
           <View style={styles.npcHeader}>
-            <View style={styles.npcIcon}>
-              <GameIcon name={icon} size={22} color={gold[400]} />
-            </View>
-            <Text variant="caption" style={styles.npcName}>
-              {npcName}
-            </Text>
+            {who ? (
+              <>
+                <SpeakerPortrait who={who} mood={lineMood(Math.min(page, pageCount - 1), mood, lineMoods)} />
+                <SpeakerTag who={who} name={npcName} textStyle={styles.npcName} />
+              </>
+            ) : (
+              <>
+                <View style={styles.npcIcon}>
+                  <GameIcon name={icon} size={22} color={gold[400]} />
+                </View>
+                <Text variant="caption" style={styles.npcName}>
+                  {npcName}
+                </Text>
+              </>
+            )}
           </View>
 
           {/* Content */}

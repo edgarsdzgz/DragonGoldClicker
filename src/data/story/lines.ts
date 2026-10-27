@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import type { Ionicons } from '@expo/vector-icons'
 import type { BeatId } from '../../types/story'
+import type { CastId, Mood } from '../../types/cast'
 
 // =============================================================================
 // SCENE TEXT (prose only; triggers and unlocks live in types/story.ts)
@@ -13,7 +14,13 @@ export type SceneTab = 'GameTab' | 'ForageTab' | 'DraconiaTab'
 
 export interface SceneDef {
   speaker: string
+  /** Who speaks: their bust (or the Gate's emblem) and sigil head the scene */
+  who: CastId
   icon: IconName
+  /** The speaker's face for the whole scene; neutral when omitted */
+  mood?: Mood
+  /** A face for one line (by its index), over the scene's */
+  lineMoods?: Partial<Record<number, Mood>>
   title: string
   lines: string[]
   /** Lines used instead when the beat's `altScene` says so */
@@ -26,11 +33,11 @@ export interface SceneDef {
   highlight?: string
 }
 
-const PYRETH = { speaker: 'Elder Pyreth', icon: 'person' } as const
-const RODAIN = { speaker: 'Captain Rodain', icon: 'shield' } as const
-const MIRAEL = { speaker: 'Scout Mirael', icon: 'compass' } as const
-const KAEL = { speaker: 'Kael Ironwright', icon: 'hammer' } as const
-const LIRAE = { speaker: 'Lirae the Ink-Wing', icon: 'book' } as const
+const PYRETH = { speaker: 'Elder Pyreth', who: 'pyreth', icon: 'person' } as const
+const RODAIN = { speaker: 'Captain Rodain', who: 'rodain', icon: 'shield' } as const
+const MIRAEL = { speaker: 'Scout Mirael', who: 'mirael', icon: 'compass' } as const
+const KAEL = { speaker: 'Kael Ironwright', who: 'kael', icon: 'hammer' } as const
+const LIRAE = { speaker: 'Lirae the Ink-Wing', who: 'lirae', icon: 'book' } as const
 
 /** Silent beats (mend_the_walls, the_keep_stands) have no scene and no entry here */
 export const SCENES: Partial<Record<BeatId, SceneDef>> = {
@@ -38,6 +45,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   // the last line ("The first wave is coming...").
   prologue: {
     speaker: 'The Gate of Draconia',
+    who: 'gate',
     icon: 'flame',
     title: 'The Last Bastion',
     lines: [
@@ -120,6 +128,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   strangers_at_gate: {
     ...MIRAEL,
     title: 'A Stranger on the Road',
+    lineMoods: { 0: 'alarmed' },
     lines: [
       'A traveler on the east road, alone and half-starved.',
       'Every soul we take in must be fed the day they arrive, and every one is another pair of hands. The choice is yours.',
@@ -221,6 +230,7 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
     {
       ...RODAIN,
       title: 'The Wall Falls',
+      mood: 'grieving',
       lines: [
         'The wall is down! They are in the streets!',
         'Every hand that can hold a blade is fighting: villagers, fighters, menders. We are losing them, Steward.',
@@ -229,6 +239,7 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
     {
       ...PYRETH,
       title: 'The Ancient Magic',
+      mood: 'grieving',
       lines: [
         'My lord, there is one thing left. The elders keep the ancient magic of Draconia for this hour, and this hour only.',
         'It is woken with what we hold dear: our stores, our standing, and your renown.',
@@ -241,11 +252,13 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
     {
       ...RODAIN,
       title: 'The Wall Falls',
+      mood: 'grieving',
       lines: ['The wall is down again! They are in the streets!'],
     },
     {
       ...PYRETH,
       title: 'The Ancient Magic',
+      mood: 'grieving',
       lines: ['Once more the ancient magic answers, my lord, and once more Draconia pays for it.'],
       dismissLabel: 'Count the cost',
     },

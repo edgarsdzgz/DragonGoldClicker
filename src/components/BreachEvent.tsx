@@ -29,6 +29,9 @@ export function BreachEvent({ visible, report, onDone }: BreachEventProps) {
         visible={visible}
         npcName={scene.speaker}
         icon={scene.icon}
+        who={scene.who}
+        mood={scene.mood}
+        lineMoods={scene.lineMoods}
         title={scene.title}
         lines={scene.lines}
         dismissLabel={scene.dismissLabel}

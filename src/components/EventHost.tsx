@@ -80,6 +80,9 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
           visible={activeModal === 'scene'}
           npcName={scene.speaker}
           icon={scene.icon}
+          who={scene.who}
+          mood={scene.mood}
+          lineMoods={scene.lineMoods}
           title={scene.title}
           lines={queued?.alt && scene.altLines ? scene.altLines : scene.lines}
           dismissLabel={scene.dismissLabel}

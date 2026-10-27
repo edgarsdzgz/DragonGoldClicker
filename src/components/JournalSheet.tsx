@@ -6,6 +6,7 @@ import { PillTabs } from './PillTabs'
 import type { PillTab } from './PillTabs'
 import { Surface } from './Surface'
 import { Text } from './Text'
+import { SpeakerTag } from './SpeakerTag'
 import { useGame } from '../context/GameContext'
 import { useJournal } from '../context/JournalContext'
 import { getStoryEntries, getHowItWorks, isLoreUnlocked, getLoreLines } from '../data/story/journal'
@@ -91,7 +92,7 @@ function StoryTab() {
     <>
       {entries.map(({ id, scene }) => (
         <Surface key={id} level={2} style={styles.card}>
-          <Text variant="caption" style={styles.speaker}>{scene.speaker.toUpperCase()}</Text>
+          <SpeakerTag who={scene.who} name={scene.speaker.toUpperCase()} textStyle={styles.speaker} />
           <Text variant="h3">{scene.title}</Text>
           {scene.lines.map((line, i) => (
             <Text key={i} variant="bodySmall" color="secondary" style={styles.line}>{line}</Text>
@@ -120,7 +121,7 @@ function LoreTab() {
   return (
     <>
       <Surface level={2} style={styles.card}>
-        <Text variant="caption" style={styles.speaker}>LIRAE THE INK-WING</Text>
+        <SpeakerTag who="lirae" name="LIRAE THE INK-WING" textStyle={styles.speaker} />
         {getLoreLines().map((line, i) => (
           <Text key={i} variant="bodySmall" color="secondary" style={styles.line}>{line}</Text>
         ))}
