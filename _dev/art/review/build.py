@@ -23,7 +23,7 @@ PENDING = ("The thirteen research studies, and Villagers and Train as townsfolk 
     ('13-research/out/icon_res_weak_points.png', 'Weak Points'),
     ('13-research/out/icon_res_wyrms_fury.png', "Wyrm's Fury"),
     ('13-research/out/icon_res_drill_tactics.png', 'Drill Tactics'),
-    ('13-research/out/icon_res_tempered_steel.png', 'Tempered Steel'),
+    ('17-gems-hammer/out/icon_res_steel_hammer_front_big.png', 'Tempered Steel (hammer and anvil)'),
     ('13-research/out/icon_res_battle_drill.png', 'Battle Drill'),
     ('13-research/out/icon_res_rationing.png', 'Rationing'),
     ('13-research/out/icon_res_lean_rations.png', 'Lean Rations'),

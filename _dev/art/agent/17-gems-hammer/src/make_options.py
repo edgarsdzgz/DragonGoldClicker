@@ -165,6 +165,19 @@ for name, ha, hb, center, desc in [
                     "a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4 D=wood2",
                     ground_hammer(ha, hb, center)))
 
+# D: A's layout (the hammer lying flat in front of the anvil) with B's big head, squared off into a
+# rectangle: three wide, five tall, standing on the ground; the handle along the ground.
+cells = anvil(1, -1)
+head = {(x, y) for x in range(1, 4) for y in range(6, 11)}
+handle = line(4.2, 8.5, 10.4, 8.5, 0.55)
+colors = {}
+for x, y in head:  # lit top and left face, shaded right face, as on B's head
+    colors[(x, y)] = "H" if (y == 6 or x == 1) else ("S" if x == 3 else "M")
+colors.update({p: "w" for p in handle})
+over(cells, head | handle, colors)
+options.append(("steel_hammer_front_big", "Tempered Steel: the hammer lying in front of the anvil, with B's big rectangular head",
+                "a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4", outlined(cells)))
+
 lines = ["# Gems and hammer options, 2026-10-26. Written by make_options.py."]
 for name, desc, key, rows in options:
     assert len(rows) == N and all(len(r) == N for r in rows), (name, [len(r) for r in rows])

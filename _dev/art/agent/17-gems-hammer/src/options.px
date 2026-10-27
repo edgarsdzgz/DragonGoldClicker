@@ -379,3 +379,22 @@ aHHMwwassssa
 .aSSSa......
 ..aSSa......
 ...aa.......
+
+# Tempered Steel: the hammer lying in front of the anvil, with B's big rectangular head
+@asset icon_res_steel_hammer_front_big
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4
+frame
+............
+..aaaaaaaaa.
+.ahhhhhhhhha
+..aammmmmmsa
+....ammmsaa.
+.aaaammmsaa.
+aHHHammmmmsa
+aHMSaaaaaaaa
+aHMSwwwwwwwa
+aHMSaaaaaaa.
+aHMSa.......
+.aaa........

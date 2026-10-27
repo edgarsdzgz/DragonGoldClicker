@@ -310,5 +310,18 @@
    "single-pixel island at 10,2",
    "single-pixel island at 7,5"
   ]
+ },
+ {
+  "name": "icon_res_steel_hammer_front_big",
+  "file": "icon_res_steel_hammer_front_big.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
  }
 ]
