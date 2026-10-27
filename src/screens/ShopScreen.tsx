@@ -494,10 +494,11 @@ export function ShopScreen() {
   const comingSoonIds: BuildingId[] = ['housing', 'wizard', 'tower_east', 'tower_west']
 
   // Guided tutorial: tell it when the Garrison sheet is open, and scroll a target into view
-  const { registry: coachRegistry, setGarrisonSheetOpen } = useCoach()
+  const { registry: coachRegistry, setSheetOpen } = useCoach()
   React.useEffect(() => {
-    setGarrisonSheetOpen(purchaseTarget === 'garrison')
-  }, [purchaseTarget, setGarrisonSheetOpen])
+    setSheetOpen('garrison', purchaseTarget === 'garrison')
+    return () => setSheetOpen('garrison', false)
+  }, [purchaseTarget, setSheetOpen])
   const scrollRef = React.useRef<ScrollView>(null)
   const scrollY = React.useRef(0)
   const scrollTargetIntoView = (rect: Rect) => {

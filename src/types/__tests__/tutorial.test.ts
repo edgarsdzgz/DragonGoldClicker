@@ -37,10 +37,10 @@ describe('getActiveStep', () => {
     expect(getActiveStep(s)?.id).toBe('tap_slay')
   })
 
-  it('has the ten steps in order: foraging before Repair, then the claws', () => {
+  it('has the eleven steps in order: foraging before Repair, then the claws', () => {
     expect(TUTORIAL_STEPS.map((t) => t.id)).toEqual([
       'tap_slay', 'tap_rally', 'open_forage', 'tap_forage', 'train_gatherer',
-      'tap_repair', 'sharpen_claws', 'open_draconia', 'tap_garrison', 'build_garrison',
+      'tap_repair', 'open_claws', 'sharpen_claws', 'open_draconia', 'tap_garrison', 'build_garrison',
     ])
   })
 
@@ -67,7 +67,16 @@ describe('isStepComplete', () => {
   it('completes tab and sheet steps from the UI', () => {
     expect(isStepComplete(step('open_forage'), make({}), EMPTY_TUTORIAL_UI)).toBe(false)
     expect(isStepComplete(step('open_forage'), make({}), { ...EMPTY_TUTORIAL_UI, focusedTab: 'ForageTab' })).toBe(true)
-    expect(isStepComplete(step('tap_garrison'), make({}), { ...EMPTY_TUTORIAL_UI, garrisonSheetOpen: true })).toBe(true)
+    expect(isStepComplete(step('tap_garrison'), make({}), { ...EMPTY_TUTORIAL_UI, openSheet: 'garrison' })).toBe(true)
+  })
+
+  it('the claws are two steps: open the sheet, then a hole on its Sharpen button', () => {
+    expect(isStepComplete(step('open_claws'), make({}), { ...EMPTY_TUTORIAL_UI, openSheet: 'garrison' })).toBe(false)
+    expect(isStepComplete(step('open_claws'), make({}), { ...EMPTY_TUTORIAL_UI, openSheet: 'claws' })).toBe(true)
+    expect(isStepComplete(step('sharpen_claws'), make({}), { ...EMPTY_TUTORIAL_UI, openSheet: 'claws' })).toBe(false)
+    expect(step('sharpen_claws').target).toBe('claws_sharpen')
+    // A save that already sharpened clears the new step at once
+    expect(isStepComplete(step('open_claws'), make({ clawLevel: 1 }), EMPTY_TUTORIAL_UI)).toBe(true)
   })
 })
 

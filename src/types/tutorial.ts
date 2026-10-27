@@ -16,18 +16,22 @@ export type TutorialStepId =
   | 'open_forage'
   | 'tap_forage'
   | 'train_gatherer'
+  | 'open_claws'
   | 'sharpen_claws'
   | 'open_draconia'
   | 'tap_garrison'
   | 'build_garrison'
 
-/** Things only the UI knows (not saved): which tab is showing, whether a sheet is open */
+/** Sheets the tutorial waits on: the Garrison's build sheet and the claws sheet */
+export type TutorialSheet = 'garrison' | 'claws'
+
+/** Things only the UI knows (not saved): which tab is showing, which sheet is open */
 export interface TutorialUi {
   focusedTab: string | null
-  garrisonSheetOpen: boolean
+  openSheet: TutorialSheet | null
 }
 
-export const EMPTY_TUTORIAL_UI: TutorialUi = { focusedTab: null, garrisonSheetOpen: false }
+export const EMPTY_TUTORIAL_UI: TutorialUi = { focusedTab: null, openSheet: null }
 
 export interface TutorialStep {
   id: TutorialStepId
@@ -92,8 +96,17 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     cost: (s) => getRepairerCost(s.repairersDirected),
   },
   {
-    id: 'sharpen_claws', afterBeat: 'sharpen_claws', target: 'claws',
-    hint: 'Tap your claws to sharpen them.',
+    // The claws sheet is drawn in the screen's own layer, under this overlay, so opening it
+    // and sharpening are two steps: a hole on the chip would sit on the open sheet's track
+    id: 'open_claws', afterBeat: 'sharpen_claws', target: 'claws',
+    hint: 'Tap your claws.',
+    isDone: (s) => s.clawLevel >= 1,
+    doneUi: (ui) => ui.openSheet === 'claws',
+    cost: (s) => nextClaw(s.clawLevel)?.cost ?? 0,
+  },
+  {
+    id: 'sharpen_claws', afterBeat: 'sharpen_claws', target: 'claws_sharpen',
+    hint: 'Sharpen your claws.',
     isDone: (s) => s.clawLevel >= 1,
     cost: (s) => nextClaw(s.clawLevel)?.cost ?? 0,
   },
@@ -107,7 +120,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     id: 'tap_garrison', afterBeat: 'a_city_to_build', target: 'garrison',
     hint: 'Tap the Garrison.',
     isDone: (s) => s.barracksLevel >= 1,
-    doneUi: (ui) => ui.garrisonSheetOpen,
+    doneUi: (ui) => ui.openSheet === 'garrison',
   },
   {
     id: 'build_garrison', afterBeat: 'a_city_to_build', target: 'garrison_build', inModal: true,

@@ -8,6 +8,7 @@ import { ResourceBar } from '../components/ResourceBar'
 import { Battlefield } from '../components/Battlefield'
 import type { BattlefieldHandle, StrikeShown } from '../components/Battlefield'
 import { useGame } from '../context/GameContext'
+import { useCoach } from '../context/CoachContext'
 import { useShakeRequest } from '../context/ShakeContext'
 import { useScreenShake } from '../hooks/useScreenShake'
 import { useFlavorText } from '../hooks/useFlavorText'
@@ -116,6 +117,12 @@ export function GameScreen() {
   const showDetails = showFooter && reveal.details
   const claws = clawDef(state.clawLevel)
   const [clawsOpen, setClawsOpen] = useState(false)
+  // Guided tutorial: the Sharpen step waits for the claws sheet to open
+  const { setSheetOpen } = useCoach()
+  useEffect(() => {
+    setSheetOpen('claws', clawsOpen)
+    return () => setSheetOpen('claws', false)
+  }, [clawsOpen, setSheetOpen])
   const playSharpen = useSfx(SFX.COIN)
   // Feedback follows the rule checked before the action (an action's own report is not reliable)
   const handleSharpen = useCallback(() => {

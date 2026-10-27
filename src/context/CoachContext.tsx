@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useRef, useState,
 import { useGame } from './GameContext'
 import { CoachRegistry } from './coachRegistry'
 import { getActiveStep, isStepComplete, EMPTY_TUTORIAL_UI } from '../types/tutorial'
-import type { TutorialStep, TutorialUi } from '../types/tutorial'
+import type { TutorialStep, TutorialUi, TutorialSheet } from '../types/tutorial'
 
 /**
  * Drives the guided tutorial. Knows which step is active, completes it when its
@@ -14,7 +14,8 @@ interface CoachContextType {
   registry: CoachRegistry
   activeStep: TutorialStep | null
   setFocusedTab: (tab: string) => void
-  setGarrisonSheetOpen: (open: boolean) => void
+  /** Tell the tutorial a sheet opened or closed (closing another sheet leaves this one be) */
+  setSheetOpen: (sheet: TutorialSheet, open: boolean) => void
 }
 
 const CoachContext = createContext<CoachContextType | null>(null)
@@ -35,13 +36,16 @@ export function CoachProvider({ children }: { children: React.ReactNode }) {
   const setFocusedTab = useCallback((tab: string) => {
     setUi((prev) => (prev.focusedTab === tab ? prev : { ...prev, focusedTab: tab }))
   }, [])
-  const setGarrisonSheetOpen = useCallback((open: boolean) => {
-    setUi((prev) => (prev.garrisonSheetOpen === open ? prev : { ...prev, garrisonSheetOpen: open }))
+  const setSheetOpen = useCallback((sheet: TutorialSheet, open: boolean) => {
+    setUi((prev) => {
+      const next = open ? sheet : prev.openSheet === sheet ? null : prev.openSheet
+      return prev.openSheet === next ? prev : { ...prev, openSheet: next }
+    })
   }, [])
 
   const value = useMemo(
-    () => ({ registry, activeStep, setFocusedTab, setGarrisonSheetOpen }),
-    [registry, activeStep, setFocusedTab, setGarrisonSheetOpen],
+    () => ({ registry, activeStep, setFocusedTab, setSheetOpen }),
+    [registry, activeStep, setFocusedTab, setSheetOpen],
   )
   return <CoachContext.Provider value={value}>{children}</CoachContext.Provider>
 }

@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { BottomSheet } from './BottomSheet'
 import { Button } from './Button'
 import { Text } from './Text'
+import { CoachTarget } from './CoachTarget'
 import { CLAWS, MAX_CLAW_LEVEL, clawDef, nextClaw } from '../types/claws'
 import { formatNumber } from '../types/state'
 import { colors, spacing, radius, gold, dark } from '../theme'
@@ -53,9 +54,11 @@ export function ClawsSheet({ visible, onClose, level, renown, reforge, onSharpen
               ? 'Harder strikes kill faster and earn more renown with every tap.'
               : `Needs ${formatNumber(next.cost)} renown. You have ${formatNumber(renown)}.`}
           </Text>
-          <Button onPress={onSharpen} disabled={!affordable} icon={reforging ? 'hammer' : 'flash'} fullWidth>
-            {`${reforging ? 'Reforge' : 'Sharpen'} for ${formatNumber(next.cost)} renown`}
-          </Button>
+          <CoachTarget id="claws_sharpen">
+            <Button onPress={onSharpen} disabled={!affordable} icon={reforging ? 'hammer' : 'flash'} fullWidth>
+              {`${reforging ? 'Reforge' : 'Sharpen'} for ${formatNumber(next.cost)} renown`}
+            </Button>
+          </CoachTarget>
         </View>
       ) : (
         <Text variant="body" style={styles.next}>Your claws are Ancient. Kael's forge may yet make them sharper.</Text>

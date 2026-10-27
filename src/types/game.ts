@@ -198,5 +198,5 @@ export { STORY_BEATS, getBeat } from './story'
 export type { StoryPacing } from './storyDirector'
 export { findNextBeat, effectiveDwell, TEST_DWELL_CAP_SEC } from './storyDirector'
 
-export type { TutorialStep, TutorialStepId, TutorialUi } from './tutorial'
+export type { TutorialStep, TutorialStepId, TutorialUi, TutorialSheet } from './tutorial'
 export { TUTORIAL_STEPS, EMPTY_TUTORIAL_UI, getActiveStep, isStepComplete, backfillTutorial } from './tutorial'
