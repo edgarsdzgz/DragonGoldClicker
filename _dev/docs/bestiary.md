@@ -84,8 +84,9 @@ One big monster at a time, at the head of a wave.
 | Forge-Master of the Inferno | A cult leader in a melted forge-apron, a hammer that glows | The Flame-Touched Cultists' leader |
 | Corrupted Wyvern | A wyvern cracked and darkened by the Unmaking | Large enemies |
 
-The Corrupted Wyvern and the Ember Wraith are dragon-kin. Whether the Unmaking can take dragons is a
-story question for me to settle.
+The Corrupted Wyvern and the Ember Wraith are dragon-kin. Settled 2026-10-27: the Unmaking can take
+dragons. They are drawn clearly monstrous and cracked, so they never read like the player or the friendly
+dragons.
 
 ## Waiting on a new battlefield
 
@@ -95,7 +96,7 @@ story question for me to settle.
 | Storm Rider | Mounted on the wind; needs riders or fliers |
 | Windcaller | A wind mage; casts from a distance |
 
-## My next picks
+## Drawn
 
-Not decided yet. A first set that would add the most variety: Giant Rat, Goblin Archer, Shield Bearer,
-Beetle Guard, Wraith, Ashen Convert, and the Stone Golem as the second boss.
+All eighteen candidates above were drawn in batch `44-bestiary` (2026-10-27), with every monster shaded
+like the busts (the six in the game redone as v2).
