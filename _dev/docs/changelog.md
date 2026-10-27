@@ -2,6 +2,15 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Security: Android permissions and the store build (2026-10-27)
+- The game no longer asks for the microphone, to draw over other apps, shared storage, or the
+  media foreground service; none was used (app.json android.blockedPermissions, and the audio
+  plugin's recording turned off). Left: internet, network state, audio settings, vibration
+- `scripts/build-android.ps1 -Kind playtest|store`: playtest APKs carry the dev tools, store
+  bundles (.aab) never do. The JS bundle is rebuilt every time (Gradle would otherwise reuse a
+  playtest one in a store build), the permissions are checked against the expected list, and it
+  warns while release builds are still signed with the debug key (Google Play needs an upload key)
+
 ### Warfront: the life bar alone; damage in Stats (2026-10-27)
 - The monster's life bar no longer shows "5 / 5": the bar says it (screen readers still hear the HP)
 - The line under the wall (monsters slain, damage per tap, army damage/s) moved to Settings, Stats,
