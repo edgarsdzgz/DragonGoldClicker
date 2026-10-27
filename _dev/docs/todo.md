@@ -5,14 +5,20 @@ What I still want made for Draconia Chronicles, as of 2026-10-27. The art librar
 
 ## Art
 
-- [ ] **City light levels.** The city should brighten as I rebuild it: night, dusk, lit. The night and
-      dusk palette maps exist and were previewed on the base map in Batch 2, but the darker map versions
-      were never locked or wired in. v1 on the board: `_dev/art/agent/34-city-light/` (awaiting review).
-- [ ] **Story illustrations** (optional): the prologue, and the Breach. v1 on the board: `37-story/`.
-- [ ] **Building interior headers** (optional): a picture at the top of each building's screen. v1 on the
-      board: `36-interiors/`.
-- [ ] **Five more busts**, once their scenes are written: Varn, Ashara, Thornwick, Sera, the Hollow Knight.
-      Same style as the locked simpler busts (22x23, shown at x2). v1 on the board: `35-busts-more/`.
+Locked 2026-10-27 and imported, not yet shown in the game: the city light levels (night, dusk), the
+story pictures (prologue, the Breach), the building interior headers, and the busts of Varn, Ashara,
+Thornwick, Sera and the Hollow Knight.
+
+- [ ] **Sigils for the five new busts.** Every named character has a heraldic sigil on their dialog name
+      tag (`official/cast/cast_sigil-*`); Varn, Ashara, Thornwick, Sera and the Hollow Knight have none.
+- [ ] **Two study icons:** Cartography and Keen Scouts (Wilds) still fall back to glyphs; the other 13
+      studies have `icon_res_*`.
+- [ ] **Six interface icons still drawn as glyphs:** warning (confirm dialog), wallet (Shop, Settings),
+      business (Shop), hand-left (Settings, wanderer dialog), speedometer and phone-portrait (Settings).
+- [ ] **The Minotaur boss** (when a boss exists in the code): only its idle is drawn; it needs walk, hit,
+      hurt, death and the Unmaking tiers like the other monsters.
+- [ ] **Second expressions for the busts** (optional, when scenes call for them): angry, grieving.
+- [ ] **More story illustrations** (optional): the other 17 scenes use busts today.
 - [ ] **The dragon, last**, from the commissioned artist: portrait, perch, victory pose, head token, idle
       loop, fireball attack, the fireball and critical fireball, upgrade looks (claws, fangs, armor, horns).
 
