@@ -27,13 +27,23 @@ GROUPS = [
 ]
 
 
-def monster(mid, name, note):
+def full_set(mid, out, preview, tag=""):
     n = f"mob_{mid}"
-    return section(name, note, [
-        fig(OUT / f"{n}_idle.png", 5, "idle"), fig(OUT / f"{n}_hit.png", 5, "hit"),
-        fig(OUT / f"{n}_hurt.png", 5, "hurt"), gif_fig(PREVIEW / f"{n}_walk.gif", 1, "walk"),
-        gif_fig(PREVIEW / f"{n}_death.gif", 1, "death"),
-        fig(OUT / f"{n}-strong_idle.png", 5, "strong"), fig(OUT / f"{n}-stronger_idle.png", 5, "stronger")])
+    return [fig(out / f"{n}_idle.png", 5, f"{tag}idle"), fig(out / f"{n}_hit.png", 5, f"{tag}hit"),
+            fig(out / f"{n}_hurt.png", 5, f"{tag}hurt"), gif_fig(preview / f"{n}_walk.gif", 1, f"{tag}walk"),
+            gif_fig(preview / f"{n}_death.gif", 1, f"{tag}death"),
+            fig(out / f"{n}-strong_idle.png", 5, f"{tag}strong"), fig(out / f"{n}-stronger_idle.png", 5, f"{tag}stronger")]
+
+
+def monster(mid, name, note):
+    if mid != "lich":
+        return section(name, note, full_set(mid, OUT, PREVIEW))
+    note += (" v2 (owner: v1 looked too alive): v2a, the first row, is cold gray bone; v2b, the second, is corpse "
+             "gray-green. Both have sunken cheeks. v1's warm bone at the end, for comparison.")
+    return section(name, note, full_set(mid, OUT, PREVIEW, "v2a ") +
+                   full_set(mid, OUT / "lich_v2b", PREVIEW / "lich_v2b", "v2b ") +
+                   [fig(OUT / "lich_v1" / "mob_lich_idle.png", 5, "v1"),
+                    fig(OUT / "lich_v1" / "mob_lich-stronger_idle.png", 5, "v1 stronger")])
 
 
 sections = []

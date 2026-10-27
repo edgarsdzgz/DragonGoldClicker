@@ -99,8 +99,12 @@ def corrupted_drake():
          [(18, 13), (17, 14), (18, 15), (17, 16)], [(9, 16), (10, 17), (11, 17)], [(3, 16), (4, 17), (4, 18)]], False
 
 
-def lich():
-    """The master of the risen dead: a crowned skull in a high-collared robe, a staff with a pale green orb."""
+def lich(skin="steel3", hollow="steel2"):
+    """The master of the risen dead: a crowned skull in a high-collared robe, a staff with a pale green orb.
+
+    v2 (owner: "they look too alive, they should look more undead"): v1's warm bone (parch3) read as a pale
+    living face. v2a is cold gray bone, v2b corpse gray-green; both with sunken cheeks in the darker step.
+    """
     c = Canvas(20, 25)
     c.rect(16, 0, 18, 2, "o")
     c.clear([(16, 0), (18, 0), (16, 2), (18, 2)])
@@ -114,6 +118,7 @@ def lich():
     c.pts([(8, 5), (11, 5)], "e")
     c.pts([(9, 6), (10, 6)], "a")
     c.pts([(8, 7), (10, 7)], "a")
+    c.pts([(7, 5), (7, 6), (12, 5), (12, 6)], "h")
     c.rect(5, 3, 6, 8, "R", sym=True)
     c.rect(5, 8, 14, 8, "R")
     c.rect(4, 9, 15, 22, "R")
@@ -127,8 +132,8 @@ def lich():
     c.pts([(0, 5), (1, 4), (2, 5), (1, 6)], "o")
     c.rect(15, 9, 16, 12, "R")
     c.px(16, 13, "K")
-    key = {"o": "teal3", "O": "teal4", "b": "parch2", "c": "gold3", "K": "parch3", "d": "night1", "e": "gold5",
-           "a": "ink", "R": "night2", "r": "night3"}
+    key = {"o": "teal3", "O": "teal4", "b": "parch2", "c": "gold3", "K": skin, "h": hollow, "d": "night1",
+           "e": "gold5", "a": "ink", "R": "night2", "r": "night3"}
     return c.rows(), key, pose(14, "night2", "night1", [(6, 19), (14, 13)], lambda x, y: x >= 17 and y <= 5), \
         [[(10, 3), (10, 4), (9, 5)], [(5, 10), (6, 11), (6, 12), (5, 13)], [(13, 15), (14, 16), (13, 17), (14, 18)],
          [(9, 17), (10, 18), (10, 19), (9, 20)], [(2, 10), (3, 11), (2, 12)]], False
