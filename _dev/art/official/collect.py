@@ -283,6 +283,21 @@ ASSETS = [
     ("icons/icon_heartstone_flicker_strip4.png", AGENT / "32-heartstone/out/icon_heartstone-teardrop-flame_12_flicker_strip4.png", "The heartstone, its flame flickering, 12x12 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms)", "heartstone v3"),
     ("icons/icon_heartstone_16.png", AGENT / "32-heartstone/out/icon_heartstone-teardrop-flame_16.png", "The heartstone, 16x16", "heartstone v3"),
     ("icons/icon_heartstone_16_flicker_strip4.png", AGENT / "32-heartstone/out/icon_heartstone-teardrop-flame_16_flicker_strip4.png", "The heartstone, its flame flickering, 16x16 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms)", "heartstone v3"),
+    ("mobs/mob_kobold_death_strip4.png", AGENT / "33-mob-deaths/out/mob_kobold_death_strip4.png", "Kobold: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_goblin_death_strip4.png", AGENT / "33-mob-deaths/out/mob_goblin_death_strip4.png", "Goblin: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_crawler_death_strip4.png", AGENT / "33-mob-deaths/out/mob_crawler_death_strip4.png", "Shadow Crawler: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_orc_death_strip4.png", AGENT / "33-mob-deaths/out/mob_orc_death_strip4.png", "Orc: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_raider_death_strip4.png", AGENT / "33-mob-deaths/out/mob_raider_death_strip4.png", "Raider: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_kobold-strong_death_strip4.png", AGENT / "33-mob-deaths/out/mob_kobold-strong_death_strip4.png", "Kobold, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_goblin-strong_death_strip4.png", AGENT / "33-mob-deaths/out/mob_goblin-strong_death_strip4.png", "Goblin, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_crawler-strong_death_strip4.png", AGENT / "33-mob-deaths/out/mob_crawler-strong_death_strip4.png", "Shadow Crawler, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_orc-strong_death_strip4.png", AGENT / "33-mob-deaths/out/mob_orc-strong_death_strip4.png", "Orc, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_raider-strong_death_strip4.png", AGENT / "33-mob-deaths/out/mob_raider-strong_death_strip4.png", "Raider, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_kobold-stronger_death_strip4.png", AGENT / "33-mob-deaths/out/mob_kobold-stronger_death_strip4.png", "Kobold, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_goblin-stronger_death_strip4.png", AGENT / "33-mob-deaths/out/mob_goblin-stronger_death_strip4.png", "Goblin, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_crawler-stronger_death_strip4.png", AGENT / "33-mob-deaths/out/mob_crawler-stronger_death_strip4.png", "Shadow Crawler, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_orc-stronger_death_strip4.png", AGENT / "33-mob-deaths/out/mob_orc-stronger_death_strip4.png", "Orc, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
+    ("mobs/mob_raider-stronger_death_strip4.png", AGENT / "33-mob-deaths/out/mob_raider-stronger_death_strip4.png", "Raider, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
 ]
 
 rows = []
