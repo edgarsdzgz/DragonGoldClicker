@@ -1,0 +1,62 @@
+[
+ {
+  "name": "icon_tome_grimoire",
+  "file": "icon_tome_grimoire.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 2,2",
+   "single-pixel island at 9,2",
+   "single-pixel island at 9,7",
+   "single-pixel island at 8,8"
+  ]
+ },
+ {
+  "name": "icon_tome_ribbons",
+  "file": "icon_tome_ribbons.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,4",
+   "single-pixel island at 7,4"
+  ]
+ },
+ {
+  "name": "icon_tome_lectern",
+  "file": "icon_tome_lectern.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_tome_stack",
+  "file": "icon_tome_stack.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]

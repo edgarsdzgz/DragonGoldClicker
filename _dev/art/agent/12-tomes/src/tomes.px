@@ -1,0 +1,80 @@
+# Stats as a tome, 2026-10-26: four record books, each unlike the Librarium book (a closed purple
+# book seen from the spine side with a gold diamond) and the Journal scroll.
+# 12x12, ink outline, light from the upper left.
+
+# A: a floating grimoire, open: writing on the left page, a glowing trend on the right, sparkles above.
+@asset icon_tome_grimoire
+size 12 12
+budget 8
+key a=ink W=steel5 L=sea3 P=parch3 q=parch1 l=night3 B=sea2 C=sea1
+frame
+..a......a..
+.aLa....aLa.
+aLWLa..aLWLa
+.aLa....aLa.
+.aaaa..aaaa.
+aPPPPaaPPPPa
+aPllPqqPPPBa
+aPPPPqqPPBPa
+aPllPqqPBPPa
+aPPPPqqBPPPa
+aCCCCCCCCCCa
+.aaaaaaaaaa.
+
+# B: a closed record tome seen face-on: brown leather, gold corners and a gold ring sigil, and three
+# ribbon bookmarks hanging in rising lengths (sea, green, gold) like a hidden bar chart.
+@asset icon_tome_ribbons
+size 12 12
+budget 8
+key a=ink T=wood4 t=wood3 d=wood2 G=gold4 H=gold5 P=parch3 R=sea3 E=green3
+frame
+.aaaaaaaaaa.
+.aGTTTTTTGa.
+.aTttttttda.
+.aTttHHttda.
+.aTtHttHtda.
+.aTttHHttda.
+.aGddddddGa.
+.aPPPPPPPPa.
+.aaRaaEaaHa.
+...a.aEaaHa.
+......a.aHa.
+.........a..
+
+# C: the Chronicle on its lectern: an open book on a wooden stand, its right page in glowing ink.
+@asset icon_tome_lectern
+size 12 12
+budget 8
+key a=ink P=parch3 q=parch1 l=night3 b=sea2 C=sea1 W=wood4 D=wood2
+frame
+............
+.aaaa..aaaa.
+aPPPPaaPPPPa
+aPllPqqPbbPa
+aPPPPqqPPPPa
+aPllPqqPbbPa
+aCCCCCCCCCCa
+.aaaaWDaaaa.
+....aWDa....
+...aaWDaa...
+..aWWWWWDa..
+..aaaaaaaa..
+
+# D: a stack of three ledgers, an archive of records: green on sea on brown, gold bands, page ends.
+@asset icon_tome_stack
+size 12 12
+budget 8
+key a=ink E=green3 e=green2 B=sea3 b=sea2 W=wood4 w=wood3 g=gold4 P=parch3
+frame
+............
+...aaaaaa...
+..aEEEEEEa..
+..aegeegPa..
+..aeeeeePa..
+.aBBBBBBBBa.
+.abgbbbbgPa.
+.abbbbbbbPa.
+aWWWWWWWWWWa
+awgwwwwwwgPa
+awwwwwwwwwPa
+aaaaaaaaaaaa
