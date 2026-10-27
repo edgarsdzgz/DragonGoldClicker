@@ -44,7 +44,7 @@ import { makeForager as makeForagerState } from '../types/lodge'
 import { moveMany } from '../types/reassignment'
 import type { Gear } from '../types/forge'
 import { useStorage } from '../hooks/useStorage'
-import type { OfflineEarnings } from '../hooks/useStorage'
+import type { OfflineEarnings, LoadedGame } from '../hooks/useStorage'
 import { useGameLoop } from '../hooks/useGameLoop'
 
 interface GameContextType {
@@ -106,14 +106,20 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType | undefined>(undefined)
 
-export function GameProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<GameState>(DEFAULT_GAME_STATE)
-  const [loaded, setLoaded] = useState(false)
-  const [pendingOfflineEarnings, setPendingOfflineEarnings] = useState<OfflineEarnings | null>(null)
+export function GameProvider({ children, initial }: {
+  children: React.ReactNode
+  /** The game the title screen loaded; without it the provider reads the save itself */
+  initial?: LoadedGame
+}) {
+  const [state, setState] = useState<GameState>(initial?.state ?? DEFAULT_GAME_STATE)
+  const [loaded, setLoaded] = useState(initial !== undefined)
+  const [pendingOfflineEarnings, setPendingOfflineEarnings] = useState<OfflineEarnings | null>(initial?.offlineEarnings ?? null)
   const { save, load, clear } = useStorage()
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  const preloaded = useRef(initial !== undefined)
   useEffect(() => {
+    if (preloaded.current) return
     load().then((result) => {
       setState(result.state)
       if (result.offlineEarnings) {

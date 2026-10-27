@@ -15,13 +15,18 @@ interface SplashSequenceProps {
   still?: boolean
   /** Read by screen readers */
   label: string
-  /** Called once, when the splash ends or is skipped */
-  onDone: () => void
+  /** Called once, when the splash ends; `skipped` when the player tapped through it */
+  onDone: (skipped: boolean) => void
 }
 
 /** Share of the screen the art may fill */
 const FILL_W = 0.9
 const FILL_H = 0.8
+
+/** A splash's points per art pixel on this screen (the title screen holds the gate at the same size) */
+export function splashScale(width: number, height: number, timing: SheetTiming, ratio: number): number {
+  return Math.min(fitWhole(width * FILL_W, timing.frame_width, ratio), fitWhole(height * FILL_H, timing.frame_height, ratio))
+}
 
 /**
  * One full-screen splash animation, played frame by frame at its own timing. The first tap jumps
@@ -33,16 +38,17 @@ export function SplashSequence({ id, timing, from = 0, lastHoldMs, still = false
   const [phase, setPhase] = useState<SplashPhase>('playing')
   const { width, height } = useWindowDimensions()
   const ratio = PixelRatio.get()
-  const scale = Math.min(fitWhole(width * FILL_W, timing.frame_width, ratio), fitWhole(height * FILL_H, timing.frame_height, ratio))
+  const scale = splashScale(width, height, timing, ratio)
 
   // Kept in a ref so a parent re-render never restarts the timers
   const doneRef = useRef(onDone)
   doneRef.current = onDone
   const finished = useRef(false)
+  const skipped = useRef(false)
   const finish = () => {
     if (finished.current) return
     finished.current = true
-    doneRef.current()
+    doneRef.current(skipped.current)
   }
 
   useEffect(() => {
@@ -60,6 +66,7 @@ export function SplashSequence({ id, timing, from = 0, lastHoldMs, still = false
   }, [frame, phase, last, lastHoldMs, timing])
 
   const onTap = () => {
+    skipped.current = true
     setFrame(last)
     setPhase(tapSplash)
   }

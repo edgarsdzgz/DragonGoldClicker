@@ -1,4 +1,4 @@
-# Title screen: Tap to Start, with a loading bar (plan, awaiting approval)
+# Title screen: Tap to Start, with a loading bar (approved 2026-10-27)
 
 **Goal:** the game opens like a console or store game. The studio seal plays, then the Draconia
 Chronicles gate, and the gate stays on screen as the title, with a loading bar that says what it is
@@ -72,6 +72,21 @@ when the title appears. It still shows, so the screen always reads the same way.
 
 ## Owner rulings (2026-10-27)
 
+- **All five open questions as recommended:** loading starts at launch behind the splashes; a tap
+  during the splashes skips to the title; the theme starts on the title; I build on the art
+  session's committed intro, changing only where the title hooks in.
 - **Updates:** when there is no update, the title goes straight to Tap to Start. The update step
   shows on the bar only when an update is actually downloading. Until the update service is set
   up there is never one, so the bar carries only the real loading steps.
+
+## Progress
+
+- **Built 2026-10-27.** Loading runs from launch behind the splashes (`src/loading/`): the save,
+  every sprite but the app icon files (174), then the theme (at most 5 s; music never holds the
+  game back). A tap on a splash skips to the title. The title holds the gate where its splash
+  ended, with `LoadingBar`, then `TapToStart`; a screen reader hears "Ready. Tap to start." A
+  failed step says so with Try again; a broken save also offers a new game, which keeps the old
+  save under `@dragongold/gamestate_unreadable_<time>`. The time away is counted at Start. The
+  theme starts on the title. On the A16 everything loads before the gate finishes, so the bar is
+  only seen on slower phones; a dev-only Title Preview shows each state. Fixed on the way: a
+  save that could not be read used to start a new game silently and be overwritten by its autosave.

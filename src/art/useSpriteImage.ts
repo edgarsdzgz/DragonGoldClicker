@@ -40,3 +40,12 @@ export function useSpriteImage(id: SpriteId): SkImage | null {
   }, [id])
   return ready
 }
+
+/** Decode every sprite ahead of time (the title screen's loader), reporting each one as it lands */
+export async function preloadSprites(onEach: (done: number, total: number) => void): Promise<void> {
+  // The app icon files are the launcher's and the stores', never drawn in the game (8 MB decoded)
+  const ids = (Object.keys(SPRITES) as SpriteId[]).filter((id) => !id.startsWith('app_'))
+  let done = 0
+  // A sprite that fails is not fatal: its screen tries again, and keeps its old look meanwhile
+  await Promise.all(ids.map((id) => load(id).then(() => onEach(++done, ids.length))))
+}

@@ -2,6 +2,16 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Title screen: Tap to Start (2026-10-27)
+- After the studio seal and the Draconia Chronicles gate, the gate stays as the title: a loading
+  bar says what is loading (your save, the art, the music), then "Tap to start"
+- Loading starts at launch, behind the splashes, so the title is usually ready at once; tapping a
+  splash skips to the title. The main theme starts on the title
+- A save that cannot be read stops at the title with Try again, or a new game that keeps the old
+  save aside; before, it silently started over and the old save was overwritten
+- Time away counts until you tap Start
+- Dev: a Title Preview in Settings shows the title loading, ready and failed
+
 ### Pixel art in the game, step 5: people, events and effects (2026-10-27)
 - Fighters stand on the Warfront wall, up to four, and jab with their spears as each volley lands
 - A monster's blow raises dust on the gatehouse; repair sparkles show while repairers work; at a

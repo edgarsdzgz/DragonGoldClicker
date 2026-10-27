@@ -11,16 +11,15 @@ import { ShakeProvider } from './src/context/ShakeContext'
 import { CoachProvider } from './src/context/CoachContext'
 import { Navigation } from './src/navigation'
 import { IntroScreen } from './src/screens/IntroScreen'
+import { TitleScreen } from './src/screens/TitleScreen'
 import { useBgMusic, useImmersiveMode } from './src/hooks'
+import { useLaunch } from './src/loading/useLaunch'
+import type { LoadedGame } from './src/hooks/useStorage'
+import { BGM_PLAYLIST } from './src/data/music'
 import { configureTextDefaults } from './src/theme/textDefaults'
 
 // Configure global text rendering defaults for Expo 54 / RN 0.81
 configureTextDefaults()
-
-const BGM_PLAYLIST = [
-  // Main theme, looped. CC BY-SA 3.0: credited in Settings > Credits and CREDITS.md
-  require('./assets/music/out/Refusing the Ultimatum.m4a'),
-]
 
 /**
  * The music player's status updates every 500ms. Kept in a component of its own that renders
@@ -31,10 +30,9 @@ function BgMusic() {
   return null
 }
 
-function AppInner() {
+function AppInner({ game }: { game: LoadedGame }) {
   return (
-    <GameProvider>
-      <BgMusic />
+    <GameProvider initial={game}>
       <StoryProvider>
         <CoachProvider>
           <ShakeProvider>
@@ -52,16 +50,31 @@ function AppInner() {
 
 export default function App() {
   useImmersiveMode()
-  // The game mounts when the intro's splashes are over, under its fading cover
-  const [gameShown, setGameShown] = useState(false)
+  // Loading starts now, behind the splashes; the title waits for it, then the player starts
+  const launch = useLaunch()
+  const [game, setGame] = useState<LoadedGame | null>(null)
+  const [titleShown, setTitleShown] = useState(false)
   const [introDone, setIntroDone] = useState(false)
+
+  const start = () => {
+    if (launch.progress.status === 'ready' && !game) setGame(launch.begin())
+  }
 
   return (
     <SafeAreaProvider>
       <DevSettingsProvider>
         <AudioSettingsProvider>
-          {gameShown && <AppInner />}
-          {!introDone && <IntroScreen onReveal={() => setGameShown(true)} onFinished={() => setIntroDone(true)} />}
+          {/* The theme starts with the title and plays on into the game */}
+          {titleShown && <BgMusic />}
+          {game && <AppInner game={game} />}
+          {!introDone && (
+            <IntroScreen
+              title={<TitleScreen progress={launch.progress} onStart={start} onRetry={launch.retry} onStartFresh={launch.startFresh} />}
+              onTitle={() => setTitleShown(true)}
+              started={game !== null}
+              onFinished={() => setIntroDone(true)}
+            />
+          )}
           <StatusBar style="light" />
         </AudioSettingsProvider>
       </DevSettingsProvider>

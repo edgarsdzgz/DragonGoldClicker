@@ -1,16 +1,19 @@
 import { useEffect, useRef } from 'react'
-import { useAudioPlayer, useAudioPlayerStatus, setAudioModeAsync } from 'expo-audio'
+import { useAudioPlayerStatus, setAudioModeAsync } from 'expo-audio'
 import type { AudioSource } from 'expo-audio'
 import { useAudioSettings } from '../context/AudioSettingsContext'
+import { sharedSfxPlayer } from './sfxPlayers'
 
 /**
  * Plays a playlist of BGM tracks sequentially, looping back to the first
  * track after the last one finishes. Accepts a single source or an array.
+ * The first track's player is the shared one the title screen's loader warmed up, so the
+ * music starts the moment the title shows.
  */
 export function useBgMusic(sources: AudioSource | AudioSource[]) {
   const playlist = Array.isArray(sources) ? sources : [sources]
   const { effectiveMusicVolume, musicMuted } = useAudioSettings()
-  const player = useAudioPlayer(playlist[0])
+  const player = sharedSfxPlayer(playlist[0])
   const status = useAudioPlayerStatus(player)
   const didInit = useRef(false)
   const trackIndex = useRef(0)
@@ -25,6 +28,8 @@ export function useBgMusic(sources: AudioSource | AudioSource[]) {
     if (!status.isLoaded || didInit.current) return
     didInit.current = true
     player.volume = effectiveMusicVolume
+    // Muted before the theme first plays (it now loads early, on the title): start muted too
+    player.muted = musicMuted
     player.loop = playlist.length === 1
     player.play()
   }, [status.isLoaded])
