@@ -110,7 +110,7 @@ rest are the old bestiary's leftovers. Split by size, since each size shares its
 | --- | --- | --- |
 | 1. Regulars | War Hound, Skeleton, Spectral Hound, Nomad Scout, Nomad Archer, Cult Apprentice | Locked and in the app (`45-bestiary-regulars`) |
 | 2. Elites | Kobold Shaman, Goblin Chieftain, Orc Warchief, Troll, Ogre, Iron Golem, Windcaller | Locked and in the app (`46-bestiary-elites`) |
-| 3. Bosses | Basilisk, Spider Queen, Corrupted Drake, Lich | Drawn, on the board (`47-bestiary-bosses`) |
+| 3. Bosses | Basilisk, Spider Queen, Corrupted Drake, Lich | Locked and in the app (`47-bestiary-bosses`; the Lich as v2a, cold gray bone) |
 
 Elites sit between a monster and a boss in size (about 16x21) and march with their own kind. Whether the
 game gets an elite rank is still my call; they are drawn either way.
