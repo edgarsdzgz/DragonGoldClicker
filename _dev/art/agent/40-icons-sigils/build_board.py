@@ -33,12 +33,23 @@ V2 = [
             [fig(OUT / f"cast_sigil-lirae_{v}.png", 2, f"{v} (x2)") for v in ("v2a", "v2b", "v2c", "v2d")]),
     section("Stats: the quill and inkpot, options", "Owner: revisit it with the quill study, and make it look "
             "different from Lirae's. The quill stands in its pot: a lip, a neck dark with ink, a rounded body. "
-            "The locked icon first.",
-            [fig(OFFICIAL / "icons" / "icon_stats.png", 8, "locked (v1)")] +
+            "The locked icon first. The owner keeps the locked v1.",
+            [fig(OFFICIAL / "icons" / "icon_stats.png", 8, "locked (v1): kept")] +
             [fig(OUT / f"icon_stats_{v}.png", 8, c) for v, c in
              (("v2a", "a: white feather, gray shaft, dark glass"), ("v2b", "b: gold feather, blue ink bottle"),
               ("v2c", "c: dusky violet feather, white shaft"))] +
             [fig(OUT / f"icon_stats_{v}.png", 2, f"{v} (x2)") for v in ("v2a", "v2b", "v2c")]),
+    section("Consumption (food eaten per second, on Stats)", "The speedometer was too thin to read and too modern. "
+            "The owner chose a) the leaking grain sack: food and loss in one picture. b) and c) are for comparison: "
+            "a candle clock (time used up, but not food), and the gauge redrawn to read. The Ionicons market stall "
+            "and purse are dropped: business is the Keep's icon in the Shop (map it to the locked icon_bld-keep), "
+            "and wallet always draws the Renown coin instead.",
+            [fig(OUT / "icon_gauge_v1.png", 8, "v1: the speedometer")] +
+            [fig(OUT / f"icon_consumption_{v}.png", 8, c) for v, c in
+             (("v2a", "a: leaking grain sack, the owner's choice"), ("v2b", "b: candle clock"),
+              ("v2c", "c: the gauge, redrawn"))] +
+            [fig(OUT / f"icon_consumption_{v}.png", 2, f"{v} (x2)") for v in ("v2a", "v2b", "v2c")] +
+            [fig(OFFICIAL / "icons" / f"{n}.png", 2, n) for n in ("icon_food", "icon_rations", "icon_hourglass")]),
 ]
 sections = V2 + [
     section("Sigils for the new five", "10x10, each beside its bust. The five locked sigils follow.",
