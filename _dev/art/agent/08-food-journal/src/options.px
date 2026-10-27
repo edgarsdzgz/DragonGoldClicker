@@ -1,0 +1,153 @@
+# Food and Journal options, 2026-10-26. Written by make_options.py.
+
+# Food A: a crusty loaf with three scored cuts
+@asset icon_food_loaf
+size 12 12
+budget 8
+key a=ink H=gold5 m=gold3 p=parch3 G=gold2 D=gold1
+frame
+............
+............
+...aaaaaa...
+..aHHHHHma..
+.aHHmmmmmma.
+aHmmpmpmpmGa
+ammpmpmpmmGa
+ammmmmmmmmGa
+.aGGGGGGGGa.
+..aDDDDDDa..
+...aaaaaa...
+............
+
+# Food B: a roast drumstick, meat on the bone
+@asset icon_food_drumstick
+size 12 12
+budget 8
+key a=ink H=clay3 m=clay2 G=clay1 w=skin3 b=parch3 s=parch1
+frame
+..aaaa......
+.aHHHma.....
+aHmmmmma....
+aHmmmmmma...
+aHmmmmmGa...
+ammmmmGa....
+.ammmGGba...
+..amGabbbaa.
+...aa.abbwba
+.......awbsa
+.......absa.
+........aa..
+
+# Food C: a wedge of cheese with holes
+@asset icon_food_cheese
+size 12 12
+budget 8
+key a=ink H=gold5 g=gold4 S=gold3 o=gold2
+frame
+.........aa.
+.......aaHHa
+.....aaHHHHa
+...aaHHHoHHa
+.aaHHHHHHHHa
+agggggggggSa
+aggogggoggSa
+aggggoggggSa
+.aaaaaaaaaa.
+............
+............
+............
+
+# Food D: an apple with a stem and a leaf
+@asset icon_food_apple
+size 12 12
+budget 8
+key a=ink W=parch3 H=clay3 m=clay2 G=clay1 s=wood2 L=green3
+frame
+.....aaaa...
+....asLLLa..
+...amsaaa...
+..aHmHHma...
+.aHWmmmmma..
+aHmmmmmmmma.
+aHmmmmmmmGa.
+ammmmmmmmGa.
+.ammmmmmGa..
+..ammmmGa...
+...amGGa....
+....aaa.....
+
+# Journal A: a leather journal with a brass clasp and a ribbon
+@asset icon_journal_leather
+size 12 12
+budget 8
+key a=ink S=wood1 L=wood4 m=wood3 d=wood2 p=parch3 g=gold4 H=gold5 R=clay2
+frame
+.aaaaaaaaaa.
+.aSLLLLLLLpa
+.aSLmmmmmmpa
+.aSLmmmmmmpa
+.aSLmmmmmmpa
+.aSLmmmgHgga
+.aSLmmmmmmpa
+.aSLmmmmmmpa
+.aSdddddddda
+.aaaaRaaaaa.
+....aRa.....
+.....a......
+
+# Journal B: an open book with lines of writing
+@asset icon_journal_open
+size 12 12
+budget 8
+key a=ink P=parch3 q=parch1 l=night3 C=night3
+frame
+............
+............
+.aaaa..aaaa.
+aPPPPaaPPPPa
+aPllPqqPllPa
+aPPPPqqPPPPa
+aPllPqqPllPa
+aPPPPqqPPPPa
+aPlPPqqPllPa
+aCCCCCCCCCCa
+.aaaaaaaaaa.
+............
+
+# Journal C: Lirae's quill in an inkpot
+@asset icon_journal_quill
+size 12 12
+budget 8
+key a=ink h=night4 n=night3 d=night2 w=steel5 V=steel4 q=gold4 k=night1
+frame
+.........aa.
+........aVqa
+.......aVVqa
+......aVVqa.
+.....aVVqa..
+.....aVqa...
+...aaVqa....
+..ahkhna....
+.ahwnnnna...
+.ahnnnnda...
+.anddddda...
+..aaaaaa....
+
+# Journal D: a scroll with rolled ends, writing and a wax seal
+@asset icon_journal_scroll
+size 12 12
+budget 8
+key a=ink H=skin3 R=parch2 d=parch1 D=parch1 P=parch3 l=wood2 S=clay2
+frame
+.aaaaaaaaaa.
+aHRRRRRRRRda
+aDDDDDDDDDDa
+.aPPPPPPPPa.
+.aPllllllPa.
+.aPPPPPPPPa.
+.aPllllPPPa.
+.aPPPPPSSPa.
+.aPlllPSSPa.
+aHRRRRRRRRda
+aDDDDDDDDDDa
+.aaaaaaaaaa.

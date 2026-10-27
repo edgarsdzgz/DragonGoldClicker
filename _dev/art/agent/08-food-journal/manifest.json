@@ -1,0 +1,117 @@
+[
+ {
+  "name": "icon_food_loaf",
+  "file": "icon_food_loaf.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,5",
+   "single-pixel island at 6,5",
+   "single-pixel island at 8,5",
+   "single-pixel island at 3,6",
+   "single-pixel island at 5,6",
+   "single-pixel island at 7,6"
+  ]
+ },
+ {
+  "name": "icon_food_drumstick",
+  "file": "icon_food_drumstick.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_food_cheese",
+  "file": "icon_food_cheese.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 8,3",
+   "single-pixel island at 3,6",
+   "single-pixel island at 7,6"
+  ]
+ },
+ {
+  "name": "icon_food_apple",
+  "file": "icon_food_apple.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_journal_leather",
+  "file": "icon_journal_leather.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_journal_open",
+  "file": "icon_journal_open.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_journal_quill",
+  "file": "icon_journal_quill.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_journal_scroll",
+  "file": "icon_journal_scroll.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]
