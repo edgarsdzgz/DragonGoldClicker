@@ -124,3 +124,11 @@ the rest; swap art in as it arrives; the city map replaces the card list.
   screens name the sprite where one name means different things (claw tiers, each building, each
   study, swords, the journal, the Draconia tab). Glyphs with no pixel icon yet stay as they are.
   Disabled and unfocused icons are faded, since pixel icons keep their own colors.
+- **Step 3, the Warfront: built 2026-10-27.** The night map, the gate by the wall's HP and the
+  torches, in one canvas behind the screen; the wall lines up under the gate row (or sits on the
+  bottom edge when it would not fit). Monsters stand on the road in their own art at twice the
+  map's scale (shrunk to fit a short window): the walk bob, the red-flash hit, the wounded pose.
+  The slash (by claw tier), spark, crit and army hit are pixel strips. Owner question from the
+  mobs batch settled: double scale. A16, idle Warfront, 20 s: frames drawn 1,209 -> 201 (the old
+  breathing animation is gone), median frame 9 -> 12 ms, 90th 11 -> 17 ms; the performance pass
+  looks into the per-frame cost.

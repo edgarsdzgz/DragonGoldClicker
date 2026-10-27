@@ -25,8 +25,6 @@ describe('effect caps', () => {
   const fx = require('../../components/StrikeEffects')
 
   it('keeps the pools within the plan', () => {
-    expect(fx.MAX_SLASHES).toBe(3)
-    expect(fx.MAX_SPARKS).toBe(24)
     expect(fx.MAX_EMBERS).toBeGreaterThanOrEqual(12)
     expect(fx.MAX_EMBERS).toBeLessThanOrEqual(16)
   })

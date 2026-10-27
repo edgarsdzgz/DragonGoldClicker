@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react'
-import { View, StyleSheet, Animated, useWindowDimensions, LayoutChangeEvent } from 'react-native'
+import { View, StyleSheet, Animated, useWindowDimensions, LayoutChangeEvent, PixelRatio } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { Text, StoryObjective, StorySpotlight, CoachTarget } from '../components'
 import { FlavorText } from '../components/FlavorText'
@@ -19,7 +19,9 @@ import { SFX, SFX_WEAPON_POOL } from '../data/sfx'
 import { useRandomSfx } from '../hooks/useRandomSfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, getFighterCost, getRepairerCost, isSystemOn } from '../types/game'
+import { formatNumber, getFighterCost, getRepairerCost, isSystemOn, MAX_CITY_HP } from '../types/game'
+import { mapUnit, gateState } from '../art'
+import { WarfrontScene } from './warfront/WarfrontScene'
 import { armySize, armyVolleyNow, armyDps } from '../types/army'
 import { battlefieldLayout, TALL_WINDOW, FLAVOR_H } from '../types/warfrontLayout'
 import { DevShortcut } from '../components/DevShortcut'
@@ -50,7 +52,10 @@ export function GameScreen() {
   const { shakeNonce } = useShakeRequest()
   const shakeStyle = useScreenShake(shakeNonce)
   const flavor = useFlavorText(COMBAT_LINES)
-  const windowHeight = useWindowDimensions().height
+  const { height: windowHeight, width: windowWidth } = useWindowDimensions()
+  // The night map behind the Warfront: its wall lines up with the bottom of the gate row
+  const unit = mapUnit(windowWidth, PixelRatio.get())
+  const [wallTop, setWallTop] = useState(0)
   const insets = useSafeAreaInsets()
   // What the Warfront shows so far (the opening reveals it in order)
   const reveal = warfrontReveal(state)
@@ -134,6 +139,9 @@ export function GameScreen() {
 
   return (
     <Animated.View style={[styles.container, shakeStyle, !reveal.chrome && { paddingBottom: insets.bottom }]}>
+      {wallTop > 0 && (
+        <WarfrontScene unit={unit} wallTop={wallTop} gate={isSystemOn(state, 'siege') ? gateState(state.cityHp, MAX_CITY_HP) : 'sound'} />
+      )}
       {reveal.topBar && (
         <ResourceBar
           inspiration={state.inspiration}
@@ -158,6 +166,7 @@ export function GameScreen() {
             kills={state.monstersDefeated}
             damage={tapDamageNow(state)}
             clawLevel={state.clawLevel}
+            unit={unit}
             onStrike={handleStrike}
             showName={reveal.monsterName}
             coachId="slay"
@@ -168,7 +177,9 @@ export function GameScreen() {
         )}
       </View>
 
-      <Gate />
+      <View onLayout={(e) => setWallTop(e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
+        <Gate />
+      </View>
 
       {/* Command row: Rally + Repair below the gate, near the thumb */}
       {(rallyOn || repairOn) && (

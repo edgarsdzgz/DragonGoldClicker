@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
-import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent } from 'react-native'
+import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent, PixelRatio } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { PosedMonster } from './PosedMonster'
@@ -9,10 +9,14 @@ import { useAppActive } from '../hooks/useAppActive'
 import type { MonsterDef } from '../types/monsters'
 import { Text } from './Text'
 import { EnemyHp } from './EnemyHp'
-import { ClawSlash, SparkBurst, EmberDissolve } from './StrikeEffects'
+import { EmberDissolve } from './StrikeEffects'
+import type { EmberDissolveHandle } from './StrikeEffects'
 import { clawLook } from '../types/claws'
-import type { ClawTier } from '../types/claws'
-import type { ClawSlashHandle, SparkBurstHandle, EmberDissolveHandle } from './StrikeEffects'
+import { PixelMonster } from './PixelMonster'
+import { PixelBurst } from './PixelBurst'
+import type { PixelBurstHandle } from './PixelBurst'
+import { PixelSprite } from './PixelSprite'
+import { SPRITES, mobScale, mobSprites, slashSprite } from '../art'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
 import { useActionPress, HOLD_REPEAT_MS } from '../hooks/useActionPress'
@@ -22,12 +26,6 @@ import { useReduceMotion } from '../hooks/useReduceMotion'
 import { SPAWN_DELAY_MS, monsterLabel, currentMonster } from '../types/monsters'
 import { restingPose } from '../data/monsterArt'
 import { colors, spacing, gold } from '../theme'
-
-const CLAW_TINT: Record<ClawTier, string> = {
-  plain: colors.warfront.clawPlain,
-  gold: colors.warfront.clawGold,
-  ember: colors.warfront.clawEmber,
-}
 
 interface BattlefieldProps {
   /** Monster sprite diameter in dp */
@@ -40,8 +38,10 @@ interface BattlefieldProps {
   kills: number
   /** Damage per hit, shown as a floating number */
   damage: number
-  /** The dragon's claws (layer 3): the slash grows and warms with them */
+  /** The dragon's claws (layer 3): the slash turns gold, then ember, with them */
   clawLevel?: number
+  /** Points per Warfront map pixel; monsters and strikes are drawn at MOB_SCALE times it (art/warfront.ts) */
+  unit?: number
   /**
    * Called for every hit: the first press, then once per HOLD_REPEAT_MS while held. May return
    * what the hit dealt (a double strike shows larger, in gold); otherwise `damage` is shown.
@@ -95,11 +95,15 @@ const KNOCKBACK = 0.06
  * (one strike every HOLD_REPEAT_MS, shared by every main button) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
-  { monster: size, monsterIndex, monsterHp, hordeKills = 0, kills, damage, clawLevel = 0, onStrike, header, queue, camp, showName = true, locked = false, coachId },
+  { monster: size, monsterIndex, monsterHp, hordeKills = 0, kills, damage, clawLevel = 0, unit = 3, onStrike, header, queue, camp, showName = true, locked = false, coachId },
   ref,
 ) {
   const coach = useCoachTarget(coachId)
   const def = currentMonster({ monsterIndex, hordeKills })
+  // Pixel art for this monster, when it has some; otherwise it keeps the old circle and silhouette
+  const mob = mobSprites(def.id)
+  const mobArt = mob ? SPRITES[mob.idle] : null
+  const pixelScale = mobScale(unit, size, mobArt ? Math.max(mobArt.w, mobArt.h) : 1, PixelRatio.get())
   const reduceMotion = useReduceMotion()
   const numbers = useRef<FloatingNumbersHandle>(null)
   const widthRef = useRef(300)
@@ -117,11 +121,10 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const squash = useRef(new Animated.Value(1)).current
   const shake = useRef(new Animated.Value(0)).current
   const flash = useRef(new Animated.Value(0)).current
-  const slashes = useRef<ClawSlashHandle>(null)
+  const fx = useRef<PixelBurstHandle>(null)
   const embers = useRef<EmberDissolveHandle>(null)
   // The whole battlefield gives a small nudge on a kill
   const nudge = useRef(new Animated.Value(0)).current
-  const sparks = useRef<SparkBurstHandle>(null)
   // Knockback: 0 -> 1 pushes the monster up and tilts it, then springs back
   const knock = useRef(new Animated.Value(0)).current
   const tilt = useRef(new Animated.Value(0)).current
@@ -136,12 +139,14 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   // Pose: the hit frame for ~120ms on each strike, else idle (or hurt at 1/3 HP or less)
   const posed = useRef<PosedMonsterHandle>(null)
   const resting = restingPose(monsterHp, def.hp)
+  const pixelMob = mob !== null
 
   // Idle breathing: ~2% over ~1.5s; hurt breathes faster and uneven. Off with Reduce Motion.
   const breath = useRef(new Animated.Value(0)).current
   useEffect(() => {
-    // Only breathe while this screen is showing and the app is in the foreground
-    if (reduceMotion || !focused || !appActive) {
+    // Only breathe while this screen is showing and the app is in the foreground; pixel
+    // monsters bob in their own walk instead
+    if (reduceMotion || !focused || !appActive || pixelMob) {
       breath.setValue(0)
       return
     }
@@ -159,7 +164,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
         ]))
     loop.start()
     return () => loop.stop()
-  }, [reduceMotion, resting, breath, focused, appActive])
+  }, [reduceMotion, resting, breath, focused, appActive, pixelMob])
 
   useImperativeHandle(ref, () => ({
     showBounty: (amount) =>
@@ -190,6 +195,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       // Spread across the monster so several fighters read as several small hits
       const x = size * (0.25 + Math.random() * 0.5)
       numbers.current?.spawn({ x, y: size * 0.45, text: amount, color: colors.warfront.ally })
+      fx.current?.play('fx_ally-hit_anim', x, size * 0.6)
       flash.setValue(0.12)
       Animated.timing(flash, { toValue: 0, duration: 120, useNativeDriver: true }).start()
     },
@@ -228,8 +234,9 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     } else {
       numbers.current?.spawn({ x: point.x, y: size * 0.3, text: `-${shown?.damage ?? damage}`, color: colors.text.primary })
     }
-    slashes.current?.slash(point.x, point.y)
-    if (!reduceMotion) sparks.current?.spark(point.x, point.y, size)
+    fx.current?.play(slashSprite(clawLook(clawLevel).tier), point.x, point.y)
+    if (shown?.double) fx.current?.play('fx_crit_anim', point.x, point.y)
+    else if (!reduceMotion) fx.current?.play('fx_spark_anim', point.x, point.y)
     // Hit-stop: the monster holds still ~50ms, then the knockback runs
     if (!reduceMotion) {
       tiltSide.current = -tiltSide.current
@@ -249,7 +256,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       const hop = (to: number) => Animated.timing(shake, { toValue: to, duration: 28, useNativeDriver: true })
       Animated.sequence([Animated.delay(HIT_STOP_MS), hop(2), hop(-2), hop(1), hop(0)]).start()
     }
-  }, [onStrike, damage, size, flash, shake, knock, tilt, reduceMotion])
+  }, [onStrike, damage, size, clawLevel, flash, shake, knock, tilt, reduceMotion])
   // The same press as every main button: tap, hold (repeats at the shared speed), screen reader,
   // and a stop when the screen or the app is left (hooks/useActionPress)
   const press = useActionPress(strike, { repeatOnHold: true })
@@ -340,42 +347,50 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
             <Animated.View
               pointerEvents="none"
               style={[
-                styles.ghost,
+                mob ? styles.ghostPixel : styles.ghost,
                 {
                   opacity: fall.interpolate({ inputRange: [0, 1], outputRange: [0.9, 0] }),
                 },
               ]}
             >
-              <MonsterIcon monster={fallen} size={Math.round(size * ART_SCALE)} color={gold[400]} />
+              {mobSprites(fallen.id)
+                ? <PixelSprite id={mobSprites(fallen.id)!.hurt} scale={pixelScale} />
+                : <MonsterIcon monster={fallen} size={Math.round(size * ART_SCALE)} color={gold[400]} />}
             </Animated.View>
           )}
           <Animated.View
             pointerEvents="none"
             style={[
-              styles.sprite,
+              mob ? styles.spritePixel : styles.sprite,
               {
                 width: size,
                 height: size,
-                borderRadius: size / 2,
+                borderRadius: mob ? 0 : size / 2,
                 opacity: spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
                 transform: [
                   { translateX: shake },
                   { translateY: knock.interpolate({ inputRange: [0, 1], outputRange: [0, -size * KNOCKBACK] }) },
                   { rotate: Animated.multiply(knock, tilt).interpolate({ inputRange: [-5, 5], outputRange: ['-5deg', '5deg'] }) },
-                  { scale: reduceMotion ? 1 : breath.interpolate({ inputRange: [0, 1], outputRange: [1, 1.02] }) },
-                  { translateY: reduceMotion ? 0 : breath.interpolate({ inputRange: [0, 1], outputRange: [0, -size * 0.01] }) },
+                  // Pixel monsters bob in their own walk; a fractional scale would blur their pixels
+                  { scale: reduceMotion || mob ? 1 : breath.interpolate({ inputRange: [0, 1], outputRange: [1, 1.02] }) },
+                  { translateY: reduceMotion || mob ? 0 : breath.interpolate({ inputRange: [0, 1], outputRange: [0, -size * 0.01] }) },
                   { scale: Animated.multiply(squash, spawn.interpolate({ inputRange: [0, 1], outputRange: [reduceMotion ? 1 : 0.8, 1] })) },
                 ],
               },
             ]}
           >
-            <LinearGradient colors={[colors.bg.surface2, colors.bg.surface1]} style={styles.inner}>
-              <PosedMonster ref={posed} monster={def} size={Math.round(size * ART_SCALE)} color={gold[400]} resting={resting} spawnKey={kills} />
-            </LinearGradient>
-            <Animated.View pointerEvents="none" style={[styles.flash, { opacity: flash }]} />
+            {mob ? (
+              <PixelMonster ref={posed} sprites={mob} scale={pixelScale} resting={resting} spawnKey={kills} paused={!focused || !appActive} />
+            ) : (
+              <>
+                <LinearGradient colors={[colors.bg.surface2, colors.bg.surface1]} style={styles.inner}>
+                  <PosedMonster ref={posed} monster={def} size={Math.round(size * ART_SCALE)} color={gold[400]} resting={resting} spawnKey={kills} />
+                </LinearGradient>
+                <Animated.View pointerEvents="none" style={[styles.flash, { opacity: flash }]} />
+              </>
+            )}
           </Animated.View>
-          <ClawSlash ref={slashes} size={Math.round(size * 0.9 * clawLook(clawLevel).scale)} tint={CLAW_TINT[clawLook(clawLevel).tier]} />
-          <SparkBurst ref={sparks} unit={size} />
+          <PixelBurst ref={fx} scale={pixelScale} max={4} />
           <EmberDissolve ref={embers} unit={size} />
           <FloatingNumbers ref={numbers} />
         </View>
@@ -410,6 +425,10 @@ const styles = StyleSheet.create({
     shadowRadius: 18,
     elevation: 8,
   },
+  spritePixel: {
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
   inner: {
     flex: 1,
     alignItems: 'center',
@@ -426,6 +445,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  ghostPixel: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   flash: {
     ...StyleSheet.absoluteFillObject,

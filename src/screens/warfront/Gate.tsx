@@ -1,25 +1,25 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { GameIcon } from '../../components/GameIcon'
-import { Text } from '../../components/Text'
 import { CityHpMeter } from '../../components/CityHpMeter'
 import { useGame } from '../../context/GameContext'
 import { MAX_CITY_HP, isSystemOn, hordeLevel } from '../../types/game'
 import { wardLeft } from '../../types/breach'
-import { colors, spacing, gold, dark } from '../../theme'
+import { gateState } from '../../art'
+import { spacing } from '../../theme'
 
-/** The gate at the bottom of the battlefield. The wall's HP shows only once the siege has begun. */
+/**
+ * The gate row, at the bottom of the battlefield: the wall's HP once the siege has begun. The gate
+ * itself is drawn by the Warfront scene, with its wall's top edge at this row's bottom.
+ */
 export function Gate() {
   const { state } = useGame()
   const siege = isSystemOn(state, 'siege')
+  const look = siege ? gateState(state.cityHp, MAX_CITY_HP) : 'sound'
 
   return (
     <View style={styles.root}>
       {siege && <CityHpMeter hp={state.cityHp} max={MAX_CITY_HP} hordeLevel={hordeLevel(state.hordeKills)} wardSec={wardLeft(state)} />}
-      <View style={styles.gate} accessible accessibilityLabel="Gate">
-        <GameIcon name="log-in" size={14} color={gold[400]} />
-        <Text variant="caption" style={styles.label}>GATE</Text>
-      </View>
+      <View style={styles.wallLine} accessible accessibilityLabel={`Gate, ${look}`} />
     </View>
   )
 }
@@ -28,22 +28,7 @@ const styles = StyleSheet.create({
   root: {
     paddingTop: spacing[1],
   },
-  gate: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing[2],
-    height: 24,
-    marginHorizontal: spacing[4],
-    marginTop: spacing[1],
-    borderTopWidth: 3,
-    borderTopColor: gold[600],
-    backgroundColor: dark[800],
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
-  },
-  label: {
-    color: colors.text.secondary,
-    letterSpacing: 4,
+  wallLine: {
+    height: spacing[1],
   },
 })

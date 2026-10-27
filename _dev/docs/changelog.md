@@ -2,6 +2,16 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Pixel art in the game, step 3: the Warfront (2026-10-27)
+- The Warfront is the night map: blood moon, the horde's camp, the road, and the wall at the
+  bottom with flickering torches. The gate shows the wall's HP: sound, cracking, failing, breached
+- Monsters stand on the road in their own pixel art (kobold, goblin, shadow crawler, orc, raider):
+  a walking bob, a red flash when struck, and a wounded pose at a third of their HP. The gold
+  circle is gone for monsters with art
+- Strikes are pixel effects: the slash in the claws' tier (steel, gold, ember), a spark, a crit
+  burst on a double strike, and a flash for the army's hits
+- The gate row keeps the wall's HP meter; the GATE bar is replaced by the drawn gate
+
 ### Pixel art in the game, step 2: icons (2026-10-27)
 - Pixel icons replace the stock icons across the game: the tab bar, resource bar, objective,
   buttons, badges, sheets, cards and stats. Icons with no pixel art yet keep the old glyph

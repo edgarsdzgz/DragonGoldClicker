@@ -114,9 +114,6 @@ export const colors = {
     /** Fighters' hits on the monster */
     ally: '#93c5fd',
     /** The claw slash by tier (layer 3): plain, gold from Serrated, ember from Ember */
-    clawPlain: '#ffffff',
-    clawGold: gold[200],
-    clawEmber: '#ffb15c',
   },
 
   dark,
