@@ -1,0 +1,362 @@
+# Interface options 2, 2026-10-26. Written by make_options.py.
+
+# Rising A: the trend line, polished
+@asset icon_rising_zigzag
+size 12 12
+budget 8
+key a=ink H=green3 g=green2 G=green1
+frame
+.....aaaaaa.
+....agHHHHga
+.....aggggGa
+......agggGa
+.......aggGa
+.......aagGa
+...aa.aHgaga
+..aHgaHGa.a.
+.aHGGHGa....
+aHGaaga.....
+aga..a......
+.a..........
+
+# Falling A: the trend line, polished
+@asset icon_falling_zigzag
+size 12 12
+budget 8
+key a=ink H=clay3 g=clay2 G=clay1
+frame
+.a..........
+aga..a......
+aggaaga.....
+.agHHGga....
+..agGagga.a.
+...aa.aggaga
+.......aaHGa
+.......aHgGa
+......aHggGa
+.....aHgggGa
+....agGGGGGa
+.....aaaaaa.
+
+# Rising B: one bold diagonal arrow
+@asset icon_rising_diagonal
+size 12 12
+budget 8
+key a=ink H=green3 g=green2 G=green1
+frame
+.....aaaaaa.
+....agHHHHga
+.....aggggGa
+......aHggGa
+.....aHgGgGa
+....aHgGagGa
+...aHgGa.aga
+..aHgGa...a.
+.aHgGa......
+aHgGa.......
+agGa........
+.aa.........
+
+# Falling B: one bold diagonal arrow
+@asset icon_falling_diagonal
+size 12 12
+budget 8
+key a=ink H=clay3 g=clay2 G=clay1
+frame
+.aa.........
+aHga........
+aggga.......
+.aggga......
+..aggga...a.
+...aggga.aga
+....agggaHGa
+.....aggHgGa
+......aHggGa
+.....aHgggGa
+....agGGGGGa
+.....aaaaaa.
+
+# Rising C: two stacked chevrons, the sign a herald would paint
+@asset icon_rising_chevrons
+size 12 12
+budget 8
+key a=ink H=green3 g=green2 G=green1
+frame
+.....aa.....
+....aHga....
+...aHGGga...
+..aHGaagga..
+.aHGa..agga.
+.aga.aa.aga.
+..a.aHga.a..
+...aHGGga...
+..aHGaagga..
+.aHGa..agga.
+.aga....aga.
+..a......a..
+
+# Falling C: two stacked chevrons, the sign a herald would paint
+@asset icon_falling_chevrons
+size 12 12
+budget 8
+key a=ink H=clay3 g=clay2 G=clay1
+frame
+..a......a..
+.aga....aga.
+.agga..aHGa.
+..aggaaHGa..
+...agHHGa...
+..a.agGa.a..
+.aga.aa.aga.
+.agga..aHGa.
+..aggaaHGa..
+...agHHGa...
+....agGa....
+.....aa.....
+
+# Rising D: a cut gem pointing the way
+@asset icon_rising_gem
+size 12 12
+budget 8
+key a=ink H=green3 g=green2 G=green1
+frame
+............
+.....aa.....
+....aHGa....
+....aHGa....
+...aHgGGa...
+...aHgGGa...
+..aHggGGGa..
+.aHgggGGGGa.
+.aHgggGGGGa.
+aHggggGGGGGa
+.aaaaaaaaaa.
+............
+
+# Falling D: a cut gem pointing the way
+@asset icon_falling_gem
+size 12 12
+budget 8
+key a=ink H=clay3 g=clay2 G=clay1
+frame
+............
+.aaaaaaaaaa.
+aHHHHHHHHHHa
+.aggggGGGGa.
+.aggggGGGGa.
+..agggGGGa..
+...aggGGa...
+...aggGGa...
+....agGa....
+....agGa....
+.....aa.....
+............
+
+# Rising E: a sack of grain with an arrow
+@asset icon_rising_sack
+size 12 12
+budget 8
+key a=ink H=green3 g=green2 G=green1 p=parch3 q=parch2 Q=parch1 t=wood2 w=gold5
+frame
+.........a..
+...aaa..aHa.
+..awwwaaggga
+..appqa.aga.
+..attta.aga.
+.apqqqqaaga.
+apqqqqqqaga.
+apqqqqqQaa..
+aqqqqqqQa...
+.aqqqqQa....
+..aqQQa.....
+...aaa......
+
+# Falling E: a sack of grain with an arrow
+@asset icon_falling_sack
+size 12 12
+budget 8
+key a=ink H=clay3 g=clay2 G=clay1 p=parch3 q=parch2 Q=parch1 t=wood2 w=gold5
+frame
+.........a..
+...aaa..aga.
+..awwwa.aga.
+..appqa.aga.
+..attta.aga.
+.apqqqqaggga
+apqqqqqqaHa.
+apqqqqqQaa..
+aqqqqqqQa...
+.aqqqqQa....
+..aqQQa.....
+...aaa......
+
+# Unknown A: a question mark carved in a mossy standing stone
+@asset icon_unknown_runestone
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel3 s=steel2 c=night1 e=steel5 g=green2
+frame
+...aaaaaa...
+..ahhhhhma..
+.ahmmmmmmsa.
+.ahmcccmmsa.
+.ahcemmcmsa.
+.ahmmmmcesa.
+.ahmmmcemsa.
+.ahmmmcmmsa.
+.ahmmmemmsa.
+.ahmmmcmmsa.
+.agggmmggga.
+.aaaaaaaaaa.
+
+# Unknown B: a crystal ball, a question clouding inside
+@asset icon_unknown_crystal
+size 12 12
+budget 8
+key a=ink W=steel5 q=steel4 L=night4 m=night3 d=night2 w=wood4 D=wood2
+frame
+....aaaa....
+...aLLLma...
+..aLmqqmma..
+.aLWqmmqmma.
+.aLmmmqmmda.
+.aLmmmqmmda.
+.ammmmmmmda.
+..ammmqmda..
+...amddda...
+..awwwwwwa..
+.aDDDDDDDDa.
+..aaaaaaaa..
+
+# Unknown C: a notice nailed to a board, a question inked on it
+@asset icon_unknown_notice
+size 12 12
+budget 8
+key a=ink P=parch3 D=parch1 q=parch2 k=wood1 n=steel3
+frame
+............
+.aaaaaaaaaa.
+.aPPPnPPPDa.
+.aPPkkkPPDa.
+.aPkPPPkPDa.
+.aPPPPPkPDa.
+.aPPPPkPPDa.
+.aPPPkPPPDa.
+.aPPPPPPPDa.
+.aPPPkPPDqa.
+.aDDDDDDqa..
+.aaaaaaaa...
+
+# Help D: a wise owl (for help more than for unknown)
+@asset icon_unknown_owl
+size 12 12
+budget 8
+key a=ink B=wood4 D=wood2 f=parch3 g=gold4 c=parch2 d=parch1
+frame
+.aa......aa.
+.aBaaaaaaBa.
+aBBBBBBBBBBa
+aBfffBBfffBa
+aBfafBBfafBa
+aBfffggfffBa
+aBBBBggBBBDa
+aBBcccccBBDa
+.aBcdcdcBDa.
+.aBcccccBDa.
+..aBBBBBDa..
+...aaaaaa...
+
+# Info A: an i carved in the same mossy stone
+@asset icon_info_runestone
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel3 s=steel2 c=night1 e=steel5 g=green2
+frame
+...aaaaaa...
+..ahhhhhma..
+.ahmmmmmmsa.
+.ahmmcemmsa.
+.ahmmmmmmsa.
+.ahmccemmsa.
+.ahmmcemmsa.
+.ahmmcemmsa.
+.ahmmcemmsa.
+.ahmcccemsa.
+.agggmmggga.
+.aaaaaaaaaa.
+
+# Info B: an illuminated letter, blue with a gold dot, in a gilt frame
+@asset icon_info_illuminated
+size 12 12
+budget 8
+key a=ink H=gold5 G=gold2 P=parch3 b=sea2 B=sea1
+frame
+.aaaaaaaaaa.
+.aHHHHHHHGa.
+.aHPPPPPPGa.
+.aHPPHHPPGa.
+.aHPPPPPPGa.
+.aHPbbBPPGa.
+.aHPPbBPPGa.
+.aHPPbBPPGa.
+.aHPPbBPPGa.
+.aHPbbbBPGa.
+.aGGGGGGGGa.
+.aaaaaaaaaa.
+
+# Info C: a brass lantern, lighting the way
+@asset icon_info_lantern
+size 12 12
+budget 8
+key a=ink H=gold4 G=gold2 g=gold3 W=fire3 Y=fire2 O=fire1
+frame
+....aaaa....
+....a..a....
+...aaaaaa...
+..aHHHHHGa..
+..aaaaaaaa..
+..agWWYgGa..
+..agWYYgGa..
+..agYYOgGa..
+..agYOOgGa..
+..aaaaaaaa..
+..aHHHHHGa..
+..aaaaaaaa..
+
+# Stats B: chalk tally marks on a slate in a wooden frame
+@asset icon_stats_tally
+size 12 12
+budget 8
+key a=ink W=wood4 D=wood2 k=night2 c=parch3
+frame
+............
+aaaaaaaaaaaa
+aWWWWWWWWWDa
+aWkkkkkkkkDa
+aWkckckckcDa
+aWkckckcccDa
+aWkckccckcDa
+aWkccckckcDa
+aWcckckckcDa
+aDDDDDDDDDDa
+aaaaaaaaaaaa
+............
+
+# Stats C: an abacus, beads counted along three rods
+@asset icon_stats_abacus
+size 12 12
+budget 8
+key a=ink W=wood4 D=wood2 k=night1 r=steel2 H=gold5 G=gold3 B=sea3 b=sea1
+frame
+aaaaaaaaaaaa
+aWWWWWWWWWDa
+aWHHkHHkkkDa
+aWGGrGGrrrDa
+aWkkkkkkkkDa
+aWkkkBBkBBDa
+aWrrrbbrbbDa
+aWkkkkkkkkDa
+aWHHHHkkkkDa
+aWGGGGrrrrDa
+aDDDDDDDDDDa
+aaaaaaaaaaaa
