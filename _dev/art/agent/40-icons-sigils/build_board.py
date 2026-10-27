@@ -21,16 +21,24 @@ V2 = [
     section("Varn v2: a vertical crack", "Owner: more vertical than horizontal, to read as a crack. v1, then a "
             "(the crack runs down from the top), then b (with a chip broken out where it starts).",
             [fig(OUT / f"cast_sigil-varn_{v}.png", 8, c) for v, c in
-             (("v1", "v1"), ("v2a", "v2 a"), ("v2b", "v2 b: chipped"))] +
+             (("v1", "v1"), ("v2a", "v2 a: the owner's pick"), ("v2b", "v2 b: chipped"))] +
             [fig(OUT / f"cast_sigil-varn_{v}.png", 2, f"{v} (x2)") for v in ("v2a", "v2b")]),
     section("Lirae: quill options", "From the owner's reference sheet: a diagonal with the nib low left; a shaft "
             "line in a contrasting color the whole length; a notched vane wider on the upper side; a bare dark nib. "
             "In Lirae's blues. The locked quill first.",
             [fig(OFFICIAL / "cast" / "cast_sigil-lirae.png", 8, "locked (v1)")] +
             [fig(OUT / f"cast_sigil-lirae_{v}.png", 8, c) for v, c in
-             (("v2a", "a: pale blue, white shaft"), ("v2b", "b: longer and slimmer"),
+             (("v2a", "a: pale blue, white shaft"), ("v2b", "b: longer and slimmer, the owner's pick"),
               ("v2c", "c: a, with ink written under it"), ("v2d", "d: the classic white quill"))] +
             [fig(OUT / f"cast_sigil-lirae_{v}.png", 2, f"{v} (x2)") for v in ("v2a", "v2b", "v2c", "v2d")]),
+    section("Stats: the quill and inkpot, options", "Owner: revisit it with the quill study, and make it look "
+            "different from Lirae's. The quill stands in its pot: a lip, a neck dark with ink, a rounded body. "
+            "The locked icon first.",
+            [fig(OFFICIAL / "icons" / "icon_stats.png", 8, "locked (v1)")] +
+            [fig(OUT / f"icon_stats_{v}.png", 8, c) for v, c in
+             (("v2a", "a: white feather, gray shaft, dark glass"), ("v2b", "b: gold feather, blue ink bottle"),
+              ("v2c", "c: dusky violet feather, white shaft"))] +
+            [fig(OUT / f"icon_stats_{v}.png", 2, f"{v} (x2)") for v in ("v2a", "v2b", "v2c")]),
 ]
 sections = V2 + [
     section("Sigils for the new five", "10x10, each beside its bust. The five locked sigils follow.",
