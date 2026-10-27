@@ -164,17 +164,99 @@ def hollow_knight():
     return b.image()
 
 
+# v2, the owner: "We already have a human. Pick different races for each NPC that haven't been used yet."
+# Taken by busts or townsfolk: human, orc, wood elf, dragon, halfling, dwarf, a horned people. So Thornwick
+# is a gnome and Sera is bearfolk.
+
+def thornwick_v2():
+    """A gnome: small under a huge hat, a round nose, ears out to the sides, a white beard."""
+    b = Bust()
+    b.rect(3, 18, 10, 22, "azure1", True, round=True)                    # robe
+    b.shade(3, 18, 18, 22, "azure1", "azure2", "night2")
+    b.pts([(5, 20), (7, 22), (16, 21)], "gold5")                         # stars on the robe
+    b.pts([(2, 10), (3, 11), (4, 11), (5, 11), (4, 12), (5, 12), (5, 13)], "skin2", True)   # ears, out wide
+    b.pts([(4, 12), (17, 12)], "skin1")
+    b.rect(6, 9, 15, 16, "skin2", round=True)                            # face
+    b.shade(6, 9, 15, 16, "skin2", "skin3", "skin1")
+    b.pts([(7, 10), (8, 10)], "steel5")                                  # one bushy brow level
+    b.pts([(13, 9), (14, 9)], "steel5")                                  # the other raised: wry
+    b.pts([(8, 11), (13, 11)], "night1")                                 # eyes
+    b.rect(10, 12, 11, 14, "skin1")                                      # the round nose
+    b.pts([(9, 13), (12, 13)], "skin1")
+    b.px(10, 12, "skin3")
+    b.px(12, 13, "clay3")
+    b.rect(7, 15, 14, 20, "steel4", round=True)                          # white beard
+    b.shade(7, 15, 14, 20, "steel4", "steel5", "steel3")
+    b.pts([(8, 14), (9, 14), (12, 14), (13, 14)], "steel5")              # moustache
+    b.pts([(8, 20), (10, 21), (12, 20), (13, 21), (7, 19)], "ash1")      # its singed ends
+    b.pts([(10, 16), (11, 16), (12, 15)], "ink")                         # a crooked smile
+    for y, x0, x1 in ((8, 2, 19), (7, 5, 16), (6, 6, 15), (5, 7, 14), (4, 8, 13), (3, 9, 12), (2, 10, 12),
+                      (1, 11, 13)):
+        b.rect(x0, y, x1, y, "azure1")                                   # the hat, bigger than he is
+    b.shade(2, 1, 19, 8, "azure1", "azure2", "night2")
+    b.rect(5, 7, 16, 7, "gold4")                                         # its band
+    b.pts([(13, 0), (14, 0), (14, 1)], "ink")                            # a scorched tip
+    b.pts([(15, 0), (16, 1)], "ash3")
+    b.rect(7, 5, 9, 6, "steel3")                                         # goggles on the band
+    b.rect(12, 5, 14, 6, "steel3")
+    b.pts([(8, 6), (13, 6)], "sea3")
+    b.rect(18, 17, 19, 18, "skin2")                                      # his hand, holding a spark
+    b.pts([(19, 13), (18, 14), (20, 14), (19, 15)], "fire2")
+    b.px(19, 14, "fire3")
+    b.pts([(17, 12), (21, 12), (21, 16)], "fire1")
+    return b.image()
+
+
+def sera_v2():
+    """Bearfolk: round ears beside a small helm, a broad snout gone gray with age, fur braids."""
+    b = Bust()
+    b.rect(1, 16, 11, 22, "steel2", True, round=True)                    # mail
+    b.shade(1, 16, 20, 22, "steel2", "steel3", "steel1")
+    for y in range(17, 23):
+        for x in range(2 + y % 2, 20, 2):
+            if b.cells.get((x, y)) == "steel2":
+                b.px(x, y, "steel1")                                     # the rings
+    b.rect(3, 2, 6, 5, "wood3", True, round=True)                        # round ears
+    b.rect(4, 3, 5, 4, "wood1", True)
+    b.rect(4, 5, 17, 15, "wood3", round=True)                            # a broad furred head
+    b.shade(4, 5, 17, 15, "wood3", "wood4", "wood2")
+    b.rect(7, 2, 14, 6, "steel3", round=True)                            # a small helm between the ears
+    b.shade(7, 2, 14, 6, "steel3", "steel4", "steel2")
+    b.rect(10, 1, 11, 6, "steel4")                                       # its ridge
+    b.pts([(7, 7), (8, 7)], "ash3", True)                                # gray brows
+    b.pts([(8, 8), (13, 8)], "night1")                                   # small dark eyes
+    b.pts([(8, 8), (13, 8)], "night1")
+    b.rect(8, 10, 13, 14, "ash3", round=True)                            # the gray muzzle
+    b.rect(13, 11, 13, 13, "ash2")
+    b.rect(10, 10, 11, 11, "ink")                                        # nose
+    b.rect(10, 13, 11, 13, "ash1")                                       # a set mouth
+    for y in range(9, 19):                                               # fur braids, both sides
+        b.rect(3, y, 4, y, "ash3" if y % 2 else "ash2", True)
+    for y in range(14, 23):                                              # the round shield, in front
+        for x in range(0, 11):
+            d = (x - 5) ** 2 + (y - 19) ** 2
+            if d <= 26:
+                b.px(x, y, "steel3" if d > 17 else "wood3")
+    b.pts([(3, 16), (2, 17), (2, 18)], "wood4")
+    b.rect(4, 18, 6, 20, "gold4", round=True)                            # its boss
+    b.px(5, 18, "gold5")
+    b.rect(0, 22, 10, 22, "steel1")
+    return b.image()
+
+
 BUSTS = {"varn": varn, "ashara": ashara, "thornwick": thornwick, "sera": sera, "hollow-knight": hollow_knight}
+BUSTS_V2 = {"thornwick": thornwick_v2, "sera": sera_v2}
 
 
 def main():
     OUT.mkdir(exist_ok=True)
     PREVIEW.mkdir(exist_ok=True)
-    for name, f in BUSTS.items():
-        img = f()
-        img.save(OUT / f"bust_{name}_v1.png")
-        upscale(img, 8).save(PREVIEW / f"bust_{name}_v1_x8.png")
-    print(len(BUSTS), "busts")
+    for version, busts in (("v1", BUSTS), ("v2", BUSTS_V2)):
+        for name, f in busts.items():
+            img = f()
+            img.save(OUT / f"bust_{name}_{version}.png")
+            upscale(img, 8).save(PREVIEW / f"bust_{name}_{version}_x8.png")
+    print(len(BUSTS) + len(BUSTS_V2), "busts")
 
 
 if __name__ == "__main__":
