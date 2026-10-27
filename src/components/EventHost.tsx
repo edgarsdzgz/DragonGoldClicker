@@ -1,7 +1,8 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useGame } from '../context/GameContext'
 import { useStory } from '../context/StoryContext'
 import { getScene, OFFLINE_FRAMING } from '../data/story/lines'
+import { sceneSting } from '../data/story/stings'
 import type { SceneTab } from '../data/story/lines'
 import type { BeatId } from '../types/story'
 import { markScripted, hasRun } from '../types/scripted'
@@ -14,6 +15,8 @@ import { useActiveEvent } from '../hooks/useActiveEvent'
 import { WandererModal } from './WandererModal'
 import { BreachEvent } from './BreachEvent'
 import { wallAwayLine } from '../types/timeAway'
+import { useSfx } from '../hooks/useSfx'
+import { SOUND } from '../data/sounds'
 
 interface EventHostProps {
   /** Switches the visible tab (the host lives above the tab navigator) */
@@ -85,6 +88,8 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
           lineMoods={scene.lineMoods}
           stage={scene.stage}
           title={scene.title}
+          picture={scene.picture}
+          sting={queued && !queued.replay ? sceneSting(queued.id) : undefined}
           lines={queued?.alt && scene.altLines ? scene.altLines : scene.lines}
           dismissLabel={scene.dismissLabel}
           onDismiss={handleSceneClose}
@@ -133,6 +138,11 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
 function RefugeesChoice({ visible, count, food, onAnswer }: { visible: boolean; count: number; food: number; onAnswer: (takeIn: boolean) => void }) {
   const cost = count * REFUGEE_FOOD_EACH
   const affordable = food >= cost
+  // A knock at the gate
+  const playKnock = useSfx(SOUND.gateKnock)
+  useEffect(() => {
+    if (visible) playKnock()
+  }, [visible, playKnock])
   return (
     <ConfirmModal
       visible={visible}

@@ -3,7 +3,7 @@ import { PixelRatio, StyleSheet, useWindowDimensions } from 'react-native'
 import { Text, Surface, SectionLabel, PillTabs } from '../../components'
 import type { PillTab } from '../../components'
 import { cityUnit } from '../../art'
-import type { CityBuildingId, PlotLook } from '../../art'
+import type { CityBuildingId, CityLight, PlotLook } from '../../art'
 import { CityMap } from '../shop/CityMap'
 import type { CityPlot } from '../shop/CityMap'
 import { spacing } from '../../theme'
@@ -39,10 +39,16 @@ const TABS: PillTab[] = [
   { key: 'mid', label: 'Mid' },
   { key: 'late', label: 'Late' },
 ]
+const LIGHTS: PillTab[] = [
+  { key: 'night', label: 'Night' },
+  { key: 'dusk', label: 'Dusk' },
+  { key: 'day', label: 'Lit' },
+]
 
-/** Dev panel section: the Draconia map at three moments, to check the plots and markers on the device */
+/** Dev panel section: the Draconia map at three moments and in each light, to check the plots and markers on the device */
 export function DevCityPreview() {
   const [moment, setMoment] = useState('start')
+  const [light, setLight] = useState<CityLight>('night')
   const width = useWindowDimensions().width - spacing[4] * 4
   const looks = MOMENTS[moment]
   const plots: CityPlot[] = (Object.keys(looks) as CityBuildingId[]).map((id) => ({
@@ -56,8 +62,9 @@ export function DevCityPreview() {
     <Surface style={styles.section}>
       <SectionLabel spacing={2}>CITY PREVIEW</SectionLabel>
       <PillTabs tabs={TABS} activeKey={moment} onSelect={setMoment} />
+      <PillTabs tabs={LIGHTS} activeKey={light} onSelect={(k) => setLight(k as CityLight)} />
       <Text variant="caption" color="muted">Sample cities, not your save. Plots do nothing here.</Text>
-      <CityMap plots={plots} unit={cityUnit(width, PixelRatio.get())} onPress={() => {}} />
+      <CityMap plots={plots} unit={cityUnit(width, PixelRatio.get())} light={light} onPress={() => {}} />
     </Surface>
   )
 }

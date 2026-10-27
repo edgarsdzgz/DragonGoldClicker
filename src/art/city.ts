@@ -1,5 +1,6 @@
 import { MAP_PLOTS, SPRITES } from './manifest'
 import type { SpriteId } from './manifest'
+import type { GameState } from '../types/state'
 
 // =============================================================================
 // THE CITY'S ART: which sprite each plot shows, and its marker
@@ -106,6 +107,42 @@ export function plotMarker(look: PlotLook): SpriteId | null {
   if (look.canAfford) return 'map_marker-upgrade'
   if (look.built && look.hasAction) return 'map_marker-todo'
   return null
+}
+
+/** The city's light: every map piece is drawn lit (day), at dusk and at night */
+export type CityLight = 'day' | 'dusk' | 'night'
+
+/** Brighter is higher: the city only ever brightens (the story moves one way) */
+export const LIGHT_RANK: Record<CityLight, number> = { night: 0, dusk: 1, day: 2 }
+
+/**
+ * The city's light follows its story (owner, 2026-10-27): night while it is a ruin, dusk once the
+ * Keep is restored, lit once Lirae has come to the Librarium. The Warfront stays night.
+ */
+export function cityLight(s: Pick<GameState, 'beatsSeen'>): CityLight {
+  if (s.beatsSeen.includes('the_scholar')) return 'day'
+  if (s.beatsSeen.includes('the_keep')) return 'dusk'
+  return 'night'
+}
+
+/**
+ * A city sprite in a light: the level goes before a strip's suffix (`bld_forge_lit_anim` at night
+ * is `bld_forge_lit_night_anim`). The lit art is the plain id; a piece with no copy stays lit.
+ */
+export function litSprite(id: SpriteId, light: CityLight): SpriteId {
+  if (light === 'day') return id
+  const lit = id.endsWith('_anim') ? `${id.slice(0, -'_anim'.length)}_${light}_anim` : `${id}_${light}`
+  return has(lit) ? lit : id
+}
+
+/** The header across the top of a building's interior (110x34) */
+export function interiorHeader(id: CityBuildingId): SpriteId {
+  switch (id) {
+    case 'wizard': return 'int_wizard-tower'
+    case 'tower_east':
+    case 'tower_west': return 'int_tower'
+    default: return `int_${id}`
+  }
 }
 
 /** What a marker means, for screen readers */

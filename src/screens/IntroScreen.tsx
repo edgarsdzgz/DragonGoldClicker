@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { AccessibilityInfo, Animated, StyleSheet } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { INTRO, INTRO_FADE_MS, INTRO_SEEN_KEY, SHORT_LAST_HOLD_MS, STILL_HOLD_MS } from '../art'
+import { INTRO, INTRO_FADE_MS, INTRO_SEEN_KEY, SHORT_LAST_HOLD_MS, STILL_HOLD_MS, SEAL_BUILD_TIMING } from '../art'
+import { beatFrameSounds } from '../data/sounds'
 import { SplashSequence } from '../components'
+
+/** The studio splash's beats, each on its frame (the game's splash has no sound of its own) */
+const SEAL_SOUNDS = beatFrameSounds(SEAL_BUILD_TIMING.beats)
 
 interface IntroScreenProps {
   /** The title screen, shown when the splashes end (or one is tapped through) */
@@ -96,6 +100,7 @@ export function IntroScreen({ title, onTitle, started, onFinished }: IntroScreen
               lastHoldMs={setup.still ? STILL_HOLD_MS : short ? SHORT_LAST_HOLD_MS : undefined}
               still={setup.still}
               label={splash.label}
+              sounds={splash.timing === SEAL_BUILD_TIMING ? SEAL_SOUNDS : undefined}
               onDone={next}
             />
           ) : (

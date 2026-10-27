@@ -14,7 +14,8 @@ import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { formatNumber } from '../types/game'
-import { useHaptics } from '../hooks'
+import { useHaptics, useSfx } from '../hooks'
+import { SOUND } from '../data/sounds'
 
 interface OfflineModalProps {
   visible: boolean
@@ -69,9 +70,11 @@ export function OfflineModal({
   const [displayInsp, setDisplayInsp] = useState(0)
   const countingRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  const playWelcome = useSfx(SOUND.welcomeBack)
   useEffect(() => {
     if (visible) {
       setDisplayInsp(0)
+      playWelcome()
 
       // Phase 1: Backdrop
       Animated.timing(backdropOpacity, {
@@ -233,7 +236,7 @@ export function OfflineModal({
     iconScale, iconOpacity, glowPulse,
     titleOpacity, titleTranslateY,
     amountOpacity, amountScale,
-    footerOpacity, btnOpacity, btnTranslateY,
+    footerOpacity, btnOpacity, btnTranslateY, playWelcome,
   ])
 
   const handleCollect = () => {

@@ -15,7 +15,7 @@ import { ModalEmblem } from './ModalEmblem'
 import { ModalButton } from './ModalButton'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { useHaptics, useSfx } from '../hooks'
-import { SFX } from '../data/sfx'
+import { SOUND } from '../data/sounds'
 import type { WandererEncounter } from '../types/game'
 import {
   getEncounterName,
@@ -49,7 +49,8 @@ export function WandererModal({
   onReject,
 }: WandererModalProps) {
   const haptics = useHaptics()
-  const playNpc = useSfx(SFX.NPC)
+  // A knock at the gate
+  const playKnock = useSfx(SOUND.gateKnock)
   const { state } = useGame()
 
   // Animations
@@ -65,7 +66,7 @@ export function WandererModal({
 
   useEffect(() => {
     if (visible) {
-      playNpc()
+      playKnock()
       // Phase 1: Backdrop
       Animated.timing(backdropOpacity, {
         toValue: 1,
@@ -160,7 +161,7 @@ export function WandererModal({
       actionsOpacity.setValue(0)
     }
   }, [
-    visible, playNpc,
+    visible, playKnock,
     backdropOpacity, cardTranslateY, cardOpacity,
     iconScale, iconOpacity, glowPulse,
     contentOpacity, contentTranslateY, actionsOpacity,

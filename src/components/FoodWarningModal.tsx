@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Modal, Pressable, StyleSheet } from 'react-native'
 import { GameIcon } from './GameIcon'
 import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { Button } from './Button'
 import { colors, spacing, radius, elevation, dark } from '../theme'
+import { useSfx } from '../hooks/useSfx'
+import { SOUND } from '../data/sounds'
 
 interface FoodWarningModalProps {
   visible: boolean
@@ -21,6 +23,10 @@ export function FoodWarningModal({
   onDismiss,
 }: FoodWarningModalProps) {
   const urgent = level === 1
+  const playLow = useSfx(SOUND.foodLow)
+  useEffect(() => {
+    if (visible) playLow()
+  }, [visible, level, playLow])
   const accentColor = urgent ? colors.status.error : colors.status.warning
 
   return (

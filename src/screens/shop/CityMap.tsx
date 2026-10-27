@@ -1,8 +1,8 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { Canvas, FilterMode, Image, MipmapMode } from '@shopify/react-native-skia'
-import { MAP_PLOTS, SPRITES, plotFor, plotLabel, plotMarker, plotSprite, useSpriteImage } from '../../art'
-import type { CityBuildingId, PlotLook, SpriteId } from '../../art'
+import { MAP_PLOTS, SPRITES, litSprite, plotFor, plotLabel, plotMarker, plotSprite, useSpriteImage } from '../../art'
+import type { CityBuildingId, CityLight, PlotLook, SpriteId } from '../../art'
 import { PixelSprite } from '../../components/PixelSprite'
 import { Text } from '../../components/Text'
 import { useCoachTarget } from '../../hooks/useCoachTarget'
@@ -27,6 +27,8 @@ interface CityMapProps {
   plots: CityPlot[]
   /** Points per map pixel */
   unit: number
+  /** The city's light (art/city.ts cityLight): every piece is drawn in it */
+  light: CityLight
   onPress: (id: CityBuildingId) => void
   /** Plots that take part in the guided tutorial, by building id */
   coachIds?: Partial<Record<CityBuildingId, string>>
@@ -85,14 +87,16 @@ function PlotButton({ plot, unit, onPress, coachId, scrollIntoView }: {
 /**
  * Draconia as a map: the city's base map with every building on its plot, drawn as fog until
  * its beat reveals it, then its ruin, then the building at its level, with a marker when it can be
- * built or something waits inside. Each revealed plot is a button with its name under it.
+ * built or something waits inside. Each revealed plot is a button with its name under it. The
+ * whole map is drawn in the city's light: night, dusk, or lit.
  */
-export function CityMap({ plots, unit, onPress, coachIds, scrollIntoView }: CityMapProps) {
-  const base = useSpriteImage('map_city_base')
+export function CityMap({ plots, unit, light, onPress, coachIds, scrollIntoView }: CityMapProps) {
+  const base = useSpriteImage(litSprite('map_city_base', light))
   const drawn = plots.map((plot) => {
     const p = plotFor(plot.id)
-    const sprite = plotSprite(plot.id, plot.look)
-    const marker = plotMarker(plot.look)
+    const sprite = litSprite(plotSprite(plot.id, plot.look), light)
+    const lit = plotMarker(plot.look)
+    const marker = lit && litSprite(lit, light)
     return { plot, p, sprite, animated: SPRITES[sprite].frames > 1, marker }
   })
 

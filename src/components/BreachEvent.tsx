@@ -33,6 +33,7 @@ export function BreachEvent({ visible, report, onDone }: BreachEventProps) {
         lineMoods={scene.lineMoods}
         stage={scene.stage}
         title={scene.title}
+        picture={scene.picture}
         lines={scene.lines}
         dismissLabel={scene.dismissLabel}
         onDismiss={next}

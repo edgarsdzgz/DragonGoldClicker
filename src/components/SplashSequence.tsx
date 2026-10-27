@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, StyleSheet, useWindowDimensions, PixelRatio } from 'react-native'
+import type { AudioSource } from 'expo-audio'
+import { usePlaySound } from '../hooks/useSfx'
 import { fitWhole, tapSplash, SKIP_HOLD_MS } from '../art'
 import type { SheetTiming, SplashPhase, SpriteId } from '../art'
 import { PixelSheet } from './PixelSheet'
@@ -15,6 +17,8 @@ interface SplashSequenceProps {
   still?: boolean
   /** Read by screen readers */
   label: string
+  /** A sound to play as the splash reaches a frame (its beats); none after a tap skips */
+  sounds?: Readonly<Record<number, AudioSource>>
   /** Called once, when the splash ends; `skipped` when the player tapped through it */
   onDone: (skipped: boolean) => void
 }
@@ -32,7 +36,7 @@ export function splashScale(width: number, height: number, timing: SheetTiming, 
  * One full-screen splash animation, played frame by frame at its own timing. The first tap jumps
  * to the last frame and moves on after half a second; a second tap leaves at once.
  */
-export function SplashSequence({ id, timing, from = 0, lastHoldMs, still = false, label, onDone }: SplashSequenceProps) {
+export function SplashSequence({ id, timing, from = 0, lastHoldMs, still = false, label, sounds, onDone }: SplashSequenceProps) {
   const last = timing.frames - 1
   const [frame, setFrame] = useState(still ? last : from)
   const [phase, setPhase] = useState<SplashPhase>('playing')
@@ -64,6 +68,13 @@ export function SplashSequence({ id, timing, from = 0, lastHoldMs, still = false
     }, hold)
     return () => clearTimeout(timer)
   }, [frame, phase, last, lastHoldMs, timing])
+
+  // Each beat's sound as its frame comes up, while it plays on its own
+  const play = usePlaySound()
+  useEffect(() => {
+    const sound = sounds?.[frame]
+    if (sound && phase === 'playing' && !still) play(sound)
+  }, [frame, phase, still, sounds, play])
 
   const onTap = () => {
     skipped.current = true

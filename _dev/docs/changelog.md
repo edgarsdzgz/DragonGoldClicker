@@ -2,6 +2,28 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Sound, story pictures, interior headers, city light (2026-10-27, the art wiring brief)
+- The game's own sounds (data/sounds.ts) replace the stock event sounds; the stock interface ticks stay
+  - Warfront: a monster's death, its blow on the wall, a crit, the Ember claws' strike, the next
+    monster's footfalls, the gate cracking, the Unmaking rising, Rally, Repair, the Breach
+  - City: a building raised, a study done, an expedition out and back (a find when it brings people
+    home), a knock at the gate for wanderers and refugees, the city brightening
+  - Forage: food low, a raid at the gate, the granary full
+  - Story: a scene opening (replaces the ring), a quest done (fanfare), welcome back; a character's
+    sting on their first scene (Sera, Thornwick, the Hollow Knight, who have no scenes yet)
+  - The RAXDEG splash plays its eight beats on their frames (the short splash and a skip follow)
+  - State-driven sounds play one per change, most important first, so a time-away catch-up does
+    not pile them up
+  - Not wired: sfx_build-start (building is instant) and sfx_heartstone (no heartstone yet)
+- Ambient loops at a share of the sound-effects volume, paused in the background: torches and
+  the night wind on the Warfront, the horde's drums once the siege is on, the forge in its
+  interior, the night wind over the city while it is dark (mixed well under the rest)
+- Every scene shows its picture across the top, behind the dialogue (SceneDef `picture`)
+- Every building's interior opens under its header picture (InteriorHeader)
+- The city's light: night while a ruin, dusk once the Keep is restored, lit once Lirae comes to the
+  Librarium (owner ruling); every map piece is drawn in it, and the Warfront stays night. The dev
+  city preview has a light switch
+
 ### Bosses (2026-10-27)
 - Borrowed from the old game's plan (miniboss every 5 wards, boss every 10; 15x and 40x HP, 3x and
   5x damage), with a horde level as a ward:

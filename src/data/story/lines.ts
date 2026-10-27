@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import type { Ionicons } from '@expo/vector-icons'
 import type { BeatId } from '../../types/story'
 import type { CastId, Mood } from '../../types/cast'
+import type { SpriteId } from '../../art'
 
 // =============================================================================
 // SCENE TEXT (prose only; triggers and unlocks live in types/story.ts)
@@ -24,6 +25,8 @@ export interface SceneDef {
   /** Two on stage (left, right) for a conversation: the speaker lit, the other in shadow */
   stage?: [CastId, CastId]
   title: string
+  /** The scene's picture (130x96), shown across the top behind the dialogue */
+  picture?: SpriteId
   lines: string[]
   /** Lines used instead when the beat's `altScene` says so */
   altLines?: string[]
@@ -50,6 +53,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
     who: 'gate',
     icon: 'flame',
     title: 'The Last Bastion',
+    picture: 'story_prologue',
     lines: [
       'You are one of the last lines of defense in Draconia.',
       'The lone dragon standing upon its gate. Beyond the walls, the masses of the apocalypse lie camped, seeking to snuff out the last bastion of light.',
@@ -58,6 +62,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   elder_approaches: {
     ...PYRETH,
     title: 'The Elder Approaches',
+    picture: 'story_elder-approaches',
     lines: [
       'I have known you your whole life. I believe you have the strength to defend Draconia, but you cannot hold the gate alone.',
       'You must stand up and fight. The renown you earn defending our people may inspire the remaining villagers to stand beside you.',
@@ -66,6 +71,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   first_renown: {
     ...PYRETH,
     title: 'Renown',
+    picture: 'story_renown',
     // Point at the renown figure in the top bar while the elder explains it
     highlight: 'renown',
     lines: [
@@ -76,6 +82,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   call_to_arms: {
     ...PYRETH,
     title: 'The Wall Holds',
+    picture: 'story_wall-holds',
     lines: [
       'The wall holds, my lord. Four of them lie before the gate, and all of Draconia saw who stood against them.',
       'The people have noticed your bravery. Your renown is now enough to convince a villager to take up arms as a Fighter.',
@@ -86,6 +93,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   the_breach: {
     ...RODAIN,
     title: 'The Wall Shakes',
+    picture: 'story_wall-shakes',
     lines: [
       'The stores are full, Steward, and none too soon. The horde has stopped waiting at the Gate.',
       'Captain Rodain, and fifty swords behind me. Where do you want us?',
@@ -98,6 +106,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   sharpen_claws: {
     ...PYRETH,
     title: 'Young Claws',
+    picture: 'story_young-claws',
     lines: [
       'The wall is yours now, my lord, and so is the fight at the Gate.',
       'Forgive an old dragon for saying it: your claws are young. Against orcs, they will not be enough.',
@@ -107,6 +116,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   the_wall_is_yours: {
     ...RODAIN,
     title: 'The Wall Is Yours',
+    picture: 'story_wall-is-yours',
     lines: [
       'The wall stands mended, Steward. You learn quickly.',
       'My company is spent. We held the stone while you learned to mend it. From here, the wall is yours to keep.',
@@ -117,6 +127,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   empty_stores: {
     ...PYRETH,
     title: 'Our Stores Run Low',
+    picture: 'story_stores-run-low',
     lines: [
       'The line holds, my lord, but your fighters spend themselves at the gate, and they eat from our stores. The villagers fend for themselves.',
       'Our stores will not last forever. Every time the meal bell rings, the fighters eat, and the stores grow thinner.',
@@ -130,6 +141,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   strangers_at_gate: {
     ...MIRAEL,
     title: 'A Stranger on the Road',
+    picture: 'story_stranger',
     lineMoods: { 0: 'alarmed' },
     lines: [
       'A traveler on the east road, alone and half-starved.',
@@ -140,6 +152,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   a_city_to_build: {
     ...PYRETH,
     title: 'A City, Not a Wall',
+    picture: 'story_city-not-a-wall',
     lines: [
       'Draconia was a city once, my lord, not only a wall. Let us begin to rebuild it.',
       'Your fighters need a garrison, a place to train into soldiers who strike harder. Start there.',
@@ -149,6 +162,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   the_smith: {
     ...KAEL,
     title: 'The Forge Is Cold',
+    picture: 'story_forge-is-cold',
     lines: [
       'Kael Ironwright. My father kept the forge here.',
       "Look, I can hit metal with a hammer. That's about where we're at.",
@@ -159,6 +173,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   beyond_the_walls: {
     ...MIRAEL,
     title: 'Beyond the Walls',
+    picture: 'story_beyond-the-walls',
     lines: [
       'Rodain is right, my lord. The horde grows, and a city that waits for wanderers will not keep pace.',
       'There are people out in the valley: farms the horde passed by, families hiding in the old mines. They cannot reach us alone.',
@@ -170,6 +185,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   the_keep: {
     ...PYRETH,
     title: 'The Keep Restored',
+    picture: 'story_keep-restored',
     lines: [
       'With the Keep restored, the city can tend itself while you rest. I will keep the ledgers.',
       'Your army holds the Gate while you are away, if it is strong enough. If it is not, the wall will wear, but the people will not let it fall.',
@@ -179,6 +195,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   the_lodge: {
     ...MIRAEL,
     title: "The Ranger's Lodge",
+    picture: 'story_rangers-lodge',
     lines: [
       'Gathering berries will not feed an army, my lord. Your soldiers eat more than your fighters ever did.',
       'Give me a lodge, and I will teach your gatherers to set traps, and the best of them to range the deep valley.',
@@ -188,6 +205,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   the_scholar: {
     ...LIRAE,
     title: 'The Ink-Wing',
+    picture: 'story_ink-wing',
     lines: [
       "Oh! Sorry, I didn't mean to... is this Draconia? I'm Lirae. I keep records. Kept. Keep.",
       "I don't fight. I remember. And there is so much here worth remembering.",
@@ -197,6 +215,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   dragonsteel: {
     ...KAEL,
     title: 'Dragonsteel',
+    picture: 'story_dragonsteel',
     lines: [
       'Those claws are the best the old world made, my lord. They are not the best that can be made.',
       'Dragonsteel takes renown and time at the forge, and every reforge costs more than the last.',
@@ -206,6 +225,7 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   the_horde_grows: {
     ...RODAIN,
     title: 'They Come Bigger',
+    picture: 'story_they-come-bigger',
     lines: [
       'They come bigger now, Steward. Every season the horde sends worse than the last.',
       "The number beside the wall counts how far they have come. The Ink-Wing's books may be how we keep pace.",
@@ -232,6 +252,7 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
     {
       ...RODAIN,
       title: 'The Wall Falls',
+      picture: 'story_breach',
       mood: 'grieving',
       stage: ['rodain', 'pyreth'],
       lines: [
@@ -242,6 +263,7 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
     {
       ...PYRETH,
       title: 'The Ancient Magic',
+      picture: 'story_ancient-magic',
       mood: 'grieving',
       stage: ['rodain', 'pyreth'],
       lines: [
@@ -256,6 +278,7 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
     {
       ...RODAIN,
       title: 'The Wall Falls',
+      picture: 'story_breach',
       mood: 'grieving',
       stage: ['rodain', 'pyreth'],
       lines: ['The wall is down again! They are in the streets!'],
@@ -263,6 +286,7 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
     {
       ...PYRETH,
       title: 'The Ancient Magic',
+      picture: 'story_ancient-magic',
       mood: 'grieving',
       stage: ['rodain', 'pyreth'],
       lines: ['Once more the ancient magic answers, my lord, and once more Draconia pays for it.'],

@@ -1,7 +1,9 @@
-import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent, PixelRatio } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { useAppActive } from '../hooks/useAppActive'
+import { useSfx } from '../hooks/useSfx'
+import { SOUND } from '../data/sounds'
 import { EnemyHp } from './EnemyHp'
 import { clawLook } from '../types/claws'
 import { RoadMonster } from './RoadMonster'
@@ -107,6 +109,12 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   // Strikes land on the monster where it is on the road, at its size of the moment
   const walker = useRef(road.walker)
   walker.current = road.walker
+  // The next one's footfalls as it sets out from the camps
+  const playWalkUp = useSfx(SOUND.walkUp)
+  const walking = road.walker.walking
+  useEffect(() => {
+    if (walking) playWalkUp()
+  }, [walking, playWalkUp])
   const fellTop = road.fellTop
 
   // Pose: the hit frame for ~120ms on each strike, else idle (or hurt at 1/3 HP or less)

@@ -16,7 +16,9 @@ import { useKillEvents } from '../hooks/useKillEvents'
 import { useHaptics } from '../hooks/useHaptics'
 import { useSfx } from '../hooks/useSfx'
 import { SFX, SFX_WEAPON_POOL } from '../data/sfx'
+import { SOUND } from '../data/sounds'
 import { useRandomSfx } from '../hooks/useRandomSfx'
+import { useAmbientLoop } from '../hooks/useAmbientLoop'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, getFighterCost, getRepairerCost, isSystemOn, MAX_CITY_HP } from '../types/game'
@@ -31,7 +33,7 @@ import { warfrontReveal } from '../types/opening'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
 import { Gate } from './warfront/Gate'
-import { clawDef, canSharpen, canReforge, tapDamageNow, tapHit, rollsDouble } from '../types/claws'
+import { clawDef, clawLook, canSharpen, canReforge, tapDamageNow, tapHit, rollsDouble } from '../types/claws'
 import { ClawsChip } from '../components/ClawsChip'
 import { ClawsSheet } from '../components/ClawsSheet'
 
@@ -69,9 +71,13 @@ export function GameScreen() {
   const field = battlefieldLayout(fieldHeight)
   const focused = useIsFocused()
 
-  // Each hit is a claw swing (a random one from the weapon pool, slightly varied in pitch)
+  // Each hit is a claw swing (a random one from the weapon pool, slightly varied in pitch); Ember
+  // claws have a strike of their own, and a double strike is a crit
   const playSwing = useRandomSfx(SFX_WEAPON_POOL, { cooldownMs: 90, pitchVariation: 0.06 })
-  const playKill = useSfx(SFX.COIN)
+  const playEmber = useSfx(SOUND.slashEmber)
+  const playCrit = useSfx(SOUND.crit)
+  const playKill = useSfx(SOUND.monsterDeath)
+  const playWallHit = useSfx(SOUND.wallHit)
   const haptics = useHaptics()
   const battlefieldRef = useRef<BattlefieldHandle>(null)
   const sceneRef = useRef<WarfrontSceneHandle>(null)
@@ -85,11 +91,13 @@ export function GameScreen() {
     const s = stateRef.current
     const double = rollsDouble(s, Math.random())
     click(double)
-    playSwing()
+    if (double) playCrit()
+    else if (clawLook(s.clawLevel).tier === 'ember') playEmber()
+    else playSwing()
     if (double) haptics.medium()
     else haptics.light()
     return { damage: tapHit(s, double), double }
-  }, [click, playSwing, haptics])
+  }, [click, playSwing, playEmber, playCrit, haptics])
 
   // The army's volleys that landed: one small number each (only while the Warfront shows)
   const army = armySize(state)
@@ -113,9 +121,13 @@ export function GameScreen() {
     const change = wallChange(wallSeen.current, now)
     wallSeen.current = now
     if (!focused || !change) return
+    // The Breach's own sound plays on every screen (hooks/useGameSounds)
     if (change === 'breach') sceneRef.current?.breach()
-    else sceneRef.current?.struck()
-  }, [state.cityHp, state.breaches, state.startedAt, focused])
+    else {
+      sceneRef.current?.struck()
+      playWallHit()
+    }
+  }, [state.cityHp, state.breaches, state.startedAt, focused, playWallHit])
 
   // A kill: coin sound, the bounty floats up, and about one in four brings a flavor line. Only
   // the player's own kills get the haptic; fighters' kills away from the Warfront stay quiet.
@@ -134,6 +146,12 @@ export function GameScreen() {
   const rallyOn = isSystemOn(state, 'rally')
   const repairOn = isSystemOn(state, 'repair')
   const siegeOn = isSystemOn(state, 'siege')
+
+  // The Warfront's air: torches and the night wind (it is always night here), and the horde's
+  // drums far off once the siege is on
+  useAmbientLoop('torches', focused)
+  useAmbientLoop('nightWind', focused)
+  useAmbientLoop('hordeDrums', focused && siegeOn)
   const hungerOn = isSystemOn(state, 'hunger')
   const claws = clawDef(state.clawLevel)
   const [clawsOpen, setClawsOpen] = useState(false)

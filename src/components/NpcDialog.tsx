@@ -7,10 +7,15 @@ import {
   Animated,
   AccessibilityInfo,
   Platform,
+  PixelRatio,
+  useWindowDimensions,
 } from 'react-native'
+import type { AudioSource } from 'expo-audio'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import type { GameIconName } from '../art'
+import { SPRITES, fitWhole } from '../art'
+import type { GameIconName, SpriteId } from '../art'
 import { GameIcon } from './GameIcon'
+import { PixelSprite } from './PixelSprite'
 import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { HighlightBackdrop } from './HighlightBackdrop'
@@ -20,7 +25,7 @@ import { colors, spacing, radius, gold } from '../theme'
 import { useHaptics, useSfx } from '../hooks'
 import { useReduceMotion } from '../hooks/useReduceMotion'
 import { useScreenReader } from '../hooks/useScreenReader'
-import { SFX } from '../data/sfx'
+import { SOUND } from '../data/sounds'
 import { dialogPaging } from '../types/dialogPaging'
 import { lineMood } from '../types/cast'
 import type { CastId, Mood } from '../types/cast'
@@ -33,6 +38,12 @@ const TYPE_MS = 28
 
 /** Light enough that the world shows behind the people talking */
 const BACKDROP_DIM = 'rgba(2, 2, 6, 0.6)'
+
+/** The scene's picture takes at most this share of the screen's height */
+const PICTURE_MAX_H = 0.42
+
+/** The picture starts below the scene's title, which sits at the top */
+const PICTURE_TOP = 28
 
 /** One line of dialogue text, in points */
 const LINE_H = 22
@@ -53,6 +64,10 @@ interface NpcDialogProps {
   /** Two on stage (left, right) for a conversation: the speaker lit, the other in shadow */
   stage?: [CastId, CastId]
   title: string
+  /** The scene's picture (130x96), across the top of the screen behind the dialogue */
+  picture?: SpriteId
+  /** A character's sting, played as the scene opens instead of its usual sound (their first scene) */
+  sting?: AudioSource
   /** Keep the same array for the same scene (a new array starts the scene over from its first line) */
   lines: string[]
   dismissLabel?: string
@@ -80,6 +95,8 @@ export function NpcDialog({
   lineMoods,
   stage,
   title,
+  picture,
+  sting,
   lines,
   dismissLabel = 'Continue',
   onDismiss,
@@ -88,8 +105,9 @@ export function NpcDialog({
   highlight,
 }: NpcDialogProps) {
   const haptics = useHaptics()
-  const playNpc = useSfx(SFX.NPC)
+  const playOpen = useSfx(sting ?? SOUND.sceneOpen)
   const insets = useSafeAreaInsets()
+  const { width, height } = useWindowDimensions()
   const reduceMotion = useReduceMotion()
   const screenReader = useScreenReader()
   const backdropOpacity = useRef(new Animated.Value(0)).current
@@ -98,7 +116,7 @@ export function NpcDialog({
 
   useEffect(() => {
     if (visible) {
-      playNpc()
+      playOpen()
       Animated.parallel([
         Animated.timing(backdropOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
         Animated.timing(castOpacity, { toValue: 1, duration: 220, useNativeDriver: true }),
@@ -109,7 +127,7 @@ export function NpcDialog({
       castOpacity.setValue(0)
       riseY.setValue(24)
     }
-  }, [visible, playNpc, backdropOpacity, castOpacity, riseY])
+  }, [visible, playOpen, backdropOpacity, castOpacity, riseY])
 
   // One line per page. A tap steps through the pages; the last page's tap is the scene's own
   // dismiss (with its label and any navigation). Skip is only for cutscenes of 2+ pages.
@@ -178,6 +196,12 @@ export function NpcDialog({
   }
 
   const buttonLabel = lastPage ? dismissLabel : 'Continue'
+  // Across the top at whole screen pixels, under the title, as wide as fits
+  const art = picture ? SPRITES[picture] : null
+  const ratio = PixelRatio.get()
+  const pictureScale = art
+    ? Math.min(fitWhole(width - spacing[4] * 2, art.w, ratio), fitWhole(height * PICTURE_MAX_H, art.h, ratio))
+    : 0
   const speakerOnRight = !!(who && stage && stage[1] === who)
 
   return (
@@ -191,6 +215,17 @@ export function NpcDialog({
       <Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]}>
         <HighlightBackdrop targetId={highlight} dim={BACKDROP_DIM} />
       </Animated.View>
+
+      {picture && (
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.picture, { top: insets.top + spacing[2] + PICTURE_TOP, opacity: castOpacity }]}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+        >
+          <PixelSprite id={picture} scale={pictureScale} />
+        </Animated.View>
+      )}
 
       {/* The whole screen is the advance button: tap anywhere */}
       <Pressable
@@ -260,6 +295,12 @@ export function NpcDialog({
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
+  },
+  picture: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
   },
   scene: {
     width: '100%',

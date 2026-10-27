@@ -1,4 +1,7 @@
-/** Semantic sound-effect map. All files point to converted .m4a assets. */
+/**
+ * The stock pack's interface ticks (taps, slides, purchases), kept until the owner says otherwise.
+ * The game's own event sounds are in data/sounds.ts.
+ */
 export const SFX = {
   COIN: require('../../assets/music/out/coin_01.m4a'),
   ALERT: require('../../assets/music/out/notes_four_UP_01.m4a'),
@@ -17,12 +20,11 @@ export const SFX = {
   NO_GOLD: require('../../assets/music/out/dissonant_03.m4a'),
 } as const
 
-/** Pool of weapon hit/swing sounds for the SLAY orb. */
+/**
+ * The claw's swing below the Ember tier. The stock wall hits are gone: sfx_wall-hit is a monster's
+ * blow on the wall now (data/sounds.ts).
+ */
 export const SFX_WEAPON_POOL = [
-  require('../../assets/music/out/WEAPON_HIT_WALL_002.m4a'),
-  require('../../assets/music/out/WEAPON_HIT_WALL_003.m4a'),
-  require('../../assets/music/out/WEAPON_HIT_WALL_004.m4a'),
-  require('../../assets/music/out/WEAPON_HIT_WALL_005.m4a'),
   require('../../assets/music/out/WEAPON_HIT_WOOD_001.m4a'),
   require('../../assets/music/out/WEAPON_HIT_WOOD_002.m4a'),
   require('../../assets/music/out/WEAPON_HIT_WOOD_003.m4a'),

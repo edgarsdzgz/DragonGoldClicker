@@ -1,16 +1,17 @@
 import React from 'react'
 import { View, ScrollView, PixelRatio, useWindowDimensions } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import { GameIcon } from '../components/GameIcon'
-import { cityUnit } from '../art'
+import { cityUnit, cityLight, interiorHeader } from '../art'
 import type { CityBuildingId } from '../art'
-import { Text, BottomSheet, ConfirmModal, InspirationIcon, StoryObjective, type ResourceItem } from '../components'
+import { Text, BottomSheet, ConfirmModal, InspirationIcon, StoryObjective, InteriorHeader, type ResourceItem } from '../components'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
 import { useHaptics, useSfx } from '../hooks'
 import { useCoach } from '../context/CoachContext'
 import type { Rect } from '../context/coachRegistry'
 import { SFX } from '../data/sfx'
+import { useAmbientLoop } from '../hooks/useAmbientLoop'
 import { colors, gold } from '../theme'
 import {
   ARMORY_COST,
@@ -67,7 +68,18 @@ function ComingSoonInterior() {
   )
 }
 
+/** A building's interior under its header picture; the forge is heard while it is open */
 function BuildingInterior({ id }: { id: BuildingId }) {
+  useAmbientLoop('forge', id === 'forge')
+  return (
+    <>
+      <InteriorHeader id={interiorHeader(id)} />
+      <InteriorBody id={id} />
+    </>
+  )
+}
+
+function InteriorBody({ id }: { id: BuildingId }) {
   switch (id) {
     case 'keep': return <DraconiaHallInterior />
     case 'garrison': return <BarracksInterior />
@@ -100,8 +112,12 @@ export function ShopScreen() {
     buildLibrarium,
   } = useGame()
   const haptics = useHaptics()
-  const playCoin = useSfx(SFX.COIN)
+  // Building plays its own sound when it stands (hooks/useGameSounds)
   const playShop = useSfx(SFX.SHOP)
+  // The city in its light; the night wind blows over it while it is dark
+  const light = cityLight(state)
+  const focused = useIsFocused()
+  useAmbientLoop('nightWind', focused && light === 'night')
 
   // Clear open panel when navigating away so it doesn't reopen on return
   useFocusEffect(
@@ -416,6 +432,7 @@ export function ShopScreen() {
         <CityMap
           plots={plots}
           unit={unit}
+          light={light}
           onPress={handleNodePress}
           coachIds={{ garrison: 'garrison' }}
           scrollIntoView={scrollTargetIntoView}
@@ -436,7 +453,6 @@ export function ShopScreen() {
         onConfirm={() => {
           if (purchaseBuilding?.canAfford && purchaseTarget) {
             haptics.medium()
-            playCoin()
             purchaseBuilding.onBuild()
             const openId = purchaseTarget
             setPurchaseTarget(null)

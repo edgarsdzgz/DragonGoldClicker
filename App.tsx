@@ -13,6 +13,7 @@ import { Navigation } from './src/navigation'
 import { IntroScreen } from './src/screens/IntroScreen'
 import { TitleScreen } from './src/screens/TitleScreen'
 import { useBgMusic, useImmersiveMode } from './src/hooks'
+import { useGameSounds } from './src/hooks/useGameSounds'
 import { useLaunch } from './src/loading/useLaunch'
 import type { LoadedGame } from './src/hooks/useStorage'
 import { BGM_PLAYLIST } from './src/data/music'
@@ -30,9 +31,16 @@ function BgMusic() {
   return null
 }
 
+/** The game's event sounds, in a component of its own for the same reason: the state ticks */
+function GameSounds() {
+  useGameSounds()
+  return null
+}
+
 function AppInner({ game }: { game: LoadedGame }) {
   return (
     <GameProvider initial={game}>
+      <GameSounds />
       <StoryProvider>
         <CoachProvider>
           <ShakeProvider>
