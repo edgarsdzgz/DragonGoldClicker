@@ -622,6 +622,71 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
+## Chapter 8: Dragonsteel, the claws past Ancient (proposed 2026-10-26)
+
+Roadmap Step 3, paired with the story: every old beat has now played or been retired, so Chapter 8
+needs new material, and Kael reforging the claws is it. The claws screen already promises it:
+"Your claws are Ancient. Kael's forge may yet make them sharper."
+
+### What the numbers say
+
+- **The claws stop at Ancient** (level 8, 20 damage, 800 renown for the last level). The owner
+  ruled this "later, not now" until a player could reach Ancient.
+- **The horde never stops.** Since the balance pass it grows 5% a level. Taps to kill an orc:
+
+| Horde level | Orc HP | Taps at Ancient (20) | With Dragon Anatomy + Wyrm's Fury (26) |
+|---|---|---|---|
+| 1 | 20 | 1 | 1 |
+| 27 | 46 | 3 | 2 |
+| 50 | 69 | 4 | 3 |
+| 100 | 119 | 6 | 5 |
+| 200 | 219 | 11 | 9 |
+
+- Every other track keeps growing (the army, the swords, the studies); the dragon's own strike is
+  the only one that ends. At level 100 a tap is a sixth of an orc and the Gate feels slow.
+
+### Recommended
+
+**An endless track past Ancient: Dragonsteel.** Each reforge adds 5 damage (a quarter of
+Ancient), so one reforge keeps pace with five horde levels. The price grows 40% each time, so
+the claws fall slowly behind unless the player chooses to invest in them.
+
+| Reforge | Damage | Renown |
+|---|---|---|
+| +1 | 25 | 1,000 |
+| +2 | 30 | 1,400 |
+| +3 | 35 | 1,960 |
+| +5 | 45 | 3,842 |
+| +10 | 70 | 20,661 |
+
+- Shown as "Ancient Claws +3" on the claws chip and sheet; the sheet lists Ancient and the next
+  reforge instead of an ever-longer table.
+- Studies still multiply it (Dragon Anatomy, Wyrm's Fury, Weak Points).
+- Renown stays honest: tougher claws only kill faster; every HP still pays 0.05.
+- The slash keeps its ember look; a Dragonsteel look waits for the visual redesign.
+
+**The story: Kael, "Dragonsteel".** A main beat once the claws are Ancient and Mirael's chapter
+has been seen (a minute later): "Those claws are the best the old world made. I can do better:
+give me renown and time at the forge." One quest, **Reforge the Claws** (one reforge). The
+reforge row appears in the claws sheet only after this scene. A player who has not reached
+Ancient simply meets Kael when they do; the story waits there.
+
+**Code**
+- `types/claws.ts`: `reforgeCost(n)`, `clawDamage(level)` and `clawName(level)` past Ancient,
+  with `sharpenClaws` going on past level 8 once Kael's beat is seen. `clawLevel` keeps counting
+  (9 is Ancient +1), so saves need no migration.
+- `ClawsSheet` shows the next step only; the chip shows the name with "+n".
+
+### Open questions
+
+1. **The track:** endless reforges at +5 damage and +40% price from 1,000 (recommended), or a
+   few more named levels that end again?
+2. **The story:** Kael's "Dragonsteel" as Chapter 8, once the claws are Ancient (recommended)?
+3. **Your save:** I cannot read it from the phone. If your claws are not Ancient yet, Chapter 8
+   waits for you there; tell me if you would rather it come sooner.
+
+---
+
 ## Chapter 7: Beyond the Walls (approved and built 2026-10-26)
 
 The last three paused beats, all written for the old idle game. After this chapter every beat in
