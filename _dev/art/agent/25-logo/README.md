@@ -28,7 +28,10 @@ small spaced caps.
 - **A in motion** (`src/make_shield_anim.py`, optional use): the shield flies in from the foreground and
   slams into place (squash, shake, dust), three claws slash upward, and the three sparks fly off the
   slash as debris. The shield is redrawn from its polygons at every size, so the zoom stays crisp; the
-  last frame is `logo_shield_icon.png` exactly. Output: `logo_anim_frames_strip19.png`,
+  last frame is `logo_shield_icon.png` exactly. Output: `logo_anim_frames_strip20.png`,
   `logo_anim_timing.json`, `preview/logo_anim.gif`.
 - **Splash timing** (owner): 6.2 seconds in all, the middle of the first cut (5.5 s, `splash_timing_v1`)
   and the slowed cut (8.4 s, `splash_timing_v2`); both are kept with their preview GIFs.
+- **A's slam dust, v2** (owner: "more all around the shield, to make the impact more impactful"): a ring
+  of uneven puffs bursts from behind the whole shield, spreads and breaks up over four frames. The first
+  cut is kept as `out/logo_anim_frames_strip19_v1.png` and `preview/logo_anim_v1.gif`.

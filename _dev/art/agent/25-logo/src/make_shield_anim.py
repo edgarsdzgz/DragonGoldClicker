@@ -70,8 +70,24 @@ def claw_upward(img, off, progress, clip, half=1.7):
             px[x, y] = rgba("ink")
 
 
+def dust_ring(out, spread, r, body, rim, shade):
+    """The slam's dust, blasting out from behind the whole shield (owner: "more all around the shield").
+    Puffs sit on an oval around the shield, pushed further out each frame; drawn before the shield,
+    so they burst from under its edges."""
+    cx, cy = 32, 34
+    discs = []
+    for i in range(24):
+        ang = i * 2 * math.pi / 24 + 0.2
+        lump = (0.8, 1.15, 0.95, 1.25)[i % 4]          # uneven puffs, so the ring billows
+        rx, ry = 17 + spread + lump, 21 + spread + lump
+        discs.append((cx + rx * math.cos(ang), cy + ry * math.sin(ang), r * lump))
+    cloud(out, discs, body, rim, shade)
+
+
 def frame(scale=1.0, squash=(1.0, 1.0), shake=0, claws=(0, 0, 0), debris=None, dust=None):
     out = background()
+    if dust:
+        dust_ring(out, *dust)
     if scale > 0:
         anchor = (32, 32) if squash == (1.0, 1.0) else (32, 54)
         sx, sy = scale * squash[0], scale * squash[1]
@@ -80,9 +96,6 @@ def frame(scale=1.0, squash=(1.0, 1.0), shake=0, claws=(0, 0, 0), debris=None, d
             if p > 0:
                 claw_upward(layer, off, p, clip)
         out.alpha_composite(pixkit.outline(layer))
-    if dust:
-        body, rim, shade, r = dust
-        cloud(out, [(24, 55, r), (40, 55, r), (32, 57, r - 0.5)], body, rim, shade)
     if debris is not None:
         for (fx, fy), color, (sx0, sy0) in DEBRIS:
             k = 1 - (1 - debris) ** 2                  # ease out: fast off the claw, settling
@@ -98,9 +111,10 @@ def timeline():
     beats = [(dict(scale=0), 300)]
     for s in (3.2, 2.4, 1.8, 1.4, 1.15):              # in from the foreground, accelerating
         beats.append((dict(scale=s), 50))
-    beats.append((dict(squash=(1.1, 0.9), shake=2, dust=("steel3", "steel4", "steel2", 2.2)), 70))   # the slam
-    beats.append((dict(squash=(0.96, 1.04), shake=-1, dust=("steel2", "steel3", "steel1", 3.0)), 70))
-    beats.append((dict(dust=("steel1", "steel2", None, 2.4)), 90))
+    beats.append((dict(squash=(1.1, 0.9), shake=2, dust=(0, 3.6, "steel3", "steel4", "steel2")), 70))   # the slam
+    beats.append((dict(squash=(0.96, 1.04), shake=-1, dust=(3, 4.4, "steel2", "steel3", "steel1")), 70))
+    beats.append((dict(dust=(6, 3.8, "steel2", "steel3", "steel1")), 80))
+    beats.append((dict(dust=(8.5, 2.4, "steel1", "steel2", None)), 90))
     beats.append((dict(), 260))
     steps = [0.3, 0.6, 0.85, 1.0]
     for f in range(6):                                 # the three claws, a beat apart
