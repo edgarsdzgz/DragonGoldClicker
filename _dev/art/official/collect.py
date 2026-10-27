@@ -231,7 +231,7 @@ ASSETS = [
     ("cast/cast_sigil-rodain.png", AGENT / "30-cast/out/cast_sigil-rodain.png", "Sigil: Captain Rodain, crossed spears", "Batch 8"),
     ("cast/cast_sigil-mirael.png", AGENT / "30-cast/out/cast_sigil-mirael.png", "Sigil: Scout Mirael, the compass star", "Batch 8"),
     ("cast/cast_sigil-kael.png", AGENT / "30-cast/out/cast_sigil-kael.png", "Sigil: Kael Ironwright, the anvil", "Batch 8"),
-    ("cast/cast_sigil-lirae.png", AGENT / "40-icons-sigils/out/cast_sigil-lirae_v2b.png", "Sigil: Lirae the Ink-Wing, the quill", "sigils v2b (replaced Batch 8's quill, owner 2026-10-27)"),
+    ("cast/cast_sigil-lirae.png", AGENT / "30-cast/out/cast_sigil-lirae.png", "Sigil: Lirae the Ink-Wing, the quill", "Batch 8"),
     ("cast/cast_emblem-gate.png", AGENT / "30-cast/out/cast_emblem-gate.png", "The Gate of Draconia: the narrator's emblem, in a bust's place", "Batch 8"),
     ("cast/bust_pyreth.png", AGENT / "31-busts-simple/out/bust_pyreth_v4.png", "Bust: Elder Pyreth (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
     ("cast/bust_rodain.png", AGENT / "31-busts-simple/out/bust_rodain_v4.png", "Bust: Captain Rodain (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
