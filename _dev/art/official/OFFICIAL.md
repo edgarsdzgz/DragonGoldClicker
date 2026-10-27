@@ -853,3 +853,108 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_cult-apprentice-stronger_hurt.png` | 14x18 | Cult Apprentice, stronger (the Unmaking's deepest): hurt | bestiary regulars v1 |
 | `mobs/mob_cult-apprentice-stronger_walk_strip2.png` | 28x18 | Cult Apprentice, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary regulars v1 |
 | `mobs/mob_cult-apprentice-stronger_death_strip4.png` | 96x18 | Cult Apprentice, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_kobold-shaman_idle.png` | 17x22 | Kobold Shaman (elite): idle | bestiary elites v1 |
+| `mobs/mob_kobold-shaman_hit.png` | 17x22 | Kobold Shaman (elite): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_kobold-shaman_hurt.png` | 17x22 | Kobold Shaman (elite): hurt | bestiary elites v1 |
+| `mobs/mob_kobold-shaman_walk_strip2.png` | 34x22 | Kobold Shaman (elite): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_kobold-shaman_death_strip4.png` | 116x22 | Kobold Shaman (elite): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-strong_idle.png` | 17x22 | Kobold Shaman (elite), strong: idle | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-strong_hit.png` | 17x22 | Kobold Shaman (elite), strong: hit, the red flash | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-strong_hurt.png` | 17x22 | Kobold Shaman (elite), strong: hurt | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-strong_walk_strip2.png` | 34x22 | Kobold Shaman (elite), strong: walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-strong_death_strip4.png` | 116x22 | Kobold Shaman (elite), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-stronger_idle.png` | 17x22 | Kobold Shaman (elite), stronger (the Unmaking's deepest): idle | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-stronger_hit.png` | 17x22 | Kobold Shaman (elite), stronger (the Unmaking's deepest): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-stronger_hurt.png` | 17x22 | Kobold Shaman (elite), stronger (the Unmaking's deepest): hurt | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-stronger_walk_strip2.png` | 34x22 | Kobold Shaman (elite), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_kobold-shaman-stronger_death_strip4.png` | 116x22 | Kobold Shaman (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain_idle.png` | 19x21 | Goblin Chieftain (elite): idle | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain_hit.png` | 19x21 | Goblin Chieftain (elite): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain_hurt.png` | 19x21 | Goblin Chieftain (elite): hurt | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain_walk_strip2.png` | 38x21 | Goblin Chieftain (elite): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain_death_strip4.png` | 108x21 | Goblin Chieftain (elite): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-strong_idle.png` | 19x21 | Goblin Chieftain (elite), strong: idle | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-strong_hit.png` | 19x21 | Goblin Chieftain (elite), strong: hit, the red flash | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-strong_hurt.png` | 19x21 | Goblin Chieftain (elite), strong: hurt | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-strong_walk_strip2.png` | 38x21 | Goblin Chieftain (elite), strong: walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-strong_death_strip4.png` | 108x21 | Goblin Chieftain (elite), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-stronger_idle.png` | 19x21 | Goblin Chieftain (elite), stronger (the Unmaking's deepest): idle | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-stronger_hit.png` | 19x21 | Goblin Chieftain (elite), stronger (the Unmaking's deepest): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-stronger_hurt.png` | 19x21 | Goblin Chieftain (elite), stronger (the Unmaking's deepest): hurt | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-stronger_walk_strip2.png` | 38x21 | Goblin Chieftain (elite), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_goblin-chieftain-stronger_death_strip4.png` | 108x21 | Goblin Chieftain (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_orc-warchief_idle.png` | 20x23 | Orc Warchief (elite): idle | bestiary elites v1 |
+| `mobs/mob_orc-warchief_hit.png` | 20x23 | Orc Warchief (elite): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_orc-warchief_hurt.png` | 20x23 | Orc Warchief (elite): hurt | bestiary elites v1 |
+| `mobs/mob_orc-warchief_walk_strip2.png` | 40x23 | Orc Warchief (elite): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_orc-warchief_death_strip4.png` | 120x23 | Orc Warchief (elite): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_orc-warchief-strong_idle.png` | 20x23 | Orc Warchief (elite), strong: idle | bestiary elites v1 |
+| `mobs/mob_orc-warchief-strong_hit.png` | 20x23 | Orc Warchief (elite), strong: hit, the red flash | bestiary elites v1 |
+| `mobs/mob_orc-warchief-strong_hurt.png` | 20x23 | Orc Warchief (elite), strong: hurt | bestiary elites v1 |
+| `mobs/mob_orc-warchief-strong_walk_strip2.png` | 40x23 | Orc Warchief (elite), strong: walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_orc-warchief-strong_death_strip4.png` | 120x23 | Orc Warchief (elite), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_orc-warchief-stronger_idle.png` | 20x23 | Orc Warchief (elite), stronger (the Unmaking's deepest): idle | bestiary elites v1 |
+| `mobs/mob_orc-warchief-stronger_hit.png` | 20x23 | Orc Warchief (elite), stronger (the Unmaking's deepest): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_orc-warchief-stronger_hurt.png` | 20x23 | Orc Warchief (elite), stronger (the Unmaking's deepest): hurt | bestiary elites v1 |
+| `mobs/mob_orc-warchief-stronger_walk_strip2.png` | 40x23 | Orc Warchief (elite), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_orc-warchief-stronger_death_strip4.png` | 120x23 | Orc Warchief (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_troll_idle.png` | 19x24 | Troll (elite): idle | bestiary elites v1 |
+| `mobs/mob_troll_hit.png` | 19x24 | Troll (elite): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_troll_hurt.png` | 19x24 | Troll (elite): hurt | bestiary elites v1 |
+| `mobs/mob_troll_walk_strip2.png` | 38x24 | Troll (elite): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_troll_death_strip4.png` | 124x24 | Troll (elite): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_troll-strong_idle.png` | 19x24 | Troll (elite), strong: idle | bestiary elites v1 |
+| `mobs/mob_troll-strong_hit.png` | 19x24 | Troll (elite), strong: hit, the red flash | bestiary elites v1 |
+| `mobs/mob_troll-strong_hurt.png` | 19x24 | Troll (elite), strong: hurt | bestiary elites v1 |
+| `mobs/mob_troll-strong_walk_strip2.png` | 38x24 | Troll (elite), strong: walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_troll-strong_death_strip4.png` | 124x24 | Troll (elite), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_troll-stronger_idle.png` | 19x24 | Troll (elite), stronger (the Unmaking's deepest): idle | bestiary elites v1 |
+| `mobs/mob_troll-stronger_hit.png` | 19x24 | Troll (elite), stronger (the Unmaking's deepest): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_troll-stronger_hurt.png` | 19x24 | Troll (elite), stronger (the Unmaking's deepest): hurt | bestiary elites v1 |
+| `mobs/mob_troll-stronger_walk_strip2.png` | 38x24 | Troll (elite), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_troll-stronger_death_strip4.png` | 124x24 | Troll (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_ogre_idle.png` | 20x24 | Ogre (elite): idle | bestiary elites v1 |
+| `mobs/mob_ogre_hit.png` | 20x24 | Ogre (elite): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_ogre_hurt.png` | 20x24 | Ogre (elite): hurt | bestiary elites v1 |
+| `mobs/mob_ogre_walk_strip2.png` | 40x24 | Ogre (elite): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_ogre_death_strip4.png` | 120x24 | Ogre (elite): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_ogre-strong_idle.png` | 20x24 | Ogre (elite), strong: idle | bestiary elites v1 |
+| `mobs/mob_ogre-strong_hit.png` | 20x24 | Ogre (elite), strong: hit, the red flash | bestiary elites v1 |
+| `mobs/mob_ogre-strong_hurt.png` | 20x24 | Ogre (elite), strong: hurt | bestiary elites v1 |
+| `mobs/mob_ogre-strong_walk_strip2.png` | 40x24 | Ogre (elite), strong: walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_ogre-strong_death_strip4.png` | 120x24 | Ogre (elite), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_ogre-stronger_idle.png` | 20x24 | Ogre (elite), stronger (the Unmaking's deepest): idle | bestiary elites v1 |
+| `mobs/mob_ogre-stronger_hit.png` | 20x24 | Ogre (elite), stronger (the Unmaking's deepest): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_ogre-stronger_hurt.png` | 20x24 | Ogre (elite), stronger (the Unmaking's deepest): hurt | bestiary elites v1 |
+| `mobs/mob_ogre-stronger_walk_strip2.png` | 40x24 | Ogre (elite), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_ogre-stronger_death_strip4.png` | 120x24 | Ogre (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_iron-golem_idle.png` | 18x23 | Iron Golem (elite): idle | bestiary elites v1 |
+| `mobs/mob_iron-golem_hit.png` | 18x23 | Iron Golem (elite): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_iron-golem_hurt.png` | 18x23 | Iron Golem (elite): hurt | bestiary elites v1 |
+| `mobs/mob_iron-golem_walk_strip2.png` | 36x23 | Iron Golem (elite): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_iron-golem_death_strip4.png` | 120x23 | Iron Golem (elite): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_iron-golem-strong_idle.png` | 18x23 | Iron Golem (elite), strong: idle | bestiary elites v1 |
+| `mobs/mob_iron-golem-strong_hit.png` | 18x23 | Iron Golem (elite), strong: hit, the red flash | bestiary elites v1 |
+| `mobs/mob_iron-golem-strong_hurt.png` | 18x23 | Iron Golem (elite), strong: hurt | bestiary elites v1 |
+| `mobs/mob_iron-golem-strong_walk_strip2.png` | 36x23 | Iron Golem (elite), strong: walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_iron-golem-strong_death_strip4.png` | 120x23 | Iron Golem (elite), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_iron-golem-stronger_idle.png` | 18x23 | Iron Golem (elite), stronger (the Unmaking's deepest): idle | bestiary elites v1 |
+| `mobs/mob_iron-golem-stronger_hit.png` | 18x23 | Iron Golem (elite), stronger (the Unmaking's deepest): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_iron-golem-stronger_hurt.png` | 18x23 | Iron Golem (elite), stronger (the Unmaking's deepest): hurt | bestiary elites v1 |
+| `mobs/mob_iron-golem-stronger_walk_strip2.png` | 36x23 | Iron Golem (elite), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_iron-golem-stronger_death_strip4.png` | 120x23 | Iron Golem (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_windcaller_idle.png` | 17x23 | Windcaller (elite): idle | bestiary elites v1 |
+| `mobs/mob_windcaller_hit.png` | 17x23 | Windcaller (elite): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_windcaller_hurt.png` | 17x23 | Windcaller (elite): hurt | bestiary elites v1 |
+| `mobs/mob_windcaller_walk_strip2.png` | 34x23 | Windcaller (elite): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_windcaller_death_strip4.png` | 116x23 | Windcaller (elite): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_windcaller-strong_idle.png` | 17x23 | Windcaller (elite), strong: idle | bestiary elites v1 |
+| `mobs/mob_windcaller-strong_hit.png` | 17x23 | Windcaller (elite), strong: hit, the red flash | bestiary elites v1 |
+| `mobs/mob_windcaller-strong_hurt.png` | 17x23 | Windcaller (elite), strong: hurt | bestiary elites v1 |
+| `mobs/mob_windcaller-strong_walk_strip2.png` | 34x23 | Windcaller (elite), strong: walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_windcaller-strong_death_strip4.png` | 116x23 | Windcaller (elite), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_windcaller-stronger_idle.png` | 17x23 | Windcaller (elite), stronger (the Unmaking's deepest): idle | bestiary elites v1 |
+| `mobs/mob_windcaller-stronger_hit.png` | 17x23 | Windcaller (elite), stronger (the Unmaking's deepest): hit, the red flash | bestiary elites v1 |
+| `mobs/mob_windcaller-stronger_hurt.png` | 17x23 | Windcaller (elite), stronger (the Unmaking's deepest): hurt | bestiary elites v1 |
+| `mobs/mob_windcaller-stronger_walk_strip2.png` | 34x23 | Windcaller (elite), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary elites v1 |
+| `mobs/mob_windcaller-stronger_death_strip4.png` | 116x23 | Windcaller (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
