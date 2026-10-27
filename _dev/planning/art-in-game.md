@@ -1,4 +1,4 @@
-# Art in the game: catalog and import plan (proposal, 2026-10-27)
+# Art in the game: catalog and import plan (approved 2026-10-27)
 
 **Goal:** get the official pixel art out of `_dev/art/official/` and onto the A16, one screen at a
 time, without hand-copying files and without the art going blurry.
@@ -108,3 +108,14 @@ The performance pass measures before step 3 and after it, so the art's cost on t
    (recommended)? Or wait until a whole screen's art is ready?
 4. **Draconia layout:** the city map replaces the card list (recommended, the cards' details move
    into each building's sheet)? Or the map sits above the list?
+
+## Owner rulings (2026-10-27)
+
+All four as recommended: Skia; import and gallery first, then icons, the Warfront, Draconia and
+the rest; swap art in as it arrives; the city map replaces the card list.
+
+## Progress
+
+- **Step 1, import and gallery: built 2026-10-27.** Skia 2.2.12; `scripts/import-art.py` writes
+  `assets/art/` and `src/art/manifest.ts`; `PixelSprite` draws any sprite or strip; the dev Art
+  Gallery (Settings, Dev) shows every sprite. Checked on the A16: sharp, whole-pixel art.

@@ -2,6 +2,15 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Pixel art in the game, step 1: import and gallery (2026-10-27)
+- The official pixel art is imported by `scripts/import-art.py` into `assets/art/` with a typed
+  manifest (`src/art/manifest.ts`); rerun it after an approved art change
+- Skia (2.2.12) draws the art sharp: whole screen pixels per art pixel, nearest-neighbor
+- `PixelSprite` shows any sprite at a whole-number scale and plays strips at their own speed
+  (held still with Reduce Motion); a dev-only Art Gallery in Settings shows every sprite
+- Fix: the claws tutorial step no longer traps the player under the open claws sheet; it is now
+  two steps, open the claws, then Sharpen
+
 ### Chapter 8: Dragonsteel, the claws past Ancient (2026-10-26)
 - Kael's "Dragonsteel" scene comes a minute after the claws reach Ancient (once Mirael's chapter
   has played), with the quest Reforge the Claws. The story pauses after it

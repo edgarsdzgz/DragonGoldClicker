@@ -12,6 +12,7 @@ import type { GameState } from '../../types/game'
 import { spacing } from '../../theme'
 import { DevCheckpoints } from './DevCheckpoints'
 import { DevStory } from './DevStory'
+import { DevArtGallery } from './DevArtGallery'
 
 /**
  * Dev-only test panel (Settings > Dev). Rendered only when DEV_TOOLS_ENABLED (src/config/devTools.ts).
@@ -72,6 +73,7 @@ export function DevPanel() {
       </Surface>
 
       <DevStory />
+      <DevArtGallery />
 
       <Surface style={styles.section}>
         <SectionLabel spacing={2}>FORCE EVENTS</SectionLabel>
