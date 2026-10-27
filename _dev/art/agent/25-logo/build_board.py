@@ -100,6 +100,7 @@ def gif_fig(path, caption):
 
 seal_intros = "".join(gif_fig(SEAL / "preview" / f"seal_intro_{k}.gif", f"{label}, x2")
                       for k, label in (("gold", "Gold, engraved"), ("arcane", "Arcane, a spell circle"), ("wax", "Wax, pressed")))
+build_fig = gif_fig(SEAL / "preview" / "seal_build.gif", "The seal builds, x2")
 runic_figs = "".join(fig(Image.open(SEAL / "out" / f"runic_{k}.png").convert("RGBA"), 4, label)
                      for k, label in (("gold", "Gold"), ("arcane", "Arcane"), ("wax", "Ruby wax"), ("steel", "Steel")))
 bottom = f"""
@@ -108,7 +109,14 @@ bottom = f"""
     <p class="muted">The studio's startup splash, before the game's own. The shield belongs to the game, so the studio
       takes Raxdeg's own wax seal, with the shield's slam and slash. Raxdeg is Edgar, with an X; code is the spell,
       and calling it casts it.</p>
-    <h3>The seal intro, in three finishes</h3>
+    <h3>The seal builds itself: arcane blue, then a gold SMASH</h3>
+    <p class="muted">The plates land first: the body slams down in a ring of dust, then the three medallions land one
+      by one, each with its own impact. Then the details are etched in arcane blue, a little at a time, each new cut
+      flashing white: the triangle traces from the top medallion down and across, the runes burn in around the ring,
+      the E, G and D appear, the small symbols, and the knot last, from its center out. Then the SMASH: a white-hot
+      flash, a hard shake, a shockwave, and the seal is gold. The slash carves the name. About 6.7 seconds.</p>
+    <div class="tiles">{build_fig}</div>
+    <h3>Earlier: the seal intro, in three finishes</h3>
     <p class="muted">The seal flies in from the foreground, unlit, and slams down in a ring of dust. Then the spell
       ignites: a white-hot wave runs out from the center knot to the outer ring and the seal cools to its finish.
       Last, the slash rips left to right and carves RAXDEG&middot;STVDIOS. About 4 seconds, then it holds.</p>
