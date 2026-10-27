@@ -46,6 +46,18 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_claw-7.png` | 16x16 | Claws 7: Ember | claw tiers |
 | `icons/icon_claw-8.png` | 16x16 | Claws 8: Dragonsteel | claw tiers |
 | `icons/icon_claw-9.png` | 16x16 | Claws 9: Ancient | claw tiers |
+| `icons/icon_next.png` | 12x12 | Next, go | icon sheet 4 |
+| `icons/icon_unknown.png` | 12x12 | Unknown, help | options 3 (crystal ball with the gold question mark) |
+| `icons/icon_info.png` | 12x12 | Info | options 2 (rune stone) |
+| `icons/icon_rising.png` | 12x12 | Rising stores | options 2 (cut gem) |
+| `icons/icon_falling.png` | 12x12 | Falling stores | options 2 (cut gem, brick: red stays for HP and danger) |
+| `icons/icon_rank.png` | 12x12 | Rank | icon sheet 4 |
+| `icons/icon_shield_gear.png` | 12x12 | Shield gear | icon sheet 4 |
+| `icons/icon_claws.png` | 12x12 | Claws (the track) | icon sheet 4 |
+| `icons/icon_moon.png` | 12x12 | Offline, rest | icon sheet 4 |
+| `icons/icon_sparkles.png` | 12x12 | Wizard's Tower | icon sheet 4 |
+| `icons/icon_map.png` | 12x12 | Map | icon sheet 4 |
+| `icons/icon_stats.png` | 12x12 | Stats | food and journal options (quill and inkpot) |
 | `people/ppl_human.png` | 11x16 | Townsfolk: human | mockup v1 |
 | `people/ppl_elf.png` | 11x16 | Townsfolk: elf | mockup v1 |
 | `people/ppl_horned.png` | 11x16 | Townsfolk: horned folk | mockup v1 |

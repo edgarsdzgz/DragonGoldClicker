@@ -18,16 +18,7 @@ OFFICIAL = ART / "official"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "review.html"
 
 # The batch awaiting the owner's approval: (title, [(path under agent/, label), ...]), or None.
-PENDING = ("Icon sheet 4: the last twelve interface icons, with the owner's picks from the options", [
-    ("09-icons-4/out/icon_next.png", "Next"),
-    ("11-options-3/out/icon_unknown_crystal_gold.png", "Unknown, help (crystal ball)"),
-    ("10-options-2/out/icon_info_runestone.png", "Info (rune stone)"),
-    ("10-options-2/out/icon_rising_gem.png", "Rising stores (cut gem)"),
-    ("10-options-2/out/icon_falling_gem.png", "Falling stores (cut gem)"),
-    ("09-icons-4/out/icon_rank.png", "Rank"), ("09-icons-4/out/icon_shield_gear.png", "Shield gear"),
-    ("09-icons-4/out/icon_claws.png", "Claws"), ("09-icons-4/out/icon_moon.png", "Offline, rest"),
-    ("09-icons-4/out/icon_sparkles.png", "Wizard's Tower"), ("09-icons-4/out/icon_map.png", "Map"),
-    ("08-food-journal/out/icon_journal_quill.png", "Stats (quill and inkpot)")])
+PENDING = None
 MOTION = [
     (AGENT / "01-test-run/preview/scene_warfront.gif", "The fighter's jab and the hit spark on the Warfront wall"),
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),
