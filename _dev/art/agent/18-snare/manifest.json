@@ -44,5 +44,50 @@
    "single-pixel island at 10,3",
    "single-pixel island at 3,5"
   ]
+ },
+ {
+  "name": "icon_res_snare_spring",
+  "file": "icon_res_snare_spring.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_snare_hanging",
+  "file": "icon_res_snare_hanging.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 3,5",
+   "single-pixel island at 8,5"
+  ]
+ },
+ {
+  "name": "icon_res_snare_stake",
+  "file": "icon_res_snare_stake.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,3",
+   "single-pixel island at 4,8"
+  ]
  }
 ]

@@ -85,6 +85,47 @@ options.append(("snare_box_steep", "Snares and Nets C: the box tipped up steeply
                 "a=ink W=wood4 w=wood3 D=wood2 S=parch1 r=parch2 O=fire1 g=green3 G=green2",
                 outlined(box_trap(carrot, slope=0.85, height=4.4))))
 
+# === Rope snares (owner references, 2026-10-26) =========================================
+def ring(cx, cy, rx, ry, w=0.55):
+    return cells_where(lambda px, py: abs(math.hypot((px - cx) / rx, (py - cy) / ry) - 1.0) * min(rx, ry) <= w)
+
+
+def bezier_band(p0, p1, p2, r0, r1):
+    out = set()
+    for k in range(161):
+        t = k / 160
+        cx = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t * t * p2[0]
+        cy = (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t * t * p2[1]
+        r = r0 + (r1 - r0) * t
+        out |= cells_where(lambda px, py: math.hypot(px - cx, py - cy) <= r)
+    return out
+
+
+# D: the spring snare: a bent sapling rising from the lower right and arching over, a line down
+# from its tip to the noose. No ground strip, so the noose stays open.
+cells = {}
+sapling = bezier_band((9.4, 10.6), (10.4, 1.0), (3.4, 1.8), 1.0, 0.5)
+cells.update({p: ("g" if p[0] + p[1] < 12 else "d") for p in sapling})
+cells.update({(3, 3): "R"})
+cells.update({p: "R" for p in ring(3.6, 7.2, 2.4, 2.6, 0.5)})
+options.append(("snare_spring", "Snares and Nets D: a spring snare: a bent sapling, a line from its tip to the noose",
+                "a=ink g=green3 d=green1 R=parch3", outlined(cells)))
+
+# E: a noose hanging from a branch, a twig on the branch.
+cells = {(x, 2): ("W" if x < 9 else "D") for x in range(1, 11)}
+cells.update({(8, 1): "w", (3, 3): "D"})  # a twig above, a stub below
+cells.update({(6, 3): "R"})
+cells.update({p: "R" for p in ring(6.0, 7.2, 3.2, 3.0, 0.5)})
+options.append(("snare_hanging", "Snares and Nets E: a noose hanging from a branch",
+                "a=ink W=wood4 w=wood3 D=wood2 R=parch3", outlined(cells)))
+
+# F: the noose alone on its stake: a short stake at the left, the rope running to an open loop.
+cells = {(1, y): ("W" if y < 6 else "w") for y in range(3, 11)}
+cells.update({(2, 4): "R", (3, 4): "R"})
+cells.update({p: "R" for p in ring(6.8, 6.0, 3.6, 3.4, 0.5)})
+options.append(("snare_stake", "Snares and Nets F: a snare on its stake, the noose wide open",
+                "a=ink W=wood4 w=wood3 R=parch3", outlined(cells)))
+
 lines = ["# Snares and Nets as a box trap, 2026-10-26. Written by make_options.py."]
 for name, desc, key, rows in options:
     assert len(rows) == N and all(len(r) == N for r in rows), (name, [len(r) for r in rows])

@@ -56,3 +56,60 @@ awDaaaaaaSa.
 .aaaOOOgaSra
 aGGGGGGGGGGa
 .aaaaaaaaaa.
+
+# Snares and Nets D: a spring snare: a bent sapling, a line from its tip to the noose
+@asset icon_res_snare_spring
+size 12 12
+budget 8
+key a=ink g=green3 d=green1 R=parch3
+frame
+...aaaa.....
+..agggga....
+...aaagga...
+..aRa.agga..
+.aRRRa.adda.
+aRRaaRaadda.
+aRa.aRa.ada.
+aRa.aRa.ada.
+aRaaaRa.ada.
+.aRRRRa.ada.
+..aaaa.adda.
+........aa..
+
+# Snares and Nets E: a noose hanging from a branch
+@asset icon_res_snare_hanging
+size 12 12
+budget 8
+key a=ink W=wood4 w=wood3 D=wood2 R=parch3
+frame
+........a...
+.aaaaaaawaa.
+aWWWWWWWWDDa
+.aaDaaRaaaa.
+...aRRRRa...
+..aRaaaaRa..
+.aRa....aRa.
+.aRa....aRa.
+..aRa..aRa..
+..aRRaaRRa..
+...aaRRaa...
+.....aa.....
+
+# Snares and Nets F: a snare on its stake, the noose wide open
+@asset icon_res_snare_stake
+size 12 12
+budget 8
+key a=ink W=wood4 w=wood3 R=parch3
+frame
+............
+.....aaaa...
+.a..aRRRRa..
+aWaaRaaaRRa.
+aWRRa...aRRa
+aWaRa....aRa
+awaRa....aRa
+awaRa...aRRa
+awaaRaaaRRa.
+awa.aRRRRa..
+awa..aaaa...
+.a..........

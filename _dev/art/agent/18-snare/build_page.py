@@ -27,6 +27,12 @@ GROUPS = [
          "The same trap with nothing under it: the cleanest outline."),
         (["res_snare_box_steep"], "C: Tipped up steeply",
          "The box raised higher on its stick, so the open gap and the carrot show most."),
+        (["res_snare_spring"], "D: Spring snare",
+         "A bent sapling arching over, a line from its tip down to the noose: the trap from your first reference."),
+        (["res_snare_hanging"], "E: Noose on a branch",
+         "A noose hanging from a branch. Clean, but a hanging noose can read as a gallows."),
+        (["res_snare_stake"], "F: Snare on a stake",
+         "A short stake with the rope running to a wide-open loop. At game size it can read as '10'."),
     ]),
 ]
 NEIGHBORS = ["icon_rations", "icon_wheat", "icon_bell", "icon_star"]
