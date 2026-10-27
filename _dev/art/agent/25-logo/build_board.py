@@ -100,7 +100,9 @@ def gif_fig(path, caption):
 
 seal_intros = "".join(gif_fig(SEAL / "preview" / f"seal_intro_{k}.gif", f"{label}, x2")
                       for k, label in (("gold", "Gold, engraved"), ("arcane", "Arcane, a spell circle"), ("wax", "Wax, pressed")))
-build_fig = gif_fig(SEAL / "preview" / "seal_build.gif", "The seal builds, x2")
+build_fig = gif_fig(SEAL / "preview" / "seal_build.gif", "The seal builds, the name arched, x2")
+straight_fig = fig(Image.open(SEAL / "out" / "seal_card_straight.png").convert("RGBA"), 2, "The name straight across, x2")
+build_v1 = gif_fig(SEAL / "preview" / "seal_build_v1.gif", "Before: the small name below, x2")
 runic_figs = "".join(fig(Image.open(SEAL / "out" / f"runic_{k}.png").convert("RGBA"), 4, label)
                      for k, label in (("gold", "Gold"), ("arcane", "Arcane"), ("wax", "Ruby wax"), ("steel", "Steel")))
 bottom = f"""
@@ -114,8 +116,10 @@ bottom = f"""
       by one, each with its own impact. Then the details are etched in arcane blue, a little at a time, each new cut
       flashing white: the triangle traces from the top medallion down and across, the runes burn in around the ring,
       the E, G and D appear, the small symbols, and the knot last, from its center out. Then the SMASH: a white-hot
-      flash, a hard shake, a shockwave, and the seal is gold. The slash carves the name. About 6.7 seconds.</p>
-    <div class="tiles">{build_fig}</div>
+      flash, a hard shake, a shockwave, and the seal is gold. The slash carves the name, now in a bigger runic face
+      (eleven pixels, two-pixel strokes) arched over the top of the seal like a coin's inscription, the slash
+      following the arch. About 6.7 seconds. Beside it, the same name straight across the top, for comparison.</p>
+    <div class="tiles">{build_fig}{straight_fig}{build_v1}</div>
     <h3>Earlier: the seal intro, in three finishes</h3>
     <p class="muted">The seal flies in from the foreground, unlit, and slams down in a ring of dust. Then the spell
       ignites: a white-hot wave runs out from the center knot to the outer ring and the seal cools to its finish.

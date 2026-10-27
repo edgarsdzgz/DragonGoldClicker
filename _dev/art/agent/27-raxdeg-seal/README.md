@@ -31,3 +31,9 @@ the finished frame is exactly the gold seal. The body slams in, the medallions l
 etch in arcane blue (new cuts flash white), the seal smashes to gold with a shockwave, and the slash carves
 the name. About 6.7 seconds. Output: `seal_build_stripN.png`, `seal_build_timing.json`,
 `seal_build_card.png`, `preview/seal_build.gif`.
+
+The name, v2 (owner: "I want RAXDEG STUDIOS to be bigger, please. Maybe even across the top of the seal,
+over it"): `src/runic_big.py` draws a big runic face (eleven rows, two-pixel strokes, drawn at size, never
+scaled) and sets RAXDEG·STVDIOS upright on an arc over the seal's top; the slash follows the arc.
+`out/seal_card_straight.png` shows the big name straight across for comparison. The first build, with the
+small name below the seal, is kept as `*_v1`.

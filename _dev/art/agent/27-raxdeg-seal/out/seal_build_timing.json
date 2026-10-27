@@ -1,7 +1,7 @@
 {
-  "frame_width": 184,
-  "frame_height": 197,
-  "frames": 66,
+  "frame_width": 172,
+  "frame_height": 192,
+  "frames": 67,
   "background": "#281e32",
   "ms": [
     300,
@@ -57,6 +57,7 @@
     70,
     80,
     260,
+    45,
     45,
     45,
     45,
