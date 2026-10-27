@@ -41,4 +41,12 @@ The name, v3 (owner: "I want the text to appear straight through the seal. Like 
 will probably need a black outline"): the big name runs straight through the middle of the seal with a
 two-pixel ink outline (all eight neighbors; one pixel got lost in the seal's lines), and the slash strikes
 through the seal at the letters' middle, carving the name behind it. The frame is the seal plus its margin,
-172 x 172. The first build, with the small name below the seal, is kept as `*_v1`.
+172 x 172. Kept as `*_v3`. The first build, with the small name below the seal, is kept as `*_v1`.
+
+The name, v4 (owner: "Can we make the letters larger ... move the effect of turning the blue to gold
+until after the letters slice over the top ... seal, populate seal, letters slice in (in gold), seal slams
+into gold", and "let's not lose all the small details of the letters, like the T's wings pointing down"):
+the seal builds and etches in blue, the slash carves the name in gold across the blue seal, then the SMASH
+turns the seal gold under it. The name is in a larger face (`HUGE_RUNIC` in `src/runic_big.py`: fifteen
+rows, two-pixel strokes, letter gap 3), drawn from the five-by-seven face's own shapes, and runs past the
+ring on both sides. Frame 180 x 172, 69 frames, about 7 seconds.

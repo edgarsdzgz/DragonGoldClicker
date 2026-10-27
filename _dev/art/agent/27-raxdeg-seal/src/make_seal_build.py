@@ -13,11 +13,13 @@ pixel at 128 belongs to the part that covers most of it, so the finished seal is
 2. The etching, in arcane blue: the triangle traces from the top medallion down and across, the runes
    burn in around the ring, the medallion letters appear, the small symbols, and the knot last, from
    its center out. New strokes flash white as they are cut.
-3. The SMASH: a white-hot flash, a hard shake and a shockwave, and the seal is gold.
-4. The slash carves RAXDEG·STVDIOS in gold, in the big runic face, straight through the middle of the
-   seal like a strikethrough, outlined two pixels thick in ink so it reads over the seal (owner: "I want
-   the text to appear straight through the seal. Like a strikethrough"). Kept: *_v1, the small name
-   under the seal, and *_v2, the big name arched over the top.
+3. The slash carves RAXDEG·STVDIOS in gold over the blue seal, straight through its middle like a
+   strikethrough, in the larger runic face (fifteen rows, two-pixel strokes, the small face's details kept) that runs past the ring on
+   both sides, outlined two pixels thick in ink so it reads over the seal.
+4. The SMASH: a white-hot flash, a hard shake and a shockwave, and the seal is gold under the name.
+   (Owner, 2026-10-27: "seal, populate seal, letters slice in (in gold), seal slams into gold.")
+Kept: *_v1, the small name under the seal; *_v2, the name arched over the top; *_v3, the name struck
+through after the gold smash, in the eleven-row face.
 
 Run: python make_seal_build.py (after make_seal.py)
 """
@@ -133,10 +135,10 @@ def build():
     lab = labels()
     final_strokes = strokes(lab, N)
     seal_gold = gold(N)
-    sx = sy = MARGIN
-    size = (N + MARGIN * 2, N + MARGIN * 2)
+    word, path = straight(RIM, "huge")
+    size = (max(N + MARGIN * 2, word.width + 20), N + MARGIN * 2)
+    sx, sy = (size[0] - N) // 2, MARGIN
     scx, scy = sx + N / 2, sy + N / 2
-    word, path = straight(RIM)
     wx, wy = round(scx - word.width / 2), round(scy - word.height / 2)
     final = frame_base(size)
     final.alpha_composite(seal_gold, (sx, sy))
@@ -213,7 +215,18 @@ def build():
     beats.append((seal_frame(), 380))
     assert lit == set(final_strokes), "every stroke etched"
 
-    # 3. The SMASH: white-hot, a hard shake and a shockwave, then gold.
+    # 3. The slash strikes through the blue seal and carves the name in gold.
+    for head in range(wx - 2, wx + word.width + 14, 12):
+        f = frame_base(size)
+        put(f, arcane(N, lit), sx, sy)
+        carve(f, word, wx, wy, path, head)
+        beats.append((f, 45))
+    f = frame_base(size)
+    put(f, arcane(N, lit), sx, sy)
+    f.alpha_composite(word, (wx, wy))
+    beats.append((f, 420))
+
+    # 4. The SMASH: white-hot, a hard shake and a shockwave, and the seal is gold under the name.
     white = gold(N)
     wpx = white.load()
     for x, y in lit:
@@ -236,17 +249,8 @@ def build():
         dust(f, scx, scy, N / 2 + d[0], 46, d[1], *d[2])
         put(f, img, sx, sy)
         ring(f, radius, colors)
+        f.alpha_composite(word, (wx, wy))
         beats.append((shaken(f, shake), ms))
-    f = frame_base(size)
-    put(f, seal_gold, sx, sy)
-    beats.append((f, 260))
-
-    # 4. The slash strikes through the seal and carves the name.
-    for head in range(wx - 2, wx + word.width + 14, 12):
-        f = frame_base(size)
-        put(f, seal_gold, sx, sy)
-        carve(f, word, wx, wy, path, head)
-        beats.append((f, 45))
     beats.append((final, 1800))
     return beats, final
 

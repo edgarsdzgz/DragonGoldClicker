@@ -101,6 +101,7 @@ def gif_fig(path, caption):
 seal_intros = "".join(gif_fig(SEAL / "preview" / f"seal_intro_{k}.gif", f"{label}, x2")
                       for k, label in (("gold", "Gold, engraved"), ("arcane", "Arcane, a spell circle"), ("wax", "Wax, pressed")))
 build_fig = gif_fig(SEAL / "preview" / "seal_build.gif", "The seal builds, the name struck through it, x2")
+build_v3 = gif_fig(SEAL / "preview" / "seal_build_v3.gif", "Before: gold first, then the smaller name, x2")
 build_v2 = gif_fig(SEAL / "preview" / "seal_build_v2.gif", "Before: the name arched over the top, x2")
 build_v1 = gif_fig(SEAL / "preview" / "seal_build_v1.gif", "Before: the small name below, x2")
 runic_figs = "".join(fig(Image.open(SEAL / "out" / f"runic_{k}.png").convert("RGBA"), 4, label)
@@ -115,12 +116,13 @@ bottom = f"""
     <p class="muted">The plates land first: the body slams down in a ring of dust, then the three medallions land one
       by one, each with its own impact. Then the details are etched in arcane blue, a little at a time, each new cut
       flashing white: the triangle traces from the top medallion down and across, the runes burn in around the ring,
-      the E, G and D appear, the small symbols, and the knot last, from its center out. Then the SMASH: a white-hot
-      flash, a hard shake, a shockwave, and the seal is gold. Then the slash strikes straight through the middle of
-      the seal and carves the name behind it, in the big runic face (eleven pixels, two-pixel strokes) with a
-      two-pixel black outline so it reads over the gold lines. About 6.7 seconds. Beside it, the two earlier
+      the E, G and D appear, the small symbols, and the knot last, from its center out. Then the slash strikes
+      straight through the blue seal and carves the name in gold behind it, in a larger runic face (fifteen pixels
+      tall, drawn from the small face's own shapes: the T's drooping wings, the A's spike and dot, the O's diamond)
+      with a two-pixel black outline, running past the ring on both sides. Last, the SMASH: a white-hot flash, a
+      hard shake, a shockwave, and the seal turns gold under the name. About 7 seconds. Beside it, the earlier
       versions.</p>
-    <div class="tiles">{build_fig}{build_v2}{build_v1}</div>
+    <div class="tiles">{build_fig}{build_v3}{build_v2}{build_v1}</div>
     <h3>Earlier: the seal intro, in three finishes</h3>
     <p class="muted">The seal flies in from the foreground, unlit, and slams down in a ring of dust. Then the spell
       ignites: a white-hot wave runs out from the center knot to the outer ring and the seal cools to its finish.

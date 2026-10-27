@@ -28,12 +28,48 @@ BIG_RUNIC = {
     "·": ["..", "..", "..", "..", "..", "##", "##", "..", "..", "..", ".."],
 }
 GOLD = ["gold6", "gold6", "gold5", "gold5", "gold5", "gold4", "gold4", "gold4", "gold3", "gold3", "gold2"]
+
+# The larger face (owner: "Can we make the letters larger, please ... let's not lose all the small
+# details of the letters, like the T's wings pointing down"): fifteen rows, two-pixel strokes, drawn at
+# size from the five-by-seven face's own shapes: the T an arrow with drooping wings, the A a spike over
+# splayed legs with a dot between them, the angular R and D, the E's short middle bar, the G's spur, the
+# slanted S, the V's foot, the O a diamond with a dot. Wide enough to run past the seal's ring.
+HUGE_RUNIC = {
+    "R": ["####.....", "##.##....", "##..##...", "##...##..", "##....##.", "##...##..", "##..##...",
+          "##.##....", "####.....", "##.##....", "##..##...", "##...##..", "##....##.", "##.....##",
+          "##.....##"],
+    "A": ["....##....", "....##....", "....##....", "...####...", "..##..##..", "..##..##..", ".##....##.",
+          ".##....##.", "##..##..##", "##..##..##"] + ["##......##"] * 5,
+    "X": ["##......##"] * 3 + [".##....##.", "..##..##..", "...####...", "....##....", "....##....",
+                               "....##....", "...####...", "..##..##..", ".##....##."] + ["##......##"] * 3,
+    "D": ["####.....", "##.##....", "##..##...", "##...##..", "##....##."] + ["##.....##"] * 5
+         + ["##....##.", "##...##..", "##..##...", "##.##....", "####....."],
+    "E": ["########"] * 2 + ["##......"] * 4 + ["######.."] * 2 + ["##......"] * 5 + ["########"] * 2,
+    "G": ["..#######.", ".########.", "##........", "##........", "##........", "##........",
+          "##...#####", "##...#####"] + ["##......##"] * 5 + [".########.", "..######.."],
+    "S": ["....#####", "...#####.", "..##.....", ".##......", "##.......", "##.......", ".######..",
+          "..######.", ".......##", ".......##", "......##.", ".....##..", "....##...", ".#####...",
+          "#####...."],
+    "T": ["....##....", "..######..", ".##.##.##.", "##..##..##"] + ["....##...."] * 11,
+    "V": ["##......##"] * 6 + [".##....##.", ".##....##.", "..##..##..", "..##..##..", "...####...",
+                               "...####...", "....##....", "....##....", "....##...."],
+    "I": ["##"] * 15,
+    "O": ["....##....", "...####...", "..##..##..", ".##....##.", "##......##", "##......##",
+          "##..##..##", "##..##..##"] + ["##......##"] * 3 + [".##....##.", "..##..##..", "...####...",
+                                                             "....##...."],
+    "·": [".."] * 6 + ["##"] * 2 + [".."] * 7,
+}
+GOLD15 = ["gold6", "gold6", "gold6", "gold5", "gold5", "gold5", "gold5", "gold4", "gold4", "gold4", "gold4",
+          "gold3", "gold3", "gold3", "gold2"]
+FACES = {"big": (BIG_RUNIC, GOLD, 2), "huge": (HUGE_RUNIC, GOLD15, 3)}   # font, ramp, letter gap
 TEXT = "RAXDEG·STVDIOS"
 GAP = 2
 
 
-def glyph(c, ramp=GOLD):
-    rows = BIG_RUNIC[c]
+def glyph(c, face="big"):
+    font, ramp, _ = FACES[face]
+    rows = font[c]
+    assert all(len(r) == len(rows[0]) for r in rows) and len(rows) == len(ramp), c
     img = Image.new("RGBA", (len(rows[0]), len(rows)), (0, 0, 0, 0))
     for y, row in enumerate(rows):
         for x, ch in enumerate(row):
@@ -42,8 +78,8 @@ def glyph(c, ramp=GOLD):
     return img
 
 
-def advance():
-    return [len(BIG_RUNIC[c][0]) for c in TEXT]
+def advance(face="big"):
+    return [len(FACES[face][0][c][0]) for c in TEXT]
 
 
 N8 = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
@@ -63,17 +99,17 @@ def thick_outline(img, r):
     return img
 
 
-def straight(rim=1):
+def straight(rim=1, face="big"):
     """The name in one line with an ink outline rim pixels thick; returns (image, path) where path(x) is
     the streak's y at column x, through the middle of the letters."""
-    widths = advance()
-    w = sum(widths) + GAP * (len(TEXT) - 1)
-    img = Image.new("RGBA", (w + 2 * rim, 11 + 2 * rim), (0, 0, 0, 0))
+    widths, h, gap = advance(face), len(FACES[face][1]), FACES[face][2]
+    w = sum(widths) + gap * (len(TEXT) - 1)
+    img = Image.new("RGBA", (w + 2 * rim, h + 2 * rim), (0, 0, 0, 0))
     x = rim
     for c, gw in zip(TEXT, widths):
-        img.alpha_composite(glyph(c), (x, rim))
-        x += gw + GAP
-    return thick_outline(img, rim), (lambda x: rim + 5)
+        img.alpha_composite(glyph(c, face), (x, rim))
+        x += gw + gap
+    return thick_outline(img, rim), (lambda x: rim + h // 2)
 
 
 def arched(radius, center, size):
