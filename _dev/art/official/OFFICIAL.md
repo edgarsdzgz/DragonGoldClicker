@@ -224,7 +224,7 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `cast/cast_sigil-rodain.png` | 10x10 | Sigil: Captain Rodain, crossed spears | Batch 8 |
 | `cast/cast_sigil-mirael.png` | 10x10 | Sigil: Scout Mirael, the compass star | Batch 8 |
 | `cast/cast_sigil-kael.png` | 10x10 | Sigil: Kael Ironwright, the anvil | Batch 8 |
-| `cast/cast_sigil-lirae.png` | 10x10 | Sigil: Lirae the Ink-Wing, the quill | Batch 8 |
+| `cast/cast_sigil-lirae.png` | 10x10 | Sigil: Lirae the Ink-Wing, the quill | sigils v2b (replaced Batch 8's quill, owner 2026-10-27) |
 | `cast/cast_emblem-gate.png` | 44x46 | The Gate of Draconia: the narrator's emblem, in a bust's place | Batch 8 |
 | `cast/bust_pyreth.png` | 22x23 | Bust: Elder Pyreth (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
 | `cast/bust_rodain.png` | 22x23 | Bust: Captain Rodain (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
@@ -441,3 +441,55 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `sound/amb_forge.m4a` | 8.00 s | Loop, 8 s, seamless: the forge, the bellows every few seconds | sound batch 2 v1 |
 | `sound/amb_night-wind.m4a` | 8.00 s | Loop, 8 s, seamless: night wind. Mastered loud; play it well under the rest (owner, 2026-10-27) | sound batch 2 v1 |
 | `sound/amb_horde-drums.m4a` | 8.00 s | Loop, 8 s, seamless: the horde's drums far off, 12 beats at 90 a minute | sound batch 2 v1 |
+| `cast/cast_sigil-varn.png` | 10x10 | Sigil: Varn, a cracked egg | sigils v2a |
+| `cast/cast_sigil-ashara.png` | 10x10 | Sigil: Ashara, her burning eye | sigils v1 |
+| `cast/cast_sigil-thornwick.png` | 10x10 | Sigil: Thornwick, his scorched hat | sigils v1 |
+| `cast/cast_sigil-sera.png` | 10x10 | Sigil: Sera, her round shield | sigils v1 |
+| `cast/cast_sigil-hollow-knight.png` | 10x10 | Sigil: the Hollow Knight, an empty helm | sigils v1 |
+| `icons/icon_res_cartography.png` | 12x12 | Study: Cartography, a chart and dividers | icons v1 |
+| `icons/icon_res_keen_scouts.png` | 12x12 | Study: Keen Scouts, a spyglass | icons v1 |
+| `icons/icon_warning.png` | 12x12 | Warning (confirm dialog): a gold triangle | icons v1 |
+| `icons/icon_hand.png` | 12x12 | Total clicks: an open hand | icons v1 |
+| `icons/icon_phone.png` | 12x12 | Vibration: a phone | icons v1 |
+| `icons/icon_consumption.png` | 12x12 | Consumption (food eaten per second): a leaking grain sack | icons v2a |
+| `mobs/mob_minotaur_idle.png` | 20x25 | Minotaur: idle | Minotaur v1 |
+| `mobs/mob_minotaur_hit.png` | 20x25 | Minotaur: hit, the red flash | Minotaur v1 |
+| `mobs/mob_minotaur_hurt.png` | 20x25 | Minotaur: hurt, the axe broken | Minotaur v1 |
+| `mobs/mob_minotaur_walk_strip2.png` | 40x25 | Minotaur: walk bob (2 frames, 4 fps) | Minotaur v1 |
+| `mobs/mob_minotaur_death_strip4.png` | 128x25 | Minotaur: death, buckles, falls, lands, unmade (4 frames, 8 fps) | Minotaur v1 |
+| `mobs/mob_minotaur-strong_idle.png` | 20x25 | Minotaur, strong: idle | Minotaur v1 |
+| `mobs/mob_minotaur-strong_hit.png` | 20x25 | Minotaur, strong: hit, the red flash | Minotaur v1 |
+| `mobs/mob_minotaur-strong_hurt.png` | 20x25 | Minotaur, strong: hurt, the axe broken | Minotaur v1 |
+| `mobs/mob_minotaur-strong_walk_strip2.png` | 40x25 | Minotaur, strong: walk bob (2 frames, 4 fps) | Minotaur v1 |
+| `mobs/mob_minotaur-strong_death_strip4.png` | 128x25 | Minotaur, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | Minotaur v1 |
+| `mobs/mob_minotaur-stronger_idle.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): idle | Minotaur v1 |
+| `mobs/mob_minotaur-stronger_hit.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): hit, the red flash | Minotaur v1 |
+| `mobs/mob_minotaur-stronger_hurt.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): hurt, the axe broken | Minotaur v1 |
+| `mobs/mob_minotaur-stronger_walk_strip2.png` | 40x25 | Minotaur, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Minotaur v1 |
+| `mobs/mob_minotaur-stronger_death_strip4.png` | 128x25 | Minotaur, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | Minotaur v1 |
+| `cast/bust_pyreth_grieving.png` | 22x23 | Bust: Elder Pyreth, grieving (22x23) | expressions v1 |
+| `cast/bust_rodain_grieving.png` | 22x23 | Bust: Captain Rodain, grieving (22x23) | expressions v1 |
+| `cast/bust_mirael_alarmed.png` | 22x23 | Bust: Scout Mirael, alarmed (22x23) | expressions v1 |
+| `cast/bust_kael_angry.png` | 22x23 | Bust: Kael Ironwright, angry (22x23) | expressions v1 |
+| `cast/bust_lirae_grieving.png` | 22x23 | Bust: Lirae the Ink-Wing, grieving (22x23) | expressions v1 |
+| `cast/bust_varn_fierce.png` | 22x23 | Bust: Varn, fierce (22x23) | expressions v1 |
+| `cast/bust_ashara_grieving.png` | 22x23 | Bust: Ashara, grieving (22x23) | expressions v1 |
+| `cast/bust_thornwick_startled.png` | 22x23 | Bust: Thornwick, startled (22x23) | expressions v1 |
+| `cast/bust_sera_roaring.png` | 22x23 | Bust: Sera, roaring (22x23) | expressions v1 |
+| `story/story_elder-approaches.png` | 130x96 | Story: The Elder Approaches (130x96) | story scenes v1 |
+| `story/story_renown.png` | 130x96 | Story: Renown (130x96) | story scenes v1 |
+| `story/story_wall-holds.png` | 130x96 | Story: The Wall Holds (130x96) | story scenes v1 |
+| `story/story_wall-shakes.png` | 130x96 | Story: The Wall Shakes (130x96) | story scenes v1 |
+| `story/story_young-claws.png` | 130x96 | Story: Young Claws (130x96) | story scenes v1 |
+| `story/story_wall-is-yours.png` | 130x96 | Story: The Wall Is Yours (130x96) | story scenes v1 |
+| `story/story_stores-run-low.png` | 130x96 | Story: Our Stores Run Low (130x96) | story scenes v1 |
+| `story/story_stranger.png` | 130x96 | Story: A Stranger on the Road (130x96) | story scenes v1 |
+| `story/story_city-not-a-wall.png` | 130x96 | Story: A City, Not a Wall (130x96) | story scenes v1 |
+| `story/story_forge-is-cold.png` | 130x96 | Story: The Forge Is Cold (130x96) | story scenes v1 |
+| `story/story_beyond-the-walls.png` | 130x96 | Story: Beyond the Walls (130x96) | story scenes v1 |
+| `story/story_keep-restored.png` | 130x96 | Story: The Keep Restored (130x96) | story scenes v1 |
+| `story/story_rangers-lodge.png` | 130x96 | Story: The Ranger's Lodge (130x96) | story scenes v1 |
+| `story/story_ink-wing.png` | 130x96 | Story: The Ink-Wing (130x96) | story scenes v1 |
+| `story/story_dragonsteel.png` | 130x96 | Story: Dragonsteel (130x96) | story scenes v1 |
+| `story/story_they-come-bigger.png` | 130x96 | Story: They Come Bigger (130x96) | story scenes v1 |
+| `story/story_ancient-magic.png` | 130x96 | Story: The Ancient Magic (130x96) | story scenes v1 |

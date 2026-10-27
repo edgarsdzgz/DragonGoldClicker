@@ -264,8 +264,7 @@ def the_horde_grows():
     far(img, ["orc", "goblin", "orc"], 47, [44, 50, 56, 61, 66, 71, 76, 82, 88])
     for x, n in ((34, "orc-stronger"), (52, "goblin-stronger"), (80, "raider-stronger"), (98, "orc-stronger")):
         stand(img, relight(art(f"mobs/mob_{n}_idle.png"), DUSK), x, 66)
-    # The Minotaur is not locked yet: its art comes from its batch (41-minotaur)
-    stand(img, Image.open(AGENT / "41-minotaur" / "out" / "mob_minotaur-stronger_idle.png").convert("RGBA"), 66, 84)
+    stand(img, art("mobs/mob_minotaur-stronger_idle.png"), 66, 84)
     wall(img, "cracking", 14)
     return img
 

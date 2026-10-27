@@ -231,7 +231,7 @@ ASSETS = [
     ("cast/cast_sigil-rodain.png", AGENT / "30-cast/out/cast_sigil-rodain.png", "Sigil: Captain Rodain, crossed spears", "Batch 8"),
     ("cast/cast_sigil-mirael.png", AGENT / "30-cast/out/cast_sigil-mirael.png", "Sigil: Scout Mirael, the compass star", "Batch 8"),
     ("cast/cast_sigil-kael.png", AGENT / "30-cast/out/cast_sigil-kael.png", "Sigil: Kael Ironwright, the anvil", "Batch 8"),
-    ("cast/cast_sigil-lirae.png", AGENT / "30-cast/out/cast_sigil-lirae.png", "Sigil: Lirae the Ink-Wing, the quill", "Batch 8"),
+    ("cast/cast_sigil-lirae.png", AGENT / "40-icons-sigils/out/cast_sigil-lirae_v2b.png", "Sigil: Lirae the Ink-Wing, the quill", "sigils v2b (replaced Batch 8's quill, owner 2026-10-27)"),
     ("cast/cast_emblem-gate.png", AGENT / "30-cast/out/cast_emblem-gate.png", "The Gate of Draconia: the narrator's emblem, in a bust's place", "Batch 8"),
     ("cast/bust_pyreth.png", AGENT / "31-busts-simple/out/bust_pyreth_v4.png", "Bust: Elder Pyreth (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
     ("cast/bust_rodain.png", AGENT / "31-busts-simple/out/bust_rodain_v4.png", "Bust: Captain Rodain (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
@@ -380,6 +380,49 @@ ASSETS += [(f"sound/{n}.m4a", SOUND2 / f"{n}.m4a", what, "sound batch 2 v1") for
     ('amb_night-wind', 'Loop, 8 s, seamless: night wind. Mastered loud; play it well under the rest (owner, 2026-10-27)'),
     ('amb_horde-drums', "Loop, 8 s, seamless: the horde's drums far off, 12 beats at 90 a minute"),
 ]]
+
+ASSETS += [
+    ("cast/cast_sigil-varn.png", AGENT / "40-icons-sigils/out/cast_sigil-varn_v2a.png", "Sigil: Varn, a cracked egg", "sigils v2a"),
+    ("cast/cast_sigil-ashara.png", AGENT / "40-icons-sigils/out/cast_sigil-ashara_v1.png", "Sigil: Ashara, her burning eye", "sigils v1"),
+    ("cast/cast_sigil-thornwick.png", AGENT / "40-icons-sigils/out/cast_sigil-thornwick_v1.png", "Sigil: Thornwick, his scorched hat", "sigils v1"),
+    ("cast/cast_sigil-sera.png", AGENT / "40-icons-sigils/out/cast_sigil-sera_v1.png", "Sigil: Sera, her round shield", "sigils v1"),
+    ("cast/cast_sigil-hollow-knight.png", AGENT / "40-icons-sigils/out/cast_sigil-hollow-knight_v1.png", "Sigil: the Hollow Knight, an empty helm", "sigils v1"),
+    ("icons/icon_res_cartography.png", AGENT / "40-icons-sigils/out/icon_res_cartography_v1.png", "Study: Cartography, a chart and dividers", "icons v1"),
+    ("icons/icon_res_keen_scouts.png", AGENT / "40-icons-sigils/out/icon_res_keen_scouts_v1.png", "Study: Keen Scouts, a spyglass", "icons v1"),
+    ("icons/icon_warning.png", AGENT / "40-icons-sigils/out/icon_warning_v1.png", "Warning (confirm dialog): a gold triangle", "icons v1"),
+    ("icons/icon_hand.png", AGENT / "40-icons-sigils/out/icon_hand_v1.png", "Total clicks: an open hand", "icons v1"),
+    ("icons/icon_phone.png", AGENT / "40-icons-sigils/out/icon_phone_v1.png", "Vibration: a phone", "icons v1"),
+    ("icons/icon_consumption.png", AGENT / "40-icons-sigils/out/icon_consumption_v2a.png", "Consumption (food eaten per second): a leaking grain sack", "icons v2a"),
+]
+
+# The Minotaur boss (41-minotaur), every pose at each Unmaking tier
+for _tier, _label in (("", ""), ("-strong", ", strong"), ("-stronger", ", stronger (the Unmaking's deepest)")):
+    _n = f"mob_minotaur{_tier}"
+    ASSETS += [
+        (f"mobs/{_n}_idle.png", AGENT / f"41-minotaur/out/{_n}_idle.png", f"Minotaur{_label}: idle", "Minotaur v1"),
+        (f"mobs/{_n}_hit.png", AGENT / f"41-minotaur/out/{_n}_hit.png", f"Minotaur{_label}: hit, the red flash", "Minotaur v1"),
+        (f"mobs/{_n}_hurt.png", AGENT / f"41-minotaur/out/{_n}_hurt.png", f"Minotaur{_label}: hurt, the axe broken", "Minotaur v1"),
+        (f"mobs/{_n}_walk_strip2.png", AGENT / f"41-minotaur/out/{_n}_walk_strip2.png", f"Minotaur{_label}: walk bob (2 frames, 4 fps)", "Minotaur v1"),
+        (f"mobs/{_n}_death_strip4.png", AGENT / f"41-minotaur/out/{_n}_death_strip4.png", f"Minotaur{_label}: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "Minotaur v1"),
+    ]
+
+# A second expression for each bust (42-expressions); the Hollow Knight has none, by design
+ASSETS += [(f"cast/bust_{b}_{e}.png", AGENT / f"42-expressions/out/bust_{b}_{e}_v1.png", f"Bust: {n}, {e} (22x23)", "expressions v1")
+           for b, e, n in (("pyreth", "grieving", "Elder Pyreth"), ("rodain", "grieving", "Captain Rodain"),
+                           ("mirael", "alarmed", "Scout Mirael"), ("kael", "angry", "Kael Ironwright"),
+                           ("lirae", "grieving", "Lirae the Ink-Wing"), ("varn", "fierce", "Varn"),
+                           ("ashara", "grieving", "Ashara"), ("thornwick", "startled", "Thornwick"),
+                           ("sera", "roaring", "Sera"))]
+
+# Story scenes (43-story-scenes), one per scene in src/data/story/lines.ts
+ASSETS += [(f"story/story_{s}.png", AGENT / f"43-story-scenes/out/story_{s}_v1.png", f"Story: {t} (130x96)", "story scenes v1")
+           for s, t in (("elder-approaches", "The Elder Approaches"), ("renown", "Renown"), ("wall-holds", "The Wall Holds"),
+                        ("wall-shakes", "The Wall Shakes"), ("young-claws", "Young Claws"), ("wall-is-yours", "The Wall Is Yours"),
+                        ("stores-run-low", "Our Stores Run Low"), ("stranger", "A Stranger on the Road"),
+                        ("city-not-a-wall", "A City, Not a Wall"), ("forge-is-cold", "The Forge Is Cold"),
+                        ("beyond-the-walls", "Beyond the Walls"), ("keep-restored", "The Keep Restored"),
+                        ("rangers-lodge", "The Ranger's Lodge"), ("ink-wing", "The Ink-Wing"), ("dragonsteel", "Dragonsteel"),
+                        ("they-come-bigger", "They Come Bigger"), ("ancient-magic", "The Ancient Magic"))]
 
 rows = []
 for dest, src, what, origin in ASSETS:
