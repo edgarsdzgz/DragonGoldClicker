@@ -19,8 +19,9 @@ its enemy families (`docs/archive/v2.3/tome/05_Combat_Systems_Enemies_Bosses.md`
   Each also comes in the Unmaking's three tiers: weak, strong (dark cracks) and stronger (glowing
   cracks).
 - **Colors:** red is only for damage, and magenta is only for the Unmaking's cracks.
-- **The battlefield is a road:** everything walks up it to the gate. Fliers and riders need a new
-  kind of battlefield, so they wait.
+- **The battlefield is a road:** everything comes up it to the gate. Fliers use it too (settled
+  2026-10-27): they are drawn higher, over a shadow of their own, and their walk is a wingbeat. Riders on
+  mounts simply walk.
 
 ## In the game
 
@@ -85,15 +86,21 @@ One big monster at a time, at the head of a wave.
 | Corrupted Wyvern | A wyvern cracked and darkened by the Unmaking | Large enemies |
 
 The Corrupted Wyvern and the Ember Wraith are dragon-kin. Settled 2026-10-27: the Unmaking can take
-dragons. They are drawn clearly monstrous and cracked, so they never read like the player or the friendly
-dragons.
+dragons. They are drawn cle## Fliers and riders
 
-## Waiting on a new battlefield
+No new battlefield needed (settled 2026-10-27). Drawn in batch `48-bestiary-fliers`, on the board for review.
 
-| Monster | Why it waits |
+| Monster | Looks |
 | --- | --- |
-| Mantair Corsair | A flying manta-ray raider (the old game built it); needs fliers |
-| Storm Rider | Mounted on the wind; needs riders or fliers |
+| Giant Bat | A brown bat as big as a goblin, big ears, fangs, leathery wings |
+| Harpy | A gray-green hag's face, stringy black hair, feathered wings, talons |
+| Mantair Corsair | A raider in a rust head-wrap on a flying manta (the old game built it) |
+| Storm Rider | A Wind-Taken rider on a storm-gray horse that runs on the wind, a lance |
+| Goblin Wolf Rider | A goblin with a spear on a gray wolf; a ground rider |
+
+The Windcaller, once listed here, was drawn with the elites.
+
+ the wind; needs riders or fliers |
 | Windcaller | A wind mage; casts from a distance |
 
 ## Drawn
