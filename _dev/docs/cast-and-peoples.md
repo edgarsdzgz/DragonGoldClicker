@@ -34,13 +34,17 @@ awaiting a decision; **open** = not decided yet.
 | Elder Pyreth | Elder dragon, too old to fight | Advisor, narrator, keeper of the ledgers | canon |
 | Kael Ironwright | Human refugee | Smith; her father forged for the Dragon Council | canon |
 | Lirae the Ink-Wing | Small apprentice dragon, an Academy survivor | Archivist, keeper of the Journal's lore | canon |
-| Varn, Dragon Recruit | Young dragon, barely fledged | Planned recruit | proposed |
-| Ashara, Elder Wyrm | Ancient dragon | Planned late recruit | proposed |
+| Varn, Dragon Recruit | Young dragon, barely fledged; a first-year at the Academy who knew Lirae | Chapter 9: a small dragon on the wall who strikes on his own | canon |
+| Ashara, Elder Wyrm | Ancient dragon, the eldest; slept beneath the mountain | Chapter 12: her strength behind yours (strikes hit harder) | canon |
 | Captain Rodain | Orc veteran: gray-green skin, tusks, a scar, steel pauldrons, red captain's sash | Leads the company of fifty | canon |
 | Scout Mirael | Wood elf: long ears, copper braid, teal ranger's cloak, brass compass | Scouts, wanderers, expeditions | canon |
-| Thornwick, the Exiled Mage | Human with gnomish ears and dark skin (owner, 2026-10-27; a full gnome was too light and too happy) | Planned; unlocks the Wizard's Tower | proposed |
-| Sera the Shieldmaiden | Bearfolk (owner asked for a people no bust uses yet, 2026-10-27) | Planned recruit | proposed |
-| The Hollow Knight | Unknown, by design | Planned recruit; no one asks what is inside the armor | open |
+| Thornwick, the Exiled Mage | Human with gnomish ears and dark skin (owner, 2026-10-27; a full gnome was too light and too happy); sent away from the eastern towers after the third fire | Chapter 11: an expedition brings him home; unlocks the Wizard's Tower | canon |
+| Sera the Shieldmaiden | Bearfolk (owner asked for a people no bust uses yet, 2026-10-27); her clan held the high pass in the north | Chapter 10: a shield wall (monsters strike the wall for less) | canon |
+| The Hollow Knight | Unknown, by design; it has no name | Chapter 13: holds the gate while you are away; no one asks what is inside the armor | canon |
+
+**Chapters 9 to 13** (approved 2026-10-27, "Lock them in"): when each new character arrives, what they
+bring and every line, with its face, are in `_dev/planning/new-cast-scenes/build_board.py` (board:
+https://claude.ai/artifact/V9egN1oNoQ5wZU4k5NA9ic). None of it is in the game yet.
 
 ## How each is drawn
 
