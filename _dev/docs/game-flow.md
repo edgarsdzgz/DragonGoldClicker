@@ -89,6 +89,16 @@ monster the horde sends now, against that monster's 5s strike on the wall.
 
 ---
 
+## The Dragon's Claws (the player's own strike)
+
+- **The named track** (`types/claws.ts`): Fledgling 1 damage, then Sharpened 2 (5 renown), Hooked
+  3 (12), Hardened 4 (25), Serrated 6 (50), Obsidian 8 (100), Ember 11 (200), Dragonsteel 15 (400),
+  Ancient 20 (800).
+- **Dragonsteel reforges** (chapter 8): after Kael's scene, endless levels past Ancient. Each adds
+  5 damage (keeping pace with five horde levels); the first costs 1,000 and each after 40% more.
+  Shown as "Ancient Claws +n". Studies multiply the result (Dragon Anatomy, Wyrm's Fury, Weak
+  Points).
+
 ## People (where the city's villagers come from)
 
 - **Wanderers** (chapter 4): one encounter every 4-7 minutes of play (twice as often while

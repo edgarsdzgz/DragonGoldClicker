@@ -183,6 +183,15 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
       'If you give me a library, I can give you everything the old world knew.',
     ],
   },
+  dragonsteel: {
+    ...KAEL,
+    title: 'Dragonsteel',
+    lines: [
+      'Those claws are the best the old world made, my lord. They are not the best that can be made.',
+      'Dragonsteel takes renown and time at the forge, and every reforge costs more than the last.',
+      'Bring me the renown, and each time I will make them bite deeper.',
+    ],
+  },
   the_horde_grows: {
     ...RODAIN,
     title: 'They Come Bigger',

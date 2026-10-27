@@ -2,6 +2,13 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Chapter 8: Dragonsteel, the claws past Ancient (2026-10-26)
+- Kael's "Dragonsteel" scene comes a minute after the claws reach Ancient (once Mirael's chapter
+  has played), with the quest Reforge the Claws. The story pauses after it
+- Endless reforges past Ancient: each adds 5 damage; 1,000 renown for the first, 40% more for each
+  after. Shown as "Ancient Claws +n"; the claws sheet shows the named track, the current reforge
+  and the next, with a Reforge button. Saves need no change (claw level 9 is Ancient +1)
+
 ### Chapter 7: Beyond the Walls (2026-10-26)
 - Mirael's "Beyond the Walls" is now the chapter's main beat, three minutes after Rodain's "They
   Come Bigger", in new words: the horde grows, so the city must too. Quests Raise the Outpost

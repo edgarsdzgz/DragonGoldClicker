@@ -2,6 +2,7 @@ import type { GameState } from './state'
 import type { BeatId } from './story'
 import { roundInsp } from './utils'
 import { studiesDone } from './library'
+import { MAX_CLAW_LEVEL } from './claws'
 
 // =============================================================================
 // QUESTS: the guided path through the game and the story
@@ -12,7 +13,7 @@ import { studiesDone } from './library'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers' | 'raise_the_librarium' | 'first_study' | 'raise_the_outpost' | 'first_expedition'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers' | 'raise_the_librarium' | 'first_study' | 'raise_the_outpost' | 'first_expedition' | 'reforge_the_claws'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -159,6 +160,11 @@ export const QUESTS: QuestDef[] = [
     id: 'first_expedition', title: 'First Expedition',
     goals: [{ label: 'Bring an expedition home', target: 1, progress: (s) => Math.min(1, s.villagersRescued) }],
     offeredWhen: (s) => done(s, 'raise_the_outpost'),
+  },
+  {
+    id: 'reforge_the_claws', title: 'Reforge the Claws',
+    goals: [{ label: 'Reforge your claws at the Forge', target: 1, progress: (s) => Math.max(0, s.clawLevel - MAX_CLAW_LEVEL) }],
+    offeredWhen: (s) => s.beatsSeen.includes('dragonsteel'),
   },
 ]
 

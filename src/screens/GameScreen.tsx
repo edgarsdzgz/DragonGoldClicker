@@ -27,7 +27,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
 import { Gate } from './warfront/Gate'
 import { fighterDamageMultiplier } from '../types/fedState'
-import { clawDef, canSharpen, tapDamageNow, tapHit, rollsDouble } from '../types/claws'
+import { clawDef, canSharpen, canReforge, tapDamageNow, tapHit, rollsDouble } from '../types/claws'
 import { ClawsChip } from '../components/ClawsChip'
 import { ClawsSheet } from '../components/ClawsSheet'
 
@@ -237,6 +237,7 @@ export function GameScreen() {
         onClose={() => setClawsOpen(false)}
         level={state.clawLevel}
         renown={state.inspiration}
+        reforge={canReforge(state)}
         onSharpen={handleSharpen}
       />
     </Animated.View>

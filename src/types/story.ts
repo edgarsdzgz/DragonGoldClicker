@@ -1,4 +1,5 @@
 import type { GameState } from './state'
+import { MAX_CLAW_LEVEL } from './claws'
 // Type-only: systems.ts imports STORY_BEATS from this file at runtime
 import type { SystemId, BuildingRevealId } from './systems'
 
@@ -25,6 +26,7 @@ export type BeatId =
   | 'the_keep'
   | 'the_scholar'
   | 'the_horde_grows'
+  | 'dragonsteel'
 
 /** One-time scripted first occurrences a beat can run (behavior arrives in later groups) */
 export type ScriptedEventId =
@@ -212,6 +214,14 @@ export const STORY_BEATS: BeatDef[] = [
     scripted: 'firstExpedition',
     spotlight: 'draconiaTab',
   },
+  {
+    // Chapter 8 (approved 2026-10-26): Kael, a minute after the claws reach Ancient (once Mirael's
+    // chapter has been seen). He reforges them past Ancient (types/claws.ts, Dragonsteel); its
+    // goal is the Reforge the Claws quest. A player short of Ancient meets him when they get there.
+    id: 'dragonsteel', chapter: 8, dwellSec: 60,
+    trigger: (s) => seen(s, 'beyond_the_walls') && s.clawLevel >= MAX_CLAW_LEVEL,
+    unlocks: [],
+  },
 ]
 
 /**
@@ -219,7 +229,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'beyond_the_walls'
+export const STORY_PAUSED_AFTER: BeatId = 'dragonsteel'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

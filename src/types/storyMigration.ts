@@ -2,6 +2,7 @@ import type { GameState } from './state'
 import type { BeatId } from './story'
 import { STORY_BEATS } from './story'
 import { DEFEND_THE_WALL_KILLS, MEND_THE_WALLS_REPAIRERS, OPEN_THE_GATES_PEOPLE } from './quests'
+import { MAX_CLAW_LEVEL } from './claws'
 
 // =============================================================================
 // SAVE v1 -> v2: BACKFILL STORY PROGRESS
@@ -35,6 +36,7 @@ const EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   the_scholar: (s) => s.librariumBuilt,
   the_horde_grows: (s) => s.completedResearch.length > 0,
   beyond_the_walls: (s) => s.postLevel > 0 || s.explorerIntroShown,
+  dragonsteel: (s) => s.clawLevel > MAX_CLAW_LEVEL,
 }
 
 /** Side beats that can also be proven by what the save already did */

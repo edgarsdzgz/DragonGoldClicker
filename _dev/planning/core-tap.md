@@ -622,7 +622,7 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
-## Chapter 8: Dragonsteel, the claws past Ancient (proposed 2026-10-26)
+## Chapter 8: Dragonsteel, the claws past Ancient (approved and built 2026-10-26)
 
 Roadmap Step 3, paired with the story: every old beat has now played or been retired, so Chapter 8
 needs new material, and Kael reforging the claws is it. The claws screen already promises it:
@@ -684,6 +684,20 @@ Ancient simply meets Kael when they do; the story waits there.
 2. **The story:** Kael's "Dragonsteel" as Chapter 8, once the claws are Ancient (recommended)?
 3. **Your save:** I cannot read it from the phone. If your claws are not Ancient yet, Chapter 8
    waits for you there; tell me if you would rather it come sooner.
+
+### Owner rulings (2026-10-26)
+
+All three as recommended: endless reforges (+5 damage, 1,000 then +40%); Kael's Dragonsteel as
+Chapter 8 once the claws are Ancient; the chapter waits for Ancient.
+
+### As built
+
+- `types/claws.ts`: `clawDef` computes any level past Ancient; `nextClaw(level, reforge)`,
+  `canSharpen` and `sharpenClaws` go past Ancient only when `canReforge` (Kael's scene seen).
+- `dragonsteel` beat (chapter 8, after `beyond_the_walls`), quest `reforge_the_claws`, EVIDENCE
+  `clawLevel > 8`. The pause is now `dragonsteel`.
+- `ClawsSheet` takes `reforge`; past Ancient it lists the current and next reforge and its button
+  reads Reforge.
 
 ---
 

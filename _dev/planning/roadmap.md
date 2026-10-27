@@ -72,7 +72,7 @@ Three side stories are paused, all written for the old idle game:
 
 ---
 
-## Step 3: Claws past Ancient (proposed 2026-10-26 as Chapter 8, Dragonsteel, in core-tap.md)
+## Step 3: Claws past Ancient (built 2026-10-26 as Chapter 8, Dragonsteel, in core-tap.md)
 
 The owner ruled this "later, not now": it waits until a player can reach Ancient Claws (800
 renown for the last level). With the horde now growing 5% a level, the claws will fall behind

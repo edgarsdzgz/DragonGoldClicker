@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { BottomSheet } from './BottomSheet'
 import { Button } from './Button'
 import { Text } from './Text'
-import { CLAWS, clawDef, nextClaw } from '../types/claws'
+import { CLAWS, MAX_CLAW_LEVEL, clawDef, nextClaw } from '../types/claws'
 import { formatNumber } from '../types/state'
 import { colors, spacing, radius, gold, dark } from '../theme'
 
@@ -13,17 +13,27 @@ interface ClawsSheetProps {
   onClose: () => void
   level: number
   renown: number
+  /** Kael reforges past Ancient (after his Dragonsteel scene, chapter 8) */
+  reforge: boolean
   onSharpen: () => void
 }
 
 /**
  * The dragon's claws (layer 3): what they are now, what the next level gives and costs, and the
- * whole track. One tap of Sharpen buys one level.
+ * named track. Past Ancient the track ends with the current reforge and the next one (chapter 8).
+ * One tap of Sharpen (or Reforge) buys one level.
  */
-export function ClawsSheet({ visible, onClose, level, renown, onSharpen }: ClawsSheetProps) {
+export function ClawsSheet({ visible, onClose, level, renown, reforge, onSharpen }: ClawsSheetProps) {
   const now = clawDef(level)
-  const next = nextClaw(level)
+  const next = nextClaw(level, reforge)
   const affordable = next !== null && renown >= next.cost
+  const reforging = next !== null && next.level > MAX_CLAW_LEVEL
+  // The named levels, then where the reforges stand: the current one and the next
+  const track = [
+    ...CLAWS,
+    ...(level > MAX_CLAW_LEVEL ? [now] : []),
+    ...(reforging && next ? [next] : []),
+  ]
 
   return (
     <BottomSheet
@@ -43,8 +53,8 @@ export function ClawsSheet({ visible, onClose, level, renown, onSharpen }: Claws
               ? 'Harder strikes kill faster and earn more renown with every tap.'
               : `Needs ${formatNumber(next.cost)} renown. You have ${formatNumber(renown)}.`}
           </Text>
-          <Button onPress={onSharpen} disabled={!affordable} icon="flash" fullWidth>
-            {`Sharpen for ${formatNumber(next.cost)} renown`}
+          <Button onPress={onSharpen} disabled={!affordable} icon={reforging ? 'hammer' : 'flash'} fullWidth>
+            {`${reforging ? 'Reforge' : 'Sharpen'} for ${formatNumber(next.cost)} renown`}
           </Button>
         </View>
       ) : (
@@ -52,7 +62,7 @@ export function ClawsSheet({ visible, onClose, level, renown, onSharpen }: Claws
       )}
 
       <View style={styles.track} accessibilityRole="list">
-        {CLAWS.map((c) => {
+        {track.map((c) => {
           const owned = c.level <= level
           const isNow = c.level === level
           return (

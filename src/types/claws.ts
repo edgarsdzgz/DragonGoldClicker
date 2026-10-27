@@ -30,27 +30,55 @@ export const CLAWS: ClawDef[] = [
   { level: 8, name: 'Ancient Claws', damage: 20, cost: 800 },
 ]
 
+/** The last named level: Ancient. Past it, Kael reforges (chapter 8) */
 export const MAX_CLAW_LEVEL = CLAWS[CLAWS.length - 1].level
 
-/** The claws at this level (clamped to the track) */
-export function clawDef(level: number): ClawDef {
-  return CLAWS[Math.max(0, Math.min(MAX_CLAW_LEVEL, Math.floor(level)))]
+// =============================================================================
+// DRAGONSTEEL (chapter 8, approved 2026-10-26): endless reforges past Ancient
+// =============================================================================
+// Each reforge adds a quarter of Ancient's damage, so one keeps pace with five horde levels (5% a
+// level); the price grows 40% each time, so the claws fall slowly behind unless the player invests.
+// clawLevel keeps counting: 9 is Ancient +1.
+
+/** Damage each reforge adds */
+export const REFORGE_DAMAGE = 5
+/** Renown for the first reforge; each one after costs REFORGE_COST_GROWTH times the last */
+export const REFORGE_BASE_COST = 1000
+export const REFORGE_COST_GROWTH = 1.4
+
+/** Kael reforges past Ancient once his Dragonsteel scene has been seen */
+export function canReforge(s: Pick<GameState, 'beatsSeen'>): boolean {
+  return s.beatsSeen.includes('dragonsteel')
 }
 
-/** The next level up, or null once the claws are Ancient */
-export function nextClaw(level: number): ClawDef | null {
-  return level >= MAX_CLAW_LEVEL ? null : clawDef(level + 1)
+/** The claws at this level: the named track, then "Ancient Claws +n" */
+export function clawDef(level: number): ClawDef {
+  const l = Math.max(0, Math.floor(level))
+  if (l <= MAX_CLAW_LEVEL) return CLAWS[l]
+  const ancient = CLAWS[MAX_CLAW_LEVEL]
+  const n = l - MAX_CLAW_LEVEL
+  return {
+    level: l,
+    name: `${ancient.name} +${n}`,
+    damage: ancient.damage + REFORGE_DAMAGE * n,
+    cost: Math.round(REFORGE_BASE_COST * Math.pow(REFORGE_COST_GROWTH, n - 1)),
+  }
+}
+
+/** The next level up; past Ancient only when Kael reforges (`reforge`), else null */
+export function nextClaw(level: number, reforge = false): ClawDef | null {
+  return level >= MAX_CLAW_LEVEL && !reforge ? null : clawDef(level + 1)
 }
 
 /** Whether the next level can be bought now (never while renown is in debt) */
-export function canSharpen(s: Pick<GameState, 'clawLevel' | 'inspiration'>): boolean {
-  const next = nextClaw(s.clawLevel)
+export function canSharpen(s: Pick<GameState, 'clawLevel' | 'inspiration' | 'beatsSeen'>): boolean {
+  const next = nextClaw(s.clawLevel, canReforge(s))
   return next !== null && s.inspiration >= next.cost
 }
 
 /** Buy the next level: pays its cost and sets the tap damage. Unchanged if it cannot be bought. */
 export function sharpenClaws(s: GameState): GameState {
-  const next = nextClaw(s.clawLevel)
+  const next = nextClaw(s.clawLevel, canReforge(s))
   if (!next || s.inspiration < next.cost) return s
   return {
     ...s,

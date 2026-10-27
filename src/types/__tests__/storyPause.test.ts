@@ -10,8 +10,8 @@ import { getCurrentObjective } from '../objectives'
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
 describe('story pause', () => {
-  it('pauses everything after beyond_the_walls (the Outpost, chapter 7) and nothing up to it', () => {
-    expect(STORY_PAUSED_AFTER).toBe('beyond_the_walls')
+  it('pauses everything after dragonsteel (the claws past Ancient, chapter 8) and nothing up to it', () => {
+    expect(STORY_PAUSED_AFTER).toBe('dragonsteel')
     expect(isBeatPaused('prologue')).toBe(false)
     expect(isBeatPaused('call_to_arms')).toBe(false)
     expect(isBeatPaused('empty_stores')).toBe(false)
@@ -28,8 +28,9 @@ describe('story pause', () => {
     expect(isBeatPaused('the_scholar')).toBe(false)
     expect(isBeatPaused('the_horde_grows')).toBe(false)
     expect(isBeatPaused('beyond_the_walls')).toBe(false)
-    // Every beat in the story is now live: the old side beats were retired (chapter 7)
-    expect(STORY_BEATS[STORY_BEATS.length - 1].id).toBe('beyond_the_walls')
+    expect(isBeatPaused('dragonsteel')).toBe(false)
+    // Every beat in the story is live: the old side beats were retired (chapter 7)
+    expect(STORY_BEATS[STORY_BEATS.length - 1].id).toBe('dragonsteel')
   })
 
   it('the director never offers a paused beat, main or side', () => {

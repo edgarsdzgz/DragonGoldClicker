@@ -32,9 +32,9 @@ describe('the claw track', () => {
     expect(clawDef(MAX_CLAW_LEVEL).damage).toBeGreaterThanOrEqual(orc.hp)
   })
 
-  it('has no level past Ancient', () => {
+  it('has no level past Ancient until Kael reforges (chapter 8)', () => {
     expect(nextClaw(MAX_CLAW_LEVEL)).toBeNull()
-    expect(clawDef(99).level).toBe(MAX_CLAW_LEVEL)
+    expect(nextClaw(MAX_CLAW_LEVEL, true)?.name).toBe('Ancient Claws +1')
   })
 })
 
