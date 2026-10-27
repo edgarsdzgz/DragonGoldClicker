@@ -26,6 +26,10 @@ MOTION = [
     (AGENT / "21-warfront/preview/torch.gif", "Gate torch, 6 fps"),
 ] + [(AGENT / f"22-mobs/preview/mob_{m}_walk.gif", f"{m.capitalize()} walking, 4 fps")
      for m in ("kobold", "goblin", "crawler", "orc", "raider")]
+MOTION += [(AGENT / f"23-effects/preview/scene_{n}.gif", label) for n, label in (
+    ("slash-plain", "Slash, plain"), ("slash-gold", "Slash, gold"), ("slash-ember", "Slash, ember"),
+    ("crit", "Critical hit"), ("ally-hit", "Ally hit"), ("ember", "Embers"), ("wall-impact", "Wall impact"),
+    ("repair", "Repair"), ("breach", "The breach"))]
 SCALE = {"icons": 6, "people": 6, "fx": 6, "events": 4, "city": 2, "buildings": 3, "warfront": 2, "mobs": 6}
 
 

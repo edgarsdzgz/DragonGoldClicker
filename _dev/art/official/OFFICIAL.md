@@ -152,6 +152,15 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `warfront/map_gate_failing.png` | 130x60 | The gate and wall: failing | batch 4 |
 | `warfront/map_gate_breached.png` | 130x60 | The gate and wall: breached | batch 4 |
 | `warfront/map_torch_strip3.png` | 18x12 | Gate torch, flickering (3 frames, 6 fps) | batch 4 |
+| `fx/fx_slash-plain_strip4.png` | 96x24 | Slash, plain steel (claw tiers 1-4), 24x24 frames, 12 fps | batch 5 |
+| `fx/fx_slash-gold_strip4.png` | 96x24 | Slash, gold (from Serrated), 24x24 frames, 12 fps | batch 5 |
+| `fx/fx_slash-ember_strip4.png` | 96x24 | Slash, ember (from Ember), 24x24 frames, 12 fps | batch 5 |
+| `fx/fx_crit_strip4.png` | 96x24 | Critical hit burst, 24x24 frames, 12 fps | batch 5 |
+| `fx/fx_ally-hit_strip3.png` | 48x16 | The army's hit flash, 16x16 frames, 12 fps | batch 5 |
+| `fx/fx_ember_strip3.png` | 12x4 | Floating ember, 4x4 frames, 8 fps, loops | batch 5 |
+| `fx/fx_wall-impact_strip4.png` | 80x16 | A monster strikes the wall, 20x16 frames, 12 fps | batch 5 |
+| `fx/fx_repair_strip4.png` | 48x12 | Repair sparkle, 12x12 frames, 8 fps, loops | batch 5 |
+| `fx/fx_breach_strip6.png` | 780x60 | The wall falls, gate box frames, 8 fps; ends on the breached gate | batch 5 |
 | `mobs/mob_kobold_idle.png` | 13x16 | Kobold: idle | simple mobs |
 | `mobs/mob_kobold_hit.png` | 13x16 | Kobold: hit, the red flash | simple mobs |
 | `mobs/mob_kobold_hurt.png` | 13x16 | Kobold: hurt | simple mobs |
