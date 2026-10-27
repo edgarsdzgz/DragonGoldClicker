@@ -6,6 +6,7 @@ and replaces the official file only when the owner approves it. Run: python coll
 """
 import pathlib
 import shutil
+import wave
 
 from PIL import Image
 
@@ -314,15 +315,54 @@ ASSETS = [
     ("mobs/mob_raider-stronger_death_strip4.png", AGENT / "33-mob-deaths/out/mob_raider-stronger_death_strip4.png", "Raider, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "monster deaths"),
 ]
 
+ASSETS += [
+    ("story/story_prologue.png", AGENT / "37-story/out/story_prologue_v1.png", "Story: the prologue, The Walls of Draconia (130x96, shown at the map's scale)", "story v1"),
+    ("story/story_breach.png", AGENT / "37-story/out/story_breach_v1.png", "Story: the Breach, The Wall Falls (130x96, shown at the map's scale)", "story v1"),
+]
+
+# The city at night and dusk: every city and building piece above, relit (34-city-light). A strip keeps
+# its _stripN ending last, so the game still reads it as a strip.
+LIGHT = AGENT / "34-city-light/out"
+for dest, src, what, origin in [a for a in ASSETS if a[0].startswith(("city/map_", "buildings/bld_")) and a[0].endswith(".png")]:
+    stem = pathlib.Path(dest).stem
+    for level in ("night", "dusk"):
+        base, _, n = stem.rpartition("_strip") if "_strip" in stem else (stem, "", "")
+        name = f"{base}_{level}_strip{n}" if n else f"{stem}_{level}"
+        ASSETS.append((f"{pathlib.Path(dest).parent.as_posix()}/{name}.png", LIGHT / f"{stem}_{level}.png",
+                       f"{what}, at {level}", "city light levels"))
+
+# Sound effects (38-sound): the .m4a the app plays; the .wav masters stay in the batch folder.
+SOUND = AGENT / "38-sound/out"
+ASSETS += [(f"sound/{n}.m4a", SOUND / f"{n}.m4a", what, "sound v1") for n, what in [
+    ("splash_full", "The studio splash, every beat on the seal's frame timing"),
+    ("splash_slam", "Splash: the plates slam together (beat slam)"),
+    ("splash_medallion-top", "Splash: a medallion settles (beat medallion_top)"),
+    ("splash_medallion-left", "Splash: a medallion settles, a step higher (beat medallion_left)"),
+    ("splash_medallion-right", "Splash: a medallion settles, higher again (beat medallion_right)"),
+    ("splash_etch", "Splash: the runes etched in blue (beat etch, until the slash)"),
+    ("splash_slash", "Splash: the name cut in gold (beat slash)"),
+    ("splash_spread", "Splash: gold runs out from the cut (beat spread)"),
+    ("splash_smash", "Splash: the seal smashes to gold (beat smash)"),
+    ("sfx_monster-death", "A monster dies, on its death strip's frames: the thud at 250 ms, glints at 375 ms"),
+    ("sfx_wall-hit", "A monster strikes the wall"),
+    ("sfx_breach", "The wall falls"),
+    ("sfx_build-complete", "A building finished: three hammer taps and a warm chord"),
+    ("sfx_heartstone", "The heartstone's soft pulse"),
+]]
+
 rows = []
 for dest, src, what, origin in ASSETS:
     out = HERE / dest
     out.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(src, out)
-    size = "" if dest.endswith((".piskel", ".json")) else "{}x{}".format(*Image.open(out).size)
+    if dest.endswith(".m4a"):
+        with wave.open(str(src.with_suffix(".wav"))) as w:
+            size = f"{w.getnframes() / w.getframerate():.2f} s"
+    else:
+        size = "" if dest.endswith((".piskel", ".json")) else "{}x{}".format(*Image.open(out).size)
     rows.append(f"| `{dest}` | {size} | {what} | {origin} |")
 
-register = """# Official pixel art: Draconia Chronicles
+register = """# Official pixel art and sound: Draconia Chronicles
 
 Locked by the owner on 2026-10-26. These are the game's official assets.
 

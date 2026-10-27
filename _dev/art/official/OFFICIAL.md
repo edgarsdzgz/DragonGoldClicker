@@ -1,4 +1,4 @@
-# Official pixel art: Draconia Chronicles
+# Official pixel art and sound: Draconia Chronicles
 
 Locked by the owner on 2026-10-26. These are the game's official assets.
 
@@ -306,3 +306,111 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_crawler-stronger_death_strip4.png` | 84x11 | Shadow Crawler, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
 | `mobs/mob_orc-stronger_death_strip4.png` | 104x19 | Orc, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
 | `mobs/mob_raider-stronger_death_strip4.png` | 100x19 | Raider, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `story/story_prologue.png` | 130x96 | Story: the prologue, The Walls of Draconia (130x96, shown at the map's scale) | story v1 |
+| `story/story_breach.png` | 130x96 | Story: the Breach, The Wall Falls (130x96, shown at the map's scale) | story v1 |
+| `city/map_city_base_night.png` | 130x282 | City base map, no buildings (lit look), at night | city light levels |
+| `city/map_city_base_dusk.png` | 130x282 | City base map, no buildings (lit look), at dusk | city light levels |
+| `city/map_fog_20x32_night.png` | 20x32 | Fog over an undiscovered plot, 20 x 32, at night | city light levels |
+| `city/map_fog_20x32_dusk.png` | 20x32 | Fog over an undiscovered plot, 20 x 32, at dusk | city light levels |
+| `city/map_fog_24x40_night.png` | 24x40 | Fog over an undiscovered plot, 24 x 40, at night | city light levels |
+| `city/map_fog_24x40_dusk.png` | 24x40 | Fog over an undiscovered plot, 24 x 40, at dusk | city light levels |
+| `city/map_fog_32x32_night.png` | 32x32 | Fog over an undiscovered plot, 32 x 32, at night | city light levels |
+| `city/map_fog_32x32_dusk.png` | 32x32 | Fog over an undiscovered plot, 32 x 32, at dusk | city light levels |
+| `city/map_fog_50x82_night.png` | 50x82 | Fog over an undiscovered plot, 50 x 82, at night | city light levels |
+| `city/map_fog_50x82_dusk.png` | 50x82 | Fog over an undiscovered plot, 50 x 82, at dusk | city light levels |
+| `city/map_foundation_20x32_night.png` | 20x32 | Foundation (first build step), 20 x 32, at night | city light levels |
+| `city/map_foundation_20x32_dusk.png` | 20x32 | Foundation (first build step), 20 x 32, at dusk | city light levels |
+| `city/map_foundation_24x40_night.png` | 24x40 | Foundation (first build step), 24 x 40, at night | city light levels |
+| `city/map_foundation_24x40_dusk.png` | 24x40 | Foundation (first build step), 24 x 40, at dusk | city light levels |
+| `city/map_foundation_32x32_night.png` | 32x32 | Foundation (first build step), 32 x 32, at night | city light levels |
+| `city/map_foundation_32x32_dusk.png` | 32x32 | Foundation (first build step), 32 x 32, at dusk | city light levels |
+| `city/map_foundation_50x82_night.png` | 50x82 | Foundation (first build step), 50 x 82, at night | city light levels |
+| `city/map_foundation_50x82_dusk.png` | 50x82 | Foundation (first build step), 50 x 82, at dusk | city light levels |
+| `city/map_plot-empty_20x32_night.png` | 20x32 | Cleared ground (unbuilt plot), 20 x 32, at night | city light levels |
+| `city/map_plot-empty_20x32_dusk.png` | 20x32 | Cleared ground (unbuilt plot), 20 x 32, at dusk | city light levels |
+| `city/map_plot-empty_24x40_night.png` | 24x40 | Cleared ground (unbuilt plot), 24 x 40, at night | city light levels |
+| `city/map_plot-empty_24x40_dusk.png` | 24x40 | Cleared ground (unbuilt plot), 24 x 40, at dusk | city light levels |
+| `city/map_plot-empty_32x32_night.png` | 32x32 | Cleared ground (unbuilt plot), 32 x 32, at night | city light levels |
+| `city/map_plot-empty_32x32_dusk.png` | 32x32 | Cleared ground (unbuilt plot), 32 x 32, at dusk | city light levels |
+| `city/map_plot-empty_50x82_night.png` | 50x82 | Cleared ground (unbuilt plot), 50 x 82, at night | city light levels |
+| `city/map_plot-empty_50x82_dusk.png` | 50x82 | Cleared ground (unbuilt plot), 50 x 82, at dusk | city light levels |
+| `city/map_scaffold_20x32_night.png` | 20x32 | Scaffold (building going up), 20 x 32, at night | city light levels |
+| `city/map_scaffold_20x32_dusk.png` | 20x32 | Scaffold (building going up), 20 x 32, at dusk | city light levels |
+| `city/map_scaffold_24x40_night.png` | 24x40 | Scaffold (building going up), 24 x 40, at night | city light levels |
+| `city/map_scaffold_24x40_dusk.png` | 24x40 | Scaffold (building going up), 24 x 40, at dusk | city light levels |
+| `city/map_scaffold_32x32_night.png` | 32x32 | Scaffold (building going up), 32 x 32, at night | city light levels |
+| `city/map_scaffold_32x32_dusk.png` | 32x32 | Scaffold (building going up), 32 x 32, at dusk | city light levels |
+| `city/map_scaffold_50x82_night.png` | 50x82 | Scaffold (building going up), 50 x 82, at night | city light levels |
+| `city/map_scaffold_50x82_dusk.png` | 50x82 | Scaffold (building going up), 50 x 82, at dusk | city light levels |
+| `city/map_marker-upgrade_night.png` | 8x8 | Map marker: upgrade ready, at night | city light levels |
+| `city/map_marker-upgrade_dusk.png` | 8x8 | Map marker: upgrade ready, at dusk | city light levels |
+| `city/map_marker-todo_night.png` | 8x8 | Map marker: something to do, at night | city light levels |
+| `city/map_marker-todo_dusk.png` | 8x8 | Map marker: something to do, at dusk | city light levels |
+| `buildings/bld_keep_ruin_night.png` | 50x82 | Draconia Keep: ruin, at night | city light levels |
+| `buildings/bld_keep_ruin_dusk.png` | 50x82 | Draconia Keep: ruin, at dusk | city light levels |
+| `buildings/bld_keep_built_night.png` | 50x82 | Draconia Keep: built, at night | city light levels |
+| `buildings/bld_keep_built_dusk.png` | 50x82 | Draconia Keep: built, at dusk | city light levels |
+| `buildings/bld_keep_restored_night.png` | 50x82 | Draconia Keep: restored, at night | city light levels |
+| `buildings/bld_keep_restored_dusk.png` | 50x82 | Draconia Keep: restored, at dusk | city light levels |
+| `buildings/bld_garrison_ruin_night.png` | 32x32 | The Garrison: ruin, at night | city light levels |
+| `buildings/bld_garrison_ruin_dusk.png` | 32x32 | The Garrison: ruin, at dusk | city light levels |
+| `buildings/bld_garrison_lv1_night.png` | 32x32 | The Garrison: lv1, at night | city light levels |
+| `buildings/bld_garrison_lv1_dusk.png` | 32x32 | The Garrison: lv1, at dusk | city light levels |
+| `buildings/bld_garrison_lv3_night.png` | 32x32 | The Garrison: lv3, at night | city light levels |
+| `buildings/bld_garrison_lv3_dusk.png` | 32x32 | The Garrison: lv3, at dusk | city light levels |
+| `buildings/bld_garrison_lv5_night.png` | 32x32 | The Garrison: lv5, at night | city light levels |
+| `buildings/bld_garrison_lv5_dusk.png` | 32x32 | The Garrison: lv5, at dusk | city light levels |
+| `buildings/bld_forge_ruin_night.png` | 32x32 | The Forge: ruin, at night | city light levels |
+| `buildings/bld_forge_ruin_dusk.png` | 32x32 | The Forge: ruin, at dusk | city light levels |
+| `buildings/bld_forge_built_night.png` | 32x32 | The Forge: built, at night | city light levels |
+| `buildings/bld_forge_built_dusk.png` | 32x32 | The Forge: built, at dusk | city light levels |
+| `buildings/bld_forge_lit_night.png` | 32x32 | The Forge: lit, at night | city light levels |
+| `buildings/bld_forge_lit_dusk.png` | 32x32 | The Forge: lit, at dusk | city light levels |
+| `buildings/bld_forge_lit_night_strip3.png` | 96x32 | The Forge: lit, fire flickering (3 frames), at night | city light levels |
+| `buildings/bld_forge_lit_dusk_strip3.png` | 96x32 | The Forge: lit, fire flickering (3 frames), at dusk | city light levels |
+| `buildings/bld_lodge_ruin_night.png` | 32x32 | Ranger's Lodge: ruin, at night | city light levels |
+| `buildings/bld_lodge_ruin_dusk.png` | 32x32 | Ranger's Lodge: ruin, at dusk | city light levels |
+| `buildings/bld_lodge_lv1_night.png` | 32x32 | Ranger's Lodge: lv1, at night | city light levels |
+| `buildings/bld_lodge_lv1_dusk.png` | 32x32 | Ranger's Lodge: lv1, at dusk | city light levels |
+| `buildings/bld_lodge_lv3_night.png` | 32x32 | Ranger's Lodge: lv3, at night | city light levels |
+| `buildings/bld_lodge_lv3_dusk.png` | 32x32 | Ranger's Lodge: lv3, at dusk | city light levels |
+| `buildings/bld_outpost_ruin_night.png` | 32x32 | Wayfinder's Outpost: ruin, at night | city light levels |
+| `buildings/bld_outpost_ruin_dusk.png` | 32x32 | Wayfinder's Outpost: ruin, at dusk | city light levels |
+| `buildings/bld_outpost_built_night.png` | 32x32 | Wayfinder's Outpost: built, at night | city light levels |
+| `buildings/bld_outpost_built_dusk.png` | 32x32 | Wayfinder's Outpost: built, at dusk | city light levels |
+| `buildings/bld_outpost_upgraded_night.png` | 32x32 | Wayfinder's Outpost: upgraded, at night | city light levels |
+| `buildings/bld_outpost_upgraded_dusk.png` | 32x32 | Wayfinder's Outpost: upgraded, at dusk | city light levels |
+| `buildings/bld_librarium_ruin_night.png` | 32x32 | The Librarium: ruin, at night | city light levels |
+| `buildings/bld_librarium_ruin_dusk.png` | 32x32 | The Librarium: ruin, at dusk | city light levels |
+| `buildings/bld_librarium_built_night.png` | 32x32 | The Librarium: built, at night | city light levels |
+| `buildings/bld_librarium_built_dusk.png` | 32x32 | The Librarium: built, at dusk | city light levels |
+| `buildings/bld_housing_house_night.png` | 32x32 | Housing: house, at night | city light levels |
+| `buildings/bld_housing_house_dusk.png` | 32x32 | Housing: house, at dusk | city light levels |
+| `buildings/bld_housing_row_night.png` | 32x32 | Housing: row, at night | city light levels |
+| `buildings/bld_housing_row_dusk.png` | 32x32 | Housing: row, at dusk | city light levels |
+| `buildings/bld_wizard-tower_ruin_night.png` | 24x40 | Wizard's Tower: ruin, at night | city light levels |
+| `buildings/bld_wizard-tower_ruin_dusk.png` | 24x40 | Wizard's Tower: ruin, at dusk | city light levels |
+| `buildings/bld_wizard-tower_built_night.png` | 24x40 | Wizard's Tower: built, at night | city light levels |
+| `buildings/bld_wizard-tower_built_dusk.png` | 24x40 | Wizard's Tower: built, at dusk | city light levels |
+| `buildings/bld_tower-west_ruin_night.png` | 20x32 | Tower West: ruin, at night | city light levels |
+| `buildings/bld_tower-west_ruin_dusk.png` | 20x32 | Tower West: ruin, at dusk | city light levels |
+| `buildings/bld_tower-west_built_night.png` | 20x32 | Tower West: built, at night | city light levels |
+| `buildings/bld_tower-west_built_dusk.png` | 20x32 | Tower West: built, at dusk | city light levels |
+| `buildings/bld_tower-east_ruin_night.png` | 20x32 | Tower East: ruin, at night | city light levels |
+| `buildings/bld_tower-east_ruin_dusk.png` | 20x32 | Tower East: ruin, at dusk | city light levels |
+| `buildings/bld_tower-east_built_night.png` | 20x32 | Tower East: built, at night | city light levels |
+| `buildings/bld_tower-east_built_dusk.png` | 20x32 | Tower East: built, at dusk | city light levels |
+| `sound/splash_full.m4a` | 7.68 s | The studio splash, every beat on the seal's frame timing | sound v1 |
+| `sound/splash_slam.m4a` | 0.70 s | Splash: the plates slam together (beat slam) | sound v1 |
+| `sound/splash_medallion-top.m4a` | 0.60 s | Splash: a medallion settles (beat medallion_top) | sound v1 |
+| `sound/splash_medallion-left.m4a` | 0.60 s | Splash: a medallion settles, a step higher (beat medallion_left) | sound v1 |
+| `sound/splash_medallion-right.m4a` | 0.60 s | Splash: a medallion settles, higher again (beat medallion_right) | sound v1 |
+| `sound/splash_etch.m4a` | 1.39 s | Splash: the runes etched in blue (beat etch, until the slash) | sound v1 |
+| `sound/splash_slash.m4a` | 1.09 s | Splash: the name cut in gold (beat slash) | sound v1 |
+| `sound/splash_spread.m4a` | 0.60 s | Splash: gold runs out from the cut (beat spread) | sound v1 |
+| `sound/splash_smash.m4a` | 3.56 s | Splash: the seal smashes to gold (beat smash) | sound v1 |
+| `sound/sfx_monster-death.m4a` | 1.00 s | A monster dies, on its death strip's frames: the thud at 250 ms, glints at 375 ms | sound v1 |
+| `sound/sfx_wall-hit.m4a` | 0.60 s | A monster strikes the wall | sound v1 |
+| `sound/sfx_breach.m4a` | 3.80 s | The wall falls | sound v1 |
+| `sound/sfx_build-complete.m4a` | 1.60 s | A building finished: three hammer taps and a warm chord | sound v1 |
+| `sound/sfx_heartstone.m4a` | 1.00 s | The heartstone's soft pulse | sound v1 |
