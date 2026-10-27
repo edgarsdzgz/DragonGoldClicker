@@ -414,3 +414,30 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `sound/sfx_breach.m4a` | 3.80 s | The wall falls | sound v1 |
 | `sound/sfx_build-complete.m4a` | 1.60 s | A building finished: three hammer taps and a warm chord | sound v1 |
 | `sound/sfx_heartstone.m4a` | 1.00 s | The heartstone's soft pulse | sound v1 |
+| `sound/sfx_crit.m4a` | 2.10 s | A critical hit: a harder cut, a heavy impact, a sparkle | sound batch 2 v1 |
+| `sound/sfx_slash-ember.m4a` | 0.60 s | The ember claws: a fire whoosh to lay over the strike | sound batch 2 v1 |
+| `sound/sfx_walk-up.m4a` | 0.55 s | The next monster's three footfalls, across the 350 ms walk-up | sound batch 2 v1 |
+| `sound/sfx_gate-crack.m4a` | 2.60 s | The wall cracks: a stone groan, a crack, grit falling | sound batch 2 v1 |
+| `sound/sfx_unmaking-rise.m4a` | 4.48 s | The Unmaking rises: a reversed shimmer, then a low, uneasy swell | sound batch 2 v1 |
+| `sound/sfx_rally.m4a` | 2.60 s | The rally horn | sound batch 2 v1 |
+| `sound/sfx_mend.m4a` | 1.00 s | Mending the wall: chisel taps, then a mallet | sound batch 2 v1 |
+| `sound/sfx_build-start.m4a` | 1.50 s | Construction starts: saw strokes, two mallet knocks | sound batch 2 v1 |
+| `sound/sfx_city-brightens.m4a` | 3.80 s | The city brightens: a rising chime over a warm chord | sound batch 2 v1 |
+| `sound/sfx_research-done.m4a` | 1.40 s | Research done: a page turns, two bright notes | sound batch 2 v1 |
+| `sound/sfx_expedition-out.m4a` | 2.20 s | An expedition leaves: a horn note, footsteps going away | sound batch 2 v1 |
+| `sound/sfx_expedition-back.m4a` | 2.40 s | An expedition returns: footsteps coming near, a two-note horn | sound batch 2 v1 |
+| `sound/sfx_find.m4a` | 1.60 s | A find: a chest creaks open, something glitters | sound batch 2 v1 |
+| `sound/sfx_gate-knock.m4a` | 2.20 s | Someone at the gate (wanderers, refugees): three knocks | sound batch 2 v1 |
+| `sound/sfx_food-low.m4a` | 4.40 s | Food running low: a low bell, tolled twice | sound batch 2 v1 |
+| `sound/sfx_food-raid.m4a` | 1.80 s | A food raid: an alarm bell over a scuffle | sound batch 2 v1 |
+| `sound/sfx_granary-full.m4a` | 1.20 s | The granary is full: a sack thumps down, a pleased chime | sound batch 2 v1 |
+| `sound/sfx_scene-open.m4a` | 0.80 s | A story scene opens: a parchment unrolls | sound batch 2 v1 |
+| `sound/sfx_fanfare.m4a` | 3.20 s | A quest done or Renown gained: horns up a major chord | sound batch 2 v1 |
+| `sound/sfx_welcome-back.m4a` | 3.60 s | Welcome back (offline): a soft dawn | sound batch 2 v1 |
+| `sound/sfx_sting-sera.m4a` | 2.30 s | Sera arrives: a shield bash | sound batch 2 v1 |
+| `sound/sfx_sting-thornwick.m4a` | 1.10 s | Thornwick arrives: a spark fizzes up and pops | sound batch 2 v1 |
+| `sound/sfx_sting-hollow-knight.m4a` | 4.40 s | The Hollow Knight arrives: one armored step, ringing hollow | sound batch 2 v1 |
+| `sound/amb_torches.m4a` | 8.00 s | Loop, 8 s, seamless: the Warfront torches | sound batch 2 v1 |
+| `sound/amb_forge.m4a` | 8.00 s | Loop, 8 s, seamless: the forge, the bellows every few seconds | sound batch 2 v1 |
+| `sound/amb_night-wind.m4a` | 8.00 s | Loop, 8 s, seamless: night wind. Mastered loud; play it well under the rest (owner, 2026-10-27) | sound batch 2 v1 |
+| `sound/amb_horde-drums.m4a` | 8.00 s | Loop, 8 s, seamless: the horde's drums far off, 12 beats at 90 a minute | sound batch 2 v1 |

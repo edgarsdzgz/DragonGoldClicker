@@ -350,6 +350,37 @@ ASSETS += [(f"sound/{n}.m4a", SOUND / f"{n}.m4a", what, "sound v1") for n, what 
     ("sfx_heartstone", "The heartstone's soft pulse"),
 ]]
 
+SOUND2 = AGENT / "39-sound-2/out"
+ASSETS += [(f"sound/{n}.m4a", SOUND2 / f"{n}.m4a", what, "sound batch 2 v1") for n, what in [
+    ('sfx_crit', 'A critical hit: a harder cut, a heavy impact, a sparkle'),
+    ('sfx_slash-ember', 'The ember claws: a fire whoosh to lay over the strike'),
+    ('sfx_walk-up', "The next monster's three footfalls, across the 350 ms walk-up"),
+    ('sfx_gate-crack', 'The wall cracks: a stone groan, a crack, grit falling'),
+    ('sfx_unmaking-rise', 'The Unmaking rises: a reversed shimmer, then a low, uneasy swell'),
+    ('sfx_rally', 'The rally horn'),
+    ('sfx_mend', 'Mending the wall: chisel taps, then a mallet'),
+    ('sfx_build-start', 'Construction starts: saw strokes, two mallet knocks'),
+    ('sfx_city-brightens', 'The city brightens: a rising chime over a warm chord'),
+    ('sfx_research-done', 'Research done: a page turns, two bright notes'),
+    ('sfx_expedition-out', 'An expedition leaves: a horn note, footsteps going away'),
+    ('sfx_expedition-back', 'An expedition returns: footsteps coming near, a two-note horn'),
+    ('sfx_find', 'A find: a chest creaks open, something glitters'),
+    ('sfx_gate-knock', 'Someone at the gate (wanderers, refugees): three knocks'),
+    ('sfx_food-low', 'Food running low: a low bell, tolled twice'),
+    ('sfx_food-raid', 'A food raid: an alarm bell over a scuffle'),
+    ('sfx_granary-full', 'The granary is full: a sack thumps down, a pleased chime'),
+    ('sfx_scene-open', 'A story scene opens: a parchment unrolls'),
+    ('sfx_fanfare', 'A quest done or Renown gained: horns up a major chord'),
+    ('sfx_welcome-back', 'Welcome back (offline): a soft dawn'),
+    ('sfx_sting-sera', 'Sera arrives: a shield bash'),
+    ('sfx_sting-thornwick', 'Thornwick arrives: a spark fizzes up and pops'),
+    ('sfx_sting-hollow-knight', 'The Hollow Knight arrives: one armored step, ringing hollow'),
+    ('amb_torches', 'Loop, 8 s, seamless: the Warfront torches'),
+    ('amb_forge', 'Loop, 8 s, seamless: the forge, the bellows every few seconds'),
+    ('amb_night-wind', 'Loop, 8 s, seamless: night wind. Mastered loud; play it well under the rest (owner, 2026-10-27)'),
+    ('amb_horde-drums', "Loop, 8 s, seamless: the horde's drums far off, 12 beats at 90 a minute"),
+]]
+
 rows = []
 for dest, src, what, origin in ASSETS:
     out = HERE / dest
