@@ -88,3 +88,60 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `events/evt_granary_0.png` | 32x32 | Granary, empty | test run |
 | `events/evt_granary_50.png` | 32x32 | Granary, half | test run |
 | `events/evt_granary_100.png` | 32x32 | Granary, full | test run |
+| `city/map_city_base.png` | 130x282 | City base map, no buildings (lit look) | batch 2 |
+| `city/map_plots.json` |  | The ten plots: id, x, y, size, anchor | batch 2 |
+| `city/map_fog_20x32.png` | 20x32 | Fog over an undiscovered plot, 20 x 32 | batch 2 |
+| `city/map_fog_24x40.png` | 24x40 | Fog over an undiscovered plot, 24 x 40 | batch 2 |
+| `city/map_fog_32x32.png` | 32x32 | Fog over an undiscovered plot, 32 x 32 | batch 2 |
+| `city/map_fog_50x82.png` | 50x82 | Fog over an undiscovered plot, 50 x 82 | batch 2 |
+| `city/map_foundation_20x32.png` | 20x32 | Foundation (first build step), 20 x 32 | batch 2 |
+| `city/map_foundation_24x40.png` | 24x40 | Foundation (first build step), 24 x 40 | batch 2 |
+| `city/map_foundation_32x32.png` | 32x32 | Foundation (first build step), 32 x 32 | batch 2 |
+| `city/map_foundation_50x82.png` | 50x82 | Foundation (first build step), 50 x 82 | batch 2 |
+| `city/map_plot-empty_20x32.png` | 20x32 | Cleared ground (unbuilt plot), 20 x 32 | batch 2 |
+| `city/map_plot-empty_24x40.png` | 24x40 | Cleared ground (unbuilt plot), 24 x 40 | batch 2 |
+| `city/map_plot-empty_32x32.png` | 32x32 | Cleared ground (unbuilt plot), 32 x 32 | batch 2 |
+| `city/map_plot-empty_50x82.png` | 50x82 | Cleared ground (unbuilt plot), 50 x 82 | batch 2 |
+| `city/map_scaffold_20x32.png` | 20x32 | Scaffold (building going up), 20 x 32 | batch 2 |
+| `city/map_scaffold_24x40.png` | 24x40 | Scaffold (building going up), 24 x 40 | batch 2 |
+| `city/map_scaffold_32x32.png` | 32x32 | Scaffold (building going up), 32 x 32 | batch 2 |
+| `city/map_scaffold_50x82.png` | 50x82 | Scaffold (building going up), 50 x 82 | batch 2 |
+| `city/map_marker-upgrade.png` | 8x8 | Map marker: upgrade ready | batch 2 |
+| `city/map_marker-todo.png` | 8x8 | Map marker: something to do | batch 2 |
+| `buildings/bld_keep_ruin.png` | 50x82 | Draconia Keep: ruin | batch 3 |
+| `buildings/bld_keep_built.png` | 50x82 | Draconia Keep: built | batch 3 |
+| `buildings/bld_keep_restored.png` | 50x82 | Draconia Keep: restored | batch 3 |
+| `buildings/bld_garrison_ruin.png` | 32x32 | The Garrison: ruin | batch 3 |
+| `buildings/bld_garrison_lv1.png` | 32x32 | The Garrison: lv1 | batch 3 |
+| `buildings/bld_garrison_lv3.png` | 32x32 | The Garrison: lv3 | batch 3 |
+| `buildings/bld_garrison_lv5.png` | 32x32 | The Garrison: lv5 | batch 3 |
+| `buildings/bld_forge_ruin.png` | 32x32 | The Forge: ruin | batch 3 |
+| `buildings/bld_forge_built.png` | 32x32 | The Forge: built | batch 3 |
+| `buildings/bld_forge_lit.png` | 32x32 | The Forge: lit | batch 3 |
+| `buildings/bld_forge_lit_strip3.png` | 96x32 | The Forge: lit, fire flickering (3 frames) | batch 3 |
+| `buildings/bld_lodge_ruin.png` | 32x32 | Ranger's Lodge: ruin | batch 3 |
+| `buildings/bld_lodge_lv1.png` | 32x32 | Ranger's Lodge: lv1 | batch 3 |
+| `buildings/bld_lodge_lv3.png` | 32x32 | Ranger's Lodge: lv3 | batch 3 |
+| `buildings/bld_outpost_ruin.png` | 32x32 | Wayfinder's Outpost: ruin | batch 3 |
+| `buildings/bld_outpost_built.png` | 32x32 | Wayfinder's Outpost: built | batch 3 |
+| `buildings/bld_outpost_upgraded.png` | 32x32 | Wayfinder's Outpost: upgraded | batch 3 |
+| `buildings/bld_librarium_ruin.png` | 32x32 | The Librarium: ruin | batch 3 |
+| `buildings/bld_librarium_built.png` | 32x32 | The Librarium: built | batch 3 |
+| `buildings/bld_housing_house.png` | 32x32 | Housing: house | batch 3 |
+| `buildings/bld_housing_row.png` | 32x32 | Housing: row | batch 3 |
+| `buildings/bld_wizard-tower_ruin.png` | 24x40 | Wizard's Tower: ruin | batch 3 |
+| `buildings/bld_wizard-tower_built.png` | 24x40 | Wizard's Tower: built | batch 3 |
+| `buildings/bld_tower-west_ruin.png` | 20x32 | Tower West: ruin | batch 3 |
+| `buildings/bld_tower-west_built.png` | 20x32 | Tower West: built | batch 3 |
+| `buildings/bld_tower-east_ruin.png` | 20x32 | Tower East: ruin | batch 3 |
+| `buildings/bld_tower-east_built.png` | 20x32 | Tower East: built | batch 3 |
+| `icons/icon_bld-keep.png` | 16x16 | Building: Draconia Keep | batch 3 building icons |
+| `icons/icon_bld-garrison.png` | 16x16 | Building: The Garrison | batch 3 building icons |
+| `icons/icon_bld-forge.png` | 16x16 | Building: The Forge | batch 3 building icons |
+| `icons/icon_bld-lodge.png` | 16x16 | Building: Ranger's Lodge | batch 3 building icons |
+| `icons/icon_bld-outpost.png` | 16x16 | Building: Wayfinder's Outpost | batch 3 building icons |
+| `icons/icon_bld-librarium.png` | 16x16 | Building: The Librarium | batch 3 building icons |
+| `icons/icon_bld-housing.png` | 16x16 | Building: Housing | batch 3 building icons |
+| `icons/icon_bld-wizard-tower.png` | 16x16 | Building: Wizard's Tower | batch 3 building icons |
+| `icons/icon_bld-tower-west.png` | 16x16 | Building: Tower West | batch 3 building icons |
+| `icons/icon_bld-tower-east.png` | 16x16 | Building: Tower East | batch 3 building icons |

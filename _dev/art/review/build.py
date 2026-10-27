@@ -24,7 +24,7 @@ MOTION = [
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),
     (AGENT / "01-test-run/preview/fx_spark.gif", "Hit spark, 12 fps"),
 ]
-SCALE = {"icons": 6, "people": 6, "fx": 6, "events": 4}
+SCALE = {"icons": 6, "people": 6, "fx": 6, "events": 4, "city": 2, "buildings": 3}
 
 
 def uri(path):
@@ -61,7 +61,7 @@ if PENDING:
     tiles = "".join(tile(AGENT / rel, label, 6) for rel, label in items)
     pending_section = (f'<section><h2>{html.escape(title)} <span class="tag">awaiting approval</span></h2>'
                        f'<div class="tiles">{tiles}</div></section>')
-groups = {"icons": [], "people": [], "fx": [], "events": []}
+groups = {"icons": [], "people": [], "fx": [], "events": [], "city": [], "buildings": []}
 for group, path, what in official_rows():
     groups[group].append(tile(path, what, SCALE[group]))
 motion = "".join(tile(p, label) for p, label in MOTION)
@@ -94,7 +94,7 @@ page = f"""<title>Pixel Art Test Run</title>
 </style>
 <main>
   <header>
-    <h1>Pixel art test run</h1>
+    <h1>Draconia pixel art</h1>
     <p class="muted">Draconia Chronicles &middot; every sprite at its game scale &middot; 2026-10-26</p>
   </header>
 
@@ -106,6 +106,8 @@ page = f"""<title>Pixel Art Test Run</title>
     <h3>Icons, x6</h3><div class="tiles">{"".join(groups["icons"])}</div>
     <h3>People, x6</h3><div class="tiles">{"".join(groups["people"])}</div>
     <h3>Effects and events</h3><div class="tiles">{"".join(groups["fx"] + groups["events"])}</div>
+    <h3>The city map and plot pieces</h3><div class="tiles">{"".join(groups["city"])}</div>
+    <h3>Buildings, x3</h3><div class="tiles">{"".join(groups["buildings"])}</div>
   </section>
 
   <section>
