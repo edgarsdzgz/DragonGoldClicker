@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { GameIcon } from '../components/GameIcon'
+import { View, StyleSheet, PixelRatio } from 'react-native'
+import { PixelSprite } from '../components/PixelSprite'
+import { SPRITES, fitScale, granarySprite } from '../art'
 import { Text, Badge, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge, FoodEventBadge } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
@@ -15,6 +16,9 @@ import { forageOrbDiameter, FLAVOR_H } from '../types/warfrontLayout'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, formatCount, GRANARY_CAP, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, getExplorerCap, isSystemOn } from '../types/game'
 import { explorerBlock, explorerCost } from '../types/outpost'
+
+/** The granary beside the food figure, in points (at a whole scale of its art) */
+const GRANARY_PTS = 48
 
 // Earthy green palette for foraging
 const forage = {
@@ -87,7 +91,10 @@ export function ForageScreen() {
       {/* HERO: Food is the primary number */}
       <View style={styles.heroSection}>
         <View style={styles.foodRow}>
-          <GameIcon name="nutrition" size={28} color={forage[400]} />
+          {/* The granary fills with the stores; the figure beside it says how much */}
+          <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+            <PixelSprite id={granarySprite(state.food, GRANARY_CAP)} scale={fitScale(GRANARY_PTS, SPRITES.evt_granary_0.w, PixelRatio.get())} />
+          </View>
           <Text variant="display" style={{ color: forage[400] }}>
             {formatCount(state.food)}
           </Text>

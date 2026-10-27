@@ -14,6 +14,7 @@ import { DevCheckpoints } from './DevCheckpoints'
 import { DevStory } from './DevStory'
 import { DevArtGallery } from './DevArtGallery'
 import { DevCityPreview } from './DevCityPreview'
+import { DevWallPreview } from './DevWallPreview'
 
 /**
  * Dev-only test panel (Settings > Dev). Rendered only when DEV_TOOLS_ENABLED (src/config/devTools.ts).
@@ -76,6 +77,7 @@ export function DevPanel() {
       <DevStory />
       <DevArtGallery />
       <DevCityPreview />
+      <DevWallPreview />
 
       <Surface style={styles.section}>
         <SectionLabel spacing={2}>FORCE EVENTS</SectionLabel>

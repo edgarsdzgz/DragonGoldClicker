@@ -8,3 +8,6 @@ export { MAP_W, MOB_SCALE, mapUnit, mobScale, gateState, gateSprite, mobSprites,
 export type { GateState, MobSprites } from './warfront'
 export { cityUnit, plotFor, plotName, plotSprite, plotMarker, plotLabel } from './city'
 export type { CityBuildingId, Plot, PlotLook } from './city'
+export { MAX_WALL_FIGHTERS, wallFighters, fighterSprite, impactPoint, BREACH_CENTER, REPAIR_SPOTS, repairing, wallChange } from './wall'
+export type { WallReading } from './wall'
+export { granarySprite } from './granary'

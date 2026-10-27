@@ -20,8 +20,10 @@ import { useRandomSfx } from '../hooks/useRandomSfx'
 import { COMBAT_LINES } from '../data/flavorText'
 import { colors, spacing, gold } from '../theme'
 import { formatNumber, getFighterCost, getRepairerCost, isSystemOn, MAX_CITY_HP } from '../types/game'
-import { mapUnit, gateState } from '../art'
+import { mapUnit, gateState, repairing, wallChange } from '../art'
+import type { WallReading } from '../art'
 import { WarfrontScene } from './warfront/WarfrontScene'
+import type { WarfrontSceneHandle } from './warfront/WarfrontScene'
 import { armySize, armyVolleyNow, armyDps } from '../types/army'
 import { battlefieldLayout, TALL_WINDOW, FLAVOR_H } from '../types/warfrontLayout'
 import { DevShortcut } from '../components/DevShortcut'
@@ -71,6 +73,7 @@ export function GameScreen() {
   const playKill = useSfx(SFX.COIN)
   const haptics = useHaptics()
   const battlefieldRef = useRef<BattlefieldHandle>(null)
+  const sceneRef = useRef<WarfrontSceneHandle>(null)
 
   // The latest state for the strike handler, so a held press does not rebuild it every tick
   const stateRef = useRef(state)
@@ -97,8 +100,22 @@ export function GameScreen() {
     allyStrikesSeen.current = state.allyStrikes
     // A volley counts one strike per member of the army and lands as one hit
     const volleys = landed / Math.max(1, army)
-    if (landed > 0 && focused) battlefieldRef.current?.showAllyHit(`-${(volleys * volleyNow).toFixed(2)}`)
+    if (landed > 0 && focused) {
+      battlefieldRef.current?.showAllyHit(`-${(volleys * volleyNow).toFixed(2)}`)
+      sceneRef.current?.volley()
+    }
   }, [state.allyStrikes, focused, army, volleyNow])
+
+  // The wall on screen: dust where a monster's blow lands, and the wall falling at a breach
+  const wallSeen = useRef<WallReading>({ hp: state.cityHp, breaches: state.breaches, startedAt: state.startedAt })
+  useEffect(() => {
+    const now = { hp: state.cityHp, breaches: state.breaches, startedAt: state.startedAt }
+    const change = wallChange(wallSeen.current, now)
+    wallSeen.current = now
+    if (!focused || !change) return
+    if (change === 'breach') sceneRef.current?.breach()
+    else sceneRef.current?.struck()
+  }, [state.cityHp, state.breaches, state.startedAt, focused])
 
   // A kill: coin sound, the bounty floats up, and about one in four brings a flavor line. Only
   // the player's own kills get the haptic; fighters' kills away from the Warfront stay quiet.
@@ -116,6 +133,7 @@ export function GameScreen() {
 
   const rallyOn = isSystemOn(state, 'rally')
   const repairOn = isSystemOn(state, 'repair')
+  const siegeOn = isSystemOn(state, 'siege')
   const hungerOn = isSystemOn(state, 'hunger')
   // Short windows drop the footer line so the battlefield keeps its room; the Claws chip stays
   const showFooter = windowHeight >= TALL_WINDOW
@@ -140,7 +158,14 @@ export function GameScreen() {
   return (
     <Animated.View style={[styles.container, shakeStyle, !reveal.chrome && { paddingBottom: insets.bottom }]}>
       {wallTop > 0 && (
-        <WarfrontScene unit={unit} wallTop={wallTop} gate={isSystemOn(state, 'siege') ? gateState(state.cityHp, MAX_CITY_HP) : 'sound'} />
+        <WarfrontScene
+          ref={sceneRef}
+          unit={unit}
+          wallTop={wallTop}
+          gate={siegeOn ? gateState(state.cityHp, MAX_CITY_HP) : 'sound'}
+          army={army}
+          repairing={repairing(siegeOn, state.repairers, state.cityHp, MAX_CITY_HP)}
+        />
       )}
       {reveal.topBar && (
         <ResourceBar

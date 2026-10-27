@@ -8,8 +8,8 @@ import { PixelSprite } from './PixelSprite'
 const MIN_SHOW_MS = 150
 
 export interface PixelBurstHandle {
-  /** Play a strip once, centered on (x, y) in this layer's space */
-  play: (id: SpriteId, x: number, y: number) => void
+  /** Play a strip once, centered on (x, y) in this layer's space, then hold its last frame `holdMs` */
+  play: (id: SpriteId, x: number, y: number, holdMs?: number) => void
 }
 
 interface Slot {
@@ -38,7 +38,7 @@ export const PixelBurst = forwardRef<PixelBurstHandle, PixelBurstProps>(function
 
   useEffect(() => () => timers.current.forEach(clearTimeout), [])
 
-  const play = useCallback((id: SpriteId, x: number, y: number) => {
+  const play = useCallback((id: SpriteId, x: number, y: number, holdMs = 0) => {
     const i = next.current
     next.current = (i + 1) % max
     const key = ++keySeq.current
@@ -46,7 +46,7 @@ export const PixelBurst = forwardRef<PixelBurstHandle, PixelBurstProps>(function
     clearTimeout(timers.current[i])
     timers.current[i] = setTimeout(() => {
       setSlots((prev) => prev.map((s, j) => (j === i && s?.key === key ? null : s)))
-    }, Math.max(MIN_SHOW_MS, stripMs(id)))
+    }, Math.max(MIN_SHOW_MS, stripMs(id) + holdMs))
   }, [max])
 
   useImperativeHandle(ref, () => ({ play }), [play])

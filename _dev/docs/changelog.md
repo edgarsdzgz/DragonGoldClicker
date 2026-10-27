@@ -2,6 +2,13 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Pixel art in the game, step 5: people, events and effects (2026-10-27)
+- Fighters stand on the Warfront wall, up to four, and jab with their spears as each volley lands
+- A monster's blow raises dust on the gatehouse; repair sparkles show while repairers work; at a
+  Breach the wall falls on screen before the patched gate shows (Reduce Motion skips the fall)
+- The Forage tab's food figure stands beside the granary: empty, half or full with the stores
+- Dev: a Wall Preview in Settings plays the fighters, blows, repairs and the Breach on demand
+
 ### Pixel art in the game, step 4: Draconia (2026-10-27)
 - Draconia is the city map: the Keep at the top, buildings along the road, the city wall at the
   bottom. Undiscovered plots are fog; revealed buildings stand in ruins until built, then show

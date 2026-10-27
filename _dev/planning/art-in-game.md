@@ -139,3 +139,12 @@ the rest; swap art in as it arrives; the city map replaces the card list.
   something to do inside, also spoken. Names and costs under the plots. A dev-only City Preview
   shows the map at three moments. `ZoneHeader` and `BuildingCard` are gone. Known: three labels
   touch a neighbor's plot (Forge, Librarium, Garrison); cosmetic only.
+- **Step 5, people, events and FX: built 2026-10-27.** Up to four of the army stand on the wall
+  walk (either side of the gatehouse first) and jab with each volley. A monster's blow raises dust
+  on the gatehouse; sparkles work on the wall while repairers do; at a breach the wall falls and
+  holds a moment before the patched gate shows (skipped with Reduce Motion, where the gate simply
+  changes). The Forage tab's food figure stands beside the granary: empty when the food is out,
+  full from two thirds of what it holds, half between. A dev-only Wall Preview plays each of these
+  on demand. Not used yet: the floating ember strip (today's ember dissolve draws 12-16 soft
+  particles; 16 pixel sprites per kill is a question for the performance pass) and the nine
+  townsfolk (no screen shows the people yet; a place for them is a later choice).
