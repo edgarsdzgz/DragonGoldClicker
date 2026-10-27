@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { AudioSettingsProvider } from './src/context/AudioSettingsContext'
@@ -10,6 +10,7 @@ import { CoinFlightProvider } from './src/context/CoinFlightContext'
 import { ShakeProvider } from './src/context/ShakeContext'
 import { CoachProvider } from './src/context/CoachContext'
 import { Navigation } from './src/navigation'
+import { IntroScreen } from './src/screens/IntroScreen'
 import { useBgMusic, useImmersiveMode } from './src/hooks'
 import { configureTextDefaults } from './src/theme/textDefaults'
 
@@ -31,8 +32,6 @@ function BgMusic() {
 }
 
 function AppInner() {
-  useImmersiveMode()
-
   return (
     <GameProvider>
       <BgMusic />
@@ -47,17 +46,23 @@ function AppInner() {
           </ShakeProvider>
         </CoachProvider>
       </StoryProvider>
-      <StatusBar style="light" />
     </GameProvider>
   )
 }
 
 export default function App() {
+  useImmersiveMode()
+  // The game mounts when the intro's splashes are over, under its fading cover
+  const [gameShown, setGameShown] = useState(false)
+  const [introDone, setIntroDone] = useState(false)
+
   return (
     <SafeAreaProvider>
       <DevSettingsProvider>
         <AudioSettingsProvider>
-          <AppInner />
+          {gameShown && <AppInner />}
+          {!introDone && <IntroScreen onReveal={() => setGameShown(true)} onFinished={() => setIntroDone(true)} />}
+          <StatusBar style="light" />
         </AudioSettingsProvider>
       </DevSettingsProvider>
     </SafeAreaProvider>
