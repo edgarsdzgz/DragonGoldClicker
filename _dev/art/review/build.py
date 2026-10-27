@@ -30,7 +30,8 @@ MOTION += [(AGENT / f"23-effects/preview/scene_{n}.gif", label) for n, label in 
     ("slash-plain", "Slash, plain"), ("slash-gold", "Slash, gold"), ("slash-ember", "Slash, ember"),
     ("crit", "Critical hit"), ("ally-hit", "Ally hit"), ("ember", "Embers"), ("wall-impact", "Wall impact"),
     ("repair", "Repair"), ("breach", "The breach"))]
-SCALE = {"icons": 6, "people": 6, "fx": 6, "events": 4, "city": 2, "buildings": 3, "warfront": 2, "mobs": 6}
+MOTION.append((AGENT / "25-logo/preview/splash.gif", "The splash, as the game loads"))
+SCALE = {"icons": 6, "people": 6, "fx": 6, "events": 4, "city": 2, "buildings": 3, "warfront": 2, "mobs": 6, "logo": 3}
 
 
 def uri(path):
@@ -56,7 +57,7 @@ def official_rows():
         m = re.match(r"\| `([^`]+\.png)` \| [^|]* \| ([^|]+) \|", line)
         if m:
             rel, what = m.group(1), m.group(2).strip()
-            if "_strip" not in rel:
+            if "_strip" not in rel and "/app_" not in rel:
                 rows.append((rel.split("/")[0], OFFICIAL / rel, what))
     return rows
 
@@ -67,7 +68,7 @@ if PENDING:
     tiles = "".join(tile(AGENT / rel, label, 6) for rel, label in items)
     pending_section = (f'<section><h2>{html.escape(title)} <span class="tag">awaiting approval</span></h2>'
                        f'<div class="tiles">{tiles}</div></section>')
-groups = {"icons": [], "people": [], "fx": [], "events": [], "city": [], "buildings": [], "warfront": [], "mobs": []}
+groups = {"icons": [], "people": [], "fx": [], "events": [], "city": [], "buildings": [], "warfront": [], "mobs": [], "logo": []}
 for group, path, what in official_rows():
     groups[group].append(tile(path, what, SCALE[group]))
 motion = "".join(tile(p, label) for p, label in MOTION)
@@ -116,6 +117,7 @@ page = f"""<title>Pixel Art Test Run</title>
     <h3>Buildings, x3</h3><div class="tiles">{"".join(groups["buildings"])}</div>
     <h3>The Warfront and its gate, x2</h3><div class="tiles">{"".join(groups["warfront"])}</div>
     <h3>Mobs, x6</h3><div class="tiles">{"".join(groups["mobs"])}</div>
+    <h3>The logo, the app icon and the splash, x3</h3><div class="tiles">{"".join(groups["logo"])}</div>
   </section>
 
   <section>

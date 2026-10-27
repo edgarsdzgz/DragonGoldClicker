@@ -161,6 +161,15 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `fx/fx_wall-impact_strip4.png` | 80x16 | A monster strikes the wall, 20x16 frames, 12 fps | batch 5 |
 | `fx/fx_repair_strip4.png` | 48x12 | Repair sparkle, 12x12 frames, 8 fps, loops | batch 5 |
 | `fx/fx_breach_strip6.png` | 780x60 | The wall falls, gate box frames, 8 fps; ends on the breached gate | batch 5 |
+| `logo/logo_icon.png` | 64x64 | The logo: the claw-struck shield, 64x64 (logo A) | logo |
+| `logo/logo_wordmark.png` | 64x21 | The wordmark: DRACONIA CHRONICLES | logo |
+| `logo/logo_lockup.png` | 72x97 | The logo with the wordmark | logo |
+| `logo/app_icon_1024.png` | 1024x1024 | App icon, stores and iOS (logo A x16) | logo |
+| `logo/app_adaptive_1024.png` | 1024x1024 | Android adaptive icon foreground (logo A x10, own background) | logo |
+| `logo/app_favicon_64.png` | 64x64 | Web favicon | logo |
+| `logo/splash_lockup.png` | 72x97 | Splash: the gate under the ember moon with the wordmark (logo B) | logo |
+| `logo/splash_frames_strip28.png` | 2016x97 | Splash animation: the gate assembles out of the dark (play with splash_timing.json) | logo |
+| `logo/splash_timing.json` |  | Splash animation: each frame's hold in ms, frame size, background | logo |
 | `mobs/mob_kobold_idle.png` | 13x16 | Kobold: idle | simple mobs |
 | `mobs/mob_kobold_hit.png` | 13x16 | Kobold: hit, the red flash | simple mobs |
 | `mobs/mob_kobold_hurt.png` | 13x16 | Kobold: hurt | simple mobs |

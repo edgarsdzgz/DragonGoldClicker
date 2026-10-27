@@ -13,3 +13,15 @@ Each is a 64x64 icon (`out/logo_<id>_icon.png`, with `preview/logo_<id>_icon_102
 stores) and a lockup with the wordmark (`out/logo_<id>_lockup.png`). The wordmark,
 `out/logo_wordmark.png`, sets DRACONIA in a bold seven-pixel face on the gold ramp and CHRONICLES in
 small spaced caps.
+
+## Chosen (owner, 2026-10-27)
+
+- **A, the shield, is the logo and the app icon.** `src/export_icons.py` writes `app_icon_1024`
+  (x16, opaque), `app_adaptive_1024` (x10 on its own background, inside Android's safe circle) and
+  `app_favicon_64`. These are installed as `assets/icon.png`, `assets/adaptive-icon.png` and
+  `assets/favicon.png`.
+- **B, the gate, is the splash.** `src/make_splash.py` builds it in the owner's order: towers, the moon
+  rising, windows, portcullis, the light spilling down into the path, then the wordmark. Fades are
+  palette steps (silhouette, dusk, lit), never alpha. Output: `splash_frames_strip28.png` and
+  `splash_timing.json` (each frame's hold in ms); the first frame is plain night1 background, so a static
+  splash in #281e32 hands over seamlessly.

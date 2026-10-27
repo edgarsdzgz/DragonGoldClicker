@@ -49,7 +49,17 @@ def masked(img, shape, scale=2):
     return out
 
 
-cards = ""
+gif = HERE / "preview" / "splash.gif"
+g = Image.open(gif)
+chosen = (f'<figure><img src="data:image/gif;base64,{base64.b64encode(gif.read_bytes()).decode()}" '
+          f'width="{g.width}" height="{g.height}" alt="The splash animation"><figcaption>The splash, x3: towers, '
+          f'moon, windows, portcullis, the path of light, the wordmark</figcaption></figure>')
+for name, cap in (("app_icon_1024", "The app icon (A), shown at 256"), ("app_adaptive_1024", "Android adaptive foreground (A), shown at 256")):
+    im = Image.open(OUT / f"{name}.png")
+    chosen += (f'<figure><img src="{uri(im)}" width="256" height="256" alt="{cap}"><figcaption>{cap}</figcaption></figure>')
+cards = ('<h3>Chosen: A is the logo and app icon, B is the splash</h3><p class="muted">The splash fades in from '
+         'the dark one piece at a time in palette steps (silhouette, dusk, lit), about 5.5 seconds, then holds.</p>'
+         f'<div class="tiles">{chosen}</div>')
 for cid, title, note in CONCEPTS:
     icon = Image.open(OUT / f"logo_{cid}_icon.png").convert("RGBA")
     lock = Image.open(OUT / f"logo_{cid}_lockup.png").convert("RGBA")
