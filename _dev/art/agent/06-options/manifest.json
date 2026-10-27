@@ -1,0 +1,132 @@
+[
+ {
+  "name": "icon_close_plate",
+  "file": "icon_close_plate.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_close_boss",
+  "file": "icon_close_boss.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_close_seal",
+  "file": "icon_close_seal.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_close_planks",
+  "file": "icon_close_planks.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_reassign_cycle",
+  "file": "icon_reassign_cycle.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_reassign_chunky",
+  "file": "icon_reassign_chunky.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_reassign_plate",
+  "file": "icon_reassign_plate.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_helm_barbute",
+  "file": "icon_helm_barbute.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_helm_sugarloaf",
+  "file": "icon_helm_sugarloaf.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_helm_plumed",
+  "file": "icon_helm_plumed.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]

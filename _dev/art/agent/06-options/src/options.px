@@ -1,0 +1,191 @@
+# Options for Close, Reassign and the Soldiers helm, 2026-10-26. Written by make_options.py.
+
+# Close A: a steel X on a stepped stone plate, like the game's panels
+@asset icon_close_plate
+size 12 12
+budget 8
+key a=ink n=night3 m=night2 d=night1 h=steel5 s=steel3
+frame
+..aaaaaaaa..
+.annnnnnnna.
+anmmmmmmmmda
+anmhsmmshmda
+anmmhsshmmda
+anmmmhhmmmda
+anmmmhhmmmda
+anmmhsshmmda
+anmhsmmshmda
+anmmmmmmmmda
+.adddddddda.
+..aaaaaaaa..
+
+# Close B: an X cut into a round steel boss
+@asset icon_close_boss
+size 12 12
+budget 8
+key a=ink H=steel5 h=steel4 m=steel3 s=steel2
+frame
+....aaaa....
+..aaHHHHaa..
+.aHHHhhHmma.
+aHHaahmaamsa
+aHhhaaaammsa
+aHhhmaammmsa
+aHhmmaammmsa
+aHmmaaaammsa
+aHmaammaassa
+.ammsmmsssa.
+..aassssaa..
+....aaaa....
+
+# Close C: an X pressed into a brick-red wax seal
+@asset icon_close_seal
+size 12 12
+budget 8
+key a=ink H=clay3 g=clay2 G=clay1 k=red1
+frame
+....aaaa....
+.aaaHHHHaa..
+aHHHHggHgga.
+aHgkkggkkgGa
+aHggkkkkHHGa
+aHgggkkHHgGa
+aHgggkkHggGa
+aHggkkkkggGa
+aHgkkHHkkgGa
+.aggHHggHHGa
+..aaGGGGGaa.
+....aaaaa...
+
+# Close D: two boards nailed in an X, boarded shut
+@asset icon_close_planks
+size 12 12
+budget 8
+key a=ink w=wood4 W=wood3 v=wood3 V=wood2 n=steel3
+frame
+.aa......aa.
+aWwa....awWa
+aVWwa..awWVa
+.aVWwaawWVa.
+..aVWwwWVa..
+...aVnWVa...
+...awWnwa...
+..awWVVWwa..
+.awWVaaVWwa.
+awWVa..aVWwa
+aWVa....aVWa
+.aa......aa.
+
+# Reassign A: two arrows chasing each other round a loop, steel and gold
+@asset icon_reassign_cycle
+size 12 12
+budget 8
+key a=ink H=steel5 m=steel3 g=gold4 G=gold2
+frame
+....aaaa....
+...aHHHHa...
+..aHHaaHHa..
+.aHHa..aHHa.
+.amma.ammmma
+..aa...amma.
+.agga...aa..
+agggga.agga.
+.aGGa..aGGa.
+..aGGaaGGa..
+...aGGGGa...
+....aaaa....
+
+# Reassign B: chunky arrows with a dark underside, steel over gold
+@asset icon_reassign_chunky
+size 12 12
+budget 8
+key a=ink H=steel5 d=steel1 g=gold4 G=gold1
+frame
+.......a....
+......aHa...
+.aaaaaaHHa..
+aHHHHHHHHHa.
+adddddddda..
+.aaaaaada...
+...agaaaaaa.
+..agggggggga
+.aGGGGGGGGGa
+..aggaaaaaa.
+...aGa......
+....a.......
+
+# Reassign C: the two arrows on the stone plate, a pair with Close A
+@asset icon_reassign_plate
+size 12 12
+budget 8
+key a=ink n=night3 m=night2 d=night1 h=steel5 g=gold4
+frame
+..aaaaaaaa..
+.annnnnnnna.
+anmmmmmmmmda
+anmmmmmhmmda
+anmhhhhhhmda
+anmmmmmhmmda
+anmmgmmmmmda
+anmggggggmda
+anmmgmmmmmda
+anmmmmmmmmda
+.adddddddda.
+..aaaaaaaa..
+
+# Helm A: a barbute, a rounded dome with the dark T opening
+@asset icon_helm_barbute
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 s=steel2 r=steel1
+frame
+....aaaa....
+...ahhmsa...
+..ahmhmmsa..
+.ahmmhmmmsa.
+.ahmmhmmmsa.
+.ahaaaaaasa.
+.ahmmaammsa.
+.ahmmaammsa.
+.ahmmaammsa.
+.ahmmaammsa.
+.arrraarrra.
+..aaaaaaaa..
+
+# Helm B: a sugarloaf great helm, pointed dome, brass cross, eye slits
+@asset icon_helm_sugarloaf
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 s=steel2 r=steel1 g=gold4 G=gold2
+frame
+.....aa.....
+....ahsa....
+...ahmmsa...
+..ahmgGmsa..
+.ahmmgGmmsa.
+.ahaagGaasa.
+.ahmmgGmmsa.
+.ahmmgGmmsa.
+.ahamgGmasa.
+.ahmmgGmmsa.
+.arrrgGrrra.
+..aaaaaaaa..
+
+# Helm C: the barbute with a red crest
+@asset icon_helm_plumed
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 s=steel2 r=steel1 R=red3 D=red2
+frame
+....aaaa....
+...aRRRRa...
+....aDDa....
+...ahhmsa...
+..ahmhmmsa..
+.ahmmhmmmsa.
+.ahaaaaaasa.
+.ahmmaammsa.
+.ahmmaammsa.
+.ahmmaammsa.
+.arrraarrra.
+..aaaaaaaa..
