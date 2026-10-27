@@ -83,11 +83,15 @@ def unmade(canvas, lying_box):
 
 
 def death(hurt, flip):
-    size = (max(hurt.width, hurt.height) + 6, hurt.height)
+    # v2: the same margin on each side of the walk's own frame, so the death is centered exactly where the
+    # walk is, and the first frame sits at that margin (v1 centered the body's outline, half a pixel off)
+    margin = (max(hurt.width, hurt.height) + 6 - hurt.width + 1) // 2
+    size = (hurt.width + 2 * margin, hurt.height)
     fell = hurt.rotate(180) if flip else hurt.rotate(90, expand=True)
     frames = []
     f = Image.new("RGBA", size, (0, 0, 0, 0))
-    place(f, squash(hurt))
+    sunk = squash(hurt)
+    f.alpha_composite(sunk, (margin, size[1] - sunk.height))
     frames.append(f)
     f = Image.new("RGBA", size, (0, 0, 0, 0))
     place(f, fell, lift=3)

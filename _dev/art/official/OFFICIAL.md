@@ -277,18 +277,18 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_heartstone_flicker_strip4.png` | 48x12 | The heartstone, its flame flickering, 12x12 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms) | heartstone v3 |
 | `icons/icon_heartstone_16.png` | 16x16 | The heartstone, 16x16 | heartstone v3 |
 | `icons/icon_heartstone_16_flicker_strip4.png` | 64x16 | The heartstone, its flame flickering, 16x16 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms) | heartstone v3 |
-| `mobs/mob_kobold_death_strip4.png` | 88x16 | Kobold: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_goblin_death_strip4.png` | 88x16 | Goblin: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_kobold_death_strip4.png` | 92x16 | Kobold: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_goblin_death_strip4.png` | 92x16 | Goblin: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
 | `mobs/mob_crawler_death_strip4.png` | 84x11 | Shadow Crawler: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_orc_death_strip4.png` | 100x19 | Orc: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_orc_death_strip4.png` | 104x19 | Orc: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
 | `mobs/mob_raider_death_strip4.png` | 100x19 | Raider: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_kobold-strong_death_strip4.png` | 88x16 | Kobold, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_goblin-strong_death_strip4.png` | 88x16 | Goblin, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_kobold-strong_death_strip4.png` | 92x16 | Kobold, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_goblin-strong_death_strip4.png` | 92x16 | Goblin, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
 | `mobs/mob_crawler-strong_death_strip4.png` | 84x11 | Shadow Crawler, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_orc-strong_death_strip4.png` | 100x19 | Orc, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_orc-strong_death_strip4.png` | 104x19 | Orc, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
 | `mobs/mob_raider-strong_death_strip4.png` | 100x19 | Raider, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_kobold-stronger_death_strip4.png` | 88x16 | Kobold, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_goblin-stronger_death_strip4.png` | 88x16 | Goblin, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_kobold-stronger_death_strip4.png` | 92x16 | Kobold, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_goblin-stronger_death_strip4.png` | 92x16 | Goblin, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
 | `mobs/mob_crawler-stronger_death_strip4.png` | 84x11 | Shadow Crawler, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_orc-stronger_death_strip4.png` | 100x19 | Orc, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_orc-stronger_death_strip4.png` | 104x19 | Orc, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
 | `mobs/mob_raider-stronger_death_strip4.png` | 100x19 | Raider, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
