@@ -1,10 +1,10 @@
-// The RAXDEG STUDIOS playground: draws the studio card in real pixels from the chosen face, color,
-// layout, letter spacing and zoom. Reads the JSON in #pg-data (fonts, ramps, palette, shield icon).
+// The RAXDEG STUDIOS playground: draws the studio card in real pixels from the chosen emblem, face,
+// color, layout, letter spacing and zoom. Reads the JSON in #pg-data (fonts, ramps, palette, emblems).
 (function () {
   const D = JSON.parse(document.getElementById("pg-data").textContent);
   const $ = (id) => document.getElementById(id);
-  const icon = new Image();
-  icon.src = D.icon;
+  const emblems = {};
+  for (const [k, src] of Object.entries(D.emblems)) { emblems[k] = new Image(); emblems[k].src = src; }
 
   // Text as a grid of colors (null = clear), with an ink outline and an optional italic lean.
   function setText(text, fontKey, gap, ramp, outline) {
@@ -67,44 +67,52 @@
 
   function render() {
     const font = $("pg-font").value, color = $("pg-color").value, layout = $("pg-layout").value;
+    const icon = emblems[$("pg-emblem").value];
+    const ew = icon.width, eh = icon.height;
+    // The runic face writes U as V, the way old inscriptions do, and joins the words with a dot.
+    const roman = !!D.fonts[font].roman;
+    // The interpunct is escaped so the page reads it whatever its declared encoding.
+    const FULL = roman ? "RAXDEG\u00b7STVDIOS" : "RAXDEG STUDIOS", SUB = roman ? "STVDIOS" : "STUDIOS";
     const gap = +$("pg-gap").value, zoom = +$("pg-zoom").value;
     $("pg-gap-out").textContent = gap;
     $("pg-zoom-out").textContent = "x" + zoom;
     const ramp = D.ramps[color];
     const outline = color !== "ink";
-    const full = setText("RAXDEG STUDIOS", font, gap, ramp, outline);
+    const full = setText(FULL, font, gap, ramp, outline);
     const name = setText("RAXDEG", font, gap, ramp, outline);
-    const sub = setText("STUDIOS", "tiny", gap + 1, D.ramps[color === "ink" ? "ink" : color].slice(2), outline);
+    const sub = roman ? setText(SUB, font, gap, ramp, outline)
+      : setText(SUB, "tiny", gap + 1, D.ramps[color === "ink" ? "ink" : color].slice(2), outline);
     const tw = (g) => g[0].length, th = (g) => g.length;
     let W, H, draw;
     if (layout === "above" || layout === "below") {
-      W = Math.max(64, tw(full)) + 8; H = th(full) + 64 + 10;
+      W = Math.max(ew, tw(full)) + 8; H = th(full) + eh + 10;
       draw = (ctx) => {
-        const tx = Math.floor((W - tw(full)) / 2), ix = Math.floor((W - 64) / 2);
+        const tx = Math.floor((W - tw(full)) / 2), ix = Math.floor((W - ew) / 2);
         if (layout === "above") { blit(ctx, full, tx, 3); ctx.drawImage(icon, ix, th(full) + 6); }
-        else { ctx.drawImage(icon, ix, 2); blit(ctx, full, tx, 64 + 5); }
+        else { ctx.drawImage(icon, ix, 2); blit(ctx, full, tx, eh + 5); }
       };
     } else if (layout === "split") {
-      W = Math.max(64, tw(name), tw(sub)) + 8; H = th(name) + 64 + th(sub) + 12;
+      W = Math.max(ew, tw(name), tw(sub)) + 8; H = th(name) + eh + th(sub) + 12;
       draw = (ctx) => {
         blit(ctx, name, Math.floor((W - tw(name)) / 2), 3);
-        ctx.drawImage(icon, Math.floor((W - 64) / 2), th(name) + 6);
-        blit(ctx, sub, Math.floor((W - tw(sub)) / 2), th(name) + 64 + 8);
+        ctx.drawImage(icon, Math.floor((W - ew) / 2), th(name) + 6);
+        blit(ctx, sub, Math.floor((W - tw(sub)) / 2), th(name) + eh + 8);
       };
     } else if (layout === "ribbon") {
       const bw = tw(full) + 6, bh = th(full) + 2;
-      W = Math.max(64, bw + 20) + 6; H = 64 + Math.max(0, bh - 10) + 10;
+      const by = Math.round(eh * 0.78);
+      W = Math.max(ew, bw + 20) + 6; H = Math.max(eh + 4, by + bh + 6);
       draw = (ctx) => {
-        ctx.drawImage(icon, Math.floor((W - 64) / 2), 2);
-        const bx = Math.floor((W - bw) / 2), by = 50;
+        ctx.drawImage(icon, Math.floor((W - ew) / 2), 2);
+        const bx = Math.floor((W - bw) / 2);
         ribbon(ctx, bx, by, bw, bh);
         blit(ctx, full, bx + 3, by + 1);
       };
     } else {
-      W = 64 + Math.max(tw(name), tw(sub)) + 10; H = 64;
+      W = ew + Math.max(tw(name), tw(sub)) + 10; H = eh;
       draw = (ctx) => {
         ctx.drawImage(icon, 0, 0);
-        const x = 68, y = Math.floor((64 - th(name) - th(sub) - 3) / 2);
+        const x = ew + 4, y = Math.floor((eh - th(name) - th(sub) - 3) / 2);
         blit(ctx, name, x, y);
         blit(ctx, sub, x + Math.floor((tw(name) - tw(sub)) / 2), y + th(name) + 3);
       };
@@ -122,6 +130,6 @@
     $("pg-size").textContent = W + " x " + H + " pixels";
   }
 
-  ["pg-font", "pg-color", "pg-layout", "pg-gap", "pg-zoom"].forEach((id) => $(id).addEventListener("input", render));
-  if (icon.complete) render(); else icon.onload = render;
+  ["pg-emblem", "pg-font", "pg-color", "pg-layout", "pg-gap", "pg-zoom"].forEach((id) => $(id).addEventListener("input", render));
+  Promise.all(Object.values(emblems).map((im) => im.decode().catch(() => null))).then(render);
 })();

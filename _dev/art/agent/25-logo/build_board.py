@@ -88,26 +88,54 @@ OPTIONS = [("light", "Light gold above", "The five-by-seven face in the gold ram
 opts = "".join(fig(Image.open(FONTS / "out" / f"studio_{k}.png").convert("RGBA"), 3, f"{t}: {n}") for k, t, n in OPTIONS)
 data = (FONTS / "out" / "playground_data.json").read_text(encoding="utf-8").replace("</", "<\\/")
 script = (FONTS / "playground.js").read_text(encoding="utf-8")
+SEAL = HERE.parent / "27-raxdeg-seal"
+
+
+def gif_fig(path, caption):
+    im = Image.open(path)
+    return (f'<figure><img src="data:image/gif;base64,{base64.b64encode(path.read_bytes()).decode()}" '
+            f'width="{im.width}" height="{im.height}" alt="{html.escape(caption)}">'
+            f'<figcaption>{html.escape(caption)}</figcaption></figure>')
+
+
+seal_intros = "".join(gif_fig(SEAL / "preview" / f"seal_intro_{k}.gif", f"{label}, x2")
+                      for k, label in (("gold", "Gold, engraved"), ("arcane", "Arcane, a spell circle"), ("wax", "Wax, pressed")))
+runic_figs = "".join(fig(Image.open(SEAL / "out" / f"runic_{k}.png").convert("RGBA"), 4, label)
+                     for k, label in (("gold", "Gold"), ("arcane", "Arcane"), ("wax", "Ruby wax"), ("steel", "Steel")))
 bottom = f"""
   <section class="studio">
     <h2>RAXDEG STUDIOS</h2>
-    <p class="muted">The shield is also the studio's startup splash, playing before the game's own. Here is the intro as
-      it stands, five lettering ideas, and a playground to try more.</p>
-    <h3>The studio intro</h3>
-    <p class="muted">After the claws, one more slash rips across the top from left to right and carves the name out of
-      the dark: the letters burn white-hot in its wake and cool to gold. About 4.1 seconds, then it holds.</p>
+    <p class="muted">The studio's startup splash, before the game's own. The shield belongs to the game, so the studio
+      takes Raxdeg's own wax seal, with the shield's slam and slash. Raxdeg is Edgar, with an X; code is the spell,
+      and calling it casts it.</p>
+    <h3>The seal intro, in three finishes</h3>
+    <p class="muted">The seal flies in from the foreground, unlit, and slams down in a ring of dust. Then the spell
+      ignites: a white-hot wave runs out from the center knot to the outer ring and the seal cools to its finish.
+      Last, the slash rips left to right and carves RAXDEG&middot;STVDIOS. About 4 seconds, then it holds.</p>
+    <div class="tiles">{seal_intros}</div>
+    <h3>The runic face, from the seal</h3>
+    <p class="muted">One-pixel strokes and angular letters like the seal's runes, a dot inside the A and the O like the
+      seal's dots, a V for U the way old inscriptions carve it, and a dot between the words.</p>
+    <div class="tiles">{runic_figs}</div>
+    <h3>Earlier: the shield version</h3>
+    <p class="muted">The shield's slam and claws, then one more slash carves the name. The shield is now the game's
+      alone; this stays for reference.</p>
     <div class="tiles">{studio}</div>
-    <h3>Lettering ideas, x3</h3>
+    <h3>Earlier: lettering ideas around the shield, x3</h3>
     <div class="tiles">{opts}</div>
     <h3>Playground</h3>
-    <p class="muted">Pick a face, a color, a layout, the letter spacing and the zoom; the card redraws in real pixels.</p>
+    <p class="muted">Pick an emblem, a face, a color, a layout, the letter spacing and the zoom; the card redraws in
+      real pixels.</p>
     <div class="pg">
       <div class="controls">
+        <label>Emblem <select id="pg-emblem">
+          <option value="seal-gold">The seal, gold</option><option value="seal-arcane">The seal, arcane</option>
+          <option value="seal-wax">The seal, wax</option><option value="shield">The shield</option></select></label>
         <label>Face <select id="pg-font">
-          <option value="light">Light (5x7)</option><option value="bold">Bold block (7x9)</option>
+          <option value="runic">Runic, from the seal (5x7)</option><option value="light">Light (5x7)</option><option value="bold">Bold block (7x9)</option>
           <option value="ember">Bold italic (6x7)</option><option value="tiny">Small caps (3x5)</option></select></label>
         <label>Color <select id="pg-color">
-          <option value="gold">Gold</option><option value="steel">Steel</option><option value="ember">Ember</option>
+          <option value="gold">Gold</option><option value="arcane">Arcane</option><option value="steel">Steel</option><option value="ember">Ember</option>
           <option value="parchment">Parchment</option><option value="ruby">Ruby</option>
           <option value="emerald">Emerald</option><option value="ink">Ink (for the ribbon)</option></select></label>
         <label>Layout <select id="pg-layout">
@@ -124,7 +152,8 @@ bottom = f"""
   <script type="application/json" id="pg-data">{data}</script>
   <script>{script}</script>"""
 
-page = f"""<title>Draconia Logo</title>
+page = f"""<meta charset="utf-8">
+<title>Draconia Logo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Nunito:wght@400;700&display=swap">
 <style>
