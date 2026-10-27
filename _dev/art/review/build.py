@@ -19,9 +19,9 @@ OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "review.html"
 
 # The batch awaiting the owner's approval: (title, [(path under agent/, label), ...]), or None.
 PENDING = ("The thirteen research studies, and Villagers and Train as townsfolk busts", [
-    ('17-gems-hammer/out/icon_res_gem_shard_emerald.png', 'Dragon Anatomy (emerald shard)'),
+    ('13-research/out/icon_res_wyrms_fury.png', 'Dragon Anatomy (wyrm eye)'),
     ('13-research/out/icon_res_weak_points.png', 'Weak Points'),
-    ('13-research/out/icon_res_wyrms_fury.png', "Wyrm's Fury"),
+    ('17-gems-hammer/out/icon_res_gem_shard_ruby.png', "Wyrm's Fury (ruby shard)"),
     ('13-research/out/icon_res_drill_tactics.png', 'Drill Tactics'),
     ('17-gems-hammer/out/icon_res_steel_hammer_front_big.png', 'Tempered Steel (hammer and anvil)'),
     ('13-research/out/icon_res_battle_drill.png', 'Battle Drill'),

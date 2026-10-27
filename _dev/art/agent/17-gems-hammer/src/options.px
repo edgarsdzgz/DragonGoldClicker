@@ -57,6 +57,25 @@ aLLmmdda..a.
 ...aa.......
 ............
 
+# Dragon Anatomy gem: a tall shard, faceted, with a twinkle beside it, ruby
+@asset icon_res_gem_shard_ruby
+size 12 12
+budget 8
+key a=ink W=steel5 H=ruby4 L=ruby3 m=ruby2 d=ruby1
+frame
+...aa....a..
+..aWHa..aHa.
+.aLHmdaaHWHa
+.aLHmda.aHa.
+aLLHmdda.a..
+aLLHmmda....
+aLLHmmda....
+aLLmmdda..a.
+.aLmmda..aWa
+..aLda....a.
+...aa.......
+............
+
 # Dragon Anatomy gem: a tall shard, faceted, with a twinkle beside it, magenta
 @asset icon_res_gem_shard_magenta
 size 12 12
@@ -152,6 +171,25 @@ aLLLmmmmddda
 .....aa.....
 ............
 
+# Dragon Anatomy gem: a brilliant cut seen from the side: table, crown and pavilion, ruby
+@asset icon_res_gem_brilliant_ruby
+size 12 12
+budget 8
+key a=ink W=steel5 H=ruby4 L=ruby3 m=ruby2 d=ruby1
+frame
+..........a.
+.........aWa
+...aaaaaa.a.
+..aLHHHHma..
+.aLLHWHmmda.
+aLLLmmmmddda
+.aLHLmmmdda.
+..aLHmmdda..
+...aLHmda...
+....aLda....
+.....aa.....
+............
+
 # Dragon Anatomy gem: a brilliant cut seen from the side: table, crown and pavilion, magenta
 @asset icon_res_gem_brilliant_magenta
 size 12 12
@@ -233,6 +271,25 @@ frame
 size 12 12
 budget 8
 key a=ink W=steel5 H=rose4 L=rose3 m=rose2 d=rose1
+frame
+...aaaaaa.a.
+..aLLLLLLaWa
+.aLmmmmmmda.
+.aLmHHHHmda.
+.aLmHWHHmda.
+.aLmHHHHmda.
+.aLmHHHLmda.
+.aLmHHLLmda.
+.aLmmmmmmda.
+..adddddda..
+...aaaaaa...
+............
+
+# Dragon Anatomy gem: an emerald (step) cut seen from above: two steps and a glinting table, ruby
+@asset icon_res_gem_emerald_ruby
+size 12 12
+budget 8
+key a=ink W=steel5 H=ruby4 L=ruby3 m=ruby2 d=ruby1
 frame
 ...aaaaaa.a.
 ..aLLLLLLaWa

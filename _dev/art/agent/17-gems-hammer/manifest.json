@@ -48,6 +48,22 @@
   ]
  },
  {
+  "name": "icon_res_gem_shard_ruby",
+  "file": "icon_res_gem_shard_ruby.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,2",
+   "single-pixel island at 10,8"
+  ]
+ },
+ {
   "name": "icon_res_gem_shard_magenta",
   "file": "icon_res_gem_shard_magenta.png",
   "size": [
@@ -128,6 +144,22 @@
   ]
  },
  {
+  "name": "icon_res_gem_brilliant_ruby",
+  "file": "icon_res_gem_brilliant_ruby.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 3,6"
+  ]
+ },
+ {
   "name": "icon_res_gem_brilliant_magenta",
   "file": "icon_res_gem_brilliant_magenta.png",
   "size": [
@@ -194,6 +226,22 @@
  {
   "name": "icon_res_gem_emerald_rose",
   "file": "icon_res_gem_emerald_rose.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 5,4"
+  ]
+ },
+ {
+  "name": "icon_res_gem_emerald_ruby",
+  "file": "icon_res_gem_emerald_ruby.png",
   "size": [
    12,
    12

@@ -26,6 +26,9 @@ RAMPS = {
     "rose": ["8a2a58", "d24e8a", "f48cb8", "ffd6e8"],
     "magenta": ["561866", "9c2a9e", "d458d6", "f6b2f2"],
     "teal": ["145656", "1fa09c", "52dccc", "bef8ee"],
+    # Ruby: a crimson jewel ramp, kept apart from the HP red. Owner exception to "red is for HP
+    # and danger" (2026-10-26), for the Wyrm's Fury gem only, like the red Close plate.
+    "ruby": ["5c0f24", "a8183c", "e8405c", "ffc4cc"],
 }
 
 # Colors that keep their value at night (README section 4).

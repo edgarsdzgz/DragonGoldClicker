@@ -52,7 +52,7 @@ CUTS = {
         "...aaaaaa...",
         "............"]),
 }
-COLORS = [("emerald", "green"), ("azure", "electric blue"), ("rose", "pink"),
+COLORS = [("emerald", "green"), ("azure", "electric blue"), ("rose", "pink"), ("ruby", "ruby"),
           ("magenta", "magenta"), ("teal", "teal")]
 
 options = []
