@@ -1,0 +1,121 @@
+[
+ {
+  "name": "icon_claw-1",
+  "file": "icon_claw-1.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_claw-2",
+  "file": "icon_claw-2.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_claw-3",
+  "file": "icon_claw-3.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_claw-4",
+  "file": "icon_claw-4.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_claw-5",
+  "file": "icon_claw-5.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_claw-6",
+  "file": "icon_claw-6.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 5,13"
+  ]
+ },
+ {
+  "name": "icon_claw-7",
+  "file": "icon_claw-7.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_claw-8",
+  "file": "icon_claw-8.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_claw-9",
+  "file": "icon_claw-9.png",
+  "size": [
+   16,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]
