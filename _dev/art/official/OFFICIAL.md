@@ -193,3 +193,36 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_raider_hit.png` | 13x19 | Raider: hit, the red flash | simple mobs |
 | `mobs/mob_raider_hurt.png` | 13x19 | Raider: hurt | simple mobs |
 | `mobs/mob_raider_walk_strip2.png` | 26x19 | Raider: walk bob (2 frames, 4 fps) | simple mobs |
+| `people/ppl_conscript.png` | 11x20 | Conscript: rags, rope belt, a dull spear (human) | Batch 6 |
+| `people/ppl_footman.png` | 11x20 | Footman: nasal helmet, gambeson, round shield, spear (human) | Batch 6 |
+| `people/ppl_knight.png` | 13x20 | Knight: plate, gold tabard and plume, lance with a pennant (human) | Batch 6 |
+| `people/ppl_gatherer.png` | 15x16 | Gatherer: a basket of greens and berries (halfling) | Batch 6 |
+| `people/ppl_trapper.png` | 13x16 | Trapper: fur cap, a pelt, a coil of snare rope (orc) | Batch 6 |
+| `people/ppl_ranger.png` | 14x19 | Ranger: green hood and cloak, a longbow (elf) | Batch 6 |
+| `people/ppl_explorer.png` | 13x20 | Explorer: pack straps, a crook staff with a lantern (horned folk) | Batch 6 |
+| `people/ppl_repairer_strip2.png` | 30x16 | Repairer: hammer raised, then striking (2 frames, 4 fps) (dwarf) | Batch 6 |
+| `events/evt_wanderer-lone.png` | 34x22 | Wanderers on the road: a traveler with a walking staff | Batch 6 |
+| `events/evt_wanderer-couple.png` | 34x22 | Wanderers on the road: two travelers | Batch 6 |
+| `events/evt_wanderer-family.png` | 34x22 | Wanderers on the road: two travelers and a child | Batch 6 |
+| `events/evt_wanderer-veteran.png` | 34x22 | Wanderers on the road: an old soldier on a crutch | Batch 6 |
+| `events/evt_granary_25.png` | 32x32 | Granary, a quarter | Batch 7 |
+| `events/evt_granary_75.png` | 32x32 | Granary, three quarters | Batch 7 |
+| `events/evt_forage-action.png` | 20x20 | The FORAGE orb: basket and sheaf | Batch 7 |
+| `events/evt_food-lean.png` | 24x24 | Food event: a lean season | Batch 7 |
+| `events/evt_food-bountiful.png` | 24x24 | Food event: a bountiful harvest | Batch 7 |
+| `events/evt_food-raid.png` | 24x24 | Food event: raiders at the stores | Batch 7 |
+| `events/evt_food-refugees.png` | 24x24 | Food event: more mouths | Batch 7 |
+| `events/evt_food-warning.png` | 12x12 | Starvation warning (red: danger) | Batch 7 |
+| `events/evt_exp-light.png` | 110x34 | Expedition: A Light in the Dark | Batch 7 |
+| `events/evt_exp-find.png` | 110x34 | Expedition: A Lucky Find | Batch 7 |
+| `events/evt_exp-survivors.png` | 110x34 | Expedition: Survivors Spotted | Batch 7 |
+| `events/evt_exp-silent.png` | 110x34 | Expedition: The Wasteland Was Silent | Batch 7 |
+| `events/evt_welcome-back.png` | 110x34 | Welcome Back: dawn over the wall | Batch 7 |
+| `events/evt_breach-report.png` | 110x34 | The Breach report: the broken gate at dawn | Batch 7 |
+| `events/evt_refugees.png` | 110x34 | Refugees Approach: a group on the road to the gate | Batch 7 |
+| `cast/cast_sigil-pyreth.png` | 10x10 | Sigil: Elder Pyreth, the ember | Batch 8 |
+| `cast/cast_sigil-rodain.png` | 10x10 | Sigil: Captain Rodain, crossed spears | Batch 8 |
+| `cast/cast_sigil-mirael.png` | 10x10 | Sigil: Scout Mirael, the compass star | Batch 8 |
+| `cast/cast_sigil-kael.png` | 10x10 | Sigil: Kael Ironwright, the anvil | Batch 8 |
+| `cast/cast_sigil-lirae.png` | 10x10 | Sigil: Lirae the Ink-Wing, the quill | Batch 8 |
+| `cast/cast_emblem-gate.png` | 44x46 | The Gate of Draconia: the narrator's emblem, in a bust's place | Batch 8 |
