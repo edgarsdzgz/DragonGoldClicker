@@ -232,6 +232,11 @@ ASSETS = [
     ("cast/cast_sigil-kael.png", AGENT / "30-cast/out/cast_sigil-kael.png", "Sigil: Kael Ironwright, the anvil", "Batch 8"),
     ("cast/cast_sigil-lirae.png", AGENT / "30-cast/out/cast_sigil-lirae.png", "Sigil: Lirae the Ink-Wing, the quill", "Batch 8"),
     ("cast/cast_emblem-gate.png", AGENT / "30-cast/out/cast_emblem-gate.png", "The Gate of Draconia: the narrator's emblem, in a bust's place", "Batch 8"),
+    ("cast/bust_pyreth.png", AGENT / "31-busts-simple/out/bust_pyreth_v4.png", "Bust: Elder Pyreth (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
+    ("cast/bust_rodain.png", AGENT / "31-busts-simple/out/bust_rodain_v4.png", "Bust: Captain Rodain (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
+    ("cast/bust_mirael.png", AGENT / "31-busts-simple/out/bust_mirael_v4.png", "Bust: Scout Mirael (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
+    ("cast/bust_kael.png", AGENT / "31-busts-simple/out/bust_kael_v4.png", "Bust: Kael Ironwright (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
+    ("cast/bust_lirae.png", AGENT / "31-busts-simple/out/bust_lirae_v4.png", "Bust: Lirae the Ink-Wing (22x23, shown at x2 in a 44x46 slot)", "simpler busts v4"),
 ]
 
 rows = []

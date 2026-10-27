@@ -226,3 +226,8 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `cast/cast_sigil-kael.png` | 10x10 | Sigil: Kael Ironwright, the anvil | Batch 8 |
 | `cast/cast_sigil-lirae.png` | 10x10 | Sigil: Lirae the Ink-Wing, the quill | Batch 8 |
 | `cast/cast_emblem-gate.png` | 44x46 | The Gate of Draconia: the narrator's emblem, in a bust's place | Batch 8 |
+| `cast/bust_pyreth.png` | 22x23 | Bust: Elder Pyreth (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
+| `cast/bust_rodain.png` | 22x23 | Bust: Captain Rodain (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
+| `cast/bust_mirael.png` | 22x23 | Bust: Scout Mirael (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
+| `cast/bust_kael.png` | 22x23 | Bust: Kael Ironwright (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
+| `cast/bust_lirae.png` | 22x23 | Bust: Lirae the Ink-Wing (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
