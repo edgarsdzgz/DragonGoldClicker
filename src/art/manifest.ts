@@ -226,6 +226,11 @@ export const SPRITES = {
   "cast_sigil-kael": { source: require('../../assets/art/cast/cast_sigil-kael.png'), w: 10, h: 10, frames: 1, fps: 0, label: "Sigil: Kael Ironwright, the anvil" },
   "cast_sigil-lirae": { source: require('../../assets/art/cast/cast_sigil-lirae.png'), w: 10, h: 10, frames: 1, fps: 0, label: "Sigil: Lirae the Ink-Wing, the quill" },
   "cast_emblem-gate": { source: require('../../assets/art/cast/cast_emblem-gate.png'), w: 44, h: 46, frames: 1, fps: 0, label: "The Gate of Draconia: the narrator's emblem, in a bust's place" },
+  "bust_pyreth": { source: require('../../assets/art/cast/bust_pyreth.png'), w: 22, h: 23, frames: 1, fps: 0, label: "Bust: Elder Pyreth (22x23, shown at x2 in a 44x46 slot)" },
+  "bust_rodain": { source: require('../../assets/art/cast/bust_rodain.png'), w: 22, h: 23, frames: 1, fps: 0, label: "Bust: Captain Rodain (22x23, shown at x2 in a 44x46 slot)" },
+  "bust_mirael": { source: require('../../assets/art/cast/bust_mirael.png'), w: 22, h: 23, frames: 1, fps: 0, label: "Bust: Scout Mirael (22x23, shown at x2 in a 44x46 slot)" },
+  "bust_kael": { source: require('../../assets/art/cast/bust_kael.png'), w: 22, h: 23, frames: 1, fps: 0, label: "Bust: Kael Ironwright (22x23, shown at x2 in a 44x46 slot)" },
+  "bust_lirae": { source: require('../../assets/art/cast/bust_lirae.png'), w: 22, h: 23, frames: 1, fps: 0, label: "Bust: Lirae the Ink-Wing (22x23, shown at x2 in a 44x46 slot)" },
 } satisfies Record<string, SpriteDef>
 
 export type SpriteId = keyof typeof SPRITES
