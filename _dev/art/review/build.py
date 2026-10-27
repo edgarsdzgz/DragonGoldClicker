@@ -18,10 +18,7 @@ OFFICIAL = ART / "official"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "review.html"
 
 # The batch awaiting the owner's approval: (folder, title, [(file stem, label), ...]), or None.
-PENDING = ("07-claws", "The nine claw tiers", [
-    (f"icon_claw-{i}", f"{i}: {name}") for i, name in enumerate(
-        ("Fledgling", "Sharpened", "Hooked", "Hardened", "Serrated", "Obsidian", "Ember",
-         "Dragonsteel", "Ancient"), 1)])
+PENDING = None
 MOTION = [
     (AGENT / "01-test-run/preview/scene_warfront.gif", "The fighter's jab and the hit spark on the Warfront wall"),
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),

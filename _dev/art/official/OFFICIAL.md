@@ -32,11 +32,20 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_upgrade.png` | 12x12 | Upgrade | icon sheet 2 |
 | `icons/icon_check.png` | 12x12 | Done | icon sheet 2 |
 | `icons/icon_star.png` | 12x12 | Renown | mockup v1 |
-| `icons/icon_food.png` | 12x12 | Food | mockup v1 |
+| `icons/icon_food.png` | 12x12 | Food | food and journal options (cheese wedge; replaced the bun) |
 | `icons/icon_villager.png` | 12x12 | Villagers | mockup v1 |
 | `icons/icon_swords.png` | 12x12 | Sword gear (stand-in for Fighters) | mockup v1 |
-| `icons/icon_scroll.png` | 12x12 | Journal | mockup v1 |
+| `icons/icon_scroll.png` | 12x12 | Journal | food and journal options (rolled scroll; replaced the v1 scroll) |
 | `icons/icon_castle.png` | 12x12 | Draconia tab, Keep | mockup v1 |
+| `icons/icon_claw-1.png` | 16x16 | Claws 1: Fledgling | claw tiers |
+| `icons/icon_claw-2.png` | 16x16 | Claws 2: Sharpened | claw tiers |
+| `icons/icon_claw-3.png` | 16x16 | Claws 3: Hooked | claw tiers |
+| `icons/icon_claw-4.png` | 16x16 | Claws 4: Hardened | claw tiers |
+| `icons/icon_claw-5.png` | 16x16 | Claws 5: Serrated | claw tiers |
+| `icons/icon_claw-6.png` | 16x16 | Claws 6: Obsidian | claw tiers |
+| `icons/icon_claw-7.png` | 16x16 | Claws 7: Ember | claw tiers |
+| `icons/icon_claw-8.png` | 16x16 | Claws 8: Dragonsteel | claw tiers |
+| `icons/icon_claw-9.png` | 16x16 | Claws 9: Ancient | claw tiers |
 | `people/ppl_human.png` | 11x16 | Townsfolk: human | mockup v1 |
 | `people/ppl_elf.png` | 11x16 | Townsfolk: elf | mockup v1 |
 | `people/ppl_horned.png` | 11x16 | Townsfolk: horned folk | mockup v1 |
