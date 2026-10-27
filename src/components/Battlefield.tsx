@@ -16,7 +16,11 @@ import { PixelMonster } from './PixelMonster'
 import { PixelBurst } from './PixelBurst'
 import type { PixelBurstHandle } from './PixelBurst'
 import { PixelSprite } from './PixelSprite'
-import { SPRITES, mobScale, mobSprites, slashSprite } from '../art'
+import {
+  SPRITES, mobScale, mobSprites, mobDeathSprite, slashSprite, stripMs,
+  DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, WALK_IN_DELAY_MS, WALK_IN_MS, WALK_IN_FROM,
+} from '../art'
+import type { SpriteId } from '../art'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
 import { useActionPress, HOLD_REPEAT_MS } from '../hooks/useActionPress'
@@ -77,6 +81,14 @@ export interface BattlefieldHandle {
   showAllyHit: (amount: string) => void
 }
 
+/** A monster just killed: its death strip (null without one), whether it blinks out, and its kill's token */
+interface Fallen {
+  monster: MonsterDef
+  death: SpriteId | null
+  blink: boolean
+  token: number
+}
+
 /** The monster's art box as a share of the sprite circle (fits inside the circle) */
 const ART_SCALE = 0.68
 
@@ -112,9 +124,10 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const coinFlight = useCoinFlight()
   const spriteRef = useRef<View>(null)
   const spawn = useRef(new Animated.Value(1)).current
-  // The fallen monster: its silhouette fades out in place while embers rise from it
+  // The fallen monster. With a death strip it plays its death, holds, then blinks out (`fall` is its
+  // visibility); without one (or with Reduce Motion) it fades out in place. Embers rise from it either way.
   const fall = useRef(new Animated.Value(1)).current
-  const [fallen, setFallen] = React.useState<MonsterDef | null>(null)
+  const [fallen, setFallen] = React.useState<Fallen | null>(null)
   // A steady pulse on the battlefield while the press is held
   const holdPulse = useRef(new Animated.Value(0)).current
   const killToken = useRef(0)
@@ -172,12 +185,25 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     showKill: (monster) => {
       // Each kill gets a token, so an older fade finishing can never remove a newer ghost
       const token = ++killToken.current
-      setFallen(monster)
+      const death = mobDeathSprite(monster.id)
+      const blink = death !== null && !reduceMotion
+      setFallen({ monster, death, blink, token })
       fall.stopAnimation()
-      fall.setValue(0)
-      Animated.timing(fall, { toValue: 1, duration: reduceMotion ? 300 : 700, useNativeDriver: true }).start(({ finished }) => {
+      const done = ({ finished }: { finished: boolean }) => {
         if (finished && killToken.current === token) setFallen(null)
-      })
+      }
+      if (blink) {
+        // The death plays, its last frame holds, then off, on, off... it is gone
+        fall.setValue(1)
+        const steps: Animated.CompositeAnimation[] = [Animated.delay(stripMs(death) + DEATH_HOLD_MS)]
+        for (let i = 0; i < BLINK_STEPS; i++) {
+          steps.push(Animated.timing(fall, { toValue: i % 2, duration: 0, useNativeDriver: true }), Animated.delay(BLINK_STEP_MS))
+        }
+        Animated.sequence(steps).start(done)
+      } else {
+        fall.setValue(0)
+        Animated.timing(fall, { toValue: 1, duration: reduceMotion ? 300 : 700, useNativeDriver: true }).start(done)
+      }
       embers.current?.dissolve(size / 2, size / 2, size)
       // Kill punch: ~80ms hit-stop, then a 2-3px nudge of the battlefield
       if (!reduceMotion) {
@@ -201,7 +227,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     },
   }), [size, fall, nudge, flash, coinFlight, reduceMotion])
 
-  // After a kill the next monster eases in (taps meanwhile already hit it)
+  // After a kill the next monster eases in (taps meanwhile already hit it); a pixel monster walks up the
+  // road instead, starting as the last one's death ends
   const firstRender = useRef(true)
   useEffect(() => {
     if (firstRender.current) {
@@ -214,8 +241,15 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       return
     }
     spawn.setValue(0)
-    Animated.timing(spawn, { toValue: 1, duration: SPAWN_DELAY_MS, useNativeDriver: true }).start()
-  }, [kills, spawn, reduceMotion])
+    if (pixelMob) {
+      Animated.sequence([
+        Animated.delay(WALK_IN_DELAY_MS),
+        Animated.timing(spawn, { toValue: 1, duration: WALK_IN_MS, useNativeDriver: true }),
+      ]).start()
+    } else {
+      Animated.timing(spawn, { toValue: 1, duration: SPAWN_DELAY_MS, useNativeDriver: true }).start()
+    }
+  }, [kills, spawn, reduceMotion, pixelMob])
 
   // Every hit: flash and shake the monster, float the damage up from it
   const lockedRef = useRef(locked)
@@ -349,13 +383,17 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
               style={[
                 mob ? styles.ghostPixel : styles.ghost,
                 {
-                  opacity: fall.interpolate({ inputRange: [0, 1], outputRange: [0.9, 0] }),
+                  opacity: fallen.blink ? fall : fall.interpolate({ inputRange: [0, 1], outputRange: [0.9, 0] }),
                 },
               ]}
             >
-              {mobSprites(fallen.id)
-                ? <PixelSprite id={mobSprites(fallen.id)!.hurt} scale={pixelScale} />
-                : <MonsterIcon monster={fallen} size={Math.round(size * ART_SCALE)} color={gold[400]} />}
+              {fallen.death ? (
+                // Played once and held; with Reduce Motion only the last frame, the body on the ground
+                <PixelSprite key={fallen.token} id={fallen.death} scale={pixelScale} loop={false}
+                  frame={fallen.blink ? undefined : SPRITES[fallen.death].frames - 1} />
+              ) : mobSprites(fallen.monster.id)
+                ? <PixelSprite id={mobSprites(fallen.monster.id)!.hurt} scale={pixelScale} />
+                : <MonsterIcon monster={fallen.monster} size={Math.round(size * ART_SCALE)} color={gold[400]} />}
             </Animated.View>
           )}
           <Animated.View
@@ -366,15 +404,19 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
                 width: size,
                 height: size,
                 borderRadius: mob ? 0 : size / 2,
-                opacity: spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
+                // A pixel monster is hidden until it starts walking up; the old circle fades in from 0.3
+                opacity: mob
+                  ? spawn.interpolate({ inputRange: [0, 0.01, 1], outputRange: [0, 1, 1] })
+                  : spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
                 transform: [
+                  { translateY: mob ? spawn.interpolate({ inputRange: [0, 1], outputRange: [-size * WALK_IN_FROM, 0] }) : 0 },
                   { translateX: shake },
                   { translateY: knock.interpolate({ inputRange: [0, 1], outputRange: [0, -size * KNOCKBACK] }) },
                   { rotate: Animated.multiply(knock, tilt).interpolate({ inputRange: [-5, 5], outputRange: ['-5deg', '5deg'] }) },
                   // Pixel monsters bob in their own walk; a fractional scale would blur their pixels
                   { scale: reduceMotion || mob ? 1 : breath.interpolate({ inputRange: [0, 1], outputRange: [1, 1.02] }) },
                   { translateY: reduceMotion || mob ? 0 : breath.interpolate({ inputRange: [0, 1], outputRange: [0, -size * 0.01] }) },
-                  { scale: Animated.multiply(squash, spawn.interpolate({ inputRange: [0, 1], outputRange: [reduceMotion ? 1 : 0.8, 1] })) },
+                  { scale: Animated.multiply(squash, spawn.interpolate({ inputRange: [0, 1], outputRange: [reduceMotion || mob ? 1 : 0.8, 1] })) },
                 ],
               },
             ]}

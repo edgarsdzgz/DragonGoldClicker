@@ -1,5 +1,8 @@
 import { SPRITES } from '../manifest'
-import { mapUnit, mobScale, gateState, gateSprite, mobSprites, slashSprite, stripMs, MAP_W } from '../warfront'
+import {
+  mapUnit, mobScale, gateState, gateSprite, mobSprites, mobDeathSprite, slashSprite, stripMs, MAP_W,
+  DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, WALK_IN_DELAY_MS, WALK_IN_MS,
+} from '../warfront'
 import { MONSTERS } from '../../types/monsterRoster'
 
 describe('the Warfront map', () => {
@@ -32,6 +35,36 @@ describe('the monsters', () => {
     }
     expect(mobSprites('shadow_crawler')?.hurt).toBe('mob_crawler_hurt')
     expect(mobSprites('minotaur')).toBeNull()
+  })
+
+  it('every monster in the roster dies on screen, its feet where its walk has them', () => {
+    for (const m of MONSTERS) {
+      const death = mobDeathSprite(m.id)
+      expect([m.id, death !== null]).toEqual([m.id, true])
+      const walk = SPRITES[mobSprites(m.id)!.idle]
+      const d = SPRITES[death!]
+      expect(d.frames).toBe(4)
+      // Same height, standing on the same ground
+      expect(d.h).toBe(walk.h)
+      // Wider by the same margin on each side, so it is centered where the walk is
+      expect([m.id, (d.w - walk.w) % 2]).toEqual([m.id, 0])
+    }
+    expect(mobDeathSprite('shadow_crawler')).toBe('mob_crawler_death_anim')
+    expect(mobDeathSprite('minotaur')).toBeNull()
+  })
+
+  it('a kill reads in order: the death, the hold, the blink, while the next one walks up', () => {
+    const death = stripMs('mob_kobold_death_anim')
+    expect(death).toBe(500)
+    // The next monster starts walking before the body is gone and arrives about as it vanishes
+    expect(WALK_IN_DELAY_MS).toBeLessThan(death + DEATH_HOLD_MS)
+    const gone = death + DEATH_HOLD_MS + BLINK_STEPS * BLINK_STEP_MS
+    // It arrives after the death has played and no later than the body vanishing
+    const arrives = WALK_IN_DELAY_MS + WALK_IN_MS
+    expect(arrives).toBeGreaterThanOrEqual(death)
+    expect(arrives).toBeLessThanOrEqual(gone)
+    // An odd number of steps ends on "off"
+    expect(BLINK_STEPS % 2).toBe(1)
   })
 
   it('the slash follows the claws tier, and strips report how long they play', () => {
