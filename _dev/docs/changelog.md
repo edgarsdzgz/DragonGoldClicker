@@ -2,6 +2,13 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Warfront: the claws chip shows the name only (2026-10-27)
+- The Claws chip under the wall reads the claw's name, not "N per tap"; the damage is in Stats,
+  the Claws sheet and the chip's screen-reader label. Stats shows Total Clicks as a whole number
+- Code: the battlefield's strike feel (flash, knockback, shake, nudge, breathing, fade-in, hold
+  pulse) is its own hook (`useStrikeFeel`), and the monster on the road its own component
+  (`RoadMonster`); no change in play
+
 ### Security: Android permissions and the store build (2026-10-27)
 - The game no longer asks for the microphone, to draw over other apps, shared storage, or the
   media foreground service; none was used (app.json android.blockedPermissions, and the audio

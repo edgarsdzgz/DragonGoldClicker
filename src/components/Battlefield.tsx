@@ -1,8 +1,6 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent, PixelRatio } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { PosedMonster } from './PosedMonster'
 import type { PosedMonsterHandle } from './PosedMonster'
 import { useAppActive } from '../hooks/useAppActive'
 import type { MonsterDef } from '../types/monsters'
@@ -11,19 +9,20 @@ import { EnemyHp } from './EnemyHp'
 import { EmberDissolve } from './StrikeEffects'
 import type { EmberDissolveHandle } from './StrikeEffects'
 import { clawLook } from '../types/claws'
-import { PixelMonster } from './PixelMonster'
+import { RoadMonster } from './RoadMonster'
 import { PixelBurst } from './PixelBurst'
 import type { PixelBurstHandle } from './PixelBurst'
 import { FallenBody } from './FallenBody'
 import { SPRITES, mobScale, mobSprites, mobTier, slashSprite } from '../art'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
-import { useActionPress, HOLD_REPEAT_MS } from '../hooks/useActionPress'
+import { useActionPress } from '../hooks/useActionPress'
 import { useCoinFlight } from '../context/CoinFlightContext'
 import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useReduceMotion } from '../hooks/useReduceMotion'
 import { useMonsterRoad } from '../hooks/useMonsterRoad'
-import { SPAWN_DELAY_MS, monsterLabel, currentMonster } from '../types/monsters'
+import { useStrikeFeel, useHoldPulse } from '../hooks/useStrikeFeel'
+import { monsterLabel, currentMonster } from '../types/monsters'
 import { restingPose } from '../data/monsterArt'
 import { colors, spacing, gold } from '../theme'
 
@@ -79,19 +78,6 @@ export interface BattlefieldHandle {
   showAllyHit: (amount: string) => void
 }
 
-/** The monster's art box as a share of the sprite circle (fits inside the circle) */
-const ART_SCALE = 0.68
-
-/** Press squash: the monster shrinks about 5% */
-const SQUASH = 0.95
-
-/** The monster holds still this long at impact before the knockback */
-const HIT_STOP_MS = 50
-/** A kill holds still a little longer before the nudge */
-const KILL_STOP_MS = 80
-/** Knockback travel, as a share of the sprite size (away from the gate) */
-const KNOCKBACK = 0.06
-
 /**
  * The tap target: the whole battlefield. Every press strikes the monster; holding repeats
  * (one strike every HOLD_REPEAT_MS, shared by every main button) with a steady pulse. Damage numbers rise from the monster.
@@ -114,20 +100,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
 
   const coinFlight = useCoinFlight()
   const spriteRef = useRef<View>(null)
-  const spawn = useRef(new Animated.Value(1)).current
-  // A steady pulse on the battlefield while the press is held
-  const holdPulse = useRef(new Animated.Value(0)).current
-  const squash = useRef(new Animated.Value(1)).current
-  const shake = useRef(new Animated.Value(0)).current
-  const flash = useRef(new Animated.Value(0)).current
   const fx = useRef<PixelBurstHandle>(null)
   const embers = useRef<EmberDissolveHandle>(null)
-  // The whole battlefield gives a small nudge on a kill
-  const nudge = useRef(new Animated.Value(0)).current
-  // Knockback: 0 -> 1 pushes the monster up and tilts it, then springs back
-  const knock = useRef(new Animated.Value(0)).current
-  const tilt = useRef(new Animated.Value(0)).current
-  const tiltSide = useRef(1)
   // Where the last press landed, in dp from the sprite's top-left (hold repeats reuse it)
   const tapPoint = useRef({ x: size / 2, y: size / 2 })
   // The sprite's offset inside the press area; both are measured in the press area's own space
@@ -151,31 +125,16 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const posed = useRef<PosedMonsterHandle>(null)
   const resting = restingPose(monsterHp, def.hp)
   const pixelMob = mob !== null
-
-  // Idle breathing: ~2% over ~1.5s; hurt breathes faster and uneven. Off with Reduce Motion.
-  const breath = useRef(new Animated.Value(0)).current
-  useEffect(() => {
-    // Only breathe while this screen is showing and the app is in the foreground; pixel
-    // monsters bob in their own walk instead
-    if (reduceMotion || !focused || !appActive || pixelMob) {
-      breath.setValue(0)
-      return
-    }
-    const hurt = resting === 'hurt'
-    const loop = Animated.loop(Animated.sequence(hurt
-      ? [
-          Animated.timing(breath, { toValue: 1, duration: 380, useNativeDriver: true }),
-          Animated.timing(breath, { toValue: 0.2, duration: 260, useNativeDriver: true }),
-          Animated.timing(breath, { toValue: 1, duration: 300, useNativeDriver: true }),
-          Animated.timing(breath, { toValue: 0, duration: 520, useNativeDriver: true }),
-        ]
-      : [
-          Animated.timing(breath, { toValue: 1, duration: 750, useNativeDriver: true }),
-          Animated.timing(breath, { toValue: 0, duration: 750, useNativeDriver: true }),
-        ]))
-    loop.start()
-    return () => loop.stop()
-  }, [reduceMotion, resting, breath, focused, appActive, pixelMob])
+  const feel = useStrikeFeel({
+    reduceMotion,
+    // Only breathe while this screen is showing and the app is in the foreground; pixel monsters
+    // bob in their own walk instead
+    breathe: focused && appActive && !pixelMob,
+    hurt: resting === 'hurt',
+    kills,
+    fadeIn: !pixelMob,
+  })
+  const { hit, allyFlash, killNudge, pressIn, pressOut } = feel
 
   useImperativeHandle(ref, () => ({
     // The bounty rises from where the monster fell
@@ -186,15 +145,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       // (no death of its own) dissolves in embers instead
       if (fellTop.current === null) embers.current?.dissolve(size / 2, size / 2, size)
       // Kill punch: ~80ms hit-stop, then a 2-3px nudge of the battlefield
-      if (!reduceMotion) {
-        nudge.stopAnimation()
-        nudge.setValue(0)
-        Animated.sequence([
-          Animated.delay(KILL_STOP_MS),
-          Animated.timing(nudge, { toValue: 1, duration: 40, useNativeDriver: true }),
-          Animated.timing(nudge, { toValue: 0, duration: 110, useNativeDriver: true }),
-        ]).start()
-      }
+      killNudge()
       spriteRef.current?.measureInWindow((x, y, w, h) => coinFlight.fly({ x: x + w / 2, y: y + h / 2 }))
     },
     showAllyHit: (amount) => {
@@ -205,31 +156,9 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       const x = size / 2 + (Math.random() - 0.5) * (w.walking ? w.width : size) * 0.5
       numbers.current?.spawn({ x, y: top + tall * 0.45, text: amount, color: colors.warfront.ally })
       fx.current?.play('fx_ally-hit_anim', x, top + tall * 0.6, 0, w.walking ? w.scale : undefined)
-      flash.setValue(0.12)
-      Animated.timing(flash, { toValue: 0, duration: 120, useNativeDriver: true }).start()
+      allyFlash()
     },
-  }), [size, nudge, flash, coinFlight, reduceMotion, fellTop])
-
-  // After a kill the next monster eases in (taps meanwhile already hit it); a pixel monster walks down
-  // the road instead (the road's walker)
-  const firstRender = useRef(true)
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      return
-    }
-    // Reduce Motion: the next monster is simply there, with no opacity ramp
-    if (reduceMotion) {
-      spawn.setValue(1)
-      return
-    }
-    if (pixelMob) {
-      spawn.setValue(1)
-      return
-    }
-    spawn.setValue(0)
-    Animated.timing(spawn, { toValue: 1, duration: SPAWN_DELAY_MS, useNativeDriver: true }).start()
-  }, [kills, spawn, reduceMotion, pixelMob])
+  }), [size, killNudge, allyFlash, coinFlight, fellTop])
 
   // Every hit: flash and shake the monster, float the damage up from it
   const lockedRef = useRef(locked)
@@ -255,49 +184,18 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     fx.current?.play(slashSprite(clawLook(clawLevel).tier), point.x, point.y, 0, at)
     if (shown?.double) fx.current?.play('fx_crit_anim', point.x, point.y, 0, at)
     else if (!reduceMotion) fx.current?.play('fx_spark_anim', point.x, point.y, 0, at)
-    // Hit-stop: the monster holds still ~50ms, then the knockback runs
-    if (!reduceMotion) {
-      tiltSide.current = -tiltSide.current
-      tilt.setValue(tiltSide.current * (3 + Math.random() * 2))
-      knock.stopAnimation()
-      knock.setValue(0)
-      Animated.sequence([
-        Animated.delay(HIT_STOP_MS),
-        Animated.timing(knock, { toValue: 1, duration: 40, useNativeDriver: true }),
-        Animated.timing(knock, { toValue: 0, duration: 180, useNativeDriver: true }),
-      ]).start()
-    }
-    flash.setValue(0.35)
-    Animated.timing(flash, { toValue: 0, duration: 140, useNativeDriver: true }).start()
-    if (!reduceMotion) {
-      // A small sideways jitter after the hit-stop; the knockback carries most of the motion
-      const hop = (to: number) => Animated.timing(shake, { toValue: to, duration: 28, useNativeDriver: true })
-      Animated.sequence([Animated.delay(HIT_STOP_MS), hop(2), hop(-2), hop(1), hop(0)]).start()
-    }
-  }, [onStrike, damage, size, clawLevel, flash, shake, knock, tilt, reduceMotion])
+    hit()
+  }, [onStrike, damage, size, clawLevel, hit, reduceMotion])
   // The same press as every main button: tap, hold (repeats at the shared speed), screen reader,
   // and a stop when the screen or the app is left (hooks/useActionPress)
   const press = useActionPress(strike, { repeatOnHold: true })
   const { holding, cancel: cancelPress } = press
+  const holdPulse = useHoldPulse(holding, reduceMotion)
 
   // Wave mode (cold storage): the field is replaced by the camp, so a held press must not carry on
   useEffect(() => {
     if (inCamp) cancelPress()
   }, [inCamp, cancelPress])
-
-  // A steady pulse on the battlefield while the press is held
-  useEffect(() => {
-    if (!holding || reduceMotion) {
-      holdPulse.setValue(0)
-      return
-    }
-    const loop = Animated.loop(Animated.sequence([
-      Animated.timing(holdPulse, { toValue: 1, duration: HOLD_REPEAT_MS / 2, useNativeDriver: true }),
-      Animated.timing(holdPulse, { toValue: 0, duration: HOLD_REPEAT_MS / 2, useNativeDriver: true }),
-    ]))
-    loop.start()
-    return () => loop.stop()
-  }, [holding, reduceMotion, holdPulse])
 
   const handlePressIn = (e: GestureResponderEvent) => {
     // locationX/Y are relative to the press area (its children ignore touches), as is the sprite offset
@@ -307,11 +205,11 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       x: clamp(locationX - spriteOffset.current.x),
       y: clamp(locationY - spriteOffset.current.y),
     }
-    if (!reduceMotion) Animated.timing(squash, { toValue: SQUASH, duration: 70, useNativeDriver: true }).start()
+    pressIn()
     press.handlers.onPressIn()
   }
   const handlePressOut = () => {
-    if (!reduceMotion) Animated.spring(squash, { toValue: 1, tension: 220, friction: 7, useNativeDriver: true }).start()
+    pressOut()
     press.handlers.onPressOut()
   }
 
@@ -326,7 +224,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       ref={coach.ref}
       onLayout={onLayout}
       collapsable={false}
-      style={[styles.field, { transform: [{ translateY: nudge.interpolate({ inputRange: [0, 1], outputRange: [0, 3] }) }] }]}
+      style={[styles.field, { transform: [{ translateY: feel.nudge.interpolate({ inputRange: [0, 1], outputRange: [0, 3] }) }] }]}
     >
       {camp ?? <Pressable
         onPressIn={handlePressIn}
@@ -374,44 +272,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
                 onGone={() => road.dropBody(b.key)} />
             ) })),
             { feet: road.walker.feet + 0.5, node: (
-          // Its place on the road is its own layer: the strike's native-driven knockback below would keep
-          // the old place until it finished
-          <View key="walker" pointerEvents="none" style={[StyleSheet.absoluteFill, { transform: [{ translateY: road.walker.offsetY }] }]}>
-          <Animated.View
-            pointerEvents="none"
-            style={[
-              mob ? styles.spritePixel : styles.sprite,
-              {
-                width: size,
-                height: size,
-                borderRadius: mob ? 0 : size / 2,
-                // The old circle fades in from 0.3; a pixel monster walks down the road instead
-                opacity: mob ? 1 : spawn.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1] }),
-                transform: [
-                  { translateX: shake },
-                  { translateY: knock.interpolate({ inputRange: [0, 1], outputRange: [0, -size * KNOCKBACK] }) },
-                  { rotate: Animated.multiply(knock, tilt).interpolate({ inputRange: [-5, 5], outputRange: ['-5deg', '5deg'] }) },
-                  // Pixel monsters bob in their own walk; a fractional scale would blur their pixels
-                  { scale: reduceMotion || mob ? 1 : breath.interpolate({ inputRange: [0, 1], outputRange: [1, 1.02] }) },
-                  { translateY: reduceMotion || mob ? 0 : breath.interpolate({ inputRange: [0, 1], outputRange: [0, -size * 0.01] }) },
-                  { scale: Animated.multiply(squash, spawn.interpolate({ inputRange: [0, 1], outputRange: [reduceMotion || mob ? 1 : 0.8, 1] })) },
-                ],
-              },
-            ]}
-          >
-            {mob ? (
-              <PixelMonster ref={posed} sprites={mob} scale={road.walker.scale} resting={resting} spawnKey={kills}
-                paused={!focused || !appActive} frame={road.walker.frame} />
-            ) : (
-              <>
-                <LinearGradient colors={[colors.bg.surface2, colors.bg.surface1]} style={styles.inner}>
-                  <PosedMonster ref={posed} monster={def} size={Math.round(size * ART_SCALE)} color={gold[400]} resting={resting} spawnKey={kills} />
-                </LinearGradient>
-                <Animated.View pointerEvents="none" style={[styles.flash, { opacity: flash }]} />
-              </>
-            )}
-          </Animated.View>
-          </View>
+              <RoadMonster key="walker" size={size} monster={def} mob={mob} walker={road.walker} feel={feel}
+                posedRef={posed} resting={resting} spawnKey={kills} paused={!focused || !appActive} reduceMotion={reduceMotion} />
             ) },
           ].sort((a, b) => a.feet - b.feet).map((d) => d.node)}
           <View pointerEvents="none" style={styles.effects}>
@@ -441,25 +303,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  sprite: {
-    overflow: 'hidden',
-    borderWidth: 2,
-    borderColor: gold[500],
-    shadowColor: gold[500],
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 18,
-    elevation: 8,
-  },
-  spritePixel: {
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  inner: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   holdRing: {
     position: 'absolute',
     left: -12,
@@ -470,10 +313,6 @@ const styles = StyleSheet.create({
   // Strikes, embers and numbers, drawn last: over everything on the road
   effects: {
     ...StyleSheet.absoluteFillObject,
-  },
-  flash: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#ffffff',
   },
   name: {
     color: gold[300],
