@@ -15,7 +15,17 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_cog.png` | 12x12 | Settings | icon redraw |
 | `icons/icon_wheat.png` | 12x12 | Foragers, Forage tab | icon redraw (v2, the ear) |
 | `icons/icon_hammer.png` | 12x12 | Repairers | icon redraw |
-| `icons/icon_helm.png` | 12x12 | Soldiers | icon redraw |
+| `icons/icon_helm.png` | 12x12 | Soldiers | options (plumed barbute; replaced the great helm) |
+| `icons/icon_close.png` | 12x12 | Close | options (red stone plate; red is an owner exception for Close) |
+| `icons/icon_reassign.png` | 12x12 | Reassign | options (chunky arrows) |
+| `icons/icon_shield.png` | 12x12 | Fighters | icon sheet 3 |
+| `icons/icon_gate.png` | 12x12 | Gate | icon sheet 3 |
+| `icons/icon_damage.png` | 12x12 | Damage | icon sheet 3 |
+| `icons/icon_skull.png` | 12x12 | Death, reset | icon sheet 3 |
+| `icons/icon_rations.png` | 12x12 | Rations | icon sheet 3 |
+| `icons/icon_bell.png` | 12x12 | Next meal | icon sheet 3 |
+| `icons/icon_train.png` | 12x12 | Train | icon sheet 3 |
+| `icons/icon_book.png` | 12x12 | Librarium | icon sheet 3 |
 | `icons/icon_padlock.png` | 12x12 | Locked | icon sheet 2 |
 | `icons/icon_flag.png` | 12x12 | Objective | icon sheet 2 |
 | `icons/icon_compass.png` | 12x12 | Explorers | icon sheet 2 |

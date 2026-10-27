@@ -17,13 +17,8 @@ AGENT = ART / "agent"
 OFFICIAL = ART / "official"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "review.html"
 
-# The batch awaiting the owner's approval: (folder, title, [(file stem, label), ...]).
-PENDING = ("05-icons-3", "Sheet 3: ten more icons", [
-    ("icon_shield", "Shield: Fighters"), ("icon_gate", "Gate"), ("icon_damage", "Damage"),
-    ("icon_skull", "Skull: death, reset"), ("icon_rations", "Rations"), ("icon_bell", "Bell: next meal"),
-    ("icon_train", "Train"), ("icon_reassign", "Reassign"), ("icon_close", "Close"),
-    ("icon_book", "Book: Librarium"),
-])
+# The batch awaiting the owner's approval: (folder, title, [(file stem, label), ...]), or None.
+PENDING = None
 MOTION = [
     (AGENT / "01-test-run/preview/scene_warfront.gif", "The fighter's jab and the hit spark on the Warfront wall"),
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),
@@ -60,8 +55,12 @@ def official_rows():
     return rows
 
 
-folder, title, items = PENDING
-pending = "".join(tile(AGENT / folder / "out" / f"{stem}.png", label, 6) for stem, label in items)
+pending_section = ""
+if PENDING:
+    folder, title, items = PENDING
+    tiles = "".join(tile(AGENT / folder / "out" / f"{stem}.png", label, 6) for stem, label in items)
+    pending_section = (f'<section><h2>{html.escape(title)} <span class="tag">awaiting approval</span></h2>'
+                       f'<div class="tiles">{tiles}</div></section>')
 groups = {"icons": [], "people": [], "fx": [], "events": []}
 for group, path, what in official_rows():
     groups[group].append(tile(path, what, SCALE[group]))
@@ -99,10 +98,7 @@ page = f"""<title>Pixel Art Test Run</title>
     <p class="muted">Draconia Chronicles &middot; every sprite at its game scale &middot; 2026-10-26</p>
   </header>
 
-  <section>
-    <h2>{html.escape(title)} <span class="tag">awaiting approval</span></h2>
-    <div class="tiles">{pending}</div>
-  </section>
+  {pending_section}
 
   <section>
     <h2>The official library ({count} sprites)</h2>

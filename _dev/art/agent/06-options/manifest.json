@@ -13,6 +13,19 @@
   "warnings": []
  },
  {
+  "name": "icon_close_plate_red",
+  "file": "icon_close_plate_red.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
   "name": "icon_close_boss",
   "file": "icon_close_boss.png",
   "size": [

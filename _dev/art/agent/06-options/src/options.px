@@ -19,6 +19,25 @@ anmmmmmmmmda
 .adddddddda.
 ..aaaaaaaa..
 
+# Close A, red: the stone plate in red with a light steel X (chosen)
+@asset icon_close_plate_red
+size 12 12
+budget 8
+key a=ink n=red3 m=red2 d=red1 h=steel5 s=steel4
+frame
+..aaaaaaaa..
+.annnnnnnna.
+anmmmmmmmmda
+anmhsmmshmda
+anmmhsshmmda
+anmmmhhmmmda
+anmmmhhmmmda
+anmmhsshmmda
+anmhsmmshmda
+anmmmmmmmmda
+.adddddddda.
+..aaaaaaaa..
+
 # Close B: an X cut into a round steel boss
 @asset icon_close_boss
 size 12 12

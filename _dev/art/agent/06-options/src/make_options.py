@@ -57,6 +57,10 @@ for x, y in XSET:
     c[(x, y)] = "h" if (x == y or x + y == 11) else "s"
 options.append(("close_plate", "Close A: a steel X on a stepped stone plate, like the game's panels",
                 "a=ink n=night3 m=night2 d=night1 h=steel5 s=steel3", c))
+# The owner's pick (2026-10-26): plate A in red, "this is CLOSE after all". A deliberate exception
+# to red being kept for HP and danger.
+options.append(("close_plate_red", "Close A, red: the stone plate in red with a light steel X (chosen)",
+                "a=ink n=red3 m=red2 d=red1 h=steel5 s=steel4", dict(c)))
 
 m = rows_to_set(ROUND)
 c = {(x, y): (diag_light(x, y) if rim(m, x, y) else ("h" if x + y <= 8 else "m")) for x, y in m}
