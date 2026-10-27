@@ -2,10 +2,11 @@
 by the unmaking, so they all need the purple cracks throughout their body. Regardless of the color
 of their skin").
 
-Each mob's idle from 22-mobs gets crack lines over its body: head, torso and limbs. Two looks:
-dark (magenta2 lines, a magenta3 heart) and glow (magenta3 lines, a magenta4 heart). Hit, hurt and
-walk are rebuilt from the cracked idle, so the cracks move with the body. The raider is a human
-bandit, not a monster, so it stays uncracked.
+Each mob's idle from 22-mobs gets crack lines over its body: head, torso and limbs, over clothes
+too (owner: "even humans need to have cracks"). The three looks are wave tiers (owner: "weak >
+strong > stronger, for deeper waves"): weak is the uncracked 22-mobs art; strong has dark cracks
+(magenta2 lines, a magenta3 heart); stronger has glowing cracks (magenta3 lines, a magenta4 heart).
+Hit, hurt and walk are rebuilt from the cracked idle, so the cracks move with the body.
 
 Run: python make_unmade.py
 """
@@ -21,7 +22,7 @@ from make_mobs import MOBS, draw, hit_pose, hurt_pose, pixkit, red_flash, walk  
 
 P = pixkit.PALETTE
 OUT, PREVIEW = BATCH / "out", BATCH / "preview"
-LOOKS = {"dark": ("magenta2", "magenta3"), "glow": ("magenta3", "magenta4")}
+LOOKS = {"strong": ("magenta2", "magenta3"), "stronger": ("magenta3", "magenta4")}
 
 # Crack lines in fill-grid coordinates (x, y); the middle pixel of each line is its bright heart.
 CRACKS = {
@@ -29,6 +30,7 @@ CRACKS = {
     "goblin": [[(7, 1), (6, 2), (6, 3)], [(1, 8), (1, 9)], [(4, 8), (5, 9), (5, 10)], [(8, 11), (8, 12)]],
     "crawler": [[(7, 0), (6, 1), (6, 2)], [(4, 3), (4, 4)], [(9, 3), (8, 4)], [(2, 4)]],
     "orc": [[(5, 0), (4, 1), (5, 2)], [(1, 9), (2, 10)], [(9, 8), (8, 9)], [(7, 14), (6, 15)], [(4, 8), (5, 9), (5, 10)]],
+    "raider": [[(6, 0), (7, 1), (7, 2)], [(4, 4), (5, 5)], [(3, 7), (4, 8), (4, 9)], [(6, 13), (5, 14)]],
 }
 
 
@@ -48,14 +50,13 @@ def main():
         (PREVIEW / look).mkdir(parents=True, exist_ok=True)
         for name, m in MOBS.items():
             idle = draw(m["fill"], m["key"])
-            if name in CRACKS:
-                idle = crack(idle, CRACKS[name], line, heart)
+            idle = crack(idle, CRACKS[name], line, heart)
             hit, hurt = red_flash(hit_pose(idle, m["pose"])), hurt_pose(idle, m["pose"])
             for st, im in (("idle", idle), ("hit", hit), ("hurt", hurt)):
-                im.save(OUT / look / f"mob_{name}_{st}.png")
+                im.save(OUT / look / f"mob_{name}-{look}_{st}.png")
             frames = walk(idle)
-            pixkit.strip(frames).save(OUT / look / f"mob_{name}_walk_strip2.png")
-            pixkit.write_gif(frames, 4, PREVIEW / look / f"mob_{name}_walk.gif", scale=6)
+            pixkit.strip(frames).save(OUT / look / f"mob_{name}-{look}_walk_strip2.png")
+            pixkit.write_gif(frames, 4, PREVIEW / look / f"mob_{name}-{look}_walk.gif", scale=6)
             rows.append((f"{look} {name}", [idle, hit, hurt]))
     pixkit.contact_sheet(rows, scale=6).save(PREVIEW / "unmade_x6.png")
     print("written", v1.__name__)

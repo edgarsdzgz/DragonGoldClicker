@@ -11,9 +11,10 @@ HERE = pathlib.Path(__file__).parent
 OUT, PREVIEW = HERE / "out", HERE / "preview"
 V1 = HERE.parent / "22-mobs"
 MOBS = [("kobold", "Kobold"), ("goblin", "Goblin"), ("crawler", "Shadow Crawler"), ("orc", "Orc"),
-        ("raider", "Raider (a human bandit: left uncracked)")]
-LOOKS = [(V1 / "out", V1 / "preview", "Before"), (OUT / "dark", PREVIEW / "dark", "A: dark cracks"),
-         (OUT / "glow", PREVIEW / "glow", "B: glowing cracks")]
+        ("raider", "Raider")]
+LOOKS = [(V1 / "out", V1 / "preview", "", "Weak: no cracks"),
+         (OUT / "strong", PREVIEW / "strong", "-strong", "Strong: dark cracks"),
+         (OUT / "stronger", PREVIEW / "stronger", "-stronger", "Stronger: glowing cracks")]
 
 
 def uri(path):
@@ -30,9 +31,9 @@ def fig(path, scale, caption):
 cards = ""
 for mid, name in MOBS:
     groups = ""
-    for out, prev, label in LOOKS:
-        figs = "".join(fig(out / f"mob_{mid}_{st}.png", 6, st.capitalize()) for st in ("idle", "hit", "hurt"))
-        figs += fig(prev / f"mob_{mid}_walk.gif", 1, "Walk")
+    for out, prev, tier, label in LOOKS:
+        figs = "".join(fig(out / f"mob_{mid}{tier}_{st}.png", 6, st.capitalize()) for st in ("idle", "hit", "hurt"))
+        figs += fig(prev / f"mob_{mid}{tier}_walk.gif", 1, "Walk")
         groups += f'<div class="look"><h4>{html.escape(label)}</h4><div class="row">{figs}</div></div>'
     cards += f'<h3>{html.escape(name)}</h3><div class="tiles">{groups}</div>'
 
@@ -63,9 +64,9 @@ page = f"""<title>Draconia Unmade Mobs</title>
 <main>
   <header>
     <h1>Mobs marked by the Unmaking</h1>
-    <p class="muted">Purple cracks run through every monster's head, body and limbs, whatever its skin. A uses dark
-      purple with a brighter heart; B glows, like the eyes, so it shines on the purple crawler too. The cracks move
-      with the body in every pose. Version 2 of the locked mobs; the official files change only on approval
+    <p class="muted">Three wave tiers from one set of monsters: weak (the locked art, no cracks), strong (dark purple
+      cracks with a brighter heart) and stronger (glowing cracks that shine like the eyes). The Unmaking marks every
+      monster, the human raider too, its cracks over its clothes. The cracks move with the body in every pose
       &middot; 2026-10-27</p>
   </header>
   {cards}
