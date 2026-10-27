@@ -1,0 +1,168 @@
+[
+ {
+  "name": "icon_res_anatomy_sketch",
+  "file": "icon_res_anatomy_sketch.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 6,6",
+   "single-pixel island at 7,7",
+   "single-pixel island at 8,8"
+  ]
+ },
+ {
+  "name": "icon_res_anatomy_lens",
+  "file": "icon_res_anatomy_lens.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_anatomy_talon",
+  "file": "icon_res_anatomy_talon.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_mortar_trowel",
+  "file": "icon_res_mortar_trowel.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_mortar_bucket",
+  "file": "icon_res_mortar_bucket.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,1",
+   "single-pixel island at 8,2"
+  ]
+ },
+ {
+  "name": "icon_res_mortar_wall",
+  "file": "icon_res_mortar_wall.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_steel_steam",
+  "file": "icon_res_steel_steam.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_steel_trough",
+  "file": "icon_res_steel_trough.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_steel_anvil",
+  "file": "icon_res_steel_anvil.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_evac_runner",
+  "file": "icon_res_evac_runner.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,4",
+   "single-pixel island at 3,6"
+  ]
+ },
+ {
+  "name": "icon_res_evac_door",
+  "file": "icon_res_evac_door.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_evac_horn",
+  "file": "icon_res_evac_horn.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]

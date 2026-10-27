@@ -1,0 +1,229 @@
+# Research options, 2026-10-26. Written by make_options.py.
+
+# Dragon Anatomy A: a bold hooked claw sketched on Lirae's page, the weak spot marked
+@asset icon_res_anatomy_sketch
+size 12 12
+budget 8
+key a=ink P=parch3 D=parch1 k=wood1 x=clay2
+frame
+.aaaaaaaaaa.
+.aPPPPPPPPa.
+.aPPkkkkPPa.
+.aPkkkkkkPa.
+.akkkPPPkPa.
+.akkkPPPkPa.
+.akkkPxPxPa.
+.akkkkPxPPa.
+.akkkkxPxPa.
+.aPPPPPPPPa.
+.aDDDDDDDDa.
+.aaaaaaaaaa.
+
+# Dragon Anatomy B: a claw studied through a brass magnifying glass
+@asset icon_res_anatomy_lens
+size 12 12
+budget 8
+key a=ink H=gold5 g=gold4 G=gold2 q=parch3 k=wood1 W=steel5 w=wood3
+frame
+...aaaa.....
+..agggga....
+.agqqqqga...
+agqWkkkqga..
+agqkkqqqga..
+agkkkqqqga..
+agkkkqqqga..
+.agkkqqgaa..
+..aggggawwa.
+...aaaaawwwa
+........awwa
+.........aa.
+
+# Dragon Anatomy C: a bare talon with a gold ring marking its deadly point
+@asset icon_res_anatomy_talon
+size 12 12
+budget 8
+key a=ink H=parch3 m=skin3 d=parch1 g=gold5
+frame
+.......aaa..
+......aggga.
+....aaHmmgga
+...aHHdaaaga
+..aHmdgaaaga
+.aHmdaaggga.
+aHmmda.aaa..
+aHmmda......
+aHmda.......
+aHmda.......
+amddma......
+.aaaa.......
+
+# Mortar Craft A: a mason's trowel, the pointed blade down, mortar on it
+@asset icon_res_mortar_trowel
+size 12 12
+budget 8
+key a=ink W=wood4 D=wood2 h=steel5 m=steel3 s=steel2 M=parch2
+frame
+.....aa.....
+....aWDa....
+....aWDa....
+....aWDa....
+.aaaaasaaaa.
+ahhhhhhhhhsa
+.ahMMMmmmsa.
+..ahMMmmsa..
+...ahmmsa...
+....ahsa....
+.....aa.....
+............
+
+# Mortar Craft B: a bucket of mortar with the trowel standing in it
+@asset icon_res_mortar_bucket
+size 12 12
+budget 8
+key a=ink W=wood4 w=wood3 D=wood2 s=steel3 M=parch2 m=parch3
+frame
+.........a..
+........aWa.
+....aaaaWa..
+...ammmsa...
+..amMMMMa...
+.aWwwwwwDa..
+.asssssssa..
+.aWwwwwwDa..
+..aWwwwDa...
+..asssssa...
+..aWwwwDa...
+...aaaaa....
+
+# Mortar Craft C: a trowel laid on a fresh course of stone, the joints in pale mortar
+@asset icon_res_mortar_wall
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 W=wood4 S=steel4 s=steel2 M=parch3
+frame
+............
+............
+..a.....aa..
+.ahaa..aWWa.
+ahmmhaaWWa..
+.ahmaa.aa...
+aaaaaaaaaaaa
+aSSSMSSSSMSa
+assSMssSsMsa
+aMMMMMMMMMMa
+aSMSSSSMSSSa
+aaaaaaaaaaaa
+
+# Tempered Steel A: the glowing sword, now with steam rising from the quench
+@asset icon_res_steel_steam
+size 12 12
+budget 8
+key a=ink W=fire3 Y=fire2 O=fire1 h=steel5 s=steel3 H=gold5 d=wood2 S=steel4
+frame
+.....aa..aa.
+....aWYaaSSa
+..aaaYOaSSa.
+.aSSaYOaaa..
+..aaahsa....
+....ahsa....
+....ahsa....
+..aaahsaaa..
+.aHHHHHHHHa.
+..aaaddaaa..
+....aHHa....
+....aaaa....
+
+# Tempered Steel B: the sword plunged point-first into the quenching trough, glowing at the waterline
+@asset icon_res_steel_trough
+size 12 12
+budget 8
+key a=ink H=gold5 d=wood2 h=steel5 s=steel3 O=fire1 W=wood4 B=sea3 b=sea2
+frame
+.....aa.....
+....aHHa....
+..aaaddaaa..
+.aHHHHHHHHa.
+..aaahsaaa..
+....ahsa....
+.aaaaOOaaaa.
+aWBBBBBBBBda
+aWbbbbbbbbda
+aWbbbbbbbbda
+adddddddddda
+aaaaaaaaaaaa
+
+# Tempered Steel C: a blade glowing on Kael's anvil
+@asset icon_res_steel_anvil
+size 12 12
+budget 8
+key a=ink W=fire3 Y=fire2 O=fire1 h=steel4 m=steel2 s=steel1
+frame
+............
+............
+..aaaaaaaa..
+.aWYYYYOOOa.
+ahhhhhhhhhsa
+.aammmmmmsa.
+...ammmsaa..
+...ammmsaa..
+..ammmmmmsa.
+..asssssssa.
+..aaaaaaaaa.
+............
+
+# Evacuation Drills A: a townsperson running, the townsfolk colors
+@asset icon_res_evac_runner
+size 12 12
+budget 8
+key a=ink B=wood3 C=skin2 D=clay1 E=wood2 F=wood1
+frame
+.....aaaa...
+....aBBBBa..
+....aBCaCa..
+....aCCCCaa.
+....aDDDDaCa
+...aDDDDDDa.
+..aCaDDDDa..
+...aaEEEEa..
+....aFFFFa..
+...aFFaaFFa.
+..aFFa..aFFa
+...aa....aa.
+
+# Evacuation Drills B: a stone doorway with a gold arrow leading out
+@asset icon_res_evac_door
+size 12 12
+budget 8
+key a=ink m=steel3 k=night1 H=gold5 g=gold3
+frame
+..aaaa......
+.ammmma.....
+ammkkmma....
+amkkkkmaa...
+amkkkkmaHa..
+amkkkkmaHHa.
+amkHHHHHHHHa
+amkgggggggga
+amkkkkmagga.
+amkkkkmaga..
+ammmmmmaa...
+.aaaaaa.....
+
+# Evacuation Drills C: the war horn, redrawn as a clean crescent with gold bands
+@asset icon_res_evac_horn
+size 12 12
+budget 8
+key a=ink H=parch3 m=skin3 d=parch1 g=gold4 k=wood1
+frame
+.........a..
+.a.....aama.
+ama...aHHmma
+ama...aHkkda
+ammaaaHmmkda
+.aHHgHmgmdda
+.ammgmmgdaa.
+..amgddaa...
+...aaaa.....
+............
+............
+............
