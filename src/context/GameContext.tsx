@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { AppState } from 'react-native'
 import { DEV_TOOLS_ENABLED } from '../config/devTools'
-import type { GameState, SoldierTier, ForagerTier, RoleId, StarvationResult, WandererEncounter, ResearchPrereq, MilestoneDef } from '../types/game'
+import type { GameState, SoldierTier, ForagerTier, RoleId, StarvationResult, WandererEncounter, MilestoneDef } from '../types/game'
 import {
   DEFAULT_GAME_STATE,
   ARMORY_COST,
@@ -30,16 +30,12 @@ import {
   stepWanderers,
   welcomeWanderer,
   turnAwayWanderer,
-  LIBRARIUM_COST,
-  RESEARCH_NODES,
-  getResearchBonuses,
   getFighterCost,
   getRepairerCost,
   stepFighterVolley,
   FIGHTER_TICK_MS,
   MAX_CITY_HP,
   getNextMilestone,
-  getRepairRate,
   granaryRoom,
   isSystemOn,
   isBuildingRevealed,
@@ -53,7 +49,9 @@ import { stepFoodEvents, gatherMultiplier, answerRefugees as answerRefugeesState
 import { isRationAvailable } from '../types/rations'
 import type { RationId } from '../types/rations'
 import { firstExpeditionReward } from '../types/scripted'
-import { sharpenClaws as sharpenClawsState } from '../types/claws'
+import { sharpenClaws as sharpenClawsState, tapHit } from '../types/claws'
+import { repairRateNow } from '../types/siege'
+import { buildLibrarium as buildLibrariumState, study } from '../types/library'
 import { armySize, armyVolleyNow, makeRank as makeRankState } from '../types/army'
 import { forgeGear } from '../types/forge'
 import { makeForager as makeForagerState } from '../types/lodge'
@@ -65,7 +63,8 @@ import { useGameLoop } from '../hooks/useGameLoop'
 
 interface GameContextType {
   state: GameState
-  click: () => void
+  /** One tap at the Gate; `double` when it rolled a double strike (Weak Points) */
+  click: (double?: boolean) => void
   forage: () => void
   buildOrUpgradeBarracks: () => boolean
   buildArmory: () => boolean
@@ -105,7 +104,6 @@ interface GameContextType {
   rejectMilestone: () => void
   buildLibrarium: () => boolean
   completeResearch: (id: string) => boolean
-  isResearchAvailable: (id: string) => boolean
   /** Set the fighters' rations (only an available one) */
   setRation: (id: RationId) => void
   /** Refugees at the gate: take them in, or turn them away */
@@ -253,7 +251,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (!loaded) return
       setState((prev) => {
         if (!isSystemOn(prev, 'repair') || prev.repairers <= 0 || prev.cityHp >= MAX_CITY_HP || prev.cityHp <= 0) return prev
-        const rate = getRepairRate(prev.repairers)
+        const rate = repairRateNow(prev)
         const newProgress = prev.repairProgress + rate
         const healed = Math.floor(newProgress)
         if (healed <= 0) {
@@ -282,8 +280,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [loaded, state])
 
   // One tap hits the monster; the bounty is paid and the kill counted on its death (types/monsters.ts)
-  const click = useCallback(() => {
-    setState((prev) => strike(prev).state)
+  const click = useCallback((double = false) => {
+    setState((prev) => strike(prev, tapHit(prev, double)).state)
   }, [])
 
   const forage = useCallback(() => {
@@ -488,7 +486,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           {
             id: prev.nextExpeditionId,
             startedAt: Date.now(),
-            duration: Math.floor(EXPEDITION_DURATION * (1 - getResearchBonuses(prev.completedResearch).expeditionSpeedBonus)),
+            duration: EXPEDITION_DURATION,
           },
         ],
         nextExpeditionId: prev.nextExpeditionId + 1,
@@ -505,9 +503,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const elapsed = (Date.now() - expedition.startedAt) / 1000
       if (elapsed < expedition.duration) return prev
       const pity = prev.expeditionDryStreak >= EXPEDITION_PITY_THRESHOLD
-      const rb = getResearchBonuses(prev.completedResearch)
       // The first expedition ever claimed always rescues at least 1 villager
-      const { found: villagersFound, state: base } = firstExpeditionReward(prev, rollExpeditionReward(pity, rb.expeditionFindBonus))
+      const { found: villagersFound, state: base } = firstExpeditionReward(prev, rollExpeditionReward(pity))
       result = { villagersFound }
       return {
         ...base,
@@ -623,54 +620,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // LIBRARIUM & RESEARCH
   // =========================================================================
 
-  const checkPrereqs = useCallback((prereqs: ResearchPrereq[], s: GameState): boolean => {
-    for (const p of prereqs) {
-      switch (p.type) {
-        case 'research':
-          if (!s.completedResearch.includes(p.id)) return false
-          break
-        case 'barracksLevel':
-          if (s.barracksLevel < p.level) return false
-          break
-        case 'lodgeLevel':
-          if (s.lodgeLevel < p.level) return false
-          break
-        case 'postLevel':
-          if (s.postLevel < p.level) return false
-          break
-        case 'totalInspirationEarned':
-          if (s.totalInspirationEarned < p.amount) return false
-          break
-        case 'monstersDefeated':
-          if (s.monstersDefeated < p.amount) return false
-          break
-        case 'villagersRescued':
-          if (s.villagersRescued < p.amount) return false
-          break
-      }
-    }
-    return true
-  }, [])
-
-  const isResearchAvailable = useCallback((id: string): boolean => {
-    const node = RESEARCH_NODES.find((n) => n.id === id)
-    if (!node) return false
-    if (state.completedResearch.includes(id)) return false
-    return checkPrereqs(node.prereqs, state)
-  }, [state, checkPrereqs])
-
   const buildLibrarium = useCallback((): boolean => {
     let success = false
     setState((prev) => {
-      if (prev.librariumBuilt) return prev
-      if (prev.inspiration < LIBRARIUM_COST) return prev
-      success = true
-      return {
-        ...prev,
-        inspiration: prev.inspiration - LIBRARIUM_COST,
-        totalInspirationSpent: prev.totalInspirationSpent + LIBRARIUM_COST,
-        librariumBuilt: true,
-      }
+      const next = buildLibrariumState(prev)
+      success = next !== prev
+      return next
     })
     return success
   }, [])
@@ -678,36 +633,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const completeResearch = useCallback((id: string): boolean => {
     let success = false
     setState((prev) => {
-      if (!prev.librariumBuilt) return prev
-      if (prev.completedResearch.includes(id)) return prev
-      const node = RESEARCH_NODES.find((n) => n.id === id)
-      if (!node || prev.inspiration < node.cost) return prev
-      if (!checkPrereqs(node.prereqs, prev)) return prev
-      success = true
-
-      const next = {
-        ...prev,
-        inspiration: prev.inspiration - node.cost,
-        totalInspirationSpent: prev.totalInspirationSpent + node.cost,
-        completedResearch: [...prev.completedResearch, id],
-      }
-
-      // Apply immediate effects
-      for (const effect of node.effects) {
-        switch (effect.type) {
-          case 'clickPowerBonus':
-            next.clickPower = next.clickPower + effect.value
-            break
-          case 'foragePowerBonus':
-            next.foragePower = next.foragePower + effect.value
-            break
-        }
-      }
-
+      const next = study(prev, id)
+      success = next !== prev
       return next
     })
     return success
-  }, [checkPrereqs])
+  }, [])
 
   const setRation = useCallback((id: RationId) => {
     setState((prev) => (isRationAvailable(prev, id) && prev.ration !== id ? { ...prev, ration: id } : prev))
@@ -791,7 +722,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         rejectMilestone,
         buildLibrarium,
         completeResearch,
-        isResearchAvailable,
         markBeatSeen,
         setRation,
         answerRefugees,

@@ -1,5 +1,5 @@
 import { DEFAULT_GAME_STATE } from '../state'
-import { setStoryPauseForTests } from '../story'
+import { setStoryPauseForTests, STORY_BEATS } from '../story'
 import type { GameState } from '../state'
 import { backfillStory } from '../storyMigration'
 import { isSystemOn, isBuildingRevealed } from '../systems'
@@ -7,7 +7,8 @@ import { isSystemOn, isBuildingRevealed } from '../systems'
 const v1 = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, saveMigrationVersion: 1, ...over })
 
 // These suites exercise the whole story, so lift the pause for them
-beforeAll(() => setStoryPauseForTests('the_horde_grows'))
+// Lift the pause past the last beat, so every beat can fire
+beforeAll(() => setStoryPauseForTests(STORY_BEATS[STORY_BEATS.length - 1].id))
 afterAll(() => setStoryPauseForTests())
 
 describe('backfillStory', () => {

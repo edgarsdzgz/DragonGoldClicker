@@ -1,5 +1,6 @@
 import type { GameState } from './state'
 import { roundInsp } from './utils'
+import { getResearchBonuses } from './research'
 
 // =============================================================================
 // THE DRAGON'S CLAWS (core-tap layer 3): the player's own power curve
@@ -58,6 +59,24 @@ export function sharpenClaws(s: GameState): GameState {
     inspiration: roundInsp(s.inspiration - next.cost),
     totalInspirationSpent: roundInsp(s.totalInspirationSpent + next.cost),
   }
+}
+
+/** A double strike (Weak Points) deals this many times a tap's damage */
+export const DOUBLE_STRIKE = 2
+
+/** One tap's damage with the Librarium's studies (Dragon Anatomy, Wyrm's Fury) */
+export function tapDamageNow(s: Pick<GameState, 'tapDamage' | 'completedResearch'>): number {
+  return Math.round(s.tapDamage * (1 + getResearchBonuses(s.completedResearch).tapDamageBonus) * 100) / 100
+}
+
+/** Whether a tap strikes for double, for a roll in [0, 1) (Weak Points; never before it) */
+export function rollsDouble(s: Pick<GameState, 'completedResearch'>, roll: number): boolean {
+  return roll < getResearchBonuses(s.completedResearch).doubleStrikeChance
+}
+
+/** What one tap deals: its damage now, doubled on a double strike */
+export function tapHit(s: Pick<GameState, 'tapDamage' | 'completedResearch'>, double: boolean): number {
+  return tapDamageNow(s) * (double ? DOUBLE_STRIKE : 1)
 }
 
 export type ClawTier = 'plain' | 'gold' | 'ember'

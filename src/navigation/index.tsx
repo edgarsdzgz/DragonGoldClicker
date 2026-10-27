@@ -26,6 +26,7 @@ import { useCoach } from '../context/CoachContext'
 import { CoachMark } from '../components/CoachMark'
 import { rankBlock } from '../types/army'
 import { foragerBlock } from '../types/lodge'
+import { canStudyAny } from '../types/library'
 import { JournalSheet } from '../components/JournalSheet'
 import type { SceneTab } from '../data/story/lines'
 import type { UnlockToastHandle } from '../components/UnlockToast'
@@ -48,7 +49,6 @@ import {
   getPostUpgradeCost,
   getOfflineUpgradeCost,
   LIBRARIUM_COST,
-  RESEARCH_NODES,
 } from '../types/game'
 
 import { GameScreen } from '../screens/GameScreen'
@@ -139,24 +139,7 @@ function useBuildTabBadge(): boolean {
 
     // Librarium: can build or can research
     if (!state.librariumBuilt && isBuildingRevealed(state, 'librarium') && g >= LIBRARIUM_COST) return true
-    if (state.librariumBuilt) {
-      for (const node of RESEARCH_NODES) {
-        if (!state.completedResearch.includes(node.id) && g >= node.cost) {
-          // Simple prereq check inline for badge (just check research prereqs)
-          const prereqsMet = node.prereqs.every((p) => {
-            if (p.type === 'research') return state.completedResearch.includes(p.id)
-            if (p.type === 'barracksLevel') return state.barracksLevel >= p.level
-            if (p.type === 'lodgeLevel') return state.lodgeLevel >= p.level
-            if (p.type === 'postLevel') return state.postLevel >= p.level
-            if (p.type === 'totalInspirationEarned') return state.totalInspirationEarned >= p.amount
-            if (p.type === 'monstersDefeated') return state.monstersDefeated >= p.amount
-            if (p.type === 'villagersRescued') return state.villagersRescued >= p.amount
-            return false
-          })
-          if (prereqsMet) return true
-        }
-      }
-    }
+    if (canStudyAny(state)) return true
 
     return false
   }, [state])

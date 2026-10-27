@@ -37,7 +37,6 @@ export type ScriptedEventId =
   | 'milestoneFollow'
   | 'firstExpedition'
   | 'offlineFraming'
-  | 'trainedRefugee'
 
 /** Controls a beat can pulse (Spotlight arrives in a later group) */
 export type SpotlightTarget = 'rally' | 'repair' | 'forageTab' | 'draconiaTab'
@@ -192,6 +191,21 @@ export const STORY_BEATS: BeatDef[] = [
     unlocks: [],
   },
   {
+    // Chapter 6, the Librarium (approved 2026-10-26): Lirae a minute after First Trappers. Her
+    // goals are the Raise the Librarium and First Study quests (types/library.ts).
+    id: 'the_scholar', chapter: 6, dwellSec: 60,
+    trigger: (s) => s.questsDone.includes('first_trappers'),
+    unlocks: [],
+    reveals: ['librarium'],
+    spotlight: 'draconiaTab',
+  },
+  {
+    // Rodain, a minute after the first study: the horde really grows now (5% a level, types/horde.ts)
+    id: 'the_horde_grows', chapter: 6, dwellSec: 60,
+    trigger: (s) => s.questsDone.includes('first_study'),
+    unlocks: [],
+  },
+  {
     id: 'word_spreads', chapter: 6, dwellSec: 0, side: true,
     trigger: (s) => s.totalInspirationEarned >= 25,
     unlocks: ['milestones'],
@@ -213,21 +227,6 @@ export const STORY_BEATS: BeatDef[] = [
     scripted: 'firstExpedition',
     objective: { label: 'Send an expedition', current: (s) => s.nextExpeditionId - 1, target: 1 },
   },
-  {
-    id: 'the_scholar', chapter: 10, dwellSec: 600,
-    trigger: (s) => seen(s, 'the_keep'),
-    unlocks: [],
-    reveals: ['librarium'],
-    scripted: 'trainedRefugee',
-    objective: { label: 'Build the Librarium', current: (s) => (s.librariumBuilt ? 1 : 0), target: 1 },
-  },
-  {
-    id: 'the_horde_grows', chapter: 11, dwellSec: 300,
-    trigger: (s) => s.completedResearch.length >= 1,
-    // The floor is lifted by the_wall_is_yours now (layer 6); this scene needs new words before
-    // the story reaches it ("from here, the wall is yours" has already been said)
-    unlocks: [],
-  },
 ]
 
 /**
@@ -235,7 +234,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'the_lodge'
+export const STORY_PAUSED_AFTER: BeatId = 'the_horde_grows'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

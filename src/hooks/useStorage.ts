@@ -66,13 +66,11 @@ export function useStorage() {
         if (!Array.isArray(merged.ownedWeapons)) {
           merged.ownedWeapons = []
         }
-        // Migrate removed weapons: clear old weapon IDs and recalculate clickPower
+        // Migrate removed weapons: clear old weapon IDs
         const REMOVED_WEAPONS = ['iron_sword', 'steel_blade', 'dragon_fang']
         const hadOldWeapons = (merged.ownedWeapons as string[]).some((id: string) => REMOVED_WEAPONS.includes(id))
         if (hadOldWeapons) {
           merged.ownedWeapons = (merged.ownedWeapons as string[]).filter((id: string) => !REMOVED_WEAPONS.includes(id))
-          // Reset clickPower to base (no valid old weapons carry over)
-          merged.clickPower = 0.05
         }
         if (typeof merged.soldiersTrained !== 'object' || merged.soldiersTrained === null) {
           merged.soldiersTrained = typeof merged.soldiers === 'object' && merged.soldiers !== null
@@ -109,11 +107,11 @@ export function useStorage() {
 
         // Number shrink migration: divide inspiration-economy values by 20
         if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 1) {
-          if (typeof merged.clickPower === 'number' && merged.clickPower >= 1) {
+          // A pre-shrink save is told apart by its old click power (the field is gone since the Librarium)
+          if (typeof legacy.clickPower === 'number' && legacy.clickPower >= 1) {
             merged.inspiration = roundInsp((merged.inspiration as number) / 20)
             merged.totalInspirationEarned = roundInsp((merged.totalInspirationEarned as number) / 20)
             merged.totalInspirationSpent = roundInsp((merged.totalInspirationSpent as number) / 20)
-            merged.clickPower = roundInsp((merged.clickPower as number) / 20)
           }
           const MILESTONE_REMAP: Record<number, number> = { 500: 25, 1000: 50, 2500: 125, 3500: 175 }
           if (Array.isArray(merged.milestonesOffered)) {

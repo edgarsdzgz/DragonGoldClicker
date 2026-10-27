@@ -4,6 +4,7 @@ import { FOOD_CHECK_INTERVAL, NEWCOMER_FOOD_EACH } from './food'
 import { MONSTERS } from './monsterRoster'
 import { pickNextMonster } from './spawnPool'
 import { monsterAt } from './monsters'
+import { getResearchBonuses } from './research'
 
 // =============================================================================
 // FOOD EVENTS (core-tap layer 3, phase C): pressure in waves, calm in between
@@ -60,7 +61,11 @@ export function foodEventsOn(s: GameState): boolean {
 }
 
 /** How much the gatherers bring in, scaled by a season under way */
-export function gatherMultiplier(s: Pick<GameState, 'foodEvent'>): number {
+export function gatherMultiplier(s: Pick<GameState, 'foodEvent' | 'completedResearch'>): number {
+  return seasonMultiplier(s) * (1 + getResearchBonuses(s.completedResearch).gatherBonus)
+}
+
+function seasonMultiplier(s: Pick<GameState, 'foodEvent'>): number {
   const e = s.foodEvent
   if (!e || e.phase !== 'active') return 1
   if (e.id === 'lean_season') return LEAN_MULTIPLIER

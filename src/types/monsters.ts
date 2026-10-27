@@ -4,6 +4,7 @@ import { MONSTERS } from './monsterRoster'
 import type { MonsterDef } from './monsterRoster'
 import { pickNextMonster } from './spawnPool'
 import { hordeStrength } from './horde'
+import { tapDamageNow } from './claws'
 
 export { MONSTERS } from './monsterRoster'
 export type { MonsterDef } from './monsterRoster'
@@ -117,7 +118,7 @@ export function applyDamage(s: GameState, damage: number, rand: number = Math.ra
 }
 
 /** One tap: the player's strike, counted as a click */
-export function strike(s: GameState, damage: number = s.tapDamage, rand?: number): StrikeResult {
+export function strike(s: GameState, damage: number = tapDamageNow(s), rand?: number): StrikeResult {
   const r = applyDamage(s, damage, rand)
   return { ...r, state: { ...r.state, totalClicks: s.totalClicks + 1 } }
 }

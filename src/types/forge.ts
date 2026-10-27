@@ -2,6 +2,7 @@ import type { GameState } from './state'
 import type { SoldierCounts, SoldierTier } from './soldiers'
 import { SOLDIER_TIERS, getTotalSoldiers, getSoldierCount, soldierKey } from './soldiers'
 import { roundCost, roundInsp } from './utils'
+import { getResearchBonuses } from './research'
 
 // =============================================================================
 // KAEL'S FORGE (chapter 5 phase B, approved 2026-10-26)
@@ -78,10 +79,16 @@ export function forgeGear(s: GameState, gear: Gear): GameState {
   }
 }
 
+/** How much harder an armed soldier hits: the Forge's SWORD_DAMAGE_BONUS, plus Tempered Steel */
+export function swordBonusNow(s: Pick<GameState, 'completedResearch'>): number {
+  return SWORD_DAMAGE_BONUS + getResearchBonuses(s.completedResearch).swordBonus
+}
+
 /** Damage the swords add to the army's volley (before rations and hunger) */
-export function swordVolleyBonus(s: Pick<GameState, 'soldiers' | 'armoryGear'>): number {
+export function swordVolleyBonus(s: Pick<GameState, 'soldiers' | 'armoryGear' | 'completedResearch'>): number {
   const armed = gearByRank(s.soldiers, s.armoryGear.swords)
-  return SOLDIER_TIERS.reduce((sum, t) => sum + armed[soldierKey(t.id)] * t.damage * SWORD_DAMAGE_BONUS, 0)
+  const bonus = swordBonusNow(s)
+  return SOLDIER_TIERS.reduce((sum, t) => sum + armed[soldierKey(t.id)] * t.damage * bonus, 0)
 }
 
 /**

@@ -622,7 +622,7 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
-## The Librarium: Lirae's studies (proposed 2026-10-26)
+## The Librarium: Lirae's studies (approved and built 2026-10-26)
 
 Research is the last old system behind the story pause. It was built for the idle game before
 the siege, and most of it no longer touches anything.
@@ -716,6 +716,23 @@ real choices.
    or a plain +15% to tap damage?
 4. **Studies take effect at once** (recommended), or take time to study?
 5. **Prices:** the Librarium at 200 and studies from 50 to 400?
+
+### Owner rulings (2026-10-26)
+
+All five as recommended.
+
+### As built
+
+- Effects are read where they apply: `tapDamageNow`, `rollsDouble` and `tapHit` (claws.ts),
+  `swordBonusNow` (forge.ts), the volley (army.ts), `gatherMultiplier` (foodEvents.ts),
+  `repairRateNow` (siege.ts; the repair loop and time away), the Breach losses (breach.ts).
+- The double strike is rolled on the Warfront per tap (GameScreen) and passed to `click`;
+  Battlefield shows the hit's number from what `onStrike` returns, larger and gold for a double.
+- The sword row's text follows `swordBonusNow`; the claws chip, the tap caption and the stats
+  show `tapDamageNow`.
+- `clickPower` is removed from the state; the old number-shrink migration reads it from the raw
+  save. Expedition speed and find bonuses are gone with their studies (expeditions stay paused).
+- The `trainedRefugee` script id (no handler) is removed.
 
 ---
 

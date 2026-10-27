@@ -25,12 +25,16 @@ export function armySize(s: Pick<GameState, 'fighters' | 'soldiers'>): number {
   return s.fighters + getTotalSoldiers(s.soldiers)
 }
 
-/** The volley's damage before rations and hunger: fighters, every soldier by rank, and their swords */
-export function armyVolleyDamage(s: Pick<GameState, 'fighters' | 'soldiers' | 'armoryGear'>): number {
-  return SOLDIER_TIERS.reduce(
+/**
+ * The volley's damage before rations and hunger: fighters, every soldier by rank, and their
+ * swords, then Battle Drill
+ */
+export function armyVolleyDamage(s: Pick<GameState, 'fighters' | 'soldiers' | 'armoryGear' | 'completedResearch'>): number {
+  const base = SOLDIER_TIERS.reduce(
     (sum, t) => sum + getSoldierCount(s.soldiers, t.id) * t.damage,
     s.fighters * FIGHTER_HIT_DAMAGE + swordVolleyBonus(s),
   )
+  return base * (1 + getResearchBonuses(s.completedResearch).volleyBonus)
 }
 
 /** The volley as it lands: scaled by the army's ration and how fed it is (0 when they stand down) */

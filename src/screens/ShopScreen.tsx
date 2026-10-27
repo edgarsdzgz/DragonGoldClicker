@@ -45,6 +45,7 @@ import { LibrariumInterior } from './shop/LibrariumInterior'
 import { mapStyles } from './shop/mapStyles'
 import { rankBlock } from '../types/army'
 import { foragerBlock } from '../types/lodge'
+import { canStudyAny, studiesDone } from '../types/library'
 
 // =============================================================================
 // BUILDING INTERIOR ROUTER
@@ -259,7 +260,6 @@ export function ShopScreen() {
     buildOrUpgradePost,
     buildDraconiaHall,
     buildLibrarium,
-    isResearchAvailable,
   } = useGame()
   const haptics = useHaptics()
   const playCoin = useSfx(SFX.COIN)
@@ -314,12 +314,7 @@ export function ShopScreen() {
     return upgCost !== null && state.inspiration >= upgCost
   })()
 
-  const librariumHasAction = state.librariumBuilt && (() => {
-    for (const node of RESEARCH_NODES) {
-      if (isResearchAvailable(node.id) && state.inspiration >= node.cost) return true
-    }
-    return false
-  })()
+  const librariumHasAction = canStudyAny(state)
 
   // Fogged buildings appear when their story beat reveals them (or once built)
   const revealed = (id: Parameters<typeof isBuildingRevealed>[1], built: boolean) =>
@@ -425,7 +420,7 @@ export function ShopScreen() {
       hasAction: librariumHasAction,
       resourceKeys: ['inspiration'],
       statusLabel: state.librariumBuilt
-        ? `${state.completedResearch.length}/${RESEARCH_NODES.length} researched`
+        ? `${studiesDone(state)}/${RESEARCH_NODES.length} studied`
         : undefined,
     },
     housing: {

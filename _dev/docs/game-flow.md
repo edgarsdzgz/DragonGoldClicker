@@ -111,7 +111,7 @@ Buildings are organized in wards, top to bottom:
 
 ### INNER WARD
 - **Housing** -- Multiple houses, improves productivity
-- **The Librarium** -- Research tech tree (requires teaching a Librarian)
+- **The Librarium** (200) -- Lirae's studies (chapter 6, after First Trappers)
 - **Wizard's Tower** -- Enchantments (requires finding a Wizard)
 
 ### CRAFT WARD
@@ -142,5 +142,15 @@ Buildings are organized in wards, top to bottom:
 
 ## Research (Librarium)
 
-5 categories: Economy, Military, Survival, Exploration, Mystery
-See `src/types/research.ts` for the full tech tree.
+Four branches, each a chain bought with renown that takes effect at once (`types/research.ts`
+for the tree, `types/library.ts` for the rules). The first of a branch may need its building.
+- **The Dragon:** Dragon Anatomy (60, taps +10%), Weak Points (150, 1 tap in 10 strikes for
+  double), Wyrm's Fury (400, taps +20%)
+- **The Army:** Drill Tactics (60, Garrison; ranks 10% cheaper), Tempered Steel (150, Forge;
+  swords 75%), Battle Drill (400, volleys +10%)
+- **The Stores:** Rationing (50, Lodge; 15% less eaten), Lean Rations (80, quarter rations),
+  Snares and Nets (150, foragers +25%), Feast Hall (300, double rations)
+- **The Wall:** Mortar Craft (60, repair +25%), Night Ledgers (150, Keep; +25% renown while
+  away), Evacuation Drills (400, a Breach takes a third fewer)
+
+No study raises the bounty: every HP still pays 0.05 renown.

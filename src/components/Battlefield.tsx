@@ -42,8 +42,11 @@ interface BattlefieldProps {
   damage: number
   /** The dragon's claws (layer 3): the slash grows and warms with them */
   clawLevel?: number
-  /** Called for every hit: the first press, then once per HOLD_REPEAT_MS while held */
-  onStrike: () => void
+  /**
+   * Called for every hit: the first press, then once per HOLD_REPEAT_MS while held. May return
+   * what the hit dealt (a double strike shows larger, in gold); otherwise `damage` is shown.
+   */
+  onStrike: () => StrikeShown | void
   /** Flavor line row, above the stack */
   header?: React.ReactNode
   /** Dim queue of the next monsters, above the sprite */
@@ -56,6 +59,13 @@ interface BattlefieldProps {
   locked?: boolean
   /** Opt into the guided tutorial under this target id */
   coachId?: string
+}
+
+/** What one hit dealt, for its floating number */
+export interface StrikeShown {
+  damage: number
+  /** A double strike (Weak Points) */
+  double?: boolean
 }
 
 export interface BattlefieldHandle {
@@ -210,10 +220,14 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
 
   const strike = useCallback(() => {
     if (lockedRef.current || campRef.current) return
-    onStrike()
+    const shown = onStrike()
     posed.current?.hit()
     const point = tapPoint.current
-    numbers.current?.spawn({ x: point.x, y: size * 0.3, text: `-${damage}`, color: colors.text.primary })
+    if (shown?.double) {
+      numbers.current?.spawn({ x: point.x, y: size * 0.3, text: `-${shown.damage}!`, color: gold[300], large: true })
+    } else {
+      numbers.current?.spawn({ x: point.x, y: size * 0.3, text: `-${shown?.damage ?? damage}`, color: colors.text.primary })
+    }
     slashes.current?.slash(point.x, point.y)
     if (!reduceMotion) sparks.current?.spark(point.x, point.y, size)
     // Hit-stop: the monster holds still ~50ms, then the knockback runs

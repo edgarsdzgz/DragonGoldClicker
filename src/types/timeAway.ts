@@ -1,6 +1,6 @@
 import type { GameState } from './state'
 import { isSystemOn } from './systems'
-import { MAX_CITY_HP, getRepairRate } from './siege'
+import { MAX_CITY_HP, repairRateNow } from './siege'
 import { WALL_STRIKE_SEC } from './wall'
 import { armyKillSeconds, toughestInPool } from './army'
 
@@ -32,7 +32,7 @@ export function wallWhileAway(s: GameState, seconds: number): WallAway | null {
   const held = killSec < WALL_STRIKE_SEC
   // One monster after another: each strikes every WALL_STRIKE_SEC for as long as it lives
   const strikesPerSec = Number.isFinite(killSec) ? Math.floor(killSec / WALL_STRIKE_SEC) / killSec : 1 / WALL_STRIKE_SEC
-  const change = (getRepairRate(s.repairers) - monster.wallStrike * strikesPerSec) * seconds
+  const change = (repairRateNow(s) - monster.wallStrike * strikesPerSec) * seconds
   const floor = Math.min(s.cityHp, AWAY_WALL_FLOOR)
   const hpAfter = Math.min(MAX_CITY_HP, Math.max(floor, s.cityHp + change))
   return { hpBefore: s.cityHp, hpAfter, held, monsters: monster.plural }

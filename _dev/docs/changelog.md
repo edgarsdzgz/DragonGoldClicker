@@ -2,6 +2,20 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Chapter 6: The Librarium, Lirae's studies (2026-10-26)
+- Research rebuilt around the siege: 13 studies in four branches, bought with renown and in
+  effect at once. The Dragon: taps +10%, a double strike on 1 tap in 10 (a larger gold number),
+  taps +20% more. The Army: ranks 10% cheaper, swords 75% (was 50%), volleys +10%. The Stores:
+  15% less eaten, quarter rations, foragers +25%, double rations. The Wall: repairers 25% faster,
+  25% more renown while away, a Breach takes a third fewer people. No study raises the bounty
+- The Librarium costs 200 (was 37.5). Exploration and mystery studies are removed until the
+  outpost chapter; studies of the old tree in a save are ignored. The unused `clickPower` field
+  is gone
+- Story: Lirae arrives a minute after First Trappers (quests Raise the Librarium, First Study);
+  Rodain's "They Come Bigger" follows a minute after the first study, in new words now that the
+  horde really grows. The story pauses after it; the three old side beats stay paused
+- The Librarium screen is split into tabs, a branch chain and a study card
+
 ### The balance pass (2026-10-26)
 - The horde grows 5% a level: every monster's HP (whole numbers), bounty and wall strike rise
   together, so each HP still pays 0.05 renown. An orc at horde level 27 has 46 HP, pays 2.30 and

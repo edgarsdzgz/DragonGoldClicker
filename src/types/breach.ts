@@ -6,6 +6,7 @@ import { pickNextMonster } from './spawnPool'
 import { hordeLevel, pushedBackHorde } from './horde'
 import { roundInsp } from './utils'
 import { gearByRank, swordsLostWith } from './forge'
+import { getResearchBonuses } from './research'
 
 // =============================================================================
 // THE BREACH (core-tap layer 6, phase B): the wall falls, and Draconia pays to survive it
@@ -63,21 +64,25 @@ const minusSoldiers = (a: SoldierCounts, b: SoldierCounts): SoldierCounts => ({
  * leaves the report for the player (`pendingBreach`). `rand` picks the monster that comes next.
  */
 export function resolveBreach(s: GameState, rand: number = Math.random()): GameState {
-  const fightersLost = s.fighters > 0 ? Math.max(1, share(s.fighters, BREACH_PEOPLE_LOSS)) : 0
+  // Evacuation Drills: a third fewer people fall
+  const spared = 1 - getResearchBonuses(s.completedResearch).breachLossReduction
+  const peopleLoss = BREACH_PEOPLE_LOSS * spared
+  const foragerLoss = BREACH_FORAGER_LOSS * spared
+  const fightersLost = s.fighters > 0 ? Math.max(1, share(s.fighters, peopleLoss)) : 0
   const shielded = gearByRank(s.soldiers, s.armoryGear.shields)
   const soldiersLost: SoldierCounts = {
-    conscripts: share(s.soldiers.conscripts - shielded.conscripts, BREACH_PEOPLE_LOSS),
-    footmen: share(s.soldiers.footmen - shielded.footmen, BREACH_PEOPLE_LOSS),
-    knights: share(s.soldiers.knights - shielded.knights, BREACH_PEOPLE_LOSS),
+    conscripts: share(s.soldiers.conscripts - shielded.conscripts, peopleLoss),
+    footmen: share(s.soldiers.footmen - shielded.footmen, peopleLoss),
+    knights: share(s.soldiers.knights - shielded.knights, peopleLoss),
   }
   const swordsLost = swordsLostWith(s, soldiersLost)
   const shieldedStood = shielded.conscripts + shielded.footmen + shielded.knights
-  const repairersLost = share(s.repairers, BREACH_PEOPLE_LOSS)
-  const villagersLost = share(s.villagers, BREACH_PEOPLE_LOSS)
+  const repairersLost = share(s.repairers, peopleLoss)
+  const villagersLost = share(s.villagers, peopleLoss)
   const foragersLost: ForagerCounts = {
-    gatherers: share(s.foragers.gatherers, BREACH_FORAGER_LOSS),
-    trappers: share(s.foragers.trappers, BREACH_FORAGER_LOSS),
-    rangers: share(s.foragers.rangers, BREACH_FORAGER_LOSS),
+    gatherers: share(s.foragers.gatherers, foragerLoss),
+    trappers: share(s.foragers.trappers, foragerLoss),
+    rangers: share(s.foragers.rangers, foragerLoss),
   }
   const foodLost = share(s.food, BREACH_FOOD_LOSS)
 

@@ -1,5 +1,5 @@
 import { DEFAULT_GAME_STATE } from '../state'
-import { setStoryPauseForTests } from '../story'
+import { setStoryPauseForTests, STORY_BEATS } from '../story'
 import type { GameState } from '../state'
 import { findNextBeat, effectiveDwell } from '../storyDirector'
 import { getBeat } from '../story'
@@ -7,7 +7,8 @@ import { getBeat } from '../story'
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
 // These suites exercise the whole story, so lift the pause for them
-beforeAll(() => setStoryPauseForTests('the_horde_grows'))
+// Lift the pause past the last beat, so every beat can fire
+beforeAll(() => setStoryPauseForTests(STORY_BEATS[STORY_BEATS.length - 1].id))
 afterAll(() => setStoryPauseForTests())
 
 // Everything up to sharpen_claws seen and its quest done: strangers_at_gate (dwell 60) is next
@@ -108,14 +109,19 @@ describe('findNextBeat', () => {
     expect(findNextBeat({ ...hungry, food: 10 }, 'live')).toBeNull()
   })
 
-  it('the_keep follows Restore the Keep, then the_lodge and the_scholar, before beyond_the_walls (a side beat)', () => {
+  it('the_keep follows Restore the Keep, then the_lodge, the_scholar and the_horde_grows, before the side beats', () => {
     const main = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws', 'empty_stores', 'strangers_at_gate',
       'a_city_to_build', 'the_smith', 'the_keep_stands']
     const base = { playSeconds: 99999, draconiaHallBuilt: true, totalInspirationEarned: 0 }
     expect(findNextBeat(make({ ...base, beatsSeen: main }), 'live')?.id).not.toBe('the_keep')
     expect(findNextBeat(make({ ...base, beatsSeen: main, questsDone: ['restore_the_keep'] }), 'live')?.id).toBe('the_keep')
     expect(findNextBeat(make({ ...base, beatsSeen: [...main, 'the_keep'] }), 'live')?.id).toBe('the_lodge')
-    expect(findNextBeat(make({ ...base, beatsSeen: [...main, 'the_keep', 'the_lodge'] }), 'live')?.id).toBe('the_scholar')
+    const lodge = [...main, 'the_keep', 'the_lodge']
+    expect(findNextBeat(make({ ...base, beatsSeen: lodge }), 'live')?.id).not.toBe('the_scholar')
+    expect(findNextBeat(make({ ...base, beatsSeen: lodge, questsDone: ['first_trappers'] }), 'live')?.id).toBe('the_scholar')
+    const scholar = [...lodge, 'the_scholar']
+    expect(findNextBeat(make({ ...base, beatsSeen: scholar }), 'live')?.id).not.toBe('the_horde_grows')
+    expect(findNextBeat(make({ ...base, beatsSeen: scholar, questsDone: ['first_study'] }), 'live')?.id).toBe('the_horde_grows')
   })
 
   it('fires beyond_the_walls whenever the explorer post is revealed', () => {

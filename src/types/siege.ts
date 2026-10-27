@@ -1,3 +1,6 @@
+import type { GameState } from './state'
+import { getResearchBonuses } from './research'
+
 // =============================================================================
 // SIEGE MECHANICS: the wall's HP and its repair (strikes: types/wall.ts)
 // =============================================================================
@@ -14,4 +17,9 @@ export const REPAIR_RATE_PER_REPAIRER = 0.5
  */
 export function getRepairRate(repairers: number): number {
   return repairers * REPAIR_RATE_PER_REPAIRER
+}
+
+/** HP repaired per second now, with Mortar Craft */
+export function repairRateNow(s: Pick<GameState, 'repairers' | 'completedResearch'>): number {
+  return getRepairRate(s.repairers) * (1 + getResearchBonuses(s.completedResearch).repairBonus)
 }

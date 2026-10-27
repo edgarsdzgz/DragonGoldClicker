@@ -10,7 +10,8 @@ import type { PillTab } from '../components/PillTabs'
 import { VolumeControl } from '../components/VolumeControl'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { ResourceBar } from '../components/ResourceBar'
-import { clawDef } from '../types/claws'
+import { clawDef, tapDamageNow } from '../types/claws'
+import { studiesDone } from '../types/library'
 import { useGame } from '../context/GameContext'
 import { useAudioSettings } from '../context/AudioSettingsContext'
 import { DevPanel } from './settings/DevPanel'
@@ -169,7 +170,7 @@ function StatsContent() {
         <SectionLabel spacing={2}>COMBAT</SectionLabel>
         <StatRow icon="skull" label="Monsters Defeated" value={Math.floor(state.monstersDefeated).toLocaleString()} accent />
         <StatRow icon="hand-left" label="Total Clicks" value={formatNumber(state.totalClicks)} />
-        <StatRow icon="flash" label="Tap Damage" value={String(state.tapDamage)} />
+        <StatRow icon="flash" label="Tap Damage" value={String(tapDamageNow(state))} />
       </Surface>
 
       <Surface style={styles.section}>
@@ -218,7 +219,7 @@ function StatsContent() {
       {state.librariumBuilt && (
         <Surface style={styles.section}>
           <SectionLabel spacing={2}>LIBRARIUM</SectionLabel>
-          <StatRow icon="book" label="Research Complete" value={`${state.completedResearch.length}/${RESEARCH_NODES.length}`} />
+          <StatRow icon="book" label="Research Complete" value={`${studiesDone(state)}/${RESEARCH_NODES.length}`} />
         </Surface>
       )}
 

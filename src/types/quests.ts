@@ -1,6 +1,7 @@
 import type { GameState } from './state'
 import type { BeatId } from './story'
 import { roundInsp } from './utils'
+import { studiesDone } from './library'
 
 // =============================================================================
 // QUESTS: the guided path through the game and the story
@@ -11,7 +12,7 @@ import { roundInsp } from './utils'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers' | 'raise_the_librarium' | 'first_study'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -137,6 +138,16 @@ export const QUESTS: QuestDef[] = [
     id: 'first_trappers', title: 'First Trappers',
     goals: [{ label: 'Promote 2 gatherers to trappers', target: FIRST_TRAPPERS, progress: (s) => s.foragersTrained.trappers }],
     offeredWhen: (s) => done(s, 'raise_the_lodge'),
+  },
+  {
+    id: 'raise_the_librarium', title: 'Raise the Librarium',
+    goals: [{ label: 'Build the Librarium', target: 1, progress: (s) => (s.librariumBuilt ? 1 : 0) }],
+    offeredWhen: (s) => s.beatsSeen.includes('the_scholar'),
+  },
+  {
+    id: 'first_study', title: 'First Study',
+    goals: [{ label: 'Finish a study at the Librarium', target: 1, progress: (s) => studiesDone(s) }],
+    offeredWhen: (s) => done(s, 'raise_the_librarium'),
   },
 ]
 

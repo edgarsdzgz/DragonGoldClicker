@@ -74,7 +74,6 @@ export interface GameState {
     swords: number
     shields: number
   }
-  clickPower: number
   ownedWeapons: string[]
   autoProgress: number
   /** Accumulator for food consumption (fractional seconds between checks) */
@@ -226,7 +225,6 @@ export const DEFAULT_GAME_STATE: GameState = {
   soldiers: { conscripts: 0, footmen: 0, knights: 0 },
   soldiersTrained: { conscripts: 0, footmen: 0, knights: 0 },
   armoryGear: { swords: 0, shields: 0 },
-  clickPower: 0.05,
   ownedWeapons: [],
   autoProgress: 0,
   foodTimer: 0,

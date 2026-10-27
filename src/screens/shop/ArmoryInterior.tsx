@@ -10,7 +10,6 @@ import { SFX } from '../../data/sfx'
 import { colors, gold } from '../../theme'
 import {
   SOLDIER_TIERS,
-  SWORD_DAMAGE_BONUS,
   WALL_STRIKE_SEC,
   formatNumber,
   gearBlock,
@@ -18,7 +17,8 @@ import {
   getTotalSoldiers,
   nextGearRank,
 } from '../../types/game'
-import type { Gear, GearBlock } from '../../types/game'
+import type { GameState, Gear, GearBlock } from '../../types/game'
+import { swordBonusNow } from '../../types/forge'
 import { armyKillSeconds, toughestInPool } from '../../types/army'
 import { SummaryBar } from './SummaryBar'
 import { styles } from './interiorStyles'
@@ -27,9 +27,10 @@ import { styles } from './interiorStyles'
 // GEAR ROW (Kael's Forge, chapter 5 phase B): one sword or shield for the next soldier in line
 // =============================================================================
 
-const GEAR: Record<Gear, { title: string; icon: keyof typeof Ionicons.glyphMap; does: string }> = {
-  sword: { title: 'Swords', icon: 'flash', does: `An armed soldier hits ${SWORD_DAMAGE_BONUS * 100}% harder` },
-  shield: { title: 'Shields', icon: 'shield', does: 'A shielded soldier never falls in a Breach' },
+const GEAR: Record<Gear, { title: string; icon: keyof typeof Ionicons.glyphMap; does: (s: GameState) => string }> = {
+  // Tempered Steel (the Librarium) raises it
+  sword: { title: 'Swords', icon: 'flash', does: (s) => `An armed soldier hits ${Math.round(swordBonusNow(s) * 100)}% harder` },
+  shield: { title: 'Shields', icon: 'shield', does: () => 'A shielded soldier never falls in a Breach' },
 }
 
 const BLOCK_LABEL: Record<Exclude<GearBlock, null | 'renown'>, string> = {
@@ -68,7 +69,7 @@ function GearRow({ gear }: { gear: Gear }) {
       icon={def.icon}
       iconColor={gold[400]}
       title={`${def.title} (${Math.min(held, soldiers)}/${soldiers})`}
-      subtitle={nextName ? `${def.does}. The next goes to a ${nextName}.` : `${def.does}.`}
+      subtitle={nextName ? `${def.does(state)}. The next goes to a ${nextName}.` : `${def.does(state)}.`}
       right={
         <Button
           size="xs"

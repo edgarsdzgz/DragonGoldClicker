@@ -6,7 +6,7 @@ import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
 import { Battlefield } from '../components/Battlefield'
-import type { BattlefieldHandle } from '../components/Battlefield'
+import type { BattlefieldHandle, StrikeShown } from '../components/Battlefield'
 import { useGame } from '../context/GameContext'
 import { useShakeRequest } from '../context/ShakeContext'
 import { useScreenShake } from '../hooks/useScreenShake'
@@ -27,7 +27,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
 import { Gate } from './warfront/Gate'
 import { fighterDamageMultiplier } from '../types/fedState'
-import { clawDef, canSharpen } from '../types/claws'
+import { clawDef, canSharpen, tapDamageNow, tapHit, rollsDouble } from '../types/claws'
 import { ClawsChip } from '../components/ClawsChip'
 import { ClawsSheet } from '../components/ClawsSheet'
 
@@ -66,10 +66,19 @@ export function GameScreen() {
   const haptics = useHaptics()
   const battlefieldRef = useRef<BattlefieldHandle>(null)
 
-  const handleStrike = useCallback(() => {
-    click()
+  // The latest state for the strike handler, so a held press does not rebuild it every tick
+  const stateRef = useRef(state)
+  stateRef.current = state
+
+  // Each tap may roll a double strike (Weak Points): it lands harder and feels harder
+  const handleStrike = useCallback((): StrikeShown => {
+    const s = stateRef.current
+    const double = rollsDouble(s, Math.random())
+    click(double)
     playSwing()
-    haptics.light()
+    if (double) haptics.medium()
+    else haptics.light()
+    return { damage: tapHit(s, double), double }
   }, [click, playSwing, haptics])
 
   // The army's volleys that landed: one small number each (only while the Warfront shows)
@@ -139,7 +148,7 @@ export function GameScreen() {
             monsterHp={state.monsterHp}
             hordeKills={state.hordeKills}
             kills={state.monstersDefeated}
-            damage={state.tapDamage}
+            damage={tapDamageNow(state)}
             clawLevel={state.clawLevel}
             onStrike={handleStrike}
             showName={reveal.monsterName}
@@ -207,13 +216,13 @@ export function GameScreen() {
             <CoachTarget id="claws">
               <ClawsChip
                 name={claws.name}
-                damage={state.tapDamage}
+                damage={tapDamageNow(state)}
                 canSharpen={canSharpen(state)}
                 onPress={() => setClawsOpen(true)}
               />
             </CoachTarget>
           ) : (
-            <Text variant="caption" color="link">{state.tapDamage} damage per tap</Text>
+            <Text variant="caption" color="link">{tapDamageNow(state)} damage per tap</Text>
           )}
           {showDetails && army > 0 && (
             <Text variant="caption" style={styles.allyDps}>

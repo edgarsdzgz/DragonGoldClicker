@@ -204,10 +204,10 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
   },
   the_horde_grows: {
     ...RODAIN,
-    title: 'Fifty Became Thirty',
+    title: 'They Come Bigger',
     lines: [
-      'My company is spent, Steward. Fifty became thirty.',
-      'From here, the wall is yours to keep. Do not let it fall.',
+      'They come bigger now, Steward. Every season the horde sends worse than the last.',
+      "The number beside the wall counts how far they have come. The Ink-Wing's books may be how we keep pace.",
     ],
   },
 }

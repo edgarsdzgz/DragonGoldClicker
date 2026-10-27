@@ -58,7 +58,7 @@ describe('runScripted', () => {
   })
 
   it('does not record events that have no immediate effect', () => {
-    for (const id of ['firstExpedition', 'offlineFraming', 'trainedRefugee', 'milestoneFollow'] as const) {
+    for (const id of ['firstExpedition', 'offlineFraming', 'milestoneFollow'] as const) {
       const s = runScripted(make({}), id)
       expect(hasRun(s, id)).toBe(false)
     }

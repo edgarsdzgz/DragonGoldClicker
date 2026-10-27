@@ -1,16 +1,15 @@
 import type { Ionicons } from '@expo/vector-icons'
 
 // =============================================================================
-// LIBRARIUM BUILDING
+// THE LIBRARIUM: LIRAE'S STUDIES (approved 2026-10-26)
 // =============================================================================
+// Four short chains, one per part of the siege. Each study is bought with renown and takes effect
+// at once; each needs the one before it, and the first of a branch may need its building. No
+// study raises the bounty: every HP still pays the same renown. The rules live in types/library.ts.
 
-export const LIBRARIUM_COST = 37.5
+export const LIBRARIUM_COST = 200
 
-// =============================================================================
-// RESEARCH CATEGORIES
-// =============================================================================
-
-export type ResearchCategory = 'economy' | 'military' | 'survival' | 'exploration' | 'mystery'
+export type ResearchCategory = 'dragon' | 'army' | 'stores' | 'wall'
 
 export const RESEARCH_CATEGORIES: {
   id: ResearchCategory
@@ -18,41 +17,44 @@ export const RESEARCH_CATEGORIES: {
   icon: keyof typeof Ionicons.glyphMap
   description: string
 }[] = [
-  { id: 'economy', name: 'Economy', icon: 'wallet', description: 'Renown generation and click power' },
-  { id: 'military', name: 'Military', icon: 'shield', description: 'Soldier training and combat' },
-  { id: 'survival', name: 'Survival', icon: 'leaf', description: 'Food and village growth' },
-  { id: 'exploration', name: 'Exploration', icon: 'compass', description: 'Expedition improvements' },
-  { id: 'mystery', name: '???', icon: 'help-circle', description: 'Unknown knowledge awaits' },
+  { id: 'dragon', name: 'The Dragon', icon: 'flame', description: 'Your own strike' },
+  { id: 'army', name: 'The Army', icon: 'shield', description: 'Soldiers, swords and the volley' },
+  { id: 'stores', name: 'The Stores', icon: 'leaf', description: 'Food eaten and food brought in' },
+  { id: 'wall', name: 'The Wall', icon: 'construct', description: 'Repairs, time away and the Breach' },
 ]
 
 // =============================================================================
-// RESEARCH EFFECT TYPES
+// EFFECTS
 // =============================================================================
 
 export type ResearchEffect =
-  | { type: 'clickPowerBonus'; value: number }
-  | { type: 'autoRateMultiplier'; value: number }
+  /** Taps deal this much more damage (0.1 = 10%) */
+  | { type: 'tapDamageBonus'; value: number }
+  /** The chance a tap strikes for double */
+  | { type: 'doubleStrikeChance'; value: number }
+  /** Soldier ranks cost this much less */
   | { type: 'soldierCostDiscount'; value: number }
-  | { type: 'gearBonusMultiplier'; value: number }
+  /** Added to how much harder an armed soldier hits (the Forge's 0.5) */
+  | { type: 'swordBonus'; value: number }
+  /** The army's volleys deal this much more */
+  | { type: 'volleyBonus'; value: number }
+  /** Fighters and repairers eat this much less */
   | { type: 'foodConsumptionReduction'; value: number }
-  | { type: 'foragePowerBonus'; value: number }
+  /** Foragers bring this much more food */
+  | { type: 'gatherBonus'; value: number }
+  /** Repairers mend this much faster */
+  | { type: 'repairBonus'; value: number }
+  /** Renown earned while away grows by this much */
   | { type: 'offlineMultiplier'; value: number }
-  | { type: 'expeditionSpeedBonus'; value: number }
-  | { type: 'expeditionFindBonus'; value: number }
-  | { type: 'villagerCapBonus'; value: number }
+  /** A Breach takes this share fewer people */
+  | { type: 'breachLossReduction'; value: number }
 
-// =============================================================================
-// RESEARCH NODE DEFINITION
-// =============================================================================
+/** A building a study can need: the Garrison, the Forge, the Ranger's Lodge or the Keep */
+export type ResearchBuilding = 'garrison' | 'forge' | 'lodge' | 'keep'
 
 export type ResearchPrereq =
   | { type: 'research'; id: string }
-  | { type: 'barracksLevel'; level: number }
-  | { type: 'lodgeLevel'; level: number }
-  | { type: 'postLevel'; level: number }
-  | { type: 'totalInspirationEarned'; amount: number }
-  | { type: 'monstersDefeated'; amount: number }
-  | { type: 'villagersRescued'; amount: number }
+  | { type: 'building'; building: ResearchBuilding }
 
 export interface ResearchNodeDef {
   id: string
@@ -62,180 +64,98 @@ export interface ResearchNodeDef {
   icon: keyof typeof Ionicons.glyphMap
   cost: number
   prereqs: ResearchPrereq[]
+  /** Empty for the ration unlocks: RationDef.research (types/rations.ts) names those nodes */
   effects: ResearchEffect[]
-  /** Mystery nodes are hidden until all prereqs are met */
-  mystery?: boolean
 }
 
-// =============================================================================
-// TECH TREE
-// =============================================================================
+const after = (id: string): ResearchPrereq => ({ type: 'research', id })
+const needs = (building: ResearchBuilding): ResearchPrereq => ({ type: 'building', building })
 
 export const RESEARCH_NODES: ResearchNodeDef[] = [
-  // -- ECONOMY --
+  // -- THE DRAGON --
   {
-    id: 'keen_eye',
-    name: 'Keen Eye',
-    description: 'Sharper instincts reveal more renown per strike. +0.05 click power.',
-    category: 'economy',
-    icon: 'eye',
-    cost: 15,
+    id: 'dragon_anatomy', name: 'Dragon Anatomy', category: 'dragon', icon: 'body', cost: 60,
+    description: 'Lirae has drawn where a claw does the most harm. Taps deal 10% more damage.',
     prereqs: [],
-    effects: [{ type: 'clickPowerBonus', value: 0.05 }],
+    effects: [{ type: 'tapDamageBonus', value: 0.1 }],
   },
   {
-    id: 'efficient_patrols',
-    name: 'Efficient Patrols',
-    description: 'Optimized patrol routes increase fighter renown income by 15%.',
-    category: 'economy',
-    icon: 'trending-up',
-    cost: 25,
-    prereqs: [{ type: 'barracksLevel', level: 2 }],
-    effects: [{ type: 'autoRateMultiplier', value: 0.15 }],
+    id: 'weak_points', name: 'Weak Points', category: 'dragon', icon: 'locate', cost: 150,
+    description: 'Every beast has a seam in its hide. One tap in ten strikes for double.',
+    prereqs: [after('dragon_anatomy')],
+    effects: [{ type: 'doubleStrikeChance', value: 0.1 }],
   },
   {
-    id: 'golden_harvest',
-    name: 'Golden Harvest',
-    description: 'Recovered renown is meticulously sorted. +25% offline earnings.',
-    category: 'economy',
-    icon: 'moon',
-    cost: 50,
-    prereqs: [{ type: 'research', id: 'efficient_patrols' }, { type: 'totalInspirationEarned', amount: 250 }],
-    effects: [{ type: 'offlineMultiplier', value: 0.25 }],
+    id: 'wyrms_fury', name: "Wyrm's Fury", category: 'dragon', icon: 'flame', cost: 400,
+    description: 'The old wyrms fought with their whole weight. Taps deal 20% more damage.',
+    prereqs: [after('weak_points')],
+    effects: [{ type: 'tapDamageBonus', value: 0.2 }],
   },
 
-  // -- MILITARY --
+  // -- THE ARMY --
   {
-    id: 'drill_tactics',
-    name: 'Drill Tactics',
-    description: 'Streamlined training reduces soldier recruitment cost by 10%.',
-    category: 'military',
-    icon: 'fitness',
-    cost: 20,
-    prereqs: [{ type: 'barracksLevel', level: 1 }],
-    effects: [{ type: 'soldierCostDiscount', value: 0.10 }],
+    id: 'drill_tactics', name: 'Drill Tactics', category: 'army', icon: 'fitness', cost: 60,
+    description: 'Streamlined training. Soldier ranks cost 10% less.',
+    prereqs: [needs('garrison')],
+    effects: [{ type: 'soldierCostDiscount', value: 0.1 }],
   },
   {
-    id: 'tempered_steel',
-    name: 'Tempered Steel',
-    description: 'Better forging techniques. Swords and shields are 25% more effective.',
-    category: 'military',
-    icon: 'hammer',
-    cost: 30,
-    prereqs: [{ type: 'research', id: 'drill_tactics' }],
-    effects: [{ type: 'gearBonusMultiplier', value: 0.25 }],
+    id: 'tempered_steel', name: 'Tempered Steel', category: 'army', icon: 'hammer', cost: 150,
+    description: 'Kael learns the old quench. An armed soldier hits 75% harder (was 50%).',
+    prereqs: [after('drill_tactics'), needs('forge')],
+    effects: [{ type: 'swordBonus', value: 0.25 }],
   },
   {
-    id: 'veteran_training',
-    name: 'Veteran Training',
-    description: 'Experienced soldiers pass on wisdom. Recruitment cost reduced by another 15%.',
-    category: 'military',
-    icon: 'ribbon',
-    cost: 60,
-    prereqs: [{ type: 'research', id: 'tempered_steel' }, { type: 'monstersDefeated', amount: 250 }],
-    effects: [{ type: 'soldierCostDiscount', value: 0.15 }],
+    id: 'battle_drill', name: 'Battle Drill', category: 'army', icon: 'people', cost: 400,
+    description: 'The ranks strike as one. The army\'s volleys deal 10% more.',
+    prereqs: [after('tempered_steel')],
+    effects: [{ type: 'volleyBonus', value: 0.1 }],
   },
 
-  // -- SURVIVAL --
+  // -- THE STORES --
   {
-    id: 'rationing',
-    name: 'Rationing',
-    description: 'Careful meal planning reduces food consumption by 15%.',
-    category: 'survival',
-    icon: 'restaurant',
-    cost: 17.5,
-    prereqs: [{ type: 'lodgeLevel', level: 1 }],
+    id: 'rationing', name: 'Rationing', category: 'stores', icon: 'restaurant', cost: 50,
+    description: 'Careful meal planning. Fighters and repairers eat 15% less.',
+    prereqs: [needs('lodge')],
     effects: [{ type: 'foodConsumptionReduction', value: 0.15 }],
   },
   {
-    id: 'herbalist_knowledge',
-    name: 'Herbalist Knowledge',
-    description: 'Rangers learn to find more edible plants. +0.10 forage power.',
-    category: 'survival',
-    icon: 'flower',
-    cost: 25,
-    prereqs: [{ type: 'research', id: 'rationing' }],
-    effects: [{ type: 'foragePowerBonus', value: 0.1 }],
-  },
-  {
-    // Layer 3.4: unlocks quarter rations
-    id: 'lean_rations',
-    name: 'Lean Rations',
+    id: 'lean_rations', name: 'Lean Rations', category: 'stores', icon: 'remove-circle', cost: 80,
     description: 'Fighters learn to march on little. Unlocks quarter rations: a quarter of the food, 40% of the damage.',
-    category: 'survival',
-    icon: 'remove-circle',
-    cost: 20,
-    prereqs: [{ type: 'research', id: 'rationing' }],
-    // Unlocks quarter rations: RationDef.research (types/rations.ts) names this node
+    prereqs: [after('rationing')],
     effects: [],
   },
   {
-    // Layer 3.4: unlocks double rations
-    id: 'feast_hall',
-    name: 'Feast Hall',
+    id: 'snares_and_nets', name: 'Snares and Nets', category: 'stores', icon: 'git-network', cost: 150,
+    description: 'Old ways of taking game. Foragers bring 25% more food.',
+    prereqs: [after('lean_rations')],
+    effects: [{ type: 'gatherBonus', value: 0.25 }],
+  },
+  {
+    id: 'feast_hall', name: 'Feast Hall', category: 'stores', icon: 'restaurant', cost: 300,
     description: 'A hall where fighters eat their fill before battle. Unlocks double rations: twice the food, 140% of the damage.',
-    category: 'survival',
-    icon: 'restaurant',
-    cost: 40,
-    prereqs: [{ type: 'research', id: 'lean_rations' }],
-    // Unlocks double rations: RationDef.research (types/rations.ts) names this node
+    prereqs: [after('snares_and_nets')],
     effects: [],
   },
-  {
-    id: 'frontier_settlement',
-    name: 'Frontier Settlement',
-    description: 'Expanded housing attracts more wanderers. Village capacity +5.',
-    category: 'survival',
-    icon: 'home',
-    cost: 75,
-    prereqs: [{ type: 'research', id: 'herbalist_knowledge' }, { type: 'villagersRescued', amount: 5 }],
-    effects: [{ type: 'villagerCapBonus', value: 5 }],
-  },
 
-  // -- EXPLORATION --
+  // -- THE WALL --
   {
-    id: 'cartography',
-    name: 'Cartography',
-    description: 'Detailed maps speed up expeditions by 15%.',
-    category: 'exploration',
-    icon: 'map',
-    cost: 20,
-    prereqs: [{ type: 'postLevel', level: 1 }],
-    effects: [{ type: 'expeditionSpeedBonus', value: 0.15 }],
+    id: 'mortar_craft', name: 'Mortar Craft', category: 'wall', icon: 'construct', cost: 60,
+    description: 'A better mix sets faster. Repairers mend 25% faster.',
+    prereqs: [],
+    effects: [{ type: 'repairBonus', value: 0.25 }],
   },
   {
-    id: 'keen_scouts',
-    name: 'Keen Scouts',
-    description: 'Scouts learn to spot survivors more easily. +20% find chance.',
-    category: 'exploration',
-    icon: 'search',
-    cost: 40,
-    prereqs: [{ type: 'research', id: 'cartography' }],
-    effects: [{ type: 'expeditionFindBonus', value: 0.20 }],
-  },
-
-  // -- MYSTERY --
-  {
-    id: 'mystery_ancient_texts',
-    name: '???',
-    description: 'Ancient knowledge hidden in the ruins...',
-    category: 'mystery',
-    icon: 'help-circle',
-    cost: 100,
-    prereqs: [{ type: 'totalInspirationEarned', amount: 500 }, { type: 'monstersDefeated', amount: 500 }],
-    effects: [{ type: 'clickPowerBonus', value: 0.1 }, { type: 'autoRateMultiplier', value: 0.10 }],
-    mystery: true,
+    id: 'night_ledgers', name: 'Night Ledgers', category: 'wall', icon: 'moon', cost: 150,
+    description: 'Pyreth keeps a better count while you rest. 25% more renown while away.',
+    prereqs: [after('mortar_craft'), needs('keep')],
+    effects: [{ type: 'offlineMultiplier', value: 0.25 }],
   },
   {
-    id: 'mystery_dragon_lore',
-    name: '???',
-    description: 'The dragons left secrets in the land itself...',
-    category: 'mystery',
-    icon: 'help-circle',
-    cost: 150,
-    prereqs: [{ type: 'research', id: 'mystery_ancient_texts' }, { type: 'villagersRescued', amount: 15 }],
-    effects: [{ type: 'offlineMultiplier', value: 0.50 }, { type: 'villagerCapBonus', value: 10 }],
-    mystery: true,
+    id: 'evacuation_drills', name: 'Evacuation Drills', category: 'wall', icon: 'walk', cost: 400,
+    description: 'Everyone knows where to run when the wall falls. A Breach takes a third fewer people.',
+    prereqs: [after('night_ledgers')],
+    effects: [{ type: 'breachLossReduction', value: 1 / 3 }],
   },
 ]
 
@@ -251,63 +171,27 @@ export function getNodesByCategory(category: ResearchCategory): ResearchNodeDef[
   return RESEARCH_NODES.filter((n) => n.category === category)
 }
 
-/** Aggregate all active research bonuses from completed research IDs */
-export interface ResearchBonuses {
-  autoRateMultiplier: number
-  soldierCostDiscount: number
-  gearBonusMultiplier: number
-  foodConsumptionReduction: number
-  offlineMultiplier: number
-  expeditionSpeedBonus: number
-  expeditionFindBonus: number
-  villagerCapBonus: number
+/** Every effect of the finished studies, summed (0 for none) */
+export type ResearchBonuses = Record<ResearchEffect['type'], number>
+
+const NO_BONUSES: ResearchBonuses = {
+  tapDamageBonus: 0,
+  doubleStrikeChance: 0,
+  soldierCostDiscount: 0,
+  swordBonus: 0,
+  volleyBonus: 0,
+  foodConsumptionReduction: 0,
+  gatherBonus: 0,
+  repairBonus: 0,
+  offlineMultiplier: 0,
+  breachLossReduction: 0,
 }
 
+/** Sum the effects of the finished studies. Unknown ids (studies of the old tree) are ignored. */
 export function getResearchBonuses(completedIds: string[]): ResearchBonuses {
-  const bonuses: ResearchBonuses = {
-    autoRateMultiplier: 0,
-    soldierCostDiscount: 0,
-    gearBonusMultiplier: 0,
-    foodConsumptionReduction: 0,
-    offlineMultiplier: 0,
-    expeditionSpeedBonus: 0,
-    expeditionFindBonus: 0,
-    villagerCapBonus: 0,
-  }
-
+  const bonuses = { ...NO_BONUSES }
   for (const id of completedIds) {
-    const node = RESEARCH_NODES.find((n) => n.id === id)
-    if (!node) continue
-    for (const effect of node.effects) {
-      switch (effect.type) {
-        case 'autoRateMultiplier':
-          bonuses.autoRateMultiplier += effect.value
-          break
-        case 'soldierCostDiscount':
-          bonuses.soldierCostDiscount += effect.value
-          break
-        case 'gearBonusMultiplier':
-          bonuses.gearBonusMultiplier += effect.value
-          break
-        case 'foodConsumptionReduction':
-          bonuses.foodConsumptionReduction += effect.value
-          break
-        case 'offlineMultiplier':
-          bonuses.offlineMultiplier += effect.value
-          break
-        case 'expeditionSpeedBonus':
-          bonuses.expeditionSpeedBonus += effect.value
-          break
-        case 'expeditionFindBonus':
-          bonuses.expeditionFindBonus += effect.value
-          break
-        case 'villagerCapBonus':
-          bonuses.villagerCapBonus += effect.value
-          break
-        // clickPowerBonus and foragePowerBonus are applied immediately on purchase
-      }
-    }
+    for (const effect of getResearchNode(id)?.effects ?? []) bonuses[effect.type] += effect.value
   }
-
   return bonuses
 }
