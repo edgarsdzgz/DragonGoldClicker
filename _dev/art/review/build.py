@@ -27,7 +27,7 @@ PENDING = ("Icon sheet 4: the last twelve interface icons, with the owner's pick
     ("09-icons-4/out/icon_rank.png", "Rank"), ("09-icons-4/out/icon_shield_gear.png", "Shield gear"),
     ("09-icons-4/out/icon_claws.png", "Claws"), ("09-icons-4/out/icon_moon.png", "Offline, rest"),
     ("09-icons-4/out/icon_sparkles.png", "Wizard's Tower"), ("09-icons-4/out/icon_map.png", "Map"),
-    ("09-icons-4/out/icon_stats.png", "Stats (open: see the options page)")])
+    ("08-food-journal/out/icon_journal_quill.png", "Stats (quill and inkpot)")])
 MOTION = [
     (AGENT / "01-test-run/preview/scene_warfront.gif", "The fighter's jab and the hit spark on the Warfront wall"),
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),
