@@ -1,0 +1,270 @@
+[
+ {
+  "name": "icon_res_gem_shard_emerald",
+  "file": "icon_res_gem_shard_emerald.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,2",
+   "single-pixel island at 10,8"
+  ]
+ },
+ {
+  "name": "icon_res_gem_shard_azure",
+  "file": "icon_res_gem_shard_azure.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,2",
+   "single-pixel island at 10,8"
+  ]
+ },
+ {
+  "name": "icon_res_gem_shard_rose",
+  "file": "icon_res_gem_shard_rose.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,2",
+   "single-pixel island at 10,8"
+  ]
+ },
+ {
+  "name": "icon_res_gem_shard_magenta",
+  "file": "icon_res_gem_shard_magenta.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,2",
+   "single-pixel island at 10,8"
+  ]
+ },
+ {
+  "name": "icon_res_gem_shard_teal",
+  "file": "icon_res_gem_shard_teal.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,2",
+   "single-pixel island at 10,8"
+  ]
+ },
+ {
+  "name": "icon_res_gem_brilliant_emerald",
+  "file": "icon_res_gem_brilliant_emerald.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 3,6"
+  ]
+ },
+ {
+  "name": "icon_res_gem_brilliant_azure",
+  "file": "icon_res_gem_brilliant_azure.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 3,6"
+  ]
+ },
+ {
+  "name": "icon_res_gem_brilliant_rose",
+  "file": "icon_res_gem_brilliant_rose.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 3,6"
+  ]
+ },
+ {
+  "name": "icon_res_gem_brilliant_magenta",
+  "file": "icon_res_gem_brilliant_magenta.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 3,6"
+  ]
+ },
+ {
+  "name": "icon_res_gem_brilliant_teal",
+  "file": "icon_res_gem_brilliant_teal.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 3,6"
+  ]
+ },
+ {
+  "name": "icon_res_gem_emerald_emerald",
+  "file": "icon_res_gem_emerald_emerald.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 5,4"
+  ]
+ },
+ {
+  "name": "icon_res_gem_emerald_azure",
+  "file": "icon_res_gem_emerald_azure.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 5,4"
+  ]
+ },
+ {
+  "name": "icon_res_gem_emerald_rose",
+  "file": "icon_res_gem_emerald_rose.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 5,4"
+  ]
+ },
+ {
+  "name": "icon_res_gem_emerald_magenta",
+  "file": "icon_res_gem_emerald_magenta.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 5,4"
+  ]
+ },
+ {
+  "name": "icon_res_gem_emerald_teal",
+  "file": "icon_res_gem_emerald_teal.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,1",
+   "single-pixel island at 5,4"
+  ]
+ },
+ {
+  "name": "icon_res_steel_hammer_front",
+  "file": "icon_res_steel_hammer_front.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_steel_hammer_lean",
+  "file": "icon_res_steel_hammer_lean.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,7"
+  ]
+ }
+]

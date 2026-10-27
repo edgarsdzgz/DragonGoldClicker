@@ -1,0 +1,324 @@
+# Gems and hammer options, 2026-10-26. Written by make_options.py.
+
+# Dragon Anatomy gem: a tall shard, faceted, with a twinkle beside it, green
+@asset icon_res_gem_shard_emerald
+size 12 12
+budget 8
+key a=ink W=steel5 H=emerald4 L=emerald3 m=emerald2 d=emerald1
+frame
+...aa....a..
+..aWHa..aHa.
+.aLHmdaaHWHa
+.aLHmda.aHa.
+aLLHmdda.a..
+aLLHmmda....
+aLLHmmda....
+aLLmmdda..a.
+.aLmmda..aWa
+..aLda....a.
+...aa.......
+............
+
+# Dragon Anatomy gem: a tall shard, faceted, with a twinkle beside it, electric blue
+@asset icon_res_gem_shard_azure
+size 12 12
+budget 8
+key a=ink W=steel5 H=azure4 L=azure3 m=azure2 d=azure1
+frame
+...aa....a..
+..aWHa..aHa.
+.aLHmdaaHWHa
+.aLHmda.aHa.
+aLLHmdda.a..
+aLLHmmda....
+aLLHmmda....
+aLLmmdda..a.
+.aLmmda..aWa
+..aLda....a.
+...aa.......
+............
+
+# Dragon Anatomy gem: a tall shard, faceted, with a twinkle beside it, pink
+@asset icon_res_gem_shard_rose
+size 12 12
+budget 8
+key a=ink W=steel5 H=rose4 L=rose3 m=rose2 d=rose1
+frame
+...aa....a..
+..aWHa..aHa.
+.aLHmdaaHWHa
+.aLHmda.aHa.
+aLLHmdda.a..
+aLLHmmda....
+aLLHmmda....
+aLLmmdda..a.
+.aLmmda..aWa
+..aLda....a.
+...aa.......
+............
+
+# Dragon Anatomy gem: a tall shard, faceted, with a twinkle beside it, magenta
+@asset icon_res_gem_shard_magenta
+size 12 12
+budget 8
+key a=ink W=steel5 H=magenta4 L=magenta3 m=magenta2 d=magenta1
+frame
+...aa....a..
+..aWHa..aHa.
+.aLHmdaaHWHa
+.aLHmda.aHa.
+aLLHmdda.a..
+aLLHmmda....
+aLLHmmda....
+aLLmmdda..a.
+.aLmmda..aWa
+..aLda....a.
+...aa.......
+............
+
+# Dragon Anatomy gem: a tall shard, faceted, with a twinkle beside it, teal
+@asset icon_res_gem_shard_teal
+size 12 12
+budget 8
+key a=ink W=steel5 H=teal4 L=teal3 m=teal2 d=teal1
+frame
+...aa....a..
+..aWHa..aHa.
+.aLHmdaaHWHa
+.aLHmda.aHa.
+aLLHmdda.a..
+aLLHmmda....
+aLLHmmda....
+aLLmmdda..a.
+.aLmmda..aWa
+..aLda....a.
+...aa.......
+............
+
+# Dragon Anatomy gem: a brilliant cut seen from the side: table, crown and pavilion, green
+@asset icon_res_gem_brilliant_emerald
+size 12 12
+budget 8
+key a=ink W=steel5 H=emerald4 L=emerald3 m=emerald2 d=emerald1
+frame
+..........a.
+.........aWa
+...aaaaaa.a.
+..aLHHHHma..
+.aLLHWHmmda.
+aLLLmmmmddda
+.aLHLmmmdda.
+..aLHmmdda..
+...aLHmda...
+....aLda....
+.....aa.....
+............
+
+# Dragon Anatomy gem: a brilliant cut seen from the side: table, crown and pavilion, electric blue
+@asset icon_res_gem_brilliant_azure
+size 12 12
+budget 8
+key a=ink W=steel5 H=azure4 L=azure3 m=azure2 d=azure1
+frame
+..........a.
+.........aWa
+...aaaaaa.a.
+..aLHHHHma..
+.aLLHWHmmda.
+aLLLmmmmddda
+.aLHLmmmdda.
+..aLHmmdda..
+...aLHmda...
+....aLda....
+.....aa.....
+............
+
+# Dragon Anatomy gem: a brilliant cut seen from the side: table, crown and pavilion, pink
+@asset icon_res_gem_brilliant_rose
+size 12 12
+budget 8
+key a=ink W=steel5 H=rose4 L=rose3 m=rose2 d=rose1
+frame
+..........a.
+.........aWa
+...aaaaaa.a.
+..aLHHHHma..
+.aLLHWHmmda.
+aLLLmmmmddda
+.aLHLmmmdda.
+..aLHmmdda..
+...aLHmda...
+....aLda....
+.....aa.....
+............
+
+# Dragon Anatomy gem: a brilliant cut seen from the side: table, crown and pavilion, magenta
+@asset icon_res_gem_brilliant_magenta
+size 12 12
+budget 8
+key a=ink W=steel5 H=magenta4 L=magenta3 m=magenta2 d=magenta1
+frame
+..........a.
+.........aWa
+...aaaaaa.a.
+..aLHHHHma..
+.aLLHWHmmda.
+aLLLmmmmddda
+.aLHLmmmdda.
+..aLHmmdda..
+...aLHmda...
+....aLda....
+.....aa.....
+............
+
+# Dragon Anatomy gem: a brilliant cut seen from the side: table, crown and pavilion, teal
+@asset icon_res_gem_brilliant_teal
+size 12 12
+budget 8
+key a=ink W=steel5 H=teal4 L=teal3 m=teal2 d=teal1
+frame
+..........a.
+.........aWa
+...aaaaaa.a.
+..aLHHHHma..
+.aLLHWHmmda.
+aLLLmmmmddda
+.aLHLmmmdda.
+..aLHmmdda..
+...aLHmda...
+....aLda....
+.....aa.....
+............
+
+# Dragon Anatomy gem: an emerald (step) cut seen from above: two steps and a glinting table, green
+@asset icon_res_gem_emerald_emerald
+size 12 12
+budget 8
+key a=ink W=steel5 H=emerald4 L=emerald3 m=emerald2 d=emerald1
+frame
+...aaaaaa.a.
+..aLLLLLLaWa
+.aLmmmmmmda.
+.aLmHHHHmda.
+.aLmHWHHmda.
+.aLmHHHHmda.
+.aLmHHHLmda.
+.aLmHHLLmda.
+.aLmmmmmmda.
+..adddddda..
+...aaaaaa...
+............
+
+# Dragon Anatomy gem: an emerald (step) cut seen from above: two steps and a glinting table, electric blue
+@asset icon_res_gem_emerald_azure
+size 12 12
+budget 8
+key a=ink W=steel5 H=azure4 L=azure3 m=azure2 d=azure1
+frame
+...aaaaaa.a.
+..aLLLLLLaWa
+.aLmmmmmmda.
+.aLmHHHHmda.
+.aLmHWHHmda.
+.aLmHHHHmda.
+.aLmHHHLmda.
+.aLmHHLLmda.
+.aLmmmmmmda.
+..adddddda..
+...aaaaaa...
+............
+
+# Dragon Anatomy gem: an emerald (step) cut seen from above: two steps and a glinting table, pink
+@asset icon_res_gem_emerald_rose
+size 12 12
+budget 8
+key a=ink W=steel5 H=rose4 L=rose3 m=rose2 d=rose1
+frame
+...aaaaaa.a.
+..aLLLLLLaWa
+.aLmmmmmmda.
+.aLmHHHHmda.
+.aLmHWHHmda.
+.aLmHHHHmda.
+.aLmHHHLmda.
+.aLmHHLLmda.
+.aLmmmmmmda.
+..adddddda..
+...aaaaaa...
+............
+
+# Dragon Anatomy gem: an emerald (step) cut seen from above: two steps and a glinting table, magenta
+@asset icon_res_gem_emerald_magenta
+size 12 12
+budget 8
+key a=ink W=steel5 H=magenta4 L=magenta3 m=magenta2 d=magenta1
+frame
+...aaaaaa.a.
+..aLLLLLLaWa
+.aLmmmmmmda.
+.aLmHHHHmda.
+.aLmHWHHmda.
+.aLmHHHHmda.
+.aLmHHHLmda.
+.aLmHHLLmda.
+.aLmmmmmmda.
+..adddddda..
+...aaaaaa...
+............
+
+# Dragon Anatomy gem: an emerald (step) cut seen from above: two steps and a glinting table, teal
+@asset icon_res_gem_emerald_teal
+size 12 12
+budget 8
+key a=ink W=steel5 H=teal4 L=teal3 m=teal2 d=teal1
+frame
+...aaaaaa.a.
+..aLLLLLLaWa
+.aLmmmmmmda.
+.aLmHHHHmda.
+.aLmHWHHmda.
+.aLmHHHHmda.
+.aLmHHHLmda.
+.aLmHHLLmda.
+.aLmmmmmmda.
+..adddddda..
+...aaaaaa...
+............
+
+# Tempered Steel: the cross-peen hammer lying in front of Kael's anvil
+@asset icon_res_steel_hammer_front
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4 D=wood2
+frame
+............
+..aaaaaaaaa.
+.ahhhhhhhhha
+..aammmmmmsa
+....ammmsaa.
+....ammmsaa.
+.aaammmmmmsa
+aHHHassssssa
+aHMSaaaaaaa.
+aHMSwwwwwwwa
+.aMaaaaaaaa.
+..a.........
+
+# Tempered Steel: the cross-peen hammer leaning across the front of Kael's anvil
+@asset icon_res_steel_hammer_lean
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4 D=wood2
+frame
+....aa......
+..aaHMaaaaa.
+.aaHMSahhhha
+.aHMSammmmsa
+aHMwDammsaa.
+aMSawDamsaa.
+.aaaawDammsa
+...asawDassa
+....aaawDaa.
+.......awDa.
+........awa.
+.........a..

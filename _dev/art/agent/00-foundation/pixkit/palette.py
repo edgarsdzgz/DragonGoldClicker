@@ -19,6 +19,13 @@ RAMPS = {
     "orc": ["4e6046", "708662", "869c74"],
     # Fishfolk: sea teal, kept apart from the kobold's olive and any lizard green.
     "sea": ["24505a", "3e8a96", "78c0c0"],
+    # Gems (2026-10-26): saturated jewel ramps, dark to highlight, so a magic stone stands out
+    # among the gold and brown. Owner asked for green, electric blue, pink, magenta and teal.
+    "emerald": ["0f4a36", "1c8256", "34c47a", "a6f2c4"],
+    "azure": ["1a3480", "2a68dc", "54b0ff", "c4ecff"],
+    "rose": ["8a2a58", "d24e8a", "f48cb8", "ffd6e8"],
+    "magenta": ["561866", "9c2a9e", "d458d6", "f6b2f2"],
+    "teal": ["145656", "1fa09c", "52dccc", "bef8ee"],
 }
 
 # Colors that keep their value at night (README section 4).

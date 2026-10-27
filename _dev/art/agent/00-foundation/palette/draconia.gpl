@@ -46,3 +46,23 @@ Columns: 8
  36  80  90	sea1
  62 138 150	sea2
 120 192 192	sea3
+ 15  74  54	emerald1
+ 28 130  86	emerald2
+ 52 196 122	emerald3
+166 242 196	emerald4
+ 26  52 128	azure1
+ 42 104 220	azure2
+ 84 176 255	azure3
+196 236 255	azure4
+138  42  88	rose1
+210  78 138	rose2
+244 140 184	rose3
+255 214 232	rose4
+ 86  24 102	magenta1
+156  42 158	magenta2
+212  88 214	magenta3
+246 178 242	magenta4
+ 20  86  86	teal1
+ 31 160 156	teal2
+ 82 220 204	teal3
+190 248 238	teal4
