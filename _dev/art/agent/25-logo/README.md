@@ -35,8 +35,10 @@ small spaced caps.
 - **A's slam dust, v2** (owner: "more all around the shield, to make the impact more impactful"): a ring
   of uneven puffs bursts from behind the whole shield, spreads and breaks up over four frames. The first
   cut is kept as `out/logo_anim_frames_strip19_v1.png` and `preview/logo_anim_v1.gif`.
-- **The studio intro** (owner: "a supertitle RAXDEG STUDIOS", `src/make_studio_intro.py`): logo A's slam
-  and slash with RAXDEG STUDIOS above the shield in a five-by-seven gold face, lighter than the game's
-  wordmark. The name fades in out of the dark once the shield is whole, then holds; about 3.9 seconds.
-  Output: `studio_intro_frames_strip22.png`, `studio_intro_timing.json`, `studio_card.png` (88x83, the
-  last frame), `preview/studio_intro.gif`.
+- **The studio intro** (owner: "using the shield as the animation for RAXDEG STUDIOS. I want the letters to
+  be part of it. Maybe slash across the top from left to right"; `src/make_studio_intro.py`): logo A's
+  slam and claws, then one more slash rips across the top left to right and carves RAXDEG STUDIOS (a
+  five-by-seven gold face, lighter than the game's wordmark); the letters burn white-hot behind the slash
+  and cool to gold. About 4.1 seconds, then it holds. Output: `studio_intro_frames_strip31.png`,
+  `studio_intro_timing.json`, `studio_card.png` (88x83, the last frame), `preview/studio_intro.gif`. The
+  first cut, with the name fading in, is kept as `*_v1`.

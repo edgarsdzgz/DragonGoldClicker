@@ -61,15 +61,16 @@ intro = HERE / "preview" / "studio_intro.gif"
 si = Image.open(intro)
 studio = (f'<figure><img src="data:image/gif;base64,{base64.b64encode(intro.read_bytes()).decode()}" '
           f'width="{si.width}" height="{si.height}" alt="The Raxdeg Studios intro"><figcaption>The studio intro, x3: '
-          f'the slam and the slash, then RAXDEG STUDIOS fades in</figcaption></figure>')
+          f'the slam, the claws, then one more slash carves RAXDEG STUDIOS</figcaption></figure>')
 anim = HERE / "preview" / "logo_anim.gif"
 a = Image.open(anim)
 chosen = (f'<figure><img src="data:image/gif;base64,{base64.b64encode(anim.read_bytes()).decode()}" '
           f'width="{a.width}" height="{a.height}" alt="Logo A in motion"><figcaption>A in motion, x4: the slam, '
           f'the claws, the debris</figcaption></figure>') + chosen
-cards = ('<h3>The studio intro: RAXDEG STUDIOS</h3><p class="muted">Logo A&rsquo;s slam and slash with the studio&rsquo;s '
-         'name as a supertitle. Once the shield is whole, the name fades in out of the dark, then holds; about '
-         '3.9 seconds. It would play before the game&rsquo;s splash.</p>'
+cards = ('<h3>The studio intro: RAXDEG STUDIOS</h3><p class="muted">The shield as the studio&rsquo;s animation. After '
+         'the claws, one more slash rips across the top from left to right and carves the name out of the dark: '
+         'the letters burn white-hot in its wake and cool to gold. About 4.1 seconds, then it holds. It would '
+         'play before the game&rsquo;s splash.</p>'
          f'<div class="tiles">{studio}</div>')
 cards += ('<h3>Chosen: A is the logo and app icon, B is the splash</h3><p class="muted">The splash fades in from '
          'the dark one piece at a time in palette steps (silhouette, dusk, lit), 5.8 seconds in all, ending on a hold. A also has an intro of its own: the shield slams in from the foreground, the claws rip upward, the debris settles, about 3 seconds.</p>'
