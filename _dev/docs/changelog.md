@@ -2,6 +2,12 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Fix: "Reassign all" moves everyone (2026-10-26)
+- The Keep's "all" moved one person and stopped; it now moves everyone in one step (stopping at
+  the forager cap or when nobody is left). Sharpening the claws and studying decide their sound
+  and buzz from the rule checked first, so they never miss. Game actions no longer return a
+  success flag (it was unreliable after the first update in a tap)
+
 ### Chapter 6: The Librarium, Lirae's studies (2026-10-26)
 - Research rebuilt around the siege: 13 studies in four branches, bought with renown and in
   effect at once. The Dragon: taps +10%, a double strike on 1 tap in 10 (a larger gold number),

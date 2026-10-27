@@ -1,4 +1,4 @@
-# Roadmap after Chapter 6 (proposed 2026-10-26)
+# Roadmap after Chapter 6 (approved 2026-10-26)
 
 **Where the game stands:** the story runs through Chapter 6 (the Librarium) and pauses after
 Rodain's "They Come Bigger". Everything before the pause has been rebuilt for the siege. What
@@ -21,7 +21,7 @@ This file sets the order and how each step is run. Each step still gets its own 
 
 ---
 
-## Step 1: Fix "Reassign all" and the success reports (small)
+## Step 1: Fix "Reassign all" and the success reports (small; built 2026-10-26)
 
 **The bug.** Each GameContext action reports whether it worked by setting a flag inside a React
 state update. React runs the first update in a tap at once, but later ones in the same tap only
@@ -39,6 +39,12 @@ forging, training). The single call is usually right, but not guaranteed.
 - A sweep of every caller that uses the returned flag, listed in the commit.
 
 No story or balance change. Small enough to build straight after this roadmap is approved.
+
+**As built.** `moveMany` moves everyone in one update; "all" passes the count. Only three
+screens read a returned flag (sharpen the claws, Reassign all, a study); the first and last now
+check `canSharpen` / `researchBlock` before acting. Every GameContext action now returns nothing,
+so a screen that tests the result no longer compiles. Left for Chapter 7: `claimExpedition`
+returns its report the same unreliable way (expeditions are paused).
 
 ---
 
@@ -58,6 +64,8 @@ Three side stories are paused, all written for the old idle game:
   player a way to grow the city other than waiting for wanderers. Prices and timings on today's
   scale; Mirael as its voice; quests in the usual pattern.
 - **The exploration studies come back** with it (faster expeditions, better finds).
+- **`claimExpedition`'s report** (how many were found) comes from inside a state update, the
+  flaw Step 1 fixed elsewhere; the rebuild computes the reward before the update.
 - **A ruling on the other two.** My starting point: retire `word_spreads` (the wanderers already
   do its job), and either fold `lean_times` into Chapter 7 or retire it. The plan will lay out
   both with numbers.
@@ -85,6 +93,11 @@ higher levels with the growing horde in mind.
   side mode or delete it; it does not follow the horde's strength or the studies today.
 
 ---
+
+## Owner rulings (2026-10-26)
+
+All three as recommended: the fix now, then the Chapter 7 plan, then claws and the bigger tracks;
+the fix built without a separate plan; the owner plays each build before the next plan.
 
 ## Open questions
 

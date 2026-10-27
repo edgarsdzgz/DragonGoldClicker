@@ -103,6 +103,20 @@ export function movePerson(s: GameState, from: RoleId, to: RoleId): GameState {
   return withCount(withCount(s, from, -1), to, 1)
 }
 
+/**
+ * Move up to `count` people at once (the dialog's "all"), stopping when the next move is blocked
+ * (nobody left, or no room under the forager cap). One update, so every move lands.
+ */
+export function moveMany(s: GameState, from: RoleId, to: RoleId, count: number): GameState {
+  let next = s
+  for (let i = 0; i < count; i++) {
+    const moved = movePerson(next, from, to)
+    if (moved === next) break
+    next = moved
+  }
+  return next
+}
+
 /** A row in the Keep's move dialog */
 export interface ReassignOption {
   target: RoleId

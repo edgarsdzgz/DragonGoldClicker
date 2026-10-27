@@ -188,14 +188,7 @@ export function DraconiaHallInterior() {
 
   const handleReassignSelect = (target: RoleId, all: boolean) => {
     if (!reassignFrom) return
-    if (all) {
-      const count = reassignCount
-      for (let i = 0; i < count; i++) {
-        if (!reassignRole(reassignFrom, target)) break
-      }
-    } else {
-      reassignRole(reassignFrom, target)
-    }
+    reassignRole(reassignFrom, target, all ? reassignCount : 1)
     // Modal stays open -- auto-closed by effect when count reaches 0
   }
 

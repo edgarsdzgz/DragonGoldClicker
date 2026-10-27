@@ -7,6 +7,7 @@ import { getNodesByCategory } from '../../types/game'
 import type { ResearchCategory } from '../../types/game'
 import { BRANCH_COLORS, LIB } from './researchPalette'
 import { ResearchNode } from './ResearchNode'
+import { researchBlock } from '../../types/library'
 
 /** The line between two studies: lit once the one above is done */
 function Connector({ lit, color }: { lit: boolean; color: string }) {
@@ -27,8 +28,11 @@ export function ResearchBranch({ category }: { category: ResearchCategory }) {
   const color = BRANCH_COLORS[category]
   const nodes = getNodesByCategory(category)
 
+  // Feedback follows the rule checked before the action (an action's own report is not reliable)
   const onStudy = (id: string) => {
-    if (completeResearch(id)) haptics.medium()
+    if (researchBlock(state, id) !== null) return
+    completeResearch(id)
+    haptics.medium()
   }
 
   return (

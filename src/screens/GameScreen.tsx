@@ -117,11 +117,12 @@ export function GameScreen() {
   const claws = clawDef(state.clawLevel)
   const [clawsOpen, setClawsOpen] = useState(false)
   const playSharpen = useSfx(SFX.COIN)
+  // Feedback follows the rule checked before the action (an action's own report is not reliable)
   const handleSharpen = useCallback(() => {
-    if (sharpenClaws()) {
-      playSharpen()
-      haptics.medium()
-    }
+    if (!canSharpen(stateRef.current)) return
+    sharpenClaws()
+    playSharpen()
+    haptics.medium()
   }, [sharpenClaws, playSharpen, haptics])
 
   return (

@@ -55,7 +55,7 @@ import { buildLibrarium as buildLibrariumState, study } from '../types/library'
 import { armySize, armyVolleyNow, makeRank as makeRankState } from '../types/army'
 import { forgeGear } from '../types/forge'
 import { makeForager as makeForagerState } from '../types/lodge'
-import { movePerson } from '../types/reassignment'
+import { moveMany } from '../types/reassignment'
 import type { Gear } from '../types/forge'
 import { useStorage } from '../hooks/useStorage'
 import type { OfflineEarnings } from '../hooks/useStorage'
@@ -66,21 +66,22 @@ interface GameContextType {
   /** One tap at the Gate; `double` when it rolled a double strike (Weak Points) */
   click: (double?: boolean) => void
   forage: () => void
-  buildOrUpgradeBarracks: () => boolean
-  buildArmory: () => boolean
+  buildOrUpgradeBarracks: () => void
+  buildArmory: () => void
   /** Train a fighter into a conscript, or promote a soldier one rank up (types/army.ts) */
-  makeRank: (tier: SoldierTier) => boolean
-  buySword: () => boolean
-  buyShield: () => boolean
-  upgradeOffline: () => boolean
-  buildOrUpgradeLodge: () => boolean
-  trainForager: (tier: ForagerTier) => boolean
-  buildOrUpgradePost: () => boolean
-  trainExplorer: () => boolean
-  sendExpedition: () => boolean
+  makeRank: (tier: SoldierTier) => void
+  buySword: () => void
+  buyShield: () => void
+  upgradeOffline: () => void
+  buildOrUpgradeLodge: () => void
+  trainForager: (tier: ForagerTier) => void
+  buildOrUpgradePost: () => void
+  trainExplorer: () => void
+  sendExpedition: () => void
   claimExpedition: (id: number) => { villagersFound: number } | null
-  buildDraconiaHall: () => boolean
-  reassignRole: (from: RoleId, to: RoleId) => boolean
+  buildDraconiaHall: () => void
+  /** Move `count` people (default 1) between jobs at the Keep */
+  reassignRole: (from: RoleId, to: RoleId, count?: number) => void
   autoFoodRate: number
   foodWarningLevel: 0 | 3 | 1
   resetGame: () => void
@@ -93,17 +94,17 @@ interface GameContextType {
   pendingWanderer: WandererEncounter | null
   acceptWanderer: () => void
   rejectWanderer: () => void
-  rallyFighter: () => boolean
-  directRepairer: () => boolean
+  rallyFighter: () => void
+  directRepairer: () => void
   /** Buy the next level of the dragon's claws (layer 3) */
-  sharpenClaws: () => boolean
+  sharpenClaws: () => void
   /** Clears the last Breach's report once the player has read it (layer 6) */
   dismissBreach: () => void
   pendingMilestone: MilestoneDef | null
   acceptMilestone: () => void
   rejectMilestone: () => void
-  buildLibrarium: () => boolean
-  completeResearch: (id: string) => boolean
+  buildLibrarium: () => void
+  completeResearch: (id: string) => void
   /** Set the fighters' rations (only an available one) */
   setRation: (id: RationId) => void
   /** Refugees at the gate: take them in, or turn them away */
@@ -299,13 +300,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     })
   }, [])
 
-  const rallyFighter = useCallback((): boolean => {
-    let rallied = false
+  const rallyFighter = useCallback(() => {
     setState((prev) => {
       if (prev.villagers <= 0) return prev
       const cost = getFighterCost(prev.fightersRallied)
       if (prev.inspiration < cost) return prev
-      rallied = true
       return {
         ...prev,
         inspiration: prev.inspiration - cost,
@@ -315,17 +314,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         fightersRallied: prev.fightersRallied + 1,
       }
     })
-    return rallied
   }, [])
 
-  const directRepairer = useCallback((): boolean => {
-    let directed = false
+  const directRepairer = useCallback(() => {
     setState((prev) => {
       if (prev.villagers <= 0) return prev
       if (!isSystemOn(prev, 'repair')) return prev
       const cost = getRepairerCost(prev.repairersDirected)
       if (prev.inspiration < cost) return prev
-      directed = true
       return {
         ...prev,
         inspiration: prev.inspiration - cost,
@@ -335,26 +331,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         repairersDirected: prev.repairersDirected + 1,
       }
     })
-    return directed
   }, [])
 
-  const sharpenClaws = useCallback((): boolean => {
-    let sharpened = false
-    setState((prev) => {
-      const next = sharpenClawsState(prev)
-      sharpened = next !== prev
-      return next
-    })
-    return sharpened
+  const sharpenClaws = useCallback(() => {
+    setState((prev) => sharpenClawsState(prev))
   }, [])
 
-  const buildOrUpgradeBarracks = useCallback((): boolean => {
-    let success = false
+  const buildOrUpgradeBarracks = useCallback(() => {
     setState((prev) => {
       const nextLevel = prev.barracksLevel + 1
       const def = BARRACKS_LEVELS.find((l) => l.level === nextLevel)
       if (!def || prev.inspiration < def.cost) return prev
-      success = true
       return {
         ...prev,
         inspiration: prev.inspiration - def.cost,
@@ -362,52 +349,34 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         barracksLevel: nextLevel,
       }
     })
-    return success
   }, [])
 
-  const buildArmory = useCallback((): boolean => {
-    let success = false
+  const buildArmory = useCallback(() => {
     setState((prev) => {
       if (prev.armoryBuilt || prev.inspiration < ARMORY_COST) return prev
-      success = true
       return { ...prev, inspiration: prev.inspiration - ARMORY_COST, totalInspirationSpent: prev.totalInspirationSpent + ARMORY_COST, armoryBuilt: true }
     })
-    return success
   }, [])
 
   // The Garrison (chapter 5): train a fighter into a conscript, or promote one rank up
-  const makeRank = useCallback((tier: SoldierTier): boolean => {
-    let made = false
-    setState((prev) => {
-      const next = makeRankState(prev, tier)
-      made = next !== prev
-      return next
-    })
-    return made
+  const makeRank = useCallback((tier: SoldierTier) => {
+    setState((prev) => makeRankState(prev, tier))
   }, [])
 
   // Kael's Forge (chapter 5 phase B): gear for the next soldier in line, best ranks first
-  const forge = useCallback((gear: Gear): boolean => {
-    let forged = false
-    setState((prev) => {
-      const next = forgeGear(prev, gear)
-      forged = next !== prev
-      return next
-    })
-    return forged
+  const forge = useCallback((gear: Gear) => {
+    setState((prev) => forgeGear(prev, gear))
   }, [])
 
-  const buySword = useCallback((): boolean => forge('sword'), [forge])
-  const buyShield = useCallback((): boolean => forge('shield'), [forge])
+  const buySword = useCallback(() => forge('sword'), [forge])
+  const buyShield = useCallback(() => forge('shield'), [forge])
 
-  const buildOrUpgradeLodge = useCallback((): boolean => {
-    let success = false
+  const buildOrUpgradeLodge = useCallback(() => {
     setState((prev) => {
       if (!isBuildingRevealed(prev, 'lodge')) return prev
       const nextLevel = prev.lodgeLevel + 1
       const def = LODGE_LEVELS.find((l) => l.level === nextLevel)
       if (!def || prev.inspiration < def.cost) return prev
-      success = true
       return {
         ...prev,
         inspiration: prev.inspiration - def.cost,
@@ -415,27 +384,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         lodgeLevel: nextLevel,
       }
     })
-    return success
   }, [])
 
   // Train a villager into a gatherer, or promote at the Lodge (chapter 5 phase C)
-  const trainForager = useCallback((tier: ForagerTier): boolean => {
-    let made = false
-    setState((prev) => {
-      const next = makeForagerState(prev, tier)
-      made = next !== prev
-      return next
-    })
-    return made
+  const trainForager = useCallback((tier: ForagerTier) => {
+    setState((prev) => makeForagerState(prev, tier))
   }, [])
 
-  const buildOrUpgradePost = useCallback((): boolean => {
-    let success = false
+  const buildOrUpgradePost = useCallback(() => {
     setState((prev) => {
       const nextLevel = prev.postLevel + 1
       const def = POST_LEVELS.find((l) => l.level === nextLevel)
       if (!def || prev.inspiration < def.cost) return prev
-      success = true
       return {
         ...prev,
         inspiration: prev.inspiration - def.cost,
@@ -443,11 +403,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         postLevel: nextLevel,
       }
     })
-    return success
   }, [])
 
-  const trainExplorer = useCallback((): boolean => {
-    let trained = false
+  const trainExplorer = useCallback(() => {
     setState((prev) => {
       if (prev.postLevel <= 0) return prev
       if (prev.villagers <= 0) return prev
@@ -455,7 +413,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (prev.explorers >= cap) return prev
       const cost = EXPLORER_COST
       if (prev.inspiration < cost) return prev
-      trained = true
       return {
         ...prev,
         inspiration: prev.inspiration - cost,
@@ -465,17 +422,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         explorersTrained: prev.explorersTrained + 1,
       }
     })
-    return trained
   }, [])
 
-  const sendExpedition = useCallback((): boolean => {
-    let sent = false
+  const sendExpedition = useCallback(() => {
     setState((prev) => {
       if (prev.postLevel <= 0 || prev.explorers <= 0) return prev
       // An explorer can only go on one expedition at a time
       if (prev.activeExpeditions.length >= prev.explorers) return prev
       if (prev.inspiration < EXPEDITION_INSPIRATION_COST || prev.food < EXPEDITION_FOOD_COST) return prev
-      sent = true
       return {
         ...prev,
         inspiration: prev.inspiration - EXPEDITION_INSPIRATION_COST,
@@ -492,7 +446,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         nextExpeditionId: prev.nextExpeditionId + 1,
       }
     })
-    return sent
   }, [])
 
   const claimExpedition = useCallback((id: number): { villagersFound: number } | null => {
@@ -517,11 +470,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return result
   }, [])
 
-  const buildDraconiaHall = useCallback((): boolean => {
-    let success = false
+  const buildDraconiaHall = useCallback(() => {
     setState((prev) => {
       if (prev.draconiaHallBuilt || prev.inspiration < DRACONIA_HALL_COST) return prev
-      success = true
       return {
         ...prev,
         inspiration: prev.inspiration - DRACONIA_HALL_COST,
@@ -529,28 +480,19 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         draconiaHallBuilt: true,
       }
     })
-    return success
   }, [])
 
-  // The Keep (chapter 5 phase C): move one person to another job, free and with no refund
-  const reassignRole = useCallback((from: RoleId, to: RoleId): boolean => {
-    let moved = false
-    setState((prev) => {
-      if (!prev.draconiaHallBuilt) return prev
-      const next = movePerson(prev, from, to)
-      moved = next !== prev
-      return next
-    })
-    return moved
+  // The Keep (chapter 5 phase C): move people to another job, free and with no refund; "all"
+  // moves them in one update (moveMany), so every move lands
+  const reassignRole = useCallback((from: RoleId, to: RoleId, count = 1) => {
+    setState((prev) => (prev.draconiaHallBuilt ? moveMany(prev, from, to, count) : prev))
   }, [])
 
-  const upgradeOffline = useCallback((): boolean => {
-    let upgraded = false
+  const upgradeOffline = useCallback(() => {
     setState((prev) => {
       if (prev.offlineLevel >= MAX_OFFLINE_LEVEL) return prev
       const cost = getOfflineUpgradeCost(prev.offlineLevel)
       if (cost === null || prev.inspiration < cost) return prev
-      upgraded = true
       return {
         ...prev,
         inspiration: prev.inspiration - cost,
@@ -558,7 +500,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         offlineLevel: prev.offlineLevel + 1,
       }
     })
-    return upgraded
   }, [])
 
   const dismissOfflineEarnings = useCallback(() => {
@@ -620,24 +561,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // LIBRARIUM & RESEARCH
   // =========================================================================
 
-  const buildLibrarium = useCallback((): boolean => {
-    let success = false
-    setState((prev) => {
-      const next = buildLibrariumState(prev)
-      success = next !== prev
-      return next
-    })
-    return success
+  const buildLibrarium = useCallback(() => {
+    setState((prev) => buildLibrariumState(prev))
   }, [])
 
-  const completeResearch = useCallback((id: string): boolean => {
-    let success = false
-    setState((prev) => {
-      const next = study(prev, id)
-      success = next !== prev
-      return next
-    })
-    return success
+  const completeResearch = useCallback((id: string) => {
+    setState((prev) => study(prev, id))
   }, [])
 
   const setRation = useCallback((id: RationId) => {

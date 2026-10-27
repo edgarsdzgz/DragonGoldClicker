@@ -4,7 +4,7 @@ import { FORAGER_TIERS, LODGE_LEVELS, getForagerCap, getAutoFoodRate } from '../
 import { FOOD_CHECK_INTERVAL } from '../food'
 import { foragerCost, foragerBlock, makeForager } from '../lodge'
 import { wallWhileAway, wallAwayLine, AWAY_WALL_FLOOR } from '../timeAway'
-import { moveTargets, moveBlock, movePerson, getReassignOptions } from '../reassignment'
+import { moveTargets, moveBlock, movePerson, moveMany, getReassignOptions } from '../reassignment'
 import type { RoleId } from '../reassignment'
 import { DRACONIA_HALL_COST } from '../state'
 import { getBeat } from '../story'
@@ -137,6 +137,19 @@ describe('the Keep: moving people between jobs', () => {
     expect(moveBlock(crowded, FIGHTER, GATHERER)).toBe('full')
     expect(getReassignOptions(FIGHTER, crowded).find((o) => o.target.type === 'forager')?.atCap).toBe(true)
     expect(getReassignOptions(FIGHTER, crowded).every((o) => o.netCost === 0)).toBe(true)
+  })
+
+  it('"all" moves everyone at once', () => {
+    expect(moveMany(city, FIGHTER, REPAIRER, 5)).toMatchObject({ fighters: 0, repairers: 7, inspiration: 10 })
+    // Never more than asked
+    expect(moveMany(city, FIGHTER, REPAIRER, 2)).toMatchObject({ fighters: 3, repairers: 4 })
+  })
+
+  it('"all" stops where the next move is blocked: nobody left, or the forager cap', () => {
+    expect(moveMany(city, REPAIRER, IDLE, 9)).toMatchObject({ repairers: 0, villagers: 5 })
+    const nearlyFull = { ...city, foragers: foragers(8, 0, 0) }
+    expect(moveMany(nearlyFull, FIGHTER, GATHERER, 5)).toMatchObject({ fighters: 3, foragers: foragers(10, 0, 0) })
+    expect(moveMany(city, IDLE, FIGHTER, 3)).toBe(city)
   })
 
   it('explorers away on an expedition cannot be moved', () => {
