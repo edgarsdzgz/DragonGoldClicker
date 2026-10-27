@@ -45,8 +45,11 @@ def frames(name, n, w):
     return [s.crop((i * w, 0, (i + 1) * w, s.height)) for i in range(n)]
 
 
-old_icons = [load(ref / f"icon-{n}.png") for n in
-             ("star", "food", "villager", "swords", "helm", "hammer", "wheat", "scroll", "castle", "cog")]
+# The set as it stands: the cog, sheaf and hammer come from the 02-icon-redraw batch.
+redraw = HERE.parent / "02-icon-redraw" / "out"
+old_icons = [load(redraw / f"icon_{n}.png") if n in ("hammer", "sheaf", "cog") else load(ref / f"icon-{n}.png")
+             for n in ("star", "food", "villager", "swords", "helm", "hammer", "sheaf", "scroll", "castle",
+                       "cog")]
 rows = [
     ("Icons: new | existing", [load(out / "icon_hourglass.png"), load(out / "icon_flame.png")] + old_icons),
     ("Fighter | townsfolk", [load(out / "ppl_fighter_idle.png")] + frames("ppl_fighter_attack", 2, 16)
