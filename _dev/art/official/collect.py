@@ -424,6 +424,38 @@ ASSETS += [(f"story/story_{s}.png", AGENT / f"43-story-scenes/out/story_{s}_v1.p
                         ("rangers-lodge", "The Ranger's Lodge"), ("ink-wing", "The Ink-Wing"), ("dragonsteel", "Dragonsteel"),
                         ("they-come-bigger", "They Come Bigger"), ("ancient-magic", "The Ancient Magic"))]
 
+# The bestiary (44-bestiary), every pose at each Unmaking tier; the rat waits for its v2 cracks to be approved
+BESTIARY = AGENT / "44-bestiary/out"
+for _id, _name in (("goblin-scout", "Goblin Scout"), ("goblin-archer", "Goblin Archer"),
+                   ("banner-runner", "Banner-Runner"), ("shield-bearer", "Shield Bearer"),
+                   ("beetle-guard", "Beetle Guard"), ("chitin-warrior", "Chitin Warrior"),
+                   ("nomad-warrior", "Nomad Warrior"), ("wraith", "Wraith"), ("shadow-phantom", "Shadow Phantom"),
+                   ("ashen-convert", "Ashen Convert"), ("ember-prophet", "Ember Prophet"),
+                   ("ember-wraith", "Ember Wraith"), ("stone-golem", "Stone Golem (boss)"),
+                   ("giant-elemental", "Giant Elemental (boss)"), ("khagan", "Khagan of the Sirocco (boss)"),
+                   ("forge-master", "Forge-Master of the Inferno (boss)"),
+                   ("corrupted-wyvern", "Corrupted Wyvern (boss)")):
+    for _tier, _label in (("", ""), ("-strong", ", strong"), ("-stronger", ", stronger (the Unmaking's deepest)")):
+        _n = f"mob_{_id}{_tier}"
+        ASSETS += [
+            (f"mobs/{_n}_idle.png", BESTIARY / f"{_n}_idle.png", f"{_name}{_label}: idle", "bestiary v1"),
+            (f"mobs/{_n}_hit.png", BESTIARY / f"{_n}_hit.png", f"{_name}{_label}: hit, the red flash", "bestiary v1"),
+            (f"mobs/{_n}_hurt.png", BESTIARY / f"{_n}_hurt.png", f"{_name}{_label}: hurt", "bestiary v1"),
+            (f"mobs/{_n}_walk_strip2.png", BESTIARY / f"{_n}_walk_strip2.png", f"{_name}{_label}: walk bob (2 frames, 4 fps)", "bestiary v1"),
+            (f"mobs/{_n}_death_strip4.png", BESTIARY / f"{_n}_death_strip4.png", f"{_name}{_label}: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "bestiary v1"),
+        ]
+
+# The six monsters already in the game, shaded like the busts (44-bestiary v2, owner 2026-10-27): every
+# pose and tier now comes from the shaded set. Same file names and sizes as before.
+_SHADED = ("kobold", "goblin", "crawler", "orc", "raider", "minotaur")
+for _i, (_dest, _src, _what, _origin) in enumerate(ASSETS):
+    _stem = pathlib.Path(_dest).name
+    _mob = _stem.split("_")[1].removesuffix("-stronger").removesuffix("-strong")
+    if _dest.startswith("mobs/") and _mob in _SHADED and not _stem.endswith(".piskel"):
+        _new = BESTIARY / "v2" / _stem
+        assert _new.exists(), _new
+        ASSETS[_i] = (_dest, _new, _what, "shaded v2 (" + _origin + ")")
+
 rows = []
 for dest, src, what, origin in ASSETS:
     out = HERE / dest

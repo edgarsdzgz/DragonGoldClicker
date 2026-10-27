@@ -45,6 +45,10 @@ def monster(mid, name, note):
             fig(OUT / f"{n}_hurt.png", 5, "hurt"), gif_fig(PREVIEW / f"{n}_walk.gif", 1, "walk"),
             gif_fig(PREVIEW / f"{n}_death.gif", 1, "death"),
             fig(OUT / f"{n}-strong_idle.png", 5, "strong"), fig(OUT / f"{n}-stronger_idle.png", 5, "stronger")]
+    if mid == "rat":
+        figs += [fig(OUT / "rat_v1" / f"{n}{t}_idle.png", 5, f"v1 {t[1:] or 'weak'}") for t in ("", "-strong", "-stronger")]
+        note += (" v2 (owner: the cracks did not read): five longer cracks, and peach in place of the pink, which "
+                 "was too close to the Unmaking's magenta. v1 for comparison at the end.")
     return section(name, note, figs)
 
 
@@ -68,6 +72,6 @@ out = page("Draconia Bestiary", "The bestiary",
            "Eighteen new monsters from the old Draconia bestiary, in the simple monster style with the busts' "
            "shading: light on the upper left, dark on the right, no blending. Each has idle, hit, hurt, walk and "
            "death at all three Unmaking tiers, built by the locked monsters' own code. Bosses vary in size. The "
-           "existing six are shaded too, as v2 &middot; 2026-10-27", sections)
+           "existing six are shaded too, as v2. Locked: all but the Giant Rat, which is waiting on its v2 cracks. The first board is board_v1.html &middot; 2026-10-27", sections)
 (HERE / "board.html").write_text(out, encoding="utf-8")
 print(f"board.html: {len(out) // 1024} KB")

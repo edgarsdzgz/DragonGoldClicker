@@ -34,9 +34,11 @@ def giant_rat():
     c.rect(2, 11, 4, 11, "P")
     c.rect(8, 11, 10, 11, "P")
     c.pts([(11, 9), (12, 8), (13, 7), (13, 6), (12, 5)], "T")
-    key = {"P": "rose3", "A": "ash3", "e": "gold5", "n": "rose2", "W": "parch3", "b": "steel4", "T": "rose2"}
+    # v2: peach, not pink, for the ears, feet, nose and tail, so the Unmaking's magenta cracks stand out
+    key = {"P": "skin2", "A": "ash3", "e": "gold5", "n": "clay2", "W": "parch3", "b": "steel4", "T": "skin1"}
     return c.rows(), key, pose(6, "ash3", "ash2", [(4, 10), (10, 11)]), \
-        [[(6, 1), (5, 2)], [(3, 7), (3, 8)], [(9, 8), (9, 9)]], False
+        [[(4, 1), (5, 2), (5, 3), (6, 4)], [(8, 1), (8, 2), (9, 3)], [(2, 7), (3, 8), (3, 9), (4, 10)],
+         [(7, 8), (6, 9), (7, 10)], [(9, 7), (10, 8), (10, 9)]], False   # v2: longer, more of them (owner)
 
 
 def goblin_scout():

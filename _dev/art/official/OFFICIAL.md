@@ -173,26 +173,26 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `studio/seal_build_sheet.png` | 1800x1376 | RAXDEG STUDIOS startup splash: the seal builds in blue, the name is carved in gold, the seal smashes to gold (frames ten to a row; play with seal_build_timing.json) | RAXDEG seal (v5, locked 2026-10-27) |
 | `studio/seal_build_timing.json` |  | RAXDEG STUDIOS splash: each frame's hold in ms, frame size, columns, named beats | RAXDEG seal |
 | `studio/seal_card.png` | 180x172 | RAXDEG STUDIOS: the gold seal with the name struck through it | RAXDEG seal |
-| `mobs/mob_kobold_idle.png` | 13x16 | Kobold: idle | simple mobs |
-| `mobs/mob_kobold_hit.png` | 13x16 | Kobold: hit, the red flash | simple mobs |
-| `mobs/mob_kobold_hurt.png` | 13x16 | Kobold: hurt | simple mobs |
-| `mobs/mob_kobold_walk_strip2.png` | 26x16 | Kobold: walk bob (2 frames, 4 fps) | simple mobs |
-| `mobs/mob_goblin_idle.png` | 13x16 | Goblin: idle | simple mobs |
-| `mobs/mob_goblin_hit.png` | 13x16 | Goblin: hit, the red flash | simple mobs |
-| `mobs/mob_goblin_hurt.png` | 13x16 | Goblin: hurt | simple mobs |
-| `mobs/mob_goblin_walk_strip2.png` | 26x16 | Goblin: walk bob (2 frames, 4 fps) | simple mobs |
-| `mobs/mob_crawler_idle.png` | 15x11 | Shadow Crawler: idle | simple mobs |
-| `mobs/mob_crawler_hit.png` | 15x11 | Shadow Crawler: hit, the red flash | simple mobs |
-| `mobs/mob_crawler_hurt.png` | 15x11 | Shadow Crawler: hurt | simple mobs |
-| `mobs/mob_crawler_walk_strip2.png` | 30x11 | Shadow Crawler: walk bob (2 frames, 4 fps) | simple mobs |
-| `mobs/mob_orc_idle.png` | 14x19 | Orc: idle | simple mobs |
-| `mobs/mob_orc_hit.png` | 14x19 | Orc: hit, the red flash | simple mobs |
-| `mobs/mob_orc_hurt.png` | 14x19 | Orc: hurt | simple mobs |
-| `mobs/mob_orc_walk_strip2.png` | 28x19 | Orc: walk bob (2 frames, 4 fps) | simple mobs |
-| `mobs/mob_raider_idle.png` | 13x19 | Raider: idle | simple mobs |
-| `mobs/mob_raider_hit.png` | 13x19 | Raider: hit, the red flash | simple mobs |
-| `mobs/mob_raider_hurt.png` | 13x19 | Raider: hurt | simple mobs |
-| `mobs/mob_raider_walk_strip2.png` | 26x19 | Raider: walk bob (2 frames, 4 fps) | simple mobs |
+| `mobs/mob_kobold_idle.png` | 13x16 | Kobold: idle | shaded v2 (simple mobs) |
+| `mobs/mob_kobold_hit.png` | 13x16 | Kobold: hit, the red flash | shaded v2 (simple mobs) |
+| `mobs/mob_kobold_hurt.png` | 13x16 | Kobold: hurt | shaded v2 (simple mobs) |
+| `mobs/mob_kobold_walk_strip2.png` | 26x16 | Kobold: walk bob (2 frames, 4 fps) | shaded v2 (simple mobs) |
+| `mobs/mob_goblin_idle.png` | 13x16 | Goblin: idle | shaded v2 (simple mobs) |
+| `mobs/mob_goblin_hit.png` | 13x16 | Goblin: hit, the red flash | shaded v2 (simple mobs) |
+| `mobs/mob_goblin_hurt.png` | 13x16 | Goblin: hurt | shaded v2 (simple mobs) |
+| `mobs/mob_goblin_walk_strip2.png` | 26x16 | Goblin: walk bob (2 frames, 4 fps) | shaded v2 (simple mobs) |
+| `mobs/mob_crawler_idle.png` | 15x11 | Shadow Crawler: idle | shaded v2 (simple mobs) |
+| `mobs/mob_crawler_hit.png` | 15x11 | Shadow Crawler: hit, the red flash | shaded v2 (simple mobs) |
+| `mobs/mob_crawler_hurt.png` | 15x11 | Shadow Crawler: hurt | shaded v2 (simple mobs) |
+| `mobs/mob_crawler_walk_strip2.png` | 30x11 | Shadow Crawler: walk bob (2 frames, 4 fps) | shaded v2 (simple mobs) |
+| `mobs/mob_orc_idle.png` | 14x19 | Orc: idle | shaded v2 (simple mobs) |
+| `mobs/mob_orc_hit.png` | 14x19 | Orc: hit, the red flash | shaded v2 (simple mobs) |
+| `mobs/mob_orc_hurt.png` | 14x19 | Orc: hurt | shaded v2 (simple mobs) |
+| `mobs/mob_orc_walk_strip2.png` | 28x19 | Orc: walk bob (2 frames, 4 fps) | shaded v2 (simple mobs) |
+| `mobs/mob_raider_idle.png` | 13x19 | Raider: idle | shaded v2 (simple mobs) |
+| `mobs/mob_raider_hit.png` | 13x19 | Raider: hit, the red flash | shaded v2 (simple mobs) |
+| `mobs/mob_raider_hurt.png` | 13x19 | Raider: hurt | shaded v2 (simple mobs) |
+| `mobs/mob_raider_walk_strip2.png` | 26x19 | Raider: walk bob (2 frames, 4 fps) | shaded v2 (simple mobs) |
 | `people/ppl_conscript.png` | 11x20 | Conscript: rags, rope belt, a dull spear (human) | Batch 6 |
 | `people/ppl_footman.png` | 11x20 | Footman: nasal helmet, gambeson, round shield, spear (human) | Batch 6 |
 | `people/ppl_knight.png` | 13x20 | Knight: plate, gold tabard and plume, lance with a pennant (human) | Batch 6 |
@@ -245,67 +245,67 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `interiors/int_housing.png` | 110x34 | Interior header: Housing (110x34) | interiors v1 |
 | `interiors/int_tower.png` | 110x34 | Interior header: Wall towers, east and west (110x34) | interiors v1 |
 | `interiors/int_wizard-tower.png` | 110x34 | Interior header: Wizard's Tower (110x34) | interiors v1 |
-| `mobs/mob_kobold-strong_idle.png` | 13x16 | Kobold, strong (deeper cracks): idle | Unmaking tiers |
-| `mobs/mob_kobold-strong_hit.png` | 13x16 | Kobold, strong (deeper cracks): hit, the red flash | Unmaking tiers |
-| `mobs/mob_kobold-strong_hurt.png` | 13x16 | Kobold, strong (deeper cracks): hurt | Unmaking tiers |
-| `mobs/mob_kobold-strong_walk_strip2.png` | 26x16 | Kobold, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_goblin-strong_idle.png` | 13x16 | Goblin, strong (deeper cracks): idle | Unmaking tiers |
-| `mobs/mob_goblin-strong_hit.png` | 13x16 | Goblin, strong (deeper cracks): hit, the red flash | Unmaking tiers |
-| `mobs/mob_goblin-strong_hurt.png` | 13x16 | Goblin, strong (deeper cracks): hurt | Unmaking tiers |
-| `mobs/mob_goblin-strong_walk_strip2.png` | 26x16 | Goblin, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_crawler-strong_idle.png` | 15x11 | Shadow Crawler, strong (deeper cracks): idle | Unmaking tiers |
-| `mobs/mob_crawler-strong_hit.png` | 15x11 | Shadow Crawler, strong (deeper cracks): hit, the red flash | Unmaking tiers |
-| `mobs/mob_crawler-strong_hurt.png` | 15x11 | Shadow Crawler, strong (deeper cracks): hurt | Unmaking tiers |
-| `mobs/mob_crawler-strong_walk_strip2.png` | 30x11 | Shadow Crawler, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_orc-strong_idle.png` | 14x19 | Orc, strong (deeper cracks): idle | Unmaking tiers |
-| `mobs/mob_orc-strong_hit.png` | 14x19 | Orc, strong (deeper cracks): hit, the red flash | Unmaking tiers |
-| `mobs/mob_orc-strong_hurt.png` | 14x19 | Orc, strong (deeper cracks): hurt | Unmaking tiers |
-| `mobs/mob_orc-strong_walk_strip2.png` | 28x19 | Orc, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_raider-strong_idle.png` | 13x19 | Raider, strong (deeper cracks): idle | Unmaking tiers |
-| `mobs/mob_raider-strong_hit.png` | 13x19 | Raider, strong (deeper cracks): hit, the red flash | Unmaking tiers |
-| `mobs/mob_raider-strong_hurt.png` | 13x19 | Raider, strong (deeper cracks): hurt | Unmaking tiers |
-| `mobs/mob_raider-strong_walk_strip2.png` | 26x19 | Raider, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_kobold-stronger_idle.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): idle | Unmaking tiers |
-| `mobs/mob_kobold-stronger_hit.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
-| `mobs/mob_kobold-stronger_hurt.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
-| `mobs/mob_kobold-stronger_walk_strip2.png` | 26x16 | Kobold, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_goblin-stronger_idle.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): idle | Unmaking tiers |
-| `mobs/mob_goblin-stronger_hit.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
-| `mobs/mob_goblin-stronger_hurt.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
-| `mobs/mob_goblin-stronger_walk_strip2.png` | 26x16 | Goblin, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_crawler-stronger_idle.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): idle | Unmaking tiers |
-| `mobs/mob_crawler-stronger_hit.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
-| `mobs/mob_crawler-stronger_hurt.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
-| `mobs/mob_crawler-stronger_walk_strip2.png` | 30x11 | Shadow Crawler, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_orc-stronger_idle.png` | 14x19 | Orc, stronger (the Unmaking's deepest): idle | Unmaking tiers |
-| `mobs/mob_orc-stronger_hit.png` | 14x19 | Orc, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
-| `mobs/mob_orc-stronger_hurt.png` | 14x19 | Orc, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
-| `mobs/mob_orc-stronger_walk_strip2.png` | 28x19 | Orc, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
-| `mobs/mob_raider-stronger_idle.png` | 13x19 | Raider, stronger (the Unmaking's deepest): idle | Unmaking tiers |
-| `mobs/mob_raider-stronger_hit.png` | 13x19 | Raider, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
-| `mobs/mob_raider-stronger_hurt.png` | 13x19 | Raider, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
-| `mobs/mob_raider-stronger_walk_strip2.png` | 26x19 | Raider, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_kobold-strong_idle.png` | 13x16 | Kobold, strong (deeper cracks): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_kobold-strong_hit.png` | 13x16 | Kobold, strong (deeper cracks): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_kobold-strong_hurt.png` | 13x16 | Kobold, strong (deeper cracks): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_kobold-strong_walk_strip2.png` | 26x16 | Kobold, strong (deeper cracks): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_goblin-strong_idle.png` | 13x16 | Goblin, strong (deeper cracks): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_goblin-strong_hit.png` | 13x16 | Goblin, strong (deeper cracks): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_goblin-strong_hurt.png` | 13x16 | Goblin, strong (deeper cracks): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_goblin-strong_walk_strip2.png` | 26x16 | Goblin, strong (deeper cracks): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_crawler-strong_idle.png` | 15x11 | Shadow Crawler, strong (deeper cracks): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_crawler-strong_hit.png` | 15x11 | Shadow Crawler, strong (deeper cracks): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_crawler-strong_hurt.png` | 15x11 | Shadow Crawler, strong (deeper cracks): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_crawler-strong_walk_strip2.png` | 30x11 | Shadow Crawler, strong (deeper cracks): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_orc-strong_idle.png` | 14x19 | Orc, strong (deeper cracks): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_orc-strong_hit.png` | 14x19 | Orc, strong (deeper cracks): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_orc-strong_hurt.png` | 14x19 | Orc, strong (deeper cracks): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_orc-strong_walk_strip2.png` | 28x19 | Orc, strong (deeper cracks): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_raider-strong_idle.png` | 13x19 | Raider, strong (deeper cracks): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_raider-strong_hit.png` | 13x19 | Raider, strong (deeper cracks): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_raider-strong_hurt.png` | 13x19 | Raider, strong (deeper cracks): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_raider-strong_walk_strip2.png` | 26x19 | Raider, strong (deeper cracks): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_kobold-stronger_idle.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_kobold-stronger_hit.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_kobold-stronger_hurt.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_kobold-stronger_walk_strip2.png` | 26x16 | Kobold, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_goblin-stronger_idle.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_goblin-stronger_hit.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_goblin-stronger_hurt.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_goblin-stronger_walk_strip2.png` | 26x16 | Goblin, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_crawler-stronger_idle.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_crawler-stronger_hit.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_crawler-stronger_hurt.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_crawler-stronger_walk_strip2.png` | 30x11 | Shadow Crawler, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_orc-stronger_idle.png` | 14x19 | Orc, stronger (the Unmaking's deepest): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_orc-stronger_hit.png` | 14x19 | Orc, stronger (the Unmaking's deepest): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_orc-stronger_hurt.png` | 14x19 | Orc, stronger (the Unmaking's deepest): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_orc-stronger_walk_strip2.png` | 28x19 | Orc, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
+| `mobs/mob_raider-stronger_idle.png` | 13x19 | Raider, stronger (the Unmaking's deepest): idle | shaded v2 (Unmaking tiers) |
+| `mobs/mob_raider-stronger_hit.png` | 13x19 | Raider, stronger (the Unmaking's deepest): hit, the red flash | shaded v2 (Unmaking tiers) |
+| `mobs/mob_raider-stronger_hurt.png` | 13x19 | Raider, stronger (the Unmaking's deepest): hurt | shaded v2 (Unmaking tiers) |
+| `mobs/mob_raider-stronger_walk_strip2.png` | 26x19 | Raider, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | shaded v2 (Unmaking tiers) |
 | `logo/logo_anim_frames_strip20.png` | 1280x64 | Logo animation: the shield slams in, the claws slash upward, the logo assembles (play with logo_anim_timing.json) | logo |
 | `logo/logo_anim_timing.json` |  | Logo animation: each frame's hold in ms, frame size, background | logo |
 | `icons/icon_heartstone.png` | 12x12 | The heartstone: a teardrop of aetherglass with the heart-flame inside, 12x12 | heartstone v3 |
 | `icons/icon_heartstone_flicker_strip4.png` | 48x12 | The heartstone, its flame flickering, 12x12 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms) | heartstone v3 |
 | `icons/icon_heartstone_16.png` | 16x16 | The heartstone, 16x16 | heartstone v3 |
 | `icons/icon_heartstone_16_flicker_strip4.png` | 64x16 | The heartstone, its flame flickering, 16x16 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms) | heartstone v3 |
-| `mobs/mob_kobold_death_strip4.png` | 92x16 | Kobold: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_goblin_death_strip4.png` | 92x16 | Goblin: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_crawler_death_strip4.png` | 84x11 | Shadow Crawler: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_orc_death_strip4.png` | 104x19 | Orc: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_raider_death_strip4.png` | 100x19 | Raider: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_kobold-strong_death_strip4.png` | 92x16 | Kobold, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_goblin-strong_death_strip4.png` | 92x16 | Goblin, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_crawler-strong_death_strip4.png` | 84x11 | Shadow Crawler, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_orc-strong_death_strip4.png` | 104x19 | Orc, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_raider-strong_death_strip4.png` | 100x19 | Raider, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_kobold-stronger_death_strip4.png` | 92x16 | Kobold, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_goblin-stronger_death_strip4.png` | 92x16 | Goblin, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_crawler-stronger_death_strip4.png` | 84x11 | Shadow Crawler, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_orc-stronger_death_strip4.png` | 104x19 | Orc, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
-| `mobs/mob_raider-stronger_death_strip4.png` | 100x19 | Raider, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monster deaths |
+| `mobs/mob_kobold_death_strip4.png` | 92x16 | Kobold: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_goblin_death_strip4.png` | 92x16 | Goblin: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_crawler_death_strip4.png` | 84x11 | Shadow Crawler: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_orc_death_strip4.png` | 104x19 | Orc: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_raider_death_strip4.png` | 100x19 | Raider: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_kobold-strong_death_strip4.png` | 92x16 | Kobold, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_goblin-strong_death_strip4.png` | 92x16 | Goblin, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_crawler-strong_death_strip4.png` | 84x11 | Shadow Crawler, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_orc-strong_death_strip4.png` | 104x19 | Orc, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_raider-strong_death_strip4.png` | 100x19 | Raider, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_kobold-stronger_death_strip4.png` | 92x16 | Kobold, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_goblin-stronger_death_strip4.png` | 92x16 | Goblin, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_crawler-stronger_death_strip4.png` | 84x11 | Shadow Crawler, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_orc-stronger_death_strip4.png` | 104x19 | Orc, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
+| `mobs/mob_raider-stronger_death_strip4.png` | 100x19 | Raider, stronger: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (monster deaths) |
 | `story/story_prologue.png` | 130x96 | Story: the prologue, The Walls of Draconia (130x96, shown at the map's scale) | story v1 |
 | `story/story_breach.png` | 130x96 | Story: the Breach, The Wall Falls (130x96, shown at the map's scale) | story v1 |
 | `city/map_city_base_night.png` | 130x282 | City base map, no buildings (lit look), at night | city light levels |
@@ -452,21 +452,21 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_hand.png` | 12x12 | Total clicks: an open hand | icons v1 |
 | `icons/icon_phone.png` | 12x12 | Vibration: a phone | icons v1 |
 | `icons/icon_consumption.png` | 12x12 | Consumption (food eaten per second): a leaking grain sack | icons v2a |
-| `mobs/mob_minotaur_idle.png` | 20x25 | Minotaur: idle | Minotaur v1 |
-| `mobs/mob_minotaur_hit.png` | 20x25 | Minotaur: hit, the red flash | Minotaur v1 |
-| `mobs/mob_minotaur_hurt.png` | 20x25 | Minotaur: hurt, the axe broken | Minotaur v1 |
-| `mobs/mob_minotaur_walk_strip2.png` | 40x25 | Minotaur: walk bob (2 frames, 4 fps) | Minotaur v1 |
-| `mobs/mob_minotaur_death_strip4.png` | 128x25 | Minotaur: death, buckles, falls, lands, unmade (4 frames, 8 fps) | Minotaur v1 |
-| `mobs/mob_minotaur-strong_idle.png` | 20x25 | Minotaur, strong: idle | Minotaur v1 |
-| `mobs/mob_minotaur-strong_hit.png` | 20x25 | Minotaur, strong: hit, the red flash | Minotaur v1 |
-| `mobs/mob_minotaur-strong_hurt.png` | 20x25 | Minotaur, strong: hurt, the axe broken | Minotaur v1 |
-| `mobs/mob_minotaur-strong_walk_strip2.png` | 40x25 | Minotaur, strong: walk bob (2 frames, 4 fps) | Minotaur v1 |
-| `mobs/mob_minotaur-strong_death_strip4.png` | 128x25 | Minotaur, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | Minotaur v1 |
-| `mobs/mob_minotaur-stronger_idle.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): idle | Minotaur v1 |
-| `mobs/mob_minotaur-stronger_hit.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): hit, the red flash | Minotaur v1 |
-| `mobs/mob_minotaur-stronger_hurt.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): hurt, the axe broken | Minotaur v1 |
-| `mobs/mob_minotaur-stronger_walk_strip2.png` | 40x25 | Minotaur, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Minotaur v1 |
-| `mobs/mob_minotaur-stronger_death_strip4.png` | 128x25 | Minotaur, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | Minotaur v1 |
+| `mobs/mob_minotaur_idle.png` | 20x25 | Minotaur: idle | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur_hit.png` | 20x25 | Minotaur: hit, the red flash | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur_hurt.png` | 20x25 | Minotaur: hurt, the axe broken | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur_walk_strip2.png` | 40x25 | Minotaur: walk bob (2 frames, 4 fps) | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur_death_strip4.png` | 128x25 | Minotaur: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-strong_idle.png` | 20x25 | Minotaur, strong: idle | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-strong_hit.png` | 20x25 | Minotaur, strong: hit, the red flash | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-strong_hurt.png` | 20x25 | Minotaur, strong: hurt, the axe broken | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-strong_walk_strip2.png` | 40x25 | Minotaur, strong: walk bob (2 frames, 4 fps) | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-strong_death_strip4.png` | 128x25 | Minotaur, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-stronger_idle.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): idle | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-stronger_hit.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): hit, the red flash | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-stronger_hurt.png` | 20x25 | Minotaur, stronger (the Unmaking's deepest): hurt, the axe broken | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-stronger_walk_strip2.png` | 40x25 | Minotaur, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | shaded v2 (Minotaur v1) |
+| `mobs/mob_minotaur-stronger_death_strip4.png` | 128x25 | Minotaur, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (Minotaur v1) |
 | `cast/bust_pyreth_grieving.png` | 22x23 | Bust: Elder Pyreth, grieving (22x23) | expressions v1 |
 | `cast/bust_rodain_grieving.png` | 22x23 | Bust: Captain Rodain, grieving (22x23) | expressions v1 |
 | `cast/bust_mirael_alarmed.png` | 22x23 | Bust: Scout Mirael, alarmed (22x23) | expressions v1 |
@@ -493,3 +493,258 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `story/story_dragonsteel.png` | 130x96 | Story: Dragonsteel (130x96) | story scenes v1 |
 | `story/story_they-come-bigger.png` | 130x96 | Story: They Come Bigger (130x96) | story scenes v1 |
 | `story/story_ancient-magic.png` | 130x96 | Story: The Ancient Magic (130x96) | story scenes v1 |
+| `mobs/mob_goblin-scout_idle.png` | 14x16 | Goblin Scout: idle | bestiary v1 |
+| `mobs/mob_goblin-scout_hit.png` | 14x16 | Goblin Scout: hit, the red flash | bestiary v1 |
+| `mobs/mob_goblin-scout_hurt.png` | 14x16 | Goblin Scout: hurt | bestiary v1 |
+| `mobs/mob_goblin-scout_walk_strip2.png` | 28x16 | Goblin Scout: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_goblin-scout_death_strip4.png` | 88x16 | Goblin Scout: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_goblin-scout-strong_idle.png` | 14x16 | Goblin Scout, strong: idle | bestiary v1 |
+| `mobs/mob_goblin-scout-strong_hit.png` | 14x16 | Goblin Scout, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_goblin-scout-strong_hurt.png` | 14x16 | Goblin Scout, strong: hurt | bestiary v1 |
+| `mobs/mob_goblin-scout-strong_walk_strip2.png` | 28x16 | Goblin Scout, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_goblin-scout-strong_death_strip4.png` | 88x16 | Goblin Scout, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_goblin-scout-stronger_idle.png` | 14x16 | Goblin Scout, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_goblin-scout-stronger_hit.png` | 14x16 | Goblin Scout, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_goblin-scout-stronger_hurt.png` | 14x16 | Goblin Scout, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_goblin-scout-stronger_walk_strip2.png` | 28x16 | Goblin Scout, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_goblin-scout-stronger_death_strip4.png` | 88x16 | Goblin Scout, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_goblin-archer_idle.png` | 15x16 | Goblin Archer: idle | bestiary v1 |
+| `mobs/mob_goblin-archer_hit.png` | 15x16 | Goblin Archer: hit, the red flash | bestiary v1 |
+| `mobs/mob_goblin-archer_hurt.png` | 15x16 | Goblin Archer: hurt | bestiary v1 |
+| `mobs/mob_goblin-archer_walk_strip2.png` | 30x16 | Goblin Archer: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_goblin-archer_death_strip4.png` | 92x16 | Goblin Archer: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_goblin-archer-strong_idle.png` | 15x16 | Goblin Archer, strong: idle | bestiary v1 |
+| `mobs/mob_goblin-archer-strong_hit.png` | 15x16 | Goblin Archer, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_goblin-archer-strong_hurt.png` | 15x16 | Goblin Archer, strong: hurt | bestiary v1 |
+| `mobs/mob_goblin-archer-strong_walk_strip2.png` | 30x16 | Goblin Archer, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_goblin-archer-strong_death_strip4.png` | 92x16 | Goblin Archer, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_goblin-archer-stronger_idle.png` | 15x16 | Goblin Archer, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_goblin-archer-stronger_hit.png` | 15x16 | Goblin Archer, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_goblin-archer-stronger_hurt.png` | 15x16 | Goblin Archer, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_goblin-archer-stronger_walk_strip2.png` | 30x16 | Goblin Archer, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_goblin-archer-stronger_death_strip4.png` | 92x16 | Goblin Archer, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_banner-runner_idle.png` | 16x19 | Banner-Runner: idle | bestiary v1 |
+| `mobs/mob_banner-runner_hit.png` | 16x19 | Banner-Runner: hit, the red flash | bestiary v1 |
+| `mobs/mob_banner-runner_hurt.png` | 16x19 | Banner-Runner: hurt | bestiary v1 |
+| `mobs/mob_banner-runner_walk_strip2.png` | 32x19 | Banner-Runner: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_banner-runner_death_strip4.png` | 104x19 | Banner-Runner: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_banner-runner-strong_idle.png` | 16x19 | Banner-Runner, strong: idle | bestiary v1 |
+| `mobs/mob_banner-runner-strong_hit.png` | 16x19 | Banner-Runner, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_banner-runner-strong_hurt.png` | 16x19 | Banner-Runner, strong: hurt | bestiary v1 |
+| `mobs/mob_banner-runner-strong_walk_strip2.png` | 32x19 | Banner-Runner, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_banner-runner-strong_death_strip4.png` | 104x19 | Banner-Runner, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_banner-runner-stronger_idle.png` | 16x19 | Banner-Runner, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_banner-runner-stronger_hit.png` | 16x19 | Banner-Runner, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_banner-runner-stronger_hurt.png` | 16x19 | Banner-Runner, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_banner-runner-stronger_walk_strip2.png` | 32x19 | Banner-Runner, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_banner-runner-stronger_death_strip4.png` | 104x19 | Banner-Runner, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_shield-bearer_idle.png` | 16x21 | Shield Bearer: idle | bestiary v1 |
+| `mobs/mob_shield-bearer_hit.png` | 16x21 | Shield Bearer: hit, the red flash | bestiary v1 |
+| `mobs/mob_shield-bearer_hurt.png` | 16x21 | Shield Bearer: hurt | bestiary v1 |
+| `mobs/mob_shield-bearer_walk_strip2.png` | 32x21 | Shield Bearer: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_shield-bearer_death_strip4.png` | 112x21 | Shield Bearer: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_shield-bearer-strong_idle.png` | 16x21 | Shield Bearer, strong: idle | bestiary v1 |
+| `mobs/mob_shield-bearer-strong_hit.png` | 16x21 | Shield Bearer, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_shield-bearer-strong_hurt.png` | 16x21 | Shield Bearer, strong: hurt | bestiary v1 |
+| `mobs/mob_shield-bearer-strong_walk_strip2.png` | 32x21 | Shield Bearer, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_shield-bearer-strong_death_strip4.png` | 112x21 | Shield Bearer, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_shield-bearer-stronger_idle.png` | 16x21 | Shield Bearer, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_shield-bearer-stronger_hit.png` | 16x21 | Shield Bearer, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_shield-bearer-stronger_hurt.png` | 16x21 | Shield Bearer, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_shield-bearer-stronger_walk_strip2.png` | 32x21 | Shield Bearer, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_shield-bearer-stronger_death_strip4.png` | 112x21 | Shield Bearer, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_beetle-guard_idle.png` | 16x18 | Beetle Guard: idle | bestiary v1 |
+| `mobs/mob_beetle-guard_hit.png` | 16x18 | Beetle Guard: hit, the red flash | bestiary v1 |
+| `mobs/mob_beetle-guard_hurt.png` | 16x18 | Beetle Guard: hurt | bestiary v1 |
+| `mobs/mob_beetle-guard_walk_strip2.png` | 32x18 | Beetle Guard: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_beetle-guard_death_strip4.png` | 96x18 | Beetle Guard: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_beetle-guard-strong_idle.png` | 16x18 | Beetle Guard, strong: idle | bestiary v1 |
+| `mobs/mob_beetle-guard-strong_hit.png` | 16x18 | Beetle Guard, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_beetle-guard-strong_hurt.png` | 16x18 | Beetle Guard, strong: hurt | bestiary v1 |
+| `mobs/mob_beetle-guard-strong_walk_strip2.png` | 32x18 | Beetle Guard, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_beetle-guard-strong_death_strip4.png` | 96x18 | Beetle Guard, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_beetle-guard-stronger_idle.png` | 16x18 | Beetle Guard, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_beetle-guard-stronger_hit.png` | 16x18 | Beetle Guard, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_beetle-guard-stronger_hurt.png` | 16x18 | Beetle Guard, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_beetle-guard-stronger_walk_strip2.png` | 32x18 | Beetle Guard, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_beetle-guard-stronger_death_strip4.png` | 96x18 | Beetle Guard, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_chitin-warrior_idle.png` | 15x22 | Chitin Warrior: idle | bestiary v1 |
+| `mobs/mob_chitin-warrior_hit.png` | 15x22 | Chitin Warrior: hit, the red flash | bestiary v1 |
+| `mobs/mob_chitin-warrior_hurt.png` | 15x22 | Chitin Warrior: hurt | bestiary v1 |
+| `mobs/mob_chitin-warrior_walk_strip2.png` | 30x22 | Chitin Warrior: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_chitin-warrior_death_strip4.png` | 116x22 | Chitin Warrior: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_chitin-warrior-strong_idle.png` | 15x22 | Chitin Warrior, strong: idle | bestiary v1 |
+| `mobs/mob_chitin-warrior-strong_hit.png` | 15x22 | Chitin Warrior, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_chitin-warrior-strong_hurt.png` | 15x22 | Chitin Warrior, strong: hurt | bestiary v1 |
+| `mobs/mob_chitin-warrior-strong_walk_strip2.png` | 30x22 | Chitin Warrior, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_chitin-warrior-strong_death_strip4.png` | 116x22 | Chitin Warrior, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_chitin-warrior-stronger_idle.png` | 15x22 | Chitin Warrior, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_chitin-warrior-stronger_hit.png` | 15x22 | Chitin Warrior, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_chitin-warrior-stronger_hurt.png` | 15x22 | Chitin Warrior, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_chitin-warrior-stronger_walk_strip2.png` | 30x22 | Chitin Warrior, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_chitin-warrior-stronger_death_strip4.png` | 116x22 | Chitin Warrior, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_nomad-warrior_idle.png` | 16x20 | Nomad Warrior: idle | bestiary v1 |
+| `mobs/mob_nomad-warrior_hit.png` | 16x20 | Nomad Warrior: hit, the red flash | bestiary v1 |
+| `mobs/mob_nomad-warrior_hurt.png` | 16x20 | Nomad Warrior: hurt | bestiary v1 |
+| `mobs/mob_nomad-warrior_walk_strip2.png` | 32x20 | Nomad Warrior: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_nomad-warrior_death_strip4.png` | 104x20 | Nomad Warrior: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_nomad-warrior-strong_idle.png` | 16x20 | Nomad Warrior, strong: idle | bestiary v1 |
+| `mobs/mob_nomad-warrior-strong_hit.png` | 16x20 | Nomad Warrior, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_nomad-warrior-strong_hurt.png` | 16x20 | Nomad Warrior, strong: hurt | bestiary v1 |
+| `mobs/mob_nomad-warrior-strong_walk_strip2.png` | 32x20 | Nomad Warrior, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_nomad-warrior-strong_death_strip4.png` | 104x20 | Nomad Warrior, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_nomad-warrior-stronger_idle.png` | 16x20 | Nomad Warrior, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_nomad-warrior-stronger_hit.png` | 16x20 | Nomad Warrior, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_nomad-warrior-stronger_hurt.png` | 16x20 | Nomad Warrior, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_nomad-warrior-stronger_walk_strip2.png` | 32x20 | Nomad Warrior, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_nomad-warrior-stronger_death_strip4.png` | 104x20 | Nomad Warrior, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_wraith_idle.png` | 15x19 | Wraith: idle | bestiary v1 |
+| `mobs/mob_wraith_hit.png` | 15x19 | Wraith: hit, the red flash | bestiary v1 |
+| `mobs/mob_wraith_hurt.png` | 15x19 | Wraith: hurt | bestiary v1 |
+| `mobs/mob_wraith_walk_strip2.png` | 30x19 | Wraith: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_wraith_death_strip4.png` | 100x19 | Wraith: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_wraith-strong_idle.png` | 15x19 | Wraith, strong: idle | bestiary v1 |
+| `mobs/mob_wraith-strong_hit.png` | 15x19 | Wraith, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_wraith-strong_hurt.png` | 15x19 | Wraith, strong: hurt | bestiary v1 |
+| `mobs/mob_wraith-strong_walk_strip2.png` | 30x19 | Wraith, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_wraith-strong_death_strip4.png` | 100x19 | Wraith, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_wraith-stronger_idle.png` | 15x19 | Wraith, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_wraith-stronger_hit.png` | 15x19 | Wraith, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_wraith-stronger_hurt.png` | 15x19 | Wraith, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_wraith-stronger_walk_strip2.png` | 30x19 | Wraith, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_wraith-stronger_death_strip4.png` | 100x19 | Wraith, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_shadow-phantom_idle.png` | 15x25 | Shadow Phantom: idle | bestiary v1 |
+| `mobs/mob_shadow-phantom_hit.png` | 15x25 | Shadow Phantom: hit, the red flash | bestiary v1 |
+| `mobs/mob_shadow-phantom_hurt.png` | 15x25 | Shadow Phantom: hurt | bestiary v1 |
+| `mobs/mob_shadow-phantom_walk_strip2.png` | 30x25 | Shadow Phantom: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_shadow-phantom_death_strip4.png` | 124x25 | Shadow Phantom: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_shadow-phantom-strong_idle.png` | 15x25 | Shadow Phantom, strong: idle | bestiary v1 |
+| `mobs/mob_shadow-phantom-strong_hit.png` | 15x25 | Shadow Phantom, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_shadow-phantom-strong_hurt.png` | 15x25 | Shadow Phantom, strong: hurt | bestiary v1 |
+| `mobs/mob_shadow-phantom-strong_walk_strip2.png` | 30x25 | Shadow Phantom, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_shadow-phantom-strong_death_strip4.png` | 124x25 | Shadow Phantom, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_shadow-phantom-stronger_idle.png` | 15x25 | Shadow Phantom, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_shadow-phantom-stronger_hit.png` | 15x25 | Shadow Phantom, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_shadow-phantom-stronger_hurt.png` | 15x25 | Shadow Phantom, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_shadow-phantom-stronger_walk_strip2.png` | 30x25 | Shadow Phantom, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_shadow-phantom-stronger_death_strip4.png` | 124x25 | Shadow Phantom, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ashen-convert_idle.png` | 14x20 | Ashen Convert: idle | bestiary v1 |
+| `mobs/mob_ashen-convert_hit.png` | 14x20 | Ashen Convert: hit, the red flash | bestiary v1 |
+| `mobs/mob_ashen-convert_hurt.png` | 14x20 | Ashen Convert: hurt | bestiary v1 |
+| `mobs/mob_ashen-convert_walk_strip2.png` | 28x20 | Ashen Convert: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ashen-convert_death_strip4.png` | 104x20 | Ashen Convert: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ashen-convert-strong_idle.png` | 14x20 | Ashen Convert, strong: idle | bestiary v1 |
+| `mobs/mob_ashen-convert-strong_hit.png` | 14x20 | Ashen Convert, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_ashen-convert-strong_hurt.png` | 14x20 | Ashen Convert, strong: hurt | bestiary v1 |
+| `mobs/mob_ashen-convert-strong_walk_strip2.png` | 28x20 | Ashen Convert, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ashen-convert-strong_death_strip4.png` | 104x20 | Ashen Convert, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ashen-convert-stronger_idle.png` | 14x20 | Ashen Convert, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_ashen-convert-stronger_hit.png` | 14x20 | Ashen Convert, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_ashen-convert-stronger_hurt.png` | 14x20 | Ashen Convert, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_ashen-convert-stronger_walk_strip2.png` | 28x20 | Ashen Convert, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ashen-convert-stronger_death_strip4.png` | 104x20 | Ashen Convert, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ember-prophet_idle.png` | 16x21 | Ember Prophet: idle | bestiary v1 |
+| `mobs/mob_ember-prophet_hit.png` | 16x21 | Ember Prophet: hit, the red flash | bestiary v1 |
+| `mobs/mob_ember-prophet_hurt.png` | 16x21 | Ember Prophet: hurt | bestiary v1 |
+| `mobs/mob_ember-prophet_walk_strip2.png` | 32x21 | Ember Prophet: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ember-prophet_death_strip4.png` | 112x21 | Ember Prophet: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ember-prophet-strong_idle.png` | 16x21 | Ember Prophet, strong: idle | bestiary v1 |
+| `mobs/mob_ember-prophet-strong_hit.png` | 16x21 | Ember Prophet, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_ember-prophet-strong_hurt.png` | 16x21 | Ember Prophet, strong: hurt | bestiary v1 |
+| `mobs/mob_ember-prophet-strong_walk_strip2.png` | 32x21 | Ember Prophet, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ember-prophet-strong_death_strip4.png` | 112x21 | Ember Prophet, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ember-prophet-stronger_idle.png` | 16x21 | Ember Prophet, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_ember-prophet-stronger_hit.png` | 16x21 | Ember Prophet, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_ember-prophet-stronger_hurt.png` | 16x21 | Ember Prophet, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_ember-prophet-stronger_walk_strip2.png` | 32x21 | Ember Prophet, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ember-prophet-stronger_death_strip4.png` | 112x21 | Ember Prophet, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ember-wraith_idle.png` | 17x17 | Ember Wraith: idle | bestiary v1 |
+| `mobs/mob_ember-wraith_hit.png` | 17x17 | Ember Wraith: hit, the red flash | bestiary v1 |
+| `mobs/mob_ember-wraith_hurt.png` | 17x17 | Ember Wraith: hurt | bestiary v1 |
+| `mobs/mob_ember-wraith_walk_strip2.png` | 34x17 | Ember Wraith: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ember-wraith_death_strip4.png` | 92x17 | Ember Wraith: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ember-wraith-strong_idle.png` | 17x17 | Ember Wraith, strong: idle | bestiary v1 |
+| `mobs/mob_ember-wraith-strong_hit.png` | 17x17 | Ember Wraith, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_ember-wraith-strong_hurt.png` | 17x17 | Ember Wraith, strong: hurt | bestiary v1 |
+| `mobs/mob_ember-wraith-strong_walk_strip2.png` | 34x17 | Ember Wraith, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ember-wraith-strong_death_strip4.png` | 92x17 | Ember Wraith, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_ember-wraith-stronger_idle.png` | 17x17 | Ember Wraith, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_ember-wraith-stronger_hit.png` | 17x17 | Ember Wraith, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_ember-wraith-stronger_hurt.png` | 17x17 | Ember Wraith, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_ember-wraith-stronger_walk_strip2.png` | 34x17 | Ember Wraith, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_ember-wraith-stronger_death_strip4.png` | 92x17 | Ember Wraith, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_stone-golem_idle.png` | 24x29 | Stone Golem (boss): idle | bestiary v1 |
+| `mobs/mob_stone-golem_hit.png` | 24x29 | Stone Golem (boss): hit, the red flash | bestiary v1 |
+| `mobs/mob_stone-golem_hurt.png` | 24x29 | Stone Golem (boss): hurt | bestiary v1 |
+| `mobs/mob_stone-golem_walk_strip2.png` | 48x29 | Stone Golem (boss): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_stone-golem_death_strip4.png` | 144x29 | Stone Golem (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_stone-golem-strong_idle.png` | 24x29 | Stone Golem (boss), strong: idle | bestiary v1 |
+| `mobs/mob_stone-golem-strong_hit.png` | 24x29 | Stone Golem (boss), strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_stone-golem-strong_hurt.png` | 24x29 | Stone Golem (boss), strong: hurt | bestiary v1 |
+| `mobs/mob_stone-golem-strong_walk_strip2.png` | 48x29 | Stone Golem (boss), strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_stone-golem-strong_death_strip4.png` | 144x29 | Stone Golem (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_stone-golem-stronger_idle.png` | 24x29 | Stone Golem (boss), stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_stone-golem-stronger_hit.png` | 24x29 | Stone Golem (boss), stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_stone-golem-stronger_hurt.png` | 24x29 | Stone Golem (boss), stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_stone-golem-stronger_walk_strip2.png` | 48x29 | Stone Golem (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_stone-golem-stronger_death_strip4.png` | 144x29 | Stone Golem (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_giant-elemental_idle.png` | 24x31 | Giant Elemental (boss): idle | bestiary v1 |
+| `mobs/mob_giant-elemental_hit.png` | 24x31 | Giant Elemental (boss): hit, the red flash | bestiary v1 |
+| `mobs/mob_giant-elemental_hurt.png` | 24x31 | Giant Elemental (boss): hurt | bestiary v1 |
+| `mobs/mob_giant-elemental_walk_strip2.png` | 48x31 | Giant Elemental (boss): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_giant-elemental_death_strip4.png` | 152x31 | Giant Elemental (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_giant-elemental-strong_idle.png` | 24x31 | Giant Elemental (boss), strong: idle | bestiary v1 |
+| `mobs/mob_giant-elemental-strong_hit.png` | 24x31 | Giant Elemental (boss), strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_giant-elemental-strong_hurt.png` | 24x31 | Giant Elemental (boss), strong: hurt | bestiary v1 |
+| `mobs/mob_giant-elemental-strong_walk_strip2.png` | 48x31 | Giant Elemental (boss), strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_giant-elemental-strong_death_strip4.png` | 152x31 | Giant Elemental (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_giant-elemental-stronger_idle.png` | 24x31 | Giant Elemental (boss), stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_giant-elemental-stronger_hit.png` | 24x31 | Giant Elemental (boss), stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_giant-elemental-stronger_hurt.png` | 24x31 | Giant Elemental (boss), stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_giant-elemental-stronger_walk_strip2.png` | 48x31 | Giant Elemental (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_giant-elemental-stronger_death_strip4.png` | 152x31 | Giant Elemental (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_khagan_idle.png` | 22x28 | Khagan of the Sirocco (boss): idle | bestiary v1 |
+| `mobs/mob_khagan_hit.png` | 22x28 | Khagan of the Sirocco (boss): hit, the red flash | bestiary v1 |
+| `mobs/mob_khagan_hurt.png` | 22x28 | Khagan of the Sirocco (boss): hurt | bestiary v1 |
+| `mobs/mob_khagan_walk_strip2.png` | 44x28 | Khagan of the Sirocco (boss): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_khagan_death_strip4.png` | 136x28 | Khagan of the Sirocco (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_khagan-strong_idle.png` | 22x28 | Khagan of the Sirocco (boss), strong: idle | bestiary v1 |
+| `mobs/mob_khagan-strong_hit.png` | 22x28 | Khagan of the Sirocco (boss), strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_khagan-strong_hurt.png` | 22x28 | Khagan of the Sirocco (boss), strong: hurt | bestiary v1 |
+| `mobs/mob_khagan-strong_walk_strip2.png` | 44x28 | Khagan of the Sirocco (boss), strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_khagan-strong_death_strip4.png` | 136x28 | Khagan of the Sirocco (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_khagan-stronger_idle.png` | 22x28 | Khagan of the Sirocco (boss), stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_khagan-stronger_hit.png` | 22x28 | Khagan of the Sirocco (boss), stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_khagan-stronger_hurt.png` | 22x28 | Khagan of the Sirocco (boss), stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_khagan-stronger_walk_strip2.png` | 44x28 | Khagan of the Sirocco (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_khagan-stronger_death_strip4.png` | 136x28 | Khagan of the Sirocco (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_forge-master_idle.png` | 22x28 | Forge-Master of the Inferno (boss): idle | bestiary v1 |
+| `mobs/mob_forge-master_hit.png` | 22x28 | Forge-Master of the Inferno (boss): hit, the red flash | bestiary v1 |
+| `mobs/mob_forge-master_hurt.png` | 22x28 | Forge-Master of the Inferno (boss): hurt | bestiary v1 |
+| `mobs/mob_forge-master_walk_strip2.png` | 44x28 | Forge-Master of the Inferno (boss): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_forge-master_death_strip4.png` | 136x28 | Forge-Master of the Inferno (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_forge-master-strong_idle.png` | 22x28 | Forge-Master of the Inferno (boss), strong: idle | bestiary v1 |
+| `mobs/mob_forge-master-strong_hit.png` | 22x28 | Forge-Master of the Inferno (boss), strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_forge-master-strong_hurt.png` | 22x28 | Forge-Master of the Inferno (boss), strong: hurt | bestiary v1 |
+| `mobs/mob_forge-master-strong_walk_strip2.png` | 44x28 | Forge-Master of the Inferno (boss), strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_forge-master-strong_death_strip4.png` | 136x28 | Forge-Master of the Inferno (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_forge-master-stronger_idle.png` | 22x28 | Forge-Master of the Inferno (boss), stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_forge-master-stronger_hit.png` | 22x28 | Forge-Master of the Inferno (boss), stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_forge-master-stronger_hurt.png` | 22x28 | Forge-Master of the Inferno (boss), stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_forge-master-stronger_walk_strip2.png` | 44x28 | Forge-Master of the Inferno (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_forge-master-stronger_death_strip4.png` | 136x28 | Forge-Master of the Inferno (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_corrupted-wyvern_idle.png` | 26x27 | Corrupted Wyvern (boss): idle | bestiary v1 |
+| `mobs/mob_corrupted-wyvern_hit.png` | 26x27 | Corrupted Wyvern (boss): hit, the red flash | bestiary v1 |
+| `mobs/mob_corrupted-wyvern_hurt.png` | 26x27 | Corrupted Wyvern (boss): hurt | bestiary v1 |
+| `mobs/mob_corrupted-wyvern_walk_strip2.png` | 52x27 | Corrupted Wyvern (boss): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_corrupted-wyvern_death_strip4.png` | 136x27 | Corrupted Wyvern (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-strong_idle.png` | 26x27 | Corrupted Wyvern (boss), strong: idle | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-strong_hit.png` | 26x27 | Corrupted Wyvern (boss), strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-strong_hurt.png` | 26x27 | Corrupted Wyvern (boss), strong: hurt | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-strong_walk_strip2.png` | 52x27 | Corrupted Wyvern (boss), strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-strong_death_strip4.png` | 136x27 | Corrupted Wyvern (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-stronger_idle.png` | 26x27 | Corrupted Wyvern (boss), stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-stronger_hit.png` | 26x27 | Corrupted Wyvern (boss), stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-stronger_hurt.png` | 26x27 | Corrupted Wyvern (boss), stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-stronger_walk_strip2.png` | 52x27 | Corrupted Wyvern (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_corrupted-wyvern-stronger_death_strip4.png` | 136x27 | Corrupted Wyvern (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
