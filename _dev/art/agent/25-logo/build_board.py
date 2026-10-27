@@ -63,7 +63,7 @@ chosen = (f'<figure><img src="data:image/gif;base64,{base64.b64encode(anim.read_
           f'width="{a.width}" height="{a.height}" alt="Logo A in motion"><figcaption>A in motion, x4: the slam, '
           f'the claws, the debris</figcaption></figure>') + chosen
 cards = ('<h3>Chosen: A is the logo and app icon, B is the splash</h3><p class="muted">The splash fades in from '
-         'the dark one piece at a time in palette steps (silhouette, dusk, lit), 6.2 seconds in all, ending on a hold. A also has an intro of its own: the shield slams in from the foreground, the claws rip upward, the debris settles, about 3 seconds.</p>'
+         'the dark one piece at a time in palette steps (silhouette, dusk, lit), 5.8 seconds in all, ending on a hold. A also has an intro of its own: the shield slams in from the foreground, the claws rip upward, the debris settles, about 3 seconds.</p>'
          f'<div class="tiles">{chosen}</div>')
 for cid, title, note in CONCEPTS:
     icon = Image.open(OUT / f"logo_{cid}_icon.png").convert("RGBA")
