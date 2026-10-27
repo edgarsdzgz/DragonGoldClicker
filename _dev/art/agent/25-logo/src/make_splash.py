@@ -18,6 +18,9 @@ from PIL import Image
 from make_logo import OUT, P, PREVIEW, S, background, canvas, ellipse, mask_of, pixkit, poly, rgba, wordmark
 
 STONE = "night3"
+# Owner, 2026-10-27: "can we slow it down, please?" Every beat holds 1.75 times longer than the first
+# cut (v1 timing kept as out/splash_timing_v1.json); the final hold stays as it was.
+SLOW = 1.75
 # Glow colors keep their value in the night map, so a fade steps them down by hand.
 GLOW_DIM = {
     1: {"fire1": "wood1", "fire2": "wood1", "fire3": "wood2", "gold5": "wood1", "gold6": "wood2"},
@@ -150,7 +153,7 @@ def main():
     mark = wordmark()
     beats = timeline()
     frames = [frame(t, mark) for t, _ in beats]
-    ms = [m for _, m in beats]
+    ms = [round(m * SLOW) for _, m in beats[:-1]] + [beats[-1][1]]
     pixkit.strip(frames).save(OUT / f"splash_frames_strip{len(frames)}.png")
     (OUT / "splash_timing.json").write_text(json.dumps({
         "frame_width": frames[0].width, "frame_height": frames[0].height, "frames": len(frames),

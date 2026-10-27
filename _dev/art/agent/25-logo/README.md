@@ -25,3 +25,10 @@ small spaced caps.
   palette steps (silhouette, dusk, lit), never alpha. Output: `splash_frames_strip28.png` and
   `splash_timing.json` (each frame's hold in ms); the first frame is plain night1 background, so a static
   splash in #281e32 hands over seamlessly.
+- **A in motion** (`src/make_shield_anim.py`, optional use): the shield flies in from the foreground and
+  slams into place (squash, shake, dust), three claws slash upward, and the three sparks fly off the
+  slash as debris. The shield is redrawn from its polygons at every size, so the zoom stays crisp; the
+  last frame is `logo_shield_icon.png` exactly. Output: `logo_anim_frames_strip19.png`,
+  `logo_anim_timing.json`, `preview/logo_anim.gif`.
+- **Splash slowed down** (owner): every beat holds 1.75 times longer, about 8.4 seconds in all. The first
+  cut's timing is kept as `out/splash_timing_v1.json` and `preview/splash_v1.gif`.

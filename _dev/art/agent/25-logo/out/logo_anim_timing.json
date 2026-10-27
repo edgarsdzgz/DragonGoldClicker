@@ -1,0 +1,28 @@
+{
+  "frame_width": 64,
+  "frame_height": 64,
+  "frames": 19,
+  "ms": [
+    300,
+    50,
+    50,
+    50,
+    50,
+    50,
+    70,
+    70,
+    90,
+    260,
+    55,
+    55,
+    55,
+    55,
+    55,
+    55,
+    70,
+    70,
+    1500
+  ],
+  "loop": false,
+  "note": "Hold the last frame; it is logo_shield_icon.png exactly."
+}
