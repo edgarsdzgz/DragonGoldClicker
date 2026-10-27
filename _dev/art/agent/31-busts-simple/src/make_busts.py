@@ -1,4 +1,4 @@
-"""Simpler busts, v3, 2026-10-27. v2 (the first simpler pass) is kept as make_busts_v2.py and out/*_v2.png;
+"""Simpler busts, v4, 2026-10-27. v3 is kept as out/*_v3.png (and git history). v2 (the first simpler pass) is kept as make_busts_v2.py and out/*_v2.png;
 the v1 busts stay as they are.
 
 Owner, on v2: "Add little more shading/highlight colors to each character", then per character: pupils
@@ -84,7 +84,6 @@ def pyreth():
     b.shade(5, 4, 16, 14, "clay2", "clay3", "clay1")
     b.rect(7, 7, 9, 7, "clay1", True)                                    # brow
     b.rect(8, 8, 9, 8, "gold5", True)                                    # eyes
-    b.px(9, 8, "ink", True)                                              # pupils
     b.rect(8, 10, 10, 13, "clay3", True)                                 # snout
     b.rect(13, 10, 13, 13, "clay2")
     b.px(9, 11, "ink", True)
@@ -239,6 +238,9 @@ def lirae():
     b.rect(8, 10, 10, 13, "steel3", True)                                # snout
     b.rect(13, 10, 13, 13, "steel2")
     b.px(9, 11, "ink", True)
+    b.rect(10, 14, 11, 14, "steel3")                                     # her paler chest, above the tome
+    b.rect(9, 15, 12, 15, "steel3")
+    b.px(12, 15, "steel2")
     for x0 in (6, 12):                                                   # spectacles: round gold rims
         b.rect(x0, 6, x0 + 3, 9, "gold4", round=True)
         b.rect(x0 + 1, 7, x0 + 2, 8, "steel5")
@@ -259,8 +261,9 @@ def lirae():
     return b.image()
 
 
-BUSTS = {"pyreth": pyreth, "rodain": rodain, "mirael": mirael, "kael": kael, "kael-full": kael_full,
-         "lirae": lirae}
+# v4, the owner's picks: Pyreth without pupils, Kael's 22x23 take (kael_full is kept as v3 only), Lirae's
+# paler chest back. Rodain and Mirael are unchanged from v3.
+BUSTS = {"pyreth": pyreth, "rodain": rodain, "mirael": mirael, "kael": kael, "lirae": lirae}
 
 
 def main():
@@ -268,8 +271,8 @@ def main():
     PREVIEW.mkdir(exist_ok=True)
     for name, f in BUSTS.items():
         img = f()
-        img.save(OUT / f"bust_{name}_v3.png")
-        upscale(img, 8 if img.width < 30 else 4).save(PREVIEW / f"bust_{name}_v3_x8.png")
+        img.save(OUT / f"bust_{name}_v4.png")
+        upscale(img, 8 if img.width < 30 else 4).save(PREVIEW / f"bust_{name}_v4_x8.png")
     print(len(BUSTS), "busts")
 
 
