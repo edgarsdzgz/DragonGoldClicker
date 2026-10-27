@@ -29,6 +29,12 @@ RAMPS = {
     # Ruby: a crimson jewel ramp, kept apart from the HP red. Owner exception to "red is for HP
     # and danger" (2026-10-26), for the Wyrm's Fury gem only, like the red Close plate.
     "ruby": ["5c0f24", "a8183c", "e8405c", "ffc4cc"],
+    # Monsters (2026-10-27): each keeps its signature color from the first monster art, the colors
+    # a townsperson must never wear (goblin yellow-green, kobold olive, ashen gray, shadow purple).
+    "kobold": ["4a502c", "707840", "96a058"],
+    "goblin": ["466428", "6e963c", "96ba54"],
+    "ash": ["4e4856", "76707c", "96909c"],
+    "shadow": ["20122c", "3a224e", "5c3a78"],
 }
 
 # Colors that keep their value at night (README section 4).
