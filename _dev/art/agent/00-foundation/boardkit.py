@@ -37,8 +37,8 @@ def section(title, note, figures):
     return f'<section><h2>{html.escape(title)}</h2>{note}<div class="tiles">{"".join(figures)}</div></section>'
 
 
-def page(title, heading, intro, sections):
-    """The whole board. intro and section notes are trusted HTML written by the art tools."""
+def page(title, heading, intro, sections, css=""):
+    """The whole board. intro, section notes and css are trusted text written by the art tools."""
     return f"""<title>{html.escape(title)}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta charset="utf-8">
@@ -61,6 +61,7 @@ def page(title, heading, intro, sections):
   figure {{ margin: 0; display: grid; gap: 6px; justify-items: center; max-width: 100%; }}
   figure img {{ image-rendering: pixelated; max-width: 100%; height: auto; }}
   figcaption {{ font-size: .8rem; color: var(--muted); text-align: center; max-width: 22ch; }}
+{css}
 </style>
 <main>
   <header>
