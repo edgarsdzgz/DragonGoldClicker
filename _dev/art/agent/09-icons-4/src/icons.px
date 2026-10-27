@@ -1,0 +1,230 @@
+# Icon sheet 4, 2026-10-26: the last twelve interface icons. Written by make_icons.py.
+# 12x12, ink outline, light from the upper left. Research notes: ../README.md
+
+# Next, go. The Upgrade arrow turned to point right.
+@asset icon_next
+size 12 12
+budget 8
+key a=ink H=gold5 g=gold4 G=gold3
+frame
+......a.....
+.....aHa....
+.....agHa...
+.aaaaaggHa..
+aHHHHHgggHa.
+agggggggggHa
+aGGGGGGGGGGa
+aGGGGGGGGGa.
+.aaaaaGGGa..
+.....aGGa...
+.....aGa....
+......a.....
+
+# Unknown and help. A gold question mark on a dusk-purple plate.
+@asset icon_unknown
+size 12 12
+budget 8
+key a=ink n=night4 m=night3 d=night2 H=gold5 g=gold3
+frame
+..aaaaaaaa..
+.annnnnnnna.
+anmmmmmmmmda
+anmmHHHHmmda
+anmHgmmHgmda
+anmmmmmHgmda
+anmmmmHgmmda
+anmmmHgmmmda
+anmmmmmmmmda
+anmmmHgmmmda
+.adddddddda.
+..aaaaaaaa..
+
+# Info. A white i on a sea-blue plate.
+@asset icon_info
+size 12 12
+budget 8
+key a=ink n=sea3 m=sea2 d=sea1 h=steel5 s=steel3
+frame
+..aaaaaaaa..
+.annnnnnnna.
+anmmmmmmmmda
+anmmmhsmmmda
+anmmmmmmmmda
+anmmhhsmmmda
+anmmmhsmmmda
+anmmmhsmmmda
+anmmmhsmmmda
+anmmhhhsmmda
+.adddddddda.
+..aaaaaaaa..
+
+# Rising stores. A green zigzag climbing to the upper right.
+@asset icon_rising
+size 12 12
+budget 8
+key a=ink H=green3 g=green2 G=green1
+frame
+......aaaaa.
+.....agHHHga
+......agggGa
+.......aggGa
+........agGa
+...aaa.agaga
+..aHHgaHGaa.
+.aHgGgHGa...
+aHgGagGa....
+agGa.aa.....
+.aa.........
+............
+
+# Falling stores. The same line falling, in brick (red is kept for HP and danger).
+@asset icon_falling
+size 12 12
+budget 8
+key a=ink H=clay3 g=clay2 G=clay1
+frame
+............
+.aa.........
+aHga.aa.....
+agggaHga....
+.aggHgGga...
+..agGGaggaa.
+...aaa.agaga
+........aHGa
+.......aHgGa
+......aHggGa
+.....agGGGGa
+......aaaaa.
+
+# Rank. A gold medal hanging from a slate-blue ribbon.
+@asset icon_rank
+size 12 12
+budget 8
+key a=ink W=gold6 H=gold5 g=gold4 G=gold2 n=night4 d=night3
+frame
+..aa....aa..
+.anna..adda.
+.annnaaddda.
+..annaadda..
+..annnddda..
+...aHggga...
+..aHGgggga..
+..aggWggga..
+..agggggga..
+..aggggHGa..
+...agggGa...
+....aaaa....
+
+# Shield gear. A round wooden shield with a steel rim and boss.
+@asset icon_shield_gear
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 s=steel2 w=wood4 W=wood3 k=wood1
+frame
+....aaaa....
+..aahmmmaa..
+.ahmswWmmma.
+.amwkwWkWma.
+ahswkwWkWmma
+amwwkhmkWWma
+amwwkmskWWma
+ammwkwWkWhsa
+.amwkwWkWma.
+.ammmwWhmsa.
+..aammmsaa..
+....aaaa....
+
+# Claws. Three curved slash marks, lit on their leading edge.
+@asset icon_claws
+size 12 12
+budget 8
+key a=ink H=steel5 s=steel3
+frame
+....aa..a...
+...aHsaasaa.
+...asaasaasa
+..aHsaHsaHsa
+.aHsaasaaHsa
+.aHsaHsaHsa.
+.asaaHsaHsa.
+aHsaasaasa..
+aHsaasaasa..
+asaasa.asa..
+asaasa..a...
+.a..a.......
+
+# Offline, rest. A pale crescent moon with a star.
+@asset icon_moon
+size 12 12
+budget 8
+key a=ink H=gold6 m=parch3 d=parch1
+frame
+............
+...aa.......
+..aHma..a...
+.aHda..aHa..
+aHmda.aHHHa.
+aHmda..aHa..
+aHmmma..a...
+aHmmmmaaa...
+ammmmmHHma..
+.ammmmmdda..
+..amdddaa...
+...aaaa.....
+
+# Wizard's Tower. Lavender sparkles with white hearts.
+@asset icon_sparkles
+size 12 12
+budget 8
+key a=ink W=steel5 L=night4 n=night3
+frame
+.........a..
+........aLa.
+....a..aLWLa
+...ana..aLa.
+...aLa...a..
+.aaaLaaa....
+anLLWLLna...
+.aaaLaaa.a..
+...aLa..aLa.
+...ana.aLWLa
+....a...aLa.
+.........a..
+
+# Map. A three-fold map: a wood, a dotted path and an X.
+@asset icon_map
+size 12 12
+budget 8
+key a=ink P=parch3 Q=parch2 D=parch1 g=green2 l=wood2 x=clay2
+frame
+aaaa....aaaa
+aPPPaaaaPPPa
+aggPQQQQxPxa
+agPPQQQQPxPa
+aPPPQQQQxPxa
+aPPPQQlQPPPa
+aPPPQlQQPPPa
+aPPPQQQQPPPa
+aPlPQQQQPPPa
+aDDDQQQQDDDa
+aaaaDDDDaaaa
+....aaaa....
+
+# Stats. Three bars climbing: sea, green and gold.
+@asset icon_stats
+size 12 12
+budget 8
+key a=ink B=sea3 b=sea2 E=green3 e=green2 H=gold5 g=gold3
+frame
+............
+.......aaaa.
+.......aHga.
+....aaaaHga.
+....aEeaHga.
+....aEeaHga.
+.aaaaEeaHga.
+.aBbaEeaHga.
+.aBbaEeaHga.
+.aBbaEeaHga.
+aaaaaaaaaaaa
+............

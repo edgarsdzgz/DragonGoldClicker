@@ -18,7 +18,11 @@ OFFICIAL = ART / "official"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "review.html"
 
 # The batch awaiting the owner's approval: (folder, title, [(file stem, label), ...]), or None.
-PENDING = None
+PENDING = ("09-icons-4", "Icon sheet 4: the last twelve interface icons", [
+    ("icon_next", "Next"), ("icon_unknown", "Unknown, help"), ("icon_info", "Info"),
+    ("icon_rising", "Rising stores"), ("icon_falling", "Falling stores"), ("icon_rank", "Rank"),
+    ("icon_shield_gear", "Shield gear"), ("icon_claws", "Claws"), ("icon_moon", "Offline, rest"),
+    ("icon_sparkles", "Wizard's Tower"), ("icon_map", "Map"), ("icon_stats", "Stats")])
 MOTION = [
     (AGENT / "01-test-run/preview/scene_warfront.gif", "The fighter's jab and the hit spark on the Warfront wall"),
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),

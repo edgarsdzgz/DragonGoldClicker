@@ -1,0 +1,170 @@
+[
+ {
+  "name": "icon_next",
+  "file": "icon_next.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_unknown",
+  "file": "icon_unknown.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_info",
+  "file": "icon_info.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_rising",
+  "file": "icon_rising.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_falling",
+  "file": "icon_falling.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_rank",
+  "file": "icon_rank.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 5,7"
+  ]
+ },
+ {
+  "name": "icon_shield_gear",
+  "file": "icon_shield_gear.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_claws",
+  "file": "icon_claws.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 8,1"
+  ]
+ },
+ {
+  "name": "icon_moon",
+  "file": "icon_moon.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_sparkles",
+  "file": "icon_sparkles.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,2",
+   "single-pixel island at 4,6",
+   "single-pixel island at 9,9"
+  ]
+ },
+ {
+  "name": "icon_map",
+  "file": "icon_map.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 9,3",
+   "single-pixel island at 6,5",
+   "single-pixel island at 5,6"
+  ]
+ },
+ {
+  "name": "icon_stats",
+  "file": "icon_stats.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ }
+]
