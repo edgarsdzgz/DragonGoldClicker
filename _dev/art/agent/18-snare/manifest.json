@@ -1,0 +1,48 @@
+[
+ {
+  "name": "icon_res_snare_box_carrot",
+  "file": "icon_res_snare_box_carrot.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,5"
+  ]
+ },
+ {
+  "name": "icon_res_snare_box",
+  "file": "icon_res_snare_box.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,5"
+  ]
+ },
+ {
+  "name": "icon_res_snare_box_steep",
+  "file": "icon_res_snare_box_steep.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,3",
+   "single-pixel island at 3,5"
+  ]
+ }
+]

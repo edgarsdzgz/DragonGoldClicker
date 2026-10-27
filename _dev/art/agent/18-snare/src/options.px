@@ -1,0 +1,58 @@
+# Snares and Nets as a box trap, 2026-10-26. Written by make_options.py.
+
+# Snares and Nets A: a box trap propped on a forked stick, a carrot for bait
+@asset icon_res_snare_box_carrot
+size 12 12
+budget 8
+key a=ink W=wood4 w=wood3 D=wood2 S=parch1 r=parch2 O=fire1 g=green3 G=green2
+frame
+.......aa...
+.....aaWwa..
+...aaWWDDa..
+..aWWwDDwa..
+.aWwDDwwwaa.
+aWDDDwwDaaSa
+aDDwwDDaaSa.
+awwwDaa.aSa.
+awDaaaaaaSa.
+aDaaOOOgaSra
+aGGGGGGGGGGa
+.aaaaaaaaaa.
+
+# Snares and Nets B: the box trap alone, propped on its stick
+@asset icon_res_snare_box
+size 12 12
+budget 8
+key a=ink W=wood4 w=wood3 D=wood2 S=parch1 r=parch2 G=green2
+frame
+.......aa...
+.....aaWwa..
+...aaWWDDa..
+..aWWwDDwa..
+.aWwDDwwwaa.
+aWDDDwwDaaSa
+aDDwwDDaaSa.
+awwwDaa.aSa.
+awDaa...aSa.
+aDaaaaaaaSra
+aGGGGGGGGGGa
+.aaaaaaaaaa.
+
+# Snares and Nets C: the box tipped up steeply on its stick, a carrot for bait
+@asset icon_res_snare_box_steep
+size 12 12
+budget 8
+key a=ink W=wood4 w=wood3 D=wood2 S=parch1 r=parch2 O=fire1 g=green3 G=green2
+frame
+......aaa...
+.....aWDDa..
+...aaWDDwaa.
+..aWWDDwDaSa
+.aWwDwwaaSa.
+aWwDwwa.aSa.
+aDDwwa..aSa.
+aDwwa...aSa.
+awDaaaaaaSa.
+.aaaOOOgaSra
+aGGGGGGGGGGa
+.aaaaaaaaaa.
