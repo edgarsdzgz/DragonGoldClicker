@@ -170,6 +170,9 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `logo/splash_lockup.png` | 72x97 | Splash: the gate under the ember moon with the wordmark (logo B) | logo |
 | `logo/splash_frames_strip28.png` | 2016x97 | Splash animation: the gate assembles out of the dark (play with splash_timing.json) | logo |
 | `logo/splash_timing.json` |  | Splash animation: each frame's hold in ms, frame size, background | logo |
+| `studio/seal_build_sheet.png` | 1800x1376 | RAXDEG STUDIOS startup splash: the seal builds in blue, the name is carved in gold, the seal smashes to gold (frames ten to a row; play with seal_build_timing.json) | RAXDEG seal (v5, locked 2026-10-27) |
+| `studio/seal_build_timing.json` |  | RAXDEG STUDIOS splash: each frame's hold in ms, frame size, columns, named beats | RAXDEG seal |
+| `studio/seal_card.png` | 180x172 | RAXDEG STUDIOS: the gold seal with the name struck through it | RAXDEG seal |
 | `mobs/mob_kobold_idle.png` | 13x16 | Kobold: idle | simple mobs |
 | `mobs/mob_kobold_hit.png` | 13x16 | Kobold: hit, the red flash | simple mobs |
 | `mobs/mob_kobold_hurt.png` | 13x16 | Kobold: hurt | simple mobs |

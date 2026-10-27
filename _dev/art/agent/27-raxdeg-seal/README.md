@@ -50,3 +50,9 @@ the seal builds and etches in blue, the slash carves the name in gold across the
 turns the seal gold under it. The name is in a larger face (`HUGE_RUNIC` in `src/runic_big.py`: fifteen
 rows, two-pixel strokes, letter gap 3), drawn from the five-by-seven face's own shapes, and runs past the
 ring on both sides. Frame 180 x 172, 69 frames, about 7 seconds.
+
+v5, locked 2026-10-27 (owner: "Please plan and do as you recommend"): the gold spreads up and down from the
+slash's cut through the strokes, a white-hot edge ahead of it, before the smash. The frames go out as
+`out/seal_build_sheet.png`, ten to a row, and the timing file names each beat's first frame (slam, the three
+medallions, etch, etched, slash, spread, smash, end) for the app's short version and for sound cues. Locked
+as `official/studio/` (sheet, timing, card) and played by the app's launch intro. v4 is kept as `*_v4`.

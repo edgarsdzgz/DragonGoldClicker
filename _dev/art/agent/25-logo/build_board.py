@@ -101,6 +101,7 @@ def gif_fig(path, caption):
 seal_intros = "".join(gif_fig(SEAL / "preview" / f"seal_intro_{k}.gif", f"{label}, x2")
                       for k, label in (("gold", "Gold, engraved"), ("arcane", "Arcane, a spell circle"), ("wax", "Wax, pressed")))
 build_fig = gif_fig(SEAL / "preview" / "seal_build.gif", "The seal builds, the name struck through it, x2")
+build_v4 = gif_fig(SEAL / "preview" / "seal_build_v4.gif", "Before: the seal turned gold all at once, x2")
 build_v3 = gif_fig(SEAL / "preview" / "seal_build_v3.gif", "Before: gold first, then the smaller name, x2")
 build_v2 = gif_fig(SEAL / "preview" / "seal_build_v2.gif", "Before: the name arched over the top, x2")
 build_v1 = gif_fig(SEAL / "preview" / "seal_build_v1.gif", "Before: the small name below, x2")
@@ -119,10 +120,12 @@ bottom = f"""
       the E, G and D appear, the small symbols, and the knot last, from its center out. Then the slash strikes
       straight through the blue seal and carves the name in gold behind it, in a larger runic face (fifteen pixels
       tall, drawn from the small face's own shapes: the T's drooping wings, the A's spike and dot, the O's diamond)
-      with a two-pixel black outline, running past the ring on both sides. Last, the SMASH: a white-hot flash, a
-      hard shake, a shockwave, and the seal turns gold under the name. About 7 seconds. Beside it, the earlier
-      versions.</p>
-    <div class="tiles">{build_fig}{build_v3}{build_v2}{build_v1}</div>
+      with a two-pixel black outline, running past the ring on both sides. Then the gold spreads up and down from
+      the cut, a white-hot edge running ahead of it, and the SMASH: a white-hot flash, a hard shake, a
+      shockwave, and the seal is gold under the name. About 7 seconds on the first launch; later launches start
+      at the finished blue etching (about 3 seconds). Locked in the official library and playing in the app.
+      Beside it, the earlier versions.</p>
+    <div class="tiles">{build_fig}{build_v4}{build_v3}{build_v2}{build_v1}</div>
     <h3>Earlier: the seal intro, in three finishes</h3>
     <p class="muted">The seal flies in from the foreground, unlit, and slams down in a ring of dust. Then the spell
       ignites: a white-hot wave runs out from the center knot to the outer ring and the seal cools to its finish.

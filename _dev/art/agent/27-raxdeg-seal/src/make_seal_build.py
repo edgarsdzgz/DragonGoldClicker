@@ -16,10 +16,15 @@ pixel at 128 belongs to the part that covers most of it, so the finished seal is
 3. The slash carves RAXDEG·STVDIOS in gold over the blue seal, straight through its middle like a
    strikethrough, in the larger runic face (fifteen rows, two-pixel strokes, the small face's details kept) that runs past the ring on
    both sides, outlined two pixels thick in ink so it reads over the seal.
-4. The SMASH: a white-hot flash, a hard shake and a shockwave, and the seal is gold under the name.
+4. The gold spreads up and down from the slash's cut, a white-hot edge running ahead of it, then the
+   SMASH: a white-hot flash, a hard shake and a shockwave, and the seal is gold under the name.
    (Owner, 2026-10-27: "seal, populate seal, letters slice in (in gold), seal slams into gold.")
 Kept: *_v1, the small name under the seal; *_v2, the name arched over the top; *_v3, the name struck
-through after the gold smash, in the eleven-row face.
+through after the gold smash, in the eleven-row face; *_v4, this order without the spreading gold.
+
+The frames go out as a sheet ten frames to a row (a single strip would be over 12,000 pixels wide, past
+what many phone GPUs take as one texture), with the timing file naming each beat by its first frame, for
+the app's short version and for sound cues.
 
 Run: python make_seal_build.py (after make_seal.py)
 """
@@ -39,6 +44,7 @@ from make_fx import cloud  # noqa: E402
 
 N, SRC, MARGIN = 128, 2400, 22
 RIM = 2              # the ink outline around the name, in pixels
+COLUMNS = 10         # frames to a row in the exported sheet
 C = 1199.5
 MED = {"top": (1198.7, 416.1), "left": (519.2, 1592.5), "right": (1879.4, 1592.5)}
 R_MED = (232, 270)
@@ -147,6 +153,10 @@ def build():
     for p, k in final_strokes.items():
         by_part.setdefault(PARTS[k], set()).add(p)
     beats, lit = [(frame_base(size), 300)], set()
+    marks = {}          # each beat's first frame, by name
+
+    def mark(name):
+        marks.setdefault(name, len(beats))
 
     def seal_frame(hot=(), extra=None, shake=0):
         f = frame_base(size)
@@ -164,6 +174,7 @@ def build():
         put(f, arcane(n, big), round(scx - n / 2), round(scy - n / 2))
         beats.append((f, 50))
     lit |= by_part["ring"] | by_part["inner"]
+    mark("slam")
     for spread, r, tones, shake, ms in ((0, 6.0, ("steel3", "steel4", "steel2"), 2, 70),
                                         (6, 7.0, ("steel2", "steel3", "steel1"), -1, 70),
                                         (11, 5.5, ("steel2", "steel3", "steel1"), 0, 80),
@@ -183,6 +194,7 @@ def build():
             put(f, arcane(n, big), round(sx + mx - mx * scale), round(sy + my - my * scale))
             beats.append((f, 45))
         lit |= by_part[f"med-{key}"]
+        mark(f"medallion_{key}")
         for spread, r, tones, shake, ms in ((0, 2.6, ("steel3", "steel4", "steel2"), 1, 60),
                                             (3, 2.2, ("steel2", "steel3", None), 0, 70)):
             beats.append((seal_frame(extra=lambda f, s=spread, rr=r, t=tones, x=sx + mx, y=sy + my:
@@ -206,16 +218,19 @@ def build():
         if y > left[1] - 3:                       # the bottom line runs out from both ends to the middle
             return 1 + (N / 2 - abs(x - N / 2)) / N
         return math.hypot(x - top[0], y - top[1]) / N   # the two sides run down from the top
+    mark("etch")
     etch(by_part["lines"], along_lines, 6, 60)
     etch(by_part["runes"], lambda p: (math.atan2(p[1] - N / 2, p[0] - N / 2) + 2.4) % (2 * math.pi), 6, 60)
     for key in ("top", "left", "right"):
         etch(by_part[f"glyph-{key}"], lambda p: p[1], 1, 90)
     etch(by_part["symbols"], lambda p: (math.atan2(p[1] - N / 2, p[0] - N / 2) + 2.4) % (2 * math.pi), 2, 80)
     etch(by_part["knot"], lambda p: math.hypot(p[0] - N / 2, p[1] - N / 2), 3, 80)
+    mark("etched")
     beats.append((seal_frame(), 380))
     assert lit == set(final_strokes), "every stroke etched"
 
     # 3. The slash strikes through the blue seal and carves the name in gold.
+    mark("slash")
     for head in range(wx - 2, wx + word.width + 14, 12):
         f = frame_base(size)
         put(f, arcane(N, lit), sx, sy)
@@ -226,11 +241,33 @@ def build():
     f.alpha_composite(word, (wx, wy))
     beats.append((f, 420))
 
-    # 4. The SMASH: white-hot, a hard shake and a shockwave, and the seal is gold under the name.
+    # 4. The gold spreads from the cut, then the SMASH: white-hot, a hard shake and a shockwave.
+    def hot(x, y):
+        return rgba("fire3" if (x + y) % 3 else "gold6")
+
+    line = wy + path(0) - sy                      # the cut, in the seal's own rows
+    mark("spread")
+    for reach in (8, 20, 34, 50):
+        seal = arcane(N, lit)
+        g, px = gold(N).load(), seal.load()
+        for y in range(N):
+            if abs(y - line) > reach:
+                continue
+            for x in range(N):                    # strokes only; the disc arrives with the smash
+                if (x, y) in lit:
+                    px[x, y] = hot(x, y) if abs(y - line) > reach - 3 else g[x, y]
+                else:
+                    px[x, y] = (0, 0, 0, 0)
+        f = frame_base(size)
+        put(f, seal, sx, sy)
+        f.alpha_composite(word, (wx, wy))
+        beats.append((f, 50))
+
     white = gold(N)
     wpx = white.load()
     for x, y in lit:
-        wpx[x, y] = rgba("fire3" if (x + y) % 3 else "gold6")
+        wpx[x, y] = hot(x, y)
+    mark("smash")
 
     def ring(f, radius, colors):
         """The shockwave: a circle of radius, its pixels cycling through colors (None leaves a gap)."""
@@ -251,20 +288,27 @@ def build():
         ring(f, radius, colors)
         f.alpha_composite(word, (wx, wy))
         beats.append((shaken(f, shake), ms))
+    mark("end")
     beats.append((final, 1800))
-    return beats, final
+    return beats, final, marks
 
 
 def main():
-    beats, final = build()
+    beats, final, marks = build()
     frames, ms = [b for b, _ in beats], [m for _, m in beats]
-    pixkit.strip(frames).save(OUT / f"seal_build_strip{len(frames)}.png")
+    w, h = final.size
+    rows = -(-len(frames) // COLUMNS)
+    sheet = Image.new("RGBA", (w * COLUMNS, h * rows), rgba("night1"))
+    for i, f in enumerate(frames):
+        sheet.alpha_composite(f, ((i % COLUMNS) * w, (i // COLUMNS) * h))
+    sheet.save(OUT / "seal_build_sheet.png")
     final.save(OUT / "seal_build_card.png")
     (OUT / "seal_build_timing.json").write_text(json.dumps({
-        "frame_width": final.width, "frame_height": final.height, "frames": len(frames),
-        "background": "#%02x%02x%02x" % P["night1"], "ms": ms, "loop": False,
-        "note": "The RAXDEG STUDIOS startup splash: the seal builds in arcane blue and smashes to gold. "
-                "Hold the last frame.",
+        "frame_width": w, "frame_height": h, "frames": len(frames), "columns": COLUMNS,
+        "background": "#%02x%02x%02x" % P["night1"], "ms": ms, "loop": False, "beats": marks,
+        "note": "The RAXDEG STUDIOS startup splash: the seal builds in arcane blue, the name is carved in "
+                "gold, and the seal smashes to gold. Frames run left to right, ten to a row, in "
+                "seal_build_sheet.png. Each beat names its first frame. Hold the last frame.",
     }, indent=2), encoding="utf-8")
     big = [f.resize((f.width * 2, f.height * 2), Image.NEAREST).convert("RGB") for f in frames]
     big[0].save(PREVIEW / "seal_build.gif", save_all=True, append_images=big[1:], duration=ms, loop=0)
