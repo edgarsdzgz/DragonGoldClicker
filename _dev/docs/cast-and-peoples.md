@@ -38,7 +38,7 @@ awaiting a decision; **open** = not decided yet.
 | Ashara, Elder Wyrm | Ancient dragon | Planned late recruit | proposed |
 | Captain Rodain | Orc veteran: gray-green skin, tusks, a scar, steel pauldrons, red captain's sash | Leads the company of fifty | canon |
 | Scout Mirael | Wood elf: long ears, copper braid, teal ranger's cloak, brass compass | Scouts, wanderers, expeditions | canon |
-| Thornwick, the Exiled Mage | Gnome (owner asked for a people no bust uses yet, 2026-10-27) | Planned; unlocks the Wizard's Tower | proposed |
+| Thornwick, the Exiled Mage | Human with gnomish ears and dark skin (owner, 2026-10-27; a full gnome was too light and too happy) | Planned; unlocks the Wizard's Tower | proposed |
 | Sera the Shieldmaiden | Bearfolk (owner asked for a people no bust uses yet, 2026-10-27) | Planned recruit | proposed |
 | The Hollow Knight | Unknown, by design | Planned recruit; no one asks what is inside the armor | open |
 
