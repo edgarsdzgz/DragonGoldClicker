@@ -13,13 +13,10 @@ export const FLAVOR_H = 36
 export const QUEUE_H = 28
 /** Monster name under the sprite: 20dp of text plus its 2dp top margin */
 export const NAME_H = 22
-/** Enemy HP under the name: pips, or "cur/max" text over a bar */
-export const HP_H = 30
+/** The enemy's life bar under the name: the bar alone, no numbers (owner, 2026-10-27) */
+export const HP_H = 14
 /** Breathing room above and below the stack */
 export const FIELD_PAD = 8
-
-/** Windows shorter than this drop the footer line to give the battlefield room */
-export const TALL_WINDOW = 700
 
 export interface BattlefieldLayout {
   /** Monster sprite diameter */

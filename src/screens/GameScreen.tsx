@@ -24,14 +24,13 @@ import { ROAD_TOP_Y, mapUnit, gateState, repairing, wallChange } from '../art'
 import type { WallReading } from '../art'
 import { WarfrontScene } from './warfront/WarfrontScene'
 import type { WarfrontSceneHandle } from './warfront/WarfrontScene'
-import { armySize, armyVolleyNow, armyDps } from '../types/army'
-import { battlefieldLayout, TALL_WINDOW, FLAVOR_H } from '../types/warfrontLayout'
+import { armySize, armyVolleyNow } from '../types/army'
+import { battlefieldLayout, FLAVOR_H } from '../types/warfrontLayout'
 import { DevShortcut } from '../components/DevShortcut'
 import { warfrontReveal } from '../types/opening'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
 import { Gate } from './warfront/Gate'
-import { fighterDamageMultiplier } from '../types/fedState'
 import { clawDef, canSharpen, canReforge, tapDamageNow, tapHit, rollsDouble } from '../types/claws'
 import { ClawsChip } from '../components/ClawsChip'
 import { ClawsSheet } from '../components/ClawsSheet'
@@ -44,17 +43,12 @@ const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.r
  * at the gate, the whole battlefield is the tap target, and the gate sits by the thumb at the
  * bottom. Fighters wear the same monster down. (Waves are in cold storage: src/modes/waves.)
  */
-const killsText = (kills: number) => {
-  const n = Math.floor(kills)
-  return `${n} ${n === 1 ? 'monster' : 'monsters'} slain`
-}
-
 export function GameScreen() {
   const { state, click, rallyFighter, directRepairer, sharpenClaws } = useGame()
   const { shakeNonce } = useShakeRequest()
   const shakeStyle = useScreenShake(shakeNonce)
   const flavor = useFlavorText(COMBAT_LINES)
-  const { height: windowHeight, width: windowWidth } = useWindowDimensions()
+  const { width: windowWidth } = useWindowDimensions()
   // The night map behind the Warfront: its wall lines up with the bottom of the gate row
   const unit = mapUnit(windowWidth, PixelRatio.get())
   const [wallTop, setWallTop] = useState(0)
@@ -98,7 +92,6 @@ export function GameScreen() {
   }, [click, playSwing, haptics])
 
   // The army's volleys that landed: one small number each (only while the Warfront shows)
-  const fighterPower = fighterDamageMultiplier(state)
   const army = armySize(state)
   const volleyNow = armyVolleyNow(state)
   const allyStrikesSeen = useRef(state.allyStrikes)
@@ -142,9 +135,6 @@ export function GameScreen() {
   const repairOn = isSystemOn(state, 'repair')
   const siegeOn = isSystemOn(state, 'siege')
   const hungerOn = isSystemOn(state, 'hunger')
-  // Short windows drop the footer line so the battlefield keeps its room; the Claws chip stays
-  const showFooter = windowHeight >= TALL_WINDOW
-  const showDetails = showFooter && reveal.details
   const claws = clawDef(state.clawLevel)
   const [clawsOpen, setClawsOpen] = useState(false)
   // Guided tutorial: the Sharpen step waits for the claws sheet to open
@@ -256,33 +246,18 @@ export function GameScreen() {
         </View>
       )}
 
-      {/* Footer: kills, the claws (damage per tap) and the fighters' damage. Short windows keep
-          only the Claws chip. */}
-      {(showDetails || reveal.claws) && (
+      {/* Footer: the Claws chip. Kills and damage live in Settings, Stats (owner, 2026-10-27) */}
+      {reveal.claws && (
         <View style={styles.footer}>
-          {showDetails && (
-            <Text variant="caption" color="muted">
-              {killsText(state.monstersDefeated)}
-            </Text>
-          )}
-          {reveal.claws ? (
-            <CoachTarget id="claws">
-              <ClawsChip
-                level={state.clawLevel}
-                name={claws.name}
-                damage={tapDamageNow(state)}
-                canSharpen={canSharpen(state)}
-                onPress={() => setClawsOpen(true)}
-              />
-            </CoachTarget>
-          ) : (
-            <Text variant="caption" color="link">{tapDamageNow(state)} damage per tap</Text>
-          )}
-          {showDetails && army > 0 && (
-            <Text variant="caption" style={styles.allyDps}>
-              {fighterPower > 0 ? `army ${armyDps(state).toFixed(2)} damage/s` : 'the army stands down'}
-            </Text>
-          )}
+          <CoachTarget id="claws">
+            <ClawsChip
+              level={state.clawLevel}
+              name={claws.name}
+              damage={tapDamageNow(state)}
+              canSharpen={canSharpen(state)}
+              onPress={() => setClawsOpen(true)}
+            />
+          </CoachTarget>
         </View>
       )}
       <ClawsSheet
@@ -331,8 +306,5 @@ const styles = StyleSheet.create({
     paddingBottom: spacing[2],
     paddingTop: spacing[1],
     paddingHorizontal: spacing[4],
-  },
-  allyDps: {
-    color: colors.warfront.ally,
   },
 })

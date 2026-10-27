@@ -11,6 +11,8 @@ import { VolumeControl } from '../components/VolumeControl'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { ResourceBar } from '../components/ResourceBar'
 import { clawDef, tapDamageNow } from '../types/claws'
+import { armyDps, armySize } from '../types/army'
+import { fighterDamageMultiplier } from '../types/fedState'
 import { studiesDone } from '../types/library'
 import { useGame } from '../context/GameContext'
 import { useAudioSettings } from '../context/AudioSettingsContext'
@@ -171,6 +173,13 @@ function StatsContent() {
         <StatRow icon="skull" label="Monsters Defeated" value={Math.floor(state.monstersDefeated).toLocaleString()} accent />
         <StatRow icon="hand-left" label="Total Clicks" value={formatNumber(state.totalClicks)} />
         <StatRow icon="flash" label="Tap Damage" value={String(tapDamageNow(state))} />
+        {armySize(state) > 0 && (
+          <StatRow
+            icon="people"
+            label="Army Damage"
+            value={fighterDamageMultiplier(state) > 0 ? `${armyDps(state).toFixed(2)}/s` : 'Standing down'}
+          />
+        )}
       </Surface>
 
       <Surface style={styles.section}>

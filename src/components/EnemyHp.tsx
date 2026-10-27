@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, Animated, LayoutChangeEvent } from 'react-native'
-import { Text } from './Text'
 import { useReduceMotion } from '../hooks/useReduceMotion'
-import { shownHp } from '../types/monsters'
-import { colors, gold } from '../theme'
+import { HP_H } from '../types/warfrontLayout'
+import { colors } from '../theme'
 
 /** How long the lost chunk stays white before it drains */
 const TRAIL_HOLD_MS = 400
@@ -19,7 +18,7 @@ interface EnemyHpProps {
 /**
  * The enemy's HP: one long bar that drains in proportion to the damage taken, so a tap takes a
  * big bite and a fighter's swing a sliver. The HP just lost shows white for a moment, then
- * drains. "cur / max" sits above it (rounded up). Screen readers get the HP from the
+ * drains. No numbers: the bar says it (owner, 2026-10-27). Screen readers get the HP from the
  * battlefield's label, so this stays hidden from them.
  */
 export function EnemyHp({ hp, max, width }: EnemyHpProps) {
@@ -59,7 +58,6 @@ export function EnemyHp({ hp, max, width }: EnemyHpProps) {
       importantForAccessibility="no-hide-descendants"
       accessibilityElementsHidden
     >
-      <Text variant="caption" center style={styles.hpText}>{`${shownHp(hp)} / ${max}`}</Text>
       <View style={styles.track} onLayout={(e: LayoutChangeEvent) => setTrackW(e.nativeEvent.layout.width)}>
         <Animated.View style={[styles.fill, styles.trail, anchored(trail)]} />
         <View style={[styles.fill, styles.hpFill, { width: `${fraction * 100}%` }]} />
@@ -71,11 +69,7 @@ export function EnemyHp({ hp, max, width }: EnemyHpProps) {
 const styles = StyleSheet.create({
   root: {
     justifyContent: 'center',
-    minHeight: 30,
-  },
-  hpText: {
-    color: gold[300],
-    marginBottom: 2,
+    minHeight: HP_H,
   },
   track: {
     height: 10,

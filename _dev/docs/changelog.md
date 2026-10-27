@@ -2,6 +2,12 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Warfront: the life bar alone; damage in Stats (2026-10-27)
+- The monster's life bar no longer shows "5 / 5": the bar says it (screen readers still hear the HP)
+- The line under the wall (monsters slain, damage per tap, army damage/s) moved to Settings, Stats,
+  Combat, which gains an Army Damage row. The Claws chip stays under the wall once it is revealed
+- The slimmer bar gives the monster room: a typical 360x640 phone keeps the flavor line again
+
 ### Monster deaths and the walk down the road (2026-10-27)
 - The killing blow plays the monster's own death where it stood; the last frame holds a moment,
   then blinks out

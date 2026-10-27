@@ -22,9 +22,9 @@ describe('battlefieldLayout', () => {
     expect(l.showFlavor).toBe(true)
   })
 
-  it('keeps the queue and drops the flavor row on the typical 360x640 screen', () => {
+  it('keeps the queue and the flavor row on the typical 360x640 screen (the life bar has no numbers)', () => {
     const l = battlefieldLayout(TYPICAL_360x640, { queue: true })
-    expect(l).toMatchObject({ showFlavor: false, showQueue: true })
+    expect(l).toMatchObject({ showFlavor: true, showQueue: true })
     expect(l.monster).toBeGreaterThanOrEqual(MIN_MONSTER)
   })
 
