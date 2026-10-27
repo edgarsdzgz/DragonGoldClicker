@@ -2,6 +2,17 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Elites (2026-10-27)
+- Seven elites now lead their kinds (`_dev/planning/fliers-elites-bosses.md`, Stage 2): the Kobold
+  Shaman from 20 kills, Goblin Chieftain 45, Orc Warchief 70, Troll 115, Ogre 160, Windcaller 185
+  and Iron Golem 240
+- Once unlocked, 1 in 12 monsters of their kinds comes as the elite, and the first one always does
+  (never in place of a debut). An elite has 2.5x the HP and pay of its kind and strikes the wall
+  twice as hard
+- An elite is built from the first kind it leads (the Chieftain dropped the wolf rider, which is as
+  tough as a 2.5x goblin, and the Troll the war hound, gone before it unlocks)
+- "ELITE" shows before its name in a deeper gold, and the screen reader says it too
+
 ### Fliers and the wolf rider (2026-10-27)
 - Five more monsters join their kind (`_dev/planning/fliers-elites-bosses.md`, Stage 1):
   - Giant Bat at level 4, Goblin Wolf Rider at 5 and Harpy at 6

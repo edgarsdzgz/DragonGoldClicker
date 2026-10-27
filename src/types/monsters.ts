@@ -126,5 +126,5 @@ export function fighterStrike(s: GameState, damage: number, swings: number, rand
 /** The text a screen reader gets for the battlefield */
 export function monsterLabel(s: Pick<GameState, 'monsterIndex' | 'monsterHp' | 'hordeKills'>): string {
   const m = currentMonster(s)
-  return `${m.name}, ${shownHp(s.monsterHp)} of ${m.hp} HP. Tap to strike`
+  return `${m.rank === 'elite' ? 'Elite ' : ''}${m.name}, ${shownHp(s.monsterHp)} of ${m.hp} HP. Tap to strike`
 }

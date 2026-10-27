@@ -9,7 +9,7 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 
 describe('roster', () => {
   it('lists the pool monsters in order of debut, then the raider, which never spawns from the pool', () => {
-    expect(MONSTERS.map((m) => [m.id, m.fromKills])).toEqual([
+    expect(MONSTERS.filter((m) => !m.rank).map((m) => [m.id, m.fromKills])).toEqual([
       ['kobold', 0], ['goblin', 13], ['giant_rat', 20], ['shadow_crawler', 28], ['goblin_scout', 38],
       ['war_hound', 45], ['orc', 53], ['goblin_archer', 63], ['banner_runner', 78], ['giant_bat', 90],
       ['shield_bearer', 103], ['goblin_wolf_rider', 115], ['beetle_guard', 128], ['harpy', 140],
@@ -30,6 +30,25 @@ describe('roster', () => {
 
   it('every monster pays 0.05 renown per HP', () => {
     for (const m of MONSTERS) expect(m.bounty).toBeCloseTo(m.hp * 0.05, 9)
+  })
+
+  it('the elites: 2.5 times the HP of their first kind, paid at the same rate, each standing in for real kinds', () => {
+    const elites = MONSTERS.filter((m) => m.rank === 'elite')
+    expect(elites.map((e) => e.id)).toEqual(['kobold_shaman', 'goblin_chieftain', 'orc_warchief', 'troll', 'ogre', 'windcaller', 'iron_golem'])
+    for (const e of elites) {
+      const kinds = e.standsInFor!.map((id) => MONSTERS.find((m) => m.id === id))
+      expect(kinds.every((k) => k && !k.rank && Number.isFinite(k.fromKills))).toBe(true)
+      expect(e.hp).toBe(Math.round(kinds[0]!.hp * 2.5))
+    }
+    expect(MONSTERS.find((m) => m.id === 'orc_warchief')).toMatchObject({ hp: 50, bounty: 2.5, wallStrike: 8 })
+    // Each kind has at most one elite
+    const kinds = elites.flatMap((e) => e.standsInFor!)
+    expect(new Set(kinds).size).toBe(kinds.length)
+  })
+
+  it('an elite is named as one for the screen reader', () => {
+    const shaman = MONSTERS.findIndex((m) => m.id === 'kobold_shaman')
+    expect(monsterLabel({ monsterIndex: shaman, hordeKills: 0, monsterHp: 13 })).toBe('Elite Kobold Shaman, 13 of 13 HP. Tap to strike')
   })
 
   it('has a unique id per monster', () => {

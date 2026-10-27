@@ -89,6 +89,10 @@ monster the horde sends now, against that monster's 5s strike on the wall.
   skeleton, shadow phantom, spectral hound, ashen convert, cult apprentice, ember prophet, mantair
   corsair, ember wraith). Fliers (bat, harpy, storm rider, corsair) hang above the road over their
   own shadow. See `_dev/docs/bestiary.md`
+- **Elites** (`rank: 'elite'`): seven, each leading some kinds (Kobold Shaman, Goblin Chieftain, Orc
+  Warchief, Troll, Ogre, Windcaller, Iron Golem). From its unlock, 1 in 12 rolls of its kinds comes as
+  the elite, and the first such roll always does. 2.5x the HP and pay of its first kind, 2x the wall
+  strike; "ELITE" before its name
 - Rodain's company holds the wall at 50 HP until the Mend the Walls quest is done
   (`the_wall_is_yours`). The player never loses the game: when the wall falls it is a Breach
   (`types/breach.ts`): 30% of fighters, repairers and idle villagers and 15% of foragers die, 40%

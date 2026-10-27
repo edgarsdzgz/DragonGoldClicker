@@ -15,11 +15,18 @@ const seconds = (s: GameState, n: number) => Array.from({ length: n }).reduce<Ga
 
 describe('monsters strike the wall', () => {
   it('every pool monster strikes the wall for about a fifth of its HP; the raider never strikes', () => {
-    for (const m of MONSTERS.filter((m) => m.id !== 'raider')) {
+    for (const m of MONSTERS.filter((m) => m.id !== 'raider' && !m.rank)) {
       expect(m.wallStrike / m.hp).toBeGreaterThanOrEqual(0.15)
       expect(m.wallStrike / m.hp).toBeLessThanOrEqual(0.22)
     }
     expect(MONSTERS.find((m) => m.id === 'raider')?.wallStrike).toBe(0)
+  })
+
+  it('an elite strikes twice as hard as the first kind it stands in for', () => {
+    for (const e of MONSTERS.filter((m) => m.rank === 'elite')) {
+      const kind = MONSTERS.find((m) => m.id === e.standsInFor![0])!
+      expect([e.id, e.wallStrike]).toEqual([e.id, kind.wallStrike * 2])
+    }
   })
 
   it('nothing strikes before the siege begins', () => {

@@ -2,6 +2,9 @@
 // THE ROSTER: every monster that can come to the gate (data only)
 // =============================================================================
 
+/** Above the rank and file: an elite stands in for its kind now and then (types/spawnPool.ts) */
+export type MonsterRank = 'elite'
+
 export interface MonsterDef {
   id: string
   name: string
@@ -14,6 +17,9 @@ export interface MonsterDef {
   fromKills: number
   /** Wall damage each time it strikes, every WALL_STRIKE_SEC it stands at the gate (types/wall.ts) */
   wallStrike: number
+  /** An elite: never rolled itself; it stands in for one of these kinds (from `fromKills`) */
+  rank?: MonsterRank
+  standsInFor?: string[]
 }
 
 /**
@@ -23,7 +29,7 @@ export interface MonsterDef {
  * owner: "with their kind"). The bounty is 0.05 inspiration per HP and the wall strike about HP / 5,
  * for every monster. Wall strikes are core-tap layer 6.
  */
-export const MONSTERS: MonsterDef[] = [
+const REGULARS: MonsterDef[] = [
   // The early horde
   { id: 'kobold', name: 'Kobold', plural: 'kobolds', hp: 5, bounty: 0.25, fromKills: 0, wallStrike: 1 },
   { id: 'goblin', name: 'Goblin', plural: 'goblins', hp: 8, bounty: 0.4, fromKills: 13, wallStrike: 1.5 },
@@ -60,3 +66,34 @@ export const MONSTERS: MonsterDef[] = [
   // for the stores, not the wall, so it never strikes.
   { id: 'raider', name: 'Raider', plural: 'raiders', hp: 10, bounty: 0.5, fromKills: Infinity, wallStrike: 0 },
 ]
+
+/** An elite has this many times the HP (and so the pay) of its kind */
+export const ELITE_HP = 2.5
+/** ...and this many times its wall strike */
+export const ELITE_STRIKE = 2
+
+function eliteStats(kind: string): Pick<MonsterDef, 'hp' | 'bounty' | 'wallStrike'> {
+  const k = REGULARS.find((m) => m.id === kind)
+  if (!k) throw new Error(`Elite of an unknown kind: ${kind}`)
+  const hp = Math.round(k.hp * ELITE_HP)
+  return { hp, bounty: Math.round(hp * 5) / 100, wallStrike: k.wallStrike * ELITE_STRIKE }
+}
+
+export const MONSTERS: MonsterDef[] = [
+  ...REGULARS,
+  // The elites (owner, 2026-10-27): 1 in 12 rolls of their kind comes as the elite instead, and the
+  // first roll of their kind after they unlock (fromKills) always does. 2.5 times the HP and pay of
+  // the first kind they stand in for, and twice its wall strike.
+  ...elite('kobold_shaman', 'Kobold Shaman', 'kobold shamans', 20, ['kobold']),
+  ...elite('goblin_chieftain', 'Goblin Chieftain', 'goblin chieftains', 45, ['goblin', 'goblin_scout', 'goblin_archer']),
+  ...elite('orc_warchief', 'Orc Warchief', 'orc warchiefs', 70, ['orc', 'shield_bearer']),
+  ...elite('troll', 'Troll', 'trolls', 115, ['beetle_guard']),
+  ...elite('ogre', 'Ogre', 'ogres', 160, ['chitin_warrior']),
+  ...elite('windcaller', 'Windcaller', 'windcallers', 185, ['nomad_warrior', 'nomad_scout', 'nomad_archer', 'storm_rider']),
+  ...elite('iron_golem', 'Iron Golem', 'iron golems', 240, ['skeleton', 'ashen_convert']),
+]
+
+/** An elite's entry, from the first kind it stands in for (defined above it in MONSTERS) */
+function elite(id: string, name: string, plural: string, fromKills: number, standsInFor: string[]): MonsterDef[] {
+  return [{ id, name, plural, fromKills, standsInFor, rank: 'elite', ...eliteStats(standsInFor[0]) }]
+}

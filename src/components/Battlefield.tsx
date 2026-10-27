@@ -2,10 +2,10 @@ import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'rea
 import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent, PixelRatio } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { useAppActive } from '../hooks/useAppActive'
-import { Text } from './Text'
 import { EnemyHp } from './EnemyHp'
 import { clawLook } from '../types/claws'
 import { RoadMonster } from './RoadMonster'
+import { MonsterName } from './MonsterName'
 import type { PixelMonsterHandle } from './PixelMonster'
 import { PixelBurst } from './PixelBurst'
 import type { PixelBurstHandle } from './PixelBurst'
@@ -243,7 +243,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
             <FloatingNumbers ref={numbers} />
           </View>
         </View>
-        {showName ? <Text variant="label" center style={styles.name}>{def.name}</Text> : <View style={styles.name} />}
+        {showName ? <MonsterName name={def.name} rank={def.rank} style={styles.name} /> : <View style={styles.name} />}
         <EnemyHp hp={monsterHp} max={def.hp} width={Math.min(fieldW - spacing[6] * 2, 260)} />
         </View>
       </Pressable>

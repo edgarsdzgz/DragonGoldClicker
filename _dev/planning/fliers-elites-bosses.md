@@ -52,9 +52,9 @@ has an elite, there is a 1 in 12 chance its elite comes instead. An elite has:
 | Elite | Comes for | Unlocks at |
 | --- | --- | --- |
 | Kobold Shaman | kobold | 20 |
-| Goblin Chieftain | goblin, goblin scout, goblin archer, goblin wolf rider | 45 |
+| Goblin Chieftain | goblin, goblin scout, goblin archer | 45 |
 | Orc Warchief | orc, shield bearer | 70 |
-| Troll | war hound, beetle guard | 115 |
+| Troll | beetle guard | 115 |
 | Ogre | chitin warrior | 160 |
 | Windcaller | the nomads, storm rider | 185 |
 | Iron Golem | skeleton, ashen convert | 240 |

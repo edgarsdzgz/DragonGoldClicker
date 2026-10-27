@@ -1,14 +1,14 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { MONSTERS, strike } from '../monsters'
-import { spawnOdds, spawnWeights, pickNextMonster, SPAWN_ANCHORS } from '../spawnPool'
+import { spawnOdds, spawnWeights, pickNextMonster, eliteIndexFor, ELITE_CHANCE, SPAWN_ANCHORS } from '../spawnPool'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 const idx = (id: string) => MONSTERS.findIndex((m) => m.id === id)
 /** Every type met at least once, so no debut is pending */
 const MET_ALL = Object.fromEntries(MONSTERS.map((m) => [m.id, 1]))
 /** The monsters the pool can send (not the raider) */
-const POOL = MONSTERS.filter((m) => Number.isFinite(m.fromKills))
+const POOL = MONSTERS.filter((m) => Number.isFinite(m.fromKills) && !m.rank)
 
 describe('the spawn pool odds', () => {
   it('is all kobolds at first', () => {
@@ -106,7 +106,57 @@ describe('picking the next monster', () => {
     const counts = MONSTERS.map(() => 0)
     const N = 10000
     for (let i = 0; i < N; i++) counts[pickNextMonster(s, (i + 0.5) / N)]++
-    spawnOdds(40).forEach((p, j) => expect(counts[j] / N).toBeCloseTo(p, 2))
+    // A kind with an unlocked elite gives it 1 in 12 of its share (the kobold's shaman, at 40)
+    const odds = spawnOdds(40)
+    const expected = MONSTERS.map(() => 0)
+    odds.forEach((p, j) => {
+      const elite = eliteIndexFor(MONSTERS[j].id, 40)
+      expected[j] += elite >= 0 ? p * (1 - ELITE_CHANCE) : p
+      if (elite >= 0) expected[elite] += p * ELITE_CHANCE
+    })
+    expected.forEach((p, j) => expect([MONSTERS[j].id, counts[j] / N]).toEqual([MONSTERS[j].id, expect.closeTo(p, 2)]))
+    expect(expected[idx('kobold_shaman')]).toBeGreaterThan(0)
+  })
+})
+
+describe('the elites', () => {
+  // At 60: goblins (chieftain from 45) and orcs (warchief from 70, not yet) are in the pool
+  const s = { hordeKills: 60, killsByMonster: MET_ALL }
+  /** A roll that lands this far into a kind's share */
+  const rollInto = (kind: string, within: number) => {
+    const w = spawnWeights(60)
+    const total = w.reduce((a, b) => a + b, 0)
+    const before = w.slice(0, idx(kind)).reduce((a, b) => a + b, 0)
+    return (before + w[idx(kind)] * within) / total
+  }
+
+  it("stands in for its kind 1 time in 12: the bottom twelfth of the kind's share", () => {
+    expect(pickNextMonster(s, rollInto('goblin', 0.05))).toBe(idx('goblin_chieftain'))
+    expect(pickNextMonster(s, rollInto('goblin', 0.09))).toBe(idx('goblin'))
+    expect(pickNextMonster(s, rollInto('goblin_scout', 0.05))).toBe(idx('goblin_chieftain'))
+  })
+
+  it('never before it unlocks, and never for a kind it does not lead', () => {
+    expect(pickNextMonster(s, rollInto('orc', 0.01))).toBe(idx('orc'))
+    expect(pickNextMonster(s, rollInto('shadow_crawler', 0.01))).toBe(idx('shadow_crawler'))
+  })
+
+  it('the first roll of its kind after it unlocks always brings it', () => {
+    const unmet = { ...MET_ALL, goblin_chieftain: 0 }
+    expect(pickNextMonster({ hordeKills: 60, killsByMonster: unmet }, rollInto('goblin', 0.9))).toBe(idx('goblin_chieftain'))
+    // ...but a roll of another kind does not
+    expect(pickNextMonster({ hordeKills: 60, killsByMonster: unmet }, rollInto('orc', 0.9))).toBe(idx('orc'))
+  })
+
+  it('a debut is never an elite', () => {
+    const met = Object.fromEntries(POOL.filter((m) => m.fromKills < 38).map((m) => [m.id, 1]))
+    expect(pickNextMonster({ hordeKills: 38, killsByMonster: met }, 0)).toBe(idx('goblin_scout'))
+  })
+
+  it('is never rolled from the pool itself', () => {
+    for (let k = 0; k <= 400; k += 5) {
+      spawnWeights(k).forEach((w, j) => { if (MONSTERS[j].rank) expect(w).toBe(0) })
+    }
   })
 })
 

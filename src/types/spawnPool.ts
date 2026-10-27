@@ -86,6 +86,14 @@ export function spawnWeights(kills: number): number[] {
   })
 }
 
+/** The chance that a roll of a kind with an unlocked elite comes as that elite */
+export const ELITE_CHANCE = 1 / 12
+
+/** The roster index of the elite that stands in for this kind at this advance, or -1 */
+export function eliteIndexFor(kind: string, kills: number): number {
+  return MONSTERS.findIndex((m) => m.rank === 'elite' && kills >= m.fromKills && m.standsInFor?.includes(kind))
+}
+
 /** Each monster's chance of being next, as a share of 1 (for tests and tuning) */
 export function spawnOdds(kills: number): number[] {
   const weights = spawnWeights(kills)
@@ -95,7 +103,8 @@ export function spawnOdds(kills: number): number[] {
 
 /**
  * The next monster after a kill. `rand` is a number in [0, 1) (Math.random in the game, fixed in
- * tests). A type that has reached its debut but never been fought comes first, guaranteed.
+ * tests). A type that has reached its debut but never been fought comes first, guaranteed; a debut
+ * is never an elite. A rolled kind may come as its elite (ELITE_CHANCE, and always the first time).
  */
 export function pickNextMonster(s: Pick<GameState, 'hordeKills' | 'killsByMonster'>, rand: number): number {
   // The horde's advance, not lifetime kills: a Breach pushes it back (core-tap layer 6)
@@ -107,9 +116,19 @@ export function pickNextMonster(s: Pick<GameState, 'hordeKills' | 'killsByMonste
   const total = weights.reduce((a, b) => a + b, 0)
   if (total <= 0) return 0
   let roll = Math.min(Math.max(rand, 0), 0.999999) * total
-  for (let j = 0; j < weights.length; j++) {
-    if (roll < weights[j]) return j
-    roll -= weights[j]
+  let j = weights.length - 1
+  let within = 0
+  for (let i = 0; i < weights.length; i++) {
+    if (roll < weights[i]) {
+      j = i
+      // Where the roll fell inside this kind's share: itself a fair roll, so it decides the elite
+      within = roll / weights[i]
+      break
+    }
+    roll -= weights[i]
   }
-  return weights.length - 1
+  // An elite stands in for its kind: always the first time after it unlocks, then 1 in 12
+  const elite = eliteIndexFor(MONSTERS[j].id, kills)
+  if (elite >= 0 && (!((s.killsByMonster[MONSTERS[elite].id] ?? 0) > 0) || within < ELITE_CHANCE)) return elite
+  return j
 }
