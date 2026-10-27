@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Modal, Pressable, StyleSheet } from 'react-native'
 import { GameIcon } from './GameIcon'
+import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { Button } from './Button'
 import { colors, spacing, radius, elevation, dark } from '../theme'
@@ -35,7 +36,7 @@ export function FoodWarningModal({
         <View />
       </Pressable>
 
-      <View style={styles.centerer} pointerEvents="box-none">
+      <ModalStage>
         <View style={styles.card}>
           {/* Top accent bar */}
           <View style={[styles.accentBar, { backgroundColor: accentColor }]} />
@@ -102,7 +103,7 @@ export function FoodWarningModal({
             </View>
           </View>
         </View>
-      </View>
+      </ModalStage>
     </Modal>
   )
 }
@@ -111,12 +112,6 @@ const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(2, 2, 6, 0.85)',
-  },
-  centerer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: spacing[6],
   },
   card: {
     width: '100%',

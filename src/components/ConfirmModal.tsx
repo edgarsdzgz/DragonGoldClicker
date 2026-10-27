@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
+import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { REJECT_PHRASES } from './Button'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
@@ -167,7 +168,7 @@ export function ConfirmModal({
       </Animated.View>
 
       {/* Centered card */}
-      <View style={styles.centerer} pointerEvents="box-none">
+      <ModalStage>
         <Animated.View
           style={[
             styles.card,
@@ -292,7 +293,7 @@ export function ConfirmModal({
             </Text>
           </Animated.View>
         </Animated.View>
-      </View>
+      </ModalStage>
       {/* Guided-tutorial overlay for targets inside this modal */}
       <CoachMark inModal />
     </Modal>
@@ -305,12 +306,6 @@ const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(2, 2, 6, 0.85)',
-  },
-  centerer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: spacing[6],
   },
   card: {
     width: '100%',

@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
+import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
@@ -248,7 +249,7 @@ export function ReassignModal({
         <Pressable style={StyleSheet.absoluteFill} onPress={onCancel} />
       </Animated.View>
 
-      <View style={modalStyles.centerer} pointerEvents="box-none">
+      <ModalStage>
         <Animated.View
           style={[
             modalStyles.card,
@@ -348,7 +349,7 @@ export function ReassignModal({
             </Pressable>
           </View>
         </Animated.View>
-      </View>
+      </ModalStage>
     </Modal>
   )
 }
@@ -357,12 +358,6 @@ const modalStyles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(2, 2, 6, 0.85)',
-  },
-  centerer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: spacing[6],
   },
   card: {
     width: '100%',

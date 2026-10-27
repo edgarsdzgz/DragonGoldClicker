@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
+import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { HighlightBackdrop } from './HighlightBackdrop'
 import { SpeakerPortrait } from './SpeakerPortrait'
@@ -148,7 +149,7 @@ export function NpcDialog({
         <HighlightBackdrop targetId={highlight} dim={BACKDROP_DIM} />
       </Animated.View>
 
-      <View style={styles.centerer} pointerEvents="box-none">
+      <ModalStage>
         <Animated.View
           style={[
             styles.card,
@@ -218,20 +219,22 @@ export function NpcDialog({
                 {buttonLabel}
               </Text>
             </Pressable>
-            {canSkip && (
-              <Pressable
-                onPress={handleSkip}
-                style={styles.skip}
-                hitSlop={{ top: 4, bottom: 4, left: 16, right: 16 }}
-                accessibilityRole="button"
-                accessibilityLabel="Skip scene"
-              >
-                <Text variant="label" color="secondary">Skip</Text>
-              </Pressable>
-            )}
           </View>
+
+          {/* Skip sits in the top corner, so Continue never moves when it appears. Last child, so
+              Android paints it (and gives it the touch) over the header. */}
+          {canSkip && (
+            <Pressable
+              onPress={handleSkip}
+              style={styles.skip}
+              accessibilityRole="button"
+              accessibilityLabel="Skip scene"
+            >
+              <Text variant="label" color="secondary">Skip</Text>
+            </Pressable>
+          )}
         </Animated.View>
-      </View>
+      </ModalStage>
     </Modal>
   )
 }
@@ -239,12 +242,6 @@ export function NpcDialog({
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-  },
-  centerer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: spacing[6],
   },
   card: {
     width: '100%',
@@ -309,10 +306,14 @@ const styles = StyleSheet.create({
     backgroundColor: gold[500],
   },
   skip: {
+    position: 'absolute',
+    top: spacing[2],
+    right: spacing[2],
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 48,
-    marginTop: spacing[1],
+    minWidth: 48,
+    paddingHorizontal: spacing[3],
   },
   buttonPressed: {
     backgroundColor: gold[600],

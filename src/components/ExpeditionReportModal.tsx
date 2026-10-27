@@ -7,6 +7,7 @@ import {
   Easing,
 } from 'react-native'
 import { Text } from './Text'
+import { ModalStage } from './ModalStage'
 import type { ExpeditionReport } from '../types/outpost'
 import { Badge } from './Badge'
 import { ModalEmblem } from './ModalEmblem'
@@ -229,7 +230,7 @@ export function ExpeditionReportModal({
     >
       <Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
 
-      <View style={styles.centerer} pointerEvents="box-none">
+      <ModalStage>
         <Animated.View
           style={[
             styles.card,
@@ -296,7 +297,7 @@ export function ExpeditionReportModal({
             />
           </Animated.View>
         </Animated.View>
-      </View>
+      </ModalStage>
     </Modal>
   )
 }
@@ -305,12 +306,6 @@ const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(2, 2, 6, 0.85)',
-  },
-  centerer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: spacing[6],
   },
   card: {
     width: '100%',

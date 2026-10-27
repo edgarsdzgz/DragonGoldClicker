@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Modal, Pressable, StyleSheet } from 'react-native'
 import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
+import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { colors, spacing, radius, elevation, dark } from '../theme'
 
@@ -40,7 +41,7 @@ export function ReportModal({ visible, icon, accent, title, message, rows, dismi
         <View style={styles.backdrop} />
       )}
 
-      <View style={styles.centerer} pointerEvents="box-none">
+      <ModalStage>
         <View style={styles.card}>
           <View style={[styles.accentBar, { backgroundColor: accent }]} />
 
@@ -75,7 +76,7 @@ export function ReportModal({ visible, icon, accent, title, message, rows, dismi
             </Pressable>
           </View>
         </View>
-      </View>
+      </ModalStage>
     </Modal>
   )
 }
@@ -84,12 +85,6 @@ const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(2, 2, 6, 0.85)',
-  },
-  centerer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: spacing[6],
   },
   card: {
     width: '100%',
