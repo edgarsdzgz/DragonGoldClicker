@@ -11,20 +11,21 @@ This is Step 4's visual redesign, first slice. Nothing is built until the owner 
 
 The art session's register is `_dev/art/official/OFFICIAL.md`: 167 PNGs, about 300 KB in all,
 every file at native size. None of it is in the game yet. Today the game draws Ionicons
-(about 45 names), a painted 600x600 kobold for every monster, and three painted strike effects.
+(about 45 names), a tinted 600x600 kobold silhouette (the other monsters are Ionicons), and three
+painted strike effects.
 
 | Group | Files | What it is | What it replaces in the game today |
 | --- | --- | --- | --- |
 | Icons | 71 | 12x12 interface icons, 9 claw tiers (16x16), 13 research icons, 10 building icons (16x16) | Ionicons on every screen, the claws chip, Librarium nodes, building cards |
 | Warfront | 7 | Base map 130x282 (no gate), the gate in 4 states, torch flicker, gate layout JSON | The Warfront's plain background and the HP-only gate |
-| Mobs | 20 | Kobold, goblin, crawler, orc, raider: idle, hit, hurt, 2-frame walk | The painted kobold, now shown for every monster |
+| Mobs | 20 | Kobold, goblin, crawler, orc, raider: idle, hit, hurt, 2-frame walk | The kobold silhouette and the other monsters' Ionicons |
 | City | 20 | City base map 130x282, plot layout JSON (10 plots), fog, foundation, empty plot, scaffold in 4 plot sizes, 2 map markers | The Draconia tab's card list |
 | Buildings | 27 | All 10 buildings in every state (ruin, levels, lit forge strip) | Building cards' Ionicons |
 | People | 12 | 9 townsfolk, the fighter standing and jabbing | The fighter and villager chips (numbers only) |
 | Events | 3 | Granary empty, half, full | The food readout |
 | FX | 2 | Hit spark (4 frames) and its Piskel file | `assets/fx/fx_spark.png` |
 
-**Still missing** (from `_dev/art/asset-list.md`): the dragon himself (commissioned), the
+**Still missing** (from `_dev/art/asset-list.md`): the dragon (commissioned), the
 fireball, slash and critical bursts, the cast busts, the interface kit (frames, buttons) and the
 app icon. Screens keep their current look wherever art is missing.
 
@@ -88,7 +89,7 @@ would come out blurred. Two ways round it:
 2. **Icons.** The swaps above, screen by screen: the tab bar, the resource bar, then the
    sheets and cards.
 3. **The Warfront.** The base map, the gate by HP (sound, cracking, failing, breached), the
-   torches, and each monster with its own idle, hit and hurt. The painted kobold retires.
+   torches, and each monster with its own idle, hit and hurt. The kobold silhouette retires.
 4. **Draconia.** The city map with its ten plots: fog until a building is revealed, then the
    empty plot, scaffold, and each building by state, with the markers. Tapping a plot opens the
    building's sheet, as its card does now.
