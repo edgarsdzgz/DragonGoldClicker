@@ -1,0 +1,79 @@
+<title>Pixel Art Test Run</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Nunito:wght@400;700&display=swap">
+<style>
+  :root {
+    --bg: #1c1524; --panel: #281e32; --line: #463a5a; --fg: #ecd6aa; --muted: #9678a8;
+    --gold: #f0c060; --ok: #6aa070;
+    color-scheme: dark;
+  }
+  body { background: var(--bg); color: var(--fg); font: 15px/1.55 Nunito, system-ui, sans-serif;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 48px; }
+  main { max-width: 900px; margin: 0 auto; display: grid; gap: 28px; }
+  h1, h2 { font-family: Cinzel, Georgia, serif; color: var(--gold); margin: 0; text-wrap: balance; }
+  h1 { font-size: 1.7rem; }
+  h2 { font-size: 1.1rem; letter-spacing: .04em; }
+  p { margin: 0; max-width: 65ch; }
+  .muted { color: var(--muted); }
+  section { display: grid; gap: 12px; }
+  .frame { background: var(--panel); border: 1px solid var(--line); padding: 12px; overflow-x: auto; }
+  .frame img { display: block; image-rendering: pixelated; max-width: none; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+  .row figure { margin: 0; display: grid; gap: 6px; }
+  figcaption { font-size: .85rem; color: var(--muted); }
+  table { border-collapse: collapse; font-size: .9rem; width: 100%; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 700; }
+  td.ok { color: var(--ok); font-weight: 700; }
+  .wrap { overflow-x: auto; }
+</style>
+<main>
+  <header>
+    <h1>Pixel art test run</h1>
+    <p class="muted">Draconia Chronicles &middot; five assets drawn as text grids with the new toolkit &middot; 2026-10-26</p>
+  </header>
+
+  <section>
+    <h2>Sheet 3: ten more icons, x6</h2>
+    <p class="muted">Shield (Fighters), gate, damage, skull (death, reset), rations, bell (next meal), train, reassign, close, book (Librarium). Top row new, bottom row the official set. Not locked yet.</p>
+    <div class="frame"><img src="SHEET3" alt="Sheet 3: a heater shield with a gold diamond, a stone gatehouse with wooden doors, a lightning bolt, a skull, a wooden bowl of stew with a spoon, a brass bell, a villager with a gold plus, two opposing steel arrows, a steel X, a blue book with a gold diamond; below them the seventeen official icons"></div>
+  </section>
+
+  <section>
+    <h2>Sheet 2: the next five icons, x6 (locked)</h2>
+    <p class="muted">Padlock (locked), flag (objective), compass (Explorers), upgrade arrow, check mark (done). Now part of the official set.</p>
+    <div class="frame"><img src="SHEET2" alt="Sheet 2: a brass padlock with a steel shackle, a brick-red swallow-tailed flag on a pole, a brass pocket compass with a red and steel needle, a gold up arrow, a green check mark; below them the twelve official icons"></div>
+  </section>
+
+  <section>
+    <h2>Everything, at x4, beside the art it must match</h2>
+    <div class="frame"><img src="SHEET" alt="Contact sheet: the hourglass and flame icons beside the ten existing icons; the fighter idle and two attack frames beside three townsfolk; four frames of the hit spark; the granary empty, half and full"></div>
+  </section>
+
+  <section>
+    <h2>The peoples of Draconia, x6</h2>
+    <p class="muted">The dwarf redrawn shorter and stockier; halfling, orc, birdfolk, fishfolk and catfolk added. Orcs use Rodain's gray-green and fishfolk sea teal, so no townsperson shares a color with the goblin, kobold or Ashen Orc.</p>
+    <div class="frame"><img src="PEOPLE" alt="Line-up of townsfolk: the existing human, elf and horned folk, the old dwarf, then the new stockier dwarf, a halfling with big bare feet, a gray-green orc with tusks, an owl-like birdfolk, a teal fishfolk with fins, and an orange catfolk with a tail"></div>
+  </section>
+
+  <section>
+    <h2>In motion</h2>
+    <div class="row">
+      <figure class="frame"><img src="SCENE" alt="The fighter jabs a spear on the Warfront wall and the hit spark bursts at the tip"><figcaption>Fighter and hit spark on the Warfront wall, x6</figcaption></figure>
+      <figure class="frame"><img src="SPARK" alt="Hit spark, four frames, looping"><figcaption>Hit spark, 12 fps</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>What each one tested</h2>
+    <div class="wrap"><table>
+      <tr><th>Asset</th><th>Size</th><th>Checks</th><th>Notes</th></tr>
+      <tr><td>Hourglass icon</td><td>12x12</td><td class="ok">pass</td><td>Brass caps, dark glass, sand running down. Same outline and 3-tone build as the existing icons.</td></tr>
+      <tr><td>Flame icon</td><td>12x12</td><td class="ok">pass</td><td>Warfront tab. Glow colors only, hottest at the base.</td></tr>
+      <tr><td>Fighter</td><td>11x20 idle, 16x20 jab (2 frames)</td><td class="ok">pass</td><td>The townsfolk body in an army slate-blue tunic, with a spear. Piskel file written.</td></tr>
+      <tr><td>Hit spark</td><td>12x12, 4 frames</td><td class="ok">pass</td><td>No outline, by rule: effects are light.</td></tr>
+      <tr><td>Granary</td><td>32x32, 3 states</td><td class="ok">pass</td><td>One building; the doorway's grain and the sacks out front show the level.</td></tr>
+    </table></div>
+  </section>
+</main>

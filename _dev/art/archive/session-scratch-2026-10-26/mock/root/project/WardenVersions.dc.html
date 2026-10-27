@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Every Warden</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.ol{text-shadow:2px 0 #12090f,-2px 0 #12090f,0 2px #12090f,0 -2px #12090f,2px 2px #12090f,-2px 2px #12090f,2px -2px #12090f,-2px -2px #12090f}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+</style>
+</helmet>
+<div style="width: 1480px; height: 1180px; box-sizing: border-box; padding: 30px 28px; background: linear-gradient(#1a1420, #0c0910); font-family: 'Nunito', system-ui, sans-serif; color: #f5ecd8;">
+  <header style="margin-bottom: 18px;">
+    <h1 class="ol" style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 34px; letter-spacing: 4px; color: #ffd97a;">EVERY WARDEN, IN ORDER</h1>
+    <p style="margin: 8px 0 0; max-width: 1300px; font-weight: 800; font-size: 15px; line-height: 1.5; color: #c8bca8;">Every hero dragon drawn so far, oldest first, including the in-between passes. Each is shown at a whole-number scale on the same dark card. Letters (a, b, c) are passes within a version; the last pass of each is the one that went on its board.</p>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="3">
+      <section>
+        <h2 style="margin: 0 0 8px; display: flex; align-items: baseline; gap: 14px; font-family: 'Cinzel', serif; font-weight: 900; font-size: 19px; color: #ffd97a;">{{r.title}}<span style="font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px; color: #c8bca8;">{{r.sub}}</span></h2>
+        <div style="display: flex; gap: 4px;">
+          <sc-for list="{{r.tiles}}" as="t" hint-placeholder-count="7">
+            <figure class="step" style="margin: 0; width: 192px; flex-shrink: 0; background: #12090f; padding: 3px;">
+              <div class="step" style="box-sizing: border-box; height: 100%; background: {{t.bg}}; padding: 10px 0 10px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <div style="height: 192px; display: flex; align-items: flex-end; justify-content: center;">
+                  <img class="px" src="{{t.src}}" alt="{{t.alt}}" style="width: {{t.w}}; height: {{t.h}};">
+                </div>
+                <figcaption style="padding: 0 10px; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;">
+                  <span style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 14px; color: {{t.ink}};">{{t.name}}</span>
+                  <span style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #f0c060;">{{t.spec}}</span>
+                  <span style="font-weight: 800; font-size: 12px; line-height: 1.35; color: #c8bca8;">{{t.note}}</span>
+                </figcaption>
+              </div>
+            </figure>
+          </sc-for>
+        </div>
+      </section>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1480,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dim = '#1e1824';
+    const glow = 'radial-gradient(ellipse at 50% 50%, rgba(220,90,40,0.22), #1e1824 70%)';
+    const t = (name, src, w, h, spec, note, alt, current) => ({
+      name: name, src: '/_blob/' + src, w: w, h: h, spec: spec, note: note, alt: alt,
+      bg: current ? glow : dim, ink: current ? '#ffd97a' : '#f5ecd8'
+    });
+    return {
+      rows: [
+        { title: 'Mockups and V1', sub: 'before the dragon-art research', tiles: [
+          t('Mockup 1', '444f96d1187b653ad02846b00c6bc927', '192px', '162px', '32×27 · shown 6×', 'Back view on the gate. You asked for a cooler, front-facing hero.', 'The first hero: a dragon seen from behind, wings spread'),
+          t('Mockup 2', 'a34b06f256a0f8adebf82f7317cbb1c3', '160px', '144px', '80×72 · shown 2×', 'Side view, rearing. Still on the Warfront mockup.', 'The second hero: rearing in side view'),
+          t('V1 rearing', '736f7c22ab1c720359ae3ae36ca2c747', '192px', '176px', '96×88 · 2× · 33 col', 'Procedural. Texture and dither read as a "3D effect".', 'Procedural study: rearing sentinel, Ember'),
+          t('V1 wings', '7dbe4f2f247df3099cdd45670b369936', '192px', '160px', '96×80 · 2× · 30 col', 'Horns did not read as horns.', 'Procedural study: wings spread, Ember'),
+          t('V1 portrait', '651fac2d218b0ab6f61f8104946e235c', '192px', '192px', '64×64 · 3× · 35 col', 'Eyes out of focus, a dopey look.', 'Procedural study: portrait, Ember'),
+          t('V1 token', '764840f05bff1632cc8051af348fa22d', '192px', '192px', '32×32 · 6× · 29 col', 'All four palettes are on the Hero studies board.', 'Procedural study: map token, Ember'),
+          t('V1 eye', '3839832a97b8a9d384b4773b0f318b3f', '192px', '132px', '32×22 · 6× · 22 col', 'Ability icon study.', 'Procedural study: eye icon, Ember')
+        ]},
+        { title: 'V2 and V3', sub: 'hand-placed, flat colour, built from the bird and lizard research', tiles: [
+          t('V2a', '0cdf0032961adfc75d80dab2e0651a2a', '192px', '192px', '48×48 · 4× · 16 col', 'First pass: thin jaw, cheek stripe.', 'Head study V2, pass a'),
+          t('V2b', 'e4f675f63b1dd33c59e651800605edc9', '192px', '192px', '48×48 · 4× · 16 col', 'Deeper jaw, single fang.', 'Head study V2, pass b'),
+          t('V2c', '92d4e2873d352b7889ec9235e0ea9c3f', '192px', '192px', '48×48 · 4× · 16 col', 'Head study 1. The neck "pooches" out.', 'Head study V2, final pass'),
+          t('V3a', '70d8740233b70a607b2b299ada4cfdcc', '192px', '192px', '48×48 · 4× · 16 col', 'Lean neck, cord muscle.', 'Head study V3, pass a'),
+          t('V3b', 'c7700104ffd5d410f758145bcbc69e6f', '192px', '192px', '48×48 · 4× · 16 col', 'Jaw frill removed.', 'Head study V3, pass b'),
+          t('V3c', 'b5600ca4aef1c1dcdaf324d074fe8675', '192px', '192px', '48×48 · 4× · 16 col', 'Shoulder groove. You found it emaciated.', 'Head study V3, final pass')
+        ]},
+        { title: 'V4', sub: 'rebuilt from the eight reference portraits', tiles: [
+          t('V4a', '24ab85119c09b11b33c6976420f43d4a', '192px', '192px', '64×64 · 3× · 18 col', 'Three-quarter, crest, neck held back. Mouth barely open.', 'Head study V4, pass a'),
+          t('V4b', '0296dedbd2477517cfbad3093c0eea1c', '192px', '192px', '64×64 · 3× · 18 col', 'Jaw open, throat fire, shorter cheek light.', 'Head study V4, pass b'),
+          t('V4c', '1bc0228b792af5373e171bd4d122d76d', '192px', '192px', '64×64 · 3× · 18 col', 'Jaw seam softened so the mouth ends under the eye. Current.', 'Head study V4, final pass', true)
+        ]}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

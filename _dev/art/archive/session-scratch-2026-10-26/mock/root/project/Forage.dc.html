@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Forage expeditions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+a{color:#f0c060}a:hover{color:#ffd97a}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.ol{text-shadow:2px 0 #12090f,-2px 0 #12090f,0 2px #12090f,0 -2px #12090f,2px 2px #12090f,-2px 2px #12090f,2px -2px #12090f,-2px -2px #12090f}
+.ol1{text-shadow:1px 0 #12090f,-1px 0 #12090f,0 1px #12090f,0 -1px #12090f,1px 1px #12090f}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+.scale{clip-path:polygon(8% 0,92% 0,100% 8%,100% 58%,50% 100%,0 58%,0 8%)}
+@keyframes walk{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes glow{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes point{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@keyframes halo{0%,100%{opacity:.35}50%{opacity:.85}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #1a1410; font-family: 'Nunito', system-ui, sans-serif; color: #f5ecd8;">
+  <img class="px" src="/_blob/5c8b82e5de792da2358ad1fa300091e1" alt="" style="position: absolute; left: 0; top: 0; width: 390px; height: 288px;">
+  <div style="position: absolute; left: 0; right: 0; top: 230px; height: 70px; background: linear-gradient(transparent, #1a1410);"></div>
+
+  <!-- top bar -->
+  <div style="position: absolute; left: 22px; top: 16px; right: 12px; display: flex; align-items: center; gap: 18px;">
+    <div style="position: relative; height: 34px; padding: 0 14px 0 40px; display: flex; align-items: center; background: rgba(14,9,18,0.86); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);">
+      <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 20px; color: #ffe2a0;">312.50</span>
+    </div>
+    <img class="px" src="/_blob/b6ac6a51f61f472fc85c136a5d0dc72c" alt="Renown" style="position: absolute; left: -10px; top: -6px; width: 48px; height: 48px;">
+    <div style="position: relative; height: 34px; padding: 0 14px 0 40px; display: flex; align-items: center; background: rgba(14,9,18,0.86); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);">
+      <img class="px" src="/_blob/76146112f652be681d6f4044e3ffd4e4" alt="Food" style="position: absolute; left: -2px; top: -7px; width: 48px; height: 48px;">
+      <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 20px; color: #f5ecd8;">140</span>
+    </div>
+  </div>
+
+  <!-- title, granary and meal bell -->
+  <div style="position: absolute; left: 0; right: 0; top: 196px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+    <span class="ol" style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 28px; letter-spacing: 5px; color: #ffd97a;">THE VALLEY</span>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span class="ol1" style="font-weight: 800; font-size: 13px; color: #f5ecd8;">Granary</span>
+      <div class="step" style="width: 130px; height: 14px; background: #12090f; padding: 3px; box-sizing: border-box;"><div style="width: 47%; height: 100%; background: linear-gradient(#ffe08a 0 3px, #d89a3a 3px);"></div></div>
+      <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 15px; color: #ffe2a0;">140 / 300</span>
+    </div>
+    <span class="ol1" style="font-weight: 800; font-size: 12px; color: #e8dcc6;">The meal bell rings in <span style="font-family: 'Pixelify Sans', monospace; color: #ffe2a0;">2:40</span>. Draconia eats 24 food.</span>
+  </div>
+
+  <!-- expedition 1: meadow, under way -->
+  <div style="position: absolute; left: 10px; right: 10px; top: 296px; height: 92px; display: flex; align-items: stretch;">
+    <span aria-hidden="true" style="width: 12px; background: linear-gradient(90deg, #a88a5a, #f0dcae 50%, #a88a5a); box-shadow: 0 0 0 2px #12090f; border-radius: 3px; z-index: 1;"></span>
+    <div style="position: relative; flex: 1; overflow: hidden; box-shadow: inset 0 0 0 2px #12090f;">
+      <img class="px" src="/_blob/d10c3110760e4c6af375352d6a55ea15" alt="" style="position: absolute; left: 0; top: -6px; width: 346px; height: 107px;">
+      <img class="px" src="/_blob/5c50e16db9ebdcf807ec7c9cf618f8f1" alt="" style="position: absolute; left: 70px; top: 22px; width: 33px; height: 48px; animation: walk .6s steps(2) infinite;">
+      <img class="px" src="/_blob/19b01c1bcdab31671382fab58a6c9d73" alt="" style="position: absolute; left: 112px; top: 24px; width: 33px; height: 48px; animation: walk .6s steps(2) infinite .3s;">
+      <img class="px" src="/_blob/111a6b74371a81f5ac1a0052f3609d13" alt="" style="position: absolute; right: 24px; top: 34px; width: 48px; height: 39px;">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 30px; background: rgba(14,9,18,0.82); display: flex; align-items: center; gap: 8px; padding: 0 6px 0 10px;">
+        <span style="font-weight: 900; font-size: 13px; color: #f5ecd8; flex-grow: 1;">Meadow · 2 gatherers</span>
+        <span class="step" style="width: 56px; height: 10px; background: #12090f; padding: 2px; box-sizing: border-box; display: block;"><span style="display: block; width: 58%; height: 100%; background: #9cc4ff;"></span></span>
+        <span style="font-family: 'Pixelify Sans', monospace; font-size: 14px; color: #9cc4ff;">01:42</span>
+      </div>
+    </div>
+    <span aria-hidden="true" style="width: 12px; background: linear-gradient(90deg, #a88a5a, #f0dcae 50%, #a88a5a); box-shadow: 0 0 0 2px #12090f; border-radius: 3px; z-index: 1;"></span>
+  </div>
+
+  <!-- expedition 2: forest, returned with spoils -->
+  <div style="position: absolute; left: 10px; right: 10px; top: 398px; height: 92px; display: flex; align-items: stretch;">
+    <span aria-hidden="true" style="width: 12px; background: linear-gradient(90deg, #a88a5a, #f0dcae 50%, #a88a5a); box-shadow: 0 0 0 2px #12090f; border-radius: 3px; z-index: 1;"></span>
+    <div style="position: relative; flex: 1; overflow: hidden; box-shadow: inset 0 0 0 2px #12090f;">
+      <img class="px" src="/_blob/1a40b7dee5c0f60b407bec39bf045f9e" alt="" style="position: absolute; left: 0; top: -6px; width: 346px; height: 107px;">
+      <span style="position: absolute; left: 190px; top: 10px; width: 90px; height: 60px; background: radial-gradient(ellipse, rgba(255,210,110,0.75), transparent 65%); animation: glow 1.4s ease-in-out infinite;"></span>
+      <img class="px" src="/_blob/111a6b74371a81f5ac1a0052f3609d13" alt="" style="position: absolute; left: 212px; top: 30px; width: 48px; height: 39px;">
+      <img class="px" src="/_blob/1091038f4511554a6e83f1d4bed7d232" alt="" style="position: absolute; left: 150px; top: 24px; width: 33px; height: 48px;">
+      <img class="px" src="/_blob/c734a00ecbc28a51be8440dd1fbd645e" alt="" style="position: absolute; left: 112px; top: 26px; width: 33px; height: 48px;">
+      <img class="px" src="/_blob/31d44aae26956cb39615e73ac320936f" alt="" style="position: absolute; left: 76px; top: 24px; width: 33px; height: 48px;">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 30px; background: rgba(14,9,18,0.82); display: flex; align-items: center; gap: 8px; padding: 0 4px 0 10px;">
+        <span style="font-weight: 900; font-size: 13px; color: #f5ecd8; flex-grow: 1;">Forest · returned</span>
+        <span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 14px; color: #ffe2a0;">+120</span>
+        <img class="px" src="/_blob/76146112f652be681d6f4044e3ffd4e4" alt="food" style="width: 20px; height: 20px;">
+      </div>
+    </div>
+    <span aria-hidden="true" style="width: 12px; background: linear-gradient(90deg, #a88a5a, #f0dcae 50%, #a88a5a); box-shadow: 0 0 0 2px #12090f; border-radius: 3px; z-index: 1;"></span>
+    <a href="Spoils.dc.html" class="step" style="position: absolute; right: 22px; top: 8px; display: block; background: #5a2f0c; padding: 3px; text-decoration: none;">
+      <span class="step" style="display: block; padding: 7px 14px; background: linear-gradient(#ffe08a 0 4px, #e8ac36 4px); box-shadow: inset 0 -4px 0 #b06f1c; font-weight: 900; font-size: 14px; color: #3a1d06;">Collect</span>
+    </a>
+  </div>
+
+  <!-- expedition 3: river, empty slots -->
+  <div style="position: absolute; left: 10px; right: 10px; top: 500px; height: 92px; display: flex; align-items: stretch;">
+    <span aria-hidden="true" style="width: 12px; background: linear-gradient(90deg, #a88a5a, #f0dcae 50%, #a88a5a); box-shadow: 0 0 0 2px #12090f; border-radius: 3px; z-index: 1;"></span>
+    <div style="position: relative; flex: 1; overflow: hidden; box-shadow: inset 0 0 0 2px #12090f;">
+      <img class="px" src="/_blob/038212ebfcb2e8fac82ee610d73e1e91" alt="" style="position: absolute; left: 0; top: -6px; width: 346px; height: 107px;">
+      <div style="position: absolute; left: 30px; top: 10px; display: flex; gap: 12px;">
+        <span class="scale" style="width: 40px; height: 44px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 34px; height: 38px; background: rgba(40,60,80,0.85); display: flex; align-items: flex-start; justify-content: center;"><span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 24px; color: #9ee08a; margin-top: 2px;">+</span></span></span>
+        <span class="scale" style="width: 40px; height: 44px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 34px; height: 38px; background: rgba(40,60,80,0.85); display: flex; align-items: flex-start; justify-content: center;"><span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 24px; color: #9ee08a; margin-top: 2px;">+</span></span></span>
+        <span class="scale" style="width: 40px; height: 44px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 34px; height: 38px; background: rgba(40,60,80,0.85); display: flex; align-items: flex-start; justify-content: center;"><span style="font-family: 'Pixelify Sans', monospace; font-weight: 700; font-size: 24px; color: #9ee08a; margin-top: 2px;">+</span></span></span>
+      </div>
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 30px; background: rgba(14,9,18,0.82); display: flex; align-items: center; padding: 0 10px;">
+        <span style="font-weight: 900; font-size: 13px; color: #f5ecd8;">River · choose up to 3 gatherers</span>
+      </div>
+    </div>
+    <span aria-hidden="true" style="width: 12px; background: linear-gradient(90deg, #a88a5a, #f0dcae 50%, #a88a5a); box-shadow: 0 0 0 2px #12090f; border-radius: 3px; z-index: 1;"></span>
+    <a href="Forage.dc.html" class="step" style="position: absolute; right: 22px; top: 8px; display: block; background: #102544; padding: 3px; text-decoration: none;">
+      <span class="step" style="display: block; padding: 7px 16px; background: linear-gradient(#9cc4ff 0 4px, #4f86d0 4px); box-shadow: inset 0 -4px 0 #2c5a9c;"><span class="ol1" style="font-weight: 900; font-size: 14px; color: #ffffff;">Send</span></span>
+    </a>
+  </div>
+
+  <!-- expedition 4: locked, with the reason -->
+  <div style="position: absolute; left: 10px; right: 10px; top: 602px; height: 76px; display: flex; align-items: stretch; opacity: 0.92;">
+    <span aria-hidden="true" style="width: 12px; background: linear-gradient(90deg, #5a4a36, #8a7656 50%, #5a4a36); box-shadow: 0 0 0 2px #12090f; border-radius: 3px; z-index: 1;"></span>
+    <div style="position: relative; flex: 1; overflow: hidden; box-shadow: inset 0 0 0 2px #12090f; background: #16121c; display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <img class="px" src="/_blob/1a40b7dee5c0f60b407bec39bf045f9e" alt="" style="position: absolute; left: 0; top: -14px; width: 346px; height: 107px; filter: grayscale(1) brightness(0.35);">
+      <svg aria-hidden="true" width="24" height="26" viewBox="0 0 10 11" style="position: relative; shape-rendering: crispEdges;"><path fill="#12090f" d="M2 0h6v1h1v4h1v6H0V5h1V1h1z"/><path fill="#b8ac98" d="M3 1h4v1h1v3H7V2H3v3H2V2h1z"/><path fill="#e0c070" d="M1 5h8v5H1z"/><path fill="#12090f" d="M4 6h2v3H4z"/></svg>
+      <span class="ol1" style="position: relative; font-weight: 900; font-size: 13px; color: #e8dcc6;">Old Mines · unlocks at Ranger's Lodge Lv 2</span>
+    </div>
+    <span aria-hidden="true" style="width: 12px; background: linear-gradient(90deg, #5a4a36, #8a7656 50%, #5a4a36); box-shadow: 0 0 0 2px #12090f; border-radius: 3px; z-index: 1;"></span>
+  </div>
+
+  <!-- actions -->
+  <div style="position: absolute; left: 14px; right: 14px; top: 690px; display: flex; gap: 12px; align-items: center;">
+    <a href="KeepUpgrade.dc.html" class="step" style="flex: 1; display: block; background: #2a1c10; padding: 3px; text-decoration: none;">
+      <span class="step" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 56px; background: linear-gradient(#5a4632 0 4px, #3e3022 4px); box-shadow: inset 0 -4px 0 #241a12;">
+        <img class="px" src="/_blob/724e9076c67e72a3d2483594540a6578" alt="" style="width: 24px; height: 24px;">
+        <span style="display: flex; flex-direction: column; line-height: 1.1;">
+          <span style="font-weight: 900; font-size: 14px; color: #f5ecd8;">Train gatherer</span>
+          <span style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #ffe2a0;">5 food</span>
+        </span>
+      </span>
+    </a>
+    <div style="position: relative; flex: 1.2;">
+      <span style="position: absolute; inset: -8px; border-radius: 40%; background: radial-gradient(ellipse, rgba(120,170,255,0.5), transparent 65%); animation: halo 2s ease-in-out infinite;"></span>
+      <a href="Forage.dc.html" class="step" style="position: relative; display: block; background: #102544; padding: 3px; text-decoration: none;">
+        <span class="step" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 56px; background: linear-gradient(#9cc4ff 0 6px, #4f86d0 6px); box-shadow: inset 0 -6px 0 #2c5a9c;">
+          <span class="ol" style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 22px; letter-spacing: 2px; color: #ffffff;">FORAGE</span>
+          <span class="ol1" style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #ffe2a0;">+3 food per tap</span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <!-- tab bar -->
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 78px; background: linear-gradient(#2a2330, #17121c); box-shadow: inset 0 4px 0 #463b50, inset 0 6px 0 #12090f; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; padding-bottom: 8px; box-sizing: border-box;">
+    <a href="Draconia.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; height: 64px; justify-content: flex-end;">
+      <span class="scale" style="width: 44px; height: 42px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 38px; height: 36px; background: #3a3044; display: flex; align-items: center; justify-content: center;"><img class="px" src="/_blob/bbf53cafa9853134e3da4c68b8541307" alt="" style="width: 24px; height: 24px; margin-top: -4px;"></span></span>
+      <span style="font-weight: 800; font-size: 12px; color: #c8bca8;">Draconia</span>
+    </a>
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; height: 64px; justify-content: flex-end;">
+      <span class="scale" style="width: 44px; height: 42px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 38px; height: 36px; background: #3a3044; display: flex; align-items: center; justify-content: center;"><img class="px" src="/_blob/e24b3841e3aec9dbae71b677272c30a1" alt="" style="width: 24px; height: 24px; margin-top: -4px;"></span></span>
+      <span style="font-weight: 800; font-size: 12px; color: #c8bca8;">Warfront</span>
+    </a>
+    <a href="Forage.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; height: 92px; justify-content: flex-end; transform: translateY(-4px);">
+      <span class="scale" style="width: 64px; height: 66px; background: #f0c060; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 56px; height: 58px; background: linear-gradient(#6b3a1a, #3a1d10); display: flex; align-items: center; justify-content: center;"><img class="px" src="/_blob/76146112f652be681d6f4044e3ffd4e4" alt="" style="width: 36px; height: 36px; margin-top: -6px;"></span></span>
+      <span class="ol1" style="font-weight: 900; font-size: 13px; color: #ffd97a;">Forage</span>
+    </a>
+    <a href="Dialogue.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; height: 64px; justify-content: flex-end;">
+      <span class="scale" style="width: 44px; height: 42px; background: #12090f; display: flex; align-items: center; justify-content: center;"><span class="scale" style="width: 38px; height: 36px; background: #3a3044; display: flex; align-items: center; justify-content: center;"><img class="px" src="/_blob/1128494800de94d1a2145c3065abf748" alt="" style="width: 24px; height: 24px; margin-top: -4px;"></span></span>
+      <span style="font-weight: 800; font-size: 12px; color: #c8bca8;">Settings</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

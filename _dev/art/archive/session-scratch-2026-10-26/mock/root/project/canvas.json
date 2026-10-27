@@ -1,0 +1,247 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-26T12:00:00Z"
+  },
+  "title": "Draconia UI Mockups",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Warfront (tap the kobold)",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "Draconia.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Draconia city",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "KeepUpgrade.dc.html": {
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Keep upgrade",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "Forage.dc.html": {
+      "x": 1410,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Forage expeditions",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "Dialogue.dc.html": {
+      "x": 1880,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Elder Pyreth",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "Spoils.dc.html": {
+      "x": 2350,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Spoils of the night",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "Cast.dc.html": {
+      "x": 0,
+      "y": 1264,
+      "w": 1100,
+      "h": 844,
+      "title": "The cast of Draconia"
+    },
+    "Rodain.dc.html": {
+      "x": 1180,
+      "y": 1264,
+      "w": 390,
+      "h": 844,
+      "title": "Captain Rodain: the wall breaks",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "Mirael.dc.html": {
+      "x": 1650,
+      "y": 1264,
+      "w": 390,
+      "h": 844,
+      "title": "Scout Mirael: beyond the walls",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "Lirae.dc.html": {
+      "x": 2120,
+      "y": 1264,
+      "w": 390,
+      "h": 844,
+      "title": "Lirae: the Ink-Wing",
+      "is_interactive": true,
+      "radius": 28
+    },
+    "Bestiary.dc.html": {
+      "x": 0,
+      "y": 2528,
+      "w": 1100,
+      "h": 640,
+      "title": "Bestiary: the horde in pixel art"
+    },
+    "HeroStudies.dc.html": {
+      "x": 0,
+      "y": 3588,
+      "w": 1480,
+      "h": 1520,
+      "title": "The Warden: hero dragon studies"
+    },
+    "HeadStudy.dc.html": {
+      "x": 1560,
+      "y": 5528,
+      "w": 1480,
+      "h": 940,
+      "title": "The Warden: head study V3 (lean and muscled)"
+    },
+    "HeadV4.dc.html": {
+      "x": 0,
+      "y": 6608,
+      "w": 1480,
+      "h": 960,
+      "title": "The Warden: head study V4 (from the references)"
+    },
+    "HeadV2.dc.html": {
+      "x": 0,
+      "y": 5528,
+      "w": 1480,
+      "h": 940,
+      "title": "The Warden: head study V2 (first from the research)"
+    },
+    "HeadV5.dc.html": {
+      "x": 1560,
+      "y": 6608,
+      "w": 1480,
+      "h": 960,
+      "title": "The Warden: head study V5 (real-animal details)"
+    },
+    "HeadV6.dc.html": {
+      "x": 0,
+      "y": 7688,
+      "w": 1480,
+      "h": 960,
+      "title": "The Warden: head study V6 (hinged jaw, framed eye)"
+    },
+    "HeadV7.dc.html": {
+      "x": 1560,
+      "y": 7688,
+      "w": 1480,
+      "h": 940,
+      "title": "The Warden: head study V7 (V2 with detail)"
+    },
+    "BodyV1.dc.html": {
+      "x": 0,
+      "y": 9068,
+      "w": 1480,
+      "h": 640,
+      "title": "The Warden: body V1 (pose check)"
+    },
+    "BodyV2.dc.html": {
+      "x": 1560,
+      "y": 9068,
+      "w": 1480,
+      "h": 660,
+      "title": "The Warden: body V2 (V7 head)"
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Draconia.dc.html",
+    "KeepUpgrade.dc.html",
+    "Forage.dc.html",
+    "Dialogue.dc.html",
+    "Spoils.dc.html",
+    "Cast.dc.html",
+    "Rodain.dc.html",
+    "Mirael.dc.html",
+    "Lirae.dc.html",
+    "Bestiary.dc.html",
+    "HeroStudies.dc.html",
+    "HeadV2.dc.html",
+    "HeadStudy.dc.html",
+    "HeadV4.dc.html",
+    "HeadV5.dc.html",
+    "HeadV6.dc.html",
+    "HeadV7.dc.html",
+    "BodyV1.dc.html",
+    "BodyV2.dc.html"
+  ],
+  "notes": {
+    "title": {
+      "x": 0,
+      "y": -300,
+      "text": "Draconia: grand pixel-art UI, portrait phone",
+      "kind": "title1",
+      "maxW": 2740
+    },
+    "title2": {
+      "x": 0,
+      "y": 964,
+      "text": "The cast: dragons at the heart, every people welcome",
+      "kind": "title1",
+      "maxW": 2510
+    },
+    "title3": {
+      "x": 0,
+      "y": 2228,
+      "text": "The horde: silhouettes become pixel art",
+      "kind": "title1",
+      "maxW": 1100
+    },
+    "title4": {
+      "x": 0,
+      "y": 3288,
+      "text": "Hero studies: the Warden in five poses, four palettes",
+      "kind": "title1",
+      "maxW": 1480
+    },
+    "title5": {
+      "x": 0,
+      "y": 5228,
+      "text": "Redraw: the Warden by the rules, flat colour, real anatomy",
+      "kind": "title1",
+      "maxW": 3040
+    },
+    "howto": {
+      "x": 2820,
+      "y": 0,
+      "w": 320,
+      "size": "m",
+      "color": "orange",
+      "text": "Press Play on Warfront.\n\nTap the kobold to strike (crits read DRAGONFIRE). Your fighters strike too, in blue.\n\nRALLY costs 1.00 renown; spend it down to see the disabled state.\n\nKill the kobold and a minotaur boss arrives. Beat it to reach the Spoils screen.\n\nThe tab bar and buttons link the other screens."
+    },
+    "title6": {
+      "x": 0,
+      "y": 8768,
+      "text": "Full body: the Warden on the gate",
+      "kind": "title1",
+      "maxW": 3040
+    }
+  },
+  "designSystems": []
+}

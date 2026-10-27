@@ -1,0 +1,102 @@
+{
+ "rearing-ember.png": {
+  "grid": "96x88",
+  "scale": 3,
+  "colours": 33
+ },
+ "rearing-azure.png": {
+  "grid": "96x88",
+  "scale": 3,
+  "colours": 33
+ },
+ "rearing-obsidian.png": {
+  "grid": "96x88",
+  "scale": 3,
+  "colours": 33
+ },
+ "rearing-verdant.png": {
+  "grid": "96x88",
+  "scale": 3,
+  "colours": 33
+ },
+ "spread-ember.png": {
+  "grid": "96x80",
+  "scale": 3,
+  "colours": 30
+ },
+ "spread-azure.png": {
+  "grid": "96x80",
+  "scale": 3,
+  "colours": 30
+ },
+ "spread-obsidian.png": {
+  "grid": "96x80",
+  "scale": 3,
+  "colours": 30
+ },
+ "spread-verdant.png": {
+  "grid": "96x80",
+  "scale": 3,
+  "colours": 30
+ },
+ "portrait-ember.png": {
+  "grid": "64x64",
+  "scale": 4,
+  "colours": 35
+ },
+ "portrait-azure.png": {
+  "grid": "64x64",
+  "scale": 4,
+  "colours": 34
+ },
+ "portrait-obsidian.png": {
+  "grid": "64x64",
+  "scale": 4,
+  "colours": 35
+ },
+ "portrait-verdant.png": {
+  "grid": "64x64",
+  "scale": 4,
+  "colours": 35
+ },
+ "token-ember.png": {
+  "grid": "32x32",
+  "scale": 4,
+  "colours": 29
+ },
+ "token-azure.png": {
+  "grid": "32x32",
+  "scale": 4,
+  "colours": 29
+ },
+ "token-obsidian.png": {
+  "grid": "32x32",
+  "scale": 4,
+  "colours": 29
+ },
+ "token-verdant.png": {
+  "grid": "32x32",
+  "scale": 4,
+  "colours": 29
+ },
+ "eye-ember.png": {
+  "grid": "32x22",
+  "scale": 4,
+  "colours": 22
+ },
+ "eye-azure.png": {
+  "grid": "32x22",
+  "scale": 4,
+  "colours": 21
+ },
+ "eye-obsidian.png": {
+  "grid": "32x22",
+  "scale": 4,
+  "colours": 22
+ },
+ "eye-verdant.png": {
+  "grid": "32x22",
+  "scale": 4,
+  "colours": 22
+ }
+}

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warden body V1</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Nunito:wght@700;800;900&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07050c}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.ol{text-shadow:2px 0 #12090f,-2px 0 #12090f,0 2px #12090f,0 -2px #12090f,2px 2px #12090f,-2px 2px #12090f,2px -2px #12090f,-2px -2px #12090f}
+.step{clip-path:polygon(4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px),0 4px,4px 4px)}
+.card{background:#12090f;padding:3px}
+.in{height:100%;box-sizing:border-box;background:#1e1824;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.cap{margin:0;text-align:center;font-weight:800;font-size:13px;line-height:1.4;color:#c8bca8}
+.lab{font-family:'Pixelify Sans',monospace;font-size:13px;color:#f0c060}
+</style>
+</helmet>
+<div style="width: 1480px; height: 640px; box-sizing: border-box; padding: 30px 28px; background: linear-gradient(#1a1420, #0c0910); font-family: 'Nunito', system-ui, sans-serif; color: #f5ecd8;">
+  <header style="margin-bottom: 18px;">
+    <h1 class="ol" style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 34px; letter-spacing: 4px; color: #ffd97a;">THE WARDEN · BODY V1 · POSE CHECK</h1>
+    <p style="margin: 8px 0 0; max-width: 1300px; font-weight: 800; font-size: 15px; line-height: 1.5; color: #c8bca8;">96×96, facing right, perched on the gate. Checkpoints 1 and 2 of 3: the silhouette and flat colours, with no shading yet. If the pose is right, the next pass adds V7's shading, scales and horn rings.</p>
+  </header>
+  <div style="display: flex; gap: 18px; height: 500px;">
+    <figure class="step card" style="margin: 0; width: 416px; flex-shrink: 0;">
+      <div class="step in" style="background: #e0caa0;">
+        <img class="px" src="/_blob/b1038f1b8cc225f4300801bf1efec337" alt="The perched Warden as one flat dark silhouette" style="width: 384px; height: 384px;">
+        <figcaption class="cap" style="color: #3a2208;">1 · Silhouette at 4×. A crouched predator on the wall, the wing peaking above the back.</figcaption>
+      </div>
+    </figure>
+    <figure class="step card" style="margin: 0; width: 416px; flex-shrink: 0;">
+      <div class="step in">
+        <img class="px" src="/_blob/2fc6f740c17b83c1c8cd4f8d57491b98" alt="The perched Warden in flat colours on a stone wall: crimson body, dark folded wing, gold throat and belly plates, ivory horn and claws" style="width: 384px; height: 384px;">
+        <figcaption class="cap">2 · Flat colours at 4×, 9 colours. One colour per material.</figcaption>
+      </div>
+    </figure>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 18px;">
+      <figure class="step card" style="margin: 0;">
+        <div class="step in" style="flex-direction: row; align-items: flex-end; justify-content: center; gap: 20px;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <img class="px" src="/_blob/274891858512c6a22834f61d096a2963" alt="Head study V7" style="width: 144px; height: 144px; background: #2a2232;">
+            <span class="lab" style="color: #c8bca8;">V7 portrait · 48×48</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <div style="width: 192px; height: 192px; background: linear-gradient(#2a2232 89.5%, #4a4250 89.5%);">
+              <img class="px" src="/_blob/59a0ec35a743145ed2a3782f37eb4527" alt="The perched Warden at 2 times, its in-game size" style="width: 192px; height: 192px;">
+            </div>
+            <span class="lab">In game · 2×, half a phone's width</span>
+          </div>
+        </div>
+      </figure>
+      <section class="step card" style="flex: 1;">
+        <div class="step in" style="align-items: stretch; padding: 16px 20px;">
+          <h2 style="margin: 0; font-family: 'Cinzel', serif; font-weight: 900; font-size: 18px; color: #ffd97a;">How it is built</h2>
+          <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; font-weight: 800; font-size: 13px; line-height: 1.35; color: #e8dcc4;">
+            <li><b style="color: #ffd97a;">Head:</b> V7's design at three quarters of its portrait size: the swept horn, the gold slit eye under the brow, one fang.</li>
+            <li><b style="color: #ffd97a;">Chest (bird):</b> deep and keeled, with gold plates from throat to belly.</li>
+            <li><b style="color: #ffd97a;">Wing (bat):</b> folded, the wrist peaking high with a clawed thumb, three fingers trailing back over the hip.</li>
+            <li><b style="color: #ffd97a;">Legs (lizard, cat):</b> crouched; the hind knee forward, the hock back, the forelegs braced, the claws gripping the wall.</li>
+            <li><b style="color: #ffd97a;">Tail:</b> hangs down the wall face to a spade tip.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1480,"height":640}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
