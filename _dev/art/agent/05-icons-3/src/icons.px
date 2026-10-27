@@ -1,0 +1,196 @@
+# Icon sheet 3, 2026-10-26: shield, gate, damage, skull, rations, bell, train, reassign, close, book.
+# 12x12, ink outline, light from the upper left. Research notes: ../README.md
+
+# Fighters. A heater shield: flat top, sides curving to a point; steel rim, army slate-blue field,
+# a gold diamond charge.
+@asset icon_shield
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 s=steel2 N=night4 n=night3 d=night2 g=gold4 G=gold2
+frame
+.aaaaaaaaaa.
+.ahhhhhhhma.
+.ahNnnnndsa.
+.ahNnggndsa.
+.ahNgggGdsa.
+.ahNnggndsa.
+.ahNnnnndsa.
+..ahNnndsa..
+...ahndsa...
+....ahsa....
+.....aa.....
+............
+
+# Gate. A gatehouse: three merlons, a stone wall, an arched opening with closed wooden doors
+# and two iron bands.
+@asset icon_gate
+size 12 12
+budget 6
+key a=ink H=steel4 m=steel3 s=steel2 w=wood4 W=wood2 i=steel1
+frame
+.aa..aa..aa.
+aHHaaHHaaHma
+aHmmmmmmmmsa
+aHmmmmmmmmsa
+aHmmmaammmsa
+aHmmawWammsa
+aHmawwWWamsa
+aHmaiiiiamsa
+aHmawwWWamsa
+aHmaiiiiamsa
+aHmawwWWamsa
+aaaaaaaaaaaa
+
+# Damage. A lightning bolt in glow colors: white-hot on its lit edges, orange in shadow.
+@asset icon_damage
+size 12 12
+budget 6
+key a=ink H=fire3 g=fire2 G=fire1
+frame
+......aaa...
+.....aHHga..
+....aHgGa...
+...aHgGaa...
+..agGggHga..
+...aaHgGa...
+...aHgGa....
+..aHgGa.....
+..aHGa......
+.aHGa.......
+.aga........
+..a.........
+
+# Death and reset. A skull: a bone dome, two dark sockets, a nose hole, a row of teeth.
+# Three bone tones and no pure white.
+@asset icon_skull
+size 12 12
+budget 6
+key a=ink H=skin3 b=parch3 s=parch1
+frame
+...aaaaaa...
+..aHHHHbba..
+.aHHbbbbbsa.
+.aHbbbbbbsa.
+.aHaabbaasa.
+.aHaabbaasa.
+.aHbbaabbsa.
+..abbbbbsa..
+..abababsa..
+...assssa...
+....aaaa....
+............
+
+# Rations. A turned wooden bowl of pottage with herbs, and a wooden spoon.
+@asset icon_rations
+size 12 12
+budget 8
+key a=ink C=clay3 c=clay2 g=green3 w=parch2 H=wood4 m=wood3 s=wood2
+frame
+..........a.
+.........awa
+........awa.
+...aaaaawa..
+.aaCcgcwcaa.
+aHHHHHHHHHma
+aHmmmmmmmssa
+.aHmmmmmmsa.
+..aHmmmssa..
+...assssa...
+....aaaa....
+............
+
+# Next meal. A brass bell with a knob on top, a flared lip, and the clapper below.
+@asset icon_bell
+size 12 12
+budget 6
+key a=ink H=gold5 g=gold4 G=gold2
+frame
+.....aa.....
+....aHGa....
+...aHHgga...
+..aHggggGa..
+..aHggggGa..
+..aHggggGa..
+.aHgggggGGa.
+aHHHHHHHGGGa
+aaaaagGaaaaa
+....agGa....
+.....aa.....
+............
+
+# Train. A villager (as in icon_villager) with a gold plus: a new recruit.
+@asset icon_train
+size 12 12
+budget 6
+key a=ink b=wood3 c=skin2 d=clay1 g=gold4
+frame
+.........a..
+........aga.
+...aaaaaggga
+..abbbbbaga.
+..acccccaa..
+..acacaca...
+..accccca...
+.addddddda..
+adddddddda..
+adddddddda..
+aaaaaaaaaa..
+............
+
+# Reassign. Two steel arrows: the top points right, the bottom points left.
+@asset icon_reassign
+size 12 12
+budget 4
+key a=ink H=steel5 m=steel3
+frame
+.......a....
+.aaaaaaHa...
+aHHHHHHHHa..
+ammmmmmmma..
+.aaaaaama...
+.......a....
+....a.......
+...aHaaaaaa.
+..aHHHHHHHHa
+..ammmmmmmma
+...amaaaaaa.
+....a.......
+
+# Close. A bold steel X.
+@asset icon_close
+size 12 12
+budget 4
+key a=ink H=steel5 g=steel3 G=steel2
+frame
+............
+..aa....aa..
+.aHga..aHga.
+.agggaaHgGa.
+..aggHHgGa..
+...aHggGa...
+...aHggGa...
+..aHgGGgga..
+.aHgGaaggga.
+.agGa..agGa.
+..aa....aa..
+............
+
+# Librarium. A closed book: dark spine with gold bands on the left, Lirae's ink-blue cover with a
+# gold diamond, page edges on the right.
+@asset icon_book
+size 12 12
+budget 8
+key a=ink S=night1 N=night4 n=night3 d=night2 g=gold4 G=gold2 p=parch3 P=parch1
+frame
+.aaaaaaaaaa.
+.aSNNNNNNNpa
+.aGNnnnnnnpa
+.aSNnnnnnnPa
+.aSNnngnnnpa
+.aSNnggGnnPa
+.aSNnngnnnpa
+.aSNnnnnnnPa
+.aGNnnnnnnpa
+.aSdddddddPa
+.aaaaaaaaaa.
+............
