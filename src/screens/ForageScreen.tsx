@@ -13,7 +13,8 @@ import { FORAGE_LINES } from '../data/flavorText'
 import { forageReveal } from '../types/opening'
 import { forageOrbDiameter, FLAVOR_H } from '../types/warfrontLayout'
 import { colors, spacing, gold } from '../theme'
-import { formatNumber, formatCount, GRANARY_CAP, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, EXPLORER_COST, getExplorerCap, isSystemOn } from '../types/game'
+import { formatNumber, formatCount, GRANARY_CAP, getForageYield, getTotalForagers, getForagerCost, getForagerCount, getForagerCap, FORAGER_TIERS, getExplorerCap, isSystemOn } from '../types/game'
+import { explorerBlock, explorerCost } from '../types/outpost'
 
 // Earthy green palette for foraging
 const forage = {
@@ -75,7 +76,7 @@ export function ForageScreen() {
   const orbDiameter = forageOrbDiameter(areaHeight)
 
   const explorerCap = getExplorerCap(state.postLevel)
-  const canRecruitExplorer = state.postLevel > 0 && state.villagers > 0 && state.inspiration >= EXPLORER_COST && state.explorers < explorerCap
+  const canRecruitExplorer = explorerBlock(state) === null
 
   return (
     <View style={styles.container}>
@@ -163,7 +164,7 @@ export function ForageScreen() {
                 disabled={!canRecruitExplorer}
               />
               <Text variant="bodySmall" center style={{ color: gold[400], fontWeight: '600' }}>
-                {EXPLORER_COST} renown
+                {formatNumber(explorerCost(state))} renown
               </Text>
               <Text variant="caption" color="muted" center>
                 {state.explorers}/{explorerCap}

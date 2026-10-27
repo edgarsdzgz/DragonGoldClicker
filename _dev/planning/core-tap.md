@@ -622,7 +622,7 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
-## Chapter 7: Beyond the Walls (proposed 2026-10-26)
+## Chapter 7: Beyond the Walls (approved and built 2026-10-26)
 
 The last three paused beats, all written for the old idle game. After this chapter every beat in
 the story has either been played or retired; Chapter 8 will need new content.
@@ -699,6 +699,22 @@ Once Rodain has spoken, Mirael follows a few minutes later. The Outpost (120) an
 4. **`lean_times`:** retire it and starvation deaths, keeping the army standing down when unfed
    (recommended)? Or keep deaths, gentler?
 5. **Timing:** Mirael 3 minutes after Rodain (recommended), or tied to something else?
+
+### Owner rulings (2026-10-26)
+
+All five as recommended.
+
+### As built
+
+- Rules in `types/outpost.ts` (`postBlock`/`upgradePost`, `explorerBlock`/`trainExplorer`,
+  `expeditionBlock`/`sendExpedition`, `claimExpedition`, `outpostHasAction`). GameContext rolls
+  the dice and reads the clock outside the state update, so a replayed update gives the same
+  result. The report lives in `state.expeditionReport` until read.
+- The Forage tab's RECRUIT and both badges use the same rules. The building is named The Outpost.
+- Removed: `types/milestones.ts`, `MilestoneModal`, `StarvationModal`, the `milestones` and
+  `starvation` systems, `milestonesOffered`, `pendingStarvationReport`, the `milestoneFollow`
+  script id and `shouldRevealExplorerPost`. The food tick no longer rolls deaths.
+- The side-beat mechanism in the director stays (no beat uses it now), as does `altScene`.
 
 ---
 

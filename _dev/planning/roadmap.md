@@ -48,7 +48,7 @@ returns its report the same unreliable way (expeditions are paused).
 
 ---
 
-## Step 2: Chapter 7, Beyond the Walls (plan, then build)
+## Step 2: Chapter 7, Beyond the Walls (plan, then build; built 2026-10-26)
 
 Three side stories are paused, all written for the old idle game:
 

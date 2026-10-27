@@ -1,13 +1,9 @@
 import type { GameState } from './state'
-import type { SoldierCounts } from './soldiers'
-import type { ForagerCounts } from './foragers'
 import {
   FOOD_CHECK_INTERVAL,
   GRANARY_CAP,
-  PROFESSIONAL_STARVATION_CHANCE,
   getFoodConsumption,
 } from './food'
-import type { StarvationResult } from './food'
 import { getResearchBonuses } from './research'
 import { getAutoFoodRate } from './foragers'
 import { rationDef } from './rations'
@@ -16,26 +12,20 @@ import { gatherMultiplier } from './foodEvents'
 // =============================================================================
 // FOOD CHECK (decided from the latest state, applied by a pure updater)
 // =============================================================================
+// An unpaid meal starves no one: the army stands down instead (layer 3, fed states). Starvation
+// deaths were retired with `lean_times` (chapter 7, 2026-10-26).
 
 /** What one food-timer second changes. Applied as deltas so concurrent updates survive. */
 export interface FoodTick {
   /** New value of foodTimer (0 right after a check fires) */
   timer: number
   consumed: number
-  villagersLost: number
-  soldiersLost: SoldierCounts
-  foragersLost: ForagerCounts
-  explorersLost: number
-  fightersLost: number
-  repairersLost: number
 }
 
 export interface FoodTickResult {
   tick: FoodTick
   /** Warning level after this check, or null when no check fired this second */
   warning: 0 | 3 | 1 | null
-  /** Who starved, or null when nobody did */
-  report: StarvationResult | null
 }
 
 /** Food one check would eat from the current stores (after research reductions) */
@@ -96,31 +86,10 @@ export function mealBalance(s: GameState): MealBalance {
   return { eaten, gathered, net: gathered - eaten }
 }
 
-const rollLosses = (count: number, chance: number): number => {
-  let lost = 0
-  for (let i = 0; i < count; i++) if (Math.random() < chance) lost++
-  return lost
-}
-
-/**
- * One second of the food timer. When the check fires: consume food, work out the
- * warning level, and (only if `starvationOn`) roll deaths when the stores are empty.
- * The only impure input is Math.random for those deaths.
- */
-export function resolveFoodTick(prev: GameState, starvationOn: boolean): FoodTickResult {
-  const noLoss = {
-    villagersLost: 0,
-    soldiersLost: { conscripts: 0, footmen: 0, knights: 0 },
-    foragersLost: { gatherers: 0, trappers: 0, rangers: 0 },
-    explorersLost: 0,
-    fightersLost: 0,
-    repairersLost: 0,
-  }
-
+/** One second of the food timer. When the check fires: the meal is eaten and the warning set. */
+export function resolveFoodTick(prev: GameState): FoodTickResult {
   const timer = prev.foodTimer + 1
-  if (timer < FOOD_CHECK_INTERVAL) {
-    return { tick: { timer, consumed: 0, ...noLoss }, warning: null, report: null }
-  }
+  if (timer < FOOD_CHECK_INTERVAL) return { tick: { timer, consumed: 0 }, warning: null }
 
   const consumption = mealCost(prev)
   const consumed = Math.min(prev.food, consumption)
@@ -129,71 +98,20 @@ export function resolveFoodTick(prev: GameState, starvationOn: boolean): FoodTic
   // Warning level uses the events remaining AFTER this consumption
   const eventsLeft = consumption > 0 ? Math.floor(newFood / consumption) : Infinity
   const warning: 0 | 3 | 1 = eventsLeft <= 1 ? 1 : eventsLeft <= 3 ? 3 : 0
-
-  // Only a meal that went unpaid can starve anyone (with nobody eating from the stores, empty
-  // stores harm no one)
-  if (newFood !== 0 || !starvationOn || consumed >= consumption) {
-    return { tick: { timer: 0, consumed, ...noLoss }, warning, report: null }
-  }
-
-  // Layer 3: only the army eats from the stores, so only the army can starve. Villagers and
-  // foragers feed themselves.
-  const villagersLost = 0
-  const soldiersLost = {
-    conscripts: rollLosses(prev.soldiers.conscripts, PROFESSIONAL_STARVATION_CHANCE),
-    footmen: rollLosses(prev.soldiers.footmen, PROFESSIONAL_STARVATION_CHANCE),
-    knights: rollLosses(prev.soldiers.knights, PROFESSIONAL_STARVATION_CHANCE),
-  }
-  const foragersLost = { gatherers: 0, trappers: 0, rangers: 0 }
-  const explorersLost = rollLosses(prev.explorers, PROFESSIONAL_STARVATION_CHANCE)
-  const fightersLost = rollLosses(prev.fighters, PROFESSIONAL_STARVATION_CHANCE)
-  const repairersLost = rollLosses(prev.repairers, PROFESSIONAL_STARVATION_CHANCE)
-
-  const totalProfLost = soldiersLost.conscripts + soldiersLost.footmen + soldiersLost.knights +
-    foragersLost.gatherers + foragersLost.trappers + foragersLost.rangers +
-    explorersLost + fightersLost + repairersLost
-
-  return {
-    tick: { timer: 0, consumed, villagersLost, soldiersLost, foragersLost, explorersLost, fightersLost, repairersLost },
-    warning,
-    report: villagersLost > 0 || totalProfLost > 0
-      ? { villagersLost, soldiersLost, foragersLost, explorersLost, fightersLost, repairersLost }
-      : null,
-  }
+  return { tick: { timer: 0, consumed }, warning }
 }
 
 /** Pure: apply a resolved food tick to any state */
 export function applyFoodTick(cur: GameState, t: FoodTick): GameState {
-  const sub = (have: number, lost: number) => Math.max(0, have - lost)
-  return {
-    ...cur,
-    foodTimer: t.timer,
-    food: sub(cur.food, t.consumed),
-    villagers: sub(cur.villagers, t.villagersLost),
-    villagersLost: cur.villagersLost + t.villagersLost,
-    soldiers: {
-      conscripts: sub(cur.soldiers.conscripts, t.soldiersLost.conscripts),
-      footmen: sub(cur.soldiers.footmen, t.soldiersLost.footmen),
-      knights: sub(cur.soldiers.knights, t.soldiersLost.knights),
-    },
-    foragers: {
-      gatherers: sub(cur.foragers.gatherers, t.foragersLost.gatherers),
-      trappers: sub(cur.foragers.trappers, t.foragersLost.trappers),
-      rangers: sub(cur.foragers.rangers, t.foragersLost.rangers),
-    },
-    explorers: sub(cur.explorers, t.explorersLost),
-    fighters: sub(cur.fighters, t.fightersLost),
-    repairers: sub(cur.repairers, t.repairersLost),
-  }
+  return { ...cur, foodTimer: t.timer, food: Math.max(0, cur.food - t.consumed) }
 }
 
 /**
- * One food-timer second as a pure function of `prev`. The pop-up payloads (warning,
- * starvation report) are part of the returned state, so the decision and its result
- * commit together even when other updates were queued in the same frame.
+ * One food-timer second as a pure function of `prev`. The warning pop-up is part of the returned
+ * state, so the decision and its result commit together even when other updates were queued.
  */
-export function stepFood(prev: GameState, starvationOn: boolean): GameState {
-  const { tick, warning, report } = resolveFoodTick(prev, starvationOn)
+export function stepFood(prev: GameState): GameState {
+  const { tick, warning } = resolveFoodTick(prev)
   const next = applyFoodTick(prev, tick)
   if (warning === null) return next
   return {
@@ -201,6 +119,5 @@ export function stepFood(prev: GameState, starvationOn: boolean): GameState {
     lastFoodWarning: warning,
     // Only pop up when the warning escalates, not on every check
     pendingFoodWarning: warning > 0 && warning !== prev.lastFoodWarning ? warning : next.pendingFoodWarning,
-    pendingStarvationReport: report ?? next.pendingStarvationReport,
   }
 }

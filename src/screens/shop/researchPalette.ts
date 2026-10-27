@@ -16,4 +16,5 @@ export const BRANCH_COLORS: Record<ResearchCategory, string> = {
   army: colors.building.garrison,
   stores: colors.building.lodge,
   wall: colors.warfront.repair,
+  wilds: colors.building.explorer,
 }

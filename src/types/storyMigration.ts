@@ -34,12 +34,11 @@ const EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
   the_keep: (s) => s.draconiaHallBuilt,
   the_scholar: (s) => s.librariumBuilt,
   the_horde_grows: (s) => s.completedResearch.length > 0,
+  beyond_the_walls: (s) => s.postLevel > 0 || s.explorerIntroShown,
 }
 
 /** Side beats that can also be proven by what the save already did */
 const SIDE_EVIDENCE: Partial<Record<BeatId, (s: GameState) => boolean>> = {
-  word_spreads: (s) => s.milestonesOffered.length > 0,
-  beyond_the_walls: (s) => s.postLevel > 0 || s.explorerIntroShown,
 }
 
 /** Scripted events of beats the save has already seen are treated as run (no replays for existing players) */

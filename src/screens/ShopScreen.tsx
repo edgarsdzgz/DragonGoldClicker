@@ -22,9 +22,6 @@ import {
   SOLDIER_TIERS,
   FORAGER_TIERS,
   gearBlock,
-  EXPLORER_COST,
-  EXPEDITION_INSPIRATION_COST,
-  EXPEDITION_FOOD_COST,
   getTotalSoldiers,
   getSoldierCap,
   getBarracksUpgradeCost,
@@ -46,6 +43,7 @@ import { mapStyles } from './shop/mapStyles'
 import { rankBlock } from '../types/army'
 import { foragerBlock } from '../types/lodge'
 import { canStudyAny, studiesDone } from '../types/library'
+import { outpostHasAction } from '../types/outpost'
 
 // =============================================================================
 // BUILDING INTERIOR ROUTER
@@ -299,15 +297,7 @@ export function ShopScreen() {
     return FORAGER_TIERS.some((tier) => foragerBlock(state, tier.id) === null)
   })()
 
-  const outpostHasAction = state.postLevel > 0 && (() => {
-    const explorerCap = getExplorerCap(state.postLevel)
-    if (state.explorers < explorerCap && state.villagers > 0 && state.inspiration >= EXPLORER_COST) return true
-    const available = state.explorers - state.activeExpeditions.length
-    if (available > 0 && state.inspiration >= EXPEDITION_INSPIRATION_COST && state.food >= EXPEDITION_FOOD_COST) return true
-    const upgCost = getPostUpgradeCost(state.postLevel)
-    if (upgCost !== null && state.inspiration >= upgCost) return true
-    return false
-  })()
+  const outpostAction = outpostHasAction(state, Date.now())
 
   const keepHasAction = state.draconiaHallBuilt && (() => {
     const upgCost = getOfflineUpgradeCost(state.offlineLevel)
@@ -391,19 +381,19 @@ export function ShopScreen() {
     },
     outpost: {
       id: 'outpost',
-      name: "Wayfinder's Outpost",
+      name: 'The Outpost',
       icon: 'compass',
-      description: 'A staging ground for expeditions beyond the walls. Train wayfinders to venture into the wasteland and rescue lost villagers.',
+      description: 'Explorers set out from the ridge to bring home people stranded in the valley. Each journey costs food.',
       accentColor: colors.building.explorer,
       isBuilt: state.postLevel > 0,
       visible: revealed('outpost', state.postLevel > 0),
       cost: postBuildCost,
       canAfford: (postBuildCost ?? 0) > 0 && state.inspiration >= (postBuildCost ?? 0),
       onBuild: buildOrUpgradePost,
-      hasAction: outpostHasAction,
+      hasAction: outpostAction,
       resourceKeys: ['inspiration', 'food', 'villagers'],
       statusLabel: state.postLevel > 0
-        ? `Lv${state.postLevel} -- ${state.explorers}/${getExplorerCap(state.postLevel)} wayfinders`
+        ? `Lv${state.postLevel} -- ${state.explorers}/${getExplorerCap(state.postLevel)} explorers`
         : undefined,
     },
     librarium: {

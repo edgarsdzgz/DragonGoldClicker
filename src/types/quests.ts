@@ -12,7 +12,7 @@ import { studiesDone } from './library'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers' | 'raise_the_librarium' | 'first_study'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers' | 'raise_the_librarium' | 'first_study' | 'raise_the_outpost' | 'first_expedition'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -148,6 +148,17 @@ export const QUESTS: QuestDef[] = [
     id: 'first_study', title: 'First Study',
     goals: [{ label: 'Finish a study at the Librarium', target: 1, progress: (s) => studiesDone(s) }],
     offeredWhen: (s) => done(s, 'raise_the_librarium'),
+  },
+  {
+    id: 'raise_the_outpost', title: 'Raise the Outpost',
+    goals: [{ label: 'Build the Outpost', target: 1, progress: (s) => (s.postLevel > 0 ? 1 : 0) }],
+    offeredWhen: (s) => s.beatsSeen.includes('beyond_the_walls'),
+  },
+  {
+    // The first journey always finds someone (types/scripted.ts), so one rescued is one trip home
+    id: 'first_expedition', title: 'First Expedition',
+    goals: [{ label: 'Bring an expedition home', target: 1, progress: (s) => Math.min(1, s.villagersRescued) }],
+    offeredWhen: (s) => done(s, 'raise_the_outpost'),
   },
 ]
 

@@ -145,32 +145,13 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
       'A sword makes a soldier hit harder. A shield keeps one standing when the wall comes down.',
     ],
   },
-  word_spreads: {
-    ...PYRETH,
-    title: 'Word Spreads',
-    lines: ["Word of Draconia's stand has reached the villages beyond the hills. People are coming."],
-  },
-  lean_times: {
-    ...PYRETH,
-    title: 'Lean Times',
-    lines: [
-      'The stores ran dry last night. We buried no one, but only by luck.',
-      'If it happens again, people will die. Keep the foragers working.',
-    ],
-    // Fired through the the_keep fallback, without the stores having run dry
-    altLines: [
-      'Our stores have held so far, but it will not always be so.',
-      'If they ever run dry, people will die. Keep the foragers working.',
-    ],
-  },
   beyond_the_walls: {
     ...MIRAEL,
     title: 'Beyond the Walls',
     lines: [
-      'My lord, our scouts have spotted something troubling. The wilderness beyond Draconia grows wilder by the day -- and our villagers are stretched thin.',
-      'But there is opportunity in the danger. We have located a ruined outpost on the frontier that could serve as a staging ground for expeditions into the wasteland.',
-      'Wayfinders trained there can venture out and rescue lost souls -- villagers stranded beyond our borders. More people means a stronger Draconia.',
-      'The outpost will not come cheap, but the investment will pay for itself many times over. I urge you to save up and build it when you can.',
+      'Rodain is right, my lord. The horde grows, and a city that waits for wanderers will not keep pace.',
+      'There are people out in the valley: farms the horde passed by, families hiding in the old mines. They cannot reach us alone.',
+      'Rebuild the old outpost on the ridge. Explorers trained there can bring them home, if the stores can feed the journey.',
     ],
     dismissLabel: 'View the outpost',
     navigateTo: 'DraconiaTab',

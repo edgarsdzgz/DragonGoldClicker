@@ -1,30 +1,17 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { AppState } from 'react-native'
 import { DEV_TOOLS_ENABLED } from '../config/devTools'
-import type { GameState, SoldierTier, ForagerTier, RoleId, StarvationResult, WandererEncounter, MilestoneDef } from '../types/game'
+import type { GameState, SoldierTier, ForagerTier, RoleId, WandererEncounter } from '../types/game'
 import {
   DEFAULT_GAME_STATE,
   ARMORY_COST,
   BARRACKS_LEVELS,
-  OFFLINE_LEVELS,
   MAX_OFFLINE_LEVEL,
-  getBarracksUpgradeCost,
   getOfflineUpgradeCost,
-  getFoodConsumption,
   getFoodEventsRemaining,
   getForageYield,
   LODGE_LEVELS,
-  MAX_LODGE_LEVEL,
   getAutoFoodRate,
-  POST_LEVELS,
-  MAX_POST_LEVEL,
-  EXPLORER_COST,
-  EXPEDITION_INSPIRATION_COST,
-  EXPEDITION_FOOD_COST,
-  EXPEDITION_DURATION,
-  EXPEDITION_PITY_THRESHOLD,
-  getExplorerCap,
-  rollExpeditionReward,
   DRACONIA_HALL_COST,
   rollWandererEncounter,
   stepWanderers,
@@ -35,7 +22,6 @@ import {
   stepFighterVolley,
   FIGHTER_TICK_MS,
   MAX_CITY_HP,
-  getNextMilestone,
   granaryRoom,
   isSystemOn,
   isBuildingRevealed,
@@ -48,7 +34,7 @@ import { fighterDamageMultiplier } from '../types/fedState'
 import { stepFoodEvents, gatherMultiplier, answerRefugees as answerRefugeesState } from '../types/foodEvents'
 import { isRationAvailable } from '../types/rations'
 import type { RationId } from '../types/rations'
-import { firstExpeditionReward } from '../types/scripted'
+import { upgradePost, trainExplorer as trainExplorerState, sendExpedition as sendExpeditionState, claimExpedition as claimExpeditionState } from '../types/outpost'
 import { sharpenClaws as sharpenClawsState, tapHit } from '../types/claws'
 import { repairRateNow } from '../types/siege'
 import { buildLibrarium as buildLibrariumState, study } from '../types/library'
@@ -78,7 +64,9 @@ interface GameContextType {
   buildOrUpgradePost: () => void
   trainExplorer: () => void
   sendExpedition: () => void
-  claimExpedition: (id: number) => { villagersFound: number } | null
+  /** Bring a returned expedition home; its report waits in `state.expeditionReport` */
+  claimExpedition: (id: number) => void
+  dismissExpeditionReport: () => void
   buildDraconiaHall: () => void
   /** Move `count` people (default 1) between jobs at the Keep */
   reassignRole: (from: RoleId, to: RoleId, count?: number) => void
@@ -87,8 +75,6 @@ interface GameContextType {
   resetGame: () => void
   pendingOfflineEarnings: OfflineEarnings | null
   dismissOfflineEarnings: () => void
-  pendingStarvationReport: StarvationResult | null
-  dismissStarvationReport: () => void
   pendingFoodWarning: 0 | 3 | 1
   dismissFoodWarning: () => void
   pendingWanderer: WandererEncounter | null
@@ -100,9 +86,6 @@ interface GameContextType {
   sharpenClaws: () => void
   /** Clears the last Breach's report once the player has read it (layer 6) */
   dismissBreach: () => void
-  pendingMilestone: MilestoneDef | null
-  acceptMilestone: () => void
-  rejectMilestone: () => void
   buildLibrarium: () => void
   completeResearch: (id: string) => void
   /** Set the fighters' rations (only an available one) */
@@ -127,7 +110,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(DEFAULT_GAME_STATE)
   const [loaded, setLoaded] = useState(false)
   const [pendingOfflineEarnings, setPendingOfflineEarnings] = useState<OfflineEarnings | null>(null)
-  const [pendingMilestone, setPendingMilestone] = useState<MilestoneDef | null>(null)
   const { save, load, clear } = useStorage()
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -172,7 +154,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [loaded, save])
 
-  const { pendingStarvationReport, pendingFoodWarning, pendingWanderer } = state
+  const { pendingFoodWarning, pendingWanderer } = state
 
   // Nothing earns renown per second (chapter 5): the army wears down the monster, and renown
   // comes from its kill
@@ -234,7 +216,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   useGameLoop(
     useCallback(() => {
       if (!loaded) return
-      setState((prev) => (isSystemOn(prev, 'hunger') ? stepFood(prev, isSystemOn(prev, 'starvation')) : prev))
+      setState((prev) => (isSystemOn(prev, 'hunger') ? stepFood(prev) : prev))
     }, [loaded])
   )
 
@@ -264,15 +246,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }, [loaded])
   )
 
-
-  // Milestone recruitment check -- fires when totalInspirationEarned crosses a threshold
-  useEffect(() => {
-    if (!loaded || pendingMilestone || !isSystemOn(state, 'milestones')) return
-    const next = getNextMilestone(state.totalInspirationEarned, state.milestonesOffered)
-    if (next) {
-      setPendingMilestone(next)
-    }
-  }, [loaded, state.totalInspirationEarned, state.milestonesOffered, state.beatsSeen, pendingMilestone])
 
   // Quests: a goal that is met completes at once and pays its reward (the toast or the story
   // beat that follows is the UI's job)
@@ -391,83 +364,28 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => makeForagerState(prev, tier))
   }, [])
 
+  // The Outpost (chapter 7): rules in types/outpost.ts; the dice and the clock are rolled here
   const buildOrUpgradePost = useCallback(() => {
-    setState((prev) => {
-      const nextLevel = prev.postLevel + 1
-      const def = POST_LEVELS.find((l) => l.level === nextLevel)
-      if (!def || prev.inspiration < def.cost) return prev
-      return {
-        ...prev,
-        inspiration: prev.inspiration - def.cost,
-        totalInspirationSpent: prev.totalInspirationSpent + def.cost,
-        postLevel: nextLevel,
-      }
-    })
+    setState(upgradePost)
   }, [])
 
   const trainExplorer = useCallback(() => {
-    setState((prev) => {
-      if (prev.postLevel <= 0) return prev
-      if (prev.villagers <= 0) return prev
-      const cap = getExplorerCap(prev.postLevel)
-      if (prev.explorers >= cap) return prev
-      const cost = EXPLORER_COST
-      if (prev.inspiration < cost) return prev
-      return {
-        ...prev,
-        inspiration: prev.inspiration - cost,
-        totalInspirationSpent: prev.totalInspirationSpent + cost,
-        villagers: prev.villagers - 1,
-        explorers: prev.explorers + 1,
-        explorersTrained: prev.explorersTrained + 1,
-      }
-    })
+    setState(trainExplorerState)
   }, [])
 
   const sendExpedition = useCallback(() => {
-    setState((prev) => {
-      if (prev.postLevel <= 0 || prev.explorers <= 0) return prev
-      // An explorer can only go on one expedition at a time
-      if (prev.activeExpeditions.length >= prev.explorers) return prev
-      if (prev.inspiration < EXPEDITION_INSPIRATION_COST || prev.food < EXPEDITION_FOOD_COST) return prev
-      return {
-        ...prev,
-        inspiration: prev.inspiration - EXPEDITION_INSPIRATION_COST,
-        food: prev.food - EXPEDITION_FOOD_COST,
-        totalInspirationSpent: prev.totalInspirationSpent + EXPEDITION_INSPIRATION_COST,
-        activeExpeditions: [
-          ...prev.activeExpeditions,
-          {
-            id: prev.nextExpeditionId,
-            startedAt: Date.now(),
-            duration: EXPEDITION_DURATION,
-          },
-        ],
-        nextExpeditionId: prev.nextExpeditionId + 1,
-      }
-    })
+    const now = Date.now()
+    setState((prev) => sendExpeditionState(prev, now))
   }, [])
 
-  const claimExpedition = useCallback((id: number): { villagersFound: number } | null => {
-    let result: { villagersFound: number } | null = null
-    setState((prev) => {
-      const expedition = prev.activeExpeditions.find((e) => e.id === id)
-      if (!expedition) return prev
-      const elapsed = (Date.now() - expedition.startedAt) / 1000
-      if (elapsed < expedition.duration) return prev
-      const pity = prev.expeditionDryStreak >= EXPEDITION_PITY_THRESHOLD
-      // The first expedition ever claimed always rescues at least 1 villager
-      const { found: villagersFound, state: base } = firstExpeditionReward(prev, rollExpeditionReward(pity))
-      result = { villagersFound }
-      return {
-        ...base,
-        activeExpeditions: prev.activeExpeditions.filter((e) => e.id !== id),
-        villagers: prev.villagers + villagersFound,
-        villagersRescued: prev.villagersRescued + villagersFound,
-        expeditionDryStreak: villagersFound === 0 ? prev.expeditionDryStreak + 1 : 0,
-      }
-    })
-    return result
+  const claimExpedition = useCallback((id: number) => {
+    const now = Date.now()
+    const roll = Math.random()
+    setState((prev) => claimExpeditionState(prev, id, now, roll))
+  }, [])
+
+  const dismissExpeditionReport = useCallback(() => {
+    setState((prev) => ({ ...prev, expeditionReport: null }))
   }, [])
 
   const buildDraconiaHall = useCallback(() => {
@@ -506,10 +424,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setPendingOfflineEarnings(null)
   }, [])
 
-  const dismissStarvationReport = useCallback(() => {
-    setState((prev) => ({ ...prev, pendingStarvationReport: null }))
-  }, [])
-
   const dismissBreach = useCallback(() => {
     setState((prev) => ({ ...prev, pendingBreach: null }))
   }, [])
@@ -526,27 +440,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const rejectWanderer = useCallback(() => {
     setState(turnAwayWanderer)
   }, [])
-
-  const acceptMilestone = useCallback(() => {
-    if (!pendingMilestone) return
-    const milestone = pendingMilestone
-    setState((prev) => ({
-      ...prev,
-      villagers: prev.villagers + milestone.villagers,
-      milestonesOffered: [...prev.milestonesOffered, milestone.threshold],
-    }))
-    setPendingMilestone(null)
-  }, [pendingMilestone])
-
-  const rejectMilestone = useCallback(() => {
-    if (!pendingMilestone) return
-    // Mark as offered so it doesn't fire again, but don't add villagers
-    setState((prev) => ({
-      ...prev,
-      milestonesOffered: [...prev.milestonesOffered, pendingMilestone.threshold],
-    }))
-    setPendingMilestone(null)
-  }, [pendingMilestone])
 
   // Computed food warning level for badge display (always current, not just on events)
   const foodWarningLevel: 0 | 3 | 1 = (() => {
@@ -628,6 +521,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         trainExplorer,
         sendExpedition,
         claimExpedition,
+        dismissExpeditionReport,
         buildDraconiaHall,
         reassignRole,
         autoFoodRate,
@@ -635,8 +529,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         pendingOfflineEarnings,
         dismissOfflineEarnings,
         foodWarningLevel,
-        pendingStarvationReport,
-        dismissStarvationReport,
         pendingFoodWarning,
         dismissFoodWarning,
         pendingWanderer,
@@ -646,9 +538,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         directRepairer,
         sharpenClaws,
         dismissBreach,
-        pendingMilestone,
-        acceptMilestone,
-        rejectMilestone,
         buildLibrarium,
         completeResearch,
         markBeatSeen,

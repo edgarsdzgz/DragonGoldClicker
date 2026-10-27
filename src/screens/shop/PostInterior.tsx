@@ -3,60 +3,57 @@ import { View, Pressable } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons'
 import { Text, ActionRow, Button, StatBox, Badge, SectionLabel, InspirationIcon, ExpeditionReportModal } from '../../components'
-import type { ExpeditionReport } from '../../components'
 import { REJECT_GOLD, REJECT_MAXED, REJECT_NO_POP } from '../../components/Button'
 import { ProgressBar } from '../../components/ProgressBar'
 import { useGame } from '../../context/GameContext'
 import { useHaptics } from '../../hooks'
-import { colors, spacing, gold } from '../../theme'
+import { colors } from '../../theme'
+import { formatNumber, getExplorerCap, getPostUpgradeCost, EXPEDITION_FOOD_COST, EXPEDITION_PITY_THRESHOLD } from '../../types/game'
 import {
-  formatNumber,
-  getExplorerCap,
-  getPostUpgradeCost,
-  EXPLORER_COST,
-  EXPEDITION_INSPIRATION_COST,
-  EXPEDITION_FOOD_COST,
-  EXPEDITION_DURATION,
-  EXPEDITION_PITY_THRESHOLD,
-} from '../../types/game'
+  explorerBlock, explorerCost, expeditionBlock, expeditionSeconds, explorersFree, isExpeditionBack, postBlock,
+} from '../../types/outpost'
+import type { ExplorerBlock } from '../../types/outpost'
 import { CapacitySection, DescriptionBanner } from './shared'
 import { SummaryBar } from './SummaryBar'
 import { styles, expStyles } from './interiorStyles'
 
+// =============================================================================
+// THE OUTPOST (chapter 7, Beyond the Walls): explorers bring people home, paid in food
+// =============================================================================
+
 const EXPLORER_GRADIENT = ['#3b82f6', '#93c5fd'] as [string, string]
 
-// =============================================================================
-// EXPEDITION ROW
-// =============================================================================
-
-interface ExpeditionRowProps {
-  expedition: { id: number; startedAt: number; duration: number }
-  onClaimed: (report: ExpeditionReport) => void
+/** "5 min" or "3 min 45 s" */
+function minutes(sec: number): string {
+  const m = Math.floor(sec / 60)
+  const s = Math.round(sec % 60)
+  return s === 0 ? `${m} min` : `${m} min ${s} s`
 }
 
-function ExpeditionRow({ expedition, onClaimed }: ExpeditionRowProps) {
+const TRAIN_LABEL: Record<Exclude<ExplorerBlock, null | 'renown'>, string> = {
+  noOutpost: 'BUILD FIRST',
+  full: 'FULL',
+  nobody: 'NO VILLAGERS',
+}
+
+function ExpeditionRow({ expedition }: { expedition: { id: number; startedAt: number; duration: number } }) {
   const { claimExpedition } = useGame()
   const haptics = useHaptics()
   const [now, setNow] = React.useState(Date.now())
-
-  const elapsed = (now - expedition.startedAt) / 1000
-  const done = elapsed >= expedition.duration
+  const back = isExpeditionBack(expedition, now)
 
   React.useEffect(() => {
-    if (done) return
+    if (back) return
     const interval = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(interval)
-  }, [done])
+  }, [back])
 
-  const remaining = Math.max(0, expedition.duration - elapsed)
+  const elapsed = (now - expedition.startedAt) / 1000
   const progress = Math.min(1, elapsed / expedition.duration)
 
   const handleClaim = () => {
     haptics.medium()
-    const r = claimExpedition(expedition.id)
-    if (r) {
-      onClaimed({ expeditionId: expedition.id, villagersFound: r.villagersFound })
-    }
+    claimExpedition(expedition.id)
   }
 
   return (
@@ -64,15 +61,11 @@ function ExpeditionRow({ expedition, onClaimed }: ExpeditionRowProps) {
       icon="compass"
       iconColor={colors.building.explorer}
       title={`Expedition #${expedition.id}`}
-      subtitle={done ? 'Returned! Ready to claim.' : `${Math.ceil(remaining)}s remaining`}
+      subtitle={back ? 'Back home. See who came with them.' : `${minutes(Math.ceil(expedition.duration - elapsed))} to go`}
       right={
-        done ? (
-          <Button
-            size="xs"
-            accentColor={colors.building.explorer}
-            onPress={handleClaim}
-          >
-            CLAIM
+        back ? (
+          <Button size="xs" accentColor={colors.building.explorer} onPress={handleClaim}>
+            WELCOME
           </Button>
         ) : (
           <View style={expStyles.progressPct}>
@@ -88,23 +81,19 @@ function ExpeditionRow({ expedition, onClaimed }: ExpeditionRowProps) {
   )
 }
 
-// =============================================================================
-// POST INTERIOR
-// =============================================================================
-
 export function PostInterior() {
-  const { state, buildOrUpgradePost, trainExplorer, sendExpedition } = useGame()
+  const { state, buildOrUpgradePost, trainExplorer, sendExpedition, dismissExpeditionReport } = useGame()
   const haptics = useHaptics()
-  const [report, setReport] = React.useState<ExpeditionReport | null>(null)
   const cap = getExplorerCap(state.postLevel)
   const upgradeCost = getPostUpgradeCost(state.postLevel)
-  const canUpgrade = upgradeCost !== null && state.inspiration >= upgradeCost
-  const canTrain = state.explorers < cap && state.villagers > 0 && state.inspiration >= EXPLORER_COST
-  const availableExplorers = state.explorers - state.activeExpeditions.length
-  const canSend = availableExplorers > 0 && state.inspiration >= EXPEDITION_INSPIRATION_COST && state.food >= EXPEDITION_FOOD_COST
+  const trainBlock = explorerBlock(state)
+  const sendBlock = expeditionBlock(state)
+  const canSend = sendBlock === null
+  const free = explorersFree(state)
+  const tripSec = expeditionSeconds(state)
 
   const handleTrain = () => {
-    if (!canTrain) return
+    if (trainBlock !== null) return
     haptics.medium()
     trainExplorer()
   }
@@ -115,137 +104,87 @@ export function PostInterior() {
     sendExpedition()
   }
 
-  // Pity tracker dots
   const pityDots = Array.from({ length: EXPEDITION_PITY_THRESHOLD }, (_, i) => i < state.expeditionDryStreak)
-
-  const trainLabel = state.explorers >= cap ? 'FULL' : state.villagers <= 0 ? 'NO POP' : `${EXPLORER_COST} g`
-  const canUpgradePost = getPostUpgradeCost(state.postLevel) !== null
-  const trainRejectPhrases = state.explorers >= cap
-    ? canUpgradePost
-      ? ['Upgrade the Outpost for more room', 'The outpost is full -- time to expand']
-      : REJECT_MAXED
-    : state.villagers <= 0
-      ? REJECT_NO_POP
-      : REJECT_GOLD
+  const trainRejectPhrases = trainBlock === 'full'
+    ? (upgradeCost !== null ? ['Upgrade the Outpost for more room', 'The Outpost is full'] : REJECT_MAXED)
+    : trainBlock === 'nobody' ? REJECT_NO_POP : REJECT_GOLD
+  const sendLabel = sendBlock === 'nobody' ? 'Everyone is out' : sendBlock === 'food' ? 'Not enough food' : 'Send Expedition'
 
   return (
     <View style={styles.interiorContainer}>
-      {/* Summary bar */}
       <SummaryBar>
         <StatBox value={`${state.explorers}/${cap}`} label="Explorers" valueColor={colors.building.explorer} />
-        <StatBox
-          value={availableExplorers}
-          label={availableExplorers > 0 ? 'Available' : 'Deployed'}
-          valueColor={availableExplorers > 0 ? colors.building.explorer : colors.text.muted}
-        />
-        <StatBox value={state.villagersRescued} label="Rescued" />
+        <StatBox value={free} label={free > 0 ? 'At home' : 'All out'} valueColor={free > 0 ? colors.building.explorer : colors.text.muted} />
+        <StatBox value={state.villagersRescued} label="Brought home" />
       </SummaryBar>
 
-      {/* Capacity bar */}
-      <CapacitySection
-        label="Explorer Capacity"
-        current={state.explorers}
-        max={cap}
-        gradientColors={EXPLORER_GRADIENT}
-      />
+      <CapacitySection label="Explorer Capacity" current={state.explorers} max={cap} gradientColors={EXPLORER_GRADIENT} />
 
-      {/* Description banner */}
       <DescriptionBanner icon="compass" color={colors.building.explorer}>
         <Text variant="bodySmall" color="secondary">
-          Send explorers into the wasteland to find lost villagers.
+          Each journey costs food. Explorers come back with up to three people, or none.
         </Text>
       </DescriptionBanner>
 
-      {/* Cost chips */}
       <View style={expStyles.costChipRow}>
         <Badge icon="time" color={colors.text.muted} variant="ghost" size="sm">
-          <Text variant="caption" color="muted">{EXPEDITION_DURATION}s</Text>
-        </Badge>
-        <Badge iconElement={<InspirationIcon size={8} />} color={gold[400]} variant="ghost" size="sm">
-          <Text variant="caption" color="muted">{EXPEDITION_INSPIRATION_COST}</Text>
+          <Text variant="caption" color="muted">{minutes(tripSec)}</Text>
         </Badge>
         <Badge icon="nutrition" color={colors.text.secondary} variant="ghost" size="sm">
-          <Text variant="caption" color="muted">{EXPEDITION_FOOD_COST}</Text>
+          <Text variant="caption" color="muted">{`${EXPEDITION_FOOD_COST} food`}</Text>
         </Badge>
       </View>
 
-      {/* Pity tracker */}
-      <View style={expStyles.pityRow}>
-        <Text variant="caption" color="muted">Luck streak:</Text>
+      <View style={expStyles.pityRow} accessibilityLabel={`${state.expeditionDryStreak} of ${EXPEDITION_PITY_THRESHOLD} empty journeys; after ${EXPEDITION_PITY_THRESHOLD}, the next finds someone`}>
+        <Text variant="caption" color="muted">Empty journeys:</Text>
         <View style={expStyles.pityDots}>
           {pityDots.map((filled, i) => (
-            <View
-              key={i}
-              style={[
-                expStyles.pityDot,
-                filled ? expStyles.pityDotFilled : expStyles.pityDotEmpty,
-              ]}
-            />
+            <View key={i} style={[expStyles.pityDot, filled ? expStyles.pityDotFilled : expStyles.pityDotEmpty]} />
           ))}
         </View>
         <Text variant="caption" color="muted">
-          {state.expeditionDryStreak >= EXPEDITION_PITY_THRESHOLD ? 'GUARANTEED' : `${state.expeditionDryStreak}/${EXPEDITION_PITY_THRESHOLD}`}
+          {state.expeditionDryStreak >= EXPEDITION_PITY_THRESHOLD ? 'NEXT FINDS SOMEONE' : `${state.expeditionDryStreak}/${EXPEDITION_PITY_THRESHOLD}`}
         </Text>
       </View>
 
-      {/* Train explorer */}
       <ActionRow
         icon="person-add"
         iconColor={colors.building.explorer}
         title="Train Explorer"
-        subtitle={`${state.explorers}/${cap} trained -- consumes 1 villager`}
+        subtitle={`${state.explorers}/${cap} trained. Takes a villager; eats 2 food a meal.`}
         right={
           <Button
             size="xs"
             accentColor={colors.building.explorer}
+            iconElement={trainBlock === null || trainBlock === 'renown' ? <InspirationIcon size={7} /> : undefined}
             onPress={handleTrain}
-            disabled={!canTrain}
+            disabled={trainBlock !== null}
             rejectPhrases={trainRejectPhrases}
           >
-            {trainLabel}
+            {trainBlock === null || trainBlock === 'renown' ? formatNumber(explorerCost(state)) : TRAIN_LABEL[trainBlock]}
           </Button>
         }
       />
 
-      {/* Send expedition */}
       <Pressable
         onPress={handleSend}
         disabled={!canSend}
-        style={({ pressed }) => [
-          expStyles.sendBtnGradientWrap,
-          !canSend && { opacity: 0.4 },
-          pressed && canSend && expStyles.sendBtnPressed,
-        ]}
+        style={({ pressed }) => [expStyles.sendBtnGradientWrap, !canSend && { opacity: 0.4 }, pressed && canSend && expStyles.sendBtnPressed]}
         accessibilityRole="button"
-        accessibilityLabel={`Send expedition for ${EXPEDITION_INSPIRATION_COST} renown and ${EXPEDITION_FOOD_COST} food`}
+        accessibilityState={{ disabled: !canSend }}
+        accessibilityLabel={canSend ? `Send an expedition for ${EXPEDITION_FOOD_COST} food` : sendLabel}
       >
         <LinearGradient
-          colors={canSend
-            ? ['#3b82f6', '#2563eb'] as [string, string]
-            : [colors.bg.surface3, colors.bg.surface2] as [string, string]
-          }
+          colors={canSend ? ['#3b82f6', '#2563eb'] as [string, string] : [colors.bg.surface3, colors.bg.surface2] as [string, string]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={expStyles.sendBtnGradient}
         >
-          <Ionicons
-            name="compass"
-            size={16}
-            color={canSend ? '#ffffff' : colors.text.muted}
-          />
-          <Text
-            variant="button"
-            style={{ color: canSend ? '#ffffff' : colors.text.muted }}
-          >
-            Send Expedition
+          <Ionicons name="compass" size={16} color={canSend ? '#ffffff' : colors.text.muted} />
+          <Text variant="button" style={{ color: canSend ? '#ffffff' : colors.text.muted }}>
+            {sendLabel}
           </Text>
           <View style={expStyles.sendCostPills}>
-            <View style={expStyles.sendCostPill}>
-              <InspirationIcon size={8} color={canSend ? 'rgba(255,255,255,0.8)' : colors.text.muted} />
-              <Text variant="caption" style={{ color: canSend ? 'rgba(255,255,255,0.9)' : colors.text.muted }}>
-                {EXPEDITION_INSPIRATION_COST}
-              </Text>
-            </View>
             <View style={expStyles.sendCostPill}>
               <Ionicons name="nutrition" size={10} color={canSend ? 'rgba(255,255,255,0.8)' : colors.text.muted} />
               <Text variant="caption" style={{ color: canSend ? 'rgba(255,255,255,0.9)' : colors.text.muted }}>
@@ -256,25 +195,23 @@ export function PostInterior() {
         </LinearGradient>
       </Pressable>
 
-      {/* Active expeditions */}
       {state.activeExpeditions.length > 0 && (
         <>
-          <SectionLabel>ACTIVE EXPEDITIONS</SectionLabel>
+          <SectionLabel>OUT IN THE VALLEY</SectionLabel>
           <View style={styles.tiersSection}>
             {state.activeExpeditions.map((exp) => (
-              <ExpeditionRow key={exp.id} expedition={exp} onClaimed={setReport} />
+              <ExpeditionRow key={exp.id} expedition={exp} />
             ))}
           </View>
         </>
       )}
 
-      {/* Upgrade button */}
       {upgradeCost !== null && (
         <Button
           size="sm"
           icon="arrow-up-circle"
           onPress={buildOrUpgradePost}
-          disabled={!canUpgrade}
+          disabled={postBlock(state) !== null}
           accentColor={colors.building.explorer}
           rejectPhrases={REJECT_GOLD}
           fullWidth
@@ -284,9 +221,9 @@ export function PostInterior() {
       )}
 
       <ExpeditionReportModal
-        visible={report !== null}
-        report={report}
-        onDismiss={() => setReport(null)}
+        visible={state.expeditionReport !== null}
+        report={state.expeditionReport}
+        onDismiss={dismissExpeditionReport}
       />
     </View>
   )

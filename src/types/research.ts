@@ -9,7 +9,7 @@ import type { Ionicons } from '@expo/vector-icons'
 
 export const LIBRARIUM_COST = 200
 
-export type ResearchCategory = 'dragon' | 'army' | 'stores' | 'wall'
+export type ResearchCategory = 'dragon' | 'army' | 'stores' | 'wall' | 'wilds'
 
 export const RESEARCH_CATEGORIES: {
   id: ResearchCategory
@@ -21,6 +21,7 @@ export const RESEARCH_CATEGORIES: {
   { id: 'army', name: 'The Army', icon: 'shield', description: 'Soldiers, swords and the volley' },
   { id: 'stores', name: 'The Stores', icon: 'leaf', description: 'Food eaten and food brought in' },
   { id: 'wall', name: 'The Wall', icon: 'construct', description: 'Repairs, time away and the Breach' },
+  { id: 'wilds', name: 'The Wilds', icon: 'compass', description: 'Expeditions beyond the walls' },
 ]
 
 // =============================================================================
@@ -48,9 +49,13 @@ export type ResearchEffect =
   | { type: 'offlineMultiplier'; value: number }
   /** A Breach takes this share fewer people */
   | { type: 'breachLossReduction'; value: number }
+  /** Expeditions take this much less time */
+  | { type: 'expeditionSpeedBonus'; value: number }
+  /** Taken off an expedition's chance to find nobody (0.35) */
+  | { type: 'expeditionFindBonus'; value: number }
 
-/** A building a study can need: the Garrison, the Forge, the Ranger's Lodge or the Keep */
-export type ResearchBuilding = 'garrison' | 'forge' | 'lodge' | 'keep'
+/** A building a study can need: the Garrison, the Forge, the Ranger's Lodge, the Keep or the Outpost */
+export type ResearchBuilding = 'garrison' | 'forge' | 'lodge' | 'keep' | 'outpost'
 
 export type ResearchPrereq =
   | { type: 'research'; id: string }
@@ -157,6 +162,20 @@ export const RESEARCH_NODES: ResearchNodeDef[] = [
     prereqs: [after('night_ledgers')],
     effects: [{ type: 'breachLossReduction', value: 1 / 3 }],
   },
+
+  // -- THE WILDS (chapter 7) --
+  {
+    id: 'cartography', name: 'Cartography', category: 'wilds', icon: 'map', cost: 100,
+    description: "Mirael's maps of the valley. Expeditions take 25% less time.",
+    prereqs: [needs('outpost')],
+    effects: [{ type: 'expeditionSpeedBonus', value: 0.25 }],
+  },
+  {
+    id: 'keen_scouts', name: 'Keen Scouts', category: 'wilds', icon: 'search', cost: 250,
+    description: 'Scouts who know where people hide. Fewer expeditions come back empty (35% down to 15%).',
+    prereqs: [after('cartography')],
+    effects: [{ type: 'expeditionFindBonus', value: 0.2 }],
+  },
 ]
 
 // =============================================================================
@@ -185,6 +204,8 @@ const NO_BONUSES: ResearchBonuses = {
   repairBonus: 0,
   offlineMultiplier: 0,
   breachLossReduction: 0,
+  expeditionSpeedBonus: 0,
+  expeditionFindBonus: 0,
 }
 
 /** Sum the effects of the finished studies. Unknown ids (studies of the old tree) are ignored. */

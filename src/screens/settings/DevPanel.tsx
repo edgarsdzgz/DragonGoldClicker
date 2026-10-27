@@ -6,7 +6,7 @@ import { useGame } from '../../context/GameContext'
 import { useDevSettings, GAME_SPEEDS } from '../../context/DevSettingsContext'
 import type { GameSpeed, Pacing } from '../../context/DevSettingsContext'
 import { resolveBreach } from '../../types/breach'
-import { FOOD_CHECK_INTERVAL, MAX_CITY_HP, HORDE_LEVEL_KILLS, MILESTONES, roundInsp, isSystemOn } from '../../types/game'
+import { FOOD_CHECK_INTERVAL, MAX_CITY_HP, HORDE_LEVEL_KILLS, roundInsp, isSystemOn } from '../../types/game'
 import { startFoodEvent } from '../../types/foodEvents'
 import type { GameState } from '../../types/game'
 import { spacing } from '../../theme'
@@ -34,7 +34,6 @@ export function DevPanel() {
   const dev = useDevSettings()
 
   const grant = (fn: (s: GameState) => Partial<GameState>) => devApply((s) => ({ ...s, ...fn(s) }))
-  const nextMilestone = MILESTONES.find((m) => !state.milestonesOffered.includes(m.threshold))
 
   return (
     <View style={styles.root}>
@@ -78,14 +77,6 @@ export function DevPanel() {
         <SectionLabel spacing={2}>FORCE EVENTS</SectionLabel>
         <View style={styles.buttonGrid}>
           <Button size="sm" variant="secondary" onPress={devForceWanderer}>Wanderer arrives</Button>
-          <Button
-            size="sm"
-            variant="secondary"
-            disabled={!nextMilestone}
-            onPress={() => nextMilestone && grant((s) => ({ totalInspirationEarned: Math.max(s.totalInspirationEarned, nextMilestone.threshold) }))}
-          >
-            {nextMilestone ? `Milestone (${nextMilestone.threshold})` : 'No milestones left'}
-          </Button>
           <Button size="sm" variant="secondary" disabled={!isSystemOn(state, 'hunger')} onPress={() => grant(() => ({ foodTimer: FOOD_CHECK_INTERVAL - 1 }))}>Food check now</Button>
           <Button size="sm" variant="secondary" onPress={() => grant(() => ({ food: 0 }))}>Empty food stores</Button>
           <Button size="sm" variant="secondary" disabled={!isSystemOn(state, 'siege')} onPress={() => grant((s) => ({ cityHp: Math.max(1, s.cityHp - WALL_HIT) }))}>{`Damage wall ${WALL_HIT}`}</Button>

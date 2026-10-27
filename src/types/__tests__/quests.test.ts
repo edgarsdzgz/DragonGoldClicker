@@ -12,7 +12,7 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 const AFTER_RENOWN = ['prologue', 'elder_approaches', 'first_renown']
 
 describe('the quest line', () => {
-  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls, Sharpen Your Claws, Open the Gates, Raise the Garrison, First Soldiers, Light the Forge, Arm the Ranks, Restore the Keep, Raise the Lodge, First Trappers, Raise the Librarium, First Study', () => {
+  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls, Sharpen Your Claws, Open the Gates, Raise the Garrison, First Soldiers, Light the Forge, Arm the Ranks, Restore the Keep, Raise the Lodge, First Trappers, Raise the Librarium, First Study, Raise the Outpost, First Expedition', () => {
     expect(QUESTS.map((q) => [q.id, q.title, q.goals.map((g) => g.label)])).toEqual([
       ['defend_the_wall', 'Defend the Wall', ['Defeat 4 kobolds']],
       ['raise_the_guard', 'Raise the Guard', ['Rally 2 fighters']],
@@ -30,6 +30,8 @@ describe('the quest line', () => {
       ['first_trappers', 'First Trappers', ['Promote 2 gatherers to trappers']],
       ['raise_the_librarium', 'Raise the Librarium', ['Build the Librarium']],
       ['first_study', 'First Study', ['Finish a study at the Librarium']],
+      ['raise_the_outpost', 'Raise the Outpost', ['Build the Outpost']],
+      ['first_expedition', 'First Expedition', ['Bring an expedition home']],
     ])
   })
 

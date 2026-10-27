@@ -20,12 +20,13 @@ const studied = (...ids: string[]) => make({ completedResearch: ids })
 const NONE = make({})
 
 describe("the Librarium's tree", () => {
-  it('four branches of three or four studies, 50 to 400 renown', () => {
+  it('five branches of two to four studies, 50 to 400 renown', () => {
     expect(RESEARCH_CATEGORIES.map((c) => [c.id, getNodesByCategory(c.id).map((n) => [n.id, n.cost])])).toEqual([
       ['dragon', [['dragon_anatomy', 60], ['weak_points', 150], ['wyrms_fury', 400]]],
       ['army', [['drill_tactics', 60], ['tempered_steel', 150], ['battle_drill', 400]]],
       ['stores', [['rationing', 50], ['lean_rations', 80], ['snares_and_nets', 150], ['feast_hall', 300]]],
       ['wall', [['mortar_craft', 60], ['night_ledgers', 150], ['evacuation_drills', 400]]],
+      ['wilds', [['cartography', 100], ['keen_scouts', 250]]],
     ])
   })
 

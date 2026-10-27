@@ -27,6 +27,7 @@ import { CoachMark } from '../components/CoachMark'
 import { rankBlock } from '../types/army'
 import { foragerBlock } from '../types/lodge'
 import { canStudyAny } from '../types/library'
+import { outpostHasAction } from '../types/outpost'
 import { JournalSheet } from '../components/JournalSheet'
 import type { SceneTab } from '../data/story/lines'
 import type { UnlockToastHandle } from '../components/UnlockToast'
@@ -39,14 +40,9 @@ import {
   LODGE_LEVELS,
   FORAGER_TIERS,
   POST_LEVELS,
-  EXPLORER_COST,
-  EXPEDITION_INSPIRATION_COST,
-  EXPEDITION_FOOD_COST,
   isBuildingRevealed,
   getBarracksUpgradeCost,
   getLodgeUpgradeCost,
-  getExplorerCap,
-  getPostUpgradeCost,
   getOfflineUpgradeCost,
   LIBRARIUM_COST,
 } from '../types/game'
@@ -121,15 +117,8 @@ function useBuildTabBadge(): boolean {
       if (FORAGER_TIERS.some((tier) => foragerBlock(state, tier.id) === null)) return true
     }
 
-    // Outpost: train explorer, send expedition, or upgrade
-    if (state.postLevel > 0) {
-      const eCap = getExplorerCap(state.postLevel)
-      if (state.explorers < eCap && state.villagers > 0 && g >= EXPLORER_COST) return true
-      const available = state.explorers - state.activeExpeditions.length
-      if (available > 0 && g >= EXPEDITION_INSPIRATION_COST && state.food >= EXPEDITION_FOOD_COST) return true
-      const upgCost = getPostUpgradeCost(state.postLevel)
-      if (upgCost !== null && g >= upgCost) return true
-    }
+    // Outpost: upgrade, train an explorer, send one out, or bring one home
+    if (outpostHasAction(state, Date.now())) return true
 
     // Keep: offline upgrade
     if (state.draconiaHallBuilt) {

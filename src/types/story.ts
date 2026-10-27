@@ -1,5 +1,4 @@
 import type { GameState } from './state'
-import { shouldRevealExplorerPost } from './state'
 // Type-only: systems.ts imports STORY_BEATS from this file at runtime
 import type { SystemId, BuildingRevealId } from './systems'
 
@@ -22,8 +21,6 @@ export type BeatId =
   | 'the_smith'
   | 'the_keep_stands'
   | 'the_lodge'
-  | 'word_spreads'
-  | 'lean_times'
   | 'beyond_the_walls'
   | 'the_keep'
   | 'the_scholar'
@@ -34,7 +31,6 @@ export type ScriptedEventId =
   | 'breachHit'
   | 'firstMeal'
   | 'loneWanderer'
-  | 'milestoneFollow'
   | 'firstExpedition'
   | 'offlineFraming'
 
@@ -206,26 +202,15 @@ export const STORY_BEATS: BeatDef[] = [
     unlocks: [],
   },
   {
-    id: 'word_spreads', chapter: 6, dwellSec: 0, side: true,
-    trigger: (s) => s.totalInspirationEarned >= 25,
-    unlocks: ['milestones'],
-    scripted: 'milestoneFollow',
-  },
-  {
-    id: 'lean_times', chapter: 7, dwellSec: 0, side: true,
-    // Fallback: if the stores never ran dry, it fires once the Keep stands
-    trigger: (s) => (seen(s, 'empty_stores') && s.food <= 0) || seen(s, 'the_keep'),
-    unlocks: ['starvation'],
-    altScene: (s) => s.food > 0,
-    objective: { label: 'Get food above 0', current: (s) => (s.food > 0 ? 1 : 0), target: 1 },
-  },
-  {
-    id: 'beyond_the_walls', chapter: 8, dwellSec: 300, side: true,
-    trigger: (s) => shouldRevealExplorerPost(s),
+    // Chapter 7 (approved 2026-10-26): Mirael, three minutes after Rodain's "They Come Bigger".
+    // The horde grows, so the city must too. Its goals are the Raise the Outpost and First
+    // Expedition quests (types/outpost.ts). Word Spreads and Lean Times were retired with it.
+    id: 'beyond_the_walls', chapter: 7, dwellSec: 180,
+    trigger: (s) => seen(s, 'the_horde_grows'),
     unlocks: ['expeditions'],
     reveals: ['outpost'],
     scripted: 'firstExpedition',
-    objective: { label: 'Send an expedition', current: (s) => s.nextExpeditionId - 1, target: 1 },
+    spotlight: 'draconiaTab',
   },
 ]
 
@@ -234,7 +219,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'the_horde_grows'
+export const STORY_PAUSED_AFTER: BeatId = 'beyond_the_walls'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

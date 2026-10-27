@@ -7,9 +7,9 @@ import type { ForagerCounts } from './foragers'
 import { getTotalForagers } from './foragers'
 import { getTotalSoldiers } from './soldiers'
 import type { ActiveExpedition } from './explorers'
+import type { ExpeditionReport } from './outpost'
 import { STARTING_FOOD, STARTING_VILLAGERS } from './food'
 import { STARTING_CITY_HP } from './siege'
-import type { StarvationResult } from './food'
 import type { WandererEncounter } from './wanderers'
 import { STARTING_TAP_DAMAGE, FIRST_MONSTER_HP } from './monsters'
 
@@ -60,7 +60,7 @@ export interface GameState {
   food: number
   villagers: number
   villagersLost: number
-  /** Food system activates when triggered by milestone (barracks built) */
+  /** Food system has been turned on (the food chapter; kept for old saves and the story backfill) */
   foodSystemActive: boolean
   /** Lifetime renown earned (identifier predates the rename to renown) */
   totalInspirationEarned: number
@@ -119,6 +119,8 @@ export interface GameState {
   villagersRescued: number
   /** Consecutive expeditions that found 0 villagers (resets on find) */
   expeditionDryStreak: number
+  /** What the last expedition brought home, until the player has read it (types/outpost.ts) */
+  expeditionReport: ExpeditionReport | null
   /** Whether the explorer intro dialog has been shown */
   explorerIntroShown: boolean
   /** Lifetime wanderers welcomed into Draconia */
@@ -145,8 +147,6 @@ export interface GameState {
   librariumBuilt: boolean
   /** IDs of completed research nodes */
   completedResearch: string[]
-  /** Milestone thresholds already offered (each fires once) */
-  milestonesOffered: number[]
   /** Story beat ids already seen, in the order they fired. Systems are derived from this. */
   beatsSeen: string[]
   /** Quests completed (types/quests.ts), in the order they were done */
@@ -161,8 +161,6 @@ export interface GameState {
   lastBeatAtPlaySec: number
   /** Wanderer waiting at the gate. Set by the wander tick from the same state it decided on. */
   pendingWanderer: WandererEncounter | null
-  /** Who starved in the last food check, until the player dismisses the report. Not saved. */
-  pendingStarvationReport: StarvationResult | null
   /** Food warning level waiting to be shown (0 = none). Not saved. */
   pendingFoodWarning: 0 | 3 | 1
   /** Warning level of the last food check, so a warning only pops up when it escalates. Not saved. */
@@ -251,6 +249,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   nextExpeditionId: 1,
   villagersRescued: 0,
   expeditionDryStreak: 0,
+  expeditionReport: null,
   explorerIntroShown: false,
   wanderersWelcomed: 0,
   nextWandererAt: 0,
@@ -264,7 +263,6 @@ export const DEFAULT_GAME_STATE: GameState = {
   hpUnlocked: false,
   librariumBuilt: false,
   completedResearch: [],
-  milestonesOffered: [],
   beatsSeen: [],
   questsDone: [],
   tutorialStepsDone: [],
@@ -272,7 +270,6 @@ export const DEFAULT_GAME_STATE: GameState = {
   playSeconds: 0,
   lastBeatAtPlaySec: 0,
   pendingWanderer: null,
-  pendingStarvationReport: null,
   pendingFoodWarning: 0,
   lastFoodWarning: 0,
   tapDamage: STARTING_TAP_DAMAGE,
@@ -312,19 +309,6 @@ export function getTotalAssigned(
   repairers: number = 0,
 ): number {
   return getTotalSoldiers(soldiers) + getTotalForagers(foragers) + explorers + fighters + repairers
-}
-
-/**
- * Whether the Explorer's Post should be revealed in the shop.
- * Two paths:
- *  - Forager path: Lodge Lv1 + 2 foragers trained
- *  - Soldier path: Barracks Lv2 + 4 or fewer idle villagers
- */
-export function shouldRevealExplorerPost(s: GameState): boolean {
-  if (s.postLevel > 0) return true
-  if (s.lodgeLevel >= 1 && getTotalForagers(s.foragers) >= 2) return true
-  if (s.barracksLevel >= 2 && s.villagers <= 4) return true
-  return false
 }
 
 // =============================================================================

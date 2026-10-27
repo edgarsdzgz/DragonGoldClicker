@@ -25,7 +25,6 @@ describe('isSystemOn', () => {
     const s = withSeen('empty_stores')
     expect(isSystemOn(s, 'hunger')).toBe(true)
     expect(isSystemOn(s, 'forageTab')).toBe(true)
-    expect(isSystemOn(s, 'starvation')).toBe(false)
   })
 
   it('tolerates a state with no beatsSeen (old checkpoint)', () => {

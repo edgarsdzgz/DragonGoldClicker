@@ -17,8 +17,6 @@ export type SystemId =
   | 'forageTab'
   | 'wanderers'
   | 'draconiaTab'
-  | 'milestones'
-  | 'starvation'
   | 'expeditions'
   | 'offline'
   | 'reassignment'

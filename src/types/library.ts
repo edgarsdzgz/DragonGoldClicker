@@ -14,6 +14,7 @@ export function hasBuilding(s: GameState, b: ResearchBuilding): boolean {
     case 'forge': return s.armoryBuilt
     case 'lodge': return s.lodgeLevel > 0
     case 'keep': return s.draconiaHallBuilt
+    case 'outpost': return s.postLevel > 0
   }
 }
 

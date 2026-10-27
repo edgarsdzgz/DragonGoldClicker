@@ -1,6 +1,8 @@
 // =============================================================================
-// EXPLORER'S POST
+// THE EXPLORER'S OUTPOST (chapter 7, Beyond the Walls; numbers approved 2026-10-26)
 // =============================================================================
+// Explorers are trained from villagers and sent on expeditions that bring people home. The rules
+// (costs, blocks, sending and claiming) are pure updaters in types/outpost.ts.
 
 export interface PostLevelDef {
   level: number
@@ -9,24 +11,21 @@ export interface PostLevelDef {
 }
 
 export const POST_LEVELS: PostLevelDef[] = [
-  { level: 1, cost: 10, explorerCap: 1 },
-  { level: 2, cost: 30, explorerCap: 2 },
-  { level: 3, cost: 60, explorerCap: 3 },
+  { level: 1, cost: 120, explorerCap: 1 },
+  { level: 2, cost: 250, explorerCap: 2 },
+  { level: 3, cost: 500, explorerCap: 3 },
 ]
 
 export const MAX_POST_LEVEL = POST_LEVELS.length
 
-export const EXPLORER_COST = 1.5
+/** Renown to train the first explorer from a villager; each one after costs more (^1.15) */
+export const EXPLORER_BASE_COST = 10
 
-/** Inspiration cost to send an explorer on an expedition */
-/** Renown cost of an expedition (identifier predates the rename to renown) */
-export const EXPEDITION_INSPIRATION_COST = 2.5
+/** Food the stores pay to send an expedition (no renown) */
+export const EXPEDITION_FOOD_COST = 40
 
-/** Food cost to send an explorer on an expedition */
-export const EXPEDITION_FOOD_COST = 30
-
-/** Expedition duration in seconds */
-export const EXPEDITION_DURATION = 120
+/** Expedition duration in seconds, before Cartography */
+export const EXPEDITION_DURATION = 300
 
 /** Consecutive misses before a guaranteed find */
 export const EXPEDITION_PITY_THRESHOLD = 3
@@ -38,13 +37,12 @@ export interface ActiveExpedition {
 }
 
 /**
- * Determine how many villagers an expedition found.
+ * How many people an expedition found, for a roll in [0, 1).
  * Weighted: 0 (35%), 1 (35%), 2 (20%), 3 (10%)
  * If pity is true, 0 is removed: 1 (55%), 2 (30%), 3 (15%)
- * findBonus shifts weight from 0 toward higher results.
+ * findBonus (Keen Scouts) shifts weight from 0 toward higher results.
  */
-export function rollExpeditionReward(pity: boolean, findBonus = 0): number {
-  const r = Math.random()
+export function rollExpeditionReward(pity: boolean, findBonus = 0, r: number = Math.random()): number {
   if (pity) {
     if (r < 0.55) return 1
     if (r < 0.85) return 2

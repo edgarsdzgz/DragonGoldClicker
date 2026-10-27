@@ -9,8 +9,6 @@ interface FoodWarningModalProps {
   visible: boolean
   /** 3 = warning (3 events left), 1 = urgent (1 event left) */
   level: 3 | 1
-  /** Starvation is on (deaths are possible); until then the warning only speaks of hungry fighters */
-  starvationOn: boolean
   onGoToForage: () => void
   onDismiss: () => void
 }
@@ -18,7 +16,6 @@ interface FoodWarningModalProps {
 export function FoodWarningModal({
   visible,
   level,
-  starvationOn,
   onGoToForage,
   onDismiss,
 }: FoodWarningModalProps) {
@@ -69,12 +66,8 @@ export function FoodWarningModal({
             </Text>
             <Text variant="bodySmall" color="secondary" center>
               {urgent
-                ? (starvationOn
-                  ? 'Your people will starve after the next meal. Villagers and workers will begin to die!'
-                  : 'After the next meal the stores will be empty. Your fighters will go hungry and stand down until they are fed.')
-                : (starvationOn
-                  ? 'Your food stores are dwindling. If nothing changes, your people will go hungry soon.'
-                  : 'Your food stores are dwindling. If nothing changes, your fighters will go hungry soon.')}
+                ? 'After the next meal the stores will be empty. Your fighters will go hungry and stand down until they are fed.'
+                : 'Your food stores are dwindling. If nothing changes, your fighters will go hungry soon.'}
             </Text>
           </View>
 

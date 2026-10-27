@@ -10,6 +10,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons'
 import { Text } from './Text'
+import type { ExpeditionReport } from '../types/outpost'
 import { Badge } from './Badge'
 import { colors, spacing, radius, elevation, dark } from '../theme'
 import { useHaptics } from '../hooks'
@@ -84,10 +85,7 @@ function getTitle(villagersFound: number): string {
 // COMPONENT
 // ---------------------------------------------------------------------------
 
-export interface ExpeditionReport {
-  expeditionId: number
-  villagersFound: number
-}
+export type { ExpeditionReport } from '../types/outpost'
 
 interface ExpeditionReportModalProps {
   visible: boolean

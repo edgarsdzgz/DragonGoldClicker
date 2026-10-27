@@ -48,12 +48,6 @@ export function granaryRoom(food: number, amount: number): number {
   return Math.max(0, Math.min(amount, GRANARY_CAP - food))
 }
 
-/** Chance (0-1) each idle villager dies per food check when food is 0 */
-export const STARVATION_DEATH_CHANCE = 0.1
-
-/** Chance (0-1) each professional (soldier/forager/explorer) dies per food check when food is 0 */
-export const PROFESSIONAL_STARVATION_CHANCE = 0.03
-
 /**
  * Total food consumed per food check for current population.
  */
@@ -97,12 +91,4 @@ export function getFoodEventsRemaining(
   return Math.floor(food / consumption)
 }
 
-/** Starvation result describing who died in a food check */
-export interface StarvationResult {
-  villagersLost: number
-  soldiersLost: SoldierCounts
-  foragersLost: ForagerCounts
-  explorersLost: number
-  fightersLost: number
-  repairersLost: number
-}
+

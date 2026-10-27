@@ -66,7 +66,7 @@ monster the horde sends now, against that monster's 5s strike on the wall.
 ### Explorer Units
 | Unit | Source | Effect |
 |------|--------|--------|
-| Explorer | Train (Explorer's Outpost) | Can go on expeditions, gathers food faster but stashes for self |
+| Explorer | Trained from a villager at the Outpost (10 renown, ^1.15) | Goes on expeditions (40 food, 5 min) that bring home 0-3 people; eats 2 food a meal |
 
 ---
 
@@ -89,16 +89,16 @@ monster the horde sends now, against that monster's 5s strike on the wall.
 
 ---
 
-## Milestone Villager Recruitment
+## People (where the city's villagers come from)
 
-| Total Inspiration | Villagers Offered |
-|------------------|-------------------|
-| 500 | 3 |
-| 1,000 | 3 |
-| 2,500 | 2 |
-| 3,500 | 7 |
-
-Player can accept or reject each group.
+- **Wanderers** (chapter 4): one encounter every 4-7 minutes of play (twice as often while
+  short-handed), fed from the stores on arrival.
+- **Refugees at the Gate** (a food event): take them in, fed on arrival, or turn them away.
+- **Expeditions** (chapter 7, `types/outpost.ts`): 40 food and 5 minutes each; a journey finds
+  0-3 people (35/35/20/10%), after 3 empty journeys the next finds someone, and the first ever
+  always does. Cartography and Keen Scouts (the Librarium) make them shorter and luckier.
+- Milestone newcomers (Word Spreads) and starvation deaths (Lean Times) were retired in chapter 7.
+  An unfed army stands down; nobody starves.
 
 ---
 
@@ -119,7 +119,7 @@ Buildings are organized in wards, top to bottom:
 - **Ranger's Lodge** (30/75/150/300/600; forager cap 14-30, 10 without it) -- Promote gatherers (8 food a meal) to trappers (20, Lv1, from 15 renown) and trappers to rangers (40, Lv3, from 40)
 
 ### OUTER WARD
-- **Explorer's Outpost** -- Send explorers on expeditions
+- **The Outpost** (120/250/500; 1/2/3 explorers) -- Send explorers to bring people home (chapter 7)
 
 ### CITY EDGE
 - **Warfront Tower East** -- Station up to 6 fighters, boost insp/sec + defense, train fighters

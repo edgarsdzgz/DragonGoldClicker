@@ -5,16 +5,13 @@ import { getScene, OFFLINE_FRAMING } from '../data/story/lines'
 import type { SceneTab } from '../data/story/lines'
 import type { BeatId } from '../types/story'
 import { markScripted, hasRun } from '../types/scripted'
-import { isSystemOn } from '../types/systems'
 import { OfflineModal } from './OfflineModal'
 import { NpcDialog } from './NpcDialog'
 import { FoodWarningModal } from './FoodWarningModal'
 import { ConfirmModal } from './ConfirmModal'
 import { REFUGEE_FOOD_EACH } from '../types/foodEvents'
 import { useActiveEvent } from '../hooks/useActiveEvent'
-import { StarvationModal } from './StarvationModal'
 import { WandererModal } from './WandererModal'
-import { MilestoneModal } from './MilestoneModal'
 import { BreachEvent } from './BreachEvent'
 import { wallAwayLine } from '../types/timeAway'
 
@@ -28,15 +25,13 @@ interface EventHostProps {
 /**
  * The only place pop-ups are shown, mounted once above the tabs so events appear on
  * every screen. One at a time, highest priority first:
- * the Breach > offline > story scene > starvation > food warning > milestone > wanderer.
+ * the Breach > offline > story scene > food warning > refugees > wanderer.
  */
 export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
   const {
     state, applyScripted, dismissBreach,
     pendingOfflineEarnings, dismissOfflineEarnings,
-    pendingStarvationReport, dismissStarvationReport,
     pendingFoodWarning, dismissFoodWarning, answerRefugees,
-    pendingMilestone, acceptMilestone, rejectMilestone,
     pendingWanderer, acceptWanderer, rejectWanderer,
   } = useGame()
   const { scenes, dismissScene } = useStory()
@@ -98,7 +93,6 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
         <FoodWarningModal
           visible={activeModal === 'foodWarning'}
           level={pendingFoodWarning as 3 | 1}
-          starvationOn={isSystemOn(state, 'starvation')}
           onGoToForage={handleFoodWarningGoForage}
           onDismiss={dismissFoodWarning}
         />
@@ -112,27 +106,12 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
           onAnswer={answerRefugees}
         />
       )}
-      {pendingStarvationReport !== null && (
-        <StarvationModal
-          visible={activeModal === 'starvation'}
-          report={pendingStarvationReport}
-          onDismiss={dismissStarvationReport}
-        />
-      )}
       {pendingWanderer !== null && (
         <WandererModal
           visible={activeModal === 'wanderer'}
           encounter={pendingWanderer}
           onAccept={acceptWanderer}
           onReject={rejectWanderer}
-        />
-      )}
-      {pendingMilestone !== null && (
-        <MilestoneModal
-          visible={activeModal === 'milestone'}
-          milestone={pendingMilestone}
-          onAccept={acceptMilestone}
-          onReject={rejectMilestone}
         />
       )}
       {state.pendingBreach !== null && (

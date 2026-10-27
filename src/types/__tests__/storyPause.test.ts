@@ -10,8 +10,8 @@ import { getCurrentObjective } from '../objectives'
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
 describe('story pause', () => {
-  it('pauses everything after the_horde_grows (the Librarium, chapter 6) and nothing up to it', () => {
-    expect(STORY_PAUSED_AFTER).toBe('the_horde_grows')
+  it('pauses everything after beyond_the_walls (the Outpost, chapter 7) and nothing up to it', () => {
+    expect(STORY_PAUSED_AFTER).toBe('beyond_the_walls')
     expect(isBeatPaused('prologue')).toBe(false)
     expect(isBeatPaused('call_to_arms')).toBe(false)
     expect(isBeatPaused('empty_stores')).toBe(false)
@@ -27,7 +27,9 @@ describe('story pause', () => {
     expect(isBeatPaused('the_lodge')).toBe(false)
     expect(isBeatPaused('the_scholar')).toBe(false)
     expect(isBeatPaused('the_horde_grows')).toBe(false)
-    for (const b of STORY_BEATS.slice(17)) expect(isBeatPaused(b.id)).toBe(true)
+    expect(isBeatPaused('beyond_the_walls')).toBe(false)
+    // Every beat in the story is now live: the old side beats were retired (chapter 7)
+    expect(STORY_BEATS[STORY_BEATS.length - 1].id).toBe('beyond_the_walls')
   })
 
   it('the director never offers a paused beat, main or side', () => {
@@ -48,7 +50,7 @@ describe('story pause', () => {
     const out = backfillStory(make({
       saveMigrationVersion: 1, fighters: 5, fightersRallied: 5, repairers: 3, repairersDirected: 3,
       barracksLevel: 2, armoryBuilt: true, draconiaHallBuilt: true, totalInspirationEarned: 500,
-      milestonesOffered: [25], foodSystemActive: true,
+      foodSystemActive: true,
     }))
     expect(out.beatsSeen).toEqual(expect.arrayContaining(['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'empty_stores', 'the_keep']))
     expect(findNextBeat({ ...out, playSeconds: 99999 }, 'live')).toBeNull()

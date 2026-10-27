@@ -42,7 +42,7 @@ export function useStorage() {
   const save = useCallback(async (state: GameState) => {
     try {
       // Transient pop-up state is not worth restoring after a restart
-      const { pendingStarvationReport, pendingFoodWarning, lastFoodWarning, ...persisted } = state
+      const { pendingFoodWarning, lastFoodWarning, ...persisted } = state
       const toSave = { ...persisted, lastSavedAt: Date.now() }
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
     } catch {
@@ -103,7 +103,6 @@ export function useStorage() {
         if (typeof merged.foodSystemActive !== 'boolean') merged.foodSystemActive = false
         if (typeof merged.librariumBuilt !== 'boolean') merged.librariumBuilt = false
         if (!Array.isArray(merged.completedResearch)) merged.completedResearch = []
-        if (!Array.isArray(merged.milestonesOffered)) merged.milestonesOffered = []
 
         // Number shrink migration: divide inspiration-economy values by 20
         if (!parsed.saveMigrationVersion || (parsed.saveMigrationVersion as number) < 1) {
@@ -112,12 +111,6 @@ export function useStorage() {
             merged.inspiration = roundInsp((merged.inspiration as number) / 20)
             merged.totalInspirationEarned = roundInsp((merged.totalInspirationEarned as number) / 20)
             merged.totalInspirationSpent = roundInsp((merged.totalInspirationSpent as number) / 20)
-          }
-          const MILESTONE_REMAP: Record<number, number> = { 500: 25, 1000: 50, 2500: 125, 3500: 175 }
-          if (Array.isArray(merged.milestonesOffered)) {
-            merged.milestonesOffered = (merged.milestonesOffered as number[]).map(
-              (t: number) => MILESTONE_REMAP[t] ?? roundInsp(t / 20)
-            )
           }
           merged.saveMigrationVersion = 1
         }

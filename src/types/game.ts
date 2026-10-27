@@ -57,8 +57,7 @@ export type {
 export {
   POST_LEVELS,
   MAX_POST_LEVEL,
-  EXPLORER_COST,
-  EXPEDITION_INSPIRATION_COST,
+  EXPLORER_BASE_COST,
   EXPEDITION_FOOD_COST,
   EXPEDITION_DURATION,
   EXPEDITION_PITY_THRESHOLD,
@@ -84,7 +83,6 @@ export {
   stepFighterVolley,
 } from './fighters'
 
-export type { StarvationResult } from './food'
 export {
   STARTING_FOOD,
   STARTING_VILLAGERS,
@@ -94,8 +92,6 @@ export {
   GRANARY_CAP,
   granaryRoom,
   FOOD_CONSUMPTION,
-  STARVATION_DEATH_CHANCE,
-  PROFESSIONAL_STARVATION_CHANCE,
   getFoodConsumption,
   getFoodEventsRemaining,
 } from './food'
@@ -112,7 +108,6 @@ export {
   DRACONIA_HALL_COST,
   DEFAULT_GAME_STATE,
   getTotalAssigned,
-  shouldRevealExplorerPost,
   formatNumber,
   formatCount,
   formatAmount,
@@ -187,11 +182,6 @@ export {
 } from './wall'
 export type { WallWarning } from './wall'
 
-export type { MilestoneDef } from './milestones'
-export {
-  MILESTONES,
-  getNextMilestone,
-} from './milestones'
 
 export type { SystemId, BuildingRevealId } from './systems'
 export { HP_FLOOR, isSystemOn, isBuildingRevealed } from './systems'

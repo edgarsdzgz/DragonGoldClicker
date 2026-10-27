@@ -2,6 +2,19 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Chapter 7: Beyond the Walls (2026-10-26)
+- Mirael's "Beyond the Walls" is now the chapter's main beat, three minutes after Rodain's "They
+  Come Bigger", in new words: the horde grows, so the city must too. Quests Raise the Outpost
+  and First Expedition. The story pauses after it; every beat in the story is now live
+- The Outpost on today's scale: 120/250/500 for 1/2/3 explorers; an explorer is trained from a
+  villager for 10 renown (rising); an expedition costs 40 food (no renown) and takes 5 minutes.
+  Finds are unchanged (0-3, sure after 3 empty, the first always finds someone). The report of
+  who came home now always shows (it is kept in the save until read)
+- The Librarium's fifth branch, The Wilds: Cartography (100, journeys 25% shorter) and Keen
+  Scouts (250, empty journeys 35% down to 15%)
+- Retired: Word Spreads (milestone newcomers; wanderers do that job) and Lean Times (starvation
+  deaths; an unfed army stands down instead). Their dialogs and save fields are gone
+
 ### Fix: "Reassign all" moves everyone (2026-10-26)
 - The Keep's "all" moved one person and stopped; it now moves everyone in one step (stopping at
   the forager cap or when nobody is left). Sharpening the claws and studying decide their sound

@@ -34,23 +34,7 @@ describe('backfillStory', () => {
     ])
     expect(isSystemOn(out, 'draconiaTab')).toBe(true)
     expect(isSystemOn(out, 'hunger')).toBe(true)
-    expect(isSystemOn(out, 'milestones')).toBe(false)
     expect(isBuildingRevealed(out, 'forge')).toBe(false)
-  })
-
-  it('adds word_spreads when lifetime inspiration is at least 25', () => {
-    const out = backfillStory(v1({
-      fighters: 3, fightersRallied: 3, repairers: 3, repairersDirected: 3,
-      foragers: { gatherers: 3, trappers: 0, rangers: 0 },
-      totalInspirationEarned: 25,
-    }))
-    expect(out.beatsSeen).toContain('word_spreads')
-    expect(isSystemOn(out, 'milestones')).toBe(true)
-  })
-
-  it('adds word_spreads when a milestone was already offered', () => {
-    const out = backfillStory(v1({ milestonesOffered: [25] }))
-    expect(out.beatsSeen).toContain('word_spreads')
   })
 
   it('stops at the first beat that fails both tests', () => {
@@ -65,15 +49,15 @@ describe('backfillStory', () => {
     const out = backfillStory(v1({
       fightersRallied: 5, fighters: 5, repairersDirected: 4, repairers: 4,
       barracksLevel: 2, armoryBuilt: true, draconiaHallBuilt: true, postLevel: 1,
-      librariumBuilt: true, completedResearch: ['click_1'], milestonesOffered: [25, 50],
+      librariumBuilt: true, completedResearch: ['click_1'],
       foragers: { gatherers: 3, trappers: 0, rangers: 0 },
       foodSystemActive: true, hpUnlocked: true, explorerIntroShown: true,
       totalInspirationEarned: 500,
     }))
     for (const id of [
       'prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate',
-      'a_city_to_build', 'the_smith', 'the_keep_stands', 'word_spreads', 'beyond_the_walls', 'the_keep',
-      'the_scholar', 'the_horde_grows', 'lean_times',
+      'a_city_to_build', 'the_smith', 'the_keep_stands', 'beyond_the_walls', 'the_keep',
+      'the_scholar', 'the_horde_grows',
     ]) {
       expect(out.beatsSeen).toContain(id)
     }

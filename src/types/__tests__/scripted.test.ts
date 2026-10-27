@@ -58,7 +58,7 @@ describe('runScripted', () => {
   })
 
   it('does not record events that have no immediate effect', () => {
-    for (const id of ['firstExpedition', 'offlineFraming', 'milestoneFollow'] as const) {
+    for (const id of ['firstExpedition', 'offlineFraming'] as const) {
       const s = runScripted(make({}), id)
       expect(hasRun(s, id)).toBe(false)
     }
@@ -138,12 +138,5 @@ describe('scene text', () => {
       expect(scene!.lines.length).toBeGreaterThan(0)
       for (const line of [...scene!.lines, ...(scene!.altLines ?? [])]) expect(line).not.toMatch(/placeholder/i)
     }
-  })
-
-  it('gives lean_times an alternate line for the the_keep fallback', () => {
-    expect(SCENES.lean_times?.altLines?.[0]).toMatch(/held so far/)
-    const beat = STORY_BEATS.find((b) => b.id === 'lean_times')!
-    expect(beat.altScene?.(make({ food: 50 }))).toBe(true)
-    expect(beat.altScene?.(make({ food: 0 }))).toBe(false)
   })
 })

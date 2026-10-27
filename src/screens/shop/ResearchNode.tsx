@@ -17,6 +17,7 @@ const BUILDING_NAMES: Record<ResearchBuilding, string> = {
   forge: 'The Forge',
   lodge: "The Ranger's Lodge",
   keep: 'The Keep',
+  outpost: 'The Outpost',
 }
 
 /** A slow pulse on a study that can be bought; still with Reduce Motion */

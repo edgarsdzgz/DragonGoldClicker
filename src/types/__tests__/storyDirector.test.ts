@@ -68,17 +68,6 @@ describe('findNextBeat', () => {
     expect(findNextBeat(s, 'live')).toBeNull()
   })
 
-  it('fires a side beat out of order when its own trigger passes', () => {
-    const s = make({
-      beatsSeen: ['prologue', 'elder_approaches'],
-      totalInspirationEarned: 30,
-      inspiration: 0,
-      playSeconds: 0,
-      lastBeatAtPlaySec: 0,
-    })
-    expect(findNextBeat(s, 'live')?.id).toBe('word_spreads')
-  })
-
   it('prefers the next main beat over a side beat when both are ready', () => {
     const s = make({ beatsSeen: ['prologue', 'elder_approaches'], monstersDefeated: 1, totalInspirationEarned: 30, inspiration: 5, playSeconds: 100 })
     expect(findNextBeat(s, 'live')?.id).toBe('first_renown')
@@ -101,14 +90,6 @@ describe('findNextBeat', () => {
     expect(findNextBeat(make({ ...base, questsDone: ['fill_the_stores'], foragersTrained: trained }), 'live')?.id).toBe('the_breach')
   })
 
-  it('fires lean_times only when hunger is on and food is empty', () => {
-    const base = { beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls'], playSeconds: 1000 }
-    expect(findNextBeat(make({ ...base, food: 0 }), 'live')).toBeNull()
-    const hungry = make({ ...base, beatsSeen: [...base.beatsSeen, 'empty_stores'], food: 0, foragers: { gatherers: 0, trappers: 0, rangers: 0 } })
-    expect(findNextBeat(hungry, 'live')?.id).toBe('lean_times')
-    expect(findNextBeat({ ...hungry, food: 10 }, 'live')).toBeNull()
-  })
-
   it('the_keep follows Restore the Keep, then the_lodge, the_scholar and the_horde_grows, before the side beats', () => {
     const main = ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws', 'empty_stores', 'strangers_at_gate',
       'a_city_to_build', 'the_smith', 'the_keep_stands']
@@ -124,15 +105,18 @@ describe('findNextBeat', () => {
     expect(findNextBeat(make({ ...base, beatsSeen: scholar, questsDone: ['first_study'] }), 'live')?.id).toBe('the_horde_grows')
   })
 
-  it('fires beyond_the_walls whenever the explorer post is revealed', () => {
+  it('beyond_the_walls follows the_horde_grows, a main beat now (no longer the Outpost being built)', () => {
     const s = make({ beatsSeen: ['prologue', 'elder_approaches'], postLevel: 1, playSeconds: 300 })
-    expect(findNextBeat(s, 'live')?.id).toBe('beyond_the_walls')
+    expect(findNextBeat(s, 'live')?.id).not.toBe('beyond_the_walls')
+    const beat = STORY_BEATS.find((b) => b.id === 'beyond_the_walls')!
+    expect(beat.side).toBeFalsy()
+    expect(STORY_BEATS.findIndex((b) => b.id === 'beyond_the_walls')).toBe(STORY_BEATS.findIndex((b) => b.id === 'the_horde_grows') + 1)
   })
 
   it('returns null when everything is seen', () => {
     const all = [
       'prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate',
-      'a_city_to_build', 'the_smith', 'the_keep_stands', 'the_keep', 'the_lodge', 'word_spreads', 'lean_times',
+      'a_city_to_build', 'the_smith', 'the_keep_stands', 'the_keep', 'the_lodge',
       'beyond_the_walls', 'the_scholar', 'the_horde_grows',
     ]
     expect(findNextBeat(make({ beatsSeen: all, playSeconds: 99999 }), 'live')).toBeNull()

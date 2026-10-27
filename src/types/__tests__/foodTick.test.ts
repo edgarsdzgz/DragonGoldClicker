@@ -7,76 +7,48 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 
 describe('resolveFoodTick', () => {
   it('only advances the timer before the interval is reached', () => {
-    const r = resolveFoodTick(make({ foodTimer: 3 }), true)
+    const r = resolveFoodTick(make({ foodTimer: 3 }))
     expect(r.tick.timer).toBe(4)
     expect(r.warning).toBeNull()
-    expect(r.report).toBeNull()
   })
 
   it('consumes food when the check fires and resets the timer: only the army eats', () => {
     const s = make({ foodTimer: FOOD_CHECK_INTERVAL - 1, food: 200, villagers: 10, fighters: 5 })
-    const r = resolveFoodTick(s, true)
+    const r = resolveFoodTick(s)
     expect(r.tick.timer).toBe(0)
     // 5 fighters x 4; the 10 villagers feed themselves
     expect(applyFoodTick(s, r.tick).food).toBe(180)
   })
 
-  it('kills nobody and reports nothing on empty stores while starvation is off', () => {
-    const s = make({ foodTimer: FOOD_CHECK_INTERVAL - 1, food: 0, villagers: 50, fighters: 2 })
-    const r = resolveFoodTick(s, false)
-    expect(r.report).toBeNull()
+  it('an unpaid meal kills nobody (starvation was retired with Lean Times, chapter 7)', () => {
+    const s = make({ foodTimer: FOOD_CHECK_INTERVAL - 1, food: 0, villagers: 50, fighters: 2, repairers: 2, soldiers: { conscripts: 2, footmen: 0, knights: 0 } })
+    const r = resolveFoodTick(s)
     const next = applyFoodTick(s, r.tick)
-    expect(next.villagers).toBe(50)
+    expect([next.villagers, next.fighters, next.repairers, next.soldiers.conscripts]).toEqual([50, 2, 2, 2])
     expect(r.warning).toBe(1)
   })
+})
 
-  it('can kill and report on empty stores while starvation is on: only the army, which eats', () => {
-    const roll = jest.spyOn(Math, 'random').mockReturnValue(0)
-    const s = make({ foodTimer: FOOD_CHECK_INTERVAL - 1, food: 0, villagers: 5, fighters: 3 })
-    const r = resolveFoodTick(s, true)
-    roll.mockRestore()
-    expect(r.report?.fightersLost).toBe(3)
-    expect(r.report?.villagersLost).toBe(0)
-    const next = applyFoodTick(s, r.tick)
-    expect(next.fighters).toBe(0)
-    expect(next.villagers).toBe(5)
-  })
-
-  it('empty stores starve no one when nobody eats from them', () => {
-    const roll = jest.spyOn(Math, 'random').mockReturnValue(0)
-    const s = make({ foodTimer: FOOD_CHECK_INTERVAL - 1, food: 0, villagers: 20, foragers: { gatherers: 3, trappers: 0, rangers: 0 } })
-    const r = resolveFoodTick(s, true)
-    roll.mockRestore()
-    expect(r.report).toBeNull()
-    expect(applyFoodTick(s, r.tick).villagers).toBe(20)
+describe('applyFoodTick', () => {
+  it('never leaves the stores below 0 when applied to a newer state', () => {
+    expect(applyFoodTick(make({ food: 5 }), { timer: 0, consumed: 20 }).food).toBe(0)
   })
 })
 
 describe('stepFood (decides from prev)', () => {
   const due = { foodTimer: FOOD_CHECK_INTERVAL - 1, villagers: 5, fighters: 1 }
 
-  it('rolls starvation only against the stores in prev, so refilled stores are safe', () => {
-    const roll = jest.spyOn(Math, 'random').mockReturnValue(0)
-    const empty = stepFood(make({ ...due, food: 0 }), true)
-    const refilled = stepFood(make({ ...due, food: 500 }), true)
-    roll.mockRestore()
-    expect(empty.pendingStarvationReport?.fightersLost).toBe(1)
-    expect(refilled.pendingStarvationReport).toBeNull()
-    expect(refilled.fighters).toBe(1)
-  })
-
   it('puts the warning in the returned state and only when it escalates', () => {
-    const first = stepFood(make({ ...due, food: 0 }), false)
+    const first = stepFood(make({ ...due, food: 0 }))
     expect(first.pendingFoodWarning).toBe(1)
     expect(first.lastFoodWarning).toBe(1)
-    const again = stepFood(make({ ...due, food: 0, lastFoodWarning: 1 }), false)
+    const again = stepFood(make({ ...due, food: 0, lastFoodWarning: 1 }))
     expect(again.pendingFoodWarning).toBe(0)
   })
 
-  it('leaves pending payloads alone on seconds where no check fires', () => {
-    const report = { villagersLost: 1, soldiersLost: { conscripts: 0, footmen: 0, knights: 0 }, foragersLost: { gatherers: 0, trappers: 0, rangers: 0 }, explorersLost: 0, fightersLost: 0, repairersLost: 0 }
-    const next = stepFood(make({ foodTimer: 3, pendingStarvationReport: report }), true)
-    expect(next.pendingStarvationReport).toBe(report)
+  it('leaves the warning alone on seconds where no check fires', () => {
+    const next = stepFood(make({ foodTimer: 3, pendingFoodWarning: 3 }))
+    expect(next.pendingFoodWarning).toBe(3)
     expect(next.foodTimer).toBe(4)
   })
 })
