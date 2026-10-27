@@ -83,6 +83,7 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
           who={scene.who}
           mood={scene.mood}
           lineMoods={scene.lineMoods}
+          stage={scene.stage}
           title={scene.title}
           lines={queued?.alt && scene.altLines ? scene.altLines : scene.lines}
           dismissLabel={scene.dismissLabel}

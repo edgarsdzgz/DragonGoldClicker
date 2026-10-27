@@ -50,6 +50,15 @@ describe('the speakers in the story', () => {
     }
   })
 
+  it('puts the speaker of a conversation on its stage', () => {
+    for (const scene of scenes) {
+      if (scene.stage) {
+        expect(scene.stage).toContain(scene.who)
+        expect(scene.stage[0]).not.toBe(scene.stage[1])
+      }
+    }
+  })
+
   it('takes a line\'s own mood over the scene\'s', () => {
     expect(lineMood(0, 'grieving', { 0: 'alarmed' })).toBe('alarmed')
     expect(lineMood(1, 'grieving', { 0: 'alarmed' })).toBe('grieving')

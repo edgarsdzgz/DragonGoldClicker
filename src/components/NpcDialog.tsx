@@ -8,36 +8,52 @@ import {
   AccessibilityInfo,
   Platform,
 } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
 import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { HighlightBackdrop } from './HighlightBackdrop'
-import { SpeakerPortrait } from './SpeakerPortrait'
+import { DialogueCast } from './DialogueCast'
 import { SpeakerTag } from './SpeakerTag'
-import { colors, spacing, radius, elevation, gold, dark } from '../theme'
+import { colors, spacing, radius, gold } from '../theme'
 import { useHaptics, useSfx } from '../hooks'
+import { useReduceMotion } from '../hooks/useReduceMotion'
+import { useScreenReader } from '../hooks/useScreenReader'
 import { SFX } from '../data/sfx'
 import { dialogPaging } from '../types/dialogPaging'
 import { lineMood } from '../types/cast'
 import type { CastId, Mood } from '../types/cast'
 
-/** Ignore a second press on Continue this soon after the first */
+/** Ignore a second tap this soon after the first */
 const PRESS_GUARD_MS = 250
 
-const BACKDROP_DIM = 'rgba(2, 2, 6, 0.85)'
+/** One letter appears this often while a line types itself out */
+const TYPE_MS = 28
+
+/** Light enough that the world shows behind the people talking */
+const BACKDROP_DIM = 'rgba(2, 2, 6, 0.6)'
+
+/** One line of dialogue text, in points */
+const LINE_H = 22
+
+/** The box holds five lines of text without growing, so the people standing on it do not bob */
+const BOX_MIN_H = LINE_H * 5 + spacing[5] + spacing[7]
 
 interface NpcDialogProps {
   visible: boolean
   npcName: string
   icon: GameIconName
-  /** Who speaks: their bust (in the line's mood) and sigil replace the icon */
+  /** Who speaks: they stand on the box (in the line's mood), their sigil on the name plate */
   who?: CastId
   /** The speaker's face for the scene */
   mood?: Mood
   /** A face for one line, by its index */
   lineMoods?: Partial<Record<number, Mood>>
+  /** Two on stage (left, right) for a conversation: the speaker lit, the other in shadow */
+  stage?: [CastId, CastId]
   title: string
+  /** Keep the same array for the same scene (a new array starts the scene over from its first line) */
   lines: string[]
   dismissLabel?: string
   onDismiss: () => void
@@ -49,6 +65,12 @@ interface NpcDialogProps {
   highlight?: string
 }
 
+/**
+ * A scene as dialogue (owner, 2026-10-27): the speaker stands on a box at the bottom of the screen
+ * and their words type themselves out. A tap anywhere finishes the line, the next tap moves on. The
+ * arrow in the box's corner never moves; on the last line it carries the scene's own word. Skip
+ * stays at the top. Reduce Motion and screen readers get each line whole.
+ */
 export function NpcDialog({
   visible,
   npcName,
@@ -56,6 +78,7 @@ export function NpcDialog({
   who,
   mood,
   lineMoods,
+  stage,
   title,
   lines,
   dismissLabel = 'Continue',
@@ -66,60 +89,79 @@ export function NpcDialog({
 }: NpcDialogProps) {
   const haptics = useHaptics()
   const playNpc = useSfx(SFX.NPC)
+  const insets = useSafeAreaInsets()
+  const reduceMotion = useReduceMotion()
+  const screenReader = useScreenReader()
   const backdropOpacity = useRef(new Animated.Value(0)).current
-  const cardScale = useRef(new Animated.Value(0.85)).current
-  const cardOpacity = useRef(new Animated.Value(0)).current
+  const riseY = useRef(new Animated.Value(24)).current
+  const castOpacity = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     if (visible) {
       playNpc()
       Animated.parallel([
-        Animated.timing(backdropOpacity, {
-          toValue: 1,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(cardOpacity, {
-          toValue: 1,
-          duration: 180,
-          useNativeDriver: true,
-        }),
-        Animated.spring(cardScale, {
-          toValue: 1,
-          tension: 65,
-          friction: 8,
-          useNativeDriver: true,
-        }),
+        Animated.timing(backdropOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
+        Animated.timing(castOpacity, { toValue: 1, duration: 220, useNativeDriver: true }),
+        Animated.spring(riseY, { toValue: 0, tension: 65, friction: 9, useNativeDriver: true }),
       ]).start()
     } else {
       backdropOpacity.setValue(0)
-      cardScale.setValue(0.85)
-      cardOpacity.setValue(0)
+      castOpacity.setValue(0)
+      riseY.setValue(24)
     }
-  }, [visible, playNpc, backdropOpacity, cardScale, cardOpacity])
+  }, [visible, playNpc, backdropOpacity, castOpacity, riseY])
 
-  // One line per page. Continue steps through the pages; the last page's button is the
-  // scene's own dismiss (with its label and any navigation). Skip is only for cutscenes of 2+ pages.
-  const [page, setPage] = useState(0)
+  // One line per page. A tap steps through the pages; the last page's tap is the scene's own
+  // dismiss (with its label and any navigation). Skip is only for cutscenes of 2+ pages.
+  // The page belongs to its lines: when the next scene of a conversation takes over (the Breach,
+  // Rodain then Pyreth), it starts on its first line from the first frame
+  const [at, setAt] = useState({ lines, page: 0 })
+  const page = at.lines === lines ? at.page : 0
   const lastPress = useRef({ at: 0, page: -1 })
   useEffect(() => {
     if (visible) {
-      setPage(0)
+      setAt({ lines, page: 0 })
       lastPress.current = { at: 0, page: -1 }
     }
   }, [visible, lines])
   const { pageCount, lastPage, canSkip: skippable } = dialogPaging(lines.length, page, cutscene)
   const canSkip = skippable && !!onSkip
+  const shownPage = Math.min(page, pageCount - 1)
+  const line = lines[shownPage] ?? ''
 
-  // A double tap must not skip a page (or the whole scene): presses are ignored for a short
-  // moment after each press.
-  const handleDismiss = () => {
+  // The line types itself out, a letter at a time; whole at once for Reduce Motion and screen readers
+  const instant = reduceMotion || screenReader
+  // The count belongs to its line, so a new line never flashes whole for a frame before it types
+  const [progress, setProgress] = useState({ line: '', n: 0 })
+  const typed = instant ? line.length : progress.line === line ? progress.n : 0
+  const typing = typed < line.length
+  useEffect(() => {
+    // Closed: forget the line, so a scene that comes back (a second Breach) types it out again
+    if (!visible) {
+      setProgress({ line: '', n: 0 })
+      return
+    }
+    if (instant) return
+    setProgress({ line, n: 0 })
+    const timer = setInterval(() => {
+      setProgress((p) => (p.line === line && p.n < line.length ? { line, n: p.n + 1 } : p))
+    }, TYPE_MS)
+    return () => clearInterval(timer)
+  }, [line, instant, visible])
+
+  // A double tap must not skip a line (or the whole scene): taps are ignored for a short moment
+  // after each one. While a line is still typing, a tap finishes it instead of moving on.
+  const handleTap = () => {
     const now = Date.now()
     if (now - lastPress.current.at < PRESS_GUARD_MS) return
     lastPress.current = { at: now, page }
+    if (typing) {
+      setProgress({ line, n: line.length })
+      return
+    }
     haptics.light()
     if (!lastPage) {
-      setPage((p) => p + 1)
+      setAt({ lines, page: page + 1 })
       return
     }
     onDismiss()
@@ -136,6 +178,7 @@ export function NpcDialog({
   }
 
   const buttonLabel = lastPage ? dismissLabel : 'Continue'
+  const speakerOnRight = !!(who && stage && stage[1] === who)
 
   return (
     <Modal
@@ -149,92 +192,67 @@ export function NpcDialog({
         <HighlightBackdrop targetId={highlight} dim={BACKDROP_DIM} />
       </Animated.View>
 
+      {/* The whole screen is the advance button: tap anywhere */}
+      <Pressable
+        style={StyleSheet.absoluteFill}
+        onPress={handleTap}
+        accessibilityRole="button"
+        accessibilityLabel={buttonLabel}
+        accessibilityHint={lastPage ? undefined : 'Shows the next line'}
+      />
+
       <ModalStage>
         <Animated.View
-          style={[
-            styles.card,
-            {
-              opacity: cardOpacity,
-              transform: [{ scale: cardScale }],
-            },
-          ]}
+          pointerEvents="none"
+          style={[styles.scene, { opacity: castOpacity, transform: [{ translateY: riseY }] }]}
         >
-          {/* Accent bar */}
-          <View style={styles.accentBar} />
+          {who && <DialogueCast who={who} mood={lineMood(shownPage, mood, lineMoods)} stage={stage} />}
 
-          {/* Who speaks: their bust and sigil, or an icon for a speaker without one */}
-          <View style={styles.npcHeader}>
-            {who ? (
-              <>
-                <SpeakerPortrait who={who} mood={lineMood(Math.min(page, pageCount - 1), mood, lineMoods)} />
-                <SpeakerTag who={who} name={npcName} textStyle={styles.npcName} />
-              </>
-            ) : (
-              <>
-                <View style={styles.npcIcon}>
-                  <GameIcon name={icon} size={22} color={gold[400]} />
+          <View style={styles.box}>
+            {/* The name plate rides the box's top edge, on the speaker's side */}
+            <View style={[styles.plate, speakerOnRight ? styles.plateRight : styles.plateLeft]}>
+              {who ? (
+                <SpeakerTag who={who} name={npcName.toUpperCase()} textStyle={styles.plateText} />
+              ) : (
+                <View style={styles.plateRow}>
+                  <GameIcon name={icon} size={14} color={gold[400]} />
+                  <Text variant="caption" style={styles.plateText}>{npcName.toUpperCase()}</Text>
                 </View>
-                <Text variant="caption" style={styles.npcName}>
-                  {npcName}
-                </Text>
-              </>
-            )}
-          </View>
+              )}
+            </View>
 
-          {/* Content */}
-          <View style={styles.content}>
-            <Text variant="h3" center>
-              {title}
-            </Text>
             <Text
-              variant="bodySmall"
-              color="secondary"
+              variant="body"
               style={styles.line}
               accessibilityLiveRegion="polite"
+              accessibilityLabel={line}
             >
-              {lines[Math.min(page, pageCount - 1)]}
+              {line.slice(0, typed)}
             </Text>
-            {pageCount > 1 && (
-              <Text variant="caption" color="muted" center accessibilityLabel={`Page ${page + 1} of ${pageCount}`}>
-                {`${page + 1} / ${pageCount}`}
-              </Text>
-            )}
+
+            {/* The cue: same corner on every line; the scene's own word on the last */}
+            <View style={[styles.cue, typing && styles.hidden]}>
+              {lastPage && <Text variant="label" bold style={styles.cueText}>{dismissLabel}</Text>}
+              <GameIcon name="arrow-forward" size={12} color={gold[400]} />
+            </View>
           </View>
-
-          {/* Divider */}
-          <View style={styles.divider} />
-
-          {/* Dismiss */}
-          <View style={styles.actions}>
-            <Pressable
-              onPress={handleDismiss}
-              style={({ pressed }) => [
-                styles.button,
-                pressed && styles.buttonPressed,
-              ]}
-              accessibilityRole="button"
-              accessibilityLabel={buttonLabel}
-            >
-              <Text variant="label" bold style={{ color: dark[900] }}>
-                {buttonLabel}
-              </Text>
-            </Pressable>
-          </View>
-
-          {/* Skip sits in the top corner, so Continue never moves when it appears. Last child, so
-              Android paints it (and gives it the touch) over the header. */}
-          {canSkip && (
-            <Pressable
-              onPress={handleSkip}
-              style={styles.skip}
-              accessibilityRole="button"
-              accessibilityLabel="Skip scene"
-            >
-              <Text variant="label" color="secondary">Skip</Text>
-            </Pressable>
-          )}
         </Animated.View>
       </ModalStage>
+
+      {/* The scene's name, and Skip, at the top of the screen */}
+      <View style={[styles.top, { top: insets.top + spacing[2] }]} pointerEvents="box-none">
+        <Text variant="caption" style={styles.title} accessibilityRole="header">{title.toUpperCase()}</Text>
+        {canSkip && (
+          <Pressable
+            onPress={handleSkip}
+            style={styles.skip}
+            accessibilityRole="button"
+            accessibilityLabel="Skip scene"
+          >
+            <Text variant="label" color="secondary">Skip</Text>
+          </Pressable>
+        )}
+      </View>
     </Modal>
   )
 }
@@ -243,79 +261,85 @@ const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
   },
-  card: {
+  scene: {
     width: '100%',
-    maxWidth: 340,
+    maxWidth: 420,
+  },
+  box: {
+    minHeight: BOX_MIN_H,
     backgroundColor: colors.bg.surface1,
-    borderRadius: radius.xl,
-    borderWidth: 1,
-    borderColor: dark[700],
-    ...elevation[4],
-  },
-  accentBar: {
-    height: 3,
-    width: '100%',
-    borderTopLeftRadius: radius.xl,
-    borderTopRightRadius: radius.xl,
-    backgroundColor: colors.status.warning,
-  },
-  npcHeader: {
-    alignItems: 'center',
-    paddingTop: spacing[5],
-    gap: spacing[2],
-  },
-  npcIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(224, 168, 64, 0.1)',
+    borderRadius: radius.md,
     borderWidth: 1.5,
-    borderColor: 'rgba(224, 168, 64, 0.3)',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: gold[400] + '73',
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[5],
+    paddingBottom: spacing[7],
   },
-  npcName: {
+  plate: {
+    position: 'absolute',
+    top: -15,
+    backgroundColor: colors.bg.surface2,
+    borderRadius: radius.sm,
+    borderWidth: 1.5,
+    borderColor: gold[400] + '73',
+    paddingHorizontal: spacing[3],
+    paddingVertical: spacing[1],
+  },
+  plateLeft: {
+    left: spacing[3],
+  },
+  plateRight: {
+    right: spacing[3],
+  },
+  plateRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[1],
+  },
+  plateText: {
     color: gold[400],
     letterSpacing: 1,
-    textTransform: 'uppercase',
     fontSize: 11,
-  },
-  content: {
-    paddingHorizontal: spacing[5],
-    paddingTop: spacing[3],
-    paddingBottom: spacing[5],
-    gap: spacing[2],
+    fontWeight: 'bold',
   },
   line: {
-    lineHeight: 20,
+    color: colors.text.primary,
+    lineHeight: LINE_H,
   },
-  divider: {
-    height: 1,
-    backgroundColor: dark[700],
-    marginHorizontal: spacing[4],
-  },
-  actions: {
-    padding: spacing[4],
-  },
-  button: {
+  cue: {
+    position: 'absolute',
+    right: spacing[3],
+    bottom: spacing[2],
+    minHeight: 20,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing[3],
-    borderRadius: radius.md,
-    minHeight: 44,
-    backgroundColor: gold[500],
+    gap: spacing[1],
+  },
+  cueText: {
+    color: gold[400],
+  },
+  hidden: {
+    opacity: 0,
+  },
+  top: {
+    position: 'absolute',
+    left: spacing[4],
+    right: spacing[2],
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    color: colors.text.secondary,
+    letterSpacing: 2,
   },
   skip: {
-    position: 'absolute',
-    top: spacing[2],
-    right: spacing[2],
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 48,
     minWidth: 48,
     paddingHorizontal: spacing[3],
-  },
-  buttonPressed: {
-    backgroundColor: gold[600],
+    borderRadius: radius.md,
+    backgroundColor: colors.bg.surface1,
   },
 })

@@ -21,6 +21,8 @@ export interface SceneDef {
   mood?: Mood
   /** A face for one line (by its index), over the scene's */
   lineMoods?: Partial<Record<number, Mood>>
+  /** Two on stage (left, right) for a conversation: the speaker lit, the other in shadow */
+  stage?: [CastId, CastId]
   title: string
   lines: string[]
   /** Lines used instead when the beat's `altScene` says so */
@@ -231,6 +233,7 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
       ...RODAIN,
       title: 'The Wall Falls',
       mood: 'grieving',
+      stage: ['rodain', 'pyreth'],
       lines: [
         'The wall is down! They are in the streets!',
         'Every hand that can hold a blade is fighting: villagers, fighters, menders. We are losing them, Steward.',
@@ -240,6 +243,7 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
       ...PYRETH,
       title: 'The Ancient Magic',
       mood: 'grieving',
+      stage: ['rodain', 'pyreth'],
       lines: [
         'My lord, there is one thing left. The elders keep the ancient magic of Draconia for this hour, and this hour only.',
         'It is woken with what we hold dear: our stores, our standing, and your renown.',
@@ -253,12 +257,14 @@ export const BREACH_SCENES: { first: SceneDef[]; again: SceneDef[] } = {
       ...RODAIN,
       title: 'The Wall Falls',
       mood: 'grieving',
+      stage: ['rodain', 'pyreth'],
       lines: ['The wall is down again! They are in the streets!'],
     },
     {
       ...PYRETH,
       title: 'The Ancient Magic',
       mood: 'grieving',
+      stage: ['rodain', 'pyreth'],
       lines: ['Once more the ancient magic answers, my lord, and once more Draconia pays for it.'],
       dismissLabel: 'Count the cost',
     },

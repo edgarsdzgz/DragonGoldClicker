@@ -25,13 +25,13 @@ export function BreachEvent({ visible, report, onDone }: BreachEventProps) {
   if (scene) {
     return (
       <NpcDialog
-        key={step}
         visible={visible}
         npcName={scene.speaker}
         icon={scene.icon}
         who={scene.who}
         mood={scene.mood}
         lineMoods={scene.lineMoods}
+        stage={scene.stage}
         title={scene.title}
         lines={scene.lines}
         dismissLabel={scene.dismissLabel}
