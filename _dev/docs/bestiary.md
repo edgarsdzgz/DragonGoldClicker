@@ -88,7 +88,8 @@ One big monster at a time, at the head of a wave.
 The Corrupted Wyvern and the Ember Wraith are dragon-kin. Settled 2026-10-27: the Unmaking can take
 dragons. They are drawn cle## Fliers and riders
 
-No new battlefield needed (settled 2026-10-27). Drawn in batch `48-bestiary-fliers`, on the board for review.
+No new battlefield needed (settled 2026-10-27). Drawn in batch `48-bestiary-fliers`; locked and in the app, with each flier's
+shadow. Lifting fliers above the road and drawing the shadow is app work.
 
 | Monster | Looks |
 | --- | --- |
