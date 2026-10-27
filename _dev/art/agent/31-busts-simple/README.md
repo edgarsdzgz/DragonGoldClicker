@@ -10,3 +10,13 @@ simplified, leaning into pixel-art simplicity. These are that option; nothing he
 - `build_board.py`: the review board, v1 beside the simpler drawing at the same size.
 
 Run: `python src/make_busts.py && python build_board.py`
+
+## Versions
+
+- **v2** (the first simpler pass): `out/bust_*_v2.png`, `src/make_busts_v2.py`, `board.html` and
+  `board_v2.html` (published at https://claude.ai/artifact/Wfd4e78pefW4Y3rSUvDQKn).
+- **v3** (the owner's notes on v2): `out/bust_*_v3.png` from `src/make_busts.py`, board `board_v3.html`.
+  More shading (light from the upper left), Pyreth's pupils, Rodain's vertical scar and a thicker sash
+  moved right, Mirael's freckles, Lirae's wing and tome detail, and for Kael a second take,
+  `bust_kael-full_v3.png`: v1 at 44x46 snapped to the palette and cleaned, between v1 and v2.
+  `out/bust_*_simple.png` are the last v2 run's files under their old name.
