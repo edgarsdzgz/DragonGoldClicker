@@ -244,19 +244,58 @@ def sera_v2():
     return b.image()
 
 
+# v3, the owner: "Let's keep the human version of Thornwick, give him a darker skin tone, and make his ears
+# gnomish. The gnome version is too light and too happy. I also like the gray beard."
+
+def thornwick_v3():
+    """v1's human Thornwick with darker skin and gnomish ears, wide and pointed out to the sides."""
+    b = Bust()
+    b.rect(1, 16, 11, 22, "azure1", True, round=True)                    # robe
+    b.shade(1, 16, 20, 22, "azure1", "azure2", "night2")
+    b.pts([(4, 19), (6, 21), (16, 20)], "gold5")                         # stars on the robe
+    b.pts([(2, 9), (3, 10), (4, 10), (5, 10), (4, 11), (5, 11), (5, 12)], "wood4", True)   # gnomish ears
+    b.pts([(4, 11), (17, 11)], "wood3")
+    b.px(2, 9, "clay3")
+    b.rect(6, 8, 15, 15, "wood4", round=True)                            # face, darker
+    b.shade(6, 8, 15, 15, "wood4", "clay3", "wood3")
+    b.pts([(7, 9), (8, 9)], "ash3")                                      # one brow level
+    b.pts([(13, 8), (14, 8)], "ash3")                                    # the other raised: wry
+    b.pts([(7, 10), (8, 10), (13, 10), (14, 10)], "ink")                 # eyes, dark against the skin
+    b.pts([(10, 11), (11, 11), (11, 12)], "wood3")                       # nose
+    b.rect(7, 13, 14, 18, "ash3", round=True)                            # the gray beard
+    b.rect(14, 14, 14, 17, "ash2")
+    b.pts([(8, 18), (10, 19), (12, 18), (13, 19), (7, 17)], "ash1")      # its singed ends
+    b.pts([(11, 15), (12, 15)], "ink")                                   # a crooked smile
+    for y, x0, x1 in ((7, 3, 18), (6, 5, 16), (5, 6, 15), (4, 7, 14), (3, 8, 13), (2, 9, 12), (1, 11, 13)):
+        b.rect(x0, y, x1, y, "azure1")                                   # the hat
+    b.shade(3, 1, 18, 7, "azure1", "azure2", "night2")
+    b.rect(5, 6, 16, 6, "gold4")                                         # its band
+    b.pts([(13, 0), (14, 0), (14, 1)], "ink")                            # a scorched tip
+    b.pts([(15, 0), (16, 1)], "ash3")
+    b.rect(7, 4, 9, 5, "steel3")                                         # goggles on the band
+    b.rect(12, 4, 14, 5, "steel3")
+    b.pts([(8, 5), (13, 5)], "sea3")
+    b.rect(18, 17, 19, 18, "wood4")                                      # his hand, holding a spark
+    b.pts([(19, 13), (18, 14), (20, 14), (19, 15)], "fire2")
+    b.px(19, 14, "fire3")
+    b.pts([(17, 12), (21, 12), (21, 16)], "fire1")
+    return b.image()
+
+
 BUSTS = {"varn": varn, "ashara": ashara, "thornwick": thornwick, "sera": sera, "hollow-knight": hollow_knight}
 BUSTS_V2 = {"thornwick": thornwick_v2, "sera": sera_v2}
+BUSTS_V3 = {"thornwick": thornwick_v3}
 
 
 def main():
     OUT.mkdir(exist_ok=True)
     PREVIEW.mkdir(exist_ok=True)
-    for version, busts in (("v1", BUSTS), ("v2", BUSTS_V2)):
+    for version, busts in (("v1", BUSTS), ("v2", BUSTS_V2), ("v3", BUSTS_V3)):
         for name, f in busts.items():
             img = f()
             img.save(OUT / f"bust_{name}_{version}.png")
             upscale(img, 8).save(PREVIEW / f"bust_{name}_{version}_x8.png")
-    print(len(BUSTS) + len(BUSTS_V2), "busts")
+    print(len(BUSTS) + len(BUSTS_V2) + len(BUSTS_V3), "busts")
 
 
 if __name__ == "__main__":
