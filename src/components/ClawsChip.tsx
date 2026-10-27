@@ -15,7 +15,10 @@ interface ClawsChipProps {
   onPress: () => void
 }
 
-/** The dragon's claws on the Warfront footer (layer 3): name and damage; opens the Claws sheet. */
+/**
+ * The dragon's claws on the Warfront footer (layer 3): the name only (the damage is in Stats and the
+ * Claws sheet; a screen reader still hears it); opens the Claws sheet.
+ */
 export function ClawsChip({ level, name, damage, canSharpen, onPress }: ClawsChipProps) {
   return (
     <Pressable
@@ -27,7 +30,7 @@ export function ClawsChip({ level, name, damage, canSharpen, onPress }: ClawsChi
       style={({ pressed }) => [styles.chip, pressed && styles.pressed]}
     >
       <GameIcon name={clawIcon(level)} size={16} color={gold[400]} />
-      <Text variant="caption" color="link">{`${name}, ${damage} per tap`}</Text>
+      <Text variant="caption" color="link">{name}</Text>
       {canSharpen && <View style={styles.dot} />}
     </Pressable>
   )
