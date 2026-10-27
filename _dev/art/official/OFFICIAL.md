@@ -24,7 +24,7 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_skull.png` | 12x12 | Death, reset | icon sheet 3 |
 | `icons/icon_rations.png` | 12x12 | Rations | icon sheet 3 |
 | `icons/icon_bell.png` | 12x12 | Next meal | icon sheet 3 |
-| `icons/icon_train.png` | 12x12 | Train | icon sheet 3 |
+| `icons/icon_train.png` | 12x12 | Train | townsfolk bust (replaced the sheet-3 train) |
 | `icons/icon_book.png` | 12x12 | Librarium | icon sheet 3 |
 | `icons/icon_padlock.png` | 12x12 | Locked | icon sheet 2 |
 | `icons/icon_flag.png` | 12x12 | Objective | icon sheet 2 |
@@ -33,7 +33,7 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_check.png` | 12x12 | Done | icon sheet 2 |
 | `icons/icon_star.png` | 12x12 | Renown | mockup v1 |
 | `icons/icon_food.png` | 12x12 | Food | food and journal options (cheese wedge; replaced the bun) |
-| `icons/icon_villager.png` | 12x12 | Villagers | mockup v1 |
+| `icons/icon_villager.png` | 12x12 | Villagers | townsfolk bust (replaced the mockup villager) |
 | `icons/icon_swords.png` | 12x12 | Sword gear (stand-in for Fighters) | mockup v1 |
 | `icons/icon_scroll.png` | 12x12 | Journal | food and journal options (rolled scroll; replaced the v1 scroll) |
 | `icons/icon_castle.png` | 12x12 | Draconia tab, Keep | mockup v1 |
@@ -58,6 +58,19 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_sparkles.png` | 12x12 | Wizard's Tower | icon sheet 4 |
 | `icons/icon_map.png` | 12x12 | Map | icon sheet 4 |
 | `icons/icon_stats.png` | 12x12 | Stats | food and journal options (quill and inkpot) |
+| `icons/icon_res_dragon_anatomy.png` | 12x12 | Research: Dragon Anatomy | research (the wyrm's eye) |
+| `icons/icon_res_weak_points.png` | 12x12 | Research: Weak Points | research (target) |
+| `icons/icon_res_wyrms_fury.png` | 12x12 | Research: Wyrm's Fury | research options (ruby shard; owner exception to the red rule) |
+| `icons/icon_res_drill_tactics.png` | 12x12 | Research: Drill Tactics | research (training dummy) |
+| `icons/icon_res_tempered_steel.png` | 12x12 | Research: Tempered Steel | research options (hammer before Kael's anvil) |
+| `icons/icon_res_battle_drill.png` | 12x12 | Research: Battle Drill | research (three spears) |
+| `icons/icon_res_rationing.png` | 12x12 | Research: Rationing | research (brass balance) |
+| `icons/icon_res_lean_rations.png` | 12x12 | Research: Lean Rations | research (hardtack) |
+| `icons/icon_res_snares_and_nets.png` | 12x12 | Research: Snares and Nets | research options (spring snare) |
+| `icons/icon_res_feast_hall.png` | 12x12 | Research: Feast Hall | research (tankard) |
+| `icons/icon_res_mortar_craft.png` | 12x12 | Research: Mortar Craft | research options (trowel after the owner's reference) |
+| `icons/icon_res_night_ledgers.png` | 12x12 | Research: Night Ledgers | research (candle with a handle) |
+| `icons/icon_res_evacuation_drills.png` | 12x12 | Research: Evacuation Drills | research options (the way out) |
 | `people/ppl_human.png` | 11x16 | Townsfolk: human | mockup v1 |
 | `people/ppl_elf.png` | 11x16 | Townsfolk: elf | mockup v1 |
 | `people/ppl_horned.png` | 11x16 | Townsfolk: horned folk | mockup v1 |

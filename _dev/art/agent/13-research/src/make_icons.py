@@ -212,7 +212,7 @@ cells.update({(2, 9): "M", (3, 9): "M", (2, 8): "M", (3, 8): "M", (4, 9): "M"}) 
 icons.append(("mortar_craft", "Mortar Craft. A mason's trowel with a dab of mortar.",
               "a=ink h=steel5 m=steel3 s=steel2 w=wood4 M=parch1", outlined(cells)))
 
-icons.append(("night_ledgers", "Night Ledgers. A candle burning late over the count.",
+icons.append(("night_ledgers", "Night Ledgers. A candle burning late over the count, a handle on its dish.",
               "a=ink Y=fire2 W=fire3 O=fire1 k=night1 P=parch3 p=parch1 H=gold5 G=gold3", [
                   ".....aa.....",
                   "....aYYa....",
@@ -221,10 +221,10 @@ icons.append(("night_ledgers", "Night Ledgers. A candle burning late over the co
                   "....akaa....",
                   "...aPPPpa...",
                   "...aPPPpa...",
-                  "...aPPPpa...",
-                  "...aPPPpa...",
-                  ".aaaPPPpaaa.",
-                  "aHHHHHHHHHGa",
+                  "...aPPPpaaa.",
+                  "...aPPPpaHGa",
+                  ".aaaPPPpaaGa",
+                  "aHHHHHHHHGGa",
                   ".aaaaaaaaaa."]))
 
 # Evacuation Drills: a war horn, the call to run when the wall falls.

@@ -18,22 +18,7 @@ OFFICIAL = ART / "official"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "review.html"
 
 # The batch awaiting the owner's approval: (title, [(path under agent/, label), ...]), or None.
-PENDING = ("The thirteen research studies, and Villagers and Train as townsfolk busts", [
-    ('13-research/out/icon_res_wyrms_fury.png', 'Dragon Anatomy (wyrm eye)'),
-    ('13-research/out/icon_res_weak_points.png', 'Weak Points'),
-    ('17-gems-hammer/out/icon_res_gem_shard_ruby.png', "Wyrm's Fury (ruby shard)"),
-    ('13-research/out/icon_res_drill_tactics.png', 'Drill Tactics'),
-    ('17-gems-hammer/out/icon_res_steel_hammer_front_big.png', 'Tempered Steel (hammer and anvil)'),
-    ('13-research/out/icon_res_battle_drill.png', 'Battle Drill'),
-    ('13-research/out/icon_res_rationing.png', 'Rationing'),
-    ('13-research/out/icon_res_lean_rations.png', 'Lean Rations'),
-    ('18-snare/out/icon_res_snare_spring.png', 'Snares and Nets (spring snare)'),
-    ('13-research/out/icon_res_feast_hall.png', 'Feast Hall'),
-    ('16-research-options-2/out/icon_res_mortar_trowel2.png', 'Mortar Craft (trowel)'),
-    ('13-research/out/icon_res_night_ledgers.png', 'Night Ledgers'),
-    ('15-research-options/out/icon_res_evac_door.png', 'Evacuation Drills (the way out)'),
-    ('14-busts/out/icon_villager_bust.png', 'Villagers (townsfolk bust)'),
-    ('14-busts/out/icon_train_bust.png', 'Train (townsfolk bust)')])
+PENDING = None
 MOTION = [
     (AGENT / "01-test-run/preview/scene_warfront.gif", "The fighter's jab and the hit spark on the Warfront wall"),
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),
