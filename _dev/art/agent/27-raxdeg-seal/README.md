@@ -34,6 +34,11 @@ the name. About 6.7 seconds. Output: `seal_build_stripN.png`, `seal_build_timing
 
 The name, v2 (owner: "I want RAXDEG STUDIOS to be bigger, please. Maybe even across the top of the seal,
 over it"): `src/runic_big.py` draws a big runic face (eleven rows, two-pixel strokes, drawn at size, never
-scaled) and sets RAXDEG·STVDIOS upright on an arc over the seal's top; the slash follows the arc.
-`out/seal_card_straight.png` shows the big name straight across for comparison. The first build, with the
-small name below the seal, is kept as `*_v1`.
+scaled) and sets RAXDEG·STVDIOS upright on an arc over the seal's top; the slash follows the arc. Kept as
+`*_v2`, with `out/seal_card_straight_v2.png` (the big name straight across above the seal).
+
+The name, v3 (owner: "I want the text to appear straight through the seal. Like a strikethrough. The text
+will probably need a black outline"): the big name runs straight through the middle of the seal with a
+two-pixel ink outline (all eight neighbors; one pixel got lost in the seal's lines), and the slash strikes
+through the seal at the letters' middle, carving the name behind it. The frame is the seal plus its margin,
+172 x 172. The first build, with the small name below the seal, is kept as `*_v1`.

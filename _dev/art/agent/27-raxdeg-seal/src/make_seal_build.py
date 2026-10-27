@@ -14,9 +14,10 @@ pixel at 128 belongs to the part that covers most of it, so the finished seal is
    burn in around the ring, the medallion letters appear, the small symbols, and the knot last, from
    its center out. New strokes flash white as they are cut.
 3. The SMASH: a white-hot flash, a hard shake and a shockwave, and the seal is gold.
-4. The slash carves RAXDEG·STVDIOS in gold, in the big runic face arched over the top of the seal
-   (owner: "I want RAXDEG STUDIOS to be bigger ... across the top of the seal, over it"). The first
-   cut, with the small face under the seal, is kept as *_v1.
+4. The slash carves RAXDEG·STVDIOS in gold, in the big runic face, straight through the middle of the
+   seal like a strikethrough, outlined two pixels thick in ink so it reads over the seal (owner: "I want
+   the text to appear straight through the seal. Like a strikethrough"). Kept: *_v1, the small name
+   under the seal, and *_v2, the big name arched over the top.
 
 Run: python make_seal_build.py (after make_seal.py)
 """
@@ -29,13 +30,13 @@ import numpy as np
 from PIL import Image
 
 from make_seal import OUT, P, PREVIEW, SEAL, gold, pixkit, rgba
-from runic_big import arched, carve, straight
+from runic_big import carve, straight
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / "23-effects" / "src"))
 from make_fx import cloud  # noqa: E402
 
 N, SRC, MARGIN = 128, 2400, 22
-ARC = 76             # the name's arc, from the seal's center to the middle of the letters
+RIM = 2              # the ink outline around the name, in pixels
 C = 1199.5
 MED = {"top": (1198.7, 416.1), "left": (519.2, 1592.5), "right": (1879.4, 1592.5)}
 R_MED = (232, 270)
@@ -132,14 +133,14 @@ def build():
     lab = labels()
     final_strokes = strokes(lab, N)
     seal_gold = gold(N)
-    sx, sy = MARGIN, MARGIN + ARC + 8 - N // 2
-    size = (N + MARGIN * 2, sy + N + MARGIN)
+    sx = sy = MARGIN
+    size = (N + MARGIN * 2, N + MARGIN * 2)
     scx, scy = sx + N / 2, sy + N / 2
-    word, path = arched(ARC, (scx, scy), size)
-    wx = min(x for x in range(size[0]) if any(word.getpixel((x, y))[3] for y in range(size[1])))
+    word, path = straight(RIM)
+    wx, wy = round(scx - word.width / 2), round(scy - word.height / 2)
     final = frame_base(size)
     final.alpha_composite(seal_gold, (sx, sy))
-    final.alpha_composite(word)
+    final.alpha_composite(word, (wx, wy))
     by_part = {}
     for p, k in final_strokes.items():
         by_part.setdefault(PARTS[k], set()).add(p)
@@ -240,12 +241,11 @@ def build():
     put(f, seal_gold, sx, sy)
     beats.append((f, 260))
 
-    # 4. The slash carves the name.
-    span = size[0] - wx
-    for head in range(wx - 2, wx + span + 4, 12):
+    # 4. The slash strikes through the seal and carves the name.
+    for head in range(wx - 2, wx + word.width + 14, 12):
         f = frame_base(size)
         put(f, seal_gold, sx, sy)
-        carve(f, word, 0, 0, path, head)
+        carve(f, word, wx, wy, path, head)
         beats.append((f, 45))
     beats.append((final, 1800))
     return beats, final
@@ -265,12 +265,6 @@ def main():
     big = [f.resize((f.width * 2, f.height * 2), Image.NEAREST).convert("RGB") for f in frames]
     big[0].save(PREVIEW / "seal_build.gif", save_all=True, append_images=big[1:], duration=ms, loop=0)
     print(len(frames), "frames", sum(ms), "ms", final.size)
-    # For comparison: the big name straight across the top instead of arched.
-    line, _ = straight()
-    alt = frame_base((max(N, line.width) + MARGIN * 2, line.height + N + 8 + MARGIN * 2))
-    alt.alpha_composite(line, ((alt.width - line.width) // 2, MARGIN))
-    alt.alpha_composite(gold(N), ((alt.width - N) // 2, MARGIN + line.height + 6))
-    alt.save(OUT / "seal_card_straight.png")
 
 
 if __name__ == "__main__":

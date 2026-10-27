@@ -1,10 +1,11 @@
-"""The big runic face and the arched name (owner, 2026-10-27: "I want RAXDEG STUDIOS to be bigger,
-please. Maybe even across the top of the seal, over it").
+"""The big runic face (owner, 2026-10-27: "I want RAXDEG STUDIOS to be bigger, please").
 
 Eleven rows with two-pixel strokes, drawn at full size (never the small face scaled up), in the same
 language as the five-by-seven face: an angular R and D, a dot inside the A and the O, V for U, an
-interpunct. The name is set upright on an arc concentric with the seal, hugging its top like a coin's
-inscription, or straight across for comparison.
+interpunct. The name runs straight through the middle of the seal like a strikethrough, with a thick ink
+outline to read against it (owner: "I want the text to appear straight through the seal ... it will
+probably need a black outline"). arched() is the v2 layout, the name curved over the top, kept so the
+v2 files can be rebuilt.
 """
 import math
 
@@ -45,16 +46,34 @@ def advance():
     return [len(BIG_RUNIC[c][0]) for c in TEXT]
 
 
-def straight():
-    """The name in one line; returns (image, path) where path(x) is the streak's y at column x."""
+N8 = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+
+def thick_outline(img, r):
+    """An ink outline r pixels thick, all eight neighbors, so the name holds up over the seal's lines."""
+    for _ in range(r):
+        src, out = img.load(), img.copy()
+        dst = out.load()
+        for y in range(img.height):
+            for x in range(img.width):
+                if not src[x, y][3] and any(0 <= x + dx < img.width and 0 <= y + dy < img.height
+                                            and src[x + dx, y + dy][3] for dx, dy in N8):
+                    dst[x, y] = rgba("ink")
+        img = out
+    return img
+
+
+def straight(rim=1):
+    """The name in one line with an ink outline rim pixels thick; returns (image, path) where path(x) is
+    the streak's y at column x, through the middle of the letters."""
     widths = advance()
     w = sum(widths) + GAP * (len(TEXT) - 1)
-    img = Image.new("RGBA", (w + 2, 13), (0, 0, 0, 0))
-    x = 1
+    img = Image.new("RGBA", (w + 2 * rim, 11 + 2 * rim), (0, 0, 0, 0))
+    x = rim
     for c, gw in zip(TEXT, widths):
-        img.alpha_composite(glyph(c), (x, 1))
+        img.alpha_composite(glyph(c), (x, rim))
         x += gw + GAP
-    return pixkit.outline(img), (lambda x: 6)
+    return thick_outline(img, rim), (lambda x: rim + 5)
 
 
 def arched(radius, center, size):
