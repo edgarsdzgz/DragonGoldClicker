@@ -425,11 +425,12 @@ ASSETS += [(f"story/story_{s}.png", AGENT / f"43-story-scenes/out/story_{s}_v1.p
                         ("they-come-bigger", "They Come Bigger"), ("ancient-magic", "The Ancient Magic"))]
 
 # The bestiary, every pose at each Unmaking tier: 44-bestiary (the rat as its v2, longer cracks and peach in
-# place of pink, approved 2026-10-27), 45-bestiary-regulars and 46-bestiary-elites (batches 1 and 2 of the
-# second round)
+# place of pink, approved 2026-10-27), 45-bestiary-regulars, 46-bestiary-elites and 47-bestiary-bosses (the
+# second round; the Lich as v2a, cold gray bone, owner 2026-10-27)
 BESTIARY = AGENT / "44-bestiary/out"
 REGULARS = AGENT / "45-bestiary-regulars/out"
 ELITES = AGENT / "46-bestiary-elites/out"
+BOSSES = AGENT / "47-bestiary-bosses/out"
 for _dir, _origin, _id, _name in [(BESTIARY, "bestiary v1", i, n) for i, n in (
                    ("rat", "Giant Rat"), ("goblin-scout", "Goblin Scout"), ("goblin-archer", "Goblin Archer"),
                    ("banner-runner", "Banner-Runner"), ("shield-bearer", "Shield Bearer"),
@@ -444,7 +445,9 @@ for _dir, _origin, _id, _name in [(BESTIARY, "bestiary v1", i, n) for i, n in (
             ("nomad-scout", "Nomad Scout"), ("nomad-archer", "Nomad Archer"), ("cult-apprentice", "Cult Apprentice"))] +         [(ELITES, "bestiary elites v1", i, n) for i, n in (
             ("kobold-shaman", "Kobold Shaman (elite)"), ("goblin-chieftain", "Goblin Chieftain (elite)"),
             ("orc-warchief", "Orc Warchief (elite)"), ("troll", "Troll (elite)"), ("ogre", "Ogre (elite)"),
-            ("iron-golem", "Iron Golem (elite)"), ("windcaller", "Windcaller (elite)"))]:
+            ("iron-golem", "Iron Golem (elite)"), ("windcaller", "Windcaller (elite)"))] +         [(BOSSES, "bestiary bosses v1", i, n) for i, n in (
+            ("basilisk", "Basilisk (boss)"), ("spider-queen", "Spider Queen (boss)"),
+            ("corrupted-drake", "Corrupted Drake (boss)"), ("lich", "Lich (boss, v2a)"))]:
     for _tier, _label in (("", ""), ("-strong", ", strong"), ("-stronger", ", stronger (the Unmaking's deepest)")):
         _n = f"mob_{_id}{_tier}"
         ASSETS += [

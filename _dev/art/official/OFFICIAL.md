@@ -958,3 +958,63 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_windcaller-stronger_hurt.png` | 17x23 | Windcaller (elite), stronger (the Unmaking's deepest): hurt | bestiary elites v1 |
 | `mobs/mob_windcaller-stronger_walk_strip2.png` | 34x23 | Windcaller (elite), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary elites v1 |
 | `mobs/mob_windcaller-stronger_death_strip4.png` | 116x23 | Windcaller (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary elites v1 |
+| `mobs/mob_basilisk_idle.png` | 26x23 | Basilisk (boss): idle | bestiary bosses v1 |
+| `mobs/mob_basilisk_hit.png` | 26x23 | Basilisk (boss): hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_basilisk_hurt.png` | 26x23 | Basilisk (boss): hurt | bestiary bosses v1 |
+| `mobs/mob_basilisk_walk_strip2.png` | 52x23 | Basilisk (boss): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_basilisk_death_strip4.png` | 128x23 | Basilisk (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_basilisk-strong_idle.png` | 26x23 | Basilisk (boss), strong: idle | bestiary bosses v1 |
+| `mobs/mob_basilisk-strong_hit.png` | 26x23 | Basilisk (boss), strong: hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_basilisk-strong_hurt.png` | 26x23 | Basilisk (boss), strong: hurt | bestiary bosses v1 |
+| `mobs/mob_basilisk-strong_walk_strip2.png` | 52x23 | Basilisk (boss), strong: walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_basilisk-strong_death_strip4.png` | 128x23 | Basilisk (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_basilisk-stronger_idle.png` | 26x23 | Basilisk (boss), stronger (the Unmaking's deepest): idle | bestiary bosses v1 |
+| `mobs/mob_basilisk-stronger_hit.png` | 26x23 | Basilisk (boss), stronger (the Unmaking's deepest): hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_basilisk-stronger_hurt.png` | 26x23 | Basilisk (boss), stronger (the Unmaking's deepest): hurt | bestiary bosses v1 |
+| `mobs/mob_basilisk-stronger_walk_strip2.png` | 52x23 | Basilisk (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_basilisk-stronger_death_strip4.png` | 128x23 | Basilisk (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_spider-queen_idle.png` | 28x23 | Spider Queen (boss): idle | bestiary bosses v1 |
+| `mobs/mob_spider-queen_hit.png` | 28x23 | Spider Queen (boss): hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_spider-queen_hurt.png` | 28x23 | Spider Queen (boss): hurt | bestiary bosses v1 |
+| `mobs/mob_spider-queen_walk_strip2.png` | 56x23 | Spider Queen (boss): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_spider-queen_death_strip4.png` | 136x23 | Spider Queen (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_spider-queen-strong_idle.png` | 28x23 | Spider Queen (boss), strong: idle | bestiary bosses v1 |
+| `mobs/mob_spider-queen-strong_hit.png` | 28x23 | Spider Queen (boss), strong: hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_spider-queen-strong_hurt.png` | 28x23 | Spider Queen (boss), strong: hurt | bestiary bosses v1 |
+| `mobs/mob_spider-queen-strong_walk_strip2.png` | 56x23 | Spider Queen (boss), strong: walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_spider-queen-strong_death_strip4.png` | 136x23 | Spider Queen (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_spider-queen-stronger_idle.png` | 28x23 | Spider Queen (boss), stronger (the Unmaking's deepest): idle | bestiary bosses v1 |
+| `mobs/mob_spider-queen-stronger_hit.png` | 28x23 | Spider Queen (boss), stronger (the Unmaking's deepest): hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_spider-queen-stronger_hurt.png` | 28x23 | Spider Queen (boss), stronger (the Unmaking's deepest): hurt | bestiary bosses v1 |
+| `mobs/mob_spider-queen-stronger_walk_strip2.png` | 56x23 | Spider Queen (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_spider-queen-stronger_death_strip4.png` | 136x23 | Spider Queen (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake_idle.png` | 26x25 | Corrupted Drake (boss): idle | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake_hit.png` | 26x25 | Corrupted Drake (boss): hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake_hurt.png` | 26x25 | Corrupted Drake (boss): hurt | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake_walk_strip2.png` | 52x25 | Corrupted Drake (boss): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake_death_strip4.png` | 128x25 | Corrupted Drake (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-strong_idle.png` | 26x25 | Corrupted Drake (boss), strong: idle | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-strong_hit.png` | 26x25 | Corrupted Drake (boss), strong: hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-strong_hurt.png` | 26x25 | Corrupted Drake (boss), strong: hurt | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-strong_walk_strip2.png` | 52x25 | Corrupted Drake (boss), strong: walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-strong_death_strip4.png` | 128x25 | Corrupted Drake (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-stronger_idle.png` | 26x25 | Corrupted Drake (boss), stronger (the Unmaking's deepest): idle | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-stronger_hit.png` | 26x25 | Corrupted Drake (boss), stronger (the Unmaking's deepest): hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-stronger_hurt.png` | 26x25 | Corrupted Drake (boss), stronger (the Unmaking's deepest): hurt | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-stronger_walk_strip2.png` | 52x25 | Corrupted Drake (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_corrupted-drake-stronger_death_strip4.png` | 128x25 | Corrupted Drake (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_lich_idle.png` | 22x28 | Lich (boss, v2a): idle | bestiary bosses v1 |
+| `mobs/mob_lich_hit.png` | 22x28 | Lich (boss, v2a): hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_lich_hurt.png` | 22x28 | Lich (boss, v2a): hurt | bestiary bosses v1 |
+| `mobs/mob_lich_walk_strip2.png` | 44x28 | Lich (boss, v2a): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_lich_death_strip4.png` | 136x28 | Lich (boss, v2a): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_lich-strong_idle.png` | 22x28 | Lich (boss, v2a), strong: idle | bestiary bosses v1 |
+| `mobs/mob_lich-strong_hit.png` | 22x28 | Lich (boss, v2a), strong: hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_lich-strong_hurt.png` | 22x28 | Lich (boss, v2a), strong: hurt | bestiary bosses v1 |
+| `mobs/mob_lich-strong_walk_strip2.png` | 44x28 | Lich (boss, v2a), strong: walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_lich-strong_death_strip4.png` | 136x28 | Lich (boss, v2a), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_lich-stronger_idle.png` | 22x28 | Lich (boss, v2a), stronger (the Unmaking's deepest): idle | bestiary bosses v1 |
+| `mobs/mob_lich-stronger_hit.png` | 22x28 | Lich (boss, v2a), stronger (the Unmaking's deepest): hit, the red flash | bestiary bosses v1 |
+| `mobs/mob_lich-stronger_hurt.png` | 22x28 | Lich (boss, v2a), stronger (the Unmaking's deepest): hurt | bestiary bosses v1 |
+| `mobs/mob_lich-stronger_walk_strip2.png` | 44x28 | Lich (boss, v2a), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
+| `mobs/mob_lich-stronger_death_strip4.png` | 136x28 | Lich (boss, v2a), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
