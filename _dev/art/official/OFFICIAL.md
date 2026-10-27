@@ -16,6 +16,11 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `icons/icon_wheat.png` | 12x12 | Foragers, Forage tab | icon redraw (v2, the ear) |
 | `icons/icon_hammer.png` | 12x12 | Repairers | icon redraw |
 | `icons/icon_helm.png` | 12x12 | Soldiers | icon redraw |
+| `icons/icon_padlock.png` | 12x12 | Locked | icon sheet 2 |
+| `icons/icon_flag.png` | 12x12 | Objective | icon sheet 2 |
+| `icons/icon_compass.png` | 12x12 | Explorers | icon sheet 2 |
+| `icons/icon_upgrade.png` | 12x12 | Upgrade | icon sheet 2 |
+| `icons/icon_check.png` | 12x12 | Done | icon sheet 2 |
 | `icons/icon_star.png` | 12x12 | Renown | mockup v1 |
 | `icons/icon_food.png` | 12x12 | Food | mockup v1 |
 | `icons/icon_villager.png` | 12x12 | Villagers | mockup v1 |
