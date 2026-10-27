@@ -415,6 +415,16 @@ ASSETS += [(f"cast/bust_{b}_{e}.png", AGENT / f"42-expressions/out/bust_{b}_{e}_
                            ("ashara", "grieving", "Ashara"), ("thornwick", "startled", "Thornwick"),
                            ("sera", "roaring", "Sera"))]
 
+# The standard set of faces (50-expressions-set, 2026-10-27): neutral, happy, grieving, angry, alarmed, worried,
+# determined for every bust. The faces above fill their slots (Varn's fierce and Sera's roaring are their
+# determined, Thornwick's startled his alarmed); the Hollow Knight's feeling is a light in its visor slit.
+_SET_NAMES = {"pyreth": "Elder Pyreth", "rodain": "Captain Rodain", "mirael": "Scout Mirael",
+              "kael": "Kael Ironwright", "lirae": "Lirae the Ink-Wing", "varn": "Varn", "ashara": "Ashara",
+              "thornwick": "Thornwick", "sera": "Sera", "hollow-knight": "The Hollow Knight"}
+for _p in sorted((AGENT / "50-expressions-set/out").glob("bust_*_v1.png")):
+    _b, _e = _p.stem.removeprefix("bust_").removesuffix("_v1").rsplit("_", 1)
+    ASSETS.append((f"cast/bust_{_b}_{_e}.png", _p, f"Bust: {_SET_NAMES[_b]}, {_e} (22x23)", "expressions set v1"))
+
 # Story scenes (43-story-scenes), one per scene in src/data/story/lines.ts
 ASSETS += [(f"story/story_{s}.png", AGENT / f"43-story-scenes/out/story_{s}_v1.png", f"Story: {t} (130x96)", "story scenes v1")
            for s, t in (("elder-approaches", "The Elder Approaches"), ("renown", "Renown"), ("wall-holds", "The Wall Holds"),

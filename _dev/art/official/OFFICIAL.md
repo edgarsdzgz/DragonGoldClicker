@@ -477,6 +477,57 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `cast/bust_ashara_grieving.png` | 22x23 | Bust: Ashara, grieving (22x23) | expressions v1 |
 | `cast/bust_thornwick_startled.png` | 22x23 | Bust: Thornwick, startled (22x23) | expressions v1 |
 | `cast/bust_sera_roaring.png` | 22x23 | Bust: Sera, roaring (22x23) | expressions v1 |
+| `cast/bust_ashara_alarmed.png` | 22x23 | Bust: Ashara, alarmed (22x23) | expressions set v1 |
+| `cast/bust_ashara_angry.png` | 22x23 | Bust: Ashara, angry (22x23) | expressions set v1 |
+| `cast/bust_ashara_determined.png` | 22x23 | Bust: Ashara, determined (22x23) | expressions set v1 |
+| `cast/bust_ashara_happy.png` | 22x23 | Bust: Ashara, happy (22x23) | expressions set v1 |
+| `cast/bust_ashara_worried.png` | 22x23 | Bust: Ashara, worried (22x23) | expressions set v1 |
+| `cast/bust_hollow-knight_alarmed.png` | 22x23 | Bust: The Hollow Knight, alarmed (22x23) | expressions set v1 |
+| `cast/bust_hollow-knight_angry.png` | 22x23 | Bust: The Hollow Knight, angry (22x23) | expressions set v1 |
+| `cast/bust_hollow-knight_determined.png` | 22x23 | Bust: The Hollow Knight, determined (22x23) | expressions set v1 |
+| `cast/bust_hollow-knight_grieving.png` | 22x23 | Bust: The Hollow Knight, grieving (22x23) | expressions set v1 |
+| `cast/bust_hollow-knight_happy.png` | 22x23 | Bust: The Hollow Knight, happy (22x23) | expressions set v1 |
+| `cast/bust_hollow-knight_worried.png` | 22x23 | Bust: The Hollow Knight, worried (22x23) | expressions set v1 |
+| `cast/bust_kael_alarmed.png` | 22x23 | Bust: Kael Ironwright, alarmed (22x23) | expressions set v1 |
+| `cast/bust_kael_determined.png` | 22x23 | Bust: Kael Ironwright, determined (22x23) | expressions set v1 |
+| `cast/bust_kael_grieving.png` | 22x23 | Bust: Kael Ironwright, grieving (22x23) | expressions set v1 |
+| `cast/bust_kael_happy.png` | 22x23 | Bust: Kael Ironwright, happy (22x23) | expressions set v1 |
+| `cast/bust_kael_worried.png` | 22x23 | Bust: Kael Ironwright, worried (22x23) | expressions set v1 |
+| `cast/bust_lirae_alarmed.png` | 22x23 | Bust: Lirae the Ink-Wing, alarmed (22x23) | expressions set v1 |
+| `cast/bust_lirae_angry.png` | 22x23 | Bust: Lirae the Ink-Wing, angry (22x23) | expressions set v1 |
+| `cast/bust_lirae_determined.png` | 22x23 | Bust: Lirae the Ink-Wing, determined (22x23) | expressions set v1 |
+| `cast/bust_lirae_happy.png` | 22x23 | Bust: Lirae the Ink-Wing, happy (22x23) | expressions set v1 |
+| `cast/bust_lirae_worried.png` | 22x23 | Bust: Lirae the Ink-Wing, worried (22x23) | expressions set v1 |
+| `cast/bust_mirael_angry.png` | 22x23 | Bust: Scout Mirael, angry (22x23) | expressions set v1 |
+| `cast/bust_mirael_determined.png` | 22x23 | Bust: Scout Mirael, determined (22x23) | expressions set v1 |
+| `cast/bust_mirael_grieving.png` | 22x23 | Bust: Scout Mirael, grieving (22x23) | expressions set v1 |
+| `cast/bust_mirael_happy.png` | 22x23 | Bust: Scout Mirael, happy (22x23) | expressions set v1 |
+| `cast/bust_mirael_worried.png` | 22x23 | Bust: Scout Mirael, worried (22x23) | expressions set v1 |
+| `cast/bust_pyreth_alarmed.png` | 22x23 | Bust: Elder Pyreth, alarmed (22x23) | expressions set v1 |
+| `cast/bust_pyreth_angry.png` | 22x23 | Bust: Elder Pyreth, angry (22x23) | expressions set v1 |
+| `cast/bust_pyreth_determined.png` | 22x23 | Bust: Elder Pyreth, determined (22x23) | expressions set v1 |
+| `cast/bust_pyreth_happy.png` | 22x23 | Bust: Elder Pyreth, happy (22x23) | expressions set v1 |
+| `cast/bust_pyreth_worried.png` | 22x23 | Bust: Elder Pyreth, worried (22x23) | expressions set v1 |
+| `cast/bust_rodain_alarmed.png` | 22x23 | Bust: Captain Rodain, alarmed (22x23) | expressions set v1 |
+| `cast/bust_rodain_angry.png` | 22x23 | Bust: Captain Rodain, angry (22x23) | expressions set v1 |
+| `cast/bust_rodain_determined.png` | 22x23 | Bust: Captain Rodain, determined (22x23) | expressions set v1 |
+| `cast/bust_rodain_happy.png` | 22x23 | Bust: Captain Rodain, happy (22x23) | expressions set v1 |
+| `cast/bust_rodain_worried.png` | 22x23 | Bust: Captain Rodain, worried (22x23) | expressions set v1 |
+| `cast/bust_sera_alarmed.png` | 22x23 | Bust: Sera, alarmed (22x23) | expressions set v1 |
+| `cast/bust_sera_angry.png` | 22x23 | Bust: Sera, angry (22x23) | expressions set v1 |
+| `cast/bust_sera_grieving.png` | 22x23 | Bust: Sera, grieving (22x23) | expressions set v1 |
+| `cast/bust_sera_happy.png` | 22x23 | Bust: Sera, happy (22x23) | expressions set v1 |
+| `cast/bust_sera_worried.png` | 22x23 | Bust: Sera, worried (22x23) | expressions set v1 |
+| `cast/bust_thornwick_angry.png` | 22x23 | Bust: Thornwick, angry (22x23) | expressions set v1 |
+| `cast/bust_thornwick_determined.png` | 22x23 | Bust: Thornwick, determined (22x23) | expressions set v1 |
+| `cast/bust_thornwick_grieving.png` | 22x23 | Bust: Thornwick, grieving (22x23) | expressions set v1 |
+| `cast/bust_thornwick_happy.png` | 22x23 | Bust: Thornwick, happy (22x23) | expressions set v1 |
+| `cast/bust_thornwick_worried.png` | 22x23 | Bust: Thornwick, worried (22x23) | expressions set v1 |
+| `cast/bust_varn_alarmed.png` | 22x23 | Bust: Varn, alarmed (22x23) | expressions set v1 |
+| `cast/bust_varn_angry.png` | 22x23 | Bust: Varn, angry (22x23) | expressions set v1 |
+| `cast/bust_varn_grieving.png` | 22x23 | Bust: Varn, grieving (22x23) | expressions set v1 |
+| `cast/bust_varn_happy.png` | 22x23 | Bust: Varn, happy (22x23) | expressions set v1 |
+| `cast/bust_varn_worried.png` | 22x23 | Bust: Varn, worried (22x23) | expressions set v1 |
 | `story/story_elder-approaches.png` | 130x96 | Story: The Elder Approaches (130x96) | story scenes v1 |
 | `story/story_renown.png` | 130x96 | Story: Renown (130x96) | story scenes v1 |
 | `story/story_wall-holds.png` | 130x96 | Story: The Wall Holds (130x96) | story scenes v1 |
