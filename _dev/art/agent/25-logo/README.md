@@ -30,8 +30,8 @@ small spaced caps.
   slash as debris. The shield is redrawn from its polygons at every size, so the zoom stays crisp; the
   last frame is `logo_shield_icon.png` exactly. Output: `logo_anim_frames_strip20.png`,
   `logo_anim_timing.json`, `preview/logo_anim.gif`.
-- **Splash timing** (owner): 5.8 seconds in all. Earlier cuts are kept with their preview GIFs:
-  `splash_timing_v1` (5.5 s), `_v2` (8.4 s) and `_v3` (6.2 s).
+- **Splash timing** (owner): 5.5 seconds in all, back to the first cut after trying others, all kept:
+  `splash_timing_v1` (5.5 s), `_v2` (8.4 s), `_v3` (6.2 s) and `_v4` (5.8 s).
 - **A's slam dust, v2** (owner: "more all around the shield, to make the impact more impactful"): a ring
   of uneven puffs bursts from behind the whole shield, spreads and breaks up over four frames. The first
   cut is kept as `out/logo_anim_frames_strip19_v1.png` and `preview/logo_anim_v1.gif`.

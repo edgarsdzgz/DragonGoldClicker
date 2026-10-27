@@ -67,13 +67,8 @@ a = Image.open(anim)
 chosen = (f'<figure><img src="data:image/gif;base64,{base64.b64encode(anim.read_bytes()).decode()}" '
           f'width="{a.width}" height="{a.height}" alt="Logo A in motion"><figcaption>A in motion, x4: the slam, '
           f'the claws, the debris</figcaption></figure>') + chosen
-cards = ('<h3>The studio intro: RAXDEG STUDIOS</h3><p class="muted">The shield as the studio&rsquo;s animation. After '
-         'the claws, one more slash rips across the top from left to right and carves the name out of the dark: '
-         'the letters burn white-hot in its wake and cool to gold. About 4.1 seconds, then it holds. It would '
-         'play before the game&rsquo;s splash.</p>'
-         f'<div class="tiles">{studio}</div>')
-cards += ('<h3>Chosen: A is the logo and app icon, B is the splash</h3><p class="muted">The splash fades in from '
-         'the dark one piece at a time in palette steps (silhouette, dusk, lit), 5.8 seconds in all, ending on a hold. A also has an intro of its own: the shield slams in from the foreground, the claws rip upward, the debris settles, about 3 seconds.</p>'
+cards = ('<h3>Chosen: A is the logo and app icon, B is the splash</h3><p class="muted">The splash fades in from '
+         'the dark one piece at a time in palette steps (silhouette, dusk, lit), 5.5 seconds in all, ending on a hold. A also has an intro of its own: the shield slams in from the foreground, the claws rip upward, the debris settles, about 3 seconds.</p>'
          f'<div class="tiles">{chosen}</div>')
 for cid, title, note in CONCEPTS:
     icon = Image.open(OUT / f"logo_{cid}_icon.png").convert("RGBA")
@@ -82,6 +77,52 @@ for cid, title, note in CONCEPTS:
             + fig(masked(icon, "rounded"), 1, "iPhone rounded") + fig(icon, 4, "x4") + fig(lock, 3, "The logo, x3"))
     cards += (f"<h3>{html.escape(title)}</h3><p class=\"muted\">{html.escape(note)}</p>"
               f"<div class=\"tiles\">{figs}</div>")
+
+# The bottom section: everything RAXDEG STUDIOS, the shield as the studio's startup splash.
+FONTS = HERE.parent / "26-studio-fonts"
+OPTIONS = [("light", "Light gold above", "The five-by-seven face in the gold ramp; the current intro."),
+           ("steel", "Bold steel, framing", "A bold block face in silver above, STUDIOS in small spaced caps below."),
+           ("ember", "Ember italic", "A bold face leaning like a slash, in ember tones."),
+           ("ribbon", "The ribbon", "A parchment ribbon across the shield's foot, the name inked on it."),
+           ("side", "Side by side", "A horizontal lockup: the shield left, RAXDEG over STUDIOS right.")]
+opts = "".join(fig(Image.open(FONTS / "out" / f"studio_{k}.png").convert("RGBA"), 3, f"{t}: {n}") for k, t, n in OPTIONS)
+data = (FONTS / "out" / "playground_data.json").read_text(encoding="utf-8").replace("</", "<\\/")
+script = (FONTS / "playground.js").read_text(encoding="utf-8")
+bottom = f"""
+  <section class="studio">
+    <h2>RAXDEG STUDIOS</h2>
+    <p class="muted">The shield is also the studio's startup splash, playing before the game's own. Here is the intro as
+      it stands, five lettering ideas, and a playground to try more.</p>
+    <h3>The studio intro</h3>
+    <p class="muted">After the claws, one more slash rips across the top from left to right and carves the name out of
+      the dark: the letters burn white-hot in its wake and cool to gold. About 4.1 seconds, then it holds.</p>
+    <div class="tiles">{studio}</div>
+    <h3>Lettering ideas, x3</h3>
+    <div class="tiles">{opts}</div>
+    <h3>Playground</h3>
+    <p class="muted">Pick a face, a color, a layout, the letter spacing and the zoom; the card redraws in real pixels.</p>
+    <div class="pg">
+      <div class="controls">
+        <label>Face <select id="pg-font">
+          <option value="light">Light (5x7)</option><option value="bold">Bold block (7x9)</option>
+          <option value="ember">Bold italic (6x7)</option><option value="tiny">Small caps (3x5)</option></select></label>
+        <label>Color <select id="pg-color">
+          <option value="gold">Gold</option><option value="steel">Steel</option><option value="ember">Ember</option>
+          <option value="parchment">Parchment</option><option value="ruby">Ruby</option>
+          <option value="emerald">Emerald</option><option value="ink">Ink (for the ribbon)</option></select></label>
+        <label>Layout <select id="pg-layout">
+          <option value="above">Name above</option><option value="below">Name below</option>
+          <option value="split">RAXDEG above, STUDIOS below</option><option value="ribbon">Ribbon across the shield</option>
+          <option value="side">Side by side</option></select></label>
+        <label>Letter spacing <input id="pg-gap" type="range" min="1" max="3" value="1"> <output id="pg-gap-out">1</output></label>
+        <label>Zoom <input id="pg-zoom" type="range" min="2" max="6" value="4"> <output id="pg-zoom-out">x4</output></label>
+        <p class="muted" id="pg-size"></p>
+      </div>
+      <div class="stage"><canvas id="pg-canvas" aria-label="The studio card as set in the playground"></canvas></div>
+    </div>
+  </section>
+  <script type="application/json" id="pg-data">{data}</script>
+  <script>{script}</script>"""
 
 page = f"""<title>Draconia Logo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -103,6 +144,17 @@ page = f"""<title>Draconia Logo</title>
   figure {{ margin: 0; display: grid; gap: 6px; justify-items: center; max-width: 100%; }}
   figure img {{ image-rendering: pixelated; max-width: 100%; height: auto; }}
   figcaption {{ font-size: .8rem; color: var(--muted); text-align: center; }}
+  h2 {{ font-family: Cinzel, Georgia, serif; color: var(--gold); margin: 0; font-size: 1.3rem; letter-spacing: .04em; }}
+  .studio {{ display: grid; gap: 14px; margin-top: 40px; padding-top: 28px; border-top: 2px solid var(--line); min-width: 0; }}
+  .pg {{ display: flex; flex-wrap: wrap; gap: 20px; background: var(--panel); border: 1px solid var(--line); padding: 16px; }}
+  .controls {{ display: grid; gap: 12px; align-content: start; min-width: 220px; flex: 0 1 260px; }}
+  .controls label {{ display: grid; gap: 4px; font-size: .85rem; color: var(--muted); }}
+  .controls select, .controls input {{ font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line);
+    padding: 6px 8px; min-height: 36px; }}
+  .controls input[type=range] {{ padding: 0; accent-color: var(--gold); }}
+  .controls output {{ color: var(--fg); }}
+  .stage {{ flex: 1 1 300px; min-width: 0; display: grid; place-items: center; overflow-x: auto; }}
+  #pg-canvas {{ image-rendering: pixelated; max-width: 100%; height: auto; }}
 </style>
 <main>
   <header>
@@ -113,6 +165,7 @@ page = f"""<title>Draconia Logo</title>
       three &middot; 2026-10-27</p>
   </header>
   {cards}
+  {bottom}
 </main>
 """
 (HERE / "board.html").write_text(page, encoding="utf-8")

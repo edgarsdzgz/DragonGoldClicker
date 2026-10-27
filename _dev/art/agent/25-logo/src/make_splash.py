@@ -19,10 +19,11 @@ from make_logo import OUT, P, PREVIEW, S, background, canvas, ellipse, mask_of, 
 
 STONE = "night3"
 # Owner, 2026-10-27: "can we slow it down, please?", then "meet me in the middle, 6.2 seconds". The
-# beats stretch evenly so the whole splash, final hold included, runs TOTAL_MS (owner, then: 5.8 s).
+# beats stretch evenly so the whole splash, final hold included, runs TOTAL_MS (owner, then 5.8 s, then
+# "I concede, you were correct at 5.5 seconds").
 # Earlier timings are
-# kept: out/splash_timing_v1.json (5.5 s), _v2 (8.4 s) and _v3 (6.2 s).
-TOTAL_MS = 5800
+# kept: out/splash_timing_v1.json (5.5 s), _v2 (8.4 s), _v3 (6.2 s) and _v4 (5.8 s).
+TOTAL_MS = 5500
 # Glow colors keep their value in the night map, so a fade steps them down by hand.
 GLOW_DIM = {
     1: {"fire1": "wood1", "fire2": "wood1", "fire3": "wood2", "gold5": "wood1", "gold6": "wood2"},
