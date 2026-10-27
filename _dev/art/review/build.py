@@ -17,12 +17,17 @@ AGENT = ART / "agent"
 OFFICIAL = ART / "official"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "review.html"
 
-# The batch awaiting the owner's approval: (folder, title, [(file stem, label), ...]), or None.
-PENDING = ("09-icons-4", "Icon sheet 4: the last twelve interface icons", [
-    ("icon_next", "Next"), ("icon_unknown", "Unknown, help"), ("icon_info", "Info"),
-    ("icon_rising", "Rising stores"), ("icon_falling", "Falling stores"), ("icon_rank", "Rank"),
-    ("icon_shield_gear", "Shield gear"), ("icon_claws", "Claws"), ("icon_moon", "Offline, rest"),
-    ("icon_sparkles", "Wizard's Tower"), ("icon_map", "Map"), ("icon_stats", "Stats")])
+# The batch awaiting the owner's approval: (title, [(path under agent/, label), ...]), or None.
+PENDING = ("Icon sheet 4: the last twelve interface icons, with the owner's picks from the options", [
+    ("09-icons-4/out/icon_next.png", "Next"),
+    ("11-options-3/out/icon_unknown_crystal_gold.png", "Unknown, help (crystal ball)"),
+    ("10-options-2/out/icon_info_runestone.png", "Info (rune stone)"),
+    ("10-options-2/out/icon_rising_chevrons.png", "Rising stores (chevrons)"),
+    ("10-options-2/out/icon_falling_chevrons.png", "Falling stores (chevrons)"),
+    ("09-icons-4/out/icon_rank.png", "Rank"), ("09-icons-4/out/icon_shield_gear.png", "Shield gear"),
+    ("09-icons-4/out/icon_claws.png", "Claws"), ("09-icons-4/out/icon_moon.png", "Offline, rest"),
+    ("09-icons-4/out/icon_sparkles.png", "Wizard's Tower"), ("09-icons-4/out/icon_map.png", "Map"),
+    ("09-icons-4/out/icon_stats.png", "Stats (open: see the options page)")])
 MOTION = [
     (AGENT / "01-test-run/preview/scene_warfront.gif", "The fighter's jab and the hit spark on the Warfront wall"),
     (AGENT / "01-test-run/preview/ppl_fighter_attack.gif", "Fighter jab, 6 fps"),
@@ -61,8 +66,8 @@ def official_rows():
 
 pending_section = ""
 if PENDING:
-    folder, title, items = PENDING
-    tiles = "".join(tile(AGENT / folder / "out" / f"{stem}.png", label, 6) for stem, label in items)
+    title, items = PENDING
+    tiles = "".join(tile(AGENT / rel, label, 6) for rel, label in items)
     pending_section = (f'<section><h2>{html.escape(title)} <span class="tag">awaiting approval</span></h2>'
                        f'<div class="tiles">{tiles}</div></section>')
 groups = {"icons": [], "people": [], "fx": [], "events": []}

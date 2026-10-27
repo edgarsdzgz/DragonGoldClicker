@@ -1,0 +1,96 @@
+# Interface options 3, 2026-10-26. Written by make_options.py.
+
+# Unknown: the crystal ball with the gold question mark
+@asset icon_unknown_crystal_gold
+size 12 12
+budget 8
+key a=ink W=steel5 L=night4 m=night3 d=night2 H=gold5 g=gold3 w=wood3
+frame
+....aaaa....
+...aLLLma...
+..aWHHHHma..
+.aLHgmmHgma.
+.aLmmmmHgda.
+ammmmmHgmmma
+.aLmmHgmmda.
+.ammmmmmmda.
+..ammHgmda..
+...amddda...
+..awwwwwwa..
+...aaaaaa...
+
+# Stats B: an arcane abacus, glowing beads in a dark frame with gold corners
+@asset icon_stats_arcane_abacus
+size 12 12
+budget 8
+key a=ink G=gold4 D=wood2 k=night1 r=steel1 B=sea3 b=sea2 L=night4 l=night3
+frame
+aaaaaaaaaaaa
+aGDDDDDDDDGa
+aDBBkLLkkkDa
+aDbbrllrrrDa
+aDkkkkkkkkDa
+aDkkkBBkLLDa
+aDrrrbbrllDa
+aDkkkkkkkkDa
+aDLLBBkkkkDa
+aDllbbrrrrDa
+aGDDDDDDDDGa
+aaaaaaaaaaaa
+
+# Stats C: three crystal shards growing from a rock, like rising bars
+@asset icon_stats_crystals
+size 12 12
+budget 8
+key a=ink W=steel5 H=sea3 g=sea2 S=steel3 s=steel2
+frame
+........a...
+.......aWa..
+.......aHga.
+.....a.aHga.
+....aWaaHga.
+....aHgaHga.
+..a.aHgaHga.
+.aWaaHgaHga.
+.aHgaHgaHga.
+.aHgaHgaHga.
+aSSSSSSSSSsa
+aaaaaaaaaaaa
+
+# Stats D: a standing stone with three glowing bars carved in it
+@asset icon_stats_runetablet
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel3 s=steel2 B=sea3 W=steel5 g=green2
+frame
+...aaaaaa...
+..ahhhhhma..
+.ahmmmmmmsa.
+.ahmmmmWmsa.
+.ahmmmmBmsa.
+.ahmmWmBmsa.
+.ahmmBmBmsa.
+.ahWmBmBmsa.
+.ahBmBmBmsa.
+.ahBmBmBmsa.
+.agggmmggga.
+.aaaaaaaaaa.
+
+# Stats E: three alchemist's vials, filled to rising levels
+@asset icon_stats_vials
+size 12 12
+budget 8
+key a=ink W=steel5 e=night2 B=sea3 b=sea2 L=green3 l=green2 H=gold5 g=gold3
+frame
+.aaaaaaaaaa.
+.aWeaWeaWea.
+.aeeaeeaHHa.
+.aeeaeeagga.
+.aeeaLLagga.
+.aeeallagga.
+.aBBallagga.
+.abballagga.
+.abballagga.
+.abballagga.
+..aa.aa.aa..
+............
