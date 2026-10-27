@@ -279,6 +279,10 @@ ASSETS = [
     ("mobs/mob_raider-stronger_walk_strip2.png", AGENT / "24-mobs-unmaking/out/stronger/mob_raider-stronger_walk_strip2.png", "Raider, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps)", "Unmaking tiers"),
     ("logo/logo_anim_frames_strip20.png", AGENT / "25-logo/out/logo_anim_frames_strip20.png", "Logo animation: the shield slams in, the claws slash upward, the logo assembles (play with logo_anim_timing.json)", "logo"),
     ("logo/logo_anim_timing.json", AGENT / "25-logo/out/logo_anim_timing.json", "Logo animation: each frame's hold in ms, frame size, background", "logo"),
+    ("icons/icon_heartstone.png", AGENT / "32-heartstone/out/icon_heartstone-teardrop-flame_12.png", "The heartstone: a teardrop of aetherglass with the heart-flame inside, 12x12", "heartstone v3"),
+    ("icons/icon_heartstone_flicker_strip4.png", AGENT / "32-heartstone/out/icon_heartstone-teardrop-flame_12_flicker_strip4.png", "The heartstone, its flame flickering, 12x12 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms)", "heartstone v3"),
+    ("icons/icon_heartstone_16.png", AGENT / "32-heartstone/out/icon_heartstone-teardrop-flame_16.png", "The heartstone, 16x16", "heartstone v3"),
+    ("icons/icon_heartstone_16_flicker_strip4.png", AGENT / "32-heartstone/out/icon_heartstone-teardrop-flame_16_flicker_strip4.png", "The heartstone, its flame flickering, 16x16 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms)", "heartstone v3"),
 ]
 
 rows = []

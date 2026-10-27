@@ -273,3 +273,7 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_raider-stronger_walk_strip2.png` | 26x19 | Raider, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
 | `logo/logo_anim_frames_strip20.png` | 1280x64 | Logo animation: the shield slams in, the claws slash upward, the logo assembles (play with logo_anim_timing.json) | logo |
 | `logo/logo_anim_timing.json` |  | Logo animation: each frame's hold in ms, frame size, background | logo |
+| `icons/icon_heartstone.png` | 12x12 | The heartstone: a teardrop of aetherglass with the heart-flame inside, 12x12 | heartstone v3 |
+| `icons/icon_heartstone_flicker_strip4.png` | 48x12 | The heartstone, its flame flickering, 12x12 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms) | heartstone v3 |
+| `icons/icon_heartstone_16.png` | 16x16 | The heartstone, 16x16 | heartstone v3 |
+| `icons/icon_heartstone_16_flicker_strip4.png` | 64x16 | The heartstone, its flame flickering, 16x16 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms) | heartstone v3 |
