@@ -1018,3 +1018,82 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_lich-stronger_hurt.png` | 22x28 | Lich (boss, v2a), stronger (the Unmaking's deepest): hurt | bestiary bosses v1 |
 | `mobs/mob_lich-stronger_walk_strip2.png` | 44x28 | Lich (boss, v2a), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary bosses v1 |
 | `mobs/mob_lich-stronger_death_strip4.png` | 136x28 | Lich (boss, v2a), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary bosses v1 |
+| `mobs/mob_giant-bat_idle.png` | 21x14 | Giant Bat (flier): idle | bestiary fliers v1 |
+| `mobs/mob_giant-bat_hit.png` | 21x14 | Giant Bat (flier): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_giant-bat_hurt.png` | 21x14 | Giant Bat (flier): hurt | bestiary fliers v1 |
+| `mobs/mob_giant-bat_walk_strip2.png` | 42x14 | Giant Bat (flier): a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_giant-bat_death_strip4.png` | 108x14 | Giant Bat (flier): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_giant-bat-strong_idle.png` | 21x14 | Giant Bat (flier), strong: idle | bestiary fliers v1 |
+| `mobs/mob_giant-bat-strong_hit.png` | 21x14 | Giant Bat (flier), strong: hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_giant-bat-strong_hurt.png` | 21x14 | Giant Bat (flier), strong: hurt | bestiary fliers v1 |
+| `mobs/mob_giant-bat-strong_walk_strip2.png` | 42x14 | Giant Bat (flier), strong: a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_giant-bat-strong_death_strip4.png` | 108x14 | Giant Bat (flier), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_giant-bat-stronger_idle.png` | 21x14 | Giant Bat (flier), stronger (the Unmaking's deepest): idle | bestiary fliers v1 |
+| `mobs/mob_giant-bat-stronger_hit.png` | 21x14 | Giant Bat (flier), stronger (the Unmaking's deepest): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_giant-bat-stronger_hurt.png` | 21x14 | Giant Bat (flier), stronger (the Unmaking's deepest): hurt | bestiary fliers v1 |
+| `mobs/mob_giant-bat-stronger_walk_strip2.png` | 42x14 | Giant Bat (flier), stronger (the Unmaking's deepest): a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_giant-bat-stronger_death_strip4.png` | 108x14 | Giant Bat (flier), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_harpy_idle.png` | 21x18 | Harpy (flier): idle | bestiary fliers v1 |
+| `mobs/mob_harpy_hit.png` | 21x18 | Harpy (flier): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_harpy_hurt.png` | 21x18 | Harpy (flier): hurt | bestiary fliers v1 |
+| `mobs/mob_harpy_walk_strip2.png` | 42x18 | Harpy (flier): a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_harpy_death_strip4.png` | 108x18 | Harpy (flier): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_harpy-strong_idle.png` | 21x18 | Harpy (flier), strong: idle | bestiary fliers v1 |
+| `mobs/mob_harpy-strong_hit.png` | 21x18 | Harpy (flier), strong: hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_harpy-strong_hurt.png` | 21x18 | Harpy (flier), strong: hurt | bestiary fliers v1 |
+| `mobs/mob_harpy-strong_walk_strip2.png` | 42x18 | Harpy (flier), strong: a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_harpy-strong_death_strip4.png` | 108x18 | Harpy (flier), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_harpy-stronger_idle.png` | 21x18 | Harpy (flier), stronger (the Unmaking's deepest): idle | bestiary fliers v1 |
+| `mobs/mob_harpy-stronger_hit.png` | 21x18 | Harpy (flier), stronger (the Unmaking's deepest): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_harpy-stronger_hurt.png` | 21x18 | Harpy (flier), stronger (the Unmaking's deepest): hurt | bestiary fliers v1 |
+| `mobs/mob_harpy-stronger_walk_strip2.png` | 42x18 | Harpy (flier), stronger (the Unmaking's deepest): a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_harpy-stronger_death_strip4.png` | 108x18 | Harpy (flier), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair_idle.png` | 25x18 | Mantair Corsair (flier): idle | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair_hit.png` | 25x18 | Mantair Corsair (flier): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair_hurt.png` | 25x18 | Mantair Corsair (flier): hurt | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair_walk_strip2.png` | 50x18 | Mantair Corsair (flier): a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair_death_strip4.png` | 124x18 | Mantair Corsair (flier): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-strong_idle.png` | 25x18 | Mantair Corsair (flier), strong: idle | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-strong_hit.png` | 25x18 | Mantair Corsair (flier), strong: hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-strong_hurt.png` | 25x18 | Mantair Corsair (flier), strong: hurt | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-strong_walk_strip2.png` | 50x18 | Mantair Corsair (flier), strong: a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-strong_death_strip4.png` | 124x18 | Mantair Corsair (flier), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-stronger_idle.png` | 25x18 | Mantair Corsair (flier), stronger (the Unmaking's deepest): idle | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-stronger_hit.png` | 25x18 | Mantair Corsair (flier), stronger (the Unmaking's deepest): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-stronger_hurt.png` | 25x18 | Mantair Corsair (flier), stronger (the Unmaking's deepest): hurt | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-stronger_walk_strip2.png` | 50x18 | Mantair Corsair (flier), stronger (the Unmaking's deepest): a wingbeat (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair-stronger_death_strip4.png` | 124x18 | Mantair Corsair (flier), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_storm-rider_idle.png` | 22x25 | Storm Rider (flier): idle | bestiary fliers v1 |
+| `mobs/mob_storm-rider_hit.png` | 22x25 | Storm Rider (flier): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_storm-rider_hurt.png` | 22x25 | Storm Rider (flier): hurt | bestiary fliers v1 |
+| `mobs/mob_storm-rider_walk_strip2.png` | 44x25 | Storm Rider (flier): a gallop on the wind (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_storm-rider_death_strip4.png` | 128x25 | Storm Rider (flier): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_storm-rider-strong_idle.png` | 22x25 | Storm Rider (flier), strong: idle | bestiary fliers v1 |
+| `mobs/mob_storm-rider-strong_hit.png` | 22x25 | Storm Rider (flier), strong: hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_storm-rider-strong_hurt.png` | 22x25 | Storm Rider (flier), strong: hurt | bestiary fliers v1 |
+| `mobs/mob_storm-rider-strong_walk_strip2.png` | 44x25 | Storm Rider (flier), strong: a gallop on the wind (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_storm-rider-strong_death_strip4.png` | 128x25 | Storm Rider (flier), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_storm-rider-stronger_idle.png` | 22x25 | Storm Rider (flier), stronger (the Unmaking's deepest): idle | bestiary fliers v1 |
+| `mobs/mob_storm-rider-stronger_hit.png` | 22x25 | Storm Rider (flier), stronger (the Unmaking's deepest): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_storm-rider-stronger_hurt.png` | 22x25 | Storm Rider (flier), stronger (the Unmaking's deepest): hurt | bestiary fliers v1 |
+| `mobs/mob_storm-rider-stronger_walk_strip2.png` | 44x25 | Storm Rider (flier), stronger (the Unmaking's deepest): a gallop on the wind (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_storm-rider-stronger_death_strip4.png` | 128x25 | Storm Rider (flier), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_wolf-rider_idle.png` | 20x21 | Goblin Wolf Rider: idle | bestiary fliers v1 |
+| `mobs/mob_wolf-rider_hit.png` | 20x21 | Goblin Wolf Rider: hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_wolf-rider_hurt.png` | 20x21 | Goblin Wolf Rider: hurt | bestiary fliers v1 |
+| `mobs/mob_wolf-rider_walk_strip2.png` | 40x21 | Goblin Wolf Rider: walk bob (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_wolf-rider_death_strip4.png` | 112x21 | Goblin Wolf Rider: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-strong_idle.png` | 20x21 | Goblin Wolf Rider, strong: idle | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-strong_hit.png` | 20x21 | Goblin Wolf Rider, strong: hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-strong_hurt.png` | 20x21 | Goblin Wolf Rider, strong: hurt | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-strong_walk_strip2.png` | 40x21 | Goblin Wolf Rider, strong: walk bob (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-strong_death_strip4.png` | 112x21 | Goblin Wolf Rider, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-stronger_idle.png` | 20x21 | Goblin Wolf Rider, stronger (the Unmaking's deepest): idle | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-stronger_hit.png` | 20x21 | Goblin Wolf Rider, stronger (the Unmaking's deepest): hit, the red flash | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-stronger_hurt.png` | 20x21 | Goblin Wolf Rider, stronger (the Unmaking's deepest): hurt | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-stronger_walk_strip2.png` | 40x21 | Goblin Wolf Rider, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary fliers v1 |
+| `mobs/mob_wolf-rider-stronger_death_strip4.png` | 112x21 | Goblin Wolf Rider, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary fliers v1 |
+| `mobs/mob_giant-bat_shadow.png` | 11x3 | Giant Bat: its shadow on the road (draw at half strength, under the lifted flier) | bestiary fliers v1 |
+| `mobs/mob_harpy_shadow.png` | 11x3 | Harpy: its shadow on the road (draw at half strength, under the lifted flier) | bestiary fliers v1 |
+| `mobs/mob_mantair-corsair_shadow.png` | 13x3 | Mantair Corsair: its shadow on the road (draw at half strength, under the lifted flier) | bestiary fliers v1 |
+| `mobs/mob_storm-rider_shadow.png` | 11x3 | Storm Rider: its shadow on the road (draw at half strength, under the lifted flier) | bestiary fliers v1 |

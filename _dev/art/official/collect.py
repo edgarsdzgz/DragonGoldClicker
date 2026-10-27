@@ -431,6 +431,7 @@ BESTIARY = AGENT / "44-bestiary/out"
 REGULARS = AGENT / "45-bestiary-regulars/out"
 ELITES = AGENT / "46-bestiary-elites/out"
 BOSSES = AGENT / "47-bestiary-bosses/out"
+FLIERS = AGENT / "48-bestiary-fliers/out"
 for _dir, _origin, _id, _name in [(BESTIARY, "bestiary v1", i, n) for i, n in (
                    ("rat", "Giant Rat"), ("goblin-scout", "Goblin Scout"), ("goblin-archer", "Goblin Archer"),
                    ("banner-runner", "Banner-Runner"), ("shield-bearer", "Shield Bearer"),
@@ -447,7 +448,10 @@ for _dir, _origin, _id, _name in [(BESTIARY, "bestiary v1", i, n) for i, n in (
             ("orc-warchief", "Orc Warchief (elite)"), ("troll", "Troll (elite)"), ("ogre", "Ogre (elite)"),
             ("iron-golem", "Iron Golem (elite)"), ("windcaller", "Windcaller (elite)"))] +         [(BOSSES, "bestiary bosses v1", i, n) for i, n in (
             ("basilisk", "Basilisk (boss)"), ("spider-queen", "Spider Queen (boss)"),
-            ("corrupted-drake", "Corrupted Drake (boss)"), ("lich", "Lich (boss, v2a)"))]:
+            ("corrupted-drake", "Corrupted Drake (boss)"), ("lich", "Lich (boss, v2a)"))] +         [(FLIERS, "bestiary fliers v1", i, n) for i, n in (
+            ("giant-bat", "Giant Bat (flier)"), ("harpy", "Harpy (flier)"),
+            ("mantair-corsair", "Mantair Corsair (flier)"), ("storm-rider", "Storm Rider (flier)"),
+            ("wolf-rider", "Goblin Wolf Rider"))]:
     for _tier, _label in (("", ""), ("-strong", ", strong"), ("-stronger", ", stronger (the Unmaking's deepest)")):
         _n = f"mob_{_id}{_tier}"
         ASSETS += [
@@ -457,6 +461,17 @@ for _dir, _origin, _id, _name in [(BESTIARY, "bestiary v1", i, n) for i, n in (
             (f"mobs/{_n}_walk_strip2.png", _dir / f"{_n}_walk_strip2.png", f"{_name}{_label}: walk bob (2 frames, 4 fps)", _origin),
             (f"mobs/{_n}_death_strip4.png", _dir / f"{_n}_death_strip4.png", f"{_name}{_label}: death, buckles, falls, lands, unmade (4 frames, 8 fps)", _origin),
         ]
+
+# The fliers fly the road (owner, 2026-10-27): their walk strip is a wingbeat (the Storm Rider's a gallop), and
+# each has a shadow for the game to draw on the road beneath it, at half strength
+for _i, (_dest, _src, _what, _origin) in enumerate(ASSETS):
+    if _origin == "bestiary fliers v1" and _dest.endswith("_walk_strip2.png") and "wolf-rider" not in _dest:
+        _gait = "a gallop on the wind" if "storm-rider" in _dest else "a wingbeat"
+        ASSETS[_i] = (_dest, _src, _what.replace("walk bob", _gait), _origin)
+for _id, _name in (("giant-bat", "Giant Bat"), ("harpy", "Harpy"), ("mantair-corsair", "Mantair Corsair"),
+                   ("storm-rider", "Storm Rider")):
+    ASSETS.append((f"mobs/mob_{_id}_shadow.png", FLIERS / f"mob_{_id}_shadow.png",
+                   f"{_name}: its shadow on the road (draw at half strength, under the lifted flier)", "bestiary fliers v1"))
 
 # The six monsters already in the game, shaded like the busts (44-bestiary v2, owner 2026-10-27): every
 # pose and tier now comes from the shaded set. Same file names and sizes as before.
