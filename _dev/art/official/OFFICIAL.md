@@ -231,6 +231,11 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `cast/bust_mirael.png` | 22x23 | Bust: Scout Mirael (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
 | `cast/bust_kael.png` | 22x23 | Bust: Kael Ironwright (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
 | `cast/bust_lirae.png` | 22x23 | Bust: Lirae the Ink-Wing (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
+| `cast/bust_varn.png` | 22x23 | Bust: Varn, Dragon Recruit (22x23, shown at x2 in a 44x46 slot) | future busts v1 |
+| `cast/bust_ashara.png` | 22x23 | Bust: Ashara, Elder Wyrm (22x23, shown at x2 in a 44x46 slot) | future busts v1 |
+| `cast/bust_thornwick.png` | 22x23 | Bust: Thornwick, the Exiled Mage: human, gnomish ears (22x23, shown at x2 in a 44x46 slot) | future busts v3 |
+| `cast/bust_sera.png` | 22x23 | Bust: Sera the Shieldmaiden: bearfolk (22x23, shown at x2 in a 44x46 slot) | future busts v2 |
+| `cast/bust_hollow-knight.png` | 22x23 | Bust: The Hollow Knight (22x23, shown at x2 in a 44x46 slot) | future busts v1 |
 | `mobs/mob_kobold-strong_idle.png` | 13x16 | Kobold, strong (deeper cracks): idle | Unmaking tiers |
 | `mobs/mob_kobold-strong_hit.png` | 13x16 | Kobold, strong (deeper cracks): hit, the red flash | Unmaking tiers |
 | `mobs/mob_kobold-strong_hurt.png` | 13x16 | Kobold, strong (deeper cracks): hurt | Unmaking tiers |
