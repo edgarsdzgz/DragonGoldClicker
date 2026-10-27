@@ -27,7 +27,7 @@ PENDING = ("The thirteen research studies, and Villagers and Train as townsfolk 
     ('13-research/out/icon_res_battle_drill.png', 'Battle Drill'),
     ('13-research/out/icon_res_rationing.png', 'Rationing'),
     ('13-research/out/icon_res_lean_rations.png', 'Lean Rations'),
-    ('13-research/out/icon_res_snares_and_nets.png', 'Snares and Nets'),
+    ('18-snare/out/icon_res_snare_spring.png', 'Snares and Nets (spring snare)'),
     ('13-research/out/icon_res_feast_hall.png', 'Feast Hall'),
     ('16-research-options-2/out/icon_res_mortar_trowel2.png', 'Mortar Craft (trowel)'),
     ('13-research/out/icon_res_night_ledgers.png', 'Night Ledgers'),
