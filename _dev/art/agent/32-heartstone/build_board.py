@@ -9,7 +9,7 @@ from PIL import Image
 
 HERE = pathlib.Path(__file__).parent
 sys.path.insert(0, str(HERE.parent / "00-foundation"))
-from boardkit import fig, page, section, uri  # noqa: E402
+from boardkit import fig, gif_fig, page, section, uri  # noqa: E402
 
 OUT = HERE / "out"
 ICONS = HERE.parents[1] / "official" / "icons"
@@ -39,16 +39,19 @@ for sid, name, note in SHAPES:
     row = "".join(img(ICONS / f"icon_{n}.png", 4) for n in ("flame", "shield", "star")) + img(small, 4) + \
         "".join(img(ICONS / f"icon_{n}.png", 4) for n in ("scroll", "compass"))
     card = (f'<div class="card">{img(big, 4)}<div><b>The Heartstone</b><p>A drop of your heart-flame in '
-            f'aetherglass. Not a weapon: a heart.</p></div></div>')
+            f'aetherglass, glowing. Not a weapon: a heart.</p></div></div>')
     shapes.append(section(name, html.escape(note), [
         fig(small, 8, "12x12 (x8)"), fig(big, 8, "16x16 (x8)"),
+        gif_fig(HERE / "preview" / f"icon_heartstone-{sid}_16_pulse.gif", 1, "The pulse, 16x16 (x8)"),
+        gif_fig(HERE / "preview" / f"icon_heartstone-{sid}_12_pulse.gif", 1, "The pulse, 12x12 (x8)"),
         f'<figure><div class="icons">{row}</div><figcaption>Among the icons (x4)</figcaption></figure>',
         f'<figure>{card}<figcaption>On an item card (16x16, x4)</figcaption></figure>']))
 
-out = page("Draconia Heartstone", "The heartstone",
+out = page("Draconia Heartstone", "The heartstone, v2",
            "From the lore's Arcana Pendants: a crystal of aetherglass holding a droplet of the wearer's "
            "heart-flame, in silver-gold filigree. “The Pendants we wear are not weapons, but hearts.” "
-           "Four shapes, each at the icon set's 12x12 and at 16x16. The flame is orange and gold; red stays "
-           "for danger &middot; 2026-10-27", shapes, CSS)
-(HERE / "board.html").write_text(out, encoding="utf-8")
-print(f"board.html: {len(out) // 1024} KB")
+           "v2: the flame is now a glowing pulse, a white-gold core that swells and fades in 4 frames, like a "
+           "heartbeat. Four shapes, each at the icon set's 12x12 and at 16x16. The v1 flame board is kept "
+           "&middot; 2026-10-27", shapes, CSS)
+(HERE / "board_v2.html").write_text(out, encoding="utf-8")
+print(f"board_v2.html: {len(out) // 1024} KB")
