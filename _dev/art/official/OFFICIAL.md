@@ -236,6 +236,15 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `cast/bust_thornwick.png` | 22x23 | Bust: Thornwick, the Exiled Mage: human, gnomish ears (22x23, shown at x2 in a 44x46 slot) | future busts v3 |
 | `cast/bust_sera.png` | 22x23 | Bust: Sera the Shieldmaiden: bearfolk (22x23, shown at x2 in a 44x46 slot) | future busts v2 |
 | `cast/bust_hollow-knight.png` | 22x23 | Bust: The Hollow Knight (22x23, shown at x2 in a 44x46 slot) | future busts v1 |
+| `interiors/int_keep.png` | 110x34 | Interior header: Draconia Keep: the throne hall (110x34) | interiors v1 |
+| `interiors/int_lodge.png` | 110x34 | Interior header: Ranger's Lodge (110x34) | interiors v1 |
+| `interiors/int_outpost.png` | 110x34 | Interior header: Explorer's Outpost (110x34) | interiors v1 |
+| `interiors/int_librarium.png` | 110x34 | Interior header: Librarium (110x34) | interiors v1 |
+| `interiors/int_forge.png` | 110x34 | Interior header: The Forge (110x34) | interiors v1 |
+| `interiors/int_garrison.png` | 110x34 | Interior header: Garrison (110x34) | interiors v1 |
+| `interiors/int_housing.png` | 110x34 | Interior header: Housing (110x34) | interiors v1 |
+| `interiors/int_tower.png` | 110x34 | Interior header: Wall towers, east and west (110x34) | interiors v1 |
+| `interiors/int_wizard-tower.png` | 110x34 | Interior header: Wizard's Tower (110x34) | interiors v1 |
 | `mobs/mob_kobold-strong_idle.png` | 13x16 | Kobold, strong (deeper cracks): idle | Unmaking tiers |
 | `mobs/mob_kobold-strong_hit.png` | 13x16 | Kobold, strong (deeper cracks): hit, the red flash | Unmaking tiers |
 | `mobs/mob_kobold-strong_hurt.png` | 13x16 | Kobold, strong (deeper cracks): hurt | Unmaking tiers |
