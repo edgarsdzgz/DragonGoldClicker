@@ -231,3 +231,45 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `cast/bust_mirael.png` | 22x23 | Bust: Scout Mirael (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
 | `cast/bust_kael.png` | 22x23 | Bust: Kael Ironwright (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
 | `cast/bust_lirae.png` | 22x23 | Bust: Lirae the Ink-Wing (22x23, shown at x2 in a 44x46 slot) | simpler busts v4 |
+| `mobs/mob_kobold-strong_idle.png` | 13x16 | Kobold, strong (deeper cracks): idle | Unmaking tiers |
+| `mobs/mob_kobold-strong_hit.png` | 13x16 | Kobold, strong (deeper cracks): hit, the red flash | Unmaking tiers |
+| `mobs/mob_kobold-strong_hurt.png` | 13x16 | Kobold, strong (deeper cracks): hurt | Unmaking tiers |
+| `mobs/mob_kobold-strong_walk_strip2.png` | 26x16 | Kobold, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_goblin-strong_idle.png` | 13x16 | Goblin, strong (deeper cracks): idle | Unmaking tiers |
+| `mobs/mob_goblin-strong_hit.png` | 13x16 | Goblin, strong (deeper cracks): hit, the red flash | Unmaking tiers |
+| `mobs/mob_goblin-strong_hurt.png` | 13x16 | Goblin, strong (deeper cracks): hurt | Unmaking tiers |
+| `mobs/mob_goblin-strong_walk_strip2.png` | 26x16 | Goblin, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_crawler-strong_idle.png` | 15x11 | Shadow Crawler, strong (deeper cracks): idle | Unmaking tiers |
+| `mobs/mob_crawler-strong_hit.png` | 15x11 | Shadow Crawler, strong (deeper cracks): hit, the red flash | Unmaking tiers |
+| `mobs/mob_crawler-strong_hurt.png` | 15x11 | Shadow Crawler, strong (deeper cracks): hurt | Unmaking tiers |
+| `mobs/mob_crawler-strong_walk_strip2.png` | 30x11 | Shadow Crawler, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_orc-strong_idle.png` | 14x19 | Orc, strong (deeper cracks): idle | Unmaking tiers |
+| `mobs/mob_orc-strong_hit.png` | 14x19 | Orc, strong (deeper cracks): hit, the red flash | Unmaking tiers |
+| `mobs/mob_orc-strong_hurt.png` | 14x19 | Orc, strong (deeper cracks): hurt | Unmaking tiers |
+| `mobs/mob_orc-strong_walk_strip2.png` | 28x19 | Orc, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_raider-strong_idle.png` | 13x19 | Raider, strong (deeper cracks): idle | Unmaking tiers |
+| `mobs/mob_raider-strong_hit.png` | 13x19 | Raider, strong (deeper cracks): hit, the red flash | Unmaking tiers |
+| `mobs/mob_raider-strong_hurt.png` | 13x19 | Raider, strong (deeper cracks): hurt | Unmaking tiers |
+| `mobs/mob_raider-strong_walk_strip2.png` | 26x19 | Raider, strong (deeper cracks): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_kobold-stronger_idle.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): idle | Unmaking tiers |
+| `mobs/mob_kobold-stronger_hit.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
+| `mobs/mob_kobold-stronger_hurt.png` | 13x16 | Kobold, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
+| `mobs/mob_kobold-stronger_walk_strip2.png` | 26x16 | Kobold, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_goblin-stronger_idle.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): idle | Unmaking tiers |
+| `mobs/mob_goblin-stronger_hit.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
+| `mobs/mob_goblin-stronger_hurt.png` | 13x16 | Goblin, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
+| `mobs/mob_goblin-stronger_walk_strip2.png` | 26x16 | Goblin, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_crawler-stronger_idle.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): idle | Unmaking tiers |
+| `mobs/mob_crawler-stronger_hit.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
+| `mobs/mob_crawler-stronger_hurt.png` | 15x11 | Shadow Crawler, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
+| `mobs/mob_crawler-stronger_walk_strip2.png` | 30x11 | Shadow Crawler, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_orc-stronger_idle.png` | 14x19 | Orc, stronger (the Unmaking's deepest): idle | Unmaking tiers |
+| `mobs/mob_orc-stronger_hit.png` | 14x19 | Orc, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
+| `mobs/mob_orc-stronger_hurt.png` | 14x19 | Orc, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
+| `mobs/mob_orc-stronger_walk_strip2.png` | 28x19 | Orc, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `mobs/mob_raider-stronger_idle.png` | 13x19 | Raider, stronger (the Unmaking's deepest): idle | Unmaking tiers |
+| `mobs/mob_raider-stronger_hit.png` | 13x19 | Raider, stronger (the Unmaking's deepest): hit, the red flash | Unmaking tiers |
+| `mobs/mob_raider-stronger_hurt.png` | 13x19 | Raider, stronger (the Unmaking's deepest): hurt | Unmaking tiers |
+| `mobs/mob_raider-stronger_walk_strip2.png` | 26x19 | Raider, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | Unmaking tiers |
+| `logo/logo_anim_frames_strip20.png` | 1280x64 | Logo animation: the shield slams in, the claws slash upward, the logo assembles (play with logo_anim_timing.json) | logo |
+| `logo/logo_anim_timing.json` |  | Logo animation: each frame's hold in ms, frame size, background | logo |
