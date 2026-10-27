@@ -1,0 +1,350 @@
+# Batch 6: People, 2026-10-27. The game's roles and the wanderers, at townsfolk scale and in the
+# fighter's style (ppl_fighter_idle): a top outline, a 7-wide head with ink-dot eyes, a 5-row body,
+# 2 belt rows, 3 leg rows, flat colors. A held shaft sits in column 9 with its outline in 10, the
+# way the fighter's spear does. Each role is a different people, so the line-up shows the whole town.
+# Rank reads from gear: the conscript's rags and dull spear, the footman's helmet and shield, the
+# knight's plate, plume and pennant. Anchors are the feet, bottom center.
+
+# Conscript: a human in an undyed, patched tunic with a rope belt and a torn hem; a dull spear.
+@asset ppl_conscript
+size 11 20
+budget 9
+ground yes
+anchor 5 19
+key a=ink b=wood3 c=skin2 d=parch2 p=clay1 g=wood2 f=wood1 w=wood4 t=steel2
+frame
+.........a.
+........ata
+........ata
+..aaaaaaawa
+..abbbbbawa
+..abbbbbawa
+..acccccawa
+..acacacawa
+..acccccawa
+..acccccawa
+.adddddddwa
+.adpdddddwa
+.adppdddcwa
+.adddddddwa
+.agggggggwa
+.adddddddwa
+.adadddadwa
+..affaffawa
+..affaffawa
+..affaffaaa
+
+# Footman: a human in a steel nasal helmet and a dark gambeson, a round shield with a steel rim and
+# boss, a steel-tipped spear.
+@asset ppl_footman
+size 11 20
+budget 12
+ground yes
+anchor 5 19
+key a=ink h=steel4 l=steel5 c=skin2 d=night3 r=steel3 k=wood3 o=steel5 e=wood2 f=wood1 w=wood4 s=steel5 t=steel2
+frame
+.........a.
+........asa
+........ata
+..aaaaaaawa
+..ahhlhhawa
+..ahhhhhawa
+..acchccawa
+..acahacawa
+..acccccawa
+..acccccawa
+.arrradddwa
+arkkkraddwa
+arkkkraddwa
+arkokradcwa
+arkkkraddwa
+arkkkraeewa
+.arrraeeewa
+..affaffawa
+..affaffawa
+..affaffaaa
+
+# Knight: full plate under a gold tabard, a great helm with a visor slit and a gold plume, a lance
+# with a gold pennant.
+@asset ppl_knight
+size 13 20
+budget 12
+ground yes
+anchor 5 19
+key a=ink g=gold4 G=gold5 h=steel4 l=steel5 m=steel3 w=wood4 s=steel5 t=steel2
+frame
+....aaa..a...
+...aGga.asa..
+..aGggaaataaa
+..aaaaaaawgGa
+..ahlllhawgga
+..ahhhhhawga.
+..ahaaahawa..
+..ahhhhhawa..
+..ahhhhhawa..
+..ahhhhhawa..
+.alllllllwa..
+.ahhggghhwa..
+.ahhgGghlwa..
+.ahhggghhwa..
+.ahhggghhwa..
+.ammmmmmmwa..
+.ammmmmmmwa..
+..ahhahhawa..
+..ahhahhawa..
+..ammammaaa..
+
+# Gatherer: a halfling (the townsfolk halfling) with a woven basket of greens and berries on the hip.
+@asset ppl_gatherer
+size 15 16
+budget 10
+ground yes
+anchor 5 15
+key a=ink b=wood3 c=skin2 g=green2 p=parch3 h=wood2 s=skin2 k=wood3 w=wood2 n=green3 r=rose3
+frame
+...............
+...............
+...............
+...............
+...aaaaa.......
+..abbbbba......
+..abcccba......
+..acacaca...a..
+..accccca..ana.
+.aggpppggaanrna
+.aggpppggaakkka
+.aggpppggsakkka
+.ahhhhhhhaawwwa
+..ahhahha.aaaaa
+.abssabssa.....
+assssassssa....
+
+# Trapper: an orc (the townsfolk orc) in a fur cap with a pelt slung over the shoulder and a coil
+# of snare rope at the belt.
+@asset ppl_trapper
+size 13 16
+budget 11
+ground yes
+anchor 5 15
+key a=ink b=wood3 o=orc2 O=orc1 w=parch3 x=wood4 e=wood2 f=wood1 u=clay2 U=clay3 r=parch1
+frame
+..aaaaaaa....
+.abbbbbbba...
+.aoooooooa...
+.aoOOoOOoa...
+.aooaoaooa...
+.aowooowoa...
+.aoooooooaaa.
+aoxxxxxxxuua.
+aoxxxxxxxuUua
+aoxxxxxxxuuua
+aoxxxxxxxuUua
+aoxrarxxxuuua
+.aerrreeeauua
+.aeeeeeeeaaa.
+.afffafffa...
+.afffafffa...
+
+# Ranger: an elf under a green hood and cloak, holding a longbow.
+@asset ppl_ranger
+size 14 19
+budget 10
+ground yes
+anchor 5 18
+key a=ink h=green3 c=skin3 d=green2 e=wood2 f=wood1 s=parch1 k=wood3
+frame
+..........aa..
+.........aska.
+..aaaaaaaaska.
+.ahhhhhhhasaka
+.ahhhhhhhasaka
+.ahccccchasaka
+.ahcacachasaka
+.ahccccchasaka
+.ahccccchasaka
+.adddddddasaka
+.adddddddcsaka
+.adddddddasaka
+.adddddddasaka
+.adddddddasaka
+.aeeeeeeeaska.
+.aeeeeeeeaska.
+..affaffa.aa..
+..affaffa.....
+..affaffa.....
+
+# Explorer: horned folk in a traveling coat with pack straps, a crook staff with a lantern hanging
+# from it.
+@asset ppl_explorer
+size 13 20
+budget 10
+ground yes
+anchor 5 19
+key a=ink b=night1 c=night4 d=green1 r=wood1 e=wood2 f=wood1 w=wood4 y=gold6 Y=fire2
+frame
+.........aaa.
+........awwwa
+........awaaa
+..aaaaaaawaya
+..abbbbbawaYa
+..abbbbbawaaa
+..acccccawa..
+..acacacawa..
+..acccccawa..
+..acccccawa..
+.adrdddrdwa..
+.adrdddrdwa..
+.adrdddrcwa..
+.adrdddrdwa..
+.adddddddwa..
+.aeeeeeeewa..
+.aeeeeeeewa..
+..affaffawa..
+..affaffawa..
+..affaffaaa..
+
+# Repairer: a dwarf (the townsfolk dwarf) swinging a hammer: raised, then striking. 2 frames, 4 fps.
+@asset ppl_repairer
+size 15 16
+budget 10
+ground yes
+anchor 5 15
+fps 4
+key a=ink b=clay2 c=skin1 d=night3 e=wood2 f=wood1 g=gold4 h=steel4 l=steel5 w=wood4 C=skin1
+frame
+...............
+...............
+...............
+..aaaaaaa......
+.abbbbbbbaaaaaa
+.abcccccbaahlha
+.abcacacbaahhha
+.abbbbbbbaaawaa
+adbbbbbbbdaawa.
+adbbbbbbbdaCwa.
+addbbbbbddaaa..
+adddbbbddda....
+aeeeegeeeea....
+.aeeeaeeea.....
+.aeeeaeeea.....
+affffaffffa....
+frame
+...............
+...............
+...............
+..aaaaaaa......
+.abbbbbbba.....
+.abcccccba.....
+.abcacacba.....
+.abbbbbbba.....
+adbbbbbbbda....
+adbbbbbbbdaaa..
+addbbbbbddaCwa.
+adddbbbdddaawa.
+aeeeegeeeeaawaa
+.aeeeaeeeaahlha
+.aeeeaeeeaahhha
+affffaffffaaaaa
+
+# --- Wanderer figures, composed onto a road by src/make_wanderers.py ---
+
+# Traveler: a hooded travel cloak and a tall walking staff.
+@asset part_traveler
+size 13 19
+budget 9
+ground yes
+anchor 5 18
+key a=ink h=wood2 c=skin2 d=clay1 w=wood4 f=wood1
+frame
+..........a..
+.........awa.
+.........awa.
+..aaaaaaaawa.
+.ahhhhhhhawa.
+.ahccccchawa.
+.ahcacachawa.
+.ahccccchawa.
+.ahhhhhhhawa.
+.ahhdddhhawa.
+.ahhdddhhaca.
+.ahhdddhhaa..
+.ahhdddhha...
+.ahhdddhha...
+.ahhhhhhha...
+.ahhhhhhha...
+..affaffa....
+..affaffa....
+..affaffa....
+
+# Traveler with a headscarf, a long dress and a walking staff.
+@asset part_walker
+size 11 19
+budget 8
+ground yes
+anchor 5 18
+key a=ink b=rose2 c=skin1 d=sea2 w=wood4 f=wood1
+frame
+.........a.
+........awa
+..aaaaaaawa
+..abbbbbawa
+.abcccccbwa
+.abcacacbwa
+.abcccccbwa
+..abbbbbawa
+.adddddddwa
+.adddddddwa
+.addddddcwa
+.adddddddwa
+.adddddddwa
+.adddddddwa
+.adddddddwa
+.adddddddwa
+.adddddddwa
+..affaffawa
+..affaffaaa
+
+# A child.
+@asset part_child
+size 9 11
+budget 6
+ground yes
+anchor 4 10
+key a=ink b=wood3 c=skin2 d=gold3 e=wood2 f=wood1
+frame
+.aaaaaaa.
+.abbbbba.
+.accccca.
+.acacaca.
+.accccca.
+.addddda.
+.addddda.
+.addddda.
+.aeeeeea.
+..afafa..
+..afafa..
+
+# A veteran: gray hair and beard, an eye patch, a faded soldier's tunic, a crutch, a bandaged leg.
+@asset part_veteran
+size 12 16
+budget 9
+ground yes
+anchor 5 15
+key a=ink b=steel3 c=skin2 d=night3 e=wood2 f=wood1 g=parch1 k=wood3 w=wood4
+frame
+..aaaaaaa...
+..abbbbba...
+..accccca...
+..aaacaca...
+..abbbbba...
+..abbbbbaaaa
+.adddddddkka
+.adddddddcwa
+.adddddddawa
+.adddddddawa
+.adddddddawa
+.aeeeeeeeawa
+.aeeeeeeeawa
+..affaggaawa
+..affaggaawa
+..affaggaawa

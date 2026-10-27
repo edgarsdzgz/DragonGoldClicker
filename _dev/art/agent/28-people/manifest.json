@@ -1,0 +1,203 @@
+[
+ {
+  "name": "ppl_conscript",
+  "file": "ppl_conscript.png",
+  "size": [
+   11,
+   20
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   19
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "ppl_footman",
+  "file": "ppl_footman.png",
+  "size": [
+   11,
+   20
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   19
+  ],
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 3,13"
+  ]
+ },
+ {
+  "name": "ppl_knight",
+  "file": "ppl_knight.png",
+  "size": [
+   13,
+   20
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   19
+  ],
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 5,12"
+  ]
+ },
+ {
+  "name": "ppl_gatherer",
+  "file": "ppl_gatherer.png",
+  "size": [
+   15,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "ppl_trapper",
+  "file": "ppl_trapper.png",
+  "size": [
+   13,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 3,5",
+   "single-pixel island at 7,5",
+   "single-pixel island at 10,8",
+   "single-pixel island at 10,10"
+  ]
+ },
+ {
+  "name": "ppl_ranger",
+  "file": "ppl_ranger.png",
+  "size": [
+   14,
+   19
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   18
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "ppl_explorer",
+  "file": "ppl_explorer.png",
+  "size": [
+   13,
+   20
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   19
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "ppl_repairer",
+  "file": "ppl_repairer_strip2.png",
+  "size": [
+   15,
+   16
+  ],
+  "frames": 2,
+  "fps": 4,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "part_traveler",
+  "file": "part_traveler.png",
+  "size": [
+   13,
+   19
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   18
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "part_walker",
+  "file": "part_walker.png",
+  "size": [
+   11,
+   19
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   18
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "part_child",
+  "file": "part_child.png",
+  "size": [
+   9,
+   11
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   4,
+   10
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "part_veteran",
+  "file": "part_veteran.png",
+  "size": [
+   12,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": []
+ }
+]
