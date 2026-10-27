@@ -272,6 +272,10 @@ export const SPRITES = {
   "mob_raider-stronger_hurt": { source: require('../../assets/art/mobs/mob_raider-stronger_hurt.png'), w: 13, h: 19, frames: 1, fps: 0, label: "Raider, stronger (the Unmaking's deepest): hurt" },
   "mob_raider-stronger_walk_anim": { source: require('../../assets/art/mobs/mob_raider-stronger_walk_strip2.png'), w: 13, h: 19, frames: 2, fps: 4, label: "Raider, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps)" },
   "logo_anim_frames_anim": { source: require('../../assets/art/logo/logo_anim_frames_strip20.png'), w: 64, h: 64, frames: 20, fps: 6, label: "Logo animation: the shield slams in, the claws slash upward, the logo assembles (play with logo_anim_timing.json)" },
+  "icon_heartstone": { source: require('../../assets/art/icons/icon_heartstone.png'), w: 12, h: 12, frames: 1, fps: 0, label: "The heartstone: a teardrop of aetherglass with the heart-flame inside, 12x12" },
+  "icon_heartstone_flicker_anim": { source: require('../../assets/art/icons/icon_heartstone_flicker_strip4.png'), w: 12, h: 12, frames: 4, fps: 8, label: "The heartstone, its flame flickering, 12x12 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms)" },
+  "icon_heartstone_16": { source: require('../../assets/art/icons/icon_heartstone_16.png'), w: 16, h: 16, frames: 1, fps: 0, label: "The heartstone, 16x16" },
+  "icon_heartstone_16_flicker_anim": { source: require('../../assets/art/icons/icon_heartstone_16_flicker_strip4.png'), w: 16, h: 16, frames: 4, fps: 8, label: "The heartstone, its flame flickering, 16x16 (4 frames, 8 fps; drawn for 140, 90, 160, 110 ms)" },
 } satisfies Record<string, SpriteDef>
 
 export type SpriteId = keyof typeof SPRITES
