@@ -1,0 +1,99 @@
+# Icon sheet 2, 2026-10-26: padlock, flag, compass, upgrade arrow, check mark.
+# 12x12, ink outline, light from the upper left. Research notes: ../README.md
+
+# Locked. A steel shackle (an arch on two legs) over a brass body with a keyhole.
+@asset icon_padlock
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 s=steel2 H=gold5 g=gold4 G=gold2
+frame
+....aaaa....
+...ahhhma...
+..ahmaamsa..
+..ahmaamsa..
+..ahmaamsa..
+.aHHHHHHHGa.
+.aHggaaggGa.
+.aHggaaggGa.
+.aHggggggGa.
+.aGGGGGGGGa.
+.aaaaaaaaaa.
+............
+
+# Objective. A swallow-tailed banner in heraldic brick red on a wooden pole with a gold finial.
+# (Brick red, not pure red: pure red is kept for HP and danger.)
+@asset icon_flag
+size 12 12
+budget 8
+key a=ink f=gold6 w=wood4 H=clay3 g=clay2 G=clay1
+frame
+..a.........
+.afa........
+.awaaaaaaaa.
+.awHHHHHHga.
+.awggggggga.
+.awgggggGa..
+.awggggggga.
+.awGGGGGGGa.
+.awaaaaaaaa.
+.awa........
+.awa........
+..a.........
+
+# Explorers. A brass pocket compass with its bow on top, a cream face, and a needle pointing
+# north-east (red north, steel south) on an ink pivot.
+@asset icon_compass
+size 12 12
+budget 8
+key a=ink H=gold5 g=gold4 G=gold2 f=parch3 R=red3 s=steel1
+frame
+.....aa.....
+....agGa....
+..aaHHHHaa..
+.aHHHffggga.
+aHHfffffRGGa
+aHfffffRffGa
+aHffffafffGa
+aHfffsffffGa
+aHgfsffffGGa
+.aggGffGGGa.
+..aaGGGGaa..
+....aaaa....
+
+# Upgrade. A bold up arrow in ember gold, the key-action color.
+@asset icon_upgrade
+size 12 12
+budget 6
+key a=ink H=gold5 g=gold4 G=gold3
+frame
+.....aa.....
+....aHGa....
+...aHgGGa...
+..aHggGGGa..
+.aHgggGGGGa.
+aHggggGGGGGa
+.aaaHgGGaaa.
+...aHgGGa...
+...aHgGGa...
+...aHgGGa...
+...aHgGGa...
+....aaaa....
+
+# Done. A thick check mark in green, lit on its top edges.
+@asset icon_check
+size 12 12
+budget 6
+key a=ink H=green3 g=green2 G=green1
+frame
+............
+.........aa.
+........aHHa
+.......aHgGa
+.......agGa.
+..aa..aHGa..
+.aHHaaHGa...
+.aGgHHga....
+..aGggGa....
+...aGGa.....
+....aa......
+............
