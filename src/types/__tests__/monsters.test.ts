@@ -11,11 +11,12 @@ describe('roster', () => {
   it('lists the pool monsters in order of debut, then the raider, which never spawns from the pool', () => {
     expect(MONSTERS.map((m) => [m.id, m.fromKills])).toEqual([
       ['kobold', 0], ['goblin', 13], ['giant_rat', 20], ['shadow_crawler', 28], ['goblin_scout', 38],
-      ['war_hound', 45], ['orc', 53], ['goblin_archer', 63], ['banner_runner', 78], ['shield_bearer', 103],
-      ['beetle_guard', 128], ['chitin_warrior', 153], ['nomad_scout', 165], ['nomad_warrior', 178],
-      ['nomad_archer', 190], ['wraith', 203], ['skeleton', 215], ['shadow_phantom', 228],
+      ['war_hound', 45], ['orc', 53], ['goblin_archer', 63], ['banner_runner', 78], ['giant_bat', 90],
+      ['shield_bearer', 103], ['goblin_wolf_rider', 115], ['beetle_guard', 128], ['harpy', 140],
+      ['chitin_warrior', 153], ['nomad_scout', 165], ['nomad_warrior', 178], ['nomad_archer', 190],
+      ['storm_rider', 198], ['wraith', 203], ['skeleton', 215], ['shadow_phantom', 228],
       ['spectral_hound', 240], ['ashen_convert', 253], ['cult_apprentice', 265], ['ember_prophet', 278],
-      ['ember_wraith', 303], ['raider', Infinity],
+      ['mantair_corsair', 290], ['ember_wraith', 303], ['raider', Infinity],
     ])
   })
 

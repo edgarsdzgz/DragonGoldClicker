@@ -45,15 +45,36 @@ export function mobScale(unit: number, boxPts: number, artPx: number, pixelRatio
   return Math.min(unit * MOB_SCALE, fit)
 }
 
-/** A monster's sprites: walking (its idle), struck, and wounded */
+/** A monster's sprites: walking (its idle), struck, and wounded; a flier also has its shadow */
 export interface MobSprites {
   idle: SpriteId
   hit: SpriteId
   hurt: SpriteId
+  /** A flier's shadow on the road (drawn at half strength); its body hangs above it */
+  shadow?: SpriteId
+}
+
+/**
+ * Art pixels of air between a flier's shadow and its body (owner, 2026-10-27: fliers use the road,
+ * drawn higher over a shadow of their own; the art session's preview uses 8)
+ */
+export const FLIER_LIFT = 8
+/** A flier's shadow is drawn at this strength */
+export const SHADOW_OPACITY = 0.5
+
+/** How far a monster's body hangs above its feet line, in art pixels: a flier's shadow and the air above it, else 0 */
+export function mobLift(mob: MobSprites): number {
+  return mob.shadow ? SPRITES[mob.shadow].h + FLIER_LIFT : 0
+}
+
+/** The art pixels a monster needs in its box: its widest or tallest side, a flier's lift included */
+export function mobFitPx(mob: MobSprites): number {
+  const art = SPRITES[mob.idle]
+  return Math.max(art.w, art.h + mobLift(mob))
 }
 
 /** Monster ids whose art is named differently */
-const MOB_NAMES: Record<string, string> = { shadow_crawler: 'crawler', giant_rat: 'rat' }
+const MOB_NAMES: Record<string, string> = { shadow_crawler: 'crawler', giant_rat: 'rat', goblin_wolf_rider: 'wolf-rider' }
 
 /** A monster's art name: its id with hyphens (goblin_scout is mob_goblin-scout_*), or its own name above */
 export function mobArtName(monsterId: string): string {
@@ -87,7 +108,10 @@ export function mobSprites(monsterId: string, tier: MobTier = 'weak'): MobSprite
   const idle = tierSprite(name, tier, 'walk_anim')
   const hit = tierSprite(name, tier, 'hit')
   const hurt = tierSprite(name, tier, 'hurt')
-  return idle && hit && hurt ? { idle, hit, hurt } : null
+  if (!idle || !hit || !hurt) return null
+  // The shadow is the same at every tier
+  const shadow = tierSprite(name, 'weak', 'shadow')
+  return shadow ? { idle, hit, hurt, shadow } : { idle, hit, hurt }
 }
 
 /**

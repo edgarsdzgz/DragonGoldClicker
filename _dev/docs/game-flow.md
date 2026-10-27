@@ -80,14 +80,15 @@ monster the horde sends now, against that monster's 5s strike on the wall.
 - **Horde level** = 1 + one per 25 kills of the horde's advance (`hordeKills`), which drives the
   spawn pool. **The horde grows 5% a level** (`hordeStrength`, `hordeMonster`): monster HP
   (rounded to whole HP), bounty (kept at 0.05 per HP) and wall strike. Level 27 is 2.3x
-- **Who comes** (`types/monsterRoster.ts`, `types/spawnPool.ts`): 23 monsters in the pool. Each
+- **Who comes** (`types/monsterRoster.ts`, `types/spawnPool.ts`): 28 monsters in the pool. Each
   horde level from 2 to 13 brings a new one three kills in, and some a second of the same kind
   later; at most six share the pool at a time and the oldest fade out. The early horde (kobold,
-  goblin, giant rat, shadow crawler, goblin scout, war hound, orc, goblin archer, banner-runner);
-  the armored middle horde from level 5 (shield bearer, beetle guard, chitin warrior, the three
-  nomads); the Unmaking's own from level 9 (wraith, skeleton, shadow phantom, spectral hound, ashen
-  convert, cult apprentice, ember prophet, ember wraith). Elites and bosses are drawn but not sent
-  yet. See `_dev/docs/bestiary.md`
+  goblin, giant rat, shadow crawler, goblin scout, war hound, orc, goblin archer, banner-runner,
+  giant bat); the armored middle horde from level 5 (shield bearer, goblin wolf rider, beetle guard,
+  harpy, chitin warrior, the three nomads, storm rider); the Unmaking's own from level 9 (wraith,
+  skeleton, shadow phantom, spectral hound, ashen convert, cult apprentice, ember prophet, mantair
+  corsair, ember wraith). Fliers (bat, harpy, storm rider, corsair) hang above the road over their
+  own shadow. See `_dev/docs/bestiary.md`
 - Rodain's company holds the wall at 50 HP until the Mend the Walls quest is done
   (`the_wall_is_yours`). The player never loses the game: when the wall falls it is a Breach
   (`types/breach.ts`): 30% of fighters, repairers and idle villagers and 15% of foragers die, 40%

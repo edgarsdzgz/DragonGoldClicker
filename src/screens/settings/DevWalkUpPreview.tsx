@@ -5,7 +5,7 @@ import type { PixelBurstHandle } from '../../components'
 import type { PillTab } from '../../components'
 import {
   MAP_GATE, MAP_W, MOB_SCALE, ROAD_TOP_Y, SPRITES, mapUnit, slashSprite, spriteBox, stripMs,
-  bodyState, growScales, mobArtName, tierSprite, walkStepMs, walkUpAt, walkUpMs,
+  FLIER_LIFT, SHADOW_OPACITY, bodyState, growScales, mobArtName, tierSprite, walkStepMs, walkUpAt, walkUpMs,
 } from '../../art'
 import type { MobTier, SpriteId } from '../../art'
 import { useReduceMotion } from '../../hooks/useReduceMotion'
@@ -51,6 +51,8 @@ export function DevWalkUpPreview() {
 
   const walk = tierSprite(mob, tier, 'walk_anim') ?? 'mob_kobold_walk_anim'
   const death = tierSprite(mob, tier, 'death_anim') ?? 'mob_kobold_death_anim'
+  // A flier hangs above a shadow of its own
+  const shadow = tierSprite(mob, 'weak', 'shadow')
   const scales = growScales(unit, unit * MOB_SCALE, ratio)
   // A step is a frame of the bob; Slow stretches each one
   const stepMs = walkStepMs(walk) * Number(speed)
@@ -84,6 +86,7 @@ export function DevWalkUpPreview() {
   const pose = walking ? walkUpAt(now - walkFrom, scales, stepMs) : { step: scales.length - 1, along: 1, done: true }
   const scale = scales[pose.step]
   const feet = snap(((ROAD_TOP_Y + (PLACE_Y - ROAD_TOP_Y) * pose.along) - CROP_TOP) * unit)
+  const lift = shadow ? (SPRITES[shadow].h + FLIER_LIFT) * scale : 0
 
   const kill = () => {
     const at = Date.now()
@@ -95,7 +98,7 @@ export function DevWalkUpPreview() {
   // A tap strikes the monster where it is, the slash and spark at its size of the moment
   const strike = () => {
     const box = spriteBox(walk, scale, ratio)
-    const y = feet - box.height / 2
+    const y = feet - lift - box.height / 2
     fx.current?.play(slashSprite('plain'), x, y, 0, scale)
     if (!reduceMotion) fx.current?.play('fx_spark_anim', x, y, 0, scale)
   }
@@ -124,9 +127,16 @@ export function DevWalkUpPreview() {
             ) }
           }),
           { feet, node: (
-            <View key="walker" style={place(walk, scale, feet)}>
-              {/* On the road its bob is its steps; at its place the bob plays on its own */}
-              <PixelSprite id={walk} scale={scale} frame={walking ? pose.step % SPRITES[walk].frames : undefined} />
+            <View key="walker" style={StyleSheet.absoluteFill}>
+              {shadow && (
+                <View style={[place(shadow, scale, feet), { opacity: SHADOW_OPACITY }]}>
+                  <PixelSprite id={shadow} scale={scale} />
+                </View>
+              )}
+              <View style={place(walk, scale, feet - lift)}>
+                {/* On the road its bob is its steps; at its place the bob plays on its own */}
+                <PixelSprite id={walk} scale={scale} frame={walking ? pose.step % SPRITES[walk].frames : undefined} />
+              </View>
             </View>
           ) },
         ].sort((a, b) => a.feet - b.feet).map((d) => d.node)}

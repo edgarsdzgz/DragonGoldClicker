@@ -10,7 +10,7 @@ import type { PixelMonsterHandle } from './PixelMonster'
 import { PixelBurst } from './PixelBurst'
 import type { PixelBurstHandle } from './PixelBurst'
 import { FallenBody } from './FallenBody'
-import { SPRITES, mobScale, mobSprites, mobTier, slashSprite } from '../art'
+import { mobFitPx, mobScale, mobSprites, mobTier, slashSprite } from '../art'
 import { FloatingNumbers } from './FloatingNumbers'
 import type { FloatingNumbersHandle } from './FloatingNumbers'
 import { useActionPress } from '../hooks/useActionPress'
@@ -81,8 +81,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   // Pixel art for this monster, marked as deep as the horde's Unmaking (every roster monster has it: art tests)
   const tier = mobTier(hordeKills)
   const mob = mobSprites(def.id, tier)
-  const mobArt = mob ? SPRITES[mob.idle] : null
-  const pixelScale = mobScale(unit, size, mobArt ? Math.max(mobArt.w, mobArt.h) : 1, PixelRatio.get())
+  const pixelScale = mobScale(unit, size, mob ? mobFitPx(mob) : 1, PixelRatio.get())
   const reduceMotion = useReduceMotion()
   const numbers = useRef<FloatingNumbersHandle>(null)
   const widthRef = useRef(300)
@@ -128,7 +127,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     showAllyHit: (amount) => {
       // Spread across the monster so several fighters read as several small hits
       const w = walker.current
-      const top = w.walking ? w.feet - w.height : 0
+      const top = w.walking ? w.feet - w.lift - w.height : 0
       const tall = w.walking ? w.height : size
       const x = size / 2 + (Math.random() - 0.5) * (w.walking ? w.width : size) * 0.5
       numbers.current?.spawn({ x, y: top + tall * 0.45, text: amount, color: colors.warfront.ally })
@@ -142,8 +141,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
     posed.current?.hit()
     // At its place the strike lands where the finger did; on the road, on the monster at its size
     const w = walker.current
-    const point = w.walking ? { x: size / 2, y: w.feet - w.height / 2 } : tapPoint.current
-    const numberY = w.walking ? w.feet - w.height : size * 0.3
+    const point = w.walking ? { x: size / 2, y: w.feet - w.lift - w.height / 2 } : tapPoint.current
+    const numberY = w.walking ? w.feet - w.lift - w.height : size * 0.3
     const at = w.walking ? w.scale : undefined
     if (shown?.double) {
       numbers.current?.spawn({ x: point.x, y: numberY, text: `-${shown.damage}!`, color: gold[300], large: true })

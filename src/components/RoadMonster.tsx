@@ -1,8 +1,10 @@
 import React from 'react'
-import { View, StyleSheet, Animated } from 'react-native'
+import { View, StyleSheet, Animated, PixelRatio } from 'react-native'
 import type { RefObject } from 'react'
 import { PixelMonster } from './PixelMonster'
+import { PixelSprite } from './PixelSprite'
 import type { PixelMonsterHandle } from './PixelMonster'
+import { SHADOW_OPACITY, spriteBox } from '../art'
 import type { MobSprites } from '../art'
 import type { RoadWalker } from '../hooks/useMonsterRoad'
 import type { StrikeFeel } from '../hooks/useStrikeFeel'
@@ -27,14 +29,21 @@ interface RoadMonsterProps {
 
 /**
  * The monster the player strikes, at its place on the road, with the strike's knockback and shake
- * (hooks/useStrikeFeel). Decorative: the battlefield labels the monster.
+ * (hooks/useStrikeFeel). A flier hangs above its shadow, which stays on the road through the
+ * knockback. Decorative: the battlefield labels the monster.
  */
 export function RoadMonster({ size, sprites, walker, feel, monsterRef, resting, spawnKey, paused }: RoadMonsterProps) {
   const { shake, knock, tilt, squash } = feel
+  const shadow = sprites.shadow ? spriteBox(sprites.shadow, walker.scale, PixelRatio.get()) : null
   return (
     // Its place on the road is its own layer: the strike's native-driven knockback below would keep
     // the old place until it finished
     <View pointerEvents="none" style={[StyleSheet.absoluteFill, { transform: [{ translateY: walker.offsetY }] }]}>
+      {sprites.shadow && shadow && (
+        <View style={[styles.shadow, { left: PixelRatio.roundToNearestPixel((size - shadow.width) / 2), opacity: SHADOW_OPACITY }]}>
+          <PixelSprite id={sprites.shadow} scale={walker.scale} />
+        </View>
+      )}
       <Animated.View
         pointerEvents="none"
         style={[
@@ -42,6 +51,7 @@ export function RoadMonster({ size, sprites, walker, feel, monsterRef, resting, 
           {
             width: size,
             height: size,
+            paddingBottom: walker.lift,
             // No breathing and no fractional scale but the press squash: its pixels stay sharp
             transform: [
               { translateX: shake },
@@ -63,5 +73,9 @@ const styles = StyleSheet.create({
   monster: {
     alignItems: 'center',
     justifyContent: 'flex-end',
+  },
+  shadow: {
+    position: 'absolute',
+    bottom: 0,
   },
 })

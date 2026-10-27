@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PixelRatio } from 'react-native'
-import { SPRITES, bodyMs, growScales, mobDeathSprite, spriteBox, stripMs, walkDelayMs, walkStepMs, walkUpAt, walkUpMs } from '../art'
+import { SPRITES, bodyMs, growScales, mobDeathSprite, mobLift, spriteBox, stripMs, walkDelayMs, walkStepMs, walkUpAt, walkUpMs } from '../art'
 import type { MobSprites, MobTier, SpriteId } from '../art'
 import type { MonsterDef } from '../types/monsters'
 import { useWalkUp } from './useWalkUp'
@@ -13,8 +13,10 @@ export interface RoadWalker {
   scale: number
   /** How far above its place it is (0 or less) */
   offsetY: number
-  /** Where its feet are: the box's bottom plus offsetY */
+  /** Where its feet are: the box's bottom plus offsetY (a flier's shadow lies there) */
   feet: number
+  /** How far its body hangs above its feet, in points (a flier; 0 on the ground) */
+  lift: number
   width: number
   height: number
   /** The bob frame, pinned to its steps while it walks; undefined once it stands */
@@ -72,6 +74,7 @@ export function useMonsterRoad(a: MonsterRoadArgs) {
     scale,
     offsetY,
     feet: size + offsetY,
+    lift: mob ? mobLift(mob) * scale : 0,
     width: box.width,
     height: box.height,
     frame: pose.done ? undefined : pose.step % frames,

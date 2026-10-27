@@ -2,6 +2,15 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Fliers and the wolf rider (2026-10-27)
+- Five more monsters join their kind (`_dev/planning/fliers-elites-bosses.md`, Stage 1):
+  - Giant Bat at level 4, Goblin Wolf Rider at 5 and Harpy at 6
+  - Storm Rider at 8, beside the nomads, and Mantair Corsair at 12
+  - 28 monsters in the pool, still at most six at a time
+- Fliers use the road: the shadow lies where the feet would be, at half strength, and the body hangs
+  8 art pixels of air above it, growing with the walk down the road. Strikes and numbers land on
+  the body. The Walk-up preview shows them lifted too
+
 ### A fresh start, and the bestiary in the horde (2026-10-27)
 - The phone's copy was the only one, so it was wiped and the game now holds only what is current.
   Removed:

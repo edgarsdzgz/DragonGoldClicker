@@ -39,25 +39,30 @@ export const SPAWN_ANCHORS: SpawnAnchor[] = [
   { kills: 53, weights: { goblin: 30, shadow_crawler: 30, goblin_scout: 15, war_hound: 10, orc: 15 } },
   { kills: 63, weights: { goblin: 20, shadow_crawler: 25, goblin_scout: 15, war_hound: 10, orc: 20, goblin_archer: 10 } },
   { kills: 78, weights: { goblin: 10, shadow_crawler: 20, war_hound: 15, orc: 25, goblin_archer: 15, banner_runner: 15 } },
+  { kills: 90, weights: { shadow_crawler: 15, war_hound: 10, orc: 25, goblin_archer: 15, banner_runner: 20, giant_bat: 15 } },
   // Level 5, the dark cracks: the armored middle horde; the goblins and hounds are gone
-  { kills: 103, weights: { shadow_crawler: 10, orc: 30, goblin_archer: 20, banner_runner: 25, shield_bearer: 15 } },
-  { kills: 128, weights: { orc: 25, goblin_archer: 10, banner_runner: 20, shield_bearer: 25, beetle_guard: 20 } },
-  { kills: 153, weights: { orc: 20, banner_runner: 10, shield_bearer: 25, beetle_guard: 25, chitin_warrior: 20 } },
-  // The nomads, three of a kind
-  { kills: 165, weights: { orc: 15, shield_bearer: 25, beetle_guard: 25, chitin_warrior: 25, nomad_scout: 10 } },
-  { kills: 178, weights: { orc: 10, shield_bearer: 20, beetle_guard: 20, chitin_warrior: 25, nomad_scout: 15, nomad_warrior: 10 } },
-  { kills: 190, weights: { shield_bearer: 15, beetle_guard: 15, chitin_warrior: 25, nomad_scout: 15, nomad_warrior: 20, nomad_archer: 10 } },
+  { kills: 103, weights: { shadow_crawler: 10, orc: 30, goblin_archer: 15, banner_runner: 20, giant_bat: 10, shield_bearer: 15 } },
+  { kills: 115, weights: { orc: 30, goblin_archer: 10, banner_runner: 20, giant_bat: 10, shield_bearer: 20, goblin_wolf_rider: 10 } },
+  { kills: 128, weights: { orc: 25, banner_runner: 20, giant_bat: 5, shield_bearer: 20, goblin_wolf_rider: 15, beetle_guard: 15 } },
+  { kills: 140, weights: { orc: 20, banner_runner: 10, shield_bearer: 25, goblin_wolf_rider: 10, beetle_guard: 20, harpy: 15 } },
+  { kills: 153, weights: { orc: 20, shield_bearer: 25, goblin_wolf_rider: 5, beetle_guard: 20, harpy: 15, chitin_warrior: 15 } },
+  // The nomads, three of a kind, and the Storm Rider
+  { kills: 165, weights: { orc: 15, shield_bearer: 20, beetle_guard: 20, harpy: 15, chitin_warrior: 20, nomad_scout: 10 } },
+  { kills: 178, weights: { orc: 10, shield_bearer: 15, beetle_guard: 15, chitin_warrior: 25, nomad_scout: 15, nomad_warrior: 20 } },
+  { kills: 190, weights: { shield_bearer: 10, beetle_guard: 15, chitin_warrior: 25, nomad_scout: 15, nomad_warrior: 20, nomad_archer: 15 } },
+  { kills: 198, weights: { beetle_guard: 10, chitin_warrior: 20, nomad_scout: 15, nomad_warrior: 25, nomad_archer: 15, storm_rider: 15 } },
   // Level 9: the Unmaking's own
-  { kills: 203, weights: { beetle_guard: 10, chitin_warrior: 20, nomad_scout: 15, nomad_warrior: 25, nomad_archer: 15, wraith: 15 } },
-  { kills: 215, weights: { chitin_warrior: 15, nomad_scout: 10, nomad_warrior: 25, nomad_archer: 15, wraith: 20, skeleton: 15 } },
+  { kills: 203, weights: { chitin_warrior: 20, nomad_scout: 10, nomad_warrior: 25, nomad_archer: 15, storm_rider: 15, wraith: 15 } },
+  { kills: 215, weights: { chitin_warrior: 10, nomad_warrior: 25, nomad_archer: 15, storm_rider: 15, wraith: 20, skeleton: 15 } },
   // Level 10, the glowing cracks
-  { kills: 228, weights: { nomad_warrior: 20, nomad_archer: 15, wraith: 25, skeleton: 20, shadow_phantom: 20 } },
-  { kills: 240, weights: { nomad_warrior: 15, nomad_archer: 10, wraith: 25, skeleton: 20, shadow_phantom: 20, spectral_hound: 10 } },
-  // The cult
-  { kills: 253, weights: { nomad_warrior: 10, wraith: 25, skeleton: 20, shadow_phantom: 20, spectral_hound: 15, ashen_convert: 10 } },
+  { kills: 228, weights: { nomad_warrior: 20, nomad_archer: 10, storm_rider: 15, wraith: 20, skeleton: 15, shadow_phantom: 20 } },
+  { kills: 240, weights: { nomad_warrior: 15, storm_rider: 10, wraith: 25, skeleton: 20, shadow_phantom: 20, spectral_hound: 10 } },
+  // The cult, and a late raider from the sky
+  { kills: 253, weights: { storm_rider: 10, wraith: 25, skeleton: 20, shadow_phantom: 20, spectral_hound: 15, ashen_convert: 10 } },
   { kills: 265, weights: { wraith: 20, skeleton: 15, shadow_phantom: 20, spectral_hound: 15, ashen_convert: 20, cult_apprentice: 10 } },
   { kills: 278, weights: { wraith: 15, shadow_phantom: 20, spectral_hound: 15, ashen_convert: 20, cult_apprentice: 15, ember_prophet: 15 } },
-  { kills: 303, weights: { shadow_phantom: 20, spectral_hound: 10, ashen_convert: 20, cult_apprentice: 15, ember_prophet: 20, ember_wraith: 15 } },
+  { kills: 290, weights: { shadow_phantom: 20, spectral_hound: 10, ashen_convert: 20, cult_apprentice: 15, ember_prophet: 20, mantair_corsair: 15 } },
+  { kills: 303, weights: { shadow_phantom: 15, ashen_convert: 20, cult_apprentice: 15, ember_prophet: 20, mantair_corsair: 15, ember_wraith: 15 } },
 ]
 
 /** The pool's weights after this many kills (one per MONSTERS entry, in order): blended between anchors, zero before a debut */

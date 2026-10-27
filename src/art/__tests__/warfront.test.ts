@@ -1,6 +1,6 @@
 import { SPRITES } from '../manifest'
 import {
-  mapUnit, mobScale, gateState, gateSprite, mobSprites, mobDeathSprite, slashSprite, stripMs, MAP_W,
+  mapUnit, mobScale, gateState, gateSprite, mobSprites, mobDeathSprite, slashSprite, stripMs, MAP_W, mobLift, mobFitPx, FLIER_LIFT,
   DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, STRONG_FROM_LEVEL, STRONGER_FROM_LEVEL, mobTier,
 } from '../warfront'
 import { bodyMs, growScales, walkDelayMs, walkStepMs, walkUpMs } from '../walkUp'
@@ -106,6 +106,23 @@ describe('the monsters', () => {
     }
     expect(mobSprites('shadow_crawler', 'stronger')?.idle).toBe('mob_crawler-stronger_walk_anim')
     expect(mobDeathSprite('orc', 'strong')).toBe('mob_orc-strong_death_anim')
+  })
+
+  it('the four fliers hang above a shadow of their own at every tier; nothing else does', () => {
+    const fliers = MONSTERS.filter((m) => mobSprites(m.id)?.shadow).map((m) => m.id)
+    expect(fliers.sort()).toEqual(['giant_bat', 'harpy', 'mantair_corsair', 'storm_rider'])
+    expect(mobSprites('harpy', 'stronger')?.shadow).toBe('mob_harpy_shadow')
+    expect(mobSprites('goblin_wolf_rider')?.idle).toBe('mob_wolf-rider_walk_anim')
+  })
+
+  it("a flier's lift is its shadow plus 8 pixels of air, and its box fits it", () => {
+    const bat = mobSprites('giant_bat')!
+    expect(FLIER_LIFT).toBe(8)
+    expect(mobLift(bat)).toBe(SPRITES['mob_giant-bat_shadow'].h + 8)
+    expect(mobLift(mobSprites('orc')!)).toBe(0)
+    // 21 wide, 14 tall + 3 + 8 = 25: the lift decides the fit
+    expect(mobFitPx(bat)).toBe(25)
+    expect(mobFitPx(mobSprites('orc')!)).toBe(19)
   })
 
   it('the slash follows the claws tier, and strips report how long they play', () => {

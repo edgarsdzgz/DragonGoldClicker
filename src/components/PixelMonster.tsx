@@ -12,7 +12,7 @@ export interface PixelMonsterHandle {
   hit: () => void
 }
 
-type Pose = keyof MobSprites
+type Pose = 'idle' | 'hit' | 'hurt'
 const POSES: Pose[] = ['idle', 'hit', 'hurt']
 
 interface PixelMonsterProps {

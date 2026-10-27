@@ -34,13 +34,18 @@ export const MONSTERS: MonsterDef[] = [
   { id: 'orc', name: 'Orc', plural: 'orcs', hp: 20, bounty: 1.0, fromKills: 53, wallStrike: 4 },
   { id: 'goblin_archer', name: 'Goblin Archer', plural: 'goblin archers', hp: 10, bounty: 0.5, fromKills: 63, wallStrike: 2 },
   { id: 'banner_runner', name: 'Banner-Runner', plural: 'banner-runners', hp: 14, bounty: 0.7, fromKills: 78, wallStrike: 3 },
+  // A flier: drawn above the road over its shadow (art/warfront.ts FLIER_LIFT)
+  { id: 'giant_bat', name: 'Giant Bat', plural: 'giant bats', hp: 12, bounty: 0.6, fromKills: 90, wallStrike: 2 },
   // The middle horde: armored, from level 5 (the dark cracks)
   { id: 'shield_bearer', name: 'Shield Bearer', plural: 'shield bearers', hp: 26, bounty: 1.3, fromKills: 103, wallStrike: 4 },
+  { id: 'goblin_wolf_rider', name: 'Goblin Wolf Rider', plural: 'goblin wolf riders', hp: 20, bounty: 1.0, fromKills: 115, wallStrike: 4 },
   { id: 'beetle_guard', name: 'Beetle Guard', plural: 'beetle guards', hp: 22, bounty: 1.1, fromKills: 128, wallStrike: 4 },
+  { id: 'harpy', name: 'Harpy', plural: 'harpies', hp: 24, bounty: 1.2, fromKills: 140, wallStrike: 4 },
   { id: 'chitin_warrior', name: 'Chitin Warrior', plural: 'chitin warriors', hp: 28, bounty: 1.4, fromKills: 153, wallStrike: 5 },
   { id: 'nomad_scout', name: 'Nomad Scout', plural: 'nomad scouts', hp: 22, bounty: 1.1, fromKills: 165, wallStrike: 4 },
   { id: 'nomad_warrior', name: 'Nomad Warrior', plural: 'nomad warriors', hp: 30, bounty: 1.5, fromKills: 178, wallStrike: 6 },
   { id: 'nomad_archer', name: 'Nomad Archer', plural: 'nomad archers', hp: 26, bounty: 1.3, fromKills: 190, wallStrike: 5 },
+  { id: 'storm_rider', name: 'Storm Rider', plural: 'storm riders', hp: 30, bounty: 1.5, fromKills: 198, wallStrike: 6 },
   // The Unmaking's own: what it makes of the living, from level 9
   { id: 'wraith', name: 'Wraith', plural: 'wraiths', hp: 24, bounty: 1.2, fromKills: 203, wallStrike: 5 },
   { id: 'skeleton', name: 'Skeleton', plural: 'skeletons', hp: 28, bounty: 1.4, fromKills: 215, wallStrike: 5 },
@@ -49,6 +54,7 @@ export const MONSTERS: MonsterDef[] = [
   { id: 'ashen_convert', name: 'Ashen Convert', plural: 'ashen converts', hp: 30, bounty: 1.5, fromKills: 253, wallStrike: 6 },
   { id: 'cult_apprentice', name: 'Cult Apprentice', plural: 'cult apprentices', hp: 28, bounty: 1.4, fromKills: 265, wallStrike: 5 },
   { id: 'ember_prophet', name: 'Ember Prophet', plural: 'ember prophets', hp: 36, bounty: 1.8, fromKills: 278, wallStrike: 7 },
+  { id: 'mantair_corsair', name: 'Mantair Corsair', plural: 'mantair corsairs', hp: 34, bounty: 1.7, fromKills: 290, wallStrike: 7 },
   { id: 'ember_wraith', name: 'Ember Wraith', plural: 'ember wraiths', hp: 40, bounty: 2.0, fromKills: 303, wallStrike: 8 },
   // Never from the spawn pool: only a Raid on the Stores brings it (types/foodEvents.ts). It runs
   // for the stores, not the wall, so it never strikes.
