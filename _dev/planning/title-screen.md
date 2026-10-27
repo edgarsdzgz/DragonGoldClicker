@@ -69,3 +69,9 @@ when the title appears. It still shows, so the screen always reads the same way.
    only real work, with no pretend update step.
 5. **The intro session:** the art session wrote `IntroScreen` this morning. Is it done there, so I
    can build the title on top of it?
+
+## Owner rulings (2026-10-27)
+
+- **Updates:** when there is no update, the title goes straight to Tap to Start. The update step
+  shows on the bar only when an update is actually downloading. Until the update service is set
+  up there is never one, so the bar carries only the real loading steps.
