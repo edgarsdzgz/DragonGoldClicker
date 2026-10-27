@@ -40,6 +40,26 @@ frame
 .atuatuatua.
 ..aa.aa.aa..
 
+# Soldiers. A great helm from the front: flat-topped cylinder, eye slit across the face, a brass
+# strip down the middle (the cross), breathing holes, a red crest on top.
+@asset icon_helm
+size 12 12
+budget 8
+key a=ink h=steel5 m=steel3 s=steel2 g=gold4 G=gold2 r=red3 R=red2
+frame
+...aaaaa....
+..arrrrRa...
+...aarRaa...
+.aaaarRaaaa.
+.ahhhgGmmsa.
+.ahmmgGmmsa.
+.ahaagGaasa.
+.ahmmgGmmsa.
+.ahmagGamsa.
+.ahmmgGmmsa.
+.asssgGsssa.
+.aaaaaaaaaa.
+
 # Repairers. An upright claw hammer: blunt face block on the right, claw curving down on the left,
 # wooden handle under the eye. (A diagonal version read as a pickaxe at this size.)
 @asset icon_hammer

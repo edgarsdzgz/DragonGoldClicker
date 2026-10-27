@@ -15,6 +15,10 @@ RAMPS = {
     "skin": ["d6a078", "e8b88c", "f0d6b8"],
     "parch": ["b49664", "c8a05a", "ecd6aa"],
     "green": ["24402e", "3c785a", "6aa070"],
+    # Townsfolk orcs: Rodain's gray-green, kept apart from the goblin's yellow-green.
+    "orc": ["4e6046", "708662", "869c74"],
+    # Fishfolk: sea teal, kept apart from the kobold's olive and any lizard green.
+    "sea": ["24505a", "3e8a96", "78c0c0"],
 }
 
 # Colors that keep their value at night (README section 4).

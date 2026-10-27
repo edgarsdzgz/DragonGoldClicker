@@ -1,0 +1,154 @@
+# Townsfolk peoples, 2026-10-26. Standing pose, 11x16, feet on the ground, flat colors like the
+# existing townsfolk (folk-human, folk-elf, folk-horned). Every sprite has a top outline.
+# Canon (_dev/docs/cast-and-peoples.md): every people exists; a townsperson never reads as an
+# enemy, so no lizard shapes and no goblin, kobold or Ashen Orc colors.
+
+# Dwarf, redrawn: 13 rows tall (human 16), torso 9 wide (human 7), the beard over the chest.
+@asset folk-dwarf
+size 11 16
+budget 8
+ground yes
+anchor 5 15
+key a=ink b=clay2 c=skin1 d=night3 e=wood2 f=wood1 g=gold4
+frame
+...........
+...........
+...........
+..aaaaaaa..
+.abbbbbbba.
+.abcccccba.
+.abcacacba.
+.abbbbbbba.
+adbbbbbbbda
+adbbbbbbbda
+addbbbbbdda
+adddbbbddda
+aeeeegeeeea
+.aeeeaeeea.
+.aeeeaeeea.
+affffaffffa
+
+# Halfling: 12 rows tall, curly hair, green vest, big bare feet with hair tufts.
+@asset folk-halfling
+size 11 16
+budget 8
+ground yes
+anchor 5 15
+key a=ink b=wood3 c=skin2 g=green2 p=parch3 h=wood2 s=skin2
+frame
+...........
+...........
+...........
+...........
+...aaaaa...
+..abbbbba..
+..abcccba..
+..acacaca..
+..accccca..
+.aggpppgga.
+.aggpppgga.
+.aggpppgga.
+.ahhhhhhha.
+..ahhahha..
+.abssabssa.
+assssassssa
+
+# Orc: human height, broad shoulders, bare gray-green arms, brow ridge, tusks, leather vest.
+@asset folk-orc
+size 11 16
+budget 8
+ground yes
+anchor 5 15
+key a=ink b=wood1 o=orc2 O=orc1 w=parch3 x=wood4 e=wood2 f=wood1
+frame
+..aaaaaaa..
+.abbbbbbba.
+.aoooooooa.
+.aoOOoOOoa.
+.aooaoaooa.
+.aowooowoa.
+.aoooooooa.
+aoxxxxxxxoa
+aoxxxxxxxoa
+aoxxxxxxxoa
+aoxxxxxxxoa
+aoxxxxxxxoa
+.aeeeeeeea.
+.aeeeeeeea.
+.afffafffa.
+.afffafffa.
+
+# Birdfolk: a three-feather crest, cream face and breast, beak, wing-arms, thin legs, talons.
+@asset folk-birdfolk
+size 11 16
+budget 8
+ground yes
+anchor 5 15
+key a=ink b=wood4 B=wood2 c=parch3 y=gold4 Y=gold2 e=clay1
+frame
+...a.a.a...
+..abababa..
+..abbbbba..
+..acacaca..
+..acyyyca..
+..abcYcba..
+.abbcccbba.
+abbbcccbbba
+abbbcccbbba
+abBbcccbBba
+abBbcccbBba
+.aBeeeeeBa.
+..aeeeeea..
+...ayaya...
+...ayaya...
+..ayyayya..
+
+# Fishfolk: a head fin, ear fins, a wide mouth, sea-teal skin, a fisher's oilskin vest.
+@asset folk-fishfolk
+size 11 16
+budget 8
+ground yes
+anchor 5 15
+key a=ink F=sea3 s=sea2 d=gold3 e=wood2
+frame
+.....a.....
+....aFa....
+...aaFaa...
+..asssssa..
+.aFsasasFa.
+.aFsssssFa.
+..asaaasa..
+.asdddddsa.
+.asdddddsa.
+.asdddddsa.
+.asdddddsa.
+.asdddddsa.
+.aeeeeeeea.
+..assassa..
+..assassa..
+.asssasssa.
+
+# Catfolk: pointed ears, orange fur, cream muzzle, a tail beside the right leg.
+@asset folk-catfolk
+size 11 16
+budget 8
+ground yes
+anchor 5 15
+key a=ink b=clay3 c=parch3 d=night2 e=wood2 f=wood1 t=clay3
+frame
+...........
+...a...a...
+..abaaaba..
+..abbbbba..
+..abababa..
+..abcccba..
+..abcacba..
+.addddddda.
+.addddddda.
+.addddddda.
+.addddddda.
+.addddddda.
+.aeeeeeeeta
+..affaffata
+..affaffaca
+..affaffaa.

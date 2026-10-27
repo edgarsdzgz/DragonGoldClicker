@@ -1,0 +1,101 @@
+[
+ {
+  "name": "folk-dwarf",
+  "file": "folk-dwarf.png",
+  "size": [
+   11,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "folk-halfling",
+  "file": "folk-halfling.png",
+  "size": [
+   11,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "folk-orc",
+  "file": "folk-orc.png",
+  "size": [
+   11,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 3,5",
+   "single-pixel island at 7,5"
+  ]
+ },
+ {
+  "name": "folk-birdfolk",
+  "file": "folk-birdfolk.png",
+  "size": [
+   11,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "folk-fishfolk",
+  "file": "folk-fishfolk.png",
+  "size": [
+   11,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "folk-catfolk",
+  "file": "folk-catfolk.png",
+  "size": [
+   11,
+   16
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": [
+   5,
+   15
+  ],
+  "errors": [],
+  "warnings": []
+ }
+]

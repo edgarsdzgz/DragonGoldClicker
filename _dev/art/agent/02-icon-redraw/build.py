@@ -24,11 +24,11 @@ def load(p):
 
 ref = HERE.parents[1] / "reference"
 out = HERE / "out"
-pairs = [("cog", "cog"), ("wheat", "sheaf"), ("hammer", "hammer")]
+pairs = [("cog", "cog"), ("wheat", "sheaf"), ("hammer", "hammer"), ("helm", "helm")]
 rows = [("Old", [load(ref / f"icon-{old}.png") for old, _ in pairs]),
         ("New", [load(out / f"icon_{new}.png") for _, new in pairs]),
         ("New beside the set", [load(out / f"icon_{new}.png") for _, new in pairs]
-         + [load(ref / f"icon-{n}.png") for n in ("star", "food", "villager", "swords", "helm",
-                                                   "scroll", "castle")])]
+         + [load(ref / f"icon-{n}.png") for n in ("star", "food", "villager", "swords", "scroll",
+                                                   "castle")])]
 pixkit.contact_sheet(rows, scale=6).save(HERE / "preview" / "sheet_x6.png")
 print("sheet written")
