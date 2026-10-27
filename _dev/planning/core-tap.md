@@ -622,6 +622,86 @@ quest, and a tutorial step that points at the chip. The story pauses after `shar
 
 ---
 
+## Chapter 7: Beyond the Walls (proposed 2026-10-26)
+
+The last three paused beats, all written for the old idle game. After this chapter every beat in
+the story has either been played or retired; Chapter 8 will need new content.
+
+### What the code does today
+
+- **People.** Every fighter, repairer, gatherer and soldier comes out of the idle villagers. The
+  city gains people only from wanderers (one encounter every 4-7 minutes of play, 1.45 people
+  on average: about 16 an hour, twice that while short-handed) and the refugee food event. A
+  Breach takes 30% of them. The horde now grows 5% a level, so the army has to keep growing.
+- **`beyond_the_walls`** (Mirael, side beat, chapter 8) reveals the Explorer's Outpost. Its
+  trigger reads old Garrison levels. Prices are from before the redesign: Outpost 10/30/60 (1, 2
+  and 3 explorers), an explorer 1.5 renown, an expedition 2.5 renown and 30 food for 2 minutes.
+  A trip finds 0-3 people (35/35/20/10%); after 3 empty trips one is sure to find someone, and
+  the first trip ever always does. Explorers eat 2 food a meal.
+- **`claimExpedition`** reports how many were found from inside a state update (the flaw fixed
+  in Step 1), so the report can come back empty.
+- **`word_spreads`** (milestones) offers newcomers at 25/50/125/175 renown earned. Every save is
+  past all four, so it would fire four offers back to back. Chapter 4's wanderers do the same job.
+- **`lean_times`** turns on starvation: at an unpaid meal, 3% of each army group dies. Today an
+  unfed army stands down instead (layer 3, fed states), the Gate falls behind, and a Breach takes
+  people. The owner's ruling for food was "urgency, not exhaustion".
+
+### Recommended
+
+**`beyond_the_walls` becomes the chapter's main beat.** Mirael, a few minutes after Rodain's "They
+Come Bigger": the horde grows, so the city must too, and there are people out in the valley to
+bring home. It reveals the Outpost. Quests: **Raise the Outpost**, then **First Expedition**
+(bring one party home). The first trip still always finds someone.
+
+**The Outpost on today's scale:**
+
+| | Now | Proposed |
+|---|---|---|
+| Outpost levels (explorers) | 10 / 30 / 60 (1/2/3) | 120 / 250 / 500 (1/2/3) |
+| An explorer | 1.5 renown | from a villager, 10 renown on the ^1.15 curve (like gatherers) |
+| An expedition | 2.5 renown + 30 food, 2 min | 40 food, no renown, 5 min |
+| Finds | 0-3 (35/35/20/10%), sure after 3 empty | unchanged |
+| Explorer upkeep | 2 food a meal | unchanged |
+
+- One explorer brings home about 12 people an hour for 480 food (what two gatherers bring in).
+  Three explorers bring over twice what wanderers do. People become something the player can
+  invest in, paid in food, which ties the Outpost to the Lodge.
+- Trips run on real time, so one sent before closing the app is waiting on return.
+- **The report is computed before the update:** a pure `claimExpedition(s, id, roll)` in
+  `types/explorers.ts` puts its report in the state (like the Breach report), and the dialog
+  reads it from there.
+
+**A fifth Librarium branch, The Wilds** (the exploration studies return):
+- **Cartography** (100, needs the Outpost): expeditions take 25% less time.
+- **Keen Scouts** (250, after Cartography): an empty trip is rarer (35% down to 15%).
+
+**Retire the other two beats:**
+- **`word_spreads`:** remove the beat and the milestone offers (the code, its dialog and the
+  save fields' use). Wanderers already bring newcomers.
+- **`lean_times`:** remove the beat and the starvation deaths. Hunger already bites: the army
+  stands down, the Gate falls behind, and a Breach costs people. The starvation report dialog
+  goes with it.
+
+**Story order.** `beyond_the_walls` moves directly after `the_horde_grows` (chapter 7, main beat,
+dwell 3 minutes). The pause moves to it.
+
+### Effect on the owner's save
+
+Once Rodain has spoken, Mirael follows a few minutes later. The Outpost (120) and an explorer
+(10) are within a few minutes of kills. Each trip costs 40 food, so the Lodge's trappers matter.
+
+### Open questions
+
+1. **The Outpost:** expeditions for 40 food and 5 minutes, levels at 120/250/500, explorers from
+   villagers at 10 renown (recommended)?
+2. **The Wilds:** a fifth Librarium branch with Cartography and Keen Scouts?
+3. **`word_spreads`:** retire it and the milestone offers (recommended)?
+4. **`lean_times`:** retire it and starvation deaths, keeping the army standing down when unfed
+   (recommended)? Or keep deaths, gentler?
+5. **Timing:** Mirael 3 minutes after Rodain (recommended), or tied to something else?
+
+---
+
 ## The Librarium: Lirae's studies (approved and built 2026-10-26)
 
 Research is the last old system behind the story pause. It was built for the idle game before
