@@ -1,6 +1,6 @@
 import { SPRITES } from '../manifest'
 import { BLINK_STEPS, BLINK_STEP_MS, DEATH_HOLD_MS } from '../warfront'
-import { bodyState, growScales, growStep, tierSprite } from '../walkUp'
+import { bodyState, growScales, tierSprite, walkStepMs, walkUpAt, walkUpMs } from '../walkUp'
 
 const A16 = 2.625
 
@@ -18,14 +18,39 @@ describe('the growing walk-up', () => {
     expect(growScales(5, 3, 1)).toEqual([3])
   })
 
-  it('spends equal time at each size, starting small and ending full', () => {
-    expect(growStep(0, 9)).toBe(0)
-    expect(growStep(0.11, 9)).toBe(0)
-    expect(growStep(0.12, 9)).toBe(1)
-    expect(growStep(0.99, 9)).toBe(8)
-    expect(growStep(1, 9)).toBe(8)
-    expect(growStep(-1, 9)).toBe(0)
-    expect(growStep(2, 9)).toBe(8)
+  it('a step is one frame of the walk bob', () => {
+    // The walks bob at 4 fps
+    expect(walkStepMs('mob_kobold_walk_anim')).toBe(250)
+    expect(walkStepMs('mob_orc-stronger_walk_anim')).toBe(250)
+  })
+
+  it('moves and grows only on a step: still between steps, one size up at each', () => {
+    const scales = [1, 2, 3]
+    expect(walkUpAt(0, scales, 250)).toEqual({ step: 0, along: 0, done: false })
+    expect(walkUpAt(249, scales, 250)).toEqual({ step: 0, along: 0, done: false })
+    expect(walkUpAt(250, scales, 250).step).toBe(1)
+    // One step short of its place it is still walking
+    expect(walkUpAt(250, scales, 250).done).toBe(false)
+    expect(walkUpAt(499, scales, 250).step).toBe(1)
+    expect(walkUpAt(500, scales, 250)).toEqual({ step: 2, along: 1, done: true })
+    expect(walkUpAt(9999, scales, 250)).toEqual({ step: 2, along: 1, done: true })
+    expect(walkUpAt(-5, scales, 250).step).toBe(0)
+    expect(walkUpMs(scales, 250)).toBe(500)
+  })
+
+  it('every stride is the same in its own pixels: short while small and far, longer up close', () => {
+    // Sizes 1 then 3: the first stride covers a quarter of the road, the second three quarters
+    expect(walkUpAt(250, [1, 3, 5], 250).along).toBeCloseTo(0.25)
+    // The A16: 9 sizes, 8 steps at the bob's 4 fps, 2 s from the camps to its place
+    const a16 = growScales(8 / A16, 16 / A16, A16)
+    expect(walkUpMs(a16, 250)).toBe(2000)
+    const strides = a16.slice(1).map((_, i) => walkUpAt((i + 1) * 250, a16, 250).along - walkUpAt(i * 250, a16, 250).along)
+    for (let i = 1; i < strides.length; i++) expect(strides[i]).toBeGreaterThan(strides[i - 1])
+  })
+
+  it('a monster already at its size has arrived', () => {
+    expect(walkUpAt(0, [4], 250)).toEqual({ step: 0, along: 1, done: true })
+    expect(walkUpMs([4], 250)).toBe(0)
   })
 })
 

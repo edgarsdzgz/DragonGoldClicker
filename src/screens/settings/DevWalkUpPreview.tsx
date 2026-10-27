@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { PixelRatio, StyleSheet, View, useWindowDimensions } from 'react-native'
-import { Text, Surface, SectionLabel, PillTabs, Button, PixelSprite } from '../../components'
+import { PixelRatio, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native'
+import { Text, Surface, SectionLabel, PillTabs, Button, PixelSprite, PixelBurst } from '../../components'
+import type { PixelBurstHandle } from '../../components'
 import type { PillTab } from '../../components'
-import { MAP_GATE, MAP_W, MOB_SCALE, SPRITES, mapUnit, spriteBox, stripMs } from '../../art'
+import { MAP_GATE, MAP_W, MOB_SCALE, SPRITES, mapUnit, slashSprite, spriteBox, stripMs } from '../../art'
 import type { SpriteId } from '../../art'
-import { GROW_WALK_MS, bodyState, growScales, growStep, tierSprite } from '../../art/walkUp'
+import { bodyState, growScales, tierSprite, walkStepMs, walkUpAt, walkUpMs } from '../../art/walkUp'
 import type { MobTier } from '../../art/walkUp'
 import { useReduceMotion } from '../../hooks/useReduceMotion'
 import { WarfrontScene } from '../warfront/WarfrontScene'
@@ -50,15 +51,17 @@ export function DevWalkUpPreview() {
   const walk = tierSprite(mob, tier, 'walk_anim') ?? 'mob_kobold_walk_anim'
   const death = tierSprite(mob, tier, 'death_anim') ?? 'mob_kobold_death_anim'
   const scales = growScales(unit, unit * MOB_SCALE, ratio)
-  const walkMs = GROW_WALK_MS * Number(speed)
+  // A step is a frame of the bob; Slow stretches each one
+  const stepMs = walkStepMs(walk) * Number(speed)
 
   const [walkFrom, setWalkFrom] = useState(-Infinity)
   const [bodies, setBodies] = useState<Body[]>([])
   const [now, setNow] = useState(Date.now())
   const keyRef = useRef(0)
+  const fx = useRef<PixelBurstHandle>(null)
 
   // Ticks every frame while something moves, and stops when all is still
-  const walking = now - walkFrom < walkMs
+  const walking = !reduceMotion && now - walkFrom < walkUpMs(scales, stepMs)
   const active = walking || bodies.length > 0
   useEffect(() => {
     if (!active) return
@@ -77,15 +80,23 @@ export function DevWalkUpPreview() {
   const snap = (v: number) => Math.round(v * ratio) / ratio
   const left = snap((width - MAP_W * unit) / 2)
   const x = left + ROAD_X * unit
-  const t = reduceMotion ? 1 : Math.min(1, (now - walkFrom) / walkMs)
-  const scale = scales[growStep(t, scales.length)]
-  const feet = snap(((ROAD_TOP_Y + (PLACE_Y - ROAD_TOP_Y) * t) - CROP_TOP) * unit)
+  const pose = walking ? walkUpAt(now - walkFrom, scales, stepMs) : { step: scales.length - 1, along: 1, done: true }
+  const scale = scales[pose.step]
+  const feet = snap(((ROAD_TOP_Y + (PLACE_Y - ROAD_TOP_Y) * pose.along) - CROP_TOP) * unit)
 
   const kill = () => {
     const at = Date.now()
     setBodies((bs) => [...bs, { key: ++keyRef.current, id: death, scale, feet, at }].slice(-MAX_BODIES))
     setWalkFrom(at)
     setNow(at)
+  }
+
+  // A tap strikes the monster where it is, the slash and spark at its size of the moment
+  const strike = () => {
+    const box = spriteBox(walk, scale, ratio)
+    const y = feet - box.height / 2
+    fx.current?.play(slashSprite('plain'), x, y, 0, scale)
+    if (!reduceMotion) fx.current?.play('fx_spark_anim', x, y, 0, scale)
   }
 
   const place = (id: SpriteId, s: number, f: number) => {
@@ -99,25 +110,32 @@ export function DevWalkUpPreview() {
       <PillTabs tabs={MOB_TABS} activeKey={mob} onSelect={setMob} />
       <PillTabs tabs={TIER_TABS} activeKey={tier} onSelect={(k) => setTier(k as MobTier)} />
       <PillTabs tabs={SPEED_TABS} activeKey={speed} onSelect={setSpeed} />
-      <View style={[styles.stage, { width, height }]}>
+      <Pressable onPress={strike} accessibilityRole="button" accessibilityLabel="Strike the monster" style={[styles.stage, { width, height }]}>
         <WarfrontScene unit={unit} wallTop={(MAP_GATE.gate.y - CROP_TOP) * unit} gate="sound" army={0} repairing={false} />
-        {bodies.map((b) => {
-          const state = bodyState((now - b.at) / Number(speed), stripMs(b.id), !reduceMotion)
-          return (
-            <View key={b.key} style={[place(b.id, b.scale, b.feet), { opacity: state === 'shown' ? 1 : 0 }]}>
-              <PixelSprite id={b.id} scale={b.scale} loop={false} frame={reduceMotion ? SPRITES[b.id].frames - 1 : undefined} />
+        {/* Farther up the road is drawn first, so a nearer body or monster stands in front of it */}
+        {[
+          ...bodies.map((b) => {
+            const state = bodyState((now - b.at) / Number(speed), stripMs(b.id), !reduceMotion)
+            return { feet: b.feet, node: (
+              <View key={b.key} style={[place(b.id, b.scale, b.feet), { opacity: state === 'shown' ? 1 : 0 }]}>
+                <PixelSprite id={b.id} scale={b.scale} loop={false} frame={reduceMotion ? SPRITES[b.id].frames - 1 : undefined} />
+              </View>
+            ) }
+          }),
+          { feet, node: (
+            <View key="walker" style={place(walk, scale, feet)}>
+              {/* On the road its bob is its steps; at its place the bob plays on its own */}
+              <PixelSprite id={walk} scale={scale} frame={walking ? pose.step % SPRITES[walk].frames : undefined} />
             </View>
-          )
-        })}
-        <View style={place(walk, scale, feet)}>
-          <PixelSprite id={walk} scale={scale} />
-        </View>
-      </View>
+          ) },
+        ].sort((a, b) => a.feet - b.feet).map((d) => d.node)}
+        <PixelBurst ref={fx} scale={unit * MOB_SCALE} max={4} />
+      </Pressable>
       <View style={styles.buttons}>
         <Button size="sm" onPress={kill}>Kill</Button>
       </View>
       <Text variant="caption" color="muted">
-        Kill again while it walks to drop it on the road. Slow shows each size step.
+        It takes a step and grows a size with each frame of its bob. Tap the road to strike it: the slash matches its size. Kill again while it walks to drop it on the road.
       </Text>
     </Surface>
   )

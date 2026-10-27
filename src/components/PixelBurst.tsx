@@ -8,8 +8,11 @@ import { PixelSprite } from './PixelSprite'
 const MIN_SHOW_MS = 150
 
 export interface PixelBurstHandle {
-  /** Play a strip once, centered on (x, y) in this layer's space, then hold its last frame `holdMs` */
-  play: (id: SpriteId, x: number, y: number, holdMs?: number) => void
+  /**
+   * Play a strip once, centered on (x, y) in this layer's space, then hold its last frame `holdMs`.
+   * `scale` draws this one at another size than the layer's (a strike on a monster still far up the road).
+   */
+  play: (id: SpriteId, x: number, y: number, holdMs?: number, scale?: number) => void
 }
 
 interface Slot {
@@ -17,6 +20,7 @@ interface Slot {
   id: SpriteId
   x: number
   y: number
+  scale?: number
 }
 
 interface PixelBurstProps {
@@ -38,11 +42,11 @@ export const PixelBurst = forwardRef<PixelBurstHandle, PixelBurstProps>(function
 
   useEffect(() => () => timers.current.forEach(clearTimeout), [])
 
-  const play = useCallback((id: SpriteId, x: number, y: number, holdMs = 0) => {
+  const play = useCallback((id: SpriteId, x: number, y: number, holdMs = 0, scale?: number) => {
     const i = next.current
     next.current = (i + 1) % max
     const key = ++keySeq.current
-    setSlots((prev) => prev.map((s, j) => (j === i ? { key, id, x, y } : s)))
+    setSlots((prev) => prev.map((s, j) => (j === i ? { key, id, x, y, scale } : s)))
     clearTimeout(timers.current[i])
     timers.current[i] = setTimeout(() => {
       setSlots((prev) => prev.map((s, j) => (j === i && s?.key === key ? null : s)))
@@ -56,10 +60,11 @@ export const PixelBurst = forwardRef<PixelBurstHandle, PixelBurstProps>(function
     <View style={StyleSheet.absoluteFill} pointerEvents="none" importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
       {slots.map((s) => {
         if (!s) return null
-        const box = spriteBox(s.id, scale, ratio)
+        const size = s.scale ?? scale
+        const box = spriteBox(s.id, size, ratio)
         return (
           <View key={s.key} style={{ position: 'absolute', left: s.x - box.width / 2, top: s.y - box.height / 2 }}>
-            <PixelSprite id={s.id} scale={scale} loop={false} />
+            <PixelSprite id={s.id} scale={size} loop={false} />
           </View>
         )
       })}
