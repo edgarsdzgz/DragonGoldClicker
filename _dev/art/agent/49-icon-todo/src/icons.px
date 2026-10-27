@@ -1,0 +1,22 @@
+# Icon todo, 2026-10-27: the empty ring beside an unmet requirement, the check mark's counterpart.
+# The app's checklists (claws, the journal, research) drew a vector circle here, the last vector icon
+# a player sees. 12x12, ink outline, light from the upper left, like icon_check (04-icons-2).
+
+# Not done yet. A hollow steel ring, lit on its upper left, shaded lower right; the middle stays clear.
+@asset icon_todo
+size 12 12
+budget 5
+key a=ink h=steel4 m=steel3 s=steel2
+frame
+............
+....aaaa....
+..aahhhmaa..
+.ahhaaaamsa.
+.aha....asa.
+.aha....asa.
+.ama....asa.
+.ama....asa.
+.amsaaaassa.
+..aamsssaa..
+....aaaa....
+............
