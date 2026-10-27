@@ -424,9 +424,12 @@ ASSETS += [(f"story/story_{s}.png", AGENT / f"43-story-scenes/out/story_{s}_v1.p
                         ("rangers-lodge", "The Ranger's Lodge"), ("ink-wing", "The Ink-Wing"), ("dragonsteel", "Dragonsteel"),
                         ("they-come-bigger", "They Come Bigger"), ("ancient-magic", "The Ancient Magic"))]
 
-# The bestiary (44-bestiary), every pose at each Unmaking tier; the rat waits for its v2 cracks to be approved
+# The bestiary, every pose at each Unmaking tier: 44-bestiary (the rat as its v2, longer cracks and peach in
+# place of pink, approved 2026-10-27) and 45-bestiary-regulars (batch 1 of the second round)
 BESTIARY = AGENT / "44-bestiary/out"
-for _id, _name in (("goblin-scout", "Goblin Scout"), ("goblin-archer", "Goblin Archer"),
+REGULARS = AGENT / "45-bestiary-regulars/out"
+for _dir, _origin, _id, _name in [(BESTIARY, "bestiary v1", i, n) for i, n in (
+                   ("rat", "Giant Rat"), ("goblin-scout", "Goblin Scout"), ("goblin-archer", "Goblin Archer"),
                    ("banner-runner", "Banner-Runner"), ("shield-bearer", "Shield Bearer"),
                    ("beetle-guard", "Beetle Guard"), ("chitin-warrior", "Chitin Warrior"),
                    ("nomad-warrior", "Nomad Warrior"), ("wraith", "Wraith"), ("shadow-phantom", "Shadow Phantom"),
@@ -434,15 +437,17 @@ for _id, _name in (("goblin-scout", "Goblin Scout"), ("goblin-archer", "Goblin A
                    ("ember-wraith", "Ember Wraith"), ("stone-golem", "Stone Golem (boss)"),
                    ("giant-elemental", "Giant Elemental (boss)"), ("khagan", "Khagan of the Sirocco (boss)"),
                    ("forge-master", "Forge-Master of the Inferno (boss)"),
-                   ("corrupted-wyvern", "Corrupted Wyvern (boss)")):
+                   ("corrupted-wyvern", "Corrupted Wyvern (boss)"))] + [(REGULARS, "bestiary regulars v1", i, n) for i, n in (
+            ("war-hound", "War Hound"), ("skeleton", "Skeleton"), ("spectral-hound", "Spectral Hound"),
+            ("nomad-scout", "Nomad Scout"), ("nomad-archer", "Nomad Archer"), ("cult-apprentice", "Cult Apprentice"))]:
     for _tier, _label in (("", ""), ("-strong", ", strong"), ("-stronger", ", stronger (the Unmaking's deepest)")):
         _n = f"mob_{_id}{_tier}"
         ASSETS += [
-            (f"mobs/{_n}_idle.png", BESTIARY / f"{_n}_idle.png", f"{_name}{_label}: idle", "bestiary v1"),
-            (f"mobs/{_n}_hit.png", BESTIARY / f"{_n}_hit.png", f"{_name}{_label}: hit, the red flash", "bestiary v1"),
-            (f"mobs/{_n}_hurt.png", BESTIARY / f"{_n}_hurt.png", f"{_name}{_label}: hurt", "bestiary v1"),
-            (f"mobs/{_n}_walk_strip2.png", BESTIARY / f"{_n}_walk_strip2.png", f"{_name}{_label}: walk bob (2 frames, 4 fps)", "bestiary v1"),
-            (f"mobs/{_n}_death_strip4.png", BESTIARY / f"{_n}_death_strip4.png", f"{_name}{_label}: death, buckles, falls, lands, unmade (4 frames, 8 fps)", "bestiary v1"),
+            (f"mobs/{_n}_idle.png", _dir / f"{_n}_idle.png", f"{_name}{_label}: idle", _origin),
+            (f"mobs/{_n}_hit.png", _dir / f"{_n}_hit.png", f"{_name}{_label}: hit, the red flash", _origin),
+            (f"mobs/{_n}_hurt.png", _dir / f"{_n}_hurt.png", f"{_name}{_label}: hurt", _origin),
+            (f"mobs/{_n}_walk_strip2.png", _dir / f"{_n}_walk_strip2.png", f"{_name}{_label}: walk bob (2 frames, 4 fps)", _origin),
+            (f"mobs/{_n}_death_strip4.png", _dir / f"{_n}_death_strip4.png", f"{_name}{_label}: death, buckles, falls, lands, unmade (4 frames, 8 fps)", _origin),
         ]
 
 # The six monsters already in the game, shaded like the busts (44-bestiary v2, owner 2026-10-27): every

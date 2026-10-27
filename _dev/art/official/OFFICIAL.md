@@ -493,6 +493,21 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `story/story_dragonsteel.png` | 130x96 | Story: Dragonsteel (130x96) | story scenes v1 |
 | `story/story_they-come-bigger.png` | 130x96 | Story: They Come Bigger (130x96) | story scenes v1 |
 | `story/story_ancient-magic.png` | 130x96 | Story: The Ancient Magic (130x96) | story scenes v1 |
+| `mobs/mob_rat_idle.png` | 16x15 | Giant Rat: idle | bestiary v1 |
+| `mobs/mob_rat_hit.png` | 16x15 | Giant Rat: hit, the red flash | bestiary v1 |
+| `mobs/mob_rat_hurt.png` | 16x15 | Giant Rat: hurt | bestiary v1 |
+| `mobs/mob_rat_walk_strip2.png` | 32x15 | Giant Rat: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_rat_death_strip4.png` | 88x15 | Giant Rat: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_rat-strong_idle.png` | 16x15 | Giant Rat, strong: idle | bestiary v1 |
+| `mobs/mob_rat-strong_hit.png` | 16x15 | Giant Rat, strong: hit, the red flash | bestiary v1 |
+| `mobs/mob_rat-strong_hurt.png` | 16x15 | Giant Rat, strong: hurt | bestiary v1 |
+| `mobs/mob_rat-strong_walk_strip2.png` | 32x15 | Giant Rat, strong: walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_rat-strong_death_strip4.png` | 88x15 | Giant Rat, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_rat-stronger_idle.png` | 16x15 | Giant Rat, stronger (the Unmaking's deepest): idle | bestiary v1 |
+| `mobs/mob_rat-stronger_hit.png` | 16x15 | Giant Rat, stronger (the Unmaking's deepest): hit, the red flash | bestiary v1 |
+| `mobs/mob_rat-stronger_hurt.png` | 16x15 | Giant Rat, stronger (the Unmaking's deepest): hurt | bestiary v1 |
+| `mobs/mob_rat-stronger_walk_strip2.png` | 32x15 | Giant Rat, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
+| `mobs/mob_rat-stronger_death_strip4.png` | 88x15 | Giant Rat, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
 | `mobs/mob_goblin-scout_idle.png` | 14x16 | Goblin Scout: idle | bestiary v1 |
 | `mobs/mob_goblin-scout_hit.png` | 14x16 | Goblin Scout: hit, the red flash | bestiary v1 |
 | `mobs/mob_goblin-scout_hurt.png` | 14x16 | Goblin Scout: hurt | bestiary v1 |
@@ -748,3 +763,93 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_corrupted-wyvern-stronger_hurt.png` | 26x27 | Corrupted Wyvern (boss), stronger (the Unmaking's deepest): hurt | bestiary v1 |
 | `mobs/mob_corrupted-wyvern-stronger_walk_strip2.png` | 52x27 | Corrupted Wyvern (boss), stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary v1 |
 | `mobs/mob_corrupted-wyvern-stronger_death_strip4.png` | 136x27 | Corrupted Wyvern (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary v1 |
+| `mobs/mob_war-hound_idle.png` | 16x17 | War Hound: idle | bestiary regulars v1 |
+| `mobs/mob_war-hound_hit.png` | 16x17 | War Hound: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_war-hound_hurt.png` | 16x17 | War Hound: hurt | bestiary regulars v1 |
+| `mobs/mob_war-hound_walk_strip2.png` | 32x17 | War Hound: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_war-hound_death_strip4.png` | 96x17 | War Hound: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_war-hound-strong_idle.png` | 16x17 | War Hound, strong: idle | bestiary regulars v1 |
+| `mobs/mob_war-hound-strong_hit.png` | 16x17 | War Hound, strong: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_war-hound-strong_hurt.png` | 16x17 | War Hound, strong: hurt | bestiary regulars v1 |
+| `mobs/mob_war-hound-strong_walk_strip2.png` | 32x17 | War Hound, strong: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_war-hound-strong_death_strip4.png` | 96x17 | War Hound, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_war-hound-stronger_idle.png` | 16x17 | War Hound, stronger (the Unmaking's deepest): idle | bestiary regulars v1 |
+| `mobs/mob_war-hound-stronger_hit.png` | 16x17 | War Hound, stronger (the Unmaking's deepest): hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_war-hound-stronger_hurt.png` | 16x17 | War Hound, stronger (the Unmaking's deepest): hurt | bestiary regulars v1 |
+| `mobs/mob_war-hound-stronger_walk_strip2.png` | 32x17 | War Hound, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_war-hound-stronger_death_strip4.png` | 96x17 | War Hound, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_skeleton_idle.png` | 16x20 | Skeleton: idle | bestiary regulars v1 |
+| `mobs/mob_skeleton_hit.png` | 16x20 | Skeleton: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_skeleton_hurt.png` | 16x20 | Skeleton: hurt | bestiary regulars v1 |
+| `mobs/mob_skeleton_walk_strip2.png` | 32x20 | Skeleton: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_skeleton_death_strip4.png` | 104x20 | Skeleton: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_skeleton-strong_idle.png` | 16x20 | Skeleton, strong: idle | bestiary regulars v1 |
+| `mobs/mob_skeleton-strong_hit.png` | 16x20 | Skeleton, strong: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_skeleton-strong_hurt.png` | 16x20 | Skeleton, strong: hurt | bestiary regulars v1 |
+| `mobs/mob_skeleton-strong_walk_strip2.png` | 32x20 | Skeleton, strong: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_skeleton-strong_death_strip4.png` | 104x20 | Skeleton, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_skeleton-stronger_idle.png` | 16x20 | Skeleton, stronger (the Unmaking's deepest): idle | bestiary regulars v1 |
+| `mobs/mob_skeleton-stronger_hit.png` | 16x20 | Skeleton, stronger (the Unmaking's deepest): hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_skeleton-stronger_hurt.png` | 16x20 | Skeleton, stronger (the Unmaking's deepest): hurt | bestiary regulars v1 |
+| `mobs/mob_skeleton-stronger_walk_strip2.png` | 32x20 | Skeleton, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_skeleton-stronger_death_strip4.png` | 104x20 | Skeleton, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_spectral-hound_idle.png` | 16x17 | Spectral Hound: idle | bestiary regulars v1 |
+| `mobs/mob_spectral-hound_hit.png` | 16x17 | Spectral Hound: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_spectral-hound_hurt.png` | 16x17 | Spectral Hound: hurt | bestiary regulars v1 |
+| `mobs/mob_spectral-hound_walk_strip2.png` | 32x17 | Spectral Hound: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_spectral-hound_death_strip4.png` | 96x17 | Spectral Hound: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-strong_idle.png` | 16x17 | Spectral Hound, strong: idle | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-strong_hit.png` | 16x17 | Spectral Hound, strong: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-strong_hurt.png` | 16x17 | Spectral Hound, strong: hurt | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-strong_walk_strip2.png` | 32x17 | Spectral Hound, strong: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-strong_death_strip4.png` | 96x17 | Spectral Hound, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-stronger_idle.png` | 16x17 | Spectral Hound, stronger (the Unmaking's deepest): idle | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-stronger_hit.png` | 16x17 | Spectral Hound, stronger (the Unmaking's deepest): hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-stronger_hurt.png` | 16x17 | Spectral Hound, stronger (the Unmaking's deepest): hurt | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-stronger_walk_strip2.png` | 32x17 | Spectral Hound, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_spectral-hound-stronger_death_strip4.png` | 96x17 | Spectral Hound, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-scout_idle.png` | 15x19 | Nomad Scout: idle | bestiary regulars v1 |
+| `mobs/mob_nomad-scout_hit.png` | 15x19 | Nomad Scout: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_nomad-scout_hurt.png` | 15x19 | Nomad Scout: hurt | bestiary regulars v1 |
+| `mobs/mob_nomad-scout_walk_strip2.png` | 30x19 | Nomad Scout: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-scout_death_strip4.png` | 100x19 | Nomad Scout: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-strong_idle.png` | 15x19 | Nomad Scout, strong: idle | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-strong_hit.png` | 15x19 | Nomad Scout, strong: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-strong_hurt.png` | 15x19 | Nomad Scout, strong: hurt | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-strong_walk_strip2.png` | 30x19 | Nomad Scout, strong: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-strong_death_strip4.png` | 100x19 | Nomad Scout, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-stronger_idle.png` | 15x19 | Nomad Scout, stronger (the Unmaking's deepest): idle | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-stronger_hit.png` | 15x19 | Nomad Scout, stronger (the Unmaking's deepest): hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-stronger_hurt.png` | 15x19 | Nomad Scout, stronger (the Unmaking's deepest): hurt | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-stronger_walk_strip2.png` | 30x19 | Nomad Scout, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-scout-stronger_death_strip4.png` | 100x19 | Nomad Scout, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-archer_idle.png` | 17x20 | Nomad Archer: idle | bestiary regulars v1 |
+| `mobs/mob_nomad-archer_hit.png` | 17x20 | Nomad Archer: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_nomad-archer_hurt.png` | 17x20 | Nomad Archer: hurt | bestiary regulars v1 |
+| `mobs/mob_nomad-archer_walk_strip2.png` | 34x20 | Nomad Archer: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-archer_death_strip4.png` | 108x20 | Nomad Archer: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-strong_idle.png` | 17x20 | Nomad Archer, strong: idle | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-strong_hit.png` | 17x20 | Nomad Archer, strong: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-strong_hurt.png` | 17x20 | Nomad Archer, strong: hurt | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-strong_walk_strip2.png` | 34x20 | Nomad Archer, strong: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-strong_death_strip4.png` | 108x20 | Nomad Archer, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-stronger_idle.png` | 17x20 | Nomad Archer, stronger (the Unmaking's deepest): idle | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-stronger_hit.png` | 17x20 | Nomad Archer, stronger (the Unmaking's deepest): hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-stronger_hurt.png` | 17x20 | Nomad Archer, stronger (the Unmaking's deepest): hurt | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-stronger_walk_strip2.png` | 34x20 | Nomad Archer, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_nomad-archer-stronger_death_strip4.png` | 108x20 | Nomad Archer, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice_idle.png` | 14x18 | Cult Apprentice: idle | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice_hit.png` | 14x18 | Cult Apprentice: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice_hurt.png` | 14x18 | Cult Apprentice: hurt | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice_walk_strip2.png` | 28x18 | Cult Apprentice: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice_death_strip4.png` | 96x18 | Cult Apprentice: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-strong_idle.png` | 14x18 | Cult Apprentice, strong: idle | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-strong_hit.png` | 14x18 | Cult Apprentice, strong: hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-strong_hurt.png` | 14x18 | Cult Apprentice, strong: hurt | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-strong_walk_strip2.png` | 28x18 | Cult Apprentice, strong: walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-strong_death_strip4.png` | 96x18 | Cult Apprentice, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-stronger_idle.png` | 14x18 | Cult Apprentice, stronger (the Unmaking's deepest): idle | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-stronger_hit.png` | 14x18 | Cult Apprentice, stronger (the Unmaking's deepest): hit, the red flash | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-stronger_hurt.png` | 14x18 | Cult Apprentice, stronger (the Unmaking's deepest): hurt | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-stronger_walk_strip2.png` | 28x18 | Cult Apprentice, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | bestiary regulars v1 |
+| `mobs/mob_cult-apprentice-stronger_death_strip4.png` | 96x18 | Cult Apprentice, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | bestiary regulars v1 |
