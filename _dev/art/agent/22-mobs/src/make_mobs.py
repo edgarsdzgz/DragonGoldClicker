@@ -29,10 +29,30 @@ def hx(name):
 
 
 def draw(fill, key):
-    """A fill grid (no outline) gets a one-pixel margin and its ink outline."""
+    """A fill grid (no outline) gets a one-pixel margin, its ink outline, and one more clear row
+    on top so the walk can bob up into it."""
     w, h = len(fill[0]), len(fill)
-    rows = ["." * (w + 2)] + ["." + r + "." for r in fill] + ["." * (w + 2)]
+    rows = ["." * (w + 2)] * 2 + ["." + r + "." for r in fill] + ["." * (w + 2)]
     return pixkit.outline(pixkit.from_grid(rows, key))
+
+
+def red_flash(img):
+    """Taking damage: every ink pixel (the outline, the shut eyes, the mouth) turns red."""
+    out = img.copy()
+    o = out.load()
+    ink, red = P["ink"], P["red3"]
+    for y in range(out.height):
+        for x in range(out.width):
+            if o[x, y][3] and o[x, y][:3] == ink:
+                o[x, y] = red + (255,)
+    return out
+
+
+def walk(img):
+    """Two frames: standing, then the whole mob one pixel up. Played at 4 fps it bobs."""
+    up = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    up.alpha_composite(img.crop((0, 1, img.width, img.height)), (0, 0))
+    return [img, up]
 
 
 MOBS = {
@@ -141,10 +161,13 @@ def main():
     rows = []
     for name, m in MOBS.items():
         idle = draw(m["fill"], m["key"])
-        hit, hurt = hit_pose(idle, m["pose"]), hurt_pose(idle, m["pose"])
+        hit, hurt = red_flash(hit_pose(idle, m["pose"])), hurt_pose(idle, m["pose"])
         for st, im in (("idle", idle), ("hit", hit), ("hurt", hurt)):
             im.save(OUT / f"mob_{name}_{st}.png")
-        rows.append((name, [idle, hit, hurt]))
+        frames = walk(idle)
+        pixkit.strip(frames).save(OUT / f"mob_{name}_walk_strip2.png")
+        pixkit.write_gif(frames, 4, PREVIEW / f"mob_{name}_walk.gif", scale=6)
+        rows.append((name, [idle, hit, hurt] + frames))
     folk = [Image.open(p).convert("RGBA") for p in sorted((BATCH.parents[1] / "official" / "people").glob("ppl_*.png"))
             if "strip" not in p.name][:6]
     rows.append(("townsfolk", folk))

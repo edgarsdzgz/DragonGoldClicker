@@ -32,7 +32,12 @@ def fig(img, scale, caption):
 cards = ""
 for mid, name, note in MOBS:
     figs = "".join(fig(Image.open(OUT / f"mob_{mid}_{st}.png").convert("RGBA"), 6, cap)
-                   for st, cap in (("idle", "Idle"), ("hit", "Hit"), ("hurt", "Hurt")))
+                   for st, cap in (("idle", "Idle"), ("hit", "Hit: the red flash"), ("hurt", "Hurt")))
+    gif = PREVIEW / f"mob_{mid}_walk.gif"
+    g = Image.open(gif)
+    figs += (f'<figure><img src="data:image/gif;base64,{base64.b64encode(gif.read_bytes()).decode()}" '
+             f'width="{g.width}" height="{g.height}" alt="{html.escape(name)} walking">'
+             f'<figcaption>Walk: a bob, 2 frames at 4 fps</figcaption></figure>')
     cards += f"<h3>{html.escape(name)}</h3><p class=\"muted\">{html.escape(note)}</p><div class=\"tiles\">{figs}</div>"
 folk = "".join(fig(Image.open(p).convert("RGBA"), 6, p.stem.replace("ppl_", "").replace("_", " "))
                for p in sorted(OFFICIAL.glob("ppl_*.png")) if "strip" not in p.name)
@@ -72,7 +77,7 @@ page = f"""<title>Draconia Mobs</title>
       &middot; 2026-10-27</p>
   </header>
   <section>
-    <h2>The mobs, idle, hit and hurt (x6)</h2>
+    <h2>The mobs: idle, hit, hurt and walk (x6)</h2>
     {cards}
   </section>
   <section>

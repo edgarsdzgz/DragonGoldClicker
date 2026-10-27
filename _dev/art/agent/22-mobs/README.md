@@ -12,3 +12,8 @@ poses (`21-warfront/src/make_warfront.py`): the idle's own pixels moved.
 
 Build: `python src/make_mobs.py`, then `python build_board.py`. Sprites: `out/mob_<id>_<state>.png`.
 Open question for the owner: display size on the Warfront (the backdrop's scale, or double).
+
+Round 2 (owner): the hit pose flashes red, every ink pixel (outline, shut eyes, mouth) turned
+red3, red being the damage color; and a walk: two frames, standing and the whole mob one pixel up,
+played at 4 fps as a gentle bob (`out/mob_<id>_walk_strip2.png`). Every mob canvas has one extra
+clear row on top so all its poses share one size.
