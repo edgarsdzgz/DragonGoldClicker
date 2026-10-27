@@ -100,3 +100,20 @@ dragons.
 
 All eighteen candidates above were drawn in batch `44-bestiary` (2026-10-27), with every monster shaded
 like the busts (the six in the game redone as v2).
+
+## The second round, in three batches
+
+Started 2026-10-27. Most come from the game's own flavor text, which already names them in battle; the
+rest are the old bestiary's leftovers. Split by size, since each size shares its frame and shading.
+
+| Batch | Monsters | Status |
+| --- | --- | --- |
+| 1. Regulars | War Hound, Skeleton, Spectral Hound, Nomad Scout, Nomad Archer, Cult Apprentice | Drawn, on the board (`45-bestiary-regulars`) |
+| 2. Elites | Kobold Shaman, Goblin Chieftain, Orc Warchief, Troll, Ogre, Iron Golem, Windcaller | Next |
+| 3. Bosses | Basilisk, Spider Queen, Corrupted Drake, Lich | After the elites |
+
+Elites sit between a monster and a boss in size (about 16x21) and march with their own kind. Whether the
+game gets an elite rank is still my call; they are drawn either way.
+
+Not in any batch yet: the final boss, whose failed ritual began the Unmaking (a story decision first),
+and the fliers and riders, which wait on a new battlefield.
