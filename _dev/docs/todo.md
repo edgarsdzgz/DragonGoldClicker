@@ -9,16 +9,12 @@ Locked 2026-10-27 and imported, not yet shown in the game: the city light levels
 story pictures (prologue, the Breach), the building interior headers, and the busts of Varn, Ashara,
 Thornwick, Sera and the Hollow Knight.
 
-- [ ] **Sigils for the five new busts.** Every named character has a heraldic sigil on their dialog name
-      tag (`official/cast/cast_sigil-*`); Varn, Ashara, Thornwick, Sera and the Hollow Knight have none.
-- [ ] **Two study icons:** Cartography and Keen Scouts (Wilds) still fall back to glyphs; the other 13
-      studies have `icon_res_*`.
-- [ ] **Six interface icons still drawn as glyphs:** warning (confirm dialog), wallet (Shop, Settings),
-      business (Shop), hand-left (Settings, wanderer dialog), speedometer and phone-portrait (Settings).
-- [ ] **The Minotaur boss** (when a boss exists in the code): only its idle is drawn; it needs walk, hit,
-      hurt, death and the Unmaking tiers like the other monsters.
-- [ ] **Second expressions for the busts** (optional, when scenes call for them): angry, grieving.
-- [ ] **More story illustrations** (optional): the other 17 scenes use busts today.
+- [x] **Locked and imported 2026-10-27:** sigils for the five new busts (Lirae keeps her original quill);
+      the Cartography and Keen Scouts study icons; pixel icons for warning, taps (open hand), vibration and
+      food consumption (a leaking grain sack; Stats keeps its inkpot); the Minotaur's full set at every
+      Unmaking tier (no wave sends it yet); a second expression for each bust but the Hollow Knight; story
+      pictures for all 17 remaining scenes. Not shown in the game yet: the story pictures, the expressions,
+      the new sigils.
 - [ ] **The dragon, last**, from the commissioned artist: portrait, perch, victory pose, head token, idle
       loop, fireball attack, the fireball and critical fireball, upgrade looks (claws, fangs, armor, horns).
 
