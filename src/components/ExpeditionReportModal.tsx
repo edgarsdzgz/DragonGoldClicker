@@ -2,28 +2,21 @@ import React, { useEffect, useRef, useMemo } from 'react'
 import {
   View,
   Modal,
-  Pressable,
   StyleSheet,
   Animated,
   Easing,
 } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
-import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import type { ExpeditionReport } from '../types/outpost'
 import { Badge } from './Badge'
+import { ModalEmblem } from './ModalEmblem'
+import { ModalButton } from './ModalButton'
 import { colors, spacing, radius, elevation, dark } from '../theme'
 import { useHaptics } from '../hooks'
 
-// Cool blue palette for the explorer theme
-const explorer = {
-  glow: '#60a5fa',
-  accent: '#3b82f6',
-  deep: '#1e3a5f',
-  text: '#bfdbfe',
-  miss: '#94a3b8',
-}
+// The Explorer's Outpost color; a fruitless trip is plain gray
+const FOUND = colors.building.explorer
+const MISS = dark[300]
 
 // ---------------------------------------------------------------------------
 // FLAVOR TEXT POOLS
@@ -92,61 +85,6 @@ interface ExpeditionReportModalProps {
   visible: boolean
   report: ExpeditionReport | null
   onDismiss: () => void
-}
-
-function FloatingMote({ delay, size }: { delay: number; size: number }) {
-  const drift = useRef(new Animated.Value(0)).current
-  const opacity = useRef(new Animated.Value(0)).current
-
-  useEffect(() => {
-    Animated.timing(opacity, {
-      toValue: 0.5,
-      duration: 800,
-      delay,
-      useNativeDriver: true,
-    }).start()
-
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(drift, {
-          toValue: 1,
-          duration: 3500 + delay,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(drift, {
-          toValue: 0,
-          duration: 3500 + delay,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start()
-  }, [drift, opacity, delay])
-
-  const translateY = drift.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-6, 6],
-  })
-
-  return (
-    <Animated.View
-      style={{
-        position: 'absolute',
-        width: size,
-        height: size,
-        borderRadius: size / 2,
-        backgroundColor: explorer.glow,
-        opacity,
-        transform: [{ translateY }],
-        shadowColor: explorer.glow,
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
-        elevation: 2,
-      }}
-    />
-  )
 }
 
 export function ExpeditionReportModal({
@@ -280,9 +218,7 @@ export function ExpeditionReportModal({
 
   if (!report) return null
 
-  const accentColor = found ? explorer.accent : explorer.miss
-  const glowColor = found ? explorer.glow : explorer.miss
-  const iconName: keyof typeof Ionicons.glyphMap = found ? 'people' : 'cloudy-night'
+  const accent = found ? FOUND : MISS
 
   return (
     <Modal
@@ -300,59 +236,16 @@ export function ExpeditionReportModal({
             {
               opacity: cardOpacity,
               transform: [{ translateY: cardTranslateY }],
-              borderColor: glowColor + '20',
-              shadowColor: accentColor,
             },
           ]}
         >
-          {/* Top accent bar */}
-          <LinearGradient
-            colors={[explorer.deep, accentColor, glowColor, accentColor, explorer.deep]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.accentBar}
+          <ModalEmblem
+            accent={accent}
+            icon={found ? 'people' : 'compass'}
+            pulse={glowPulse}
+            iconStyle={{ opacity: iconOpacity, transform: [{ scale: iconScale }] }}
           />
 
-          {/* Icon area */}
-          <View style={styles.iconContainer}>
-            <Animated.View
-              style={[
-                styles.glowOuter,
-                { opacity: glowPulse, backgroundColor: glowColor + '0A' },
-              ]}
-            />
-            <Animated.View
-              style={[
-                styles.glowInner,
-                { opacity: glowPulse, backgroundColor: glowColor + '18' },
-              ]}
-            />
-
-            <FloatingMote delay={0} size={3} />
-            <FloatingMote delay={400} size={2} />
-            <FloatingMote delay={800} size={3} />
-
-            <Animated.View
-              style={[
-                styles.iconCircle,
-                {
-                  opacity: iconOpacity,
-                  transform: [{ scale: iconScale }],
-                  borderColor: glowColor + '60',
-                  shadowColor: accentColor,
-                },
-              ]}
-            >
-              <LinearGradient
-                colors={[dark[700], dark[800]]}
-                style={styles.iconGradient}
-              >
-                <GameIcon name={iconName} size={28} color={accentColor} />
-              </LinearGradient>
-            </Animated.View>
-          </View>
-
-          {/* Content */}
           <Animated.View
             style={[
               styles.content,
@@ -362,76 +255,45 @@ export function ExpeditionReportModal({
               },
             ]}
           >
-            {/* Section label */}
             <Text variant="caption" center style={{ color: dark[400], letterSpacing: 2 }}>
               EXPEDITION #{report.expeditionId}
             </Text>
 
-            {/* Title */}
-            <Text variant="h3" center style={{ color: found ? explorer.text : dark[200] }}>
+            <Text variant="h3" center accessibilityRole="header">
               {title}
             </Text>
 
-            {/* Narrative */}
             <Text variant="bodySmall" color="secondary" center style={styles.narrative}>
               {narrative}
             </Text>
 
-            {/* Result badge */}
-            {found ? (
-              <View style={styles.badgeRow}>
-                <Badge icon="person-add" color={explorer.glow}>
-                  <Text variant="caption" style={{ color: explorer.glow }}>
+            <View style={styles.badgeRow}>
+              {found ? (
+                <Badge icon="person-add" color={accent}>
+                  <Text variant="caption" style={{ color: accent }}>
                     +{report.villagersFound} villager{report.villagersFound !== 1 ? 's' : ''} rescued
                   </Text>
                 </Badge>
-              </View>
-            ) : (
-              <View style={styles.badgeRow}>
-                <Badge icon="close-circle" color={explorer.miss} variant="ghost">
-                  <Text variant="caption" style={{ color: explorer.miss }}>
+              ) : (
+                <Badge icon="close-circle" color={accent} variant="ghost">
+                  <Text variant="caption" style={{ color: accent }}>
                     No survivors found
                   </Text>
                 </Badge>
-              </View>
-            )}
+              )}
+            </View>
           </Animated.View>
 
-          {/* Divider */}
-          <LinearGradient
-            colors={['transparent', glowColor + '30', 'transparent']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.divider}
-          />
+          <View style={styles.divider} />
 
-          {/* Dismiss */}
           <Animated.View style={[styles.actions, { opacity: actionsOpacity }]}>
-            <Pressable
+            <ModalButton
+              label="Continue"
+              variant={found ? 'primary' : 'secondary'}
+              accent={accent}
               onPress={onDismiss}
-              style={({ pressed }) => [
-                styles.button,
-                found ? styles.dismissButtonFound : styles.dismissButtonMiss,
-                pressed && styles.dismissPressed,
-              ]}
-              accessibilityRole="button"
               accessibilityLabel="Dismiss expedition report"
-            >
-              {found ? (
-                <LinearGradient
-                  colors={[explorer.accent, explorer.glow]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.dismissGradient}
-                >
-                  <Text variant="label" bold style={{ color: dark[900] }}>
-                    Continue
-                  </Text>
-                </LinearGradient>
-              ) : (
-                <Text variant="label" color="secondary">Continue</Text>
-              )}
-            </Pressable>
+            />
           </Animated.View>
         </Animated.View>
       </View>
@@ -442,72 +304,27 @@ export function ExpeditionReportModal({
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(2, 5, 15, 0.88)',
+    backgroundColor: 'rgba(2, 2, 6, 0.85)',
   },
   centerer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: spacing[5],
+    paddingHorizontal: spacing[6],
   },
   card: {
     width: '100%',
     maxWidth: 340,
-    backgroundColor: dark[800],
+    backgroundColor: colors.bg.surface1,
     borderRadius: radius.xl,
     borderWidth: 1,
+    borderColor: dark[700],
     ...elevation[4],
-    shadowOpacity: 0.4,
-    shadowRadius: 24,
   },
-  accentBar: {
-    height: 2,
-    width: '100%',
-    borderTopLeftRadius: radius.xl,
-    borderTopRightRadius: radius.xl,
-  },
-
-  // Icon area
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: spacing[6],
-    height: 100,
-  },
-  glowOuter: {
-    position: 'absolute',
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-  },
-  glowInner: {
-    position: 'absolute',
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-  },
-  iconCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    overflow: 'hidden',
-    borderWidth: 1.5,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 14,
-    elevation: 10,
-  },
-  iconGradient: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  // Content
   content: {
-    paddingHorizontal: spacing[5],
+    paddingHorizontal: spacing[6],
     paddingTop: spacing[3],
-    paddingBottom: spacing[4],
+    paddingBottom: spacing[5],
     gap: spacing[2],
   },
   narrative: {
@@ -519,45 +336,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: spacing[1],
   },
-
-  // Divider
   divider: {
     height: 1,
+    backgroundColor: dark[700],
     marginHorizontal: spacing[4],
   },
-
-  // Actions
   actions: {
+    flexDirection: 'row',
     padding: spacing[4],
-  },
-  button: {
-    borderRadius: radius.md,
-    minHeight: 44,
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dismissButtonFound: {
-    shadowColor: explorer.accent,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  dismissButtonMiss: {
-    backgroundColor: colors.bg.surface2,
-    borderWidth: 1,
-    borderColor: dark[600],
-  },
-  dismissPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.98 }],
-  },
-  dismissGradient: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing[3],
   },
 })

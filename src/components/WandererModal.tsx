@@ -2,16 +2,16 @@ import React, { useEffect, useRef } from 'react'
 import {
   View,
   Modal,
-  Pressable,
   StyleSheet,
   Animated,
   Easing,
 } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
+import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { Badge } from './Badge'
+import { ModalEmblem } from './ModalEmblem'
+import { ModalButton } from './ModalButton'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { useHaptics, useSfx } from '../hooks'
 import { SFX } from '../data/sfx'
@@ -24,12 +24,14 @@ import {
 import { useGame } from '../context/GameContext'
 import { mealCost } from '../types/foodTick'
 
-// Warm amber palette for the wanderer theme
-const warm = {
-  glow: '#d4956a',
-  accent: '#e8a44a',
-  deep: '#8a5a2a',
-  text: '#f0c890',
+// The house gold: a knock at the gate is good news
+const ACCENT = gold[400]
+
+const ENCOUNTER_ICON: Record<WandererEncounter['encounterType'], GameIconName> = {
+  lone_wanderer: 'person',
+  traveling_couple: 'people',
+  small_family: 'people',
+  veteran: 'shield-half',
 }
 
 interface WandererModalProps {
@@ -37,71 +39,6 @@ interface WandererModalProps {
   encounter: WandererEncounter
   onAccept: () => void
   onReject: () => void
-}
-
-function WanderingDot({ delay, size }: { delay: number; size: number }) {
-  const drift = useRef(new Animated.Value(0)).current
-  const opacity = useRef(new Animated.Value(0)).current
-
-  useEffect(() => {
-    Animated.timing(opacity, {
-      toValue: 0.6,
-      duration: 800,
-      delay,
-      useNativeDriver: true,
-    }).start()
-
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(drift, {
-          toValue: 1,
-          duration: 3000 + delay,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(drift, {
-          toValue: 0,
-          duration: 3000 + delay,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start()
-  }, [drift, opacity, delay])
-
-  const translateX = drift.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-8, 8],
-  })
-
-  return (
-    <Animated.View
-      style={{
-        position: 'absolute',
-        width: size,
-        height: size,
-        borderRadius: size / 2,
-        backgroundColor: warm.glow,
-        opacity,
-        transform: [{ translateX }],
-        shadowColor: warm.glow,
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
-        elevation: 2,
-      }}
-    />
-  )
-}
-
-function EncounterIcon({ type }: { type: WandererEncounter['encounterType'] }) {
-  const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
-    lone_wanderer: 'person',
-    traveling_couple: 'people',
-    small_family: 'people',
-    veteran: 'shield-half',
-  }
-  return <GameIcon name={iconMap[type] ?? 'person'} size={28} color={warm.accent} />
 }
 
 export function WandererModal({
@@ -269,53 +206,13 @@ export function WandererModal({
             },
           ]}
         >
-          {/* Top accent bar */}
-          <LinearGradient
-            colors={[warm.deep, warm.accent, warm.glow, warm.accent, warm.deep]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.accentBar}
+          <ModalEmblem
+            accent={ACCENT}
+            icon={ENCOUNTER_ICON[encounter.encounterType] ?? 'person'}
+            pulse={glowPulse}
+            iconStyle={{ opacity: iconOpacity, transform: [{ scale: iconScale }] }}
           />
 
-          {/* Icon area with warm glow */}
-          <View style={styles.iconContainer}>
-            <Animated.View
-              style={[
-                styles.glowOuter,
-                { opacity: glowPulse, backgroundColor: warm.glow + '0A' },
-              ]}
-            />
-            <Animated.View
-              style={[
-                styles.glowInner,
-                { opacity: glowPulse, backgroundColor: warm.glow + '18' },
-              ]}
-            />
-
-            {/* Wandering dots -- firefly-like ambient particles */}
-            <WanderingDot delay={0} size={3} />
-            <WanderingDot delay={400} size={2} />
-            <WanderingDot delay={800} size={3} />
-
-            <Animated.View
-              style={[
-                styles.iconCircle,
-                {
-                  opacity: iconOpacity,
-                  transform: [{ scale: iconScale }],
-                },
-              ]}
-            >
-              <LinearGradient
-                colors={[dark[700], dark[800]]}
-                style={styles.iconGradient}
-              >
-                <EncounterIcon type={encounter.encounterType} />
-              </LinearGradient>
-            </Animated.View>
-          </View>
-
-          {/* Content */}
           <Animated.View
             style={[
               styles.content,
@@ -326,7 +223,7 @@ export function WandererModal({
             ]}
           >
             {/* Title */}
-            <Text variant="h3" center style={{ color: warm.text }}>
+            <Text variant="h3" center accessibilityRole="header">
               {encounterName}
             </Text>
 
@@ -339,9 +236,9 @@ export function WandererModal({
             <View style={styles.badgeRow}>
               <Badge
                 icon={encounter.veteran ? 'shield-half' : 'person-add'}
-                color={warm.accent}
+                color={ACCENT}
               >
-                <Text variant="caption" style={{ color: warm.accent }}>
+                <Text variant="caption" style={{ color: ACCENT }}>
                   {joins}
                 </Text>
               </Badge>
@@ -372,7 +269,7 @@ export function WandererModal({
               {encounter.veteran && (
                 <View style={styles.foodRow}>
                   <Text variant="caption" color="muted">Each meal after:</Text>
-                  <Text variant="caption" style={{ color: warm.accent }}>
+                  <Text variant="caption" style={{ color: ACCENT }}>
                     {`${formatCount(mealNow)} to ${formatCount(mealWithVeteran)} eaten`}
                   </Text>
                 </View>
@@ -389,54 +286,23 @@ export function WandererModal({
             )}
           </Animated.View>
 
-          {/* Divider */}
-          <LinearGradient
-            colors={['transparent', warm.glow + '30', 'transparent']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.divider}
-          />
+          <View style={styles.divider} />
 
-          {/* Actions */}
           <Animated.View style={[styles.actions, { opacity: actionsOpacity }]}>
-            <Pressable
+            <ModalButton
+              label="Turn Away"
+              variant="secondary"
               onPress={handleReject}
-              style={({ pressed }) => [
-                styles.button,
-                styles.rejectButton,
-                pressed && styles.rejectPressed,
-              ]}
-              accessibilityRole="button"
               accessibilityLabel="Turn away wanderer"
-            >
-              <Text variant="label" color="secondary">Turn Away</Text>
-            </Pressable>
-
-            <Pressable
-              onPress={handleAccept}
+            />
+            <ModalButton
+              label="Welcome"
+              icon="hand-left"
+              accent={ACCENT}
               disabled={!affordable}
-              style={({ pressed }) => [
-                styles.button,
-                styles.acceptButton,
-                pressed && styles.acceptPressed,
-                !affordable && styles.acceptDisabled,
-              ]}
-              accessibilityRole="button"
-              accessibilityState={{ disabled: !affordable }}
+              onPress={handleAccept}
               accessibilityLabel={`Welcome them: ${joins}, ${encounter.foodOnArrival} food from the stores`}
-            >
-              <LinearGradient
-                colors={[warm.accent, warm.glow]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.acceptGradient}
-              >
-                <GameIcon name="hand-left" size={14} color={dark[900]} />
-                <Text variant="label" bold style={{ color: dark[900] }}>
-                  Welcome
-                </Text>
-              </LinearGradient>
-            </Pressable>
+            />
           </Animated.View>
         </Animated.View>
       </View>
@@ -447,76 +313,27 @@ export function WandererModal({
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(5, 3, 0, 0.88)',
+    backgroundColor: 'rgba(2, 2, 6, 0.85)',
   },
   centerer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: spacing[5],
+    paddingHorizontal: spacing[6],
   },
   card: {
     width: '100%',
     maxWidth: 340,
-    backgroundColor: dark[800],
+    backgroundColor: colors.bg.surface1,
     borderRadius: radius.xl,
     borderWidth: 1,
-    borderColor: warm.glow + '20',
+    borderColor: dark[700],
     ...elevation[4],
-    shadowColor: warm.deep,
-    shadowOpacity: 0.4,
-    shadowRadius: 24,
   },
-  accentBar: {
-    height: 2,
-    width: '100%',
-    borderTopLeftRadius: radius.xl,
-    borderTopRightRadius: radius.xl,
-  },
-
-  // Icon area
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: spacing[6],
-    height: 100,
-  },
-  glowOuter: {
-    position: 'absolute',
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-  },
-  glowInner: {
-    position: 'absolute',
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-  },
-  iconCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    overflow: 'hidden',
-    borderWidth: 1.5,
-    borderColor: warm.glow + '60',
-    shadowColor: warm.accent,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 14,
-    elevation: 10,
-  },
-  iconGradient: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  // Content
   content: {
-    paddingHorizontal: spacing[5],
+    paddingHorizontal: spacing[6],
     paddingTop: spacing[3],
-    paddingBottom: spacing[4],
+    paddingBottom: spacing[5],
     gap: spacing[2],
   },
   flavorText: {
@@ -569,54 +386,14 @@ const styles = StyleSheet.create({
     marginTop: spacing[1],
   },
 
-  // Divider
   divider: {
     height: 1,
+    backgroundColor: dark[700],
     marginHorizontal: spacing[4],
   },
-
-  // Actions
   actions: {
     flexDirection: 'row',
     padding: spacing[4],
     gap: spacing[3],
-  },
-  button: {
-    flex: 1,
-    borderRadius: radius.md,
-    minHeight: 44,
-    overflow: 'hidden',
-  },
-  rejectButton: {
-    backgroundColor: colors.bg.surface2,
-    borderWidth: 1,
-    borderColor: dark[600],
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  rejectPressed: {
-    backgroundColor: colors.bg.surface3,
-  },
-  acceptButton: {
-    shadowColor: warm.accent,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  acceptPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.98 }],
-  },
-  acceptDisabled: {
-    opacity: 0.4,
-  },
-  acceptGradient: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing[2],
-    paddingVertical: spacing[3],
   },
 })

@@ -1,6 +1,5 @@
 import React, { useRef, useCallback, useEffect } from 'react'
 import { View, StyleSheet, Pressable, Animated, ViewStyle } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
 import { Text } from './Text'
@@ -179,10 +178,7 @@ export function HarvestOrb({ onAction, repeatOnHold = false, icon, label, palett
             },
           ]}
         >
-          <LinearGradient
-            colors={[colors.bg.surface2, colors.bg.surface1]}
-            style={[styles.gradient, { gap: dim.gap }]}
-          >
+          <View style={[styles.face, { gap: dim.gap }]}>
             <GameIcon name={icon} size={dim.icon} color={accentColor} />
             <Text
               variant="h2"
@@ -196,7 +192,7 @@ export function HarvestOrb({ onAction, repeatOnHold = false, icon, label, palett
             >
               {label}
             </Text>
-          </LinearGradient>
+          </View>
         </Animated.View>
       </Pressable>
     </View>
@@ -225,8 +221,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     elevation: 10,
   },
-  gradient: {
+  face: {
     flex: 1,
+    backgroundColor: colors.bg.surface2,
     justifyContent: 'center',
     alignItems: 'center',
   },

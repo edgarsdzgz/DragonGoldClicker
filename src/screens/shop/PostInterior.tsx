@@ -1,13 +1,12 @@
 import React from 'react'
 import { View, Pressable } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import { GameIcon } from '../../components/GameIcon'
 import { Text, ActionRow, Button, StatBox, Badge, SectionLabel, InspirationIcon, ExpeditionReportModal } from '../../components'
 import { REJECT_GOLD, REJECT_MAXED, REJECT_NO_POP } from '../../components/Button'
 import { ProgressBar } from '../../components/ProgressBar'
 import { useGame } from '../../context/GameContext'
 import { useHaptics } from '../../hooks'
-import { colors } from '../../theme'
+import { colors, dark } from '../../theme'
 import { formatNumber, getExplorerCap, getPostUpgradeCost, EXPEDITION_FOOD_COST, EXPEDITION_PITY_THRESHOLD } from '../../types/game'
 import {
   explorerBlock, explorerCost, expeditionBlock, expeditionSeconds, explorersFree, isExpeditionBack, postBlock,
@@ -21,7 +20,7 @@ import { styles, expStyles } from './interiorStyles'
 // THE OUTPOST (chapter 7, Beyond the Walls): explorers bring people home, paid in food
 // =============================================================================
 
-const EXPLORER_GRADIENT = ['#3b82f6', '#93c5fd'] as [string, string]
+const EXPLORER_GRADIENT: [string, string] = [colors.explorer.glow, colors.explorer.soft]
 
 /** "5 min" or "3 min 45 s" */
 function minutes(sec: number): string {
@@ -169,30 +168,25 @@ export function PostInterior() {
       <Pressable
         onPress={handleSend}
         disabled={!canSend}
-        style={({ pressed }) => [expStyles.sendBtnGradientWrap, !canSend && { opacity: 0.4 }, pressed && canSend && expStyles.sendBtnPressed]}
+        style={({ pressed }) => [expStyles.sendBtnWrap, !canSend && { opacity: 0.4 }, pressed && canSend && expStyles.sendBtnPressed]}
         accessibilityRole="button"
         accessibilityState={{ disabled: !canSend }}
         accessibilityLabel={canSend ? `Send an expedition for ${EXPEDITION_FOOD_COST} food` : sendLabel}
       >
-        <LinearGradient
-          colors={canSend ? ['#3b82f6', '#2563eb'] as [string, string] : [colors.bg.surface3, colors.bg.surface2] as [string, string]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={expStyles.sendBtnGradient}
-        >
-          <GameIcon name="compass" size={16} color={canSend ? '#ffffff' : colors.text.muted} dim={!canSend} />
-          <Text variant="button" style={{ color: canSend ? '#ffffff' : colors.text.muted }}>
+        <View style={[expStyles.sendBtnFace, { backgroundColor: canSend ? colors.explorer.accent : colors.bg.surface2 }]}>
+          <GameIcon name="compass" size={16} color={canSend ? dark[900] : colors.text.muted} dim={!canSend} />
+          <Text variant="button" style={{ color: canSend ? dark[900] : colors.text.muted }}>
             {sendLabel}
           </Text>
           <View style={expStyles.sendCostPills}>
             <View style={expStyles.sendCostPill}>
-              <GameIcon name="nutrition" size={10} color={canSend ? 'rgba(255,255,255,0.8)' : colors.text.muted} dim={!canSend} />
-              <Text variant="caption" style={{ color: canSend ? 'rgba(255,255,255,0.9)' : colors.text.muted }}>
+              <GameIcon name="nutrition" size={10} color={canSend ? dark[900] : colors.text.muted} dim={!canSend} />
+              <Text variant="caption" style={{ color: canSend ? dark[900] : colors.text.muted }}>
                 {EXPEDITION_FOOD_COST}
               </Text>
             </View>
           </View>
-        </LinearGradient>
+        </View>
       </Pressable>
 
       {state.activeExpeditions.length > 0 && (

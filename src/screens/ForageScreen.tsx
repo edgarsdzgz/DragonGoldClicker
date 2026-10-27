@@ -20,25 +20,9 @@ import { explorerBlock, explorerCost } from '../types/outpost'
 /** The granary beside the food figure, in points (at a whole scale of its art) */
 const GRANARY_PTS = 48
 
-// Earthy green palette for foraging
-const forage = {
-  900: '#052e16',
-  700: '#15803d',
-  600: '#16a34a',
-  500: '#22c55e',
-  400: '#4ade80',
-  300: '#86efac',
-} as const
-
-// Blue-tinted palette for explorers
-const explorer = {
-  accent: colors.building.explorer,
-  glow: '#3b82f6',
-} as const
-
-const FORAGE_PALETTE = { accent: forage[400], glow: forage[500] }
-const TRAIN_PALETTE = { accent: forage[300], glow: forage[400] }
-const RECRUIT_PALETTE = { accent: explorer.accent, glow: explorer.glow }
+const FORAGE_PALETTE = { accent: colors.forage.accent, glow: colors.forage.glow }
+const TRAIN_PALETTE = { accent: colors.forage.soft, glow: colors.forage.accent }
+const RECRUIT_PALETTE = { accent: colors.explorer.accent, glow: colors.explorer.glow }
 
 export function ForageScreen() {
   const { state, forage: doForage, trainForager, trainExplorer } = useGame()
@@ -95,7 +79,7 @@ export function ForageScreen() {
           <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
             <PixelSprite id={granarySprite(state.food, GRANARY_CAP)} scale={fitScale(GRANARY_PTS, SPRITES.evt_granary_0.w, PixelRatio.get())} />
           </View>
-          <Text variant="display" style={{ color: forage[400] }}>
+          <Text variant="display" style={{ color: colors.forage.accent }}>
             {formatCount(state.food)}
           </Text>
         </View>
@@ -103,8 +87,8 @@ export function ForageScreen() {
 
 
         {hasBonusPercent && (
-          <Badge icon="arrow-up" color={forage[400]} style={{ marginTop: spacing[1] }}>
-            <Text variant="caption" style={{ color: forage[300] }}>
+          <Badge icon="arrow-up" color={colors.forage.accent} style={{ marginTop: spacing[1] }}>
+            <Text variant="caption" style={{ color: colors.forage.soft }}>
               +{Math.round(state.forageBonus * 100)}% forage bonus
             </Text>
           </Badge>
@@ -125,7 +109,7 @@ export function ForageScreen() {
 
       {/* Battle area: FORAGE dominates center */}
       <View style={styles.battleArea} onLayout={(e) => setAreaHeight(Math.floor(e.nativeEvent.layout.height))}>
-        <FlavorText text={flavor.text} opacity={flavor.opacity} color={forage[300]} reserveHeight={FLAVOR_H} />
+        <FlavorText text={flavor.text} opacity={flavor.opacity} color={colors.forage.soft} reserveHeight={FLAVOR_H} />
         <HarvestOrb
           onAction={handleForage}
           repeatOnHold
@@ -186,8 +170,8 @@ export function ForageScreen() {
         <Text variant="caption" color="muted" center>
           {`${formatCount(state.forageClicks)} foraging trips, ${formatCount(state.totalFoodForaged)} food gathered in all`}
         </Text>
-        <Badge icon="nutrition" iconSize={10} color={forage[400]} variant="ghost">
-          <Text variant="caption" style={{ color: forage[400] }}>
+        <Badge icon="nutrition" iconSize={10} color={colors.forage.accent} variant="ghost">
+          <Text variant="caption" style={{ color: colors.forage.accent }}>
             {granaryFull ? 'Granary full' : `+${yield_} per tap`}
           </Text>
         </Badge>

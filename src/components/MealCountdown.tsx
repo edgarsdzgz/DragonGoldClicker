@@ -9,14 +9,8 @@ import { FOOD_CHECK_INTERVAL, isSystemOn, formatAmount } from '../types/game'
 import { mealBalance, storesOutlook } from '../types/foodTick'
 import type { StoresOutlook } from '../types/foodTick'
 
-// Warm amber palette for consumption (contrasts with green forage / red garrison)
-const meal = {
-  600: '#b45309',
-  500: '#d97706',
-  400: '#f59e0b',
-  300: '#fbbf24',
-  200: '#fde68a',
-} as const
+// Amber for consumption, from the theme (contrasts with green forage / red garrison)
+const meal = colors.meal
 
 /** What the stores are heading for, in words, and whether that is good news */
 export function outlookText(o: StoresOutlook): { text: string; good: boolean } {
@@ -149,7 +143,7 @@ function CompactCountdown({
       <ProgressBar
         progress={secondsLeft / FOOD_CHECK_INTERVAL}
         height={2}
-        gradientColors={isUrgent ? ['#ef4444', '#f87171'] : [meal[600], meal[400]]}
+        gradientColors={isUrgent ? meal.urgent : [meal[600], meal[400]]}
       />
     </View>
   )

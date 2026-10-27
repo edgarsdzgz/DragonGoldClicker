@@ -68,6 +68,14 @@ export const ICON_ART: Partial<Record<IoniconName, SpriteId>> = {
   'phone-portrait-outline': 'icon_phone',
   // Only the Stats screen's food Consumption row uses it: a leaking grain sack, not a gauge
   speedometer: 'icon_consumption',
+  // Fighters on short rations: the leaking grain sack again
+  'remove-circle': 'icon_consumption',
+  // The urgent food warning
+  'alert-circle': 'icon_warning',
+  // A veteran wanderer
+  'shield-half': 'icon_shield',
+  // The Keep, where its own building icon is not looked up
+  business: 'icon_bld-keep',
 }
 
 export function isSpriteId(name: string): name is SpriteId {

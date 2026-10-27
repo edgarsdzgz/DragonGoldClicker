@@ -1,14 +1,13 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import type { GameIconName } from '../../art'
 import { GameIcon } from '../../components/GameIcon'
 import { Text } from '../../components'
 import { ProgressBar } from '../../components/ProgressBar'
-import { colors, spacing, radius } from '../../theme'
+import { spacing, radius } from '../../theme'
 
 // =============================================================================
-// DESCRIPTION BANNER (gradient banner used across multiple interiors)
+// DESCRIPTION BANNER (tinted banner used across multiple interiors)
 // =============================================================================
 
 export function DescriptionBanner({
@@ -22,17 +21,12 @@ export function DescriptionBanner({
 }) {
   return (
     <View style={bannerStyles.container}>
-      <LinearGradient
-        colors={[`${color}0F`, `${color}05`] as [string, string]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={bannerStyles.gradient}
-      >
+      <View style={[bannerStyles.tint, { backgroundColor: `${color}0A` }]}>
         <GameIcon name={icon} size={16} color={color} style={{ opacity: 0.7 }} />
         <View style={{ flex: 1 }}>
           {children}
         </View>
-      </LinearGradient>
+      </View>
     </View>
   )
 }
@@ -42,7 +36,7 @@ const bannerStyles = StyleSheet.create({
     borderRadius: radius.md,
     overflow: 'hidden',
   },
-  gradient: {
+  tint: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing[2],

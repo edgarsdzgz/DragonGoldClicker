@@ -116,6 +116,31 @@ export const colors = {
     /** The claw slash by tier (layer 3): plain, gold from Serrated, ember from Ember */
   },
 
+  /** The Forage tab: the Lodge's green, a deeper glow, a pale tint */
+  forage: {
+    accent: '#4ade80',
+    glow: '#22c55e',
+    soft: '#86efac',
+  },
+
+  /** Explorers and expeditions: the Outpost's blue, a deeper glow, a pale tint */
+  explorer: {
+    accent: '#60a5fa',
+    glow: '#3b82f6',
+    soft: '#93c5fd',
+  },
+
+  /** Meals and consumption: amber, between the green of forage and the red of danger */
+  meal: {
+    600: '#b45309',
+    500: '#d97706',
+    400: '#f59e0b',
+    300: '#fbbf24',
+    200: '#fde68a',
+    /** The countdown bar when the next meal will empty the stores */
+    urgent: ['#ef4444', '#f87171'] as [string, string],
+  },
+
   dark,
   goldRamp: gold,
 } as const

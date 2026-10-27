@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import { GameIcon } from '../../components/GameIcon'
 import { Text, Badge } from '../../components'
 import { useGame } from '../../context/GameContext'
@@ -36,12 +35,7 @@ export function LibrariumInterior() {
   return (
     <View style={interiorStyles.interiorContainer}>
       <View style={styles.banner}>
-        <LinearGradient
-          colors={[`${LIB.accent}12`, `${LIB.accent}04`] as [string, string]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.bannerGradient}
-        >
+        <View style={[styles.bannerTint, { backgroundColor: `${LIB.accent}0B` }]}>
           <View style={styles.bannerLeft}>
             <GameIcon name="book" size={14} color={LIB.accent} style={styles.bannerIcon} />
             <Text variant="bodySmall" color="secondary">
@@ -53,7 +47,7 @@ export function LibrariumInterior() {
               {done}/{RESEARCH_NODES.length}
             </Text>
           </Badge>
-        </LinearGradient>
+        </View>
       </View>
 
       <ResearchTabs active={active} onChange={setActive} counts={counts} />
@@ -67,7 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     overflow: 'hidden',
   },
-  bannerGradient: {
+  bannerTint: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

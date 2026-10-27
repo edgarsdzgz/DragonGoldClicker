@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
   View,
   Modal,
-  Pressable,
   StyleSheet,
   Animated,
   Easing,
 } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import { GameIcon } from './GameIcon'
+import { ModalEmblem } from './ModalEmblem'
+import { ModalButton } from './ModalButton'
 import { Text } from './Text'
 import { InspirationIcon } from './InspirationIcon'
 import { colors, spacing, radius, elevation, gold, dark } from '../theme'
@@ -34,62 +34,6 @@ function formatDuration(totalSeconds: number): string {
   return `${minutes}m`
 }
 
-// Orbiting spark around the central icon
-function Spark({ delay, size, orbitRadius }: { delay: number; size: number; orbitRadius: number }) {
-  const rotation = useRef(new Animated.Value(0)).current
-  const sparkOpacity = useRef(new Animated.Value(0)).current
-
-  useEffect(() => {
-    Animated.timing(sparkOpacity, {
-      toValue: 1,
-      duration: 600,
-      delay,
-      useNativeDriver: true,
-    }).start()
-
-    Animated.loop(
-      Animated.timing(rotation, {
-        toValue: 1,
-        duration: 4000 + delay * 2,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    ).start()
-  }, [rotation, sparkOpacity, delay])
-
-  const rotate = rotation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  })
-
-  return (
-    <Animated.View
-      style={[
-        styles.sparkOrbit,
-        {
-          width: orbitRadius * 2,
-          height: orbitRadius * 2,
-          opacity: sparkOpacity,
-          transform: [{ rotate }],
-        },
-      ]}
-    >
-      <View
-        style={[
-          styles.spark,
-          {
-            width: size,
-            height: size,
-            borderRadius: size / 2,
-            backgroundColor: gold[300],
-            shadowColor: gold[400],
-          },
-        ]}
-      />
-    </Animated.View>
-  )
-}
-
 export function OfflineModal({
   visible,
   inspirationEarned,
@@ -109,7 +53,6 @@ export function OfflineModal({
   const iconScale = useRef(new Animated.Value(0.3)).current
   const iconOpacity = useRef(new Animated.Value(0)).current
   const glowPulse = useRef(new Animated.Value(0.4)).current
-  const glowScale = useRef(new Animated.Value(0.8)).current
 
   // Content stagger
   const titleOpacity = useRef(new Animated.Value(0)).current
@@ -120,8 +63,6 @@ export function OfflineModal({
   const btnOpacity = useRef(new Animated.Value(0)).current
   const btnTranslateY = useRef(new Animated.Value(10)).current
 
-  // Button shimmer
-  const shimmerPosition = useRef(new Animated.Value(-1)).current
 
   // Counting animation
   const [displayInsp, setDisplayInsp] = useState(0)
@@ -245,56 +186,21 @@ export function OfflineModal({
         }),
       ]).start()
 
-      // Continuous glow pulse
-      Animated.loop(
-        Animated.parallel([
-          Animated.sequence([
-            Animated.timing(glowPulse, {
-              toValue: 0.8,
-              duration: 1800,
-              easing: Easing.inOut(Easing.sin),
-              useNativeDriver: true,
-            }),
-            Animated.timing(glowPulse, {
-              toValue: 0.4,
-              duration: 1800,
-              easing: Easing.inOut(Easing.sin),
-              useNativeDriver: true,
-            }),
-          ]),
-          Animated.sequence([
-            Animated.timing(glowScale, {
-              toValue: 1.1,
-              duration: 1800,
-              easing: Easing.inOut(Easing.sin),
-              useNativeDriver: true,
-            }),
-            Animated.timing(glowScale, {
-              toValue: 0.8,
-              duration: 1800,
-              easing: Easing.inOut(Easing.sin),
-              useNativeDriver: true,
-            }),
-          ]),
-        ])
-      ).start()
-
-      // Button shimmer sweep
+      // The emblem's rings breathe
       Animated.loop(
         Animated.sequence([
-          Animated.delay(1200),
-          Animated.timing(shimmerPosition, {
-            toValue: 1,
-            duration: 800,
-            easing: Easing.inOut(Easing.ease),
+          Animated.timing(glowPulse, {
+            toValue: 0.8,
+            duration: 1800,
+            easing: Easing.inOut(Easing.sin),
             useNativeDriver: true,
           }),
-          Animated.timing(shimmerPosition, {
-            toValue: -1,
-            duration: 0,
+          Animated.timing(glowPulse, {
+            toValue: 0.4,
+            duration: 1800,
+            easing: Easing.inOut(Easing.sin),
             useNativeDriver: true,
           }),
-          Animated.delay(2000),
         ])
       ).start()
 
@@ -310,7 +216,6 @@ export function OfflineModal({
       iconScale.setValue(0.3)
       iconOpacity.setValue(0)
       glowPulse.setValue(0.4)
-      glowScale.setValue(0.8)
       titleOpacity.setValue(0)
       titleTranslateY.setValue(12)
       amountOpacity.setValue(0)
@@ -318,29 +223,22 @@ export function OfflineModal({
       footerOpacity.setValue(0)
       btnOpacity.setValue(0)
       btnTranslateY.setValue(10)
-      shimmerPosition.setValue(-1)
       setDisplayInsp(0)
       if (countingRef.current) clearInterval(countingRef.current)
     }
   }, [
     visible, inspirationEarned,
     backdropOpacity, cardTranslateY, cardOpacity,
-    iconScale, iconOpacity, glowPulse, glowScale,
+    iconScale, iconOpacity, glowPulse,
     titleOpacity, titleTranslateY,
     amountOpacity, amountScale,
     footerOpacity, btnOpacity, btnTranslateY,
-    shimmerPosition,
   ])
 
   const handleCollect = () => {
     haptics.heavy()
     onCollect()
   }
-
-  const shimmerTranslateX = shimmerPosition.interpolate({
-    inputRange: [-1, 1],
-    outputRange: [-120, 320],
-  })
 
   return (
     <Modal
@@ -362,81 +260,12 @@ export function OfflineModal({
             },
           ]}
         >
-          {/* Gradient top edge */}
-          <LinearGradient
-            colors={[gold[600], gold[400], gold[300], gold[400], gold[600]]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.accentBar}
+          <ModalEmblem
+            accent={gold[400]}
+            icon="moon"
+            pulse={glowPulse}
+            iconStyle={{ opacity: iconOpacity, transform: [{ scale: iconScale }] }}
           />
-
-          {/* Icon area with layered glows + orbiting sparks */}
-          <View style={styles.iconContainer}>
-            {/* Outermost diffuse glow */}
-            <Animated.View
-              style={[
-                styles.glowRing,
-                {
-                  width: 140,
-                  height: 140,
-                  borderRadius: 70,
-                  backgroundColor: 'rgba(224, 168, 64, 0.04)',
-                  opacity: glowPulse,
-                  transform: [{ scale: glowScale }],
-                },
-              ]}
-            />
-            {/* Mid glow */}
-            <Animated.View
-              style={[
-                styles.glowRing,
-                {
-                  width: 100,
-                  height: 100,
-                  borderRadius: 50,
-                  backgroundColor: 'rgba(224, 168, 64, 0.08)',
-                  opacity: glowPulse,
-                  transform: [{ scale: glowScale }],
-                },
-              ]}
-            />
-            {/* Inner concentrated glow */}
-            <Animated.View
-              style={[
-                styles.glowRing,
-                {
-                  width: 68,
-                  height: 68,
-                  borderRadius: 34,
-                  backgroundColor: 'rgba(224, 168, 64, 0.15)',
-                  opacity: glowPulse,
-                },
-              ]}
-            />
-
-            {/* Orbiting sparks */}
-            <Spark delay={0} size={4} orbitRadius={52} />
-            <Spark delay={300} size={3} orbitRadius={44} />
-            <Spark delay={600} size={3} orbitRadius={60} />
-
-            {/* Central icon */}
-            <Animated.View
-              style={[
-                styles.iconCircle,
-                {
-                  opacity: iconOpacity,
-                  transform: [{ scale: iconScale }],
-                },
-              ]}
-            >
-              <LinearGradient
-                colors={[dark[700], dark[800]]}
-                style={styles.iconGradient}
-              >
-                <GameIcon name="moon" size={28} color={gold[300]} />
-              </LinearGradient>
-            </Animated.View>
-          </View>
 
           {/* Content */}
           <View style={styles.content}>
@@ -481,7 +310,6 @@ export function OfflineModal({
                   +{formatNumber(displayInsp)}
                 </Text>
               </View>
-              <Animated.View style={[styles.amountGlow, { opacity: glowPulse }]} />
             </Animated.View>
 
             {/* Subtitle */}
@@ -508,13 +336,7 @@ export function OfflineModal({
             </Animated.View>
           </View>
 
-          {/* Divider with gradient */}
-          <LinearGradient
-            colors={['transparent', 'rgba(224, 168, 64, 0.2)', 'transparent']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.divider}
-          />
+          <View style={styles.divider} />
 
           {/* Collect button */}
           <Animated.View
@@ -526,34 +348,13 @@ export function OfflineModal({
               },
             ]}
           >
-            <Pressable
+            <ModalButton
+              label="Collect"
+              accent={gold[400]}
+              iconElement={<InspirationIcon size={14} color={dark[900]} />}
               onPress={handleCollect}
-              style={({ pressed }) => [
-                styles.collectBtn,
-                pressed && styles.collectBtnPressed,
-              ]}
-              accessibilityRole="button"
               accessibilityLabel={`Collect ${inspirationEarned} offline renown`}
-            >
-              <LinearGradient
-                colors={[gold[400], gold[500], gold[600]]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.collectGradient}
-              >
-                {/* Shimmer sweep */}
-                <Animated.View
-                  style={[
-                    styles.shimmer,
-                    { transform: [{ translateX: shimmerTranslateX }] },
-                  ]}
-                />
-                <InspirationIcon size={14} color={dark[900]} />
-                <Text variant="label" bold style={{ color: dark[900], letterSpacing: 1 }}>
-                  COLLECT
-                </Text>
-              </LinearGradient>
-            </Pressable>
+            />
           </Animated.View>
         </Animated.View>
       </View>
@@ -564,7 +365,7 @@ export function OfflineModal({
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(2, 2, 6, 0.92)',
+    backgroundColor: 'rgba(2, 2, 6, 0.85)',
   },
   centerer: {
     flex: 1,
@@ -575,62 +376,12 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 320,
-    backgroundColor: dark[800],
+    backgroundColor: colors.bg.surface1,
     borderRadius: radius.xl,
     borderWidth: 1,
-    borderColor: 'rgba(224, 168, 64, 0.15)',
+    borderColor: dark[700],
     ...elevation[4],
-    shadowColor: gold[700],
-    shadowOpacity: 0.3,
-    shadowRadius: 30,
   },
-  accentBar: {
-    height: 2,
-    width: '100%',
-    borderTopLeftRadius: radius.xl,
-    borderTopRightRadius: radius.xl,
-  },
-
-  // Icon area
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: spacing[7],
-    height: 120,
-  },
-  glowRing: {
-    position: 'absolute',
-  },
-  sparkOrbit: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  spark: {
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  iconCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    overflow: 'hidden',
-    borderWidth: 1.5,
-    borderColor: 'rgba(224, 168, 64, 0.4)',
-    shadowColor: gold[400],
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 16,
-    elevation: 10,
-  },
-  iconGradient: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   // Content
   content: {
     paddingHorizontal: spacing[6],
@@ -671,52 +422,13 @@ const styles = StyleSheet.create({
     color: gold[300],
     letterSpacing: 1,
   },
-  amountGlow: {
-    position: 'absolute',
-    width: 200,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'rgba(224, 168, 64, 0.06)',
-  },
-
-  // Divider
   divider: {
     height: 1,
-    marginHorizontal: spacing[5],
+    backgroundColor: dark[700],
+    marginHorizontal: spacing[4],
   },
-
-  // Actions
   actions: {
-    padding: spacing[4],
-    paddingTop: spacing[4],
-  },
-  collectBtn: {
-    borderRadius: radius.md,
-    overflow: 'hidden',
-    shadowColor: gold[500],
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 6,
-  },
-  collectBtnPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.98 }],
-  },
-  collectGradient: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing[2],
-    paddingVertical: spacing[3],
-    minHeight: 48,
-    overflow: 'hidden',
-  },
-  shimmer: {
-    position: 'absolute',
-    width: 60,
-    height: '200%',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    transform: [{ rotate: '15deg' }],
+    padding: spacing[4],
   },
 })

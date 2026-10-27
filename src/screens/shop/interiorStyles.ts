@@ -146,7 +146,7 @@ export const expStyles = StyleSheet.create({
   pityDotEmpty: {
     backgroundColor: dark[600],
   },
-  sendBtnGradientWrap: {
+  sendBtnWrap: {
     borderRadius: radius.md,
     overflow: 'hidden',
     marginTop: spacing[1],
@@ -154,7 +154,7 @@ export const expStyles = StyleSheet.create({
   sendBtnPressed: {
     opacity: 0.8,
   },
-  sendBtnGradient: {
+  sendBtnFace: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
