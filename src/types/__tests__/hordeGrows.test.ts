@@ -72,7 +72,7 @@ describe('the horde grows 5% a level', () => {
 
 describe('the army must keep up', () => {
   it('the readout measures the grown monster', () => {
-    expect(toughestInPool({ hordeKills: atLevel(27) })).toMatchObject({ id: 'orc', hp: 46 })
+    expect(toughestInPool({ hordeKills: atLevel(27) })).toMatchObject({ id: 'ember_wraith', hp: 92 })
   })
 
   it('an army that holds at level 3 may not hold at level 27', () => {

@@ -2,15 +2,13 @@
 
 /** Monster sprite diameter limits in dp */
 export const MAX_MONSTER = 200
-/** The sprite is kept at least this big while the flavor line or queue row can still be dropped */
+/** The sprite is kept at least this big while the flavor line can still be dropped */
 export const MIN_MONSTER = 120
-/** Smallest sprite we will ever draw, when even dropping the optional rows is not enough */
+/** Smallest sprite ever drawn, when even dropping the flavor line is not enough */
 export const FLOOR_MONSTER = 80
 
 /** Height of the flavor row: always rendered at this height, one line with ellipsis */
 export const FLAVOR_H = 36
-/** The dim queue of next monsters */
-export const QUEUE_H = 28
 /** Monster name under the sprite: 20dp of text plus its 2dp top margin */
 export const NAME_H = 22
 /** The enemy's life bar under the name: the bar alone, no numbers (owner, 2026-10-27) */
@@ -22,28 +20,18 @@ export interface BattlefieldLayout {
   /** Monster sprite diameter */
   monster: number
   showFlavor: boolean
-  showQueue: boolean
 }
 
 /**
- * Lay out the battlefield (the tap area between the wave row and the gate) in its measured
- * height. The stack is [flavor][queue][monster][name][HP]. The flavor line goes first when
- * space is short, then the queue, and only then does the monster shrink (down to 80dp),
- * so nothing ever overlaps the gate below.
+ * Lay out the battlefield (the tap area above the gate) in its measured height. The stack is
+ * [flavor][monster][name][HP]. The flavor line goes first when space is short, and only then does
+ * the monster shrink (down to 80dp), so nothing ever overlaps the gate below.
  */
-export function battlefieldLayout(height: number, opts: { queue?: boolean } = {}): BattlefieldLayout {
-  const fixed = NAME_H + HP_H + FIELD_PAD * 2
-  const queueH = opts.queue ? QUEUE_H : 0
-  const fits = (flavor: boolean, queue: boolean) =>
-    height - fixed - (flavor ? FLAVOR_H : 0) - (queue ? queueH : 0)
-
-  const tries: Array<[boolean, boolean]> = [[true, true], [false, true], [false, false]]
-  for (const [showFlavor, showQueue] of tries) {
-    const room = fits(showFlavor, showQueue)
-    if (room >= MIN_MONSTER) return { monster: Math.min(MAX_MONSTER, Math.floor(room)), showFlavor, showQueue: showQueue && !!opts.queue }
-  }
-  const room = fits(false, false)
-  return { monster: Math.max(FLOOR_MONSTER, Math.min(MAX_MONSTER, Math.floor(room))), showFlavor: false, showQueue: false }
+export function battlefieldLayout(height: number): BattlefieldLayout {
+  const room = height - (NAME_H + HP_H + FIELD_PAD * 2)
+  if (room - FLAVOR_H >= MIN_MONSTER) return { monster: Math.min(MAX_MONSTER, Math.floor(room - FLAVOR_H)), showFlavor: true }
+  if (room >= MIN_MONSTER) return { monster: Math.min(MAX_MONSTER, Math.floor(room)), showFlavor: false }
+  return { monster: Math.max(FLOOR_MONSTER, Math.min(MAX_MONSTER, Math.floor(room))), showFlavor: false }
 }
 
 // -----------------------------------------------------------------------------
@@ -62,44 +50,6 @@ export function chipsFit(labels: string[], available: number): boolean {
   if (labels.length === 0) return true
   const total = labels.reduce((sum, l) => sum + chipWidth(l), 0) + CHIP_GAP * (labels.length - 1)
   return total <= available
-}
-
-// -----------------------------------------------------------------------------
-// The camp view (between waves)
-// -----------------------------------------------------------------------------
-
-/** The Begin wave button: always at least 48dp tall */
-export const BEGIN_BUTTON_H = 52
-const CAMP_HORDE_H = 18
-const CAMP_PREVIEW_H = 22
-const CAMP_BONUS_H = 16
-const CAMP_GAP = 8
-export const CAMP_MAX_SILHOUETTE = 48
-export const CAMP_MIN_SILHOUETTE = 24
-
-export interface CampLayout {
-  showSilhouettes: boolean
-  /** Size of each of the five dim silhouettes */
-  silhouette: number
-  /** Height the camp needs without the silhouettes (it never shrinks below this) */
-  minHeight: number
-}
-
-/** Height of the camp text and button, which always show: horde line, preview, bonus, button */
-export const CAMP_CORE_H = CAMP_HORDE_H + CAMP_PREVIEW_H + CAMP_BONUS_H + BEGIN_BUTTON_H + CAMP_GAP * 3 + FIELD_PAD * 2
-
-/**
- * Budget the camp the way the monster is budgeted. The text and the button always show; the row
- * of silhouettes takes what is left (24-48dp) and is dropped when there is less than that.
- */
-export function campLayout(height: number): CampLayout {
-  const room = height - CAMP_CORE_H - CAMP_GAP
-  const showSilhouettes = room >= CAMP_MIN_SILHOUETTE
-  return {
-    showSilhouettes,
-    silhouette: showSilhouettes ? Math.min(CAMP_MAX_SILHOUETTE, Math.floor(room)) : 0,
-    minHeight: CAMP_CORE_H,
-  }
 }
 
 // =============================================================================

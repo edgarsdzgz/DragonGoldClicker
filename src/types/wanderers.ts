@@ -176,8 +176,3 @@ export function welcomeWanderer(s: GameState): GameState {
 export function turnAwayWanderer(s: GameState): GameState {
   return s.pendingWanderer ? { ...s, pendingWanderer: null } : s
 }
-
-/** A waiting wanderer saved before the 2026-10-26 rework has the old shape; it is dropped on load */
-export function isCurrentEncounter(e: unknown): e is WandererEncounter {
-  return typeof e === 'object' && e !== null && typeof (e as WandererEncounter).people === 'number'
-}

@@ -4,8 +4,33 @@ Started 2026-10-27. The art session drew the bestiary (batch `44-bestiary`) and 
 1e2193e, so every new monster has idle, hit, hurt, walk and death art at all three tiers. They are in
 the sprite manifest, but no wave sends them yet. This plan gives each one a place in the horde.
 
-Status: **awaiting the owner's approval.** Every number below is provisional, like the roster's
-numbers now.
+Status: **approved and built 2026-10-27** (the regular twelve; bosses and the rat wait). Every
+number below is provisional, like the rest of the roster.
+
+Correction made while building: the table below is what was approved, but "each level from 2 to 13
+brings one new monster" in Recommendation 1 does not match it. The Orc (53) and the Goblin Archer
+(63) are both in level 3, as the Crawler and the Scout are both in level 2. So levels 2 and 3 bring
+two each, and levels 4 to 13 one each. Also, there are twelve new regular monsters, not fifteen as
+Recommendation 3 says.
+
+Added the same day (owner: "with their kind"), from the art session's second round and the rat's
+lock. Each joins its family's levels as a second debut, on the same 0.05/HP and HP/5 rules:
+
+| Level | Debut (kills) | Monster | HP | Wall strike |
+| --- | --- | --- | --- | --- |
+| 1 | 20 | Giant Rat | 4 | 0.8 |
+| 2 | 45 | War Hound | 9 | 1.5 |
+| 7 | 165 | Nomad Scout | 22 | 4 |
+| 8 | 190 | Nomad Archer | 26 | 5 |
+| 9 | 215 | Skeleton | 28 | 5 |
+| 10 | 240 | Spectral Hound | 30 | 6 |
+| 11 | 265 | Cult Apprentice | 28 | 5 |
+
+The pool's anchors were reworked for them (`types/spawnPool.ts`); at most six share it at a time.
+The seven elites and the bosses wait for their own plan (owner, 2026-10-27).
+
+The save note under "Build notes" no longer applies: the owner wiped the only copy of the game the
+same day, so the roster is ordered by debut and the old-save migrations were removed instead.
 
 ## What is ready
 

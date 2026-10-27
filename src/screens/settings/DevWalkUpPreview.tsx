@@ -5,15 +5,17 @@ import type { PixelBurstHandle } from '../../components'
 import type { PillTab } from '../../components'
 import {
   MAP_GATE, MAP_W, MOB_SCALE, ROAD_TOP_Y, SPRITES, mapUnit, slashSprite, spriteBox, stripMs,
-  bodyState, growScales, tierSprite, walkStepMs, walkUpAt, walkUpMs,
+  bodyState, growScales, mobArtName, tierSprite, walkStepMs, walkUpAt, walkUpMs,
 } from '../../art'
 import type { MobTier, SpriteId } from '../../art'
 import { useReduceMotion } from '../../hooks/useReduceMotion'
 import { MAX_BODIES } from '../../hooks/useMonsterRoad'
+import { MONSTERS } from '../../types/monsters'
 import { WarfrontScene } from '../warfront/WarfrontScene'
 import { spacing } from '../../theme'
 
-const MOB_TABS: PillTab[] = ['kobold', 'goblin', 'crawler', 'orc', 'raider'].map((k) => ({ key: k, label: k }))
+/** Every monster on the roster, by its art name */
+const MOB_TABS: PillTab[] = MONSTERS.map((m) => ({ key: mobArtName(m.id), label: m.name }))
 const TIER_TABS: PillTab[] = ['weak', 'strong', 'stronger'].map((k) => ({ key: k, label: k }))
 const SPEED_TABS: PillTab[] = [{ key: '1', label: 'Normal' }, { key: '3', label: 'Slow (x3)' }]
 
@@ -106,7 +108,7 @@ export function DevWalkUpPreview() {
   return (
     <Surface style={styles.section}>
       <SectionLabel spacing={2}>WALK-UP PREVIEW</SectionLabel>
-      <PillTabs tabs={MOB_TABS} activeKey={mob} onSelect={setMob} />
+      <PillTabs tabs={MOB_TABS} activeKey={mob} onSelect={setMob} wrap />
       <PillTabs tabs={TIER_TABS} activeKey={tier} onSelect={(k) => setTier(k as MobTier)} />
       <PillTabs tabs={SPEED_TABS} activeKey={speed} onSelect={setSpeed} />
       <Pressable onPress={strike} accessibilityRole="button" accessibilityLabel="Strike the monster" style={[styles.stage, { width, height }]}>

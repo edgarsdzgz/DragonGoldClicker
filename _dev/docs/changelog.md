@@ -2,6 +2,26 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### A fresh start, and the bestiary in the horde (2026-10-27)
+- The phone's copy was the only one, so it was wiped and the game now holds only what is current.
+  Removed:
+  - the ten save upgrades from older versions and the gold-era field patches; the save format
+    starts again at version 1, and a save only takes defaults for fields it lacks
+  - wave mode (`src/modes/waves`, kept "in cold storage") and its fields
+  - five save fields nothing set (foodSystemActive, ownedWeapons, autoProgress,
+    explorerIntroShown, hpUnlocked)
+  - the old monster look (the gold circle and silhouettes, the ember dissolve, its art and
+    scripts) and two unused components (ActionOrb, CoinIcon)
+- Kept on every load: a story beat added behind the player's progress, and a scripted event
+  missed mid-scene, are caught up
+- The horde now sends 23 monsters, from the bestiary (`_dev/planning/bestiary-in-the-horde.md`):
+  - each level from 2 to 13 brings a new one three kills in, and some a second of the same kind
+  - the armored middle horde arrives with the dark cracks at level 5, and the Unmaking's own from
+    level 9
+  - at most six share the pool, and the oldest fade out
+  - every monster pays 0.05 renown per HP and strikes the wall for about a fifth of its HP
+- Dev: the Walk-up preview lists every monster on the roster
+
 ### Warfront: the claws chip shows the name only (2026-10-27)
 - The Claws chip under the wall reads the claw's name, not "N per tap"; the damage is in Stats,
   the Claws sheet and the chip's screen-reader label. Stats shows Total Clicks as a whole number

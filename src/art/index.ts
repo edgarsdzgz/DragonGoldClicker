@@ -4,7 +4,7 @@ export { snapScale, spriteBox, stripFrame, fitScale } from './pixel'
 export { ICON_ART, iconArt, isSpriteId, artOr, buildingIcon, studyIcon, clawIcon } from './icons'
 export type { GameIconName, IoniconName } from './icons'
 export { useSpriteImage, preloadSprites } from './useSpriteImage'
-export { MAP_W, MOB_SCALE, mapUnit, mobScale, gateState, gateSprite, mobSprites, mobDeathSprite, slashSprite, stripMs,
+export { MAP_W, MOB_SCALE, mapUnit, mobScale, gateState, gateSprite, mobSprites, mobDeathSprite, mobArtName, slashSprite, stripMs,
   DEATH_HOLD_MS, BLINK_STEP_MS, BLINK_STEPS, STRONG_FROM_LEVEL, STRONGER_FROM_LEVEL, mobTier, tierSprite } from './warfront'
 export type { MobTier } from './warfront'
 export { ROAD_TOP_Y, growScales, walkStepMs, walkUpAt, walkUpMs, bodyMs, walkDelayMs, bodyState } from './walkUp'

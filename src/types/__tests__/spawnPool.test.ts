@@ -1,16 +1,18 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { MONSTERS, strike } from '../monsters'
-import { spawnOdds, spawnWeights, pickNextMonster, backfillKillsByMonster } from '../spawnPool'
+import { spawnOdds, spawnWeights, pickNextMonster, SPAWN_ANCHORS } from '../spawnPool'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 const idx = (id: string) => MONSTERS.findIndex((m) => m.id === id)
 /** Every type met at least once, so no debut is pending */
-const MET_ALL = { kobold: 1, goblin: 1, shadow_crawler: 1, orc: 1 }
+const MET_ALL = Object.fromEntries(MONSTERS.map((m) => [m.id, 1]))
+/** The monsters the pool can send (not the raider) */
+const POOL = MONSTERS.filter((m) => Number.isFinite(m.fromKills))
 
 describe('the spawn pool odds', () => {
   it('is all kobolds at first', () => {
-    for (const k of [0, 5, 12]) expect(spawnOdds(k)).toEqual([1, 0, 0, 0, 0])
+    for (const k of [0, 5, 12]) expect(spawnOdds(k)).toEqual(MONSTERS.map((m) => (m.id === 'kobold' ? 1 : 0)))
   })
 
   it('no monster has a chance before its debut', () => {
@@ -41,7 +43,7 @@ describe('the spawn pool odds', () => {
   it('phases kobolds out once orcs arrive, and holds the last odds after that', () => {
     expect(spawnOdds(53)[idx('kobold')]).toBe(0)
     expect(spawnOdds(53)[idx('orc')]).toBeGreaterThan(0)
-    expect(spawnOdds(500)).toEqual(spawnOdds(100))
+    expect(spawnOdds(500)).toEqual(spawnOdds(SPAWN_ANCHORS[SPAWN_ANCHORS.length - 1].kills))
   })
 
   it('the odds always add up to one', () => {
@@ -62,8 +64,30 @@ describe('picking the next monster', () => {
 
   it('guarantees a debut: the first monster after a threshold is the new type, whatever the roll', () => {
     expect(pickNextMonster({ hordeKills: 13, killsByMonster: { kobold: 13 } }, 0)).toBe(idx('goblin'))
-    expect(pickNextMonster({ hordeKills: 28, killsByMonster: { kobold: 20, goblin: 8 } }, 0)).toBe(idx('shadow_crawler'))
-    expect(pickNextMonster({ hordeKills: 53, killsByMonster: { kobold: 20, goblin: 20, shadow_crawler: 13 } }, 0)).toBe(idx('orc'))
+    expect(pickNextMonster({ hordeKills: 28, killsByMonster: { kobold: 20, goblin: 8, giant_rat: 3 } }, 0)).toBe(idx('shadow_crawler'))
+    expect(pickNextMonster({ hordeKills: 53, killsByMonster: { kobold: 20, goblin: 20, giant_rat: 5, shadow_crawler: 8, goblin_scout: 5, war_hound: 2 } }, 0)).toBe(idx('orc'))
+  })
+
+  it('every pool monster debuts in order: at its kills, with the earlier ones met, it comes next', () => {
+    POOL.forEach((m, i) => {
+      const met = Object.fromEntries(POOL.slice(0, i).map((e) => [e.id, 1]))
+      for (const r of [0, 0.5, 0.9999]) expect(pickNextMonster({ hordeKills: m.fromKills, killsByMonster: met }, r)).toBe(idx(m.id))
+    })
+  })
+
+  it('every pool monster has a chance at some point, and never more than six share the pool', () => {
+    const seen = new Set<string>()
+    for (let k = 0; k <= 400; k++) {
+      const live = spawnWeights(k).filter((w) => w > 0).length
+      expect(live).toBeLessThanOrEqual(6)
+      spawnWeights(k).forEach((w, j) => { if (w > 0) seen.add(MONSTERS[j].id) })
+    }
+    expect([...seen].sort()).toEqual(POOL.map((m) => m.id).sort())
+  })
+
+  it('the anchors only name roster monsters', () => {
+    const ids = new Set(MONSTERS.map((m) => m.id))
+    for (const a of SPAWN_ANCHORS) for (const id of Object.keys(a.weights)) expect(ids.has(id)).toBe(true)
   })
 
   it('a phased-out monster never gets a debut', () => {
@@ -98,13 +122,5 @@ describe('kills feed the pool', () => {
     const met = make({ hordeKills: 14, killsByMonster: { kobold: 13, goblin: 1 }, monsterIndex: idx('goblin'), monsterHp: 1 })
     expect(strike(met, 1, 0).state.monsterIndex).toBe(idx('kobold'))
     expect(strike(met, 1, 0.99).state.monsterIndex).toBe(idx('goblin'))
-  })
-})
-
-describe('backfill for saves from before the pool', () => {
-  it('rebuilds kills per monster from the old fixed rule', () => {
-    expect(backfillKillsByMonster(0)).toEqual({})
-    expect(backfillKillsByMonster(7)).toEqual({ kobold: 7 })
-    expect(backfillKillsByMonster(60)).toEqual({ kobold: 13, goblin: 15, shadow_crawler: 25, orc: 7 })
   })
 })

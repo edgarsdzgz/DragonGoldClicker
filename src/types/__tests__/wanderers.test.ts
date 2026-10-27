@@ -1,6 +1,5 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
-import { migrateSave, LATEST_SAVE_VERSION } from '../saveMigrations'
 import { REFUGEE_FOOD_EACH } from '../foodEvents'
 import {
   WANDERER_TABLE, WANDERER_GAP_MIN_SEC, WANDERER_GAP_MAX_SEC, SHORT_HANDED_VILLAGERS,
@@ -98,13 +97,5 @@ describe('the answer', () => {
   it('turning them away costs nothing', () => {
     const s = turnAwayWanderer(make({ pendingWanderer: family, food: 100, villagers: 4 }))
     expect(s).toMatchObject({ pendingWanderer: null, food: 100, villagers: 4 })
-  })
-
-  it('a wanderer saved before the rework is dropped on load', () => {
-    const old = { encounterType: 'trained_refugee', villagerCount: 1, trained: null, flavorText: '', foodCostPerCheck: 1 }
-    const s = migrateSave(make({ saveMigrationVersion: LATEST_SAVE_VERSION, pendingWanderer: old as unknown as WandererEncounter }), LATEST_SAVE_VERSION)
-    expect(s.pendingWanderer).toBeNull()
-    const kept = migrateSave(make({ saveMigrationVersion: LATEST_SAVE_VERSION, pendingWanderer: family }), LATEST_SAVE_VERSION)
-    expect(kept.pendingWanderer).toEqual(family)
   })
 })

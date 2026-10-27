@@ -36,11 +36,6 @@ describe('warfrontReveal', () => {
     expect(warfrontReveal(make({ beatsSeen: ['the_wall_is_yours', 'sharpen_claws'] })).claws).toBe(true)
     expect(warfrontReveal(make({ clawLevel: 2 })).claws).toBe(true)
   })
-
-  it('the old wave fields no longer change what is shown', () => {
-    const plain = warfrontReveal(make({ monstersDefeated: 5 }))
-    expect(warfrontReveal(make({ monstersDefeated: 5, waveNumber: 9, waveActive: true }))).toEqual(plain)
-  })
 })
 
 describe('the first kills stay plain', () => {

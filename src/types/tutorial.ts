@@ -44,7 +44,7 @@ export interface TutorialStep {
   inModal?: boolean
   /** The step is held back (nothing dims) until this holds, e.g. a monster is on the field */
   requires?: (s: GameState) => boolean
-  /** The save already shows this step was done (also used to backfill old saves) */
+  /** The save already shows this step was done */
   isDone: (s: GameState) => boolean
   /** Done when the UI reaches this state */
   doneUi?: (ui: TutorialUi) => boolean
@@ -59,7 +59,7 @@ export const HINT_RETURN_TO_SLAY = 'Return to the Warfront and slay monsters to 
 
 export const TUTORIAL_STEPS: TutorialStep[] = [
   {
-    // The monster is at the gate from the start (waves are in cold storage, so no Begin wave step)
+    // The monster is at the gate from the start
     id: 'tap_slay', afterBeat: 'elder_approaches', target: 'slay',
     hint: 'Tap the kobold to strike it.',
     isDone: (s) => s.totalClicks >= 1,
@@ -151,16 +151,3 @@ export function isStepComplete(step: TutorialStep, s: GameState, ui: TutorialUi)
   return step.isDone(s) || (step.doneUi?.(ui) ?? false)
 }
 
-/**
- * Backfill for saves from before the tutorial: a step is done if the save shows it (or
- * anything after it) was done. A step whose beat is unseen stays pending.
- */
-export function backfillTutorial(s: GameState): string[] {
-  let lastProven = -1
-  TUTORIAL_STEPS.forEach((t, i) => {
-    if (s.beatsSeen.includes(t.afterBeat) && t.isDone(s)) lastProven = i
-  })
-  return TUTORIAL_STEPS.slice(0, lastProven + 1)
-    .filter((t) => s.beatsSeen.includes(t.afterBeat))
-    .map((t) => t.id)
-}

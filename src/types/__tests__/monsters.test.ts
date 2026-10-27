@@ -1,32 +1,40 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
-import { MONSTERS, spawnMonster, strike, fighterStrike, monsterLabel, currentMonster, monsterIndexForKills, shownHp, roundHp } from '../monsters'
+import { HORDE_LEVEL_KILLS } from '../horde'
+import { MONSTERS, strike, fighterStrike, monsterLabel, currentMonster, shownHp, roundHp, restingPose } from '../monsters'
 import { getFighterCost, getFighterDps, stepFighterVolley, FIGHTER_HIT_DAMAGE, FIGHTER_SWING_MS, FIGHTER_TICK_MS } from '../fighters'
 import { ANNOUNCE_EVERY_MS } from '../../hooks/useKillEvents'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
 describe('roster', () => {
-  it('has the four pool monsters in order of appearance, then the raider, which never spawns from the pool', () => {
-    expect(MONSTERS.map((m) => [m.name, m.hp, m.bounty, m.fromKills])).toEqual([
-      ['Kobold', 5, 0.25, 0],
-      ['Goblin', 8, 0.4, 13],
-      ['Shadow Crawler', 12, 0.6, 28],
-      ['Orc', 20, 1, 53],
-      ['Raider', 10, 0.5, Infinity],
+  it('lists the pool monsters in order of debut, then the raider, which never spawns from the pool', () => {
+    expect(MONSTERS.map((m) => [m.id, m.fromKills])).toEqual([
+      ['kobold', 0], ['goblin', 13], ['giant_rat', 20], ['shadow_crawler', 28], ['goblin_scout', 38],
+      ['war_hound', 45], ['orc', 53], ['goblin_archer', 63], ['banner_runner', 78], ['shield_bearer', 103],
+      ['beetle_guard', 128], ['chitin_warrior', 153], ['nomad_scout', 165], ['nomad_warrior', 178],
+      ['nomad_archer', 190], ['wraith', 203], ['skeleton', 215], ['shadow_phantom', 228],
+      ['spectral_hound', 240], ['ashen_convert', 253], ['cult_apprentice', 265], ['ember_prophet', 278],
+      ['ember_wraith', 303], ['raider', Infinity],
     ])
   })
 
-  it('uses real Ionicons glyph names', () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const glyphs = require('@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/Ionicons.json')
-    for (const m of MONSTERS) expect(m.glyph in glyphs).toBe(true)
+  it('every horde level from 2 to 13 brings a new monster three kills in', () => {
+    for (let level = 2; level <= 13; level++) {
+      const start = (level - 1) * HORDE_LEVEL_KILLS
+      const first = Math.min(...MONSTERS.map((m) => m.fromKills).filter((k) => k >= start && k < start + HORDE_LEVEL_KILLS))
+      expect(first).toBe(start + 3)
+    }
   })
 
-  it('picks the tier from lifetime kills, at the old wave boundaries (3 + 5 + 5, then 15, then 25)', () => {
-    const tiers = [0, 12, 13, 27, 28, 52, 53, 500].map(monsterIndexForKills)
-    expect(tiers).toEqual([0, 0, 1, 1, 2, 2, 3, 3])
+  it('every monster pays 0.05 renown per HP', () => {
+    for (const m of MONSTERS) expect(m.bounty).toBeCloseTo(m.hp * 0.05, 9)
   })
+
+  it('has a unique id per monster', () => {
+    expect(new Set(MONSTERS.map((m) => m.id)).size).toBe(MONSTERS.length)
+  })
+
 })
 
 describe('strike', () => {
@@ -101,11 +109,13 @@ describe('strike', () => {
   })
 })
 
-describe('spawnMonster (save migration)', () => {
-  it('starts an old save on a fresh monster of its tier', () => {
-    const s = spawnMonster(make({ monstersDefeated: 60, monsterIndex: 0, monsterHp: 1 }))
-    expect(s.monsterIndex).toBe(3)
-    expect(s.monsterHp).toBe(20)
+describe('the resting pose', () => {
+  it('rests wounded at a third of max HP or less', () => {
+    expect(restingPose(5, 5)).toBe('idle')
+    expect(restingPose(2, 5)).toBe('idle')
+    expect(restingPose(1, 5)).toBe('hurt')
+    expect(restingPose(4, 12)).toBe('hurt')
+    expect(restingPose(5, 12)).toBe('idle')
   })
 })
 

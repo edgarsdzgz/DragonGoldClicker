@@ -199,4 +199,4 @@ export type { StoryPacing } from './storyDirector'
 export { findNextBeat, effectiveDwell, TEST_DWELL_CAP_SEC } from './storyDirector'
 
 export type { TutorialStep, TutorialStepId, TutorialUi, TutorialSheet } from './tutorial'
-export { TUTORIAL_STEPS, EMPTY_TUTORIAL_UI, getActiveStep, isStepComplete, backfillTutorial } from './tutorial'
+export { TUTORIAL_STEPS, EMPTY_TUTORIAL_UI, getActiveStep, isStepComplete } from './tutorial'

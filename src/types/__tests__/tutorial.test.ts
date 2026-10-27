@@ -1,6 +1,6 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
-import { getActiveStep, isStepComplete, backfillTutorial, needsMoreInspiration, TUTORIAL_STEPS, EMPTY_TUTORIAL_UI } from '../tutorial'
+import { getActiveStep, isStepComplete, needsMoreInspiration, TUTORIAL_STEPS, EMPTY_TUTORIAL_UI } from '../tutorial'
 import { BARRACKS_LEVELS } from '../soldiers'
 import { blockerCells, holeRadius, padRect } from '../../context/coachGeometry'
 import { CoachRegistry, isRectVisible, hintSide } from '../../context/coachRegistry'
@@ -77,36 +77,6 @@ describe('isStepComplete', () => {
     expect(step('sharpen_claws').target).toBe('claws_sharpen')
     // A save that already sharpened clears the new step at once
     expect(isStepComplete(step('open_claws'), make({ clawLevel: 1 }), EMPTY_TUTORIAL_UI)).toBe(true)
-  })
-})
-
-describe('backfillTutorial', () => {
-  it('marks nothing for a save that has only seen the prologue', () => {
-    expect(backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches'] }))).toEqual([])
-  })
-
-  it('marks every step up to the proven one for the 3/3/3 example save', () => {
-    const done = backfillTutorial(make({
-      beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'empty_stores', 'strangers_at_gate', 'a_city_to_build'],
-      totalClicks: 50, fighters: 3, fightersRallied: 3, repairers: 3, repairersDirected: 3,
-      foragers: { gatherers: 3, trappers: 0, rangers: 0 },
-      foragersTrained: { gatherers: 3, trappers: 0, rangers: 0 },
-      forageClicks: 4,
-    }))
-    expect(done).toEqual(['tap_slay', 'tap_rally', 'open_forage', 'tap_forage', 'train_gatherer', 'tap_repair'])
-  })
-
-  it('leaves steps pending when their beat is unseen', () => {
-    const done = backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms'], totalClicks: 5, fighters: 2 }))
-    expect(done).toEqual(['tap_slay', 'tap_rally'])
-  })
-
-  it('marks everything for a save with the Garrison built', () => {
-    const done = backfillTutorial(make({
-      beatsSeen: ['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'mend_the_walls', 'the_wall_is_yours', 'sharpen_claws', 'empty_stores', 'a_city_to_build'],
-      barracksLevel: 1,
-    }))
-    expect(done).toHaveLength(TUTORIAL_STEPS.length)
   })
 })
 
@@ -210,10 +180,5 @@ describe('the opening and the first strike step', () => {
     expect(getActiveStep(make({}))).toBeNull()
     expect(getActiveStep(make({ beatsSeen: ['prologue'] }))).toBeNull()
     expect(getActiveStep(make({ beatsSeen: ['prologue', 'elder_approaches'] }))?.id).toBe('tap_slay')
-  })
-
-  it('backfill marks it done for a save that has struck, and leaves a fresh one pending', () => {
-    expect(backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches'], monstersDefeated: 3, totalClicks: 10 }))).toEqual(['tap_slay'])
-    expect(backfillTutorial(make({ beatsSeen: ['prologue', 'elder_approaches'] }))).toEqual([])
   })
 })

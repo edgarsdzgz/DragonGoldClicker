@@ -6,7 +6,7 @@ import { useStory } from '../../context/StoryContext'
 import { getScene } from '../../data/story/lines'
 import { STORY_BEATS, TUTORIAL_STEPS, getActiveStep } from '../../types/game'
 import { isBeatPaused } from '../../types/story'
-import { backfillScripted } from '../../types/storyMigration'
+import { backfillScripted } from '../../types/storyCatchUp'
 import { colors, spacing } from '../../theme'
 
 /**

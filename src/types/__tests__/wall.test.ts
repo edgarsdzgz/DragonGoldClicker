@@ -14,10 +14,12 @@ const UNFLOORED = [...SIEGE, 'the_horde_grows']
 const seconds = (s: GameState, n: number) => Array.from({ length: n }).reduce<GameState>((acc) => stepWall(acc), s)
 
 describe('monsters strike the wall', () => {
-  it('each pool monster hits harder than the last; the raider never strikes', () => {
-    expect(MONSTERS.map((m) => [m.id, m.wallStrike])).toEqual([
-      ['kobold', 1], ['goblin', 1.5], ['shadow_crawler', 2], ['orc', 4], ['raider', 0],
-    ])
+  it('every pool monster strikes the wall for about a fifth of its HP; the raider never strikes', () => {
+    for (const m of MONSTERS.filter((m) => m.id !== 'raider')) {
+      expect(m.wallStrike / m.hp).toBeGreaterThanOrEqual(0.15)
+      expect(m.wallStrike / m.hp).toBeLessThanOrEqual(0.22)
+    }
+    expect(MONSTERS.find((m) => m.id === 'raider')?.wallStrike).toBe(0)
   })
 
   it('nothing strikes before the siege begins', () => {

@@ -8,6 +8,15 @@ describe('reading a save', () => {
     expect(() => parseSave('{not json')).toThrow()
   })
 
+  it('JSON that is not an object throws too', () => {
+    for (const raw of ['null', '5', '"save"', '[]']) expect(() => parseSave(raw)).toThrow()
+  })
+
+  it('a save from a newer format, or from before the restart (v10), is kept aside, not half-loaded', () => {
+    expect(() => parseSave(JSON.stringify({ saveMigrationVersion: 10, monsterIndex: 3 }))).toThrow()
+    expect(parseSave(JSON.stringify({ saveMigrationVersion: 1 })).saveMigrationVersion).toBe(1)
+  })
+
   it('a save missing newer fields gets them from the defaults', () => {
     const s = parseSave(JSON.stringify({ inspiration: 3, saveMigrationVersion: 1, lastSavedAt: 5 }))
     expect(s.inspiration).toBe(3)

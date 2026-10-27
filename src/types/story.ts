@@ -226,7 +226,7 @@ export const STORY_BEATS: BeatDef[] = [
 
 /**
  * Depth before breadth: only beats up to and including this one can fire. Every later beat is
- * paused (never offered by the director, backfill or dev jump). Changing this constant resumes
+ * paused (never offered by the director, the catch-up or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
 export const STORY_PAUSED_AFTER: BeatId = 'dragonsteel'

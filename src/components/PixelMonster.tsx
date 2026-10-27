@@ -3,8 +3,14 @@ import { Animated, PixelRatio, StyleSheet, View } from 'react-native'
 import { spriteBox } from '../art'
 import type { MobSprites } from '../art'
 import { PixelSprite } from './PixelSprite'
-import { HIT_POSE_MS } from './PosedMonster'
-import type { PosedMonsterHandle } from './PosedMonster'
+
+/** How long the red-flash hit frame shows on a strike */
+export const HIT_POSE_MS = 120
+
+export interface PixelMonsterHandle {
+  /** Show the hit frame for about 120ms, then return to the resting pose */
+  hit: () => void
+}
 
 type Pose = keyof MobSprites
 const POSES: Pose[] = ['idle', 'hit', 'hurt']
@@ -25,10 +31,9 @@ interface PixelMonsterProps {
 
 /**
  * A monster in pixel art: its walk (the idle bob), its red-flash hit and its wounded pose,
- * stacked and switched by opacity, so a strike never re-renders anything. Same handle as
- * PosedMonster. Decorative: the battlefield labels the monster.
+ * stacked and switched by opacity, so a strike never re-renders anything. Decorative: the battlefield labels the monster.
  */
-export const PixelMonster = forwardRef<PosedMonsterHandle, PixelMonsterProps>(function PixelMonster(
+export const PixelMonster = forwardRef<PixelMonsterHandle, PixelMonsterProps>(function PixelMonster(
   { sprites, scale, resting, spawnKey, paused = false, frame },
   ref,
 ) {

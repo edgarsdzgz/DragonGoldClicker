@@ -2,7 +2,6 @@ import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { STORY_PAUSED_AFTER, isBeatPaused, STORY_BEATS } from '../story'
 import { findNextBeat } from '../storyDirector'
-import { backfillStory } from '../storyMigration'
 import { isSystemOn } from '../systems'
 import { getActiveStep } from '../tutorial'
 import { getCurrentObjective } from '../objectives'
@@ -45,16 +44,6 @@ describe('story pause', () => {
   it('still fires the live beats', () => {
     expect(findNextBeat(make({}), 'live')?.id).toBe('prologue')
     expect(findNextBeat(make({ beatsSeen: ['prologue', 'elder_approaches', 'first_renown'], questsDone: ['defend_the_wall'], playSeconds: 99 }), 'live')?.id).toBe('call_to_arms')
-  })
-
-  it('backfill still covers the whole table: the pause only limits the director', () => {
-    const out = backfillStory(make({
-      saveMigrationVersion: 1, fighters: 5, fightersRallied: 5, repairers: 3, repairersDirected: 3,
-      barracksLevel: 2, armoryBuilt: true, draconiaHallBuilt: true, totalInspirationEarned: 500,
-      foodSystemActive: true,
-    }))
-    expect(out.beatsSeen).toEqual(expect.arrayContaining(['prologue', 'elder_approaches', 'first_renown', 'call_to_arms', 'the_breach', 'empty_stores', 'the_keep']))
-    expect(findNextBeat({ ...out, playSeconds: 99999 }, 'live')).toBeNull()
   })
 
   it('systems, guided steps and objectives behind paused beats stay off', () => {

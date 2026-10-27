@@ -15,11 +15,13 @@ interface PillTabsProps {
   tabs: PillTab[]
   activeKey: string
   onSelect: (key: string) => void
+  /** Many tabs: wrap onto more lines instead of running off the edge */
+  wrap?: boolean
 }
 
-export function PillTabs({ tabs, activeKey, onSelect }: PillTabsProps) {
+export function PillTabs({ tabs, activeKey, onSelect, wrap = false }: PillTabsProps) {
   return (
-    <View style={styles.row}>
+    <View style={[styles.row, wrap && styles.wrap]}>
       {tabs.map((tab) => {
         const active = tab.key === activeKey
         return (
@@ -58,6 +60,9 @@ const styles = StyleSheet.create({
     gap: spacing[2],
     paddingHorizontal: spacing[4],
     paddingVertical: spacing[2],
+  },
+  wrap: {
+    flexWrap: 'wrap',
   },
   pill: {
     flexDirection: 'row',

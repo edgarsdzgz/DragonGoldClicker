@@ -17,9 +17,6 @@ export type { MonsterDef } from './monsterRoster'
 export const STARTING_TAP_DAMAGE = 1
 export const FIRST_MONSTER_HP = MONSTERS[0].hp
 
-/** Pause before the next monster is shown after a kill (the UI uses it; taps in it hit the next one) */
-export const SPAWN_DELAY_MS = 250
-
 /**
  * A monster as the horde sends it at its current strength (the balance pass, 2026-10-26): HP
  * grows with the horde level (whole HP), the bounty follows the HP so every HP still pays the
@@ -42,21 +39,6 @@ export function currentMonster(s: Pick<GameState, 'monsterIndex' | 'hordeKills'>
   return monsterAt(s.monsterIndex, s.hordeKills)
 }
 
-/** The newest monster that has debuted after this many lifetime kills (the old fixed rule; saves use it) */
-export function monsterIndexForKills(kills: number): number {
-  let index = 0
-  MONSTERS.forEach((m, i) => {
-    if (kills >= m.fromKills) index = i
-  })
-  return index
-}
-
-/** A fresh monster of the tier the kills so far call for */
-export function spawnMonster(s: GameState): GameState {
-  const monsterIndex = monsterIndexForKills(Math.floor(s.monstersDefeated))
-  return { ...s, monsterIndex, monsterHp: monsterAt(monsterIndex, s.hordeKills).hp }
-}
-
 /** HP is fractional (fighters chip a quarter at a time); round away float drift */
 export function roundHp(hp: number): number {
   return Math.round(hp * 100) / 100
@@ -65,6 +47,11 @@ export function roundHp(hp: number): number {
 /** HP as a whole number for text: rounded up, so a monster still standing never reads 0 */
 export function shownHp(hp: number): number {
   return Math.ceil(roundHp(hp))
+}
+
+/** The monster's resting pose: wounded once its HP is at or below a third of max, else walking */
+export function restingPose(hp: number, max: number): 'idle' | 'hurt' {
+  return hp * 3 <= max ? 'hurt' : 'idle'
 }
 
 export interface StrikeResult {

@@ -1,15 +1,12 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
+import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutChangeEvent, PixelRatio } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import type { PosedMonsterHandle } from './PosedMonster'
 import { useAppActive } from '../hooks/useAppActive'
-import type { MonsterDef } from '../types/monsters'
 import { Text } from './Text'
 import { EnemyHp } from './EnemyHp'
-import { EmberDissolve } from './StrikeEffects'
-import type { EmberDissolveHandle } from './StrikeEffects'
 import { clawLook } from '../types/claws'
 import { RoadMonster } from './RoadMonster'
+import type { PixelMonsterHandle } from './PixelMonster'
 import { PixelBurst } from './PixelBurst'
 import type { PixelBurstHandle } from './PixelBurst'
 import { FallenBody } from './FallenBody'
@@ -22,8 +19,7 @@ import { useCoachTarget } from '../hooks/useCoachTarget'
 import { useReduceMotion } from '../hooks/useReduceMotion'
 import { useMonsterRoad } from '../hooks/useMonsterRoad'
 import { useStrikeFeel, useHoldPulse } from '../hooks/useStrikeFeel'
-import { monsterLabel, currentMonster } from '../types/monsters'
-import { restingPose } from '../data/monsterArt'
+import { monsterLabel, currentMonster, restingPose } from '../types/monsters'
 import { colors, spacing, gold } from '../theme'
 
 interface BattlefieldProps {
@@ -50,14 +46,8 @@ interface BattlefieldProps {
   onStrike: () => StrikeShown | void
   /** Flavor line row, above the stack */
   header?: React.ReactNode
-  /** Dim queue of the next monsters, above the sprite */
-  queue?: React.ReactNode
-  /** Between waves: shown in place of the monster, and taps on the field do nothing */
-  camp?: React.ReactNode
   /** Show the monster's name under it (hidden until the first kill) */
   showName?: boolean
-  /** Taps are ignored while true (the wave-cleared banner); a held press carries on afterwards */
-  locked?: boolean
   /** Opt into the guided tutorial under this target id */
   coachId?: string
 }
@@ -72,9 +62,9 @@ export interface StrikeShown {
 export interface BattlefieldHandle {
   /** Float a gold bounty up from the monster */
   showBounty: (amount: string) => void
-  /** The monster that was just killed falls away and a coin flies to the inspiration figure */
-  showKill: (monster: MonsterDef) => void
-  /** A fighter's swing landed: a small number in the ally color and a faint flash, no slash */
+  /** The kill's punch: the field nudges and a coin flies to the renown figure (the body is the road's) */
+  showKill: () => void
+  /** A fighter's swing landed: a small number in the ally color and its small hit, no slash */
   showAllyHit: (amount: string) => void
 }
 
@@ -83,12 +73,12 @@ export interface BattlefieldHandle {
  * (one strike every HOLD_REPEAT_MS, shared by every main button) with a steady pulse. Damage numbers rise from the monster.
  */
 export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(function Battlefield(
-  { monster: size, monsterIndex, monsterHp, hordeKills = 0, kills, damage, clawLevel = 0, unit = 3, roadTop, onStrike, header, queue, camp, showName = true, locked = false, coachId },
+  { monster: size, monsterIndex, monsterHp, hordeKills = 0, kills, damage, clawLevel = 0, unit = 3, roadTop, onStrike, header, showName = true, coachId },
   ref,
 ) {
   const coach = useCoachTarget(coachId)
   const def = currentMonster({ monsterIndex, hordeKills })
-  // Pixel art for this monster, marked as deep as the horde's Unmaking; otherwise the old circle and silhouette
+  // Pixel art for this monster, marked as deep as the horde's Unmaking (every roster monster has it: art tests)
   const tier = mobTier(hordeKills)
   const mob = mobSprites(def.id, tier)
   const mobArt = mob ? SPRITES[mob.idle] : null
@@ -101,7 +91,6 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const coinFlight = useCoinFlight()
   const spriteRef = useRef<View>(null)
   const fx = useRef<PixelBurstHandle>(null)
-  const embers = useRef<EmberDissolveHandle>(null)
   // Where the last press landed, in dp from the sprite's top-left (hold repeats reuse it)
   const tapPoint = useRef({ x: size / 2, y: size / 2 })
   // The sprite's offset inside the press area; both are measured in the press area's own space
@@ -122,28 +111,16 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   const fellTop = road.fellTop
 
   // Pose: the hit frame for ~120ms on each strike, else idle (or hurt at 1/3 HP or less)
-  const posed = useRef<PosedMonsterHandle>(null)
+  const posed = useRef<PixelMonsterHandle>(null)
   const resting = restingPose(monsterHp, def.hp)
-  const pixelMob = mob !== null
-  const feel = useStrikeFeel({
-    reduceMotion,
-    // Only breathe while this screen is showing and the app is in the foreground; pixel monsters
-    // bob in their own walk instead
-    breathe: focused && appActive && !pixelMob,
-    hurt: resting === 'hurt',
-    kills,
-    fadeIn: !pixelMob,
-  })
-  const { hit, allyFlash, killNudge, pressIn, pressOut } = feel
+  const feel = useStrikeFeel(reduceMotion)
+  const { hit, killNudge, pressIn, pressOut } = feel
 
   useImperativeHandle(ref, () => ({
     // The bounty rises from where the monster fell
     showBounty: (amount) =>
       numbers.current?.spawn({ x: size / 2, y: fellTop.current ?? size * 0.25, text: amount, color: gold[300], large: true }),
-    showKill: (monster) => {
-      // The body itself is the road's (it lies where the monster fell); one that left no body
-      // (no death of its own) dissolves in embers instead
-      if (fellTop.current === null) embers.current?.dissolve(size / 2, size / 2, size)
+    showKill: () => {
       // Kill punch: ~80ms hit-stop, then a 2-3px nudge of the battlefield
       killNudge()
       spriteRef.current?.measureInWindow((x, y, w, h) => coinFlight.fly({ x: x + w / 2, y: y + h / 2 }))
@@ -156,19 +133,11 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       const x = size / 2 + (Math.random() - 0.5) * (w.walking ? w.width : size) * 0.5
       numbers.current?.spawn({ x, y: top + tall * 0.45, text: amount, color: colors.warfront.ally })
       fx.current?.play('fx_ally-hit_anim', x, top + tall * 0.6, 0, w.walking ? w.scale : undefined)
-      allyFlash()
     },
-  }), [size, killNudge, allyFlash, coinFlight, fellTop])
+  }), [size, killNudge, coinFlight, fellTop])
 
-  // Every hit: flash and shake the monster, float the damage up from it
-  const lockedRef = useRef(locked)
-  lockedRef.current = locked
-  const inCamp = camp !== undefined
-  const campRef = useRef(inCamp)
-  campRef.current = inCamp
-
+  // Every hit: the hit frame, the knockback, and the damage floating up from the monster
   const strike = useCallback(() => {
-    if (lockedRef.current || campRef.current) return
     const shown = onStrike()
     posed.current?.hit()
     // At its place the strike lands where the finger did; on the road, on the monster at its size
@@ -189,13 +158,8 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   // The same press as every main button: tap, hold (repeats at the shared speed), screen reader,
   // and a stop when the screen or the app is left (hooks/useActionPress)
   const press = useActionPress(strike, { repeatOnHold: true })
-  const { holding, cancel: cancelPress } = press
+  const { holding } = press
   const holdPulse = useHoldPulse(holding, reduceMotion)
-
-  // Wave mode (cold storage): the field is replaced by the camp, so a held press must not carry on
-  useEffect(() => {
-    if (inCamp) cancelPress()
-  }, [inCamp, cancelPress])
 
   const handlePressIn = (e: GestureResponderEvent) => {
     // locationX/Y are relative to the press area (its children ignore touches), as is the sprite offset
@@ -226,7 +190,7 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       collapsable={false}
       style={[styles.field, { transform: [{ translateY: feel.nudge.interpolate({ inputRange: [0, 1], outputRange: [0, 3] }) }] }]}
     >
-      {camp ?? <Pressable
+      <Pressable
         onPressIn={handlePressIn}
         onPress={press.handlers.onPress}
         onPressOut={handlePressOut}
@@ -237,7 +201,6 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
       >
         <View pointerEvents="none" style={styles.press}>
         {header}
-        {queue}
         <View
           ref={spriteRef}
           collapsable={false}
@@ -271,21 +234,20 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
               <FallenBody key={b.key} death={b.death} scale={b.scale} x={size / 2} feet={b.feet} blink={b.blink}
                 onGone={() => road.dropBody(b.key)} />
             ) })),
-            { feet: road.walker.feet + 0.5, node: (
-              <RoadMonster key="walker" size={size} monster={def} mob={mob} walker={road.walker} feel={feel}
-                posedRef={posed} resting={resting} spawnKey={kills} paused={!focused || !appActive} reduceMotion={reduceMotion} />
-            ) },
+            ...(mob ? [{ feet: road.walker.feet + 0.5, node: (
+              <RoadMonster key="walker" size={size} sprites={mob} walker={road.walker} feel={feel}
+                monsterRef={posed} resting={resting} spawnKey={kills} paused={!focused || !appActive} />
+            ) }] : []),
           ].sort((a, b) => a.feet - b.feet).map((d) => d.node)}
           <View pointerEvents="none" style={styles.effects}>
             <PixelBurst ref={fx} scale={pixelScale} max={4} />
-            <EmberDissolve ref={embers} unit={size} />
             <FloatingNumbers ref={numbers} />
           </View>
         </View>
         {showName ? <Text variant="label" center style={styles.name}>{def.name}</Text> : <View style={styles.name} />}
         <EnemyHp hp={monsterHp} max={def.hp} width={Math.min(fieldW - spacing[6] * 2, 260)} />
         </View>
-      </Pressable>}
+      </Pressable>
     </Animated.View>
   )
 })

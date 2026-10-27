@@ -41,7 +41,7 @@ const REPAIR_PALETTE = { accent: colors.warfront.repair, glow: colors.warfront.r
 /**
  * The Warfront is a scene read top to bottom along the monsters' path: there is always a monster
  * at the gate, the whole battlefield is the tap target, and the gate sits by the thumb at the
- * bottom. Fighters wear the same monster down. (Waves are in cold storage: src/modes/waves.)
+ * bottom. Fighters wear the same monster down.
  */
 export function GameScreen() {
   const { state, click, rallyFighter, directRepairer, sharpenClaws } = useGame()
@@ -127,7 +127,7 @@ export function GameScreen() {
     if (!byFighters) haptics.medium()
     playKill()
     battlefieldRef.current?.showBounty(`+${monster.bounty.toFixed(2)}`)
-    battlefieldRef.current?.showKill(monster)
+    battlefieldRef.current?.showKill()
     if (Math.random() < 0.25) flavor.show()
   })
 

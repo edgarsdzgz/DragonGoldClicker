@@ -14,7 +14,7 @@ export interface JournalStoryEntry {
   scene: SceneDef
 }
 
-/** Every seen scene, in story order, re-readable in full (backfilled beats included) */
+/** Every seen scene, in story order, re-readable in full (caught-up beats included) */
 export function getStoryEntries(s: GameState): JournalStoryEntry[] {
   return STORY_BEATS
     .filter((b) => s.beatsSeen.includes(b.id) && SCENES[b.id])

@@ -60,8 +60,6 @@ export interface GameState {
   food: number
   villagers: number
   villagersLost: number
-  /** Food system has been turned on (the food chapter; kept for old saves and the story backfill) */
-  foodSystemActive: boolean
   /** Lifetime renown earned (identifier predates the rename to renown) */
   totalInspirationEarned: number
   monstersDefeated: number
@@ -74,8 +72,6 @@ export interface GameState {
     swords: number
     shields: number
   }
-  ownedWeapons: string[]
-  autoProgress: number
   /** Accumulator for food consumption (fractional seconds between checks) */
   foodTimer: number
   /** Lifetime renown spent (identifier predates the rename to renown) */
@@ -121,8 +117,6 @@ export interface GameState {
   expeditionDryStreak: number
   /** What the last expedition brought home, until the player has read it (types/outpost.ts) */
   expeditionReport: ExpeditionReport | null
-  /** Whether the explorer intro dialog has been shown */
-  explorerIntroShown: boolean
   /** Lifetime wanderers welcomed into Draconia */
   wanderersWelcomed: number
   /** playSeconds at which the next wanderer arrives (0 = not scheduled yet; types/wanderers.ts) */
@@ -141,8 +135,6 @@ export interface GameState {
   siegeTimer: number
   /** Fractional accumulator for repair HP */
   repairProgress: number
-  /** Whether the city HP / siege system is unlocked (trigger TBD) */
-  hpUnlocked: boolean
   /** Whether the Librarium has been built */
   librariumBuilt: boolean
   /** IDs of completed research nodes */
@@ -197,15 +189,6 @@ export interface GameState {
   allyStrikes: number
   /** Monsters killed by fighters rather than by a tap, lifetime */
   allyKills: number
-  /**
-   * Wave fields: in cold storage for a later wave mode (src/modes/waves). The main game no
-   * longer reads or writes them; they stay in the save so that mode has them when it returns.
-   * Current wave. Wave 0 is the 3-kobold opening; Wave 1 onward have 5 monsters of one type. */
-  waveNumber: number
-  /** Monsters already killed in the current wave (0-4) */
-  waveKills: number
-  /** In a wave (monsters on the field) or in camp between waves, waiting for Begin wave */
-  waveActive: boolean
   /** Save format version for migrations */
   saveMigrationVersion: number
 }
@@ -215,7 +198,6 @@ export const DEFAULT_GAME_STATE: GameState = {
   food: STARTING_FOOD,
   villagers: STARTING_VILLAGERS,
   villagersLost: 0,
-  foodSystemActive: false,
   totalInspirationEarned: 0,
   monstersDefeated: 0,
   barracksLevel: 0,
@@ -223,8 +205,6 @@ export const DEFAULT_GAME_STATE: GameState = {
   soldiers: { conscripts: 0, footmen: 0, knights: 0 },
   soldiersTrained: { conscripts: 0, footmen: 0, knights: 0 },
   armoryGear: { swords: 0, shields: 0 },
-  ownedWeapons: [],
-  autoProgress: 0,
   foodTimer: 0,
   totalInspirationSpent: 0,
   totalClicks: 0,
@@ -250,7 +230,6 @@ export const DEFAULT_GAME_STATE: GameState = {
   villagersRescued: 0,
   expeditionDryStreak: 0,
   expeditionReport: null,
-  explorerIntroShown: false,
   wanderersWelcomed: 0,
   nextWandererAt: 0,
   fighters: 0,
@@ -260,7 +239,6 @@ export const DEFAULT_GAME_STATE: GameState = {
   cityHp: STARTING_CITY_HP,
   siegeTimer: 0,
   repairProgress: 0,
-  hpUnlocked: false,
   librariumBuilt: false,
   completedResearch: [],
   beatsSeen: [],
@@ -288,10 +266,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   foodEventNote: null,
   allyStrikes: 0,
   allyKills: 0,
-  waveNumber: 0,
-  waveKills: 0,
-  waveActive: false,
-  saveMigrationVersion: 10,
+  saveMigrationVersion: 1,
 }
 
 // =============================================================================

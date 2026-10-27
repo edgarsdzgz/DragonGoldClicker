@@ -53,7 +53,12 @@ export interface MobSprites {
 }
 
 /** Monster ids whose art is named differently */
-const MOB_NAMES: Record<string, string> = { shadow_crawler: 'crawler' }
+const MOB_NAMES: Record<string, string> = { shadow_crawler: 'crawler', giant_rat: 'rat' }
+
+/** A monster's art name: its id with hyphens (goblin_scout is mob_goblin-scout_*), or its own name above */
+export function mobArtName(monsterId: string): string {
+  return MOB_NAMES[monsterId] ?? monsterId.replace(/_/g, '-')
+}
 
 /** The Unmaking's marks on a monster: none, dark cracks, glowing cracks */
 export type MobTier = 'weak' | 'strong' | 'stronger'
@@ -76,9 +81,9 @@ export function tierSprite(name: string, tier: MobTier, state: string): SpriteId
   return Object.prototype.hasOwnProperty.call(SPRITES, id) ? (id as SpriteId) : null
 }
 
-/** A monster's pixel sprites at a tier, or null while it has none (it keeps its old look) */
+/** A monster's pixel sprites at a tier, or null while it has none (the art tests require them for every roster monster) */
 export function mobSprites(monsterId: string, tier: MobTier = 'weak'): MobSprites | null {
-  const name = MOB_NAMES[monsterId] ?? monsterId
+  const name = mobArtName(monsterId)
   const idle = tierSprite(name, tier, 'walk_anim')
   const hit = tierSprite(name, tier, 'hit')
   const hurt = tierSprite(name, tier, 'hurt')
@@ -90,7 +95,7 @@ export function mobSprites(monsterId: string, tier: MobTier = 'weak'): MobSprite
  * has none. The strip is wider than the walk by the same margin on each side, so its feet stay put.
  */
 export function mobDeathSprite(monsterId: string, tier: MobTier = 'weak'): SpriteId | null {
-  return tierSprite(MOB_NAMES[monsterId] ?? monsterId, tier, 'death_anim')
+  return tierSprite(mobArtName(monsterId), tier, 'death_anim')
 }
 
 // A kill, in order: the death plays (stripMs of the death), its last frame holds, then it blinks out.
