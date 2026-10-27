@@ -266,5 +266,49 @@
   "warnings": [
    "single-pixel island at 4,7"
   ]
+ },
+ {
+  "name": "icon_res_steel_hammer_ground_low",
+  "file": "icon_res_steel_hammer_ground_low.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": []
+ },
+ {
+  "name": "icon_res_steel_hammer_ground_mid",
+  "file": "icon_res_steel_hammer_ground_mid.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,7"
+  ]
+ },
+ {
+  "name": "icon_res_steel_hammer_ground_steep",
+  "file": "icon_res_steel_hammer_ground_steep.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 10,2",
+   "single-pixel island at 7,5"
+  ]
  }
 ]

@@ -322,3 +322,60 @@ aMSawDamsaa.
 .......awDa.
 ........awa.
 .........a..
+
+# Tempered Steel: the big cross-peen hammer lying diagonally on the ground before the anvil, shallow angle
+@asset icon_res_steel_hammer_ground_low
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4 D=wood2
+frame
+............
+..aaaaaaaaa.
+.ahhhhhhhhha
+..aammmmmmsa
+....ammmsaa.
+.aa.ammmsaa.
+aHHammmmaawa
+aHHMaaaawwwa
+aHMMawwwaaa.
+.aMSSwaa....
+.aSSSa......
+..aaa.......
+
+# Tempered Steel: the big cross-peen hammer lying diagonally on the ground before the anvil, middle angle
+@asset icon_res_steel_hammer_ground_mid
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4 D=wood2
+frame
+............
+..aaaaaaaaa.
+.ahhhhhhhhha
+..aammmmmmsa
+....ammmsaa.
+.aa.ammaawwa
+aHHammawwwaa
+aHHMaawwaasa
+aHMSwwaaaaa.
+.aSSSa......
+..aSSa......
+...aa.......
+
+# Tempered Steel: the big cross-peen hammer lying diagonally on the ground before the anvil, steep angle
+@asset icon_res_steel_hammer_ground_steep
+size 12 12
+budget 8
+key a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4 D=wood2
+frame
+............
+..aaaaaaaaa.
+.ahhhhhhhaha
+..aammmmawaa
+.a..ammawwa.
+aHa.aaawaaa.
+aHHaawwammsa
+aHHMwwassssa
+.aMSSaaaaaa.
+.aSSSa......
+..aSSa......
+...aa.......

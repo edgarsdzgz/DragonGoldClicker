@@ -20,21 +20,16 @@ OPT = HERE / "out"
 R2 = AGENT / "16-research-options-2" / "out"
 RAMPS = ["emerald", "azure", "rose", "magenta", "teal"]
 GROUPS = [
-    ("Dragon Anatomy: a cut magic gem (green, electric blue, pink, magenta, teal)",
-     [R2 / "icon_res_anatomy_crystal.png"], "The lavender shard from last round.", [
-        ([f"res_gem_shard_{r}" for r in RAMPS], "A: The shard, cut and glittering",
-         "The shard you liked, with a bright facet down its length, a white glint at the tip and a twinkle beside it."),
-        ([f"res_gem_brilliant_{r}" for r in RAMPS], "B: The brilliant cut",
-         "The classic gem from the side: a flat table, the crown, and the pavilion narrowing to a point. A glint above."),
-        ([f"res_gem_emerald_{r}" for r in RAMPS], "C: The emerald cut",
-         "A step cut seen from above: two stepped rings and a glinting table, like a jeweler's stone."),
-    ]),
-    ("Tempered Steel: the hammer in front of the anvil", [R2 / "icon_res_steel_hammer_rest.png"],
-     "Hammer and anvil from last round.", [
-        (["res_steel_hammer_front"], "A: Lying in front",
-         "A cross-peen hammer on the ground before the anvil: flat face up, the peen below, the handle along the ground."),
-        (["res_steel_hammer_lean"], "B: Leaning across",
-         "A bigger cross-peen hammer leaning across the front of the anvil, head up at the left."),
+    ("Tempered Steel: the big hammer lying diagonally on the ground", [OPT / "icon_res_steel_hammer_lean.png"],
+     "B, leaning across: the hammer you liked.", [
+        (["res_steel_hammer_ground_low"], "C1: Shallow",
+         "B's big cross-peen hammer on the ground, head at the lower left, the handle running back to the right."),
+        (["res_steel_hammer_ground_mid"], "C2: Middle",
+         "The same, the handle at a steeper angle across the anvil's foot."),
+        (["res_steel_hammer_ground_steep"], "C3: Steep",
+         "The steepest: the handle reaches up past the anvil's waist."),
+        (["res_steel_hammer_front"], "A: Lying in front (last round)",
+         "The smaller hammer, flat along the ground, for comparison."),
     ]),
 ]
 NEIGHBORS = ["icon_rations", "icon_wheat", "icon_bell", "icon_star"]
@@ -101,7 +96,7 @@ page = f"""<title>Research Icon Options</title>
 <main>
   <header>
     <h1>Research icon options</h1>
-    <p class="muted">Draconia Chronicles &middot; Gems and the hammer &middot;
+    <p class="muted">Draconia Chronicles &middot; Tempered Steel: the hammer on the ground &middot;
       each option large (x8), then at game size (x4) between official icons &middot; 2026-10-26</p>
   </header>
   {"".join(sections)}

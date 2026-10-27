@@ -136,6 +136,35 @@ over(cells, head | handle, colors)
 options.append(("steel_hammer_lean", "Tempered Steel: the cross-peen hammer leaning across the front of Kael's anvil",
                 "a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4 D=wood2", outlined(cells)))
 
+# C: the big hammer of B, lying diagonally on the ground in front of the anvil: the head resting
+# on the ground at the lower left, the handle running back and up to the right. Three angles.
+def ground_hammer(ha, hb, center, r_head=1.35, half=1.7):
+    cells = anvil(1, -1)
+    handle = line(*ha, *hb, 0.6)
+    dx, dy = hb[0] - ha[0], hb[1] - ha[1]
+    ln = math.hypot(dx, dy)
+    px, py = -dy / ln, dx / ln  # across the handle: the head's long axis
+    a = (center[0] - px * half, center[1] - py * half)
+    b = (center[0] + px * half, center[1] + py * half)
+    head = line(*a, *b, r_head)
+    handle -= head
+    colors = {p: ("w" if (p[0] + 0.5 - ha[0]) * py - (p[1] + 0.5 - ha[1]) * px >= 0 else "D") for p in handle}
+    for x, y in head:  # lit from the upper left
+        t = (x + 0.5 - center[0]) + (y + 0.5 - center[1])
+        colors[(x, y)] = "H" if t < -0.6 else ("M" if t < 0.8 else "S")
+    over(cells, head | handle, colors)
+    return outlined(cells)
+
+
+for name, ha, hb, center, desc in [
+        ("ground_low", (4.4, 9.4), (10.6, 7.0), (2.7, 8.5), "shallow"),
+        ("ground_mid", (4.2, 9.0), (10.2, 5.4), (2.8, 8.3), "middle"),
+        ("ground_steep", (4.0, 8.6), (9.4, 3.8), (2.9, 8.0), "steep")]:
+    options.append((f"steel_hammer_{name}",
+                    f"Tempered Steel: the big cross-peen hammer lying diagonally on the ground before the anvil, {desc} angle",
+                    "a=ink h=steel4 m=steel2 s=steel1 H=steel5 M=steel3 S=steel2 w=wood4 D=wood2",
+                    ground_hammer(ha, hb, center)))
+
 lines = ["# Gems and hammer options, 2026-10-26. Written by make_options.py."]
 for name, desc, key, rows in options:
     assert len(rows) == N and all(len(r) == N for r in rows), (name, [len(r) for r in rows])
