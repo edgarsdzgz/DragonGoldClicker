@@ -1,0 +1,30 @@
+{
+  "gate": {
+    "x": 0,
+    "y": 222,
+    "width": 130,
+    "height": 60,
+    "states": [
+      "sound",
+      "cracking",
+      "failing",
+      "breached"
+    ]
+  },
+  "torches": [
+    {
+      "x": 13,
+      "y": 245,
+      "strip": "map_torch_strip3.png",
+      "frames": 3,
+      "fps": 6
+    },
+    {
+      "x": 111,
+      "y": 245,
+      "strip": "map_torch_strip3.png",
+      "frames": 3,
+      "fps": 6
+    }
+  ]
+}
