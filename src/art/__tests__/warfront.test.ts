@@ -36,7 +36,18 @@ describe('the monsters', () => {
       expect([m.id, art !== null]).toEqual([m.id, true])
     }
     expect(mobSprites('shadow_crawler')?.hurt).toBe('mob_crawler_hurt')
-    expect(mobSprites('minotaur')).toBeNull()
+    expect(mobSprites('no_such_monster')).toBeNull()
+  })
+
+  it('the Minotaur boss has its whole set ready, though no wave sends it yet', () => {
+    expect(mobSprites('minotaur')).toEqual({
+      idle: 'mob_minotaur_walk_anim', hit: 'mob_minotaur_hit', hurt: 'mob_minotaur_hurt',
+    })
+    const walk = SPRITES.mob_minotaur_walk_anim
+    const death = SPRITES[mobDeathSprite('minotaur')!]
+    expect(death.frames).toBe(4)
+    expect(death.h).toBe(walk.h)
+    expect((death.w - walk.w) % 2).toBe(0)
   })
 
   it('every monster in the roster dies on screen, its feet where its walk has them', () => {
@@ -52,7 +63,7 @@ describe('the monsters', () => {
       expect([m.id, (d.w - walk.w) % 2]).toEqual([m.id, 0])
     }
     expect(mobDeathSprite('shadow_crawler')).toBe('mob_crawler_death_anim')
-    expect(mobDeathSprite('minotaur')).toBeNull()
+    expect(mobDeathSprite('no_such_monster')).toBeNull()
   })
 
   it('a kill reads in order: the death, the hold, the blink, while the next one walks up', () => {

@@ -25,9 +25,10 @@ describe('icons', () => {
 
   it('studies use their own icon where one is drawn, and keep the glyph where not', () => {
     expect(studyIcon('mortar_craft', 'construct')).toBe('icon_res_mortar_craft')
-    expect(studyIcon('cartography', 'map')).toBe('map')
+    expect(studyIcon('cartography', 'map')).toBe('icon_res_cartography')
+    expect(studyIcon('no_such_study', 'map')).toBe('map')
     const drawn = RESEARCH_NODES.filter((n) => studyIcon(n.id, n.icon) !== n.icon)
-    expect(drawn.length).toBe(13)
+    expect(drawn.length).toBe(RESEARCH_NODES.length)
   })
 
   it('the claws chip shows the tier icon; reforges keep Ancient', () => {

@@ -63,6 +63,11 @@ export const ICON_ART: Partial<Record<IoniconName, SpriteId>> = {
   'stats-chart': 'icon_stats',
   sparkles: 'icon_sparkles',
   'help-circle-outline': 'icon_unknown',
+  warning: 'icon_warning',
+  'hand-left': 'icon_hand',
+  'phone-portrait-outline': 'icon_phone',
+  // Only the Stats screen's food Consumption row uses it: a leaking grain sack, not a gauge
+  speedometer: 'icon_consumption',
 }
 
 export function isSpriteId(name: string): name is SpriteId {
