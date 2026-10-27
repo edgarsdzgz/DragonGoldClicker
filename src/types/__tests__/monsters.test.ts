@@ -46,6 +46,12 @@ describe('roster', () => {
     expect(new Set(kinds).size).toBe(kinds.length)
   })
 
+  it('a mini-boss and a boss are named as such for the screen reader', () => {
+    const at = (id: string) => MONSTERS.findIndex((m) => m.id === id)
+    expect(monsterLabel({ monsterIndex: at('minotaur'), hordeKills: 0, monsterHp: 286 })).toBe('Mini-boss Minotaur, 286 of 286 HP. Tap to strike')
+    expect(monsterLabel({ monsterIndex: at('khagan'), hordeKills: 0, monsterHp: 1 })).toBe('Boss Khagan of the Sirocco, 1 of 1153 HP. Tap to strike')
+  })
+
   it('an elite is named as one for the screen reader', () => {
     const shaman = MONSTERS.findIndex((m) => m.id === 'kobold_shaman')
     expect(monsterLabel({ monsterIndex: shaman, hordeKills: 0, monsterHp: 13 })).toBe('Elite Kobold Shaman, 13 of 13 HP. Tap to strike')

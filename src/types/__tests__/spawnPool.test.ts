@@ -1,12 +1,16 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { MONSTERS, strike } from '../monsters'
-import { spawnOdds, spawnWeights, pickNextMonster, eliteIndexFor, ELITE_CHANCE, SPAWN_ANCHORS } from '../spawnPool'
+import { spawnOdds, spawnWeights, pickNextMonster, eliteIndexFor, bossIndexAt, ELITE_CHANCE, SPAWN_ANCHORS } from '../spawnPool'
+import { BOSS_SCALE } from '../monsterRoster'
+import { HORDE_LEVEL_KILLS, hordeLevel } from '../horde'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 const idx = (id: string) => MONSTERS.findIndex((m) => m.id === id)
 /** Every type met at least once, so no debut is pending */
 const MET_ALL = Object.fromEntries(MONSTERS.map((m) => [m.id, 1]))
+/** Every type met but the bosses, so each boss is still waiting */
+const MET_ALL_BUT_BOSSES = Object.fromEntries(MONSTERS.filter((m) => m.rank !== 'boss' && m.rank !== 'miniboss').map((m) => [m.id, 1]))
 /** The monsters the pool can send (not the raider) */
 const POOL = MONSTERS.filter((m) => Number.isFinite(m.fromKills) && !m.rank)
 
@@ -153,7 +157,7 @@ describe('the elites', () => {
     expect(pickNextMonster({ hordeKills: 38, killsByMonster: met }, 0)).toBe(idx('goblin_scout'))
   })
 
-  it('is never rolled from the pool itself', () => {
+  it('is never rolled from the pool itself (nor is any ranked monster)', () => {
     for (let k = 0; k <= 400; k += 5) {
       spawnWeights(k).forEach((w, j) => { if (MONSTERS[j].rank) expect(w).toBe(0) })
     }
@@ -172,5 +176,57 @@ describe('kills feed the pool', () => {
     const met = make({ hordeKills: 14, killsByMonster: { kobold: 13, goblin: 1 }, monsterIndex: idx('goblin'), monsterHp: 1 })
     expect(strike(met, 1, 0).state.monsterIndex).toBe(idx('kobold'))
     expect(strike(met, 1, 0.99).state.monsterIndex).toBe(idx('goblin'))
+  })
+})
+
+describe('the bosses', () => {
+  const BOSSES = MONSTERS.filter((m) => m.rank === 'boss' || m.rank === 'miniboss')
+
+  it("follow the old game's plan: a mini-boss closes every fifth level, a boss every tenth", () => {
+    expect(BOSSES.map((b) => [hordeLevel(b.fromKills), b.rank, b.id])).toEqual([
+      [5, 'miniboss', 'minotaur'], [10, 'boss', 'khagan'], [15, 'miniboss', 'basilisk'], [20, 'boss', 'forge_master'],
+      [25, 'miniboss', 'spider_queen'], [30, 'boss', 'corrupted_drake'], [35, 'miniboss', 'stone_golem'],
+      [40, 'boss', 'corrupted_wyvern'], [45, 'miniboss', 'giant_elemental'], [50, 'boss', 'lich'],
+    ])
+    // Each is its level's last kill
+    for (const b of BOSSES) expect((b.fromKills + 1) % HORDE_LEVEL_KILLS).toBe(0)
+  })
+
+  it("have 15 or 40 times the pool's average HP there, 3 or 5 times its strike, and pay 0.05 per HP", () => {
+    for (const b of BOSSES) {
+      const w = spawnWeights(b.fromKills)
+      const total = w.reduce((a, x) => a + x, 0)
+      const avg = (f: (j: number) => number) => w.reduce((a, x, j) => a + x * f(j), 0) / total
+      const scale = BOSS_SCALE[b.rank as 'boss' | 'miniboss']
+      expect([b.id, b.hp]).toEqual([b.id, Math.round(scale.hp * avg((j) => MONSTERS[j].hp))])
+      expect([b.id, b.wallStrike]).toEqual([b.id, Math.round(2 * scale.strike * avg((j) => MONSTERS[j].wallStrike)) / 2])
+      expect(b.bounty).toBeCloseTo(b.hp * 0.05, 9)
+    }
+  })
+
+  it("comes at its level's last kill, whatever the roll, and holds the level until it falls", () => {
+    const at = MONSTERS.find((m) => m.id === 'minotaur')!.fromKills
+    expect(bossIndexAt(at)).toBe(idx('minotaur'))
+    expect(bossIndexAt(at - 1)).toBe(-1)
+    for (const r of [0, 0.5, 0.9999]) expect(pickNextMonster({ hordeKills: at, killsByMonster: MET_ALL_BUT_BOSSES }, r)).toBe(idx('minotaur'))
+  })
+
+  it('stays fallen: met again after a Breach pushed the horde back, the level ends with the pool', () => {
+    const at = MONSTERS.find((m) => m.id === 'minotaur')!.fromKills
+    expect(BOSSES.map((b) => b.id)).toContain(MONSTERS[pickNextMonster({ hordeKills: at, killsByMonster: MET_ALL_BUT_BOSSES }, 0)].id)
+    for (const r of [0, 0.5, 0.9999]) expect(MONSTERS[pickNextMonster({ hordeKills: at, killsByMonster: { ...MET_ALL_BUT_BOSSES, minotaur: 1 } }, r)].id).not.toBe('minotaur')
+  })
+
+  it("a raider killed while the boss held the gate does not let it slip by", () => {
+    const at = MONSTERS.find((m) => m.id === 'minotaur')!.fromKills
+    expect(pickNextMonster({ hordeKills: at + 1, killsByMonster: MET_ALL_BUT_BOSSES }, 0.5)).toBe(idx('minotaur'))
+    // Two past it (not a raider's gap) is the next level's pool
+    expect(pickNextMonster({ hordeKills: at + 2, killsByMonster: MET_ALL_BUT_BOSSES }, 0.5)).not.toBe(idx('minotaur'))
+  })
+
+  it('comes before a debut that is still waiting', () => {
+    const at = MONSTERS.find((m) => m.id === 'khagan')!.fromKills
+    const unmet = { ...MET_ALL_BUT_BOSSES, spectral_hound: 0 }
+    expect(pickNextMonster({ hordeKills: at, killsByMonster: unmet }, 0)).toBe(idx('khagan'))
   })
 })

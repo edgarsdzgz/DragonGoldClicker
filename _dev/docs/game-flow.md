@@ -93,6 +93,12 @@ monster the horde sends now, against that monster's 5s strike on the wall.
   Warchief, Troll, Ogre, Windcaller, Iron Golem). From its unlock, 1 in 12 rolls of its kinds comes as
   the elite, and the first such roll always does. 2.5x the HP and pay of its first kind, 2x the wall
   strike; "ELITE" before its name
+- **Bosses** (`rank: 'miniboss' | 'boss'`, from the old game's plan): a mini-boss closes every fifth
+  horde level and a boss every tenth, as that level's last kill. Nothing advances past it until it
+  falls, and once fallen it stays fallen through a Breach. 15x or 40x the pool's average HP there,
+  3x or 5x its wall strike. Minotaur (5), Khagan of the Sirocco (10), Basilisk (15), Forge-Master
+  (20), Spider Queen (25), Corrupted Drake (30), Stone Golem (35), Corrupted Wyvern (40), Giant
+  Elemental (45), Lich (50). See `_dev/planning/fliers-elites-bosses.md`, Stage 3
 - Rodain's company holds the wall at 50 HP until the Mend the Walls quest is done
   (`the_wall_is_yours`). The player never loses the game: when the wall falls it is a Breach
   (`types/breach.ts`): 30% of fighters, repairers and idle villagers and 15% of foragers die, 40%

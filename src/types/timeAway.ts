@@ -3,6 +3,7 @@ import { isSystemOn } from './systems'
 import { MAX_CITY_HP, repairRateNow } from './siege'
 import { WALL_STRIKE_SEC } from './wall'
 import { armyKillSeconds, toughestInPool } from './army'
+import { currentMonster } from './monsters'
 
 // =============================================================================
 // THE WALL WHILE YOU ARE AWAY (chapter 5 phase C, approved 2026-10-26)
@@ -27,7 +28,9 @@ export interface WallAway {
 /** The wall after this many seconds away; null before the siege has begun */
 export function wallWhileAway(s: GameState, seconds: number): WallAway | null {
   if (!isSystemOn(s, 'siege')) return null
-  const monster = toughestInPool(s)
+  // A mini-boss or boss holding the gate stays until it falls, and nothing is killed while away
+  const facing = currentMonster(s)
+  const monster = facing.rank === 'boss' || facing.rank === 'miniboss' ? facing : toughestInPool(s)
   const killSec = armyKillSeconds(s, monster)
   const held = killSec < WALL_STRIKE_SEC
   // One monster after another: each strikes every WALL_STRIKE_SEC for as long as it lives

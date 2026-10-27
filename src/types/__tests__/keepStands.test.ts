@@ -4,6 +4,7 @@ import { FORAGER_TIERS, LODGE_LEVELS, getForagerCap, getAutoFoodRate } from '../
 import { FOOD_CHECK_INTERVAL } from '../food'
 import { foragerCost, foragerBlock, makeForager } from '../lodge'
 import { wallWhileAway, wallAwayLine, AWAY_WALL_FLOOR } from '../timeAway'
+import { MONSTERS } from '../monsterRoster'
 import { moveTargets, moveBlock, movePerson, moveMany, getReassignOptions } from '../reassignment'
 import type { RoleId } from '../reassignment'
 import { DRACONIA_HALL_COST } from '../state'
@@ -79,6 +80,15 @@ describe('time away follows the army readout', () => {
     expect(w.held).toBe(false)
     expect(w.hpAfter).toBe(AWAY_WALL_FLOOR)
     expect(wallAwayLine(w)).toBe('Your army could not stop the orcs in time: the wall wore from 100 to 50.')
+  })
+
+  it('a mini-boss holding the gate is what wears the wall while away, harder than the pool', () => {
+    const minotaur = MONSTERS.findIndex((m) => m.id === 'minotaur')
+    const atBoss = MONSTERS[minotaur].fromKills
+    const pool = wallWhileAway(siege({ fighters: 4, hordeKills: atBoss }), 30)!
+    const boss = wallWhileAway(siege({ fighters: 4, hordeKills: atBoss, monsterIndex: minotaur }), 30)!
+    expect(boss.monsters).toBe('minotaurs')
+    expect(boss.hpAfter).toBeLessThan(pool.hpAfter)
   })
 
   it('a short time away wears it less than a long one', () => {

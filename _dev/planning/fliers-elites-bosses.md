@@ -62,23 +62,58 @@ has an elite, there is a 1 in 12 chance its elite comes instead. An elite has:
 The other choice is elites as plain pool members at a low weight. That needs no new rule, but they
 would not feel special.
 
-## Stage 3: bosses (a new encounter)
+## Stage 3: bosses (built from the old game's plan)
 
-**Recommendation: a boss closes every other level.** It is the last kill of levels 2, 4, 6 and on to
-20, which is kill 50, 100, 150 and so on.
-- It walks up like any monster but stays until it falls. The horde cannot advance past it, and
-  fighters, taps and the wall all work as now.
-- It has 8 times the HP of its level's average regular. The pay follows (0.05/HP), and it strikes the
-  wall for twice what a regular does.
-- A Breach pushes the horde back as now, so a boss that breaks the wall is met again later.
-- Its name is shown with "Boss" in gold. A story line for each boss can come later.
-- Order, rising in menace: Minotaur (2), Basilisk (4), Spider Queen (6), Stone Golem (8), Khagan (10),
-  Forge-Master (12), Giant Elemental (14), Corrupted Drake (16), Corrupted Wyvern (18), Lich (20).
+My first recommendation (a boss every other level at 8x HP) was set aside. The owner: "I think the
+level stuff is in the bestiary or in the other game's thing... Borrow from that, it's all planned."
 
-Levels 14-20 have no new regulars yet, so the pool's last mix holds there.
+**What the old game planned** (`C:\Users\ediaz\Coding_Projects\dragonIdler\docs`):
+- v2.3.2 GDD: "each with ~10 Wards; miniboss every 5, boss every 10"
+- tome 05 and 20: an elite has 3.2x HP and 2x damage, a mini-boss 15x HP and 3x damage, a boss 40x
+  HP and 5x damage
+- v2.4 GDD: a boss stays defeated if the player rewinds. v2.4 also moved to a boss *wave* (several
+  enemies at once) at every ward's end. That does not fit a road that sends one monster at a time,
+  so the 5/10 cadence is the one borrowed.
+
+**Built.** A ward is a horde level:
+- A mini-boss closes every fifth level and a boss every tenth. Each is the last kill of its level
+  (kills = level x 25 - 1), and nothing advances past it until it falls.
+- HP is 15x (mini-boss) or 40x (boss) the pool's average monster at that point. Wall strike is 3x or
+  5x the pool's average strike, to the nearest half. Pay is 0.05 per HP. The horde's +5% per level
+  then applies on top, as for every monster.
+- Once killed it stays killed, even when a Breach pushes the horde back below it.
+- A raid's raider killed while a boss holds the gate moves the count one past the boss; the boss is
+  still sent then, so it cannot slip by (found by /verify).
+- While a boss holds the gate, time away wears the wall with the boss, not with the pool's toughest
+  regular (found by /verify). The Garrison and Forge readouts still measure the pool.
+- The rank shows before the name: MINI-BOSS in gold, BOSS in red.
+- Order: the minis are the large beasts and the bosses the named foes. Khagan of the Sirocco was the
+  old game's first boss gate, and the Forge-Master leads the Flame-Touched cult.
+
+| Level | Rank | Monster | HP | Wall strike |
+| --- | --- | --- | --- | --- |
+| 5 | mini-boss | Minotaur | 286 | 10.5 |
+| 10 | boss | Khagan of the Sirocco | 1153 | 28.5 |
+| 15 | mini-boss | Basilisk | 504 | 20 |
+| 20 | boss | Forge-Master of the Inferno | 1344 | 33.5 |
+| 25 | mini-boss | Spider Queen | 504 | 20 |
+| 30 | boss | Corrupted Drake | 1344 | 33.5 |
+| 35 | mini-boss | Stone Golem | 504 | 20 |
+| 40 | boss | Corrupted Wyvern | 1344 | 33.5 |
+| 45 | mini-boss | Giant Elemental | 504 | 20 |
+| 50 | boss | Lich | 1344 | 33.5 |
+
+**Balance warning, for the owner.** These are the old game's multipliers taken as written, and the old
+game's damage hit a dragon, not a 100-HP wall:
+- Khagan at level 10 is 1153 x 1.45, about 1,670 HP. It strikes for about 41 every 5 seconds, so a full
+  wall falls in about 12 seconds unless the army kills it first (about 140 damage a second).
+- That makes level 10 a hard gate: Breach, pushed back, grow stronger, come back.
+- The Minotaur at level 5 (about 343 HP, about 12.6 a strike) is far gentler.
+- If the gate is too hard, the knob is `BOSS_SCALE` and the strike values in
+  `types/monsterRoster.ts`; the balance pass with the simulator should settle it.
 
 ## Build order
 
-Stage 1 now, since it needs no new rules. Stages 2 and 3 follow once approved. Each stage gets tests
+All three stages built on 2026-10-27 (46e2257, 2500717, then the bosses). Each stage gets tests
 (placement, the window of at most six, debuts, the elite chance, the boss blocking the advance), a
 /verify, a commit, and a look on the A16 before the next.

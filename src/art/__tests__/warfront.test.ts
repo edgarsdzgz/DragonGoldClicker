@@ -39,7 +39,7 @@ describe('the monsters', () => {
     expect(mobSprites('no_such_monster')).toBeNull()
   })
 
-  it('the Minotaur boss has its whole set ready, though no wave sends it yet', () => {
+  it('the Minotaur, the first mini-boss, has its whole set ready', () => {
     expect(mobSprites('minotaur')).toEqual({
       idle: 'mob_minotaur_walk_anim', hit: 'mob_minotaur_hit', hurt: 'mob_minotaur_hurt',
     })

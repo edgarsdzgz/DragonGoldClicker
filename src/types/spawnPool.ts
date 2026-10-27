@@ -86,6 +86,11 @@ export function spawnWeights(kills: number): number[] {
   })
 }
 
+/** The roster index of the mini-boss or boss met at exactly this advance (its level's last kill), or -1 */
+export function bossIndexAt(kills: number): number {
+  return MONSTERS.findIndex((m) => (m.rank === 'boss' || m.rank === 'miniboss') && m.fromKills === kills)
+}
+
 /** The chance that a roll of a kind with an unlocked elite comes as that elite */
 export const ELITE_CHANCE = 1 / 12
 
@@ -103,12 +108,19 @@ export function spawnOdds(kills: number): number[] {
 
 /**
  * The next monster after a kill. `rand` is a number in [0, 1) (Math.random in the game, fixed in
- * tests). A type that has reached its debut but never been fought comes first, guaranteed; a debut
- * is never an elite. A rolled kind may come as its elite (ELITE_CHANCE, and always the first time).
+ * tests). A level's mini-boss or boss comes first, at its level's last kill, until it falls.
+ * Then a type that has reached its debut but never been fought, guaranteed; a debut is never an
+ * elite. A rolled kind may come as its elite (ELITE_CHANCE, and always the first time).
  */
 export function pickNextMonster(s: Pick<GameState, 'hordeKills' | 'killsByMonster'>, rand: number): number {
   // The horde's advance, not lifetime kills: a Breach pushes it back (core-tap layer 6)
   const kills = Math.floor(s.hordeKills)
+  // A level's boss closes it, unless it has already fallen (it stays fallen through a Breach). One
+  // kill past it too: a raid's raider, killed while the boss held the gate, must not let it slip by
+  for (const at of [kills, kills - 1]) {
+    const boss = bossIndexAt(at)
+    if (boss >= 0 && !((s.killsByMonster[MONSTERS[boss].id] ?? 0) > 0)) return boss
+  }
   const weights = spawnWeights(kills)
   const debut = MONSTERS.findIndex((m, j) => weights[j] > 0 && !((s.killsByMonster[m.id] ?? 0) > 0))
   if (debut >= 0) return debut

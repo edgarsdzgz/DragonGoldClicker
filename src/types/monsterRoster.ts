@@ -2,8 +2,11 @@
 // THE ROSTER: every monster that can come to the gate (data only)
 // =============================================================================
 
-/** Above the rank and file: an elite stands in for its kind now and then (types/spawnPool.ts) */
-export type MonsterRank = 'elite'
+/**
+ * Above the rank and file: an elite stands in for its kind now and then; a mini-boss or a boss closes
+ * its horde level (types/spawnPool.ts)
+ */
+export type MonsterRank = 'elite' | 'miniboss' | 'boss'
 
 export interface MonsterDef {
   id: string
@@ -17,7 +20,10 @@ export interface MonsterDef {
   fromKills: number
   /** Wall damage each time it strikes, every WALL_STRIKE_SEC it stands at the gate (types/wall.ts) */
   wallStrike: number
-  /** An elite: never rolled itself; it stands in for one of these kinds (from `fromKills`) */
+  /**
+   * Ranked monsters are never rolled from the pool. An elite stands in for one of `standsInFor`
+   * from `fromKills`; a mini-boss or a boss is the monster at exactly `fromKills`, its level's last
+   */
   rank?: MonsterRank
   standsInFor?: string[]
 }
@@ -91,7 +97,28 @@ export const MONSTERS: MonsterDef[] = [
   ...elite('ogre', 'Ogre', 'ogres', 160, ['chitin_warrior']),
   ...elite('windcaller', 'Windcaller', 'windcallers', 185, ['nomad_warrior', 'nomad_scout', 'nomad_archer', 'storm_rider']),
   ...elite('iron_golem', 'Iron Golem', 'iron golems', 240, ['skeleton', 'ashen_convert']),
+  // The bosses, borrowed from the old game's plan (v2.3.2 GDD: "miniboss every 5, boss every 10"
+  // wards; tome 05: a mini-boss has 15x HP and 3x damage, a boss 40x and 5x). Each is the last kill
+  // of its horde level (fromKills = level x 25 - 1): 15 or 40 times the HP of the pool's average
+  // monster there, 3 or 5 times its wall strike (to the half). Once killed it stays killed, even
+  // when a Breach pushes the horde back. Owner, 2026-10-27: "borrow from that, it's all planned".
+  { id: 'minotaur', name: 'Minotaur', plural: 'minotaurs', rank: 'miniboss', fromKills: 124, hp: 286, bounty: 14.3, wallStrike: 10.5 },
+  { id: 'khagan', name: 'Khagan of the Sirocco', plural: 'khagans', rank: 'boss', fromKills: 249, hp: 1153, bounty: 57.65, wallStrike: 28.5 },
+  { id: 'basilisk', name: 'Basilisk', plural: 'basilisks', rank: 'miniboss', fromKills: 374, hp: 504, bounty: 25.2, wallStrike: 20 },
+  { id: 'forge_master', name: 'Forge-Master of the Inferno', plural: 'forge-masters', rank: 'boss', fromKills: 499, hp: 1344, bounty: 67.2, wallStrike: 33.5 },
+  { id: 'spider_queen', name: 'Spider Queen', plural: 'spider queens', rank: 'miniboss', fromKills: 624, hp: 504, bounty: 25.2, wallStrike: 20 },
+  { id: 'corrupted_drake', name: 'Corrupted Drake', plural: 'corrupted drakes', rank: 'boss', fromKills: 749, hp: 1344, bounty: 67.2, wallStrike: 33.5 },
+  { id: 'stone_golem', name: 'Stone Golem', plural: 'stone golems', rank: 'miniboss', fromKills: 874, hp: 504, bounty: 25.2, wallStrike: 20 },
+  { id: 'corrupted_wyvern', name: 'Corrupted Wyvern', plural: 'corrupted wyverns', rank: 'boss', fromKills: 999, hp: 1344, bounty: 67.2, wallStrike: 33.5 },
+  { id: 'giant_elemental', name: 'Giant Elemental', plural: 'giant elementals', rank: 'miniboss', fromKills: 1124, hp: 504, bounty: 25.2, wallStrike: 20 },
+  { id: 'lich', name: 'Lich', plural: 'liches', rank: 'boss', fromKills: 1249, hp: 1344, bounty: 67.2, wallStrike: 33.5 },
 ]
+
+/** A mini-boss's and a boss's HP and wall strike, as multiples of the pool's average monster there */
+export const BOSS_SCALE: Record<'miniboss' | 'boss', { hp: number; strike: number }> = {
+  miniboss: { hp: 15, strike: 3 },
+  boss: { hp: 40, strike: 5 },
+}
 
 /** An elite's entry, from the first kind it stands in for (defined above it in MONSTERS) */
 function elite(id: string, name: string, plural: string, fromKills: number, standsInFor: string[]): MonsterDef[] {

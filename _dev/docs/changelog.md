@@ -2,6 +2,17 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Bosses (2026-10-27)
+- Borrowed from the old game's plan (miniboss every 5 wards, boss every 10; 15x and 40x HP, 3x and
+  5x damage), with a horde level as a ward:
+  - a mini-boss closes every fifth level and a boss every tenth, as the level's last kill
+  - nothing advances past it until it falls, and once fallen it stays fallen through a Breach
+  - the ten, in order: Minotaur, Khagan of the Sirocco, Basilisk, Forge-Master of the Inferno,
+    Spider Queen, Corrupted Drake, Stone Golem, Corrupted Wyvern, Giant Elemental, Lich
+- MINI-BOSS (gold) or BOSS (red) shows before the name; the screen reader says it
+- Provisional balance: as borrowed, Khagan at level 10 is a hard gate (about 1,670 HP and 41 a
+  strike); see the plan's balance warning
+
 ### Elites (2026-10-27)
 - Seven elites now lead their kinds (`_dev/planning/fliers-elites-bosses.md`, Stage 2): the Kobold
   Shaman from 20 kills, Goblin Chieftain 45, Orc Warchief 70, Troll 115, Ogre 160, Windcaller 185
