@@ -409,6 +409,7 @@ export const SPRITES = {
   "icon_warning": { source: require('../../assets/art/icons/icon_warning.png'), w: 12, h: 12, frames: 1, fps: 0, label: "Warning (confirm dialog): a gold triangle" },
   "icon_hand": { source: require('../../assets/art/icons/icon_hand.png'), w: 12, h: 12, frames: 1, fps: 0, label: "Total clicks: an open hand" },
   "icon_phone": { source: require('../../assets/art/icons/icon_phone.png'), w: 12, h: 12, frames: 1, fps: 0, label: "Vibration: a phone" },
+  "icon_todo": { source: require('../../assets/art/icons/icon_todo.png'), w: 12, h: 12, frames: 1, fps: 0, label: "Not done yet: the empty ring beside an unmet requirement (the check mark's counterpart)" },
   "icon_consumption": { source: require('../../assets/art/icons/icon_consumption.png'), w: 12, h: 12, frames: 1, fps: 0, label: "Consumption (food eaten per second): a leaking grain sack" },
   "mob_minotaur_idle": { source: require('../../assets/art/mobs/mob_minotaur_idle.png'), w: 20, h: 25, frames: 1, fps: 0, label: "Minotaur: idle" },
   "mob_minotaur_hit": { source: require('../../assets/art/mobs/mob_minotaur_hit.png'), w: 20, h: 25, frames: 1, fps: 0, label: "Minotaur: hit, the red flash" },

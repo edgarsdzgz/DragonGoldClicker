@@ -76,6 +76,8 @@ export const ICON_ART: Partial<Record<IoniconName, SpriteId>> = {
   'shield-half': 'icon_shield',
   // The Keep, where its own building icon is not looked up
   business: 'icon_bld-keep',
+  // An unmet requirement in a checklist (claws, the journal, research): the check mark's counterpart
+  'ellipse-outline': 'icon_todo',
 }
 
 export function isSpriteId(name: string): name is SpriteId {
