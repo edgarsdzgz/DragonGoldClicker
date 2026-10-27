@@ -17,10 +17,12 @@ export type CastId =
   | 'gate'
 
 /**
- * A face other than the neutral one. Each character has the one their story needs (art batch
- * 42-expressions); asking for a face they do not have shows the neutral bust.
+ * A face other than the neutral one: the standard set every bust has (art batch 50-expressions-set,
+ * 2026-10-27). The Hollow Knight has no face: its faces are a light inside its visor slit.
  */
-export type Mood = 'grieving' | 'alarmed' | 'angry' | 'fierce' | 'startled' | 'roaring'
+export type Mood = 'happy' | 'grieving' | 'angry' | 'alarmed' | 'worried' | 'determined'
+
+export const MOODS: readonly Mood[] = ['happy', 'grieving', 'angry', 'alarmed', 'worried', 'determined']
 
 /** The face for one line of a scene: the line's own mood, else the scene's, else neutral */
 export function lineMood(page: number, mood?: Mood, lineMoods?: Partial<Record<number, Mood>>): Mood | undefined {

@@ -1,26 +1,31 @@
 import { SPRITES } from '../manifest'
 import { portraitSprite, sigilSprite } from '../cast'
-import { lineMood } from '../../types/cast'
-import type { CastId, Mood } from '../../types/cast'
+import { lineMood, MOODS } from '../../types/cast'
+import type { CastId } from '../../types/cast'
 import { SCENES, BREACH_SCENES } from '../../data/story/lines'
 import type { SceneDef } from '../../data/story/lines'
 
 const CAST: CastId[] = ['pyreth', 'rodain', 'mirael', 'kael', 'lirae', 'varn', 'ashara', 'thornwick', 'sera', 'hollow-knight', 'gate']
-const MOODS: Mood[] = ['grieving', 'alarmed', 'angry', 'fierce', 'startled', 'roaring']
+const PEOPLE = CAST.filter((who) => who !== 'gate')
 
 describe('the cast art', () => {
-  it('has a portrait for everyone, in every mood (the neutral bust when a face is missing)', () => {
-    for (const who of CAST) {
+  it('gives every character a face of their own for every mood (never the neutral bust as a stand-in)', () => {
+    for (const who of PEOPLE) {
       expect(SPRITES[portraitSprite(who)]).toBeDefined()
-      for (const mood of MOODS) expect(SPRITES[portraitSprite(who, mood)]).toBeDefined()
+      for (const mood of MOODS) {
+        const id = portraitSprite(who, mood)
+        expect(SPRITES[id]).toBeDefined()
+        expect(id).not.toBe(`bust_${who}`)
+      }
     }
   })
 
-  it('shows the face asked for when the character has it', () => {
+  it('finds the faces locked before the set under their own names', () => {
     expect(portraitSprite('rodain', 'grieving')).toBe('bust_rodain_grieving')
-    expect(portraitSprite('mirael', 'alarmed')).toBe('bust_mirael_alarmed')
-    // Mirael has no grieving face: the neutral bust
-    expect(portraitSprite('mirael', 'grieving')).toBe('bust_mirael')
+    expect(portraitSprite('varn', 'determined')).toBe('bust_varn_fierce')
+    expect(portraitSprite('sera', 'determined')).toBe('bust_sera_roaring')
+    expect(portraitSprite('thornwick', 'alarmed')).toBe('bust_thornwick_startled')
+    expect(portraitSprite('mirael')).toBe('bust_mirael')
     expect(portraitSprite('gate', 'grieving')).toBe('cast_emblem-gate')
   })
 
@@ -45,7 +50,7 @@ describe('the speakers in the story', () => {
       expect(CAST).toContain(scene.who)
       scene.lines.forEach((_, page) => {
         const mood = lineMood(page, scene.mood, scene.lineMoods)
-        if (mood) expect(portraitSprite(scene.who, mood)).toMatch(new RegExp(`_${mood}$`))
+        if (mood && scene.who !== 'gate') expect(portraitSprite(scene.who, mood)).not.toBe(`bust_${scene.who}`)
       })
     }
   })

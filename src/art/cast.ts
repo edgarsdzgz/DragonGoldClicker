@@ -2,11 +2,20 @@ import { SPRITES } from './manifest'
 import type { SpriteId } from './manifest'
 import type { CastId, Mood } from '../types/cast'
 
-/** The speaker's portrait: the bust in this mood if they have one, else the neutral bust; the Gate's emblem */
+/** Faces locked before the standard set, under their own names, in the set's slots */
+const FACE_FILE: Partial<Record<CastId, Partial<Record<Mood, string>>>> = {
+  varn: { determined: 'fierce' },
+  sera: { determined: 'roaring' },
+  thornwick: { alarmed: 'startled' },
+}
+
+/** The speaker's portrait: their bust in this mood (neutral when none is asked for); the Gate's emblem */
 export function portraitSprite(who: CastId, mood?: Mood): SpriteId {
   if (who === 'gate') return 'cast_emblem-gate'
-  const faced = `bust_${who}_${mood}`
-  if (mood && faced in SPRITES) return faced as SpriteId
+  if (mood) {
+    const faced = `bust_${who}_${FACE_FILE[who]?.[mood] ?? mood}`
+    if (faced in SPRITES) return faced as SpriteId
+  }
   return `bust_${who}` as SpriteId
 }
 
