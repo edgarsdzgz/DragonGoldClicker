@@ -1,59 +1,49 @@
-import { useEffect, useRef } from 'react'
-import { useAudioPlayerStatus, setAudioModeAsync } from 'expo-audio'
+import { useEffect, useMemo, useRef } from 'react'
+import { setAudioModeAsync } from 'expo-audio'
 import type { AudioSource } from 'expo-audio'
 import { useAudioSettings } from '../context/AudioSettingsContext'
 import { sharedSfxPlayer } from './sfxPlayers'
+import { crossfade } from './crossfade'
 
 /**
- * Plays a playlist of BGM tracks sequentially, looping back to the first
- * track after the last one finishes. Accepts a single source or an array.
- * The first track's player is the shared one the title screen's loader warmed up, so the
- * music starts the moment the title shows.
+ * Plays one music track on a loop, and crossfades when the track changes (the screen's music, see
+ * data/music.ts). A track left behind pauses where it was, so coming back picks it up there. Every
+ * track in `preload` gets its player now, so it has loaded by its first play; the theme's player is
+ * the one the title's loader warmed up, so the music starts the moment the title shows.
  */
-export function useBgMusic(sources: AudioSource | AudioSource[]) {
-  const playlist = Array.isArray(sources) ? sources : [sources]
+export function useBgMusic(source: AudioSource, preload: readonly AudioSource[] = []) {
   const { effectiveMusicVolume, musicMuted } = useAudioSettings()
-  const player = sharedSfxPlayer(playlist[0])
-  const status = useAudioPlayerStatus(player)
-  const didInit = useRef(false)
-  const trackIndex = useRef(0)
+  const volume = useRef(effectiveMusicVolume)
+  volume.current = effectiveMusicVolume
+  const muted = useRef(musicMuted)
+  muted.current = musicMuted
+  const playing = useRef<AudioSource | null>(null)
+
+  useMemo(() => preload.forEach((s) => { sharedSfxPlayer(s).loop = true }), [preload])
 
   // Configure audio mode once
   useEffect(() => {
     setAudioModeAsync({ playsInSilentMode: true })
   }, [])
 
-  // Start playback on first load
+  // A new track: fade it in over the last
   useEffect(() => {
-    if (!status.isLoaded || didInit.current) return
-    didInit.current = true
-    player.volume = effectiveMusicVolume
-    // Muted before the theme first plays (it now loads early, on the title): start muted too
-    player.muted = musicMuted
-    player.loop = playlist.length === 1
-    player.play()
-  }, [status.isLoaded])
+    const from = playing.current
+    if (from === source) return
+    playing.current = source
+    const incoming = sharedSfxPlayer(source)
+    incoming.loop = true
+    incoming.muted = muted.current
+    return crossfade(incoming, from ? sharedSfxPlayer(from) : null, () => volume.current)
+  }, [source])
 
-  // Advance to next track when current one finishes
+  // The volume slider (a fade in progress reads it as it goes)
   useEffect(() => {
-    if (!didInit.current || playlist.length <= 1) return
-    if (!status.didJustFinish) return
-
-    trackIndex.current = (trackIndex.current + 1) % playlist.length
-    player.replace(playlist[trackIndex.current])
-    player.loop = false
-    player.play()
-  }, [status.didJustFinish])
-
-  // Sync volume
-  useEffect(() => {
-    if (!status.isLoaded || !didInit.current) return
-    player.volume = effectiveMusicVolume
+    if (playing.current) sharedSfxPlayer(playing.current).volume = effectiveMusicVolume
   }, [effectiveMusicVolume])
 
-  // Sync mute
+  // Mute: every track, so one faded back in stays muted too
   useEffect(() => {
-    if (!status.isLoaded || !didInit.current) return
-    player.muted = musicMuted
-  }, [musicMuted])
+    for (const s of [...preload, ...(playing.current ? [playing.current] : [])]) sharedSfxPlayer(s).muted = musicMuted
+  }, [musicMuted, preload])
 }

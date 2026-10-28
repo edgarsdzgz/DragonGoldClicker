@@ -16,18 +16,19 @@ import { useBgMusic, useImmersiveMode } from './src/hooks'
 import { useGameSounds } from './src/hooks/useGameSounds'
 import { useLaunch } from './src/loading/useLaunch'
 import type { LoadedGame } from './src/hooks/useStorage'
-import { BGM_PLAYLIST } from './src/data/music'
+import { MUSIC_TRACKS, screenMusic } from './src/data/music'
+import { useMusicScreen } from './src/hooks/musicScreen'
 import { configureTextDefaults } from './src/theme/textDefaults'
 
 // Configure global text rendering defaults for Expo 54 / RN 0.81
 configureTextDefaults()
 
 /**
- * The music player's status updates every 500ms. Kept in a component of its own that renders
- * nothing, so those updates re-render only this, not the whole game (they did, twice a second).
+ * The music: the theme on the title, then each screen's own track (data/music.ts). Kept in a
+ * component of its own that renders nothing, so a tab change re-renders only this, not the game.
  */
 function BgMusic() {
-  useBgMusic(BGM_PLAYLIST)
+  useBgMusic(screenMusic(useMusicScreen()), MUSIC_TRACKS)
   return null
 }
 

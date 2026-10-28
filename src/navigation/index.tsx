@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
+import { NavigationContainer, useNavigation, useNavigationContainerRef } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { GameIcon } from '../components/GameIcon'
@@ -52,6 +52,7 @@ import { GameScreen } from '../screens/GameScreen'
 import { ForageScreen } from '../screens/ForageScreen'
 import { ShopScreen } from '../screens/ShopScreen'
 import { SettingsScreen } from '../screens/SettingsScreen'
+import { setMusicScreen } from '../hooks/musicScreen'
 
 // =============================================================================
 // HAPTIC TAB BAR BUTTON
@@ -311,8 +312,11 @@ function TabNavigator() {
 const RootStack = createNativeStackNavigator<RootStackParamList>()
 
 export function Navigation() {
+  // The screen on show picks the music (hooks/musicScreen.ts, data/music.ts)
+  const ref = useNavigationContainerRef<RootStackParamList>()
+  const report = () => setMusicScreen(ref.getCurrentRoute()?.name ?? null)
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={ref} onReady={report} onStateChange={report}>
       <RootStack.Navigator
         screenOptions={{
           headerShown: false,

@@ -26,6 +26,17 @@ export const CREDITS: CreditEntry[] = [
     sourceUrl: 'https://www.free-stock-music.com',
     license: 'Creative Commons / Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)',
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/deed.en_US',
-    changes: 'Converted from MP3 to AAC for the game. The music itself is unmodified.',
+    changes: 'Converted from MP3 to AAC for the game, played on a loop and faded in and out as the screen changes. The music itself is unmodified.',
+  },
+  {
+    role: 'The Warfront',
+    title: 'Legionnaire (Original)',
+    author: 'Scott Buckley',
+    authorUrl: 'https://www.scottbuckley.com.au',
+    source: 'Free download from BreakingCopyright',
+    sourceUrl: 'https://breakingcopyright.com/song/scott-buckley-legionnaire',
+    license: 'Creative Commons Attribution 4.0 International (CC BY 4.0)',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+    changes: 'Converted from MP3 to AAC for the game, played on a loop and faded in and out as the screen changes. The music itself is unmodified.',
   },
 ]

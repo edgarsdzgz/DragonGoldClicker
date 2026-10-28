@@ -45,7 +45,7 @@ Update a row when a track is found, delivered, or put in the game. A delivered t
 
 | # | Track | Status | Who | File |
 |---|---|---|---|---|
-| 1 | Warfront: the siege | Found (2026-10-28); not in the repo yet | The other developer | |
+| 1 | Warfront: the siege | In the game (2026-10-28): "Legionnaire", Scott Buckley, CC BY 4.0; credited | The other developer | `assets/music/out/Legionnaire.m4a` |
 | 2 | Draconia: the ruined city | Wanted | | |
 | 3 | Warfront: a boss at the gate | Wanted | | |
 | 4 | Draconia: the city rebuilt | Wanted | | |
@@ -56,4 +56,7 @@ Update a row when a track is found, delivered, or put in the game. A delivered t
 | 9 | Warfront: the deep Unmaking | Wanted | | |
 | 10 | The Librarium and the Wizard's Tower | Wanted | | |
 
-The main theme, "Refusing the Ultimatum", is in the game and plays everywhere until these arrive.
+The main theme, "Refusing the Ultimatum", plays on the title and on every screen without its own track.
+The music now follows the screen (`src/data/music.ts`, `SCREEN_MUSIC`): a delivered track is wired by adding
+its screen there, with a crossfade. Before licensing a track, check its license against
+`_dev/docs/music-licenses.md`.
