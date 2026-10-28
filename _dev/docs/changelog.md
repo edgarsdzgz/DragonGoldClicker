@@ -2,6 +2,21 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Music for every place (2026-10-28)
+- 15 licensed tracks join the theme and "Legionnaire" (src/data/music.ts `musicPlan`): Draconia in ruins
+  and rebuilt (the city art's light rule), the Forage valley, the Librarium and the Wizard's Tower while
+  open, and the Warfront's siege, deep Unmaking (horde level 10 and up) and boss fights
+- The siege and the deep Unmaking each have two tracks that take turns: each plays to its end, then the
+  other from the top
+- A boss fight draws one of three boss tracks (never the last fight's), which comes in as the boss's horn
+  ends and gives way to the Warfront's music when the boss falls
+- The Breach plays "Through the Sinister Gate" once through, then the screen's music fades back
+- Story scenes can carry a bed (hope: "Childhood"; dread: "The Long Dark" and "Horizons" by turns): a
+  `music` tag on the beat. No beat is tagged yet; the tagging rule waits on the owner
+- Credited in Settings > Credits (each credit line word for word) and CREDITS.md; the licenses doc covers
+  CC BY 3.0 (no grace period for a credit mistake) and Darren Curtis's Materials Release
+- scripts/convert-music.sh converts WAV masters too; the WAVs stay out of git (30 to 90 MB each)
+
 ### The Warfront's own music (2026-10-28)
 - "Legionnaire" by Scott Buckley (CC BY 4.0) plays on the Warfront; the title and the other screens keep
   "Refusing the Ultimatum"
