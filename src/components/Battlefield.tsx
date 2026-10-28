@@ -3,7 +3,7 @@ import { View, StyleSheet, Pressable, Animated, GestureResponderEvent, LayoutCha
 import { useIsFocused } from '@react-navigation/native'
 import { useAppActive } from '../hooks/useAppActive'
 import { useSfx } from '../hooks/useSfx'
-import { SOUND } from '../data/sounds'
+import { SOUND, arrivalSound } from '../data/sounds'
 import { EnemyHp } from './EnemyHp'
 import { clawLook } from '../types/claws'
 import { RoadMonster } from './RoadMonster'
@@ -109,12 +109,24 @@ export const Battlefield = forwardRef<BattlefieldHandle, BattlefieldProps>(funct
   // Strikes land on the monster where it is on the road, at its size of the moment
   const walker = useRef(road.walker)
   walker.current = road.walker
-  // The next one's footfalls as it sets out from the camps
+  // The next one sets out from the camps: its footfalls, or the horde's war horn for a boss or a
+  // mini-boss. With reduced motion there is no walk, so a boss's horn sounds as it takes the road.
   const playWalkUp = useSfx(SOUND.walkUp)
+  const playBossHorn = useSfx(SOUND.bossArrives)
+  const playMinibossHorn = useSfx(SOUND.minibossArrives)
+  const arrival = arrivalSound(def.rank)
+  const playArrival = useRef(playWalkUp)
+  playArrival.current = arrival === 'bossArrives' ? playBossHorn : arrival === 'minibossArrives' ? playMinibossHorn : playWalkUp
   const walking = road.walker.walking
   useEffect(() => {
-    if (walking) playWalkUp()
-  }, [walking, playWalkUp])
+    if (walking) playArrival.current()
+  }, [walking])
+  const arrivedId = useRef(def.id)
+  useEffect(() => {
+    const changed = arrivedId.current !== def.id
+    arrivedId.current = def.id
+    if (changed && reduceMotion && focused && appActive && arrival !== 'walkUp') playArrival.current()
+  }, [def.id, reduceMotion, focused, appActive, arrival])
   const fellTop = road.fellTop
 
   // Pose: the hit frame for ~120ms on each strike, else idle (or hurt at 1/3 HP or less)

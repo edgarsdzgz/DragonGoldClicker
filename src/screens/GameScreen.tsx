@@ -15,8 +15,8 @@ import { useFlavorText } from '../hooks/useFlavorText'
 import { useKillEvents } from '../hooks/useKillEvents'
 import { useHaptics } from '../hooks/useHaptics'
 import { useSfx } from '../hooks/useSfx'
-import { SFX, SFX_WEAPON_POOL } from '../data/sfx'
-import { SOUND } from '../data/sounds'
+import { SFX_WEAPON_POOL } from '../data/sfx'
+import { SOUND, deathSound, clawSound } from '../data/sounds'
 import { useRandomSfx } from '../hooks/useRandomSfx'
 import { useAmbientLoop } from '../hooks/useAmbientLoop'
 import { COMBAT_LINES } from '../data/flavorText'
@@ -34,7 +34,7 @@ import { warfrontReveal } from '../types/opening'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PopulationChips } from './warfront/PopulationChips'
 import { Gate } from './warfront/Gate'
-import { clawDef, clawLook, canSharpen, canReforge, tapDamageNow, tapHit, rollsDouble } from '../types/claws'
+import { clawDef, clawLook, canSharpen, canReforge, reforgesNext, tapDamageNow, tapHit, rollsDouble } from '../types/claws'
 import { ClawsChip } from '../components/ClawsChip'
 import { ClawsSheet } from '../components/ClawsSheet'
 
@@ -78,6 +78,7 @@ export function GameScreen() {
   const playEmber = useSfx(SOUND.slashEmber)
   const playCrit = useSfx(SOUND.crit)
   const playKill = useSfx(SOUND.monsterDeath)
+  const playBossFall = useSfx(SOUND.bossFalls)
   const playWallHit = useSfx(SOUND.wallHit)
   const haptics = useHaptics()
   const battlefieldRef = useRef<BattlefieldHandle>(null)
@@ -119,14 +120,16 @@ export function GameScreen() {
   const varnHere = varnOnWall(state)
   const varnHit = tapDamageNow(state) * VARN_BREATH_TAPS
   const varnBreathsSeen = useRef(state.varnBreaths)
+  const playBreath = useSfx(SOUND.varnBreath)
   useEffect(() => {
     const landed = state.varnBreaths - varnBreathsSeen.current
     varnBreathsSeen.current = state.varnBreaths
     if (landed > 0 && focused) {
       battlefieldRef.current?.showAllyHit(`-${varnHit.toFixed(2)}`)
       sceneRef.current?.breathe()
+      playBreath()
     }
-  }, [state.varnBreaths, focused, varnHit])
+  }, [state.varnBreaths, focused, varnHit, playBreath])
 
   // The wall on screen: dust where a monster's blow lands, and the wall falling at a breach
   const wallSeen = useRef<WallReading>({ hp: state.cityHp, breaches: state.breaches, startedAt: state.startedAt })
@@ -151,7 +154,9 @@ export function GameScreen() {
     allyKillsSeen.current = state.allyKills
     if (!focused) return { silent: true }
     if (!byFighters) haptics.medium()
-    playKill()
+    // A boss or mini-boss falls with Draconia's horn answering
+    if (deathSound(monster.rank) === 'bossFalls') playBossFall()
+    else playKill()
     battlefieldRef.current?.showBounty(`+${monster.bounty.toFixed(2)}`)
     battlefieldRef.current?.showKill()
     if (Math.random() < 0.25) flavor.show()
@@ -175,14 +180,18 @@ export function GameScreen() {
     setSheetOpen('claws', clawsOpen)
     return () => setSheetOpen('claws', false)
   }, [clawsOpen, setSheetOpen])
-  const playSharpen = useSfx(SFX.COIN)
+  const playSharpen = useSfx(SOUND.clawSharpen)
+  const playReforge = useSfx(SOUND.clawReforge)
   // Feedback follows the rule checked before the action (an action's own report is not reliable)
   const handleSharpen = useCallback(() => {
-    if (!canSharpen(stateRef.current)) return
+    const s = stateRef.current
+    if (!canSharpen(s)) return
+    const sound = clawSound(reforgesNext(s.clawLevel, canReforge(s)))
     sharpenClaws()
-    playSharpen()
+    if (sound === 'clawReforge') playReforge()
+    else playSharpen()
     haptics.medium()
-  }, [sharpenClaws, playSharpen, haptics])
+  }, [sharpenClaws, playSharpen, playReforge, haptics])
 
   return (
     <Animated.View style={[styles.container, shakeStyle, !reveal.chrome && { paddingBottom: insets.bottom }]}>

@@ -1,5 +1,6 @@
 import type { AudioSource } from 'expo-audio'
 import type { CastId } from '../types/cast'
+import type { MonsterRank } from '../types/monsterRoster'
 
 // =============================================================================
 // THE GAME'S OWN SOUNDS: the locked set in assets/sound (written by scripts/import-art.py).
@@ -19,6 +20,13 @@ export const SOUND = {
   rally: require('../../assets/sound/sfx_rally.m4a'),
   mend: require('../../assets/sound/sfx_mend.m4a'),
   breach: require('../../assets/sound/sfx_breach.m4a'),
+  bossArrives: require('../../assets/sound/sfx_boss-arrives.m4a'),
+  minibossArrives: require('../../assets/sound/sfx_miniboss-arrives.m4a'),
+  bossFalls: require('../../assets/sound/sfx_boss-falls.m4a'),
+  varnBreath: require('../../assets/sound/sfx_varn-breath.m4a'),
+  // The claws
+  clawSharpen: require('../../assets/sound/sfx_claw-sharpen.m4a'),
+  clawReforge: require('../../assets/sound/sfx_claw-reforge.m4a'),
   // The city
   buildStart: require('../../assets/sound/sfx_build-start.m4a'),
   buildComplete: require('../../assets/sound/sfx_build-complete.m4a'),
@@ -40,6 +48,23 @@ export const SOUND = {
 } as const satisfies Record<string, AudioSource>
 
 export type SoundId = keyof typeof SOUND
+
+/** A monster setting out for the gate: the horde's war horn for a boss, a shorter blast for a mini-boss, else its footfalls */
+export function arrivalSound(rank?: MonsterRank): SoundId {
+  if (rank === 'boss') return 'bossArrives'
+  if (rank === 'miniboss') return 'minibossArrives'
+  return 'walkUp'
+}
+
+/** A monster dying: a boss or mini-boss falls (and Draconia's horn answers); the rest, elites too, die plainly */
+export function deathSound(rank?: MonsterRank): SoundId {
+  return rank === 'boss' || rank === 'miniboss' ? 'bossFalls' : 'monsterDeath'
+}
+
+/** The claws' work: reforging once they are at their best, else sharpening */
+export function clawSound(reforge: boolean): SoundId {
+  return reforge ? 'clawReforge' : 'clawSharpen'
+}
 
 /** Played when a character first appears in a scene; the rest of the cast has none */
 export const CAST_STINGS: Partial<Record<CastId, AudioSource>> = {

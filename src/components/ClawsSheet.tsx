@@ -5,7 +5,7 @@ import { BottomSheet } from './BottomSheet'
 import { Button } from './Button'
 import { Text } from './Text'
 import { CoachTarget } from './CoachTarget'
-import { CLAWS, MAX_CLAW_LEVEL, clawDef, nextClaw } from '../types/claws'
+import { CLAWS, MAX_CLAW_LEVEL, clawDef, nextClaw, reforgesNext } from '../types/claws'
 import { formatNumber } from '../types/state'
 import { colors, spacing, radius, gold, dark } from '../theme'
 
@@ -28,7 +28,7 @@ export function ClawsSheet({ visible, onClose, level, renown, reforge, onSharpen
   const now = clawDef(level)
   const next = nextClaw(level, reforge)
   const affordable = next !== null && renown >= next.cost
-  const reforging = next !== null && next.level > MAX_CLAW_LEVEL
+  const reforging = reforgesNext(level, reforge)
   // The named levels, then where the reforges stand: the current one and the next
   const track = [
     ...CLAWS,

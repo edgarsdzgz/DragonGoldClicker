@@ -71,6 +71,12 @@ export function nextClaw(level: number, reforge = false): ClawDef | null {
   return level >= MAX_CLAW_LEVEL && !reforge ? null : clawDef(level + 1)
 }
 
+/** Whether the next level is a reforge past Ancient (Kael's, after Dragonsteel) rather than a sharpening */
+export function reforgesNext(level: number, reforge: boolean): boolean {
+  const next = nextClaw(level, reforge)
+  return next !== null && next.level > MAX_CLAW_LEVEL
+}
+
 /** Whether the next level can be bought now (never while renown is in debt) */
 export function canSharpen(s: Pick<GameState, 'clawLevel' | 'inspiration' | 'beatsSeen'>): boolean {
   const next = nextClaw(s.clawLevel, canReforge(s))

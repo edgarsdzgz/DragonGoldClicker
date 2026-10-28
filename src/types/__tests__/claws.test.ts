@@ -2,7 +2,7 @@ import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { MONSTERS, strike } from '../monsters'
 import { resolveBreach } from '../breach'
-import { CLAWS, MAX_CLAW_LEVEL, clawDef, nextClaw, canSharpen, sharpenClaws, clawLook } from '../claws'
+import { CLAWS, MAX_CLAW_LEVEL, clawDef, nextClaw, canSharpen, sharpenClaws, clawLook, reforgesNext } from '../claws'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
@@ -61,6 +61,14 @@ describe('sharpening', () => {
     const ancient = make({ clawLevel: MAX_CLAW_LEVEL, tapDamage: 20, inspiration: 10000 })
     expect(canSharpen(ancient)).toBe(false)
     expect(sharpenClaws(ancient)).toBe(ancient)
+  })
+
+  it('the next level is a reforge only past Ancient, once Kael reforges', () => {
+    expect(reforgesNext(0, false)).toBe(false)
+    expect(reforgesNext(MAX_CLAW_LEVEL - 1, true)).toBe(false)
+    expect(reforgesNext(MAX_CLAW_LEVEL, false)).toBe(false)
+    expect(reforgesNext(MAX_CLAW_LEVEL, true)).toBe(true)
+    expect(reforgesNext(MAX_CLAW_LEVEL + 3, true)).toBe(true)
   })
 
   it('a Breach never takes the claws', () => {

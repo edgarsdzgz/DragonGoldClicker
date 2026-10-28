@@ -6,7 +6,8 @@ import type { SceneDef } from '../../data/story/lines'
 import { firstAppearances, sceneSting } from '../../data/story/stings'
 import { STORY_BEATS } from '../story'
 import type { BeatId } from '../story'
-import { SPLASH_BEAT_SOUNDS, AMBIENT_MIX, CAST_STINGS, beatFrameSounds } from '../../data/sounds'
+import { SPLASH_BEAT_SOUNDS, AMBIENT_MIX, CAST_STINGS, SOUND, beatFrameSounds, arrivalSound, deathSound, clawSound } from '../../data/sounds'
+import { MONSTERS } from '../monsterRoster'
 
 const ROOT = join(__dirname, '..', '..', '..')
 
@@ -79,6 +80,29 @@ describe('the sounds', () => {
     expect(beatFrameSounds(beats)[beats.smash]).toBe(SPLASH_BEAT_SOUNDS.smash)
   })
 
+  it("a boss is announced by the war horn and falls to Draconia's horn; the rest walk up and die plainly", () => {
+    expect(arrivalSound('boss')).toBe('bossArrives')
+    expect(arrivalSound('miniboss')).toBe('minibossArrives')
+    expect(arrivalSound('elite')).toBe('walkUp')
+    expect(arrivalSound(undefined)).toBe('walkUp')
+    expect(deathSound('boss')).toBe('bossFalls')
+    expect(deathSound('miniboss')).toBe('bossFalls')
+    expect(deathSound('elite')).toBe('monsterDeath')
+    expect(deathSound(undefined)).toBe('monsterDeath')
+    // Every boss and mini-boss in the roster gets them
+    const bosses = MONSTERS.filter((m) => m.rank === 'boss' || m.rank === 'miniboss')
+    expect(bosses.length).toBeGreaterThan(0)
+    for (const m of bosses) expect([m.id, arrivalSound(m.rank) !== 'walkUp', deathSound(m.rank)]).toEqual([m.id, true, 'bossFalls'])
+  })
+
+  it('the claws: reforging has its own sound', () => {
+    expect(clawSound(false)).toBe('clawSharpen')
+    expect(clawSound(true)).toBe('clawReforge')
+    for (const id of ['bossArrives', 'minibossArrives', 'bossFalls', 'varnBreath', 'clawSharpen', 'clawReforge'] as const) {
+      expect(SOUND[id]).toBeDefined()
+    }
+  })
+
   it('the night wind sits well under the other loops (it is mastered loud)', () => {
     const others = Object.entries(AMBIENT_MIX).filter(([k]) => k !== 'nightWind').map(([, v]) => v)
     expect(AMBIENT_MIX.nightWind).toBeLessThan(Math.min(...others) / 2)
@@ -87,7 +111,7 @@ describe('the sounds', () => {
 
   it('every locked sound is wired, except splash_full (the beats are used instead)', () => {
     const files = readdirSync(join(ROOT, 'assets', 'sound')).filter((f) => f.endsWith('.m4a'))
-    expect(files).toHaveLength(41)
+    expect(files).toHaveLength(47)
     const source = readFileSync(join(ROOT, 'src', 'data', 'sounds.ts'), 'utf8')
     const missing = files.filter((f) => !source.includes(`assets/sound/${f}`))
     expect(missing).toEqual(['splash_full.m4a'])
