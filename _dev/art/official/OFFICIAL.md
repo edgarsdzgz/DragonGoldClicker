@@ -470,7 +470,7 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_minotaur-stronger_death_strip4.png` | 128x25 | Minotaur, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | shaded v2 (Minotaur v1) |
 | `cast/bust_pyreth_grieving.png` | 22x23 | Bust: Elder Pyreth, grieving (22x23) | expressions v1 |
 | `cast/bust_rodain_grieving.png` | 22x23 | Bust: Captain Rodain, grieving (22x23) | expressions v1 |
-| `cast/bust_mirael_alarmed.png` | 22x23 | Bust: Scout Mirael, alarmed (22x23) | expressions v1 |
+| `cast/bust_mirael_alarmed.png` | 22x23 | Bust: Scout Mirael, alarmed (22x23) | expressions v2 |
 | `cast/bust_kael_angry.png` | 22x23 | Bust: Kael Ironwright, angry (22x23) | expressions v1 |
 | `cast/bust_lirae_grieving.png` | 22x23 | Bust: Lirae the Ink-Wing, grieving (22x23) | expressions v1 |
 | `cast/bust_varn_fierce.png` | 22x23 | Bust: Varn, fierce (22x23) | expressions v1 |
@@ -513,7 +513,7 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `cast/bust_rodain_determined.png` | 22x23 | Bust: Captain Rodain, determined (22x23) | expressions set v1 |
 | `cast/bust_rodain_happy.png` | 22x23 | Bust: Captain Rodain, happy (22x23) | expressions set v1 |
 | `cast/bust_rodain_worried.png` | 22x23 | Bust: Captain Rodain, worried (22x23) | expressions set v1 |
-| `cast/bust_sera_alarmed.png` | 22x23 | Bust: Sera, alarmed (22x23) | expressions set v1 |
+| `cast/bust_sera_alarmed.png` | 22x23 | Bust: Sera, alarmed (22x23) | expressions set v2 |
 | `cast/bust_sera_angry.png` | 22x23 | Bust: Sera, angry (22x23) | expressions set v1 |
 | `cast/bust_sera_grieving.png` | 22x23 | Bust: Sera, grieving (22x23) | expressions set v1 |
 | `cast/bust_sera_happy.png` | 22x23 | Bust: Sera, happy (22x23) | expressions set v1 |
@@ -528,6 +528,76 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `cast/bust_varn_grieving.png` | 22x23 | Bust: Varn, grieving (22x23) | expressions set v1 |
 | `cast/bust_varn_happy.png` | 22x23 | Bust: Varn, happy (22x23) | expressions set v1 |
 | `cast/bust_varn_worried.png` | 22x23 | Bust: Varn, worried (22x23) | expressions set v1 |
+| `cast/bust_ashara_alarmed_talk.png` | 22x23 | Bust: Ashara, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_ashara_angry_talk.png` | 22x23 | Bust: Ashara, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_ashara_determined_talk.png` | 22x23 | Bust: Ashara, determined, talking (22x23) | talking frames v3 |
+| `cast/bust_ashara_grieving_talk.png` | 22x23 | Bust: Ashara, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_ashara_happy_talk.png` | 22x23 | Bust: Ashara, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_ashara_talk.png` | 22x23 | Bust: Ashara, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_ashara_worried_talk.png` | 22x23 | Bust: Ashara, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_hollow-knight_alarmed_talk.png` | 22x23 | Bust: The Hollow Knight, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_hollow-knight_angry_talk.png` | 22x23 | Bust: The Hollow Knight, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_hollow-knight_determined_talk.png` | 22x23 | Bust: The Hollow Knight, determined, talking (22x23) | talking frames v3 |
+| `cast/bust_hollow-knight_grieving_talk.png` | 22x23 | Bust: The Hollow Knight, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_hollow-knight_happy_talk.png` | 22x23 | Bust: The Hollow Knight, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_hollow-knight_talk.png` | 22x23 | Bust: The Hollow Knight, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_hollow-knight_worried_talk.png` | 22x23 | Bust: The Hollow Knight, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_kael_alarmed_talk.png` | 22x23 | Bust: Kael Ironwright, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_kael_angry_talk.png` | 22x23 | Bust: Kael Ironwright, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_kael_determined_talk.png` | 22x23 | Bust: Kael Ironwright, determined, talking (22x23) | talking frames v3 |
+| `cast/bust_kael_grieving_talk.png` | 22x23 | Bust: Kael Ironwright, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_kael_happy_talk.png` | 22x23 | Bust: Kael Ironwright, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_kael_talk.png` | 22x23 | Bust: Kael Ironwright, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_kael_worried_talk.png` | 22x23 | Bust: Kael Ironwright, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_lirae_alarmed_talk.png` | 22x23 | Bust: Lirae the Ink-Wing, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_lirae_angry_talk.png` | 22x23 | Bust: Lirae the Ink-Wing, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_lirae_determined_talk.png` | 22x23 | Bust: Lirae the Ink-Wing, determined, talking (22x23) | talking frames v3 |
+| `cast/bust_lirae_grieving_talk.png` | 22x23 | Bust: Lirae the Ink-Wing, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_lirae_happy_talk.png` | 22x23 | Bust: Lirae the Ink-Wing, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_lirae_talk.png` | 22x23 | Bust: Lirae the Ink-Wing, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_lirae_worried_talk.png` | 22x23 | Bust: Lirae the Ink-Wing, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_mirael_alarmed_talk.png` | 22x23 | Bust: Scout Mirael, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_mirael_angry_talk.png` | 22x23 | Bust: Scout Mirael, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_mirael_determined_talk.png` | 22x23 | Bust: Scout Mirael, determined, talking (22x23) | talking frames v3 |
+| `cast/bust_mirael_grieving_talk.png` | 22x23 | Bust: Scout Mirael, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_mirael_happy_talk.png` | 22x23 | Bust: Scout Mirael, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_mirael_talk.png` | 22x23 | Bust: Scout Mirael, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_mirael_worried_talk.png` | 22x23 | Bust: Scout Mirael, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_pyreth_alarmed_talk.png` | 22x23 | Bust: Elder Pyreth, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_pyreth_angry_talk.png` | 22x23 | Bust: Elder Pyreth, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_pyreth_determined_talk.png` | 22x23 | Bust: Elder Pyreth, determined, talking (22x23) | talking frames v3 |
+| `cast/bust_pyreth_grieving_talk.png` | 22x23 | Bust: Elder Pyreth, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_pyreth_happy_talk.png` | 22x23 | Bust: Elder Pyreth, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_pyreth_talk.png` | 22x23 | Bust: Elder Pyreth, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_pyreth_worried_talk.png` | 22x23 | Bust: Elder Pyreth, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_rodain_alarmed_talk.png` | 22x23 | Bust: Captain Rodain, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_rodain_angry_talk.png` | 22x23 | Bust: Captain Rodain, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_rodain_determined_talk.png` | 22x23 | Bust: Captain Rodain, determined, talking (22x23) | talking frames v3 |
+| `cast/bust_rodain_grieving_talk.png` | 22x23 | Bust: Captain Rodain, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_rodain_happy_talk.png` | 22x23 | Bust: Captain Rodain, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_rodain_talk.png` | 22x23 | Bust: Captain Rodain, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_rodain_worried_talk.png` | 22x23 | Bust: Captain Rodain, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_sera_alarmed_talk.png` | 22x23 | Bust: Sera, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_sera_angry_talk.png` | 22x23 | Bust: Sera, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_sera_grieving_talk.png` | 22x23 | Bust: Sera, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_sera_happy_talk.png` | 22x23 | Bust: Sera, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_sera_roaring_talk.png` | 22x23 | Bust: Sera, roaring, talking (22x23) | talking frames v3 |
+| `cast/bust_sera_talk.png` | 22x23 | Bust: Sera, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_sera_worried_talk.png` | 22x23 | Bust: Sera, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_thornwick_angry_talk.png` | 22x23 | Bust: Thornwick, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_thornwick_determined_talk.png` | 22x23 | Bust: Thornwick, determined, talking (22x23) | talking frames v3 |
+| `cast/bust_thornwick_grieving_talk.png` | 22x23 | Bust: Thornwick, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_thornwick_happy_talk.png` | 22x23 | Bust: Thornwick, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_thornwick_startled_talk.png` | 22x23 | Bust: Thornwick, startled, talking (22x23) | talking frames v3 |
+| `cast/bust_thornwick_talk.png` | 22x23 | Bust: Thornwick, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_thornwick_worried_talk.png` | 22x23 | Bust: Thornwick, worried, talking (22x23) | talking frames v3 |
+| `cast/bust_varn_alarmed_talk.png` | 22x23 | Bust: Varn, alarmed, talking (22x23) | talking frames v3 |
+| `cast/bust_varn_angry_talk.png` | 22x23 | Bust: Varn, angry, talking (22x23) | talking frames v3 |
+| `cast/bust_varn_fierce_talk.png` | 22x23 | Bust: Varn, fierce, talking (22x23) | talking frames v3 |
+| `cast/bust_varn_grieving_talk.png` | 22x23 | Bust: Varn, grieving, talking (22x23) | talking frames v3 |
+| `cast/bust_varn_happy_talk.png` | 22x23 | Bust: Varn, happy, talking (22x23) | talking frames v3 |
+| `cast/bust_varn_talk.png` | 22x23 | Bust: Varn, neutral, talking (22x23) | talking frames v3 |
+| `cast/bust_varn_worried_talk.png` | 22x23 | Bust: Varn, worried, talking (22x23) | talking frames v3 |
 | `story/story_elder-approaches.png` | 130x96 | Story: The Elder Approaches (130x96) | story scenes v1 |
 | `story/story_renown.png` | 130x96 | Story: Renown (130x96) | story scenes v1 |
 | `story/story_wall-holds.png` | 130x96 | Story: The Wall Holds (130x96) | story scenes v1 |

@@ -425,6 +425,21 @@ for _p in sorted((AGENT / "50-expressions-set/out").glob("bust_*_v1.png")):
     _b, _e = _p.stem.removeprefix("bust_").removesuffix("_v1").rsplit("_", 1)
     ASSETS.append((f"cast/bust_{_b}_{_e}.png", _p, f"Bust: {_SET_NAMES[_b]}, {_e} (22x23)", "expressions set v1"))
 
+# Two alarmed faces redrawn with the talking frames (owner, 2026-10-28): Mirael without the lip corners beside
+# her gasp, Sera with a row of snout between nose and gasp
+_REDRAWN = {"cast/bust_mirael_alarmed.png": (AGENT / "42-expressions/out/bust_mirael_alarmed_v2.png", "expressions v2"),
+            "cast/bust_sera_alarmed.png": (AGENT / "50-expressions-set/out/bust_sera_alarmed_v2.png",
+                                           "expressions set v2")}
+ASSETS = [(d, _REDRAWN[d][0], w, _REDRAWN[d][1]) if d in _REDRAWN else (d, s, w, o) for d, s, w, o in ASSETS]
+
+# Talking frames (51-talking-frames v3, owner 2026-10-28): a second frame of every face, shown in turn with the
+# face while a line types
+for _p in sorted((AGENT / "51-talking-frames/out").glob("bust_*_talk_v3.png")):
+    _stem = _p.stem.removesuffix("_v3")
+    _b = next(b for b in sorted(_SET_NAMES, key=len, reverse=True) if _stem.startswith(f"bust_{b}"))
+    _face = _stem.removeprefix(f"bust_{_b}").removesuffix("_talk").strip("_") or "neutral"
+    ASSETS.append((f"cast/{_stem}.png", _p, f"Bust: {_SET_NAMES[_b]}, {_face}, talking (22x23)", "talking frames v3"))
+
 # Story scenes (43-story-scenes), one per scene in src/data/story/lines.ts
 ASSETS += [(f"story/story_{s}.png", AGENT / f"43-story-scenes/out/story_{s}_v1.png", f"Story: {t} (130x96)", "story scenes v1")
            for s, t in (("elder-approaches", "The Elder Approaches"), ("renown", "Renown"), ("wall-holds", "The Wall Holds"),

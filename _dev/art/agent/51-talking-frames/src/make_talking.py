@@ -48,8 +48,7 @@ FACES = ["neutral", "happy", "grieving", "angry", "alarmed", "worried", "determi
 FACE_FILE = {("varn", "determined"): "fierce", ("sera", "determined"): "roaring",
              ("thornwick", "alarmed"): "startled"}
 # Faces redrawn but not locked yet: their frames are drawn on the new face (drop each once it is in official/)
-PENDING = {("mirael", "alarmed"): AGENT / "42-expressions" / "out" / "bust_mirael_alarmed_v2.png",
-           ("sera", "alarmed"): AGENT / "50-expressions-set" / "out" / "bust_sera_alarmed_v2.png"}
+PENDING = {}                                                            # Mirael's and Sera's v2 locked 2026-10-28
 PEOPLE = ["pyreth", "rodain", "mirael", "kael", "lirae", "varn", "ashara", "thornwick", "sera", "hollow-knight"]
 
 
