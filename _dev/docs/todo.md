@@ -18,8 +18,9 @@ Thornwick, Sera and the Hollow Knight.
 - [x] **Talking frames:** a second frame of every face with the mouth open (the Hollow Knight's visor light
       flickers instead), swapped every 4 letters while a line types. Locked 2026-10-28 (v3: angry faces yell),
       with Mirael's and Sera's alarmed faces redrawn; in the dialogue box.
-- [ ] **Chapters 9 to 13** (approved 2026-10-27): a story picture for each of the five new chapters, and a
-      small Varn on the Warfront wall (he strikes on his own).
+- [x] **Chapters 9 to 13** (approved 2026-10-27): a story picture for each of the five new chapters, and a
+      small Varn on the Warfront wall (he strikes on his own). Locked 2026-10-28 and in the game, with
+      what each newcomer brings (provisional numbers, `src/types/allies.ts`).
 - [ ] **The final boss:** only if I decide I want one (who began the Unmaking is still open).
 - [ ] **The dragon, last**, from the commissioned artist: portrait, perch, victory pose, head token, idle
       loop, fireball attack, the fireball and critical fireball, upgrade looks (claws, fangs, armor, horns).

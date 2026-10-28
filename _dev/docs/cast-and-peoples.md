@@ -44,8 +44,9 @@ awaiting a decision; **open** = not decided yet.
 
 **Chapters 9 to 13** (approved 2026-10-27, "Lock them in"): when each new character arrives, what they
 bring and every line, with its face, are in `_dev/planning/new-cast-scenes/build_board.py` (its board is
-`board.html` beside it). Their pictures and small figures are batch `_dev/art/agent/52-new-cast-art`. None of
-it is in the game yet.
+`board.html` beside it). Their pictures and small figures are batch `_dev/art/agent/52-new-cast-art`, locked
+2026-10-28. All five chapters are in the game (`src/data/story/newCast.ts`); what each brings is in
+`src/types/allies.ts`.
 
 ## How each is drawn
 

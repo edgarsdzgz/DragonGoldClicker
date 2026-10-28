@@ -2,6 +2,26 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Chapters 9 to 13: the new cast arrives (2026-10-28)
+- Five chapters after Dragonsteel, each with its picture, every line and face as approved; the story
+  now pauses after chapter 13 (types/story.ts, data/story/newCast.ts)
+  - 9, A Small Pair of Wings: Lirae and Varn, a minute after the claws are reforged
+  - 10, She Did Not Ask: Sera, the next time the wall drops below half (never while it lies breached)
+  - 11, The Exile: Mirael and Thornwick, when the next expedition comes home
+  - 12, The Eldest: Pyreth and Ashara, when the Unmaking first marks the horde deepest (level 10)
+  - 13, The Hollow Knight: when the next boss or mini-boss falls at the gate
+- A conversation is two speakers' scenes in turn on one stage (SceneDef `then`); Skip ends the whole
+  conversation; the journal lists each speaker's part; Sera's, Thornwick's and the Hollow Knight's
+  stings now play as they first appear
+- What each brings (types/allies.ts; the numbers are provisional):
+  - Varn perches on the gatehouse tower and breathes fire every 3 seconds, for 3 of my taps
+  - Sera's shield wall: blows on the wall land at three quarters, live and while away
+  - Thornwick's Wizard's Tower can be built (1,200 renown; the Raise the Tower quest): the army's volley
+    deals 25% more. Its map color is now indigo (magenta is the Unmaking's)
+  - Ashara: every tap deals 25% more
+  - The Hollow Knight: renown earned while away counts 50% more
+- Locked and imported: the five story pictures, the newcomers' figures, Varn perched and breathing
+
 ### Sound, story pictures, interior headers, city light (2026-10-27, the art wiring brief)
 - The game's own sounds (data/sounds.ts) replace the stock event sounds; the stock interface ticks stay
   - Warfront: a monster's death, its blow on the wall, a crit, the Ember claws' strike, the next
