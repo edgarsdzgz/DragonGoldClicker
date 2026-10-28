@@ -1,0 +1,115 @@
+/* Draconia Chronicles, interface kit v1 (proposal, 2026-10-28). Every screen links this file, so a change here
+   restyles them all. The pieces are pixel art (batch 53-interface-kit), drawn at 3x: one art pixel, 3 points. */
+
+:root {
+  --bg: #0f0d0b; --s1: #161412; --s2: #1e1c19; --s3: #272520;
+  --text: #f1f1f5; --text2: #b4b4be; --muted: #8e8e98;
+  --gold: #e0a840; --gold-hi: #f0c060; --ink: #120a10;
+  --ok: #4ade80; --warn: #fbbf24; --bad: #ff6b6b;
+  --title: 'Cinzel', Georgia, serif;
+  --num: 'Pixelify Sans', 'Courier New', monospace;
+  --body: 'Nunito', system-ui, sans-serif;
+}
+
+.phone { position: relative; width: 390px; height: 844px; overflow: hidden; background: var(--bg); color: var(--text);
+  font-family: var(--body); font-size: 15px; line-height: 21px; }
+.px, .phone img { image-rendering: pixelated; }
+.abs { position: absolute; }
+.t { font-family: var(--title); font-weight: 700; letter-spacing: 0.5px; }
+.n { font-family: var(--num); font-weight: 500; }
+.gold { color: var(--gold); }
+.muted { color: var(--muted); }
+.sec { color: var(--text2); }
+.cap { font-size: 13px; line-height: 18px; }
+.lbl { font-family: var(--title); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.ic { width: 24px; height: 24px; flex: none; }
+.ic36 { width: 36px; height: 36px; flex: none; }
+.row { display: flex; align-items: center; gap: 8px; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+
+/* Panels: a card (stone rim) and a sheet or modal (gold rim) */
+.plate, .plate-gold { border-style: solid; border-width: 12px; border-image-slice: 4 fill; border-image-width: 12px;
+  border-image-repeat: stretch; box-sizing: border-box; }
+.plate { border-image-source: url(/_blob/20e2186ea1c3d77edb2485d83ddf56fb); }
+.plate-gold { border-image-source: url(/_blob/138b2c65f32dc76a5dbbd7b8f1a7f465); }
+
+/* Buttons: gold (the key action), steel blue (everyday), stone (quiet), red (destructive), off */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; box-sizing: border-box;
+  border-style: solid; border-width: 12px; border-image-slice: 4 fill; border-image-width: 12px; padding: 0 6px;
+  font-family: var(--title); font-weight: 700; font-size: 14px; letter-spacing: 0.5px; text-decoration: none;
+  cursor: pointer; background: none; white-space: nowrap; }
+.btn-key { border-image-source: url(/_blob/dcffc58f8995461aae67056b0897769e); color: #2a1606; }
+.btn-key:active { border-image-source: url(/_blob/2837d9996c88db5790a709e3ed4a21f8); }
+.btn-steel { border-image-source: url(/_blob/d133cbbdbaed08f4e537f35a981aa1ad); color: #141a26; }
+.btn-steel:active { border-image-source: url(/_blob/2e55fc025ab81c360feda146dd183b84); }
+.btn-quiet { border-image-source: url(/_blob/60a8d1d4959643ea4f462351b3de0af1); color: var(--text); }
+.btn-quiet:active { border-image-source: url(/_blob/a58d3cf8ccff62e4e747097731aed169); }
+.btn-danger { border-image-source: url(/_blob/5fe2a97fcb65fc541d8d4a2b8361e6a6); color: #fff; }
+.btn-danger:active { border-image-source: url(/_blob/d4239c12961b95b331c552af77bf9195); }
+.btn-off { border-image-source: url(/_blob/bdbcad8ee1ffe90a103c68caf0497efd); color: var(--muted); cursor: default; }
+.btn .n { font-size: 15px; }
+
+/* Bars: a stepped frame with a flat fill (a lit top row, never a gradient wash) */
+.bar { border-style: solid; border-width: 9px; border-image: url(/_blob/ad9323497c5c303f52f3cbdd5554476c) 3 fill / 9px stretch;
+  height: 24px; box-sizing: border-box; }
+.bar > i { display: block; height: 100%; }
+.fill-hp { background: linear-gradient(#e0604a 0 34%, #c8402c 34%); }
+.fill-wall { background: linear-gradient(#6aa070 0 34%, #3c785a 34%); }
+.fill-gold { background: linear-gradient(#ffdc78 0 34%, #d69648 34%); }
+.fill-meal { background: linear-gradient(#f0c060 0 34%, #b07828 34%); }
+.fill-steel { background: linear-gradient(#c4cedc 0 34%, #94a3b8 34%); }
+
+/* Chips: resource and population counts */
+.chip, .chip-gold { display: inline-flex; align-items: center; gap: 6px; border-style: solid; border-width: 9px;
+  border-image-slice: 3 fill; border-image-width: 9px; padding: 0 3px; box-sizing: border-box; height: 42px;
+  font-size: 13px; white-space: nowrap; }
+.chip { border-image-source: url(/_blob/8c93a626c7b2fe3f3f5b95f4d3e2f403); }
+.chip-gold { border-image-source: url(/_blob/9311a450f60eeb3d0f3ef56489bbe97b); }
+
+/* The objective ribbon, notched ends, its own height */
+.ribbon { display: flex; align-items: center; gap: 8px; height: 30px; box-sizing: border-box; border-style: solid;
+  border-width: 9px 15px; border-image: url(/_blob/0c33b13f91c17cf3b20acfd1dc370da8) 3 5 fill / 9px 15px stretch;
+  padding: 0 4px; color: #ecd6aa; font-size: 13px; line-height: 12px; white-space: nowrap; overflow: visible; }
+.ribbon .n { margin-left: auto; color: #ffecb4; }
+
+/* The heraldic socket an icon sits in */
+.socket { width: 42px; height: 45px; flex: none; display: flex; justify-content: center; padding-top: 6px; box-sizing: border-box;
+  background: url(/_blob/391db6433eb2b61f64d976d774d744cb) center / 100% 100% no-repeat; image-rendering: pixelated; }
+
+/* A section divider with diamond ends */
+.divider { height: 15px; box-sizing: border-box; border-style: solid; border-width: 6px 15px;
+  border-image: url(/_blob/43929516d454ba5ef427153ff4f0aeff) 2 5 fill / 6px 15px stretch; }
+
+/* Action orbs */
+.orb { width: 96px; height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background-position: center; background-size: 100% 100%; image-rendering: pixelated; border: 0; cursor: pointer;
+  font-family: var(--title); font-weight: 700; font-size: 13px; letter-spacing: 1px; color: #fff; text-shadow: 0 2px 0 var(--ink); }
+.orb-big { width: 192px; height: 192px; font-size: 22px; gap: 6px; }
+.orb-rally { background-image: url(/_blob/c212db3a652ab57db8f74f9a2ed189d4); }
+.orb-repair { background-image: url(/_blob/807c72044c044eb7c729c16a205983cc); }
+.orb-forage { background-image: url(/_blob/1b5da8f74495e872999a3f1d511aec31); }
+.orb-off { background-image: url(/_blob/f8e03aac05a172e47ec28d2a3e3d0d43); color: var(--muted); }
+
+/* The top bar, the tab bar */
+.topbar { position: absolute; left: 0; right: 0; top: 0; padding: 10px 12px 6px; display: flex; flex-direction: column; gap: 6px;
+  background: linear-gradient(#0f0d0bee 0 80%, #0f0d0b00); }
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-style: solid; border-width: 9px 0 0 0; border-image: url(/_blob/83947d43b554f7179e61ccff31da68ec) 3 0 0 0 fill / 9px 0 0 0 stretch;
+  padding-bottom: 14px; box-sizing: border-box; }
+.tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--muted);
+  font-family: var(--title); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-decoration: none; }
+.tab .gem { width: 42px; height: 36px; display: flex; align-items: center; justify-content: center; }
+.tab.on { color: var(--gold-hi); }
+.tab.on .gem { border-style: solid; border-width: 9px; border-image: url(/_blob/9311a450f60eeb3d0f3ef56489bbe97b) 3 fill / 9px stretch; box-sizing: border-box; width: 48px; height: 42px; }
+.tab.locked { opacity: 0.55; }
+
+/* Overlays */
+.scrim { position: absolute; inset: 0; background: rgba(6, 4, 3, 0.72); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; top: 96px; padding: 6px 6px 0; display: flex; flex-direction: column; gap: 10px; }
+.sheet-head { display: flex; align-items: center; gap: 10px; }
+.close { margin-left: auto; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+.modal { position: absolute; left: 20px; right: 20px; padding: 8px 6px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.stat { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: 1; min-width: 0; }
+.stat .n { font-size: 20px; line-height: 24px; }
+.stat span:last-child { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.line { height: 3px; background: #2a2622; }

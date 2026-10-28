@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="kit.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Nunito:wght@400;600;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#e0a840}a:hover{color:#f0c060}
+</style>
+</helmet>
+<div class="phone">
+  <div class="col" style="padding: 16px 16px 0; gap: 14px">
+    <div class="row" style="gap: 6px">
+      <span class="btn btn-steel" style="flex: 1">Settings</span>
+      <span class="btn btn-quiet" style="flex: 1">Stats</span>
+    </div>
+
+    <div class="divider"></div>
+    <span class="lbl">Sound &amp; vibration</span>
+    <div class="plate" style="padding: 2px 4px">
+      <div class="col" style="gap: 14px">
+        <div class="col" style="gap: 4px">
+          <div class="row" style="justify-content: space-between"><span>Music</span><span class="n sec">70%</span></div>
+          <div class="bar"><i class="fill-gold" style="width: 70%"></i></div>
+        </div>
+        <div class="col" style="gap: 4px">
+          <div class="row" style="justify-content: space-between"><span>Sound Effects</span><span class="n sec">85%</span></div>
+          <div class="bar"><i class="fill-gold" style="width: 85%"></i></div>
+        </div>
+        <div class="row" style="justify-content: space-between">
+          <div class="col" style="gap: 0"><span>Vibration</span><span class="cap muted">Buzz on taps, purchases and events</span></div>
+          <span class="btn btn-key" style="min-width: 72px">On</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <span class="lbl">Credits</span>
+    <div class="plate" style="padding: 2px 4px">
+      <div class="row" style="gap: 12px">
+        <img src="/_blob/fdfed8217e2e30c9ce25ecb44cea5710" alt="The RAXDEG STUDIOS seal" style="width: 54px; height: 52px">
+        <div class="col" style="gap: 0"><span class="t gold">RAXDEG STUDIOS</span><span class="cap muted">Draconia Chronicles</span></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <span class="lbl" style="color: #ff8a80">Danger zone</span>
+    <div class="plate" style="padding: 2px 4px">
+      <div class="row" style="justify-content: space-between">
+        <div class="col" style="gap: 0"><span>Reset Game</span><span class="cap muted">This will erase all progress</span></div>
+        <span class="btn btn-danger">Reset</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <a class="tab" href="Main.dc.html"><span class="gem"><img class="ic" src="/_blob/13837f6593cc2f460db3cb80a223caa3" alt=""></span>Warfront</a>
+    <a class="tab" href="Forage.dc.html"><span class="gem"><img class="ic" src="/_blob/324554bb3cc5c8149c7b29e83c31af91" alt=""></span>Forage</a>
+    <a class="tab" href="Draconia.dc.html"><span class="gem"><img class="ic" src="/_blob/2fcd2c00526c5a102fa6ef8c47ddf03e" alt=""></span>Draconia</a>
+    <a class="tab on" href="Settings.dc.html"><span class="gem"><img class="ic" src="/_blob/c8d843b17b916334d770fc312d74c671" alt=""></span>Settings</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

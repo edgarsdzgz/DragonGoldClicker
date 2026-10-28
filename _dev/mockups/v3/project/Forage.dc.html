@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Forage</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="kit.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Nunito:wght@400;600;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#e0a840}a:hover{color:#f0c060}
+</style>
+</helmet>
+<div class="phone">
+  <div class="topbar" style="position: relative">
+    <div class="row" style="justify-content: space-between">
+      <div class="chip-gold"><img class="ic" src="/_blob/d8cbe7914555013443b00383d00d5bde" alt="Renown"><span class="n gold" style="font-size: 17px">1,284.50</span></div>
+    </div>
+    <a class="ribbon" href="Journal.dc.html"><img class="ic" src="/_blob/5097fd948c560050d4eb4c1bee40934a" alt="" style="width: 18px; height: 18px"><b>Raise the Tower:</b> Build the Wizard's Tower<span class="n">0/1</span></a>
+  </div>
+
+  <div class="col" style="align-items: center; gap: 2px; margin-top: 4px">
+    <div class="row" style="gap: 12px">
+      <img src="/_blob/2af8b8b8ecee9b37620147055d00b84c" alt="" style="width: 64px; height: 64px">
+      <span class="n" style="font-size: 48px; line-height: 52px; color: #8fd18f">342</span>
+    </div>
+    <span class="cap muted">food stores (granary holds 500)</span>
+  </div>
+
+  <div class="plate" style="margin: 10px 14px 0; padding: 0 4px">
+    <div class="col" style="gap: 6px">
+      <div class="row" style="justify-content: space-between">
+        <span class="cap" style="color: #4ade80; font-weight: 700">Stores grow by 4.5 each meal</span>
+        <span class="cap muted">next meal <span class="n" style="color: #f0c060">0:42</span></span>
+      </div>
+      <div class="bar"><i class="fill-meal" style="width: 30%"></i></div>
+      <span class="cap" style="color: #f0c060">Each meal: -12 eaten, +16.5 gathered</span>
+    </div>
+  </div>
+
+  <div class="col" style="margin: 10px 14px 0; gap: 6px">
+    <div class="row" style="justify-content: space-between">
+      <span class="lbl">Rations</span>
+      <span class="cap" style="color: #4ade80">Fighters well fed</span>
+    </div>
+    <div class="row" style="gap: 4px">
+      <span class="btn btn-quiet" style="flex: 1; font-size: 12px; padding: 0">None</span>
+      <span class="btn btn-quiet" style="flex: 1; font-size: 12px; padding: 0">Half</span>
+      <span class="btn btn-steel" style="flex: 1; font-size: 12px; padding: 0">Full</span>
+      <span class="btn btn-off" style="flex: 1; font-size: 12px; padding: 0">Double</span>
+    </div>
+  </div>
+
+  <div class="col" style="align-items: center; margin-top: 12px; gap: 4px">
+    <span class="cap" style="color: #a8d8a0; font-style: italic">Ash drifted across the silent plain.</span>
+    <button class="orb orb-forage orb-big" type="button"><img class="ic36" src="/_blob/324554bb3cc5c8149c7b29e83c31af91" alt="">FORAGE</button>
+  </div>
+
+  <div class="abs" style="left: 0; right: 0; top: 622px; display: flex; justify-content: space-evenly">
+    <div class="col" style="align-items: center; gap: 0">
+      <button class="orb orb-forage" type="button" style="width: 72px; height: 72px; font-size: 11px"><img class="ic" src="/_blob/c6d22132abf3aedf748b243cc0fd5710" alt="">TRAIN</button>
+      <span class="n" style="color: #e0a840; font-size: 13px">8.20 renown</span>
+      <span class="cap muted">9/12 gatherers</span>
+    </div>
+    <div class="col" style="align-items: center; gap: 0">
+      <button class="orb orb-repair" type="button" style="width: 72px; height: 72px; font-size: 11px"><img class="ic" src="/_blob/d220d95d6e36ca9be9f818df00ae271c" alt="">RECRUIT</button>
+      <span class="n" style="color: #e0a840; font-size: 13px">24.00 renown</span>
+      <span class="cap muted">3/4</span>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <a class="tab" href="Main.dc.html"><span class="gem"><img class="ic" src="/_blob/13837f6593cc2f460db3cb80a223caa3" alt=""></span>Warfront</a>
+    <a class="tab on" href="Forage.dc.html"><span class="gem"><img class="ic" src="/_blob/324554bb3cc5c8149c7b29e83c31af91" alt=""></span>Forage</a>
+    <a class="tab" href="Draconia.dc.html"><span class="gem"><img class="ic" src="/_blob/2fcd2c00526c5a102fa6ef8c47ddf03e" alt=""></span>Draconia</a>
+    <a class="tab" href="Settings.dc.html"><span class="gem"><img class="ic" src="/_blob/c8d843b17b916334d770fc312d74c671" alt=""></span>Settings</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

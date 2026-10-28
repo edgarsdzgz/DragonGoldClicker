@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Interface kit v1</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="kit.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Nunito:wght@400;600;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#e0a840}a:hover{color:#f0c060}
+</style>
+</helmet>
+<div style="width: 1820px; height: 1140px; box-sizing: border-box; padding: 56px 64px; background: #0f0d0b; color: #f1f1f5; font-family: 'Nunito', system-ui, sans-serif; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 56px; align-content: start">
+
+  <div class="col" style="gap: 14px">
+    <span class="lbl">Panels</span>
+    <div class="plate" style="padding: 4px 8px"><span class="t">Card</span><br><span class="cap" style="color: #b4b4be">Stone rim: rows, stats, anything inside a sheet</span></div>
+    <div class="plate-gold" style="padding: 4px 8px"><span class="t">Sheet and modal</span><br><span class="cap" style="color: #b4b4be">Gold rim: building interiors, pop-ups, the dialogue box</span></div>
+  </div>
+
+  <div class="col" style="gap: 14px">
+    <span class="lbl">Buttons (a press flips the light)</span>
+    <div class="row" style="gap: 10px; flex-wrap: wrap">
+      <span class="btn btn-key">Build</span><span class="btn btn-key-down btn-key" style="border-image-source: url(/_blob/2837d9996c88db5790a709e3ed4a21f8)">Pressed</span>
+      <span class="btn btn-steel">Reassign</span><span class="btn btn-steel" style="border-image-source: url(/_blob/2e55fc025ab81c360feda146dd183b84)">Pressed</span>
+    </div>
+    <div class="row" style="gap: 10px; flex-wrap: wrap">
+      <span class="btn btn-quiet">Cancel</span><span class="btn btn-danger">Reset</span><span class="btn btn-off">Can't afford</span>
+    </div>
+    <span class="cap" style="color: #8e8e98">Gold: the key action. Steel blue: everyday. Stone: quiet. Red: destructive only.</span>
+  </div>
+
+  <div class="col" style="gap: 14px">
+    <span class="lbl">Type</span>
+    <span class="t" style="font-size: 30px">Cinzel, for titles</span>
+    <span class="n" style="font-size: 30px; color: #e0a840">1,284.50 Pixelify Sans</span>
+    <span style="font-size: 17px">Nunito for body text: lines, descriptions and every sentence a player reads.</span>
+  </div>
+
+  <div class="col" style="gap: 14px">
+    <span class="lbl">Bars</span>
+    <div class="row"><span class="cap" style="width: 90px">Enemy HP</span><div class="bar" style="flex: 1"><i class="fill-hp" style="width: 70%"></i></div></div>
+    <div class="row"><span class="cap" style="width: 90px">Wall</span><div class="bar" style="flex: 1"><i class="fill-wall" style="width: 86%"></i></div></div>
+    <div class="row"><span class="cap" style="width: 90px">Capacity</span><div class="bar" style="flex: 1"><i class="fill-gold" style="width: 60%"></i></div></div>
+    <div class="row"><span class="cap" style="width: 90px">Next meal</span><div class="bar" style="flex: 1"><i class="fill-meal" style="width: 30%"></i></div></div>
+    <div class="row"><span class="cap" style="width: 90px">Journey</span><div class="bar" style="flex: 1"><i class="fill-steel" style="width: 45%"></i></div></div>
+  </div>
+
+  <div class="col" style="gap: 14px">
+    <span class="lbl">Chips, ribbon, divider, socket</span>
+    <div class="row" style="gap: 8px">
+      <div class="chip-gold"><img class="ic" src="/_blob/d8cbe7914555013443b00383d00d5bde" alt=""><span class="n" style="color: #e0a840">1,284.50</span></div>
+      <div class="chip"><img class="ic" src="/_blob/59fbdef4a0de7ddb5bb46e6bd0938e35" alt=""><span class="n">342</span></div>
+      <div class="chip"><img class="ic" src="/_blob/7c3658e5f046b7f17f48351691c8524b" alt=""><span class="n">6</span></div>
+    </div>
+    <div class="ribbon" style="width: 380px"><img class="ic" src="/_blob/5097fd948c560050d4eb4c1bee40934a" alt="" style="width: 18px; height: 18px"><b>Raise the Tower:</b> Build the Wizard's Tower<span class="n">0/1</span></div>
+    <div class="divider" style="width: 380px"></div>
+    <div class="row" style="gap: 10px">
+      <span class="socket"><img class="ic" src="/_blob/2fcd2c00526c5a102fa6ef8c47ddf03e" alt=""></span>
+      <span class="socket"><img class="ic" src="/_blob/4a3410c9ed32873d94fee0fe691efee7" alt=""></span>
+      <span class="socket"><img class="ic" src="/_blob/6c8cf81db700f4729a6c23950fe0f532" alt=""></span>
+    </div>
+  </div>
+
+  <div class="col" style="gap: 14px">
+    <span class="lbl">Action orbs</span>
+    <div class="row" style="gap: 14px">
+      <span class="orb orb-rally"><img class="ic" src="/_blob/b56df6af72bd1b8df2ec8b98e41f0423" alt="">RALLY</span>
+      <span class="orb orb-repair"><img class="ic" src="/_blob/82e624a5743fd0c3f0b1fca504a72ed4" alt="">REPAIR</span>
+      <span class="orb orb-forage"><img class="ic" src="/_blob/324554bb3cc5c8149c7b29e83c31af91" alt="">FORAGE</span>
+      <span class="orb orb-off"><img class="ic" src="/_blob/5264a36080badc905d18313106039f82" alt="">LOCKED</span>
+    </div>
+  </div>
+
+  <div class="col" style="gap: 14px; grid-column: span 2">
+    <span class="lbl">Tab bar</span>
+    <div style="position: relative; width: 390px; height: 84px; background: #0f0d0b">
+      <nav class="tabbar">
+        <span class="tab on"><span class="gem"><img class="ic" src="/_blob/13837f6593cc2f460db3cb80a223caa3" alt=""></span>Warfront</span>
+        <span class="tab"><span class="gem"><img class="ic" src="/_blob/324554bb3cc5c8149c7b29e83c31af91" alt=""></span>Forage</span>
+        <span class="tab locked"><span class="gem"><img class="ic" src="/_blob/5264a36080badc905d18313106039f82" alt=""></span>Locked</span>
+        <span class="tab"><span class="gem"><img class="ic" src="/_blob/c8d843b17b916334d770fc312d74c671" alt=""></span>Settings</span>
+      </nav>
+    </div>
+  </div>
+
+  <div class="col" style="gap: 14px">
+    <span class="lbl">The pieces, as drawn (x6)</span>
+    <div class="row" style="gap: 14px; align-items: flex-end">
+      <img src="/_blob/20e2186ea1c3d77edb2485d83ddf56fb" alt="Card" style="width: 72px; height: 72px">
+      <img src="/_blob/138b2c65f32dc76a5dbbd7b8f1a7f465" alt="Sheet" style="width: 72px; height: 72px">
+      <img src="/_blob/dcffc58f8995461aae67056b0897769e" alt="Gold button" style="width: 72px; height: 72px">
+      <img src="/_blob/0c33b13f91c17cf3b20acfd1dc370da8" alt="Ribbon" style="width: 96px; height: 60px">
+      <img src="/_blob/391db6433eb2b61f64d976d774d744cb" alt="Socket" style="width: 84px; height: 90px">
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1820,"height":1140}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
