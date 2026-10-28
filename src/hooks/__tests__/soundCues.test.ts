@@ -1,6 +1,6 @@
 import { DEFAULT_GAME_STATE } from '../../types/state'
 import type { GameState } from '../../types/state'
-import { stateSoundCue } from '../soundCues'
+import { stateSoundCue, ARRIVAL_WINDOW_MS } from '../soundCues'
 import { GRANARY_CAP } from '../../types/food'
 import { HORDE_LEVEL_KILLS } from '../../types/horde'
 
@@ -41,20 +41,38 @@ describe('the sound a change in the game earns', () => {
     expect(cue({ hordeKills: 10 * HORDE_LEVEL_KILLS }, { hordeKills: 2 * HORDE_LEVEL_KILLS })).toBeNull()
   })
 
-  it('the city: a building, a study, an expedition out, back, and with a find', () => {
+  it('the city: a building, a study, an expedition out, and brought home with a find', () => {
     expect(cue({}, { barracksLevel: 1 })).toBe('buildComplete')
     expect(cue({}, { draconiaHallBuilt: true })).toBe('buildComplete')
     expect(cue({}, { offlineLevel: 1 })).toBe('buildComplete')
     expect(cue({}, { completedResearch: ['mortar_craft'] })).toBe('researchDone')
     const out = { id: 1, startedAt: 0, duration: 60 } as GameState['activeExpeditions'][number]
     expect(cue({}, { activeExpeditions: [out] })).toBe('expeditionOut')
-    expect(cue({}, { expeditionReport: { expeditionId: 1, villagersFound: 0 } })).toBe('expeditionBack')
     expect(cue({}, { expeditionReport: { expeditionId: 1, villagersFound: 2 } })).toBe('find')
+    // Bringing home a trip that found nobody: it was heard getting home
+    expect(cue({}, { expeditionReport: { expeditionId: 1, villagersFound: 0 } })).toBeNull()
     // The report being read and closed is not another return, nor is it while it waits to be read
     const waiting = { expeditionId: 1, villagersFound: 0 }
     expect(cue({ expeditionReport: waiting }, { expeditionReport: null })).toBeNull()
     expect(cue({ expeditionReport: waiting }, { food: 30 })).toBeNull()
     expect(cue({ expeditionReport: { expeditionId: 1, villagersFound: 2 } }, { food: 30 })).toBeNull()
+  })
+
+  it('a trip is heard the moment it gets home, while the game is open, once', () => {
+    // Sent at 0 for 60 seconds: home at 60 000 ms
+    const trip = { id: 1, startedAt: 0, duration: 60 } as GameState['activeExpeditions'][number]
+    const s = make({ activeExpeditions: [trip] })
+    const tick = { ...s, playSeconds: s.playSeconds + 1 }
+    expect(stateSoundCue(s, tick, { since: 59_500, now: 60_500 })).toBe('expeditionBack')
+    expect(stateSoundCue(s, tick, { since: 59_000, now: 60_000 })).toBe('expeditionBack')
+    // Still on the road, or home and waiting to be brought in
+    expect(stateSoundCue(s, tick, { since: 58_000, now: 59_000 })).toBeNull()
+    expect(stateSoundCue(s, tick, { since: 60_500, now: 61_500 })).toBeNull()
+    // Home while the game was closed: the Outpost's badge tells it, not a sound
+    expect(stateSoundCue(s, tick, { since: 60_000 - ARRIVAL_WINDOW_MS - 1000, now: 60_500 })).toBeNull()
+    expect(stateSoundCue(s, tick, { since: 60_000 - ARRIVAL_WINDOW_MS, now: 60_000 })).toBe('expeditionBack')
+    // No clock, no trip heard
+    expect(stateSoundCue(s, tick)).toBeNull()
   })
 
   it('the city brightens at the Keep and again at the Librarium', () => {
