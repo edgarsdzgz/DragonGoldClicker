@@ -49,7 +49,7 @@ Update a row when a track is found, delivered, or put in the game. A delivered t
 | 1 | Warfront: the siege | In the game (2026-10-28): "Legionnaire", Scott Buckley, CC BY 4.0; credited | The other developer | `assets/music/out/Legionnaire.m4a` |
 | 1b | Warfront: the siege, a second track for variety (the two take turns; the owner's choice, not a boss track) | Found (2026-10-28): "Ignis", Scott Buckley, CC BY 4.0 (his page; BreakingCopyright says 3.0). Not in the game; needs the Warfront to rotate its tracks | | `~/Downloads/Scott Buckley - Ignis.mp3` (his own file, 3:11, 320 kbps) |
 | 2 | Draconia: the ruined city | Found (2026-10-28): "A Kind Of Hope", Scott Buckley, CC BY 4.0. Not in the game | | `~/Downloads/AKindOfHope.mp3` (his own file, 5:42, 320 kbps) |
-| 3 | Warfront: a boss at the gate | Wanted | | |
+| 3 | Warfront: a boss at the gate | Found, boss music 1 (2026-10-28): "Rites of Passage", Scott Buckley, CC BY 4.0. It builds: about 10 dB quieter in its first 10 s than at full strength, which it reaches near 2:00 (measured, 10 s windows). Owner to decide whether a fight starts it from the top or partway in. Not in the game | | `~/Downloads/RitesOfPassage.mp3` (his own file, 5:36, 320 kbps) |
 | 4 | Draconia: the city rebuilt | Wanted | | |
 | 5 | The Breach | Wanted | | |
 | 6 | Forage: the valley | Wanted | | |
