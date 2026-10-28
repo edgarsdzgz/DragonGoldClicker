@@ -36,3 +36,24 @@ lets a boss or the Breach take over, and plays the story beds under scenes.
 
 No track is needed for Settings, Stats or the pop-up cards: they keep the music of the screen under them.
 The title screen keeps the main theme.
+
+## Status
+
+Update a row when a track is found, delivered, or put in the game. A delivered track goes in
+`assets/music/src` (as received) and `assets/music/out` (the game's copy), with its credit in
+`CREDITS.md` and Settings > Credits.
+
+| # | Track | Status | Who | File |
+|---|---|---|---|---|
+| 1 | Warfront: the siege | Found (2026-10-28); not in the repo yet | The other developer | |
+| 2 | Draconia: the ruined city | Wanted | | |
+| 3 | Warfront: a boss at the gate | Wanted | | |
+| 4 | Draconia: the city rebuilt | Wanted | | |
+| 5 | The Breach | Wanted | | |
+| 6 | Forage: the valley | Wanted | | |
+| 7 | Story scenes, hope | Wanted | | |
+| 8 | Story scenes, dread | Wanted | | |
+| 9 | Warfront: the deep Unmaking | Wanted | | |
+| 10 | The Librarium and the Wizard's Tower | Wanted | | |
+
+The main theme, "Refusing the Ultimatum", is in the game and plays everywhere until these arrive.
