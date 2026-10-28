@@ -32,7 +32,8 @@ lets a boss or the Breach take over, and plays the story beds under scenes.
 | 7 | **Story scenes**, hope (dialogue over any screen) | A quiet bed under the warm scenes: arrivals, gratitude, the city coming back | Tender and slow: solo piano, harp or strings. Little melody, because the words are being read | 3 |
 | 8 | **Story scenes**, dread | A quiet bed under the dark scenes: warnings, the horde growing, the Unmaking | Tense and low: drones, a distant pulse, sparse percussion. Unease, not horror | 3 |
 | 9 | **Warfront**: the deep Unmaking (from horde level 10, when the monsters' cracks glow) | Replaces the siege track once the horde is marked deepest | The siege's pulse, darker and wrong: dissonance, a low choir, bowed metal. A darker version of track 1 would be ideal | 4 |
-| 10 | **The Librarium and the Wizard's Tower** (their interiors) | While one of those sheets is open | Mystical and curious: celesta, harp, glassy bells, a soft choir. Slow | 4 |
+| 10 | **The Librarium** (its interior) | While its sheet is open: research and study | Quiet study by candlelight, curious and hushed: celesta, harp, glassy bells, soft strings. Slow | 4 |
+| 11 | **The Wizard's Tower** (its interior; Thornwick, the exile, from chapter 11) | While its sheet is open | Arcane power, stranger and more charged than the Librarium: a low wordless choir, a slow pulse, a hint of fire (warm brass, deep drums far off). Slow, never a battle track | 4 |
 
 No track is needed for Settings, Stats or the pop-up cards: they keep the music of the screen under them.
 The title screen keeps the main theme.
@@ -55,7 +56,8 @@ Update a row when a track is found, delivered, or put in the game. A delivered t
 | 7 | Story scenes, hope | Found (2026-10-28): "Childhood", Scott Buckley, CC BY 4.0 (his page; BreakingCopyright says 3.0). Not in the game; needs the music to switch to a bed while a scene is open | | `~/Downloads/Scott Buckley - Childhood.mp3` (a BreakingCopyright re-encode, 2:16, 192 kbps; his own file: http://www.scottbuckley.com.au/library/wp-content/uploads/2019/01/sb_childhood.mp3) |
 | 8 | Story scenes, dread | Wanted | | |
 | 9 | Warfront: the deep Unmaking | Wanted | | |
-| 10 | The Librarium and the Wizard's Tower | Wanted | | |
+| 10 | The Librarium | Wanted | | |
+| 11 | The Wizard's Tower | Wanted | | |
 
 The main theme, "Refusing the Ultimatum", plays on the title and on every screen without its own track.
 The music now follows the screen (`src/data/music.ts`, `SCREEN_MUSIC`): a delivered track is wired by adding
