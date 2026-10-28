@@ -43,8 +43,9 @@ awaiting a decision; **open** = not decided yet.
 | The Hollow Knight | Unknown, by design; it has no name | Chapter 13: holds the gate while you are away; no one asks what is inside the armor | canon |
 
 **Chapters 9 to 13** (approved 2026-10-27, "Lock them in"): when each new character arrives, what they
-bring and every line, with its face, are in `_dev/planning/new-cast-scenes/build_board.py` (board:
-https://claude.ai/artifact/V9egN1oNoQ5wZU4k5NA9ic). None of it is in the game yet.
+bring and every line, with its face, are in `_dev/planning/new-cast-scenes/build_board.py` (its board is
+`board.html` beside it). Their pictures and small figures are batch `_dev/art/agent/52-new-cast-art`. None of
+it is in the game yet.
 
 ## How each is drawn
 
