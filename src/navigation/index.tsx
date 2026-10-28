@@ -52,7 +52,7 @@ import { GameScreen } from '../screens/GameScreen'
 import { ForageScreen } from '../screens/ForageScreen'
 import { ShopScreen } from '../screens/ShopScreen'
 import { SettingsScreen } from '../screens/SettingsScreen'
-import { setMusicScreen } from '../hooks/musicScreen'
+import { setMusicScreen } from '../hooks/musicScene'
 
 // =============================================================================
 // HAPTIC TAB BAR BUTTON
@@ -312,7 +312,7 @@ function TabNavigator() {
 const RootStack = createNativeStackNavigator<RootStackParamList>()
 
 export function Navigation() {
-  // The screen on show picks the music (hooks/musicScreen.ts, data/music.ts)
+  // The screen on show picks the music (hooks/musicScene.ts, data/music.ts)
   const ref = useNavigationContainerRef<RootStackParamList>()
   const report = () => setMusicScreen(ref.getCurrentRoute()?.name ?? null)
   return (

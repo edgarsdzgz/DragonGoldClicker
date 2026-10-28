@@ -1,49 +1,68 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { setAudioModeAsync } from 'expo-audio'
-import type { AudioSource } from 'expo-audio'
 import { useAudioSettings } from '../context/AudioSettingsContext'
+import { BOSS_TRACKS, TRACKS } from '../data/music'
+import type { MusicPlan, TrackId } from '../data/music'
 import { sharedSfxPlayer } from './sfxPlayers'
-import { crossfade } from './crossfade'
+import { MusicDeck } from './musicDeck'
 
 /**
- * Plays one music track on a loop, and crossfades when the track changes (the screen's music, see
- * data/music.ts). A track left behind pauses where it was, so coming back picks it up there. Every
- * track in `preload` gets its player now, so it has loaded by its first play; the theme's player is
- * the one the title's loader warmed up, so the music starts the moment the title shows.
+ * Plays the music plan (data/music.ts, musicPlan) through a MusicDeck: a new plan crossfades in,
+ * a track left behind pauses where it was, two tracks take turns, and a track played once calls
+ * `onceDone`. A track's player is made the first time it plays (the cued ones, ahead); the theme's
+ * is the one the title's loader warmed up, so the music starts the moment the title shows.
  */
-export function useBgMusic(source: AudioSource, preload: readonly AudioSource[] = []) {
+export function useBgMusic(plan: MusicPlan, onceDone: (plan: MusicPlan) => void) {
   const { effectiveMusicVolume, musicMuted } = useAudioSettings()
   const volume = useRef(effectiveMusicVolume)
   volume.current = effectiveMusicVolume
   const muted = useRef(musicMuted)
   muted.current = musicMuted
-  const playing = useRef<AudioSource | null>(null)
-
-  useMemo(() => preload.forEach((s) => { sharedSfxPlayer(s).loop = true }), [preload])
+  const done = useRef(onceDone)
+  done.current = onceDone
+  const known = useRef(new Set<TrackId>())
+  const deck = useRef<MusicDeck | null>(null)
+  if (!deck.current) {
+    const d = new MusicDeck(
+      (id) => {
+        const p = sharedSfxPlayer(TRACKS[id])
+        if (!known.current.has(id)) {
+          known.current.add(id)
+          p.muted = muted.current
+          p.addListener('playbackStatusUpdate', (s) => { if (s.didJustFinish) d.ended(id) })
+        }
+        return p
+      },
+      () => volume.current,
+      (p) => done.current(p),
+    )
+    deck.current = d
+  }
 
   // Configure audio mode once
   useEffect(() => {
     setAudioModeAsync({ playsInSilentMode: true })
   }, [])
 
-  // A new track: fade it in over the last
+  // The boss tracks and the Breach's come in on a cue, so their players are made ahead
   useEffect(() => {
-    const from = playing.current
-    if (from === source) return
-    playing.current = source
-    const incoming = sharedSfxPlayer(source)
-    incoming.loop = true
-    incoming.muted = muted.current
-    return crossfade(incoming, from ? sharedSfxPlayer(from) : null, () => volume.current)
-  }, [source])
+    deck.current?.warm([...BOSS_TRACKS, 'breach'])
+    return () => deck.current?.stop()
+  }, [])
+
+  // A new plan: fade it in over the last (the deck keeps what plays when the key is the same)
+  useEffect(() => {
+    deck.current?.show(plan)
+  }, [plan])
 
   // The volume slider (a fade in progress reads it as it goes)
   useEffect(() => {
-    if (playing.current) sharedSfxPlayer(playing.current).volume = effectiveMusicVolume
+    const id = deck.current?.track
+    if (id) sharedSfxPlayer(TRACKS[id]).volume = effectiveMusicVolume
   }, [effectiveMusicVolume])
 
   // Mute: every track, so one faded back in stays muted too
   useEffect(() => {
-    for (const s of [...preload, ...(playing.current ? [playing.current] : [])]) sharedSfxPlayer(s).muted = musicMuted
-  }, [musicMuted, preload])
+    for (const id of known.current) sharedSfxPlayer(TRACKS[id]).muted = musicMuted
+  }, [musicMuted])
 }

@@ -16,19 +16,31 @@ import { useBgMusic, useImmersiveMode } from './src/hooks'
 import { useGameSounds } from './src/hooks/useGameSounds'
 import { useLaunch } from './src/loading/useLaunch'
 import type { LoadedGame } from './src/hooks/useStorage'
-import { MUSIC_TRACKS, screenMusic } from './src/data/music'
-import { useMusicScreen } from './src/hooks/musicScreen'
+import { createMusicPicks, musicPlan } from './src/data/music'
+import { setMusicScene, useMusicScene } from './src/hooks/musicScene'
+import { useMusicCues } from './src/hooks/useMusicCues'
 import { configureTextDefaults } from './src/theme/textDefaults'
 
 // Configure global text rendering defaults for Expo 54 / RN 0.81
 configureTextDefaults()
 
+/** The Breach's track has played through: the music under it comes back */
+const breachHeard = () => setMusicScene({ breach: null })
+
 /**
- * The music: the theme on the title, then each screen's own track (data/music.ts). Kept in a
- * component of its own that renders nothing, so a tab change re-renders only this, not the game.
+ * The music: the theme on the title, then what the game has on show (data/music.ts, musicPlan).
+ * Kept in a component of its own that renders nothing, so a tab change re-renders only this, not
+ * the game.
  */
 function BgMusic() {
-  useBgMusic(screenMusic(useMusicScreen()), MUSIC_TRACKS)
+  const [picks] = useState(() => createMusicPicks())
+  useBgMusic(musicPlan(useMusicScene(), picks), breachHeard)
+  return null
+}
+
+/** Tells the music what the game has on show (hooks/useMusicCues.ts) */
+function MusicCues() {
+  useMusicCues()
   return null
 }
 
@@ -43,6 +55,7 @@ function AppInner({ game }: { game: LoadedGame }) {
     <GameProvider initial={game}>
       <GameSounds />
       <StoryProvider>
+        <MusicCues />
         <CoachProvider>
           <ShakeProvider>
             <JournalProvider>

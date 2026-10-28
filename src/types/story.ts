@@ -52,6 +52,9 @@ export interface ObjectiveDef {
   target: number
 }
 
+/** A scene's mood, for the music under it (data/music.ts): Childhood for hope; The Long Dark or Horizons for dread */
+export type StoryMood = 'hope' | 'dread'
+
 export interface BeatDef {
   id: BeatId
   chapter: number
@@ -69,6 +72,8 @@ export interface BeatDef {
   silent?: boolean
   /** May fire out of order whenever its own trigger passes; never blocks later beats */
   side?: boolean
+  /** The music under its scene (data/music.ts): a hope or a dread bed. Untagged keeps the screen's music */
+  music?: StoryMood
 }
 
 const seen = (s: GameState, id: BeatId) => s.beatsSeen.includes(id)

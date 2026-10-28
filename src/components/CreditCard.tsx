@@ -25,7 +25,7 @@ export function CreditCard({ credit }: { credit: CreditEntry }) {
   return (
     <View style={styles.root}>
       <Text variant="caption" color="muted">{credit.role.toUpperCase()}</Text>
-      <Text variant="label">{`${credit.title} by ${credit.author}`}</Text>
+      <Text variant="label">{credit.attribution ?? `${credit.title} by ${credit.author}`}</Text>
       <CreditLink label={credit.authorUrl} url={credit.authorUrl} spoken={`${credit.author}'s page`} />
       <CreditLink label={credit.source} url={credit.sourceUrl} spoken={`Source: ${credit.source}`} />
       <CreditLink label={credit.license} url={credit.licenseUrl} spoken={`License: ${credit.license}`} />

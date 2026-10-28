@@ -12,6 +12,7 @@ import { ResearchTabs } from './ResearchTabs'
 import type { BranchCounts } from './ResearchTabs'
 import { ResearchBranch } from './ResearchBranch'
 import { studiesDone } from '../../types/library'
+import { useMusicSheet } from '../../hooks/musicScene'
 
 // =============================================================================
 // THE LIBRARIUM (approved 2026-10-26): Lirae's studies, one tab per branch
@@ -19,6 +20,8 @@ import { studiesDone } from '../../types/library'
 
 export function LibrariumInterior() {
   const { state } = useGame()
+  // Its own music while it is open (data/music.ts)
+  useMusicSheet('librarium')
   const [active, setActive] = React.useState<ResearchCategory>(RESEARCH_CATEGORIES[0].id)
 
   const counts = React.useMemo(() => {

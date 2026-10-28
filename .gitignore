@@ -13,3 +13,6 @@ web-build/
 .env.local
 android/
 .claude/
+
+# Composers' WAV masters: large (30-90 MB each); the game ships the .m4a in assets/music/out
+assets/music/src/*.wav

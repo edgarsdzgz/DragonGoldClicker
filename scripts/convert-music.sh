@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Convert MP3 files in assets/music/src/ to AAC (.m4a) in assets/music/out/
+# Convert MP3 and WAV files in assets/music/src/ to AAC (.m4a) in assets/music/out/
 # Requires: ffmpeg
-# Usage: bash scripts/convert-music.sh [--quality 1-5] [file.mp3 ...]
+# Usage: bash scripts/convert-music.sh [--quality 1-5] [file.mp3|file.wav ...]
 #   --quality  AAC VBR quality (1=~80kbps, 3=~128kbps, 5=~192kbps). Default: 3
-#   file.mp3   Optional specific file(s) in src/. Omit to convert all.
+#   file       Optional specific file(s) in src/. Omit to convert all.
+# WAV sources (a composer's lossless master) are not committed: see .gitignore.
 
 set -euo pipefail
 
@@ -42,12 +43,12 @@ if [[ $# -gt 0 ]]; then
   done
 else
   shopt -s nullglob
-  FILES=("$SRC_DIR"/*.mp3)
+  FILES=("$SRC_DIR"/*.mp3 "$SRC_DIR"/*.wav)
   shopt -u nullglob
 fi
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
-  echo "[ERROR] No MP3 files found in $SRC_DIR"
+  echo "[ERROR] No MP3 or WAV files found in $SRC_DIR"
   exit 1
 fi
 
@@ -61,7 +62,8 @@ for src in "${FILES[@]}"; do
     continue
   fi
 
-  basename="$(basename "$src" .mp3)"
+  name="$(basename "$src")"
+  basename="${name%.*}"
   dest="$OUT_DIR/${basename}.m4a"
 
   if [[ -f "$dest" && "$dest" -nt "$src" ]]; then
@@ -70,7 +72,7 @@ for src in "${FILES[@]}"; do
     continue
   fi
 
-  echo "[CONVERT] $basename.mp3 -> $basename.m4a (VBR quality $QUALITY)"
+  echo "[CONVERT] $name -> $basename.m4a (VBR quality $QUALITY)"
   ffmpeg -y -i "$src" -c:a aac -vbr "$QUALITY" -movflags +faststart "$dest" 2>/dev/null
   CONVERTED=$((CONVERTED + 1))
 done

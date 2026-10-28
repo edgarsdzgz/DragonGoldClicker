@@ -7,6 +7,7 @@ import { TOWER_FIRE_BONUS } from '../../types/allies'
 import { armyVolleyNow } from '../../types/army'
 import { DescriptionBanner } from './shared'
 import { styles as interiorStyles } from './interiorStyles'
+import { useMusicSheet } from '../../hooks/musicScene'
 
 // =============================================================================
 // THE WIZARD'S TOWER (chapter 11): Thornwick's fire, high up and away from anything that burns
@@ -14,6 +15,8 @@ import { styles as interiorStyles } from './interiorStyles'
 
 export function WizardTowerInterior() {
   const { state } = useGame()
+  // Its own music while it is open (data/music.ts)
+  useMusicSheet('wizard')
   return (
     <View style={interiorStyles.interiorContainer}>
       <DescriptionBanner icon="sparkles" color={colors.building.wizard}>
