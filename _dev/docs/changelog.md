@@ -26,8 +26,10 @@
 - The game's own sounds (data/sounds.ts) replace the stock event sounds; the stock interface ticks stay
   - Warfront: a monster's death, its blow on the wall, a crit, the Ember claws' strike, the next
     monster's footfalls, the gate cracking, the Unmaking rising, Rally, Repair, the Breach
-  - City: a building raised, a study done, an expedition out and back (a find when it brings people
-    home), a knock at the gate for wanderers and refugees, the city brightening
+  - City: a building raised, a study done, an expedition out, an expedition getting home (heard the
+    moment its timer runs out while the game is open, wherever the player is; a trip that got home
+    while the game was closed is left to the Outpost's badge), the find when bringing it in brings
+    people home, a knock at the gate for wanderers and refugees, the city brightening
   - Forage: food low, a raid at the gate, the granary full
   - Story: a scene opening (replaces the ring), a quest done (fanfare), welcome back; a character's
     sting on their first scene (Sera, Thornwick, the Hollow Knight, who have no scenes yet)
