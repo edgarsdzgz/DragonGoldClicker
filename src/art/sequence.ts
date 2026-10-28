@@ -39,6 +39,9 @@ export function fitWhole(boxPts: number, artPx: number, pixelRatio: number): num
 /** After a tap skips to the last frame, how long it holds before moving on */
 export const SKIP_HOLD_MS = 500
 
+/** A splash waits this long at most for its sheet to decode before it plays anyway */
+export const SHEET_WAIT_MS = 4000
+
 /**
  * A splash's tap rule: the first tap jumps to the last frame and moves on after SKIP_HOLD_MS;
  * a second tap leaves at once.

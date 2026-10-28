@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, StyleSheet, useWindowDimensions, PixelRatio } from 'react-native'
 import type { AudioSource } from 'expo-audio'
 import { usePlaySound } from '../hooks/useSfx'
-import { fitWhole, tapSplash, SKIP_HOLD_MS } from '../art'
+import { fitWhole, tapSplash, useSpriteImage, SKIP_HOLD_MS, SHEET_WAIT_MS } from '../art'
 import type { SheetTiming, SplashPhase, SpriteId } from '../art'
 import { PixelSheet } from './PixelSheet'
 
@@ -44,6 +44,17 @@ export function SplashSequence({ id, timing, from = 0, lastHoldMs, still = false
   const ratio = PixelRatio.get()
   const scale = splashScale(width, height, timing, ratio)
 
+  // The clock starts once the sheet is decoded (the launch decodes every sprite at the same time),
+  // so the opening frames are never spent on an empty screen; a sheet that never comes is not waited on
+  const loaded = useSpriteImage(id) !== null
+  const [gaveUp, setGaveUp] = useState(false)
+  const ready = loaded || gaveUp
+  useEffect(() => {
+    if (loaded) return
+    const timer = setTimeout(() => setGaveUp(true), SHEET_WAIT_MS)
+    return () => clearTimeout(timer)
+  }, [loaded])
+
   // Kept in a ref so a parent re-render never restarts the timers
   const doneRef = useRef(onDone)
   doneRef.current = onDone
@@ -60,6 +71,7 @@ export function SplashSequence({ id, timing, from = 0, lastHoldMs, still = false
       finish()
       return
     }
+    if (!ready && phase === 'playing') return
     const hold =
       phase === 'skipped' ? SKIP_HOLD_MS : frame < last ? timing.ms[frame] : lastHoldMs ?? timing.ms[last]
     const timer = setTimeout(() => {
@@ -67,14 +79,14 @@ export function SplashSequence({ id, timing, from = 0, lastHoldMs, still = false
       else setPhase('done')
     }, hold)
     return () => clearTimeout(timer)
-  }, [frame, phase, last, lastHoldMs, timing])
+  }, [frame, phase, ready, last, lastHoldMs, timing])
 
   // Each beat's sound as its frame comes up, while it plays on its own
   const play = usePlaySound()
   useEffect(() => {
     const sound = sounds?.[frame]
-    if (sound && phase === 'playing' && !still) play(sound)
-  }, [frame, phase, still, sounds, play])
+    if (sound && ready && phase === 'playing' && !still) play(sound)
+  }, [frame, phase, ready, still, sounds, play])
 
   const onTap = () => {
     skipped.current = true
