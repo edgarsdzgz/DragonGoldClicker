@@ -2,6 +2,15 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### The Warfront's own music (2026-10-28)
+- "Legionnaire" by Scott Buckley (CC BY 4.0) plays on the Warfront; the title and the other screens keep
+  "Refusing the Ultimatum"
+- The music follows the screen, crossfading over 1.2 seconds; a track left behind pauses where it was
+  and picks up there (src/data/music.ts `SCREEN_MUSIC`)
+- Credited in Settings > Credits and CREDITS.md, with the composer's own credit line; a test keeps both
+  in step with the tracks. _dev/docs/music-licenses.md sets out what each license asks, including the
+  composer's YouTube Content ID: any video with his music credits him in its description
+
 ### Sound batch 3: bosses, Varn, the claws (2026-10-28)
 - Made in-house like batches 1 and 2 (`_dev/art/agent/54-sound-3`), locked by the owner
 - A boss sets out for the gate to the horde's war horn over drums, a mini-boss to one shorter blast (no
