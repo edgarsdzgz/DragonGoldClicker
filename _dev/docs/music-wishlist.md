@@ -46,12 +46,13 @@ Update a row when a track is found, delivered, or put in the game. A delivered t
 | # | Track | Status | Who | File |
 |---|---|---|---|---|
 | 1 | Warfront: the siege | In the game (2026-10-28): "Legionnaire", Scott Buckley, CC BY 4.0; credited | The other developer | `assets/music/out/Legionnaire.m4a` |
-| 2 | Draconia: the ruined city | Wanted | | |
+| 1b | Warfront: the siege, a second track for variety (the two take turns; the owner's choice, not a boss track) | Found (2026-10-28): "Ignis", Scott Buckley, CC BY 4.0 (his page; BreakingCopyright says 3.0). Not in the game; needs the Warfront to rotate its tracks | | `~/Downloads/Scott Buckley - Ignis.mp3` (his own file, 3:11, 320 kbps) |
+| 2 | Draconia: the ruined city | Found (2026-10-28): "A Kind Of Hope", Scott Buckley, CC BY 4.0. Not in the game | | `~/Downloads/AKindOfHope.mp3` (his own file, 5:42, 320 kbps) |
 | 3 | Warfront: a boss at the gate | Wanted | | |
 | 4 | Draconia: the city rebuilt | Wanted | | |
 | 5 | The Breach | Wanted | | |
 | 6 | Forage: the valley | Wanted | | |
-| 7 | Story scenes, hope | Wanted | | |
+| 7 | Story scenes, hope | Found (2026-10-28): "Childhood", Scott Buckley, CC BY 4.0 (his page; BreakingCopyright says 3.0). Not in the game; needs the music to switch to a bed while a scene is open | | `~/Downloads/Scott Buckley - Childhood.mp3` (a BreakingCopyright re-encode, 2:16, 192 kbps; his own file: http://www.scottbuckley.com.au/library/wp-content/uploads/2019/01/sb_childhood.mp3) |
 | 8 | Story scenes, dread | Wanted | | |
 | 9 | Warfront: the deep Unmaking | Wanted | | |
 | 10 | The Librarium and the Wizard's Tower | Wanted | | |
