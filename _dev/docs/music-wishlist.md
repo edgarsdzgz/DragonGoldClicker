@@ -56,8 +56,8 @@ Update a row when a track is found, delivered, or put in the game. A delivered t
 | 7 | Story scenes, hope | Found (2026-10-28): "Childhood", Scott Buckley, CC BY 4.0 (his page; BreakingCopyright says 3.0). Not in the game; needs the music to switch to a bed while a scene is open | | `~/Downloads/Scott Buckley - Childhood.mp3` (a BreakingCopyright re-encode, 2:16, 192 kbps; his own file: http://www.scottbuckley.com.au/library/wp-content/uploads/2019/01/sb_childhood.mp3) |
 | 8 | Story scenes, dread | Wanted | | |
 | 9 | Warfront: the deep Unmaking | Wanted | | |
-| 10 | The Librarium | Wanted | | |
-| 11 | The Wizard's Tower | Wanted | | |
+| 10 | The Librarium | Found for 10 or 11 (2026-10-28): "Signal To Noise", Scott Buckley, CC BY 4.0 (his page; BreakingCopyright's notice says only "Free To Use YouTube license", which is not enough for a game). Slotted here and in 11 until the owner finds its pair and picks. Not in the game | | `~/Downloads/Scott Buckley - Signal To Noise.mp3` (a BreakingCopyright re-encode, 5:53, 192 kbps; his own file: https://www.scottbuckley.com.au/library/wp-content/uploads/2020/04/sb_signaltonoise.mp3; a "No Piano Melody" mix also exists: https://www.scottbuckley.com.au/library/wp-content/uploads/2020/04/sb_signaltonoise_nomelody.mp3) |
+| 11 | The Wizard's Tower | Found for 10 or 11: "Signal To Noise" (see 10). Not in the game | | See 10 |
 
 The main theme, "Refusing the Ultimatum", plays on the title and on every screen without its own track.
 The music now follows the screen (`src/data/music.ts`, `SCREEN_MUSIC`): a delivered track is wired by adding
