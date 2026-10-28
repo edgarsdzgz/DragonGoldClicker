@@ -381,6 +381,17 @@ ASSETS += [(f"sound/{n}.m4a", SOUND2 / f"{n}.m4a", what, "sound batch 2 v1") for
     ('amb_horde-drums', "Loop, 8 s, seamless: the horde's drums far off, 12 beats at 90 a minute"),
 ]]
 
+# Sound batch 3 (54-sound-3), locked by the owner on 2026-10-28 ("let's lock these sounds in")
+SOUND3 = AGENT / "54-sound-3/out"
+ASSETS += [(f"sound/{n}.m4a", SOUND3 / f"{n}.m4a", what, "sound batch 3 v1") for n, what in [
+    ('sfx_boss-arrives', "A boss reaches the gate: two drums, the horde's war horn (low, out of tune on purpose), a third drum"),
+    ('sfx_miniboss-arrives', 'A mini-boss reaches the gate: one drum, one shorter blast of the war horn'),
+    ('sfx_boss-falls', "A boss or mini-boss falls, on its death strip: lands at 250 ms, unmade at 375 ms, then Draconia's horn answers"),
+    ('sfx_varn-breath', "Varn's breath: a draw of air while he rears (167 ms), then a short flame. Mastered soft: every 3 s"),
+    ('sfx_claw-sharpen', 'Sharpening the claws: two whetstone strokes, then the edge rings'),
+    ('sfx_claw-reforge', "Reforging the claws: three anvil blows, the quench's hiss, an ember's glow"),
+]]
+
 ASSETS += [
     ("cast/cast_sigil-varn.png", AGENT / "40-icons-sigils/out/cast_sigil-varn_v2a.png", "Sigil: Varn, a cracked egg", "sigils v2a"),
     ("cast/cast_sigil-ashara.png", AGENT / "40-icons-sigils/out/cast_sigil-ashara_v1.png", "Sigil: Ashara, her burning eye", "sigils v1"),

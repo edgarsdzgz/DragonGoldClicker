@@ -441,6 +441,12 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `sound/amb_forge.m4a` | 8.00 s | Loop, 8 s, seamless: the forge, the bellows every few seconds | sound batch 2 v1 |
 | `sound/amb_night-wind.m4a` | 8.00 s | Loop, 8 s, seamless: night wind. Mastered loud; play it well under the rest (owner, 2026-10-27) | sound batch 2 v1 |
 | `sound/amb_horde-drums.m4a` | 8.00 s | Loop, 8 s, seamless: the horde's drums far off, 12 beats at 90 a minute | sound batch 2 v1 |
+| `sound/sfx_boss-arrives.m4a` | 5.20 s | A boss reaches the gate: two drums, the horde's war horn (low, out of tune on purpose), a third drum | sound batch 3 v1 |
+| `sound/sfx_miniboss-arrives.m4a` | 3.56 s | A mini-boss reaches the gate: one drum, one shorter blast of the war horn | sound batch 3 v1 |
+| `sound/sfx_boss-falls.m4a` | 4.56 s | A boss or mini-boss falls, on its death strip: lands at 250 ms, unmade at 375 ms, then Draconia's horn answers | sound batch 3 v1 |
+| `sound/sfx_varn-breath.m4a` | 0.80 s | Varn's breath: a draw of air while he rears (167 ms), then a short flame. Mastered soft: every 3 s | sound batch 3 v1 |
+| `sound/sfx_claw-sharpen.m4a` | 1.20 s | Sharpening the claws: two whetstone strokes, then the edge rings | sound batch 3 v1 |
+| `sound/sfx_claw-reforge.m4a` | 3.80 s | Reforging the claws: three anvil blows, the quench's hiss, an ember's glow | sound batch 3 v1 |
 | `cast/cast_sigil-varn.png` | 10x10 | Sigil: Varn, a cracked egg | sigils v2a |
 | `cast/cast_sigil-ashara.png` | 10x10 | Sigil: Ashara, her burning eye | sigils v1 |
 | `cast/cast_sigil-thornwick.png` | 10x10 | Sigil: Thornwick, his scorched hat | sigils v1 |
