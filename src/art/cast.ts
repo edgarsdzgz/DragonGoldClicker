@@ -19,6 +19,14 @@ export function portraitSprite(who: CastId, mood?: Mood): SpriteId {
   return `bust_${who}` as SpriteId
 }
 
+/** The speaker's portrait with the mouth moving, shown in turn with the face while a line types; the
+ *  face itself where there is no talking frame (the Gate's emblem) */
+export function talkSprite(who: CastId, mood?: Mood): SpriteId {
+  const face = portraitSprite(who, mood)
+  const talking = `${face}_talk`
+  return talking in SPRITES ? (talking as SpriteId) : face
+}
+
 /** The speaker's sigil, worn beside their name; the Gate has none */
 export function sigilSprite(who: CastId): SpriteId | null {
   if (who === 'gate') return null

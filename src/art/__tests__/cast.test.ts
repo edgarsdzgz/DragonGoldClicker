@@ -1,5 +1,5 @@
 import { SPRITES } from '../manifest'
-import { portraitSprite, sigilSprite } from '../cast'
+import { portraitSprite, sigilSprite, talkSprite } from '../cast'
 import { lineMood, MOODS } from '../../types/cast'
 import type { CastId } from '../../types/cast'
 import { SCENES, BREACH_SCENES } from '../../data/story/lines'
@@ -27,6 +27,22 @@ describe('the cast art', () => {
     expect(portraitSprite('thornwick', 'alarmed')).toBe('bust_thornwick_startled')
     expect(portraitSprite('mirael')).toBe('bust_mirael')
     expect(portraitSprite('gate', 'grieving')).toBe('cast_emblem-gate')
+  })
+
+  it('gives every face a talking frame of its own', () => {
+    for (const who of PEOPLE) {
+      for (const mood of [undefined, ...MOODS]) {
+        const face = portraitSprite(who, mood)
+        const talking = talkSprite(who, mood)
+        expect(talking).toBe(`${face}_talk`)
+        expect(SPRITES[talking]).toBeDefined()
+      }
+    }
+    expect(talkSprite('varn', 'determined')).toBe('bust_varn_fierce_talk')
+  })
+
+  it('keeps the Gate still: its emblem has no mouth', () => {
+    expect(talkSprite('gate', 'alarmed')).toBe('cast_emblem-gate')
   })
 
   it('has a sigil for everyone but the Gate', () => {

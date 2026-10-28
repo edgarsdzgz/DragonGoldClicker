@@ -1,4 +1,4 @@
-import { dialogPaging } from '../dialogPaging'
+import { dialogPaging, LETTERS_PER_MOUTH, mouthOpen } from '../dialogPaging'
 import { SCENES } from '../../data/story/lines'
 
 describe('dialogPaging', () => {
@@ -27,5 +27,18 @@ describe('dialogPaging', () => {
       if (!scene) continue
       expect(dialogPaging(scene.lines.length, 0, scene.cutscene).canSkip).toBe(false)
     }
+  })
+})
+
+describe('mouthOpen', () => {
+  it('opens and shuts every few letters while the line types', () => {
+    const line = 'Shields up, little ones!'.length
+    const frames = Array.from({ length: 16 }, (_, n) => mouthOpen(n, line))
+    expect(frames).toEqual([...Array(4).fill(false), ...Array(4).fill(true), ...Array(4).fill(false), ...Array(4).fill(true)])
+    expect(LETTERS_PER_MOUTH).toBe(4)
+  })
+
+  it('rests shut once the line is whole, however long it is', () => {
+    for (let length = 0; length < 12; length++) expect(mouthOpen(length, length)).toBe(false)
   })
 })

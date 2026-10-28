@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet, PixelRatio } from 'react-native'
 import { PixelSprite } from './PixelSprite'
 import { SPRITES, fitScale } from '../art'
-import { portraitSprite } from '../art/cast'
+import { portraitSprite, talkSprite } from '../art/cast'
 import type { CastId, Mood } from '../types/cast'
 
 /** A lone speaker's height, in points; two on stage stand a little smaller to fit side by side */
@@ -15,6 +15,8 @@ interface DialogueCastProps {
   mood?: Mood
   /** Two on stage (left, right): the speaker is lit, the other waits in shadow, facing them */
   stage?: [CastId, CastId]
+  /** The speaker shows their talking frame (the mouth open), in turn with the face while a line types */
+  mouthOpen?: boolean
 }
 
 /** One standing bust, sized to a height in points at a whole art scale; flipped to face left on the right */
@@ -30,10 +32,11 @@ function Figure({ id, pts, flip, quiet }: { id: ReturnType<typeof portraitSprite
  * The people of a dialogue, standing on the box: the speaker alone at the left, or two facing each
  * other. Decorative: the speaker's name is written on the plate and their words in the box.
  */
-export function DialogueCast({ who, mood, stage }: DialogueCastProps) {
+export function DialogueCast({ who, mood, stage, mouthOpen }: DialogueCastProps) {
+  const speaker = mouthOpen ? talkSprite(who, mood) : portraitSprite(who, mood)
   if (stage && stage.includes(who)) {
     const [left, right] = stage
-    const face = (id: CastId) => (id === who ? portraitSprite(id, mood) : portraitSprite(id))
+    const face = (id: CastId) => (id === who ? speaker : portraitSprite(id))
     return (
       <View style={[styles.row, styles.pair]} pointerEvents="none">
         <Figure id={face(left)} pts={PAIR_PTS} quiet={left !== who} />
@@ -43,7 +46,7 @@ export function DialogueCast({ who, mood, stage }: DialogueCastProps) {
   }
   return (
     <View style={styles.row} pointerEvents="none">
-      <Figure id={portraitSprite(who, mood)} pts={SOLO_PTS} />
+      <Figure id={speaker} pts={SOLO_PTS} />
     </View>
   )
 }

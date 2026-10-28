@@ -26,7 +26,7 @@ import { useHaptics, useSfx } from '../hooks'
 import { useReduceMotion } from '../hooks/useReduceMotion'
 import { useScreenReader } from '../hooks/useScreenReader'
 import { SOUND } from '../data/sounds'
-import { dialogPaging } from '../types/dialogPaging'
+import { dialogPaging, mouthOpen } from '../types/dialogPaging'
 import { lineMood } from '../types/cast'
 import type { CastId, Mood } from '../types/cast'
 
@@ -153,6 +153,8 @@ export function NpcDialog({
   const [progress, setProgress] = useState({ line: '', n: 0 })
   const typed = instant ? line.length : progress.line === line ? progress.n : 0
   const typing = typed < line.length
+  // The mouth moves with the letters, so it rests shut when the line is done (and never moves when instant)
+  const talking = mouthOpen(typed, line.length)
   useEffect(() => {
     // Closed: forget the line, so a scene that comes back (a second Breach) types it out again
     if (!visible) {
@@ -241,7 +243,9 @@ export function NpcDialog({
           pointerEvents="none"
           style={[styles.scene, { opacity: castOpacity, transform: [{ translateY: riseY }] }]}
         >
-          {who && <DialogueCast who={who} mood={lineMood(shownPage, mood, lineMoods)} stage={stage} />}
+          {who && (
+            <DialogueCast who={who} mood={lineMood(shownPage, mood, lineMoods)} stage={stage} mouthOpen={talking} />
+          )}
 
           <View style={styles.box}>
             {/* The name plate rides the box's top edge, on the speaker's side */}
