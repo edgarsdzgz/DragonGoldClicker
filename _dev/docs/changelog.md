@@ -2,6 +2,15 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Sound batch 3: bosses, Varn, the claws (2026-10-28)
+- Made in-house like batches 1 and 2 (`_dev/art/agent/54-sound-3`), locked by the owner
+- A boss sets out for the gate to the horde's war horn over drums, a mini-boss to one shorter blast (no
+  monster voices); with reduced motion the horn sounds as it takes the road
+- A boss or mini-boss falls on its death strip's frames, and Draconia's horn answers
+- Varn's breath sounds each time it lands (soft: he breathes every 3 seconds)
+- Sharpening the claws is a whetstone; reforging past Ancient is the anvil, the quench and an ember's glow.
+  Both replace the stock coin
+
 ### Every locked picture wired, or set aside with its reason (2026-10-28)
 - The art audit: 237 of the 1,174 locked sprites were never drawn. Batches 6 and 7 (imported
   2026-10-27) were the gap; they are now in the game (art/events.ts):
