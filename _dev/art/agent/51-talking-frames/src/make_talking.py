@@ -1,4 +1,10 @@
-"""Talking frames, v2, 2026-10-28: a second frame of every face, swapped while a line types.
+"""Talking frames, v3, 2026-10-28: a second frame of every face, swapped while a line types.
+
+v3 (owner, 2026-10-28: angry "teeth should disappear AND the mouth should open to talk, like alarmed, but because
+it's wider it should read like yelling"): the teeth go dark and open a row down under them, a wide-topped yell.
+talk_mouth(wide_yell=True) opens the corners too (the board's alternative). Mirael's and Sera's alarmed faces are
+redrawn (PENDING below): Mirael without the lip corners, Sera with a row of snout between nose and gasp, which
+had read as "a giant bouncing nose". v2 frames stay as *_talk_v2.png.
 
 v2 (owner, 2026-10-28: Rodain, Mirael, Kael, Thornwick and Sera "look like they have a mustache"): a pale row
 above a dark one reads as a mustache at this size. Bared teeth no longer get dark opened under them; the teeth
@@ -14,12 +20,12 @@ Drawn on the locked images in official/cast; only the mouth changes (the Hollow 
 face). One rule covers the faces with a mouth, from each bust's mouth (the anatomy in 50-expressions-set):
 - a mouth that is shut opens by a row below (its corners stay, so a smile opens into a smile);
 - a mouth already open (a gasp, a roar) opens a row taller;
-- bared teeth (the angry faces) go dark;
+- bared teeth (the angry faces) go dark and open a row down: a yell;
 - a face whose mouth is not drawn (Pyreth's snout, Kael's and Mirael's lips) opens a small dark mouth.
 Ashara's furnace flares instead (it grows a row taller and burns hotter). The Hollow Knight has no mouth: its
 light flickers (a glow around the light goes out, or comes up; the empty slit shows a dim light).
 
-Output: out/bust_<id>[_<face>]_talk_v2.png. preview/: x8 of each. Run: python src/make_talking.py
+Output: out/bust_<id>[_<face>]_talk_v3.png. preview/: x8 of each. Run: python src/make_talking.py
 """
 import pathlib
 import sys
@@ -34,13 +40,16 @@ sys.path.insert(0, str(AGENT / "00-foundation"))
 from pixkit import PALETTE, upscale  # noqa: E402
 
 W = 22
-VERSION = 2
+VERSION = 3
 INK = PALETTE["ink"]
 TEETH = PALETTE["parch3"]
 FACES = ["neutral", "happy", "grieving", "angry", "alarmed", "worried", "determined"]
 # Faces locked before the standard set keep their own names (src/art/cast.ts FACE_FILE)
 FACE_FILE = {("varn", "determined"): "fierce", ("sera", "determined"): "roaring",
              ("thornwick", "alarmed"): "startled"}
+# Faces redrawn but not locked yet: their frames are drawn on the new face (drop each once it is in official/)
+PENDING = {("mirael", "alarmed"): AGENT / "42-expressions" / "out" / "bust_mirael_alarmed_v2.png",
+           ("sera", "alarmed"): AGENT / "50-expressions-set" / "out" / "bust_sera_alarmed_v2.png"}
 PEOPLE = ["pyreth", "rodain", "mirael", "kael", "lirae", "varn", "ashara", "thornwick", "sera", "hollow-knight"]
 
 
@@ -88,7 +97,7 @@ def skin_left(img, x, y):
     raise ValueError(f"no skin left of {(x, y)}")
 
 
-def talk_mouth(img, neutral, m):
+def talk_mouth(img, neutral, m, wide_yell=False):
     out = img.copy()
     cols, rows = range(m.x0, m.x1 + 1), range(m.y0, m.y1 + 1)
     skin = img.getpixel((m.x0 - 1, m.y))
@@ -104,9 +113,15 @@ def talk_mouth(img, neutral, m):
         return out
     teeth = [(x, y) for x in cols for y in rows
              if rgb(img.getpixel((x, y))) == TEETH and img.getpixel((x, y)) != neutral.getpixel((x, y))]
-    if teeth:                                                           # bared teeth: a shout through them
+    if teeth:                                                           # bared teeth: a yell
         for c in teeth:
             out.putpixel(c, INK + (255,))
+        y = max(ty for _, ty in teeth)
+        xs = [tx for tx, ty in teeth if ty == y]
+        if wide_yell:                                                   # the corners open too
+            xs = [x for x in range(min(xs) - 1, max(xs) + 2) if is_ink(img.getpixel((x, y)))]
+        for x in xs:
+            out.putpixel((x, y + 1), INK + (255,))
         return out
     marked = [x for x in cols if feature[x]]
     if not marked:                                                      # no mouth drawn: a small dark one
@@ -175,7 +190,7 @@ def pairs():
         neutral = Image.open(OFFICIAL / "bust_{}.png".format(bid)).convert("RGBA")
         for face in FACES:
             stem = file_of(bid, face)
-            img = Image.open(OFFICIAL / f"{stem}.png").convert("RGBA")
+            img = Image.open(PENDING.get((bid, face), OFFICIAL / f"{stem}.png")).convert("RGBA")
             yield bid, face, img, talk(bid, img, neutral), stem
 
 
