@@ -67,3 +67,11 @@ The main theme, "Refusing the Ultimatum", plays on the title and on every screen
 The music now follows the screen (`src/data/music.ts`, `SCREEN_MUSIC`): a delivered track is wired by adding
 its screen there, with a crossfade. Before licensing a track, check its license against
 `_dev/docs/music-licenses.md`.
+
+## Kept for later (no slot yet)
+
+Cleared tracks the owner wants to keep for a place the game does not have yet.
+
+| Track | For | License | File |
+|---|---|---|---|
+| "Camelot Monastery", Darren Curtis | Church music: a church, temple or other holy place, if the game gets one (none yet; the only holy place is a flavor line, "A crumbling shrine watched the empty road.") | His Materials Release, older wording (as 9b); kept in `_dev/docs/licenses/`; the owner signs it. Credit: "Camelot Monastery by Darren Curtis" | `~/Downloads/Camelot Monastery (Darren Curtis Music)/` (WAV, 1:44; also MP3 and OGG) |
