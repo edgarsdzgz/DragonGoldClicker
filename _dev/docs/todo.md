@@ -15,8 +15,9 @@ Thornwick, Sera and the Hollow Knight.
       Unmaking tier (no wave sends it yet); a second expression for each bust but the Hollow Knight; story
       pictures for all 17 remaining scenes. Not shown in the game yet: the story pictures, the expressions,
       the new sigils.
-- [ ] **Talking frames:** a second frame of every face with the mouth open (the Hollow Knight's visor light
-      flickers instead), swapped while a line types. Next up.
+- [x] **Talking frames:** a second frame of every face with the mouth open (the Hollow Knight's visor light
+      flickers instead), swapped every 4 letters while a line types. Locked 2026-10-28 (v3: angry faces yell),
+      with Mirael's and Sera's alarmed faces redrawn; in the dialogue box.
 - [ ] **Chapters 9 to 13** (approved 2026-10-27): a story picture for each of the five new chapters, and a
       small Varn on the Warfront wall (he strikes on his own).
 - [ ] **The final boss:** only if I decide I want one (who began the Unmaking is still open).
