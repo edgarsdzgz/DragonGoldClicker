@@ -42,6 +42,8 @@ import { LodgeInterior } from './shop/LodgeInterior'
 import { PostInterior } from './shop/PostInterior'
 import { DraconiaHallInterior } from './shop/DraconiaHallInterior'
 import { LibrariumInterior } from './shop/LibrariumInterior'
+import { WizardTowerInterior } from './shop/WizardTowerInterior'
+import { WIZARD_TOWER_COST, TOWER_FIRE_BONUS } from '../types/allies'
 import { mapStyles } from './shop/mapStyles'
 import { CityMap } from './shop/CityMap'
 import type { CityPlot } from './shop/CityMap'
@@ -87,8 +89,8 @@ function InteriorBody({ id }: { id: BuildingId }) {
     case 'lodge': return <LodgeInterior />
     case 'outpost': return <PostInterior />
     case 'librarium': return <LibrariumInterior />
+    case 'wizard': return <WizardTowerInterior />
     case 'housing':
-    case 'wizard':
     case 'tower_east':
     case 'tower_west':
       return <ComingSoonInterior />
@@ -110,6 +112,7 @@ export function ShopScreen() {
     buildOrUpgradePost,
     buildDraconiaHall,
     buildLibrarium,
+    buildWizardTower,
   } = useGame()
   const haptics = useHaptics()
   // Building plays its own sound when it stands (hooks/useGameSounds)
@@ -288,16 +291,16 @@ export function ShopScreen() {
       id: 'wizard',
       name: "Wizard's Tower",
       icon: 'sparkles',
-      description: 'A towering spire of arcane power. Enchant weapons and unlock powerful bonuses.',
+      description: `Thornwick's tower, high up and well away from anything that burns. His fire makes your army's volley ${Math.round(TOWER_FIRE_BONUS * 100)}% stronger.`,
       accentColor: colors.building.wizard,
-      isBuilt: false,
-      visible: false, // fogged until a beat reveals it
-      cost: null,
-      canAfford: false,
-      onBuild: () => {},
+      isBuilt: state.wizardTowerBuilt,
+      visible: revealed('wizard', state.wizardTowerBuilt),
+      cost: WIZARD_TOWER_COST,
+      canAfford: state.inspiration >= WIZARD_TOWER_COST,
+      onBuild: buildWizardTower,
       hasAction: false,
       resourceKeys: ['inspiration'],
-      statusLabel: 'Coming soon',
+      statusLabel: state.wizardTowerBuilt ? "Thornwick's fire burns" : undefined,
     },
     tower_east: {
       id: 'tower_east',
@@ -347,7 +350,7 @@ export function ShopScreen() {
   const [purchaseTarget, setPurchaseTarget] = React.useState<BuildingId | null>(null)
   const purchaseBuilding = purchaseTarget ? buildings[purchaseTarget] ?? null : null
 
-  const comingSoonIds: BuildingId[] = ['housing', 'wizard', 'tower_east', 'tower_west']
+  const comingSoonIds: BuildingId[] = ['housing', 'tower_east', 'tower_west']
 
   // Guided tutorial: tell it when the Garrison sheet is open, and scroll a target into view
   const { registry: coachRegistry, setSheetOpen } = useCoach()

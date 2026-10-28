@@ -102,7 +102,8 @@ export const colors = {
     draconia: '#a78bfa',
     librarium: '#38bdf8',
     housing: '#c084fc',
-    wizard: '#e879f9',
+    // Indigo, Thornwick's starry robe (magenta belongs to the Unmaking)
+    wizard: '#818cf8',
     tower: '#fb923c',
   },
 

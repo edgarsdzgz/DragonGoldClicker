@@ -46,6 +46,7 @@ import {
   getOfflineUpgradeCost,
   LIBRARIUM_COST,
 } from '../types/game'
+import { WIZARD_TOWER_COST } from '../types/allies'
 
 import { GameScreen } from '../screens/GameScreen'
 import { ForageScreen } from '../screens/ForageScreen'
@@ -129,6 +130,9 @@ function useBuildTabBadge(): boolean {
     // Librarium: can build or can research
     if (!state.librariumBuilt && isBuildingRevealed(state, 'librarium') && g >= LIBRARIUM_COST) return true
     if (canStudyAny(state)) return true
+
+    // Wizard's Tower: can build
+    if (!state.wizardTowerBuilt && isBuildingRevealed(state, 'wizard') && g >= WIZARD_TOWER_COST) return true
 
     return false
   }, [state])

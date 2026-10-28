@@ -105,13 +105,13 @@ describe('what each study does', () => {
   it('Tempered Steel: an armed soldier hits 75% harder', () => {
     expect(swordBonusNow(NONE)).toBe(0.5)
     expect(swordBonusNow(studied('tempered_steel'))).toBe(0.75)
-    const army = { fighters: 0, soldiers: { conscripts: 0, footmen: 0, knights: 2 }, armoryGear: { swords: 2, shields: 0 } }
+    const army = { fighters: 0, soldiers: { conscripts: 0, footmen: 0, knights: 2 }, armoryGear: { swords: 2, shields: 0 }, wizardTowerBuilt: false }
     expect(armyVolleyDamage({ ...army, completedResearch: [] })).toBe(6)
     expect(armyVolleyDamage({ ...army, completedResearch: ['tempered_steel'] })).toBe(7)
   })
 
   it('Battle Drill: the volley deals 10% more', () => {
-    const army = { fighters: 10, soldiers: { conscripts: 0, footmen: 0, knights: 0 }, armoryGear: { swords: 0, shields: 0 } }
+    const army = { fighters: 10, soldiers: { conscripts: 0, footmen: 0, knights: 0 }, armoryGear: { swords: 0, shields: 0 }, wizardTowerBuilt: false }
     const plain = armyVolleyDamage({ ...army, completedResearch: [] })
     expect(armyVolleyDamage({ ...army, completedResearch: ['battle_drill'] })).toBeCloseTo(plain * 1.1)
   })

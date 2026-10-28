@@ -23,7 +23,7 @@ export type SystemId =
   | 'threatUnfloored'
 
 /** Buildings that start fogged on the Draconia map and are revealed by a beat */
-export type BuildingRevealId = 'forge' | 'keep' | 'lodge' | 'outpost' | 'librarium'
+export type BuildingRevealId = 'forge' | 'keep' | 'lodge' | 'outpost' | 'librarium' | 'wizard'
 
 /** City HP cannot drop below this until `threatUnfloored` (enforced in a later group) */
 export const HP_FLOOR = 50

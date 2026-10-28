@@ -3,6 +3,8 @@ import type { Ionicons } from '@expo/vector-icons'
 import type { BeatId } from '../../types/story'
 import type { CastId, Mood } from '../../types/cast'
 import type { SpriteId } from '../../art'
+import { PYRETH, RODAIN, MIRAEL, KAEL, LIRAE } from './speakers'
+import { NEW_CAST_SCENES } from './newCast'
 
 // =============================================================================
 // SCENE TEXT (prose only; triggers and unlocks live in types/story.ts)
@@ -36,13 +38,10 @@ export interface SceneDef {
   cutscene?: boolean
   /** Coach target the scene talks about: it shows through the dim with a box around it */
   highlight?: string
+  /** The next speaker's scene, played right after on the same stage: a conversation */
+  then?: SceneDef
 }
 
-const PYRETH = { speaker: 'Elder Pyreth', who: 'pyreth', icon: 'person' } as const
-const RODAIN = { speaker: 'Captain Rodain', who: 'rodain', icon: 'shield' } as const
-const MIRAEL = { speaker: 'Scout Mirael', who: 'mirael', icon: 'compass' } as const
-const KAEL = { speaker: 'Kael Ironwright', who: 'kael', icon: 'hammer' } as const
-const LIRAE = { speaker: 'Lirae the Ink-Wing', who: 'lirae', icon: 'book' } as const
 
 /** Silent beats (mend_the_walls, the_keep_stands) have no scene and no entry here */
 export const SCENES: Partial<Record<BeatId, SceneDef>> = {
@@ -231,10 +230,16 @@ export const SCENES: Partial<Record<BeatId, SceneDef>> = {
       "The number beside the wall counts how far they have come. The Ink-Wing's books may be how we keep pace.",
     ],
   },
+  ...NEW_CAST_SCENES,
 }
 
 export function getScene(id: string): SceneDef | undefined {
   return SCENES[id as BeatId]
+}
+
+/** A scene and every scene that follows it in its conversation, in order */
+export function sceneParts(scene: SceneDef): SceneDef[] {
+  return [scene, ...(scene.then ? sceneParts(scene.then) : [])]
 }
 
 /** What Pyreth says over the first offline report once the Keep stands */

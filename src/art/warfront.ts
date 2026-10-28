@@ -1,7 +1,7 @@
 import { MAP_GATE, SPRITES } from './manifest'
 import type { SpriteId } from './manifest'
 import type { ClawTier } from '../types/claws'
-import { hordeLevel } from '../types/horde'
+import { UNMAKING_DEEPEST_LEVEL, hordeLevel } from '../types/horde'
 
 // =============================================================================
 // THE WARFRONT'S ART: the map's scale, the gate by the wall's HP, each monster's sprites
@@ -86,7 +86,7 @@ export type MobTier = 'weak' | 'strong' | 'stronger'
 
 /** The horde level from which its monsters carry dark cracks, then glowing ones (owner, 2026-10-27) */
 export const STRONG_FROM_LEVEL = 5
-export const STRONGER_FROM_LEVEL = 10
+export const STRONGER_FROM_LEVEL = UNMAKING_DEEPEST_LEVEL
 
 /** How deep the Unmaking marks the horde's monsters at its level; a Breach pushes it back too. A look only. */
 export function mobTier(hordeKills: number): MobTier {

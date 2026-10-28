@@ -50,7 +50,8 @@ describe('the story: Dragonsteel', () => {
     expect(b.trigger(make({ beatsSeen: ['beyond_the_walls'], clawLevel: MAX_CLAW_LEVEL - 1 }))).toBe(false)
     expect(b.trigger(make({ beatsSeen: ['beyond_the_walls'], clawLevel: MAX_CLAW_LEVEL }))).toBe(true)
     expect(b.dwellSec).toBe(60)
-    expect(STORY_BEATS[STORY_BEATS.length - 1].id).toBe('dragonsteel')
+    // Varn's chapter follows it
+    expect(STORY_BEATS[STORY_BEATS.findIndex((x) => x.id === 'dragonsteel') + 1].id).toBe('small_wings')
     expect(getScene('dragonsteel')?.speaker).toMatch(/Kael/)
   })
 

@@ -3,6 +3,7 @@ import { currentMonster } from './monsters'
 import { applyCityDamage } from './cityHp'
 import { isSystemOn } from './systems'
 import { resolveBreach, wardLeft } from './breach'
+import { wallBlowShare } from './allies'
 
 export { HORDE_LEVEL_KILLS, HORDE_STRENGTH_PER_LEVEL, hordeLevel, hordeStrength } from './horde'
 
@@ -13,9 +14,9 @@ export { HORDE_LEVEL_KILLS, HORDE_STRENGTH_PER_LEVEL, hordeLevel, hordeStrength 
 /** Seconds between a monster's strikes. Its first comes this long after it arrives. */
 export const WALL_STRIKE_SEC = 5
 
-/** Wall damage of one strike by the monster at the gate */
+/** Wall damage of one strike by the monster at the gate (less behind Sera's shield wall) */
 export function wallStrikeDamage(s: GameState): number {
-  return currentMonster(s).wallStrike
+  return currentMonster(s).wallStrike * wallBlowShare(s)
 }
 
 /**

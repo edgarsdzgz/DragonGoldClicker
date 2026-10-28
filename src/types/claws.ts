@@ -1,6 +1,7 @@
 import type { GameState } from './state'
 import { roundInsp } from './utils'
 import { getResearchBonuses } from './research'
+import { asharaTapBonus } from './allies'
 
 // =============================================================================
 // THE DRAGON'S CLAWS (core-tap layer 3): the player's own power curve
@@ -92,9 +93,9 @@ export function sharpenClaws(s: GameState): GameState {
 /** A double strike (Weak Points) deals this many times a tap's damage */
 export const DOUBLE_STRIKE = 2
 
-/** One tap's damage with the Librarium's studies (Dragon Anatomy, Wyrm's Fury) */
-export function tapDamageNow(s: Pick<GameState, 'tapDamage' | 'completedResearch'>): number {
-  return Math.round(s.tapDamage * (1 + getResearchBonuses(s.completedResearch).tapDamageBonus) * 100) / 100
+/** One tap's damage with the Librarium's studies (Dragon Anatomy, Wyrm's Fury) and Ashara's strength */
+export function tapDamageNow(s: Pick<GameState, 'tapDamage' | 'completedResearch' | 'beatsSeen'>): number {
+  return Math.round(s.tapDamage * (1 + getResearchBonuses(s.completedResearch).tapDamageBonus + asharaTapBonus(s)) * 100) / 100
 }
 
 /** Whether a tap strikes for double, for a roll in [0, 1) (Weak Points; never before it) */
@@ -103,7 +104,7 @@ export function rollsDouble(s: Pick<GameState, 'completedResearch'>, roll: numbe
 }
 
 /** What one tap deals: its damage now, doubled on a double strike */
-export function tapHit(s: Pick<GameState, 'tapDamage' | 'completedResearch'>, double: boolean): number {
+export function tapHit(s: Pick<GameState, 'tapDamage' | 'completedResearch' | 'beatsSeen'>, double: boolean): number {
   return tapDamageNow(s) * (double ? DOUBLE_STRIKE : 1)
 }
 

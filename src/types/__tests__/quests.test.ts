@@ -12,7 +12,7 @@ const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, 
 const AFTER_RENOWN = ['prologue', 'elder_approaches', 'first_renown']
 
 describe('the quest line', () => {
-  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls, Sharpen Your Claws, Open the Gates, Raise the Garrison, First Soldiers, Light the Forge, Arm the Ranks, Restore the Keep, Raise the Lodge, First Trappers, Raise the Librarium, First Study, Raise the Outpost, First Expedition, Reforge the Claws', () => {
+  it('runs Defend the Wall, Raise the Guard, Hold the Line, Fill the Stores, Mend the Walls, Sharpen Your Claws, Open the Gates, Raise the Garrison, First Soldiers, Light the Forge, Arm the Ranks, Restore the Keep, Raise the Lodge, First Trappers, Raise the Librarium, First Study, Raise the Outpost, First Expedition, Reforge the Claws, Raise the Tower', () => {
     expect(QUESTS.map((q) => [q.id, q.title, q.goals.map((g) => g.label)])).toEqual([
       ['defend_the_wall', 'Defend the Wall', ['Defeat 4 kobolds']],
       ['raise_the_guard', 'Raise the Guard', ['Rally 2 fighters']],
@@ -33,6 +33,7 @@ describe('the quest line', () => {
       ['raise_the_outpost', 'Raise the Outpost', ['Build the Outpost']],
       ['first_expedition', 'First Expedition', ['Bring an expedition home']],
       ['reforge_the_claws', 'Reforge the Claws', ['Reforge your claws at the Forge']],
+      ['raise_the_tower', 'Raise the Tower', ["Build the Wizard's Tower"]],
     ])
   })
 

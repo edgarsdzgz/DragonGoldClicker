@@ -2,7 +2,7 @@ import type { GameState } from '../../types/state'
 import type { SystemId } from '../../types/systems'
 import { isSystemOn } from '../../types/systems'
 import { STORY_BEATS } from '../../types/story'
-import { SCENES } from './lines'
+import { SCENES, sceneParts } from './lines'
 import type { SceneDef } from './lines'
 
 // =============================================================================
@@ -14,11 +14,11 @@ export interface JournalStoryEntry {
   scene: SceneDef
 }
 
-/** Every seen scene, in story order, re-readable in full (caught-up beats included) */
+/** Every seen scene, in story order, re-readable in full (caught-up beats included); each speaker of a conversation is its own entry */
 export function getStoryEntries(s: GameState): JournalStoryEntry[] {
   return STORY_BEATS
     .filter((b) => s.beatsSeen.includes(b.id) && SCENES[b.id])
-    .map((b) => ({ id: b.id, scene: SCENES[b.id]! }))
+    .flatMap((b) => sceneParts(SCENES[b.id]!).map((scene, i) => ({ id: i === 0 ? b.id : `${b.id}-${i}`, scene })))
 }
 
 export interface HowItWorksCard {

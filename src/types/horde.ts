@@ -21,6 +21,9 @@ export function hordeStrength(hordeKills: number): number {
   return 1 + HORDE_STRENGTH_PER_LEVEL * (hordeLevel(hordeKills) - 1)
 }
 
+/** The horde level from which the Unmaking marks its monsters deepest, with glowing cracks (owner, 2026-10-27) */
+export const UNMAKING_DEEPEST_LEVEL = 10
+
 /** A Breach pushes the horde back by at least this many levels */
 export const BREACH_MIN_PUSHBACK_LEVELS = 2
 

@@ -136,6 +136,8 @@ export function claimExpedition(s: GameState, id: number, now: number, roll: num
     villagersRescued: s.villagersRescued + found,
     expeditionDryStreak: found === 0 ? s.expeditionDryStreak + 1 : 0,
     expeditionReport: { expeditionId: id, villagersFound: found },
+    // An expedition coming home is a story trigger (chapter 11)
+    lastExpeditionHomeAt: s.playSeconds,
   }
 }
 

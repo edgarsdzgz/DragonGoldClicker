@@ -13,7 +13,7 @@ import { MAX_CLAW_LEVEL } from './claws'
 // the congratulating) or shows a "Quest complete" toast. Daily and weekly quests will use the same
 // shape later.
 
-export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers' | 'raise_the_librarium' | 'first_study' | 'raise_the_outpost' | 'first_expedition' | 'reforge_the_claws'
+export type QuestId = 'defend_the_wall' | 'raise_the_guard' | 'hold_the_line' | 'fill_the_stores' | 'mend_the_walls' | 'sharpen_your_claws' | 'open_the_gates' | 'raise_the_garrison' | 'first_soldiers' | 'light_the_forge' | 'arm_the_ranks' | 'restore_the_keep' | 'raise_the_lodge' | 'first_trappers' | 'raise_the_librarium' | 'first_study' | 'raise_the_outpost' | 'first_expedition' | 'reforge_the_claws' | 'raise_the_tower'
 
 export interface QuestGoal {
   /** What to do, shown on the objective line: "Defeat 4 kobolds" */
@@ -165,6 +165,12 @@ export const QUESTS: QuestDef[] = [
     id: 'reforge_the_claws', title: 'Reforge the Claws',
     goals: [{ label: 'Reforge your claws at the Forge', target: 1, progress: (s) => Math.max(0, s.clawLevel - MAX_CLAW_LEVEL) }],
     offeredWhen: (s) => s.beatsSeen.includes('dragonsteel'),
+  },
+  {
+    // Chapter 11: Thornwick asks for a tower (types/allies.ts)
+    id: 'raise_the_tower', title: 'Raise the Tower',
+    goals: [{ label: "Build the Wizard's Tower", target: 1, progress: (s) => (s.wizardTowerBuilt ? 1 : 0) }],
+    offeredWhen: (s) => s.beatsSeen.includes('the_exile'),
   },
 ]
 

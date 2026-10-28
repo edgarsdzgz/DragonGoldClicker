@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { SPRITES, SEAL_BUILD_TIMING } from '../../art/manifest'
-import { SCENES, BREACH_SCENES } from '../../data/story/lines'
+import { SCENES, BREACH_SCENES, sceneParts } from '../../data/story/lines'
 import type { SceneDef } from '../../data/story/lines'
 import { firstAppearances, sceneSting } from '../../data/story/stings'
 import { STORY_BEATS } from '../story'
@@ -11,7 +11,8 @@ import { SPLASH_BEAT_SOUNDS, AMBIENT_MIX, CAST_STINGS, beatFrameSounds } from '.
 const ROOT = join(__dirname, '..', '..', '..')
 
 describe('story pictures', () => {
-  const all = [...Object.entries(SCENES), ...BREACH_SCENES.first.map((s, i) => [`breach first ${i}`, s] as const),
+  // Every speaker's scene, a conversation's later ones included
+  const all = [...Object.entries(SCENES).flatMap(([id, s]) => sceneParts(s!).map((p, i) => [`${id} ${i}`, p] as const)), ...BREACH_SCENES.first.map((s, i) => [`breach first ${i}`, s] as const),
     ...BREACH_SCENES.again.map((s, i) => [`breach again ${i}`, s] as const)]
 
   it("every scene has a picture, and every picture is drawn (130x96)", () => {
@@ -30,11 +31,11 @@ describe('story pictures', () => {
     expect(BREACH_SCENES.again.map((s) => s.picture)).toEqual(['story_breach', 'story_ancient-magic'])
   })
 
-  it('all nineteen pictures are used', () => {
+  it('all twenty-four pictures are used', () => {
     const used = new Set(all.map(([, s]) => s!.picture))
     const drawn = Object.keys(SPRITES).filter((k) => k.startsWith('story_'))
     expect([...used].sort()).toEqual(drawn.sort())
-    expect(drawn).toHaveLength(19)
+    expect(drawn).toHaveLength(24)
   })
 })
 
@@ -55,10 +56,16 @@ describe('character stings', () => {
     expect(sceneSting('prologue', order, scenes)).toBeUndefined()
   })
 
-  it('Sera, Thornwick and the Hollow Knight have stings; none of them has a scene yet', () => {
+  it('Sera, Thornwick and the Hollow Knight have stings, each heard in their first chapter and no other', () => {
     expect(Object.keys(CAST_STINGS).sort()).toEqual(['hollow-knight', 'sera', 'thornwick'])
-    for (const b of STORY_BEATS) expect([b.id, sceneSting(b.id)]).toEqual([b.id, undefined])
+    const stung: Partial<Record<BeatId, unknown>> = {
+      she_did_not_ask: CAST_STINGS.sera, the_exile: CAST_STINGS.thornwick, hollow_knight: CAST_STINGS['hollow-knight'],
+    }
+    for (const b of STORY_BEATS) expect([b.id, sceneSting(b.id)]).toEqual([b.id, stung[b.id]])
     expect(firstAppearances('elder_approaches')).toEqual(['pyreth'])
+    // A conversation's later speaker counts as on stage
+    expect(firstAppearances('small_wings')).toEqual(['varn'])
+    expect(firstAppearances('the_eldest')).toEqual(['ashara'])
   })
 })
 

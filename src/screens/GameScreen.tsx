@@ -27,6 +27,7 @@ import type { WallReading } from '../art'
 import { WarfrontScene } from './warfront/WarfrontScene'
 import type { WarfrontSceneHandle } from './warfront/WarfrontScene'
 import { armySize, armyVolleyNow } from '../types/army'
+import { VARN_BREATH_TAPS, varnOnWall } from '../types/allies'
 import { battlefieldLayout, FLAVOR_H } from '../types/warfrontLayout'
 import { DevShortcut } from '../components/DevShortcut'
 import { warfrontReveal } from '../types/opening'
@@ -114,6 +115,19 @@ export function GameScreen() {
     }
   }, [state.allyStrikes, focused, army, volleyNow])
 
+  // Varn's breaths that landed (chapter 9): he breathes fire on the wall and his number floats up
+  const varnHere = varnOnWall(state)
+  const varnHit = tapDamageNow(state) * VARN_BREATH_TAPS
+  const varnBreathsSeen = useRef(state.varnBreaths)
+  useEffect(() => {
+    const landed = state.varnBreaths - varnBreathsSeen.current
+    varnBreathsSeen.current = state.varnBreaths
+    if (landed > 0 && focused) {
+      battlefieldRef.current?.showAllyHit(`-${varnHit.toFixed(2)}`)
+      sceneRef.current?.breathe()
+    }
+  }, [state.varnBreaths, focused, varnHit])
+
   // The wall on screen: dust where a monster's blow lands, and the wall falling at a breach
   const wallSeen = useRef<WallReading>({ hp: state.cityHp, breaches: state.breaches, startedAt: state.startedAt })
   useEffect(() => {
@@ -179,6 +193,7 @@ export function GameScreen() {
           wallTop={wallTop}
           gate={siegeOn ? gateState(state.cityHp, MAX_CITY_HP) : 'sound'}
           army={army}
+          varn={varnHere}
           repairing={repairing(siegeOn, state.repairers, state.cityHp, MAX_CITY_HP)}
           onMapTop={setMapTop}
         />

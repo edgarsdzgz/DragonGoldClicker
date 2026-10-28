@@ -189,6 +189,14 @@ export interface GameState {
   allyStrikes: number
   /** Monsters killed by fighters rather than by a tap, lifetime */
   allyKills: number
+  /** Varn's breaths of fire that have landed, lifetime (the Warfront plays each new one; types/allies.ts) */
+  varnBreaths: number
+  /** Thornwick's tower stands (chapter 11, types/allies.ts) */
+  wizardTowerBuilt: boolean
+  /** Play second the last expedition came home (0: never); a story trigger reads it */
+  lastExpeditionHomeAt: number
+  /** Play second the last boss or mini-boss fell at the gate (0: never); a story trigger reads it */
+  lastBossFellAt: number
   /** Save format version for migrations */
   saveMigrationVersion: number
 }
@@ -266,6 +274,10 @@ export const DEFAULT_GAME_STATE: GameState = {
   foodEventNote: null,
   allyStrikes: 0,
   allyKills: 0,
+  varnBreaths: 0,
+  wizardTowerBuilt: false,
+  lastExpeditionHomeAt: 0,
+  lastBossFellAt: 0,
   saveMigrationVersion: 1,
 }
 

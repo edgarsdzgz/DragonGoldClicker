@@ -29,6 +29,17 @@ export function fighterSprite(jabbing: boolean): SpriteId {
   return jabbing ? 'ppl_fighter_attack_anim' : 'ppl_fighter_idle'
 }
 
+/** Varn's sprite height, in art pixels */
+const VARN_H = 19
+
+/** Varn's perch (top-left map pixels): his feet on the top of the gatehouse tower, between the fighters */
+export const VARN_PERCH = { x: 59, y: GATE.y + 6 - VARN_H + 1 }
+
+/** Varn's sprite: perched, or rearing and breathing fire upward while a breath lands */
+export function varnSprite(breathing: boolean): SpriteId {
+  return breathing ? 'ppl_varn_breath_anim' : 'ppl_varn_idle'
+}
+
 /** Where a monster's blow lands on the wall (a center in map pixels), across the gatehouse */
 export function impactPoint(rand: number): { x: number; y: number } {
   return { x: Math.round(GATE.x + 45 + rand * 40), y: GATE.y + 22 }

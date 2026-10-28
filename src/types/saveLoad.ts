@@ -9,6 +9,7 @@ import {
 } from './game'
 import { migrateSave, LATEST_SAVE_VERSION } from './saveMigrations'
 import { armyRenownPerSec } from './army'
+import { hollowKnightAwayBonus } from './allies'
 import { mealCost } from './foodTick'
 import { wallWhileAway } from './timeAway'
 import type { WallAway } from './timeAway'
@@ -84,7 +85,8 @@ export function applyTimeAway(saved: GameState, now: number): LoadedGame {
         }
       }
 
-      earned = roundInsp(autoRate * inspSeconds * (1 + rb.offlineMultiplier))
+      // The Hollow Knight holds the gate while the player is away (chapter 13)
+      earned = roundInsp(autoRate * inspSeconds * (1 + rb.offlineMultiplier + hollowKnightAwayBonus(gameState)))
       if (earned > 0) {
         gameState.inspiration += earned
         gameState.totalInspirationEarned += earned

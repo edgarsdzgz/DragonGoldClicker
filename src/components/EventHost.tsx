@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useGame } from '../context/GameContext'
 import { useStory } from '../context/StoryContext'
-import { getScene, OFFLINE_FRAMING } from '../data/story/lines'
+import { getScene, sceneParts, OFFLINE_FRAMING } from '../data/story/lines'
 import { sceneSting } from '../data/story/stings'
 import type { SceneTab } from '../data/story/lines'
 import type { BeatId } from '../types/story'
@@ -41,6 +41,11 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
 
   const queued = scenes[0]
   const scene = queued ? getScene(queued.id) : undefined
+  // A conversation plays its speakers' scenes in turn on one stage; the step belongs to its queue entry
+  const [step, setStep] = useState({ uid: 0, at: 0 })
+  const parts = scene ? sceneParts(scene) : []
+  const at = queued && step.uid === queued.uid ? step.at : 0
+  const part = parts[at]
 
   const activeModal = useActiveEvent()
 
@@ -53,6 +58,11 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
     if (!queued.replay) onSceneClosed?.(queued.id)
     // Skip goes where dismiss goes, so a skipped scene never strands the player off a guided step
     if (scene?.navigateTo) onNavigate(scene.navigateTo)
+  }
+  // The next speaker of a conversation, or the end of the scene
+  const handlePartDone = () => {
+    if (queued && at + 1 < parts.length) setStep({ uid: queued.uid, at: at + 1 })
+    else handleSceneClose()
   }
 
   // The first offline report after the Keep stands is spoken over by Pyreth
@@ -77,25 +87,25 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
         onCollect={collectOffline}
         framing={offlineFramed ? undefined : OFFLINE_FRAMING}
       />
-      {scene && (
+      {part && (
         <NpcDialog
           key={queued?.uid}
           visible={activeModal === 'scene'}
-          npcName={scene.speaker}
-          icon={scene.icon}
-          who={scene.who}
-          mood={scene.mood}
-          lineMoods={scene.lineMoods}
-          stage={scene.stage}
-          title={scene.title}
-          picture={scene.picture}
-          sting={queued && !queued.replay ? sceneSting(queued.id) : undefined}
-          lines={queued?.alt && scene.altLines ? scene.altLines : scene.lines}
-          dismissLabel={scene.dismissLabel}
-          onDismiss={handleSceneClose}
+          npcName={part.speaker}
+          icon={part.icon}
+          who={part.who}
+          mood={part.mood}
+          lineMoods={part.lineMoods}
+          stage={part.stage}
+          title={part.title}
+          picture={part.picture}
+          sting={queued && !queued.replay && at === 0 ? sceneSting(queued.id) : undefined}
+          lines={queued?.alt && part.altLines ? part.altLines : part.lines}
+          dismissLabel={part.dismissLabel}
+          onDismiss={handlePartDone}
           onSkip={handleSceneClose}
-          cutscene={scene.cutscene}
-          highlight={scene.highlight}
+          cutscene={part.cutscene}
+          highlight={part.highlight}
         />
       )}
       {pendingFoodWarning > 0 && (

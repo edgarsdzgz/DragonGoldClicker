@@ -17,7 +17,7 @@ const TIER_DEPTH: Record<MobTier, number> = { weak: 0, strong: 1, stronger: 2 }
 /** Every building's level added up (the Keep's own upgrades are its time-away tiers) */
 const BUILDINGS = (s: GameState) =>
   s.barracksLevel + s.lodgeLevel + s.postLevel + s.offlineLevel +
-  Number(s.armoryBuilt) + Number(s.draconiaHallBuilt) + Number(s.librariumBuilt)
+  Number(s.armoryBuilt) + Number(s.draconiaHallBuilt) + Number(s.librariumBuilt) + Number(s.wizardTowerBuilt)
 
 const gate = (s: GameState) => (isSystemOn(s, 'siege') ? gateState(s.cityHp, MAX_CITY_HP) : 'sound')
 

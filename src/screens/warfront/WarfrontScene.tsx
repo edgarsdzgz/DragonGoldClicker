@@ -3,7 +3,7 @@ import { PixelRatio, StyleSheet, View } from 'react-native'
 import type { LayoutChangeEvent } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { Canvas, FilterMode, Image, MipmapMode, Rect } from '@shopify/react-native-skia'
-import { BREACH_CENTER, MAP_GATE, MAP_W, REPAIR_SPOTS, SPRITES, fighterSprite, gateSprite, impactPoint, stripMs, useSpriteImage, wallFighters } from '../../art'
+import { BREACH_CENTER, MAP_GATE, MAP_W, REPAIR_SPOTS, SPRITES, VARN_PERCH, fighterSprite, gateSprite, impactPoint, stripMs, useSpriteImage, varnSprite, wallFighters } from '../../art'
 import type { GateState } from '../../art'
 import { useAppActive } from '../../hooks/useAppActive'
 import { useReduceMotion } from '../../hooks/useReduceMotion'
@@ -20,10 +20,14 @@ const MAP_H = SPRITES.map_warfront_base.h
 /** The fallen wall stays on screen this long after its strip ends, before the patched gate shows */
 const BREACH_HOLD_MS = 1200
 const JAB_MS = stripMs('ppl_fighter_attack_anim')
+/** Varn holds his breath of fire a moment past the strip */
+const BREATH_MS = stripMs('ppl_varn_breath_anim') * 2
 
 export interface WarfrontSceneHandle {
   /** The army's volley landed: the fighters on the wall jab */
   volley: () => void
+  /** Varn's breath landed: he rears and breathes fire */
+  breathe: () => void
   /** A monster struck the wall */
   struck: () => void
   /** The wall fell */
@@ -38,6 +42,8 @@ interface WarfrontSceneProps {
   gate: GateState
   /** The army's size: up to four of them stand on the wall */
   army: number
+  /** Varn perches on the gatehouse tower (chapter 9) */
+  varn?: boolean
   /** Repairers are at work on the wall */
   repairing: boolean
   /** Told where the map's top edge is drawn, in this scene's space, whenever it moves */
@@ -48,12 +54,13 @@ interface WarfrontSceneProps {
  * The Warfront behind everything: the night map, the gate in the wall's state and its flickering
  * torches, drawn in one canvas with nearest-neighbor sampling. The wall lines up with `wallTop`, or
  * sits on the bottom edge when it would not fit; sky fills above the map and the wall's foot below
- * it. On the wall: the army's fighters (jabbing with each volley), repair sparkles, the dust of a
+ * it. On the wall: the army's fighters (jabbing with each volley), Varn on the gatehouse tower
+ * (breathing fire with each of his strikes), repair sparkles, the dust of a
  * monster's blow and the wall falling at a breach. Torches and sparkles hold still with Reduce
  * Motion, off screen and in the background. Decorative: the gate's state is read out by the Gate.
  */
 export const WarfrontScene = forwardRef<WarfrontSceneHandle, WarfrontSceneProps>(function WarfrontScene(
-  { unit, wallTop, gate, army, repairing, onMapTop },
+  { unit, wallTop, gate, army, varn = false, repairing, onMapTop },
   ref,
 ) {
   const [size, setSize] = useState({ w: 0, h: 0 })
@@ -85,6 +92,12 @@ export const WarfrontScene = forwardRef<WarfrontSceneHandle, WarfrontSceneProps>
   const jabTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   useEffect(() => () => clearTimeout(jabTimer.current), [])
 
+  // Varn's breath, the same way: a new key restarts his strip
+  const [breath, setBreath] = useState(0)
+  const [breathing, setBreathing] = useState(false)
+  const breathTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  useEffect(() => () => clearTimeout(breathTimer.current), [])
+
   const fx = useRef<PixelBurstHandle>(null)
   // The latest placement, for the handle's calls between renders
   const place = useRef({ left, top, unit })
@@ -100,6 +113,12 @@ export const WarfrontScene = forwardRef<WarfrontSceneHandle, WarfrontSceneProps>
       setJabbing(true)
       clearTimeout(jabTimer.current)
       jabTimer.current = setTimeout(() => setJabbing(false), JAB_MS)
+    },
+    breathe: () => {
+      setBreath((b) => b + 1)
+      setBreathing(true)
+      clearTimeout(breathTimer.current)
+      breathTimer.current = setTimeout(() => setBreathing(false), BREATH_MS)
     },
     struck: () => playAt('fx_wall-impact_anim', impactPoint(Math.random())),
     // Held still, the strip would show the wall whole: with Reduce Motion the gate simply changes
@@ -127,6 +146,9 @@ export const WarfrontScene = forwardRef<WarfrontSceneHandle, WarfrontSceneProps>
       {size.w > 0 && gate !== 'breached' && wallFighters(army).map((f) => (
         <PixelSprite key={`${f.x}-${jabbing ? jab : 'idle'}`} id={fighterSprite(jabbing)} scale={unit} loop={false} style={at(f)} />
       ))}
+      {size.w > 0 && varn && gate !== 'breached' && (
+        <PixelSprite key={`varn-${breathing ? breath : 'idle'}`} id={varnSprite(breathing)} scale={unit} loop={false} style={at(VARN_PERCH)} />
+      )}
       <PixelBurst ref={fx} scale={unit} max={3} />
     </View>
   )

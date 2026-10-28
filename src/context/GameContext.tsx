@@ -28,7 +28,8 @@ import {
 } from '../types/game'
 import { stepFood } from '../types/foodTick'
 import { stepWall } from '../types/wall'
-import { strike, fighterStrike } from '../types/monsters'
+import { strike, fighterStrike, varnBreath } from '../types/monsters'
+import { VARN_BREATH_SEC, buildWizardTower as buildWizardTowerState, varnOnWall } from '../types/allies'
 import { completeQuests, hasQuestToComplete } from '../types/quests'
 import { fighterDamageMultiplier } from '../types/fedState'
 import { stepFoodEvents, gatherMultiplier, answerRefugees as answerRefugeesState } from '../types/foodEvents'
@@ -88,6 +89,8 @@ interface GameContextType {
   dismissBreach: () => void
   buildLibrarium: () => void
   completeResearch: (id: string) => void
+  /** Raise Thornwick's tower (chapter 11) */
+  buildWizardTower: () => void
   /** Set the fighters' rations (only an available one) */
   setRation: (id: RationId) => void
   /** Refugees at the gate: take them in, or turn them away */
@@ -193,6 +196,21 @@ export function GameProvider({ children, initial }: {
       setState((prev) => (armySize(prev) > 0 ? fighterStrike(prev, armyVolleyNow(prev), swings).state : prev))
     }, [army]),
     FIGHTER_TICK_MS,
+  )
+
+  // Varn on the gatehouse tower (chapter 9): every VARN_BREATH_SEC he breathes fire at the monster.
+  // His clock lives in a ref, so the seconds between breaths do not re-render.
+  const varnHere = loaded && varnOnWall(state)
+  const varnClock = useRef(0)
+  useGameLoop(
+    useCallback(() => {
+      if (!varnHere) return
+      varnClock.current += 1
+      if (varnClock.current < VARN_BREATH_SEC) return
+      varnClock.current = 0
+      // Not while the wall lies breached (he is not on it then)
+      setState((prev) => (prev.cityHp > 0 ? varnBreath(prev).state : prev))
+    }, [varnHere])
   )
 
   // Auto food accumulator (foragers gather food automatically)
@@ -468,6 +486,10 @@ export function GameProvider({ children, initial }: {
     setState((prev) => study(prev, id))
   }, [])
 
+  const buildWizardTower = useCallback(() => {
+    setState((prev) => buildWizardTowerState(prev))
+  }, [])
+
   const setRation = useCallback((id: RationId) => {
     setState((prev) => (isRationAvailable(prev, id) && prev.ration !== id ? { ...prev, ration: id } : prev))
   }, [])
@@ -546,6 +568,7 @@ export function GameProvider({ children, initial }: {
         dismissBreach,
         buildLibrarium,
         completeResearch,
+        buildWizardTower,
         markBeatSeen,
         setRation,
         answerRefugees,

@@ -1,5 +1,7 @@
 import type { GameState } from './state'
 import { MAX_CLAW_LEVEL } from './claws'
+import { MAX_CITY_HP } from './siege'
+import { UNMAKING_DEEPEST_LEVEL, hordeLevel } from './horde'
 // Type-only: systems.ts imports STORY_BEATS from this file at runtime
 import type { SystemId, BuildingRevealId } from './systems'
 
@@ -27,6 +29,11 @@ export type BeatId =
   | 'the_scholar'
   | 'the_horde_grows'
   | 'dragonsteel'
+  | 'small_wings'
+  | 'she_did_not_ask'
+  | 'the_exile'
+  | 'the_eldest'
+  | 'hollow_knight'
 
 /** One-time scripted first occurrences a beat can run (behavior arrives in later groups) */
 export type ScriptedEventId =
@@ -222,6 +229,46 @@ export const STORY_BEATS: BeatDef[] = [
     trigger: (s) => seen(s, 'beyond_the_walls') && s.clawLevel >= MAX_CLAW_LEVEL,
     unlocks: [],
   },
+  // Chapters 9 to 13 (approved 2026-10-27): the new cast arrives, one at a time. What each brings
+  // is in types/allies.ts; the newcomers' stings play as they first appear (data/story/stings.ts).
+  {
+    // Chapter 9: Varn, a minute after the claws are reforged. He perches on the gatehouse tower
+    // and breathes fire at the monster on his own.
+    id: 'small_wings', chapter: 9, dwellSec: 60,
+    trigger: (s) => s.questsDone.includes('reforge_the_claws'),
+    unlocks: [],
+  },
+  {
+    // Chapter 10: Sera, the next time the wall drops below half after Varn's chapter. Her shield
+    // wall makes the monsters' blows on the wall land for less.
+    id: 'she_did_not_ask', chapter: 10, dwellSec: 60,
+    // Not while it lies breached: the Breach's own scenes play then
+    trigger: (s) => seen(s, 'small_wings') && s.cityHp > 0 && s.cityHp < MAX_CITY_HP / 2,
+    unlocks: [],
+  },
+  {
+    // Chapter 11: Thornwick, brought home by the first expedition to return after Sera's chapter.
+    // He reveals the Wizard's Tower; its goal is the Raise the Tower quest.
+    id: 'the_exile', chapter: 11, dwellSec: 60,
+    trigger: (s) => seen(s, 'she_did_not_ask') && s.lastExpeditionHomeAt > s.lastBeatAtPlaySec,
+    unlocks: [],
+    reveals: ['wizard'],
+    spotlight: 'draconiaTab',
+  },
+  {
+    // Chapter 12: Ashara, the first time the Unmaking marks the horde deepest (its glowing cracks).
+    // Her strength is behind every tap.
+    id: 'the_eldest', chapter: 12, dwellSec: 60,
+    trigger: (s) => seen(s, 'the_exile') && hordeLevel(s.hordeKills) >= UNMAKING_DEEPEST_LEVEL,
+    unlocks: [],
+  },
+  {
+    // Chapter 13: the Hollow Knight, the first time a boss or mini-boss falls at the gate after
+    // Ashara's chapter. Renown earned while away counts for more.
+    id: 'hollow_knight', chapter: 13, dwellSec: 0,
+    trigger: (s) => seen(s, 'the_eldest') && s.lastBossFellAt > s.lastBeatAtPlaySec,
+    unlocks: [],
+  },
 ]
 
 /**
@@ -229,7 +276,7 @@ export const STORY_BEATS: BeatDef[] = [
  * paused (never offered by the director, the catch-up or dev jump). Changing this constant resumes
  * the story; beats a save has already seen are kept, so no progress is deleted.
  */
-export const STORY_PAUSED_AFTER: BeatId = 'dragonsteel'
+export const STORY_PAUSED_AFTER: BeatId = 'hollow_knight'
 
 let pausedAfter: BeatId = STORY_PAUSED_AFTER
 

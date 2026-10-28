@@ -2,11 +2,12 @@ import type { AudioSource } from 'expo-audio'
 import { STORY_BEATS } from '../../types/story'
 import type { BeatId } from '../../types/story'
 import type { CastId } from '../../types/cast'
-import { SCENES } from './lines'
+import { SCENES, sceneParts } from './lines'
 import type { SceneDef } from './lines'
 import { CAST_STINGS } from '../sounds'
 
-const onStage = (scene: SceneDef): CastId[] => [scene.who, ...(scene.stage ?? [])]
+/** Everyone on stage in a scene, its whole conversation included */
+const onStage = (scene: SceneDef): CastId[] => sceneParts(scene).flatMap((p) => [p.who, ...(p.stage ?? [])])
 
 /**
  * Who first appears in this beat's scene: anyone on stage who is in no earlier beat's scene, in

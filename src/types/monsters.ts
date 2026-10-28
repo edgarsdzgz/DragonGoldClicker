@@ -5,6 +5,7 @@ import type { MonsterDef } from './monsterRoster'
 import { pickNextMonster } from './spawnPool'
 import { hordeStrength } from './horde'
 import { tapDamageNow } from './claws'
+import { VARN_BREATH_TAPS } from './allies'
 
 export { MONSTERS } from './monsterRoster'
 export type { MonsterDef } from './monsterRoster'
@@ -96,6 +97,8 @@ export function applyDamage(s: GameState, damage: number, rand: number = Math.ra
       monsterHp: monsterAt(monsterIndex, hordeKills).hp,
       // The new monster's wall-strike clock starts from its arrival
       siegeTimer: 0,
+      // A boss or mini-boss falling is a story trigger (chapter 13)
+      lastBossFellAt: monster.rank === 'boss' || monster.rank === 'miniboss' ? s.playSeconds : s.lastBossFellAt,
     },
     monster,
     dealt,
@@ -120,6 +123,15 @@ export function fighterStrike(s: GameState, damage: number, swings: number, rand
       allyStrikes: s.allyStrikes + swings,
       allyKills: s.allyKills + (r.killed ? 1 : 0),
     },
+  }
+}
+
+/** Varn's breath (chapter 9): VARN_BREATH_TAPS of the player's taps; a kill by him is counted as an ally's */
+export function varnBreath(s: GameState, rand?: number): StrikeResult {
+  const r = applyDamage(s, tapDamageNow(s) * VARN_BREATH_TAPS, rand)
+  return {
+    ...r,
+    state: { ...r.state, varnBreaths: s.varnBreaths + 1, allyKills: s.allyKills + (r.killed ? 1 : 0) },
   }
 }
 
