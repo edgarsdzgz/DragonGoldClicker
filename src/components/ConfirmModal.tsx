@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Animated,
 } from 'react-native'
-import type { GameIconName } from '../art'
-import { GameIcon } from './GameIcon'
+import type { GameIconName, SpriteId } from '../art'
+import { ModalEmblem } from './ModalEmblem'
 import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { REJECT_PHRASES } from './Button'
@@ -30,6 +30,8 @@ interface ConfirmModalProps {
   /** Override the default gold accent with a building/context color */
   accentColor?: string
   icon?: GameIconName
+  /** The event's picture, drawn in the icon's place */
+  picture?: SpriteId
   /** Opt the confirm button into the guided tutorial under this target id */
   confirmCoachId?: string
   onConfirm: () => void
@@ -46,6 +48,7 @@ export function ConfirmModal({
   confirmDisabled = false,
   accentColor: accentColorProp,
   icon = 'warning',
+  picture,
   confirmCoachId,
   onConfirm,
   onCancel,
@@ -178,41 +181,7 @@ export function ConfirmModal({
             },
           ]}
         >
-          {/* Top accent bar */}
-          <View style={[styles.accentBar, { backgroundColor: accentColor }]} />
-
-          {/* Icon emblem */}
-          <View style={styles.iconContainer}>
-            <Animated.View
-              style={[
-                styles.iconGlowOuter,
-                {
-                  opacity: iconPulse,
-                  backgroundColor: accentColor + '14',
-                },
-              ]}
-            />
-            <Animated.View
-              style={[
-                styles.iconGlowInner,
-                {
-                  opacity: iconPulse,
-                  backgroundColor: accentColor + '2E',
-                },
-              ]}
-            />
-            <View
-              style={[
-                styles.iconCircle,
-                {
-                  borderColor: accentColor + '80',
-                  shadowColor: accentColor,
-                },
-              ]}
-            >
-              <GameIcon name={icon} size={26} color={accentColor} />
-            </View>
-          </View>
+          <ModalEmblem accent={accentColor} icon={icon} pulse={iconPulse} picture={picture} />
 
           {/* Content */}
           <View style={styles.content}>
@@ -315,43 +284,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: dark[700],
     ...elevation[4],
-  },
-  accentBar: {
-    height: 3,
-    width: '100%',
-    borderTopLeftRadius: radius.xl,
-    borderTopRightRadius: radius.xl,
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: spacing[6],
-    height: 100,
-  },
-  iconGlowOuter: {
-    position: 'absolute',
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-  },
-  iconGlowInner: {
-    position: 'absolute',
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-  },
-  iconCircle: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: colors.bg.surface1,
-    borderWidth: 1.5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6,
-    shadowRadius: 12,
-    elevation: 8,
   },
   content: {
     paddingHorizontal: spacing[6],

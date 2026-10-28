@@ -4,7 +4,7 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import { GameIcon } from '../components/GameIcon'
 import { cityUnit, cityLight, interiorHeader } from '../art'
 import type { CityBuildingId } from '../art'
-import { Text, BottomSheet, ConfirmModal, InspirationIcon, StoryObjective, InteriorHeader, type ResourceItem } from '../components'
+import { Text, BottomSheet, ConfirmModal, InspirationIcon, StoryObjective, ArtBanner, type ResourceItem } from '../components'
 import { ResourceBar } from '../components/ResourceBar'
 import { useGame } from '../context/GameContext'
 import { useHaptics, useSfx } from '../hooks'
@@ -12,7 +12,7 @@ import { useCoach } from '../context/CoachContext'
 import type { Rect } from '../context/coachRegistry'
 import { SFX } from '../data/sfx'
 import { useAmbientLoop } from '../hooks/useAmbientLoop'
-import { colors, gold } from '../theme'
+import { colors, gold, spacing } from '../theme'
 import {
   ARMORY_COST,
   DRACONIA_HALL_COST,
@@ -70,12 +70,14 @@ function ComingSoonInterior() {
   )
 }
 
+const HEADER_GAP = { marginBottom: spacing[3] }
+
 /** A building's interior under its header picture; the forge is heard while it is open */
 function BuildingInterior({ id }: { id: BuildingId }) {
   useAmbientLoop('forge', id === 'forge')
   return (
     <>
-      <InteriorHeader id={interiorHeader(id)} />
+      <ArtBanner id={interiorHeader(id)} style={HEADER_GAP} />
       <InteriorBody id={id} />
     </>
   )

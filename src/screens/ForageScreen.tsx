@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { View, StyleSheet, PixelRatio } from 'react-native'
 import { PixelSprite } from '../components/PixelSprite'
-import { SPRITES, fitScale, granarySprite } from '../art'
+import { SPRITES, fitScale, granarySprite, FORAGE_ORB_ART } from '../art'
 import { Text, Badge, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge, FoodEventBadge } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
@@ -115,7 +115,7 @@ export function ForageScreen() {
           repeatOnHold
           diameter={orbDiameter}
           disabled={granaryFull}
-          icon="leaf"
+          icon={FORAGE_ORB_ART}
           label="FORAGE"
           coachId="forage"
           palette={FORAGE_PALETTE}

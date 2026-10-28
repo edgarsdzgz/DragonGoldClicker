@@ -17,6 +17,7 @@ import { BreachEvent } from './BreachEvent'
 import { wallAwayLine } from '../types/timeAway'
 import { useSfx } from '../hooks/useSfx'
 import { SOUND } from '../data/sounds'
+import { REFUGEES_PICTURE } from '../art'
 
 interface EventHostProps {
   /** Switches the visible tab (the host lives above the tab navigator) */
@@ -161,7 +162,7 @@ function RefugeesChoice({ visible, count, food, onAnswer }: { visible: boolean; 
       confirmLabel="Take them in"
       cancelLabel="Turn them away"
       confirmDisabled={!affordable}
-      icon="people"
+      picture={REFUGEES_PICTURE}
       onConfirm={() => onAnswer(true)}
       onCancel={() => onAnswer(false)}
     />

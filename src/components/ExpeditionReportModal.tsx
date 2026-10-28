@@ -14,6 +14,7 @@ import { ModalEmblem } from './ModalEmblem'
 import { ModalButton } from './ModalButton'
 import { colors, spacing, radius, elevation, dark } from '../theme'
 import { useHaptics } from '../hooks'
+import { expeditionPicture } from '../art'
 
 // The Explorer's Outpost color; a fruitless trip is plain gray
 const FOUND = colors.building.explorer
@@ -242,7 +243,7 @@ export function ExpeditionReportModal({
         >
           <ModalEmblem
             accent={accent}
-            icon={found ? 'people' : 'compass'}
+            picture={expeditionPicture(report.villagersFound)}
             pulse={glowPulse}
             iconStyle={{ opacity: iconOpacity, transform: [{ scale: iconScale }] }}
           />

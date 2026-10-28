@@ -5,6 +5,7 @@ import { BREACH_SCENES } from '../data/story/lines'
 import { breachLines } from '../types/breach'
 import type { BreachReport } from '../types/breach'
 import { colors } from '../theme'
+import { BREACH_REPORT_PICTURE } from '../art'
 
 interface BreachEventProps {
   visible: boolean
@@ -46,6 +47,7 @@ export function BreachEvent({ visible, report, onDone }: BreachEventProps) {
     <ReportModal
       visible={visible}
       icon="flame"
+      picture={BREACH_REPORT_PICTURE}
       accent={colors.status.error}
       title={report.count === 1 ? 'The Breach' : `Breach ${report.count}`}
       message={`The wall fell, and Draconia paid to survive it.${lost}`}

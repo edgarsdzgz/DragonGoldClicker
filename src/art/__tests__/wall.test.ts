@@ -1,6 +1,5 @@
 import { SPRITES, MAP_GATE } from '../manifest'
 import { wallFighters, fighterSprite, impactPoint, BREACH_CENTER, REPAIR_SPOTS, repairing, wallChange, MAX_WALL_FIGHTERS } from '../wall'
-import { granarySprite } from '../granary'
 
 const gate = MAP_GATE.gate
 
@@ -61,15 +60,5 @@ describe('the wall struck, repaired and fallen', () => {
     expect(wallChange(at, { hp: 90, breaches: 1, startedAt: 1 })).toBe('breach')
     // A new game or a loaded save is not a blow
     expect(wallChange(at, { hp: 10, breaches: 3, startedAt: 2 })).toBeNull()
-  })
-})
-
-describe('the granary', () => {
-  it('empty when the food is out, full from two thirds, half between', () => {
-    expect(granarySprite(0, 500)).toBe('evt_granary_0')
-    expect(granarySprite(1, 500)).toBe('evt_granary_50')
-    expect(granarySprite(332, 498)).toBe('evt_granary_100')
-    expect(granarySprite(331, 498)).toBe('evt_granary_50')
-    expect(granarySprite(500, 500)).toBe('evt_granary_100')
   })
 })

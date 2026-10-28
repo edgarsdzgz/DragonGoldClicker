@@ -6,7 +6,7 @@ import {
   Animated,
   Easing,
 } from 'react-native'
-import type { GameIconName } from '../art'
+import { wandererPicture } from '../art'
 import { GameIcon } from './GameIcon'
 import { ModalStage } from './ModalStage'
 import { Text } from './Text'
@@ -27,13 +27,6 @@ import { mealCost } from '../types/foodTick'
 
 // The house gold: a knock at the gate is good news
 const ACCENT = gold[400]
-
-const ENCOUNTER_ICON: Record<WandererEncounter['encounterType'], GameIconName> = {
-  lone_wanderer: 'person',
-  traveling_couple: 'people',
-  small_family: 'people',
-  veteran: 'shield-half',
-}
 
 interface WandererModalProps {
   visible: boolean
@@ -210,7 +203,7 @@ export function WandererModal({
         >
           <ModalEmblem
             accent={ACCENT}
-            icon={ENCOUNTER_ICON[encounter.encounterType] ?? 'person'}
+            picture={wandererPicture(encounter.encounterType)}
             pulse={glowPulse}
             iconStyle={{ opacity: iconOpacity, transform: [{ scale: iconScale }] }}
           />

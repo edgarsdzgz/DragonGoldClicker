@@ -4,6 +4,7 @@ import { ToneBadge } from './ToneBadge'
 import { useGame } from '../context/GameContext'
 import { fighterStatus } from '../types/fedState'
 import { foodEventStatus } from '../types/foodEvents'
+import { foodEventBadge } from '../art'
 
 const FIGHTER_ICON = { good: 'restaurant', warn: 'remove-circle', bad: 'warning' } as const
 
@@ -19,6 +20,6 @@ export function FighterStatusBadge({ style }: { style?: ViewStyle }) {
 export function FoodEventBadge({ style }: { style?: ViewStyle }) {
   const { state } = useGame()
   const status = foodEventStatus(state)
-  if (!status) return null
-  return <ToneBadge text={status.text} tone={status.tone} icon={state.foodEvent?.id === 'raid' ? 'flash' : 'leaf'} style={style} />
+  if (!status || !state.foodEvent) return null
+  return <ToneBadge text={status.text} tone={status.tone} icon={foodEventBadge(state.foodEvent.id)} style={style} />
 }

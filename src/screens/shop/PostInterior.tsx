@@ -7,6 +7,7 @@ import { ProgressBar } from '../../components/ProgressBar'
 import { useGame } from '../../context/GameContext'
 import { useHaptics } from '../../hooks'
 import { colors, dark } from '../../theme'
+import { roleFigure } from '../../art'
 import { formatNumber, getExplorerCap, getPostUpgradeCost, EXPEDITION_FOOD_COST, EXPEDITION_PITY_THRESHOLD } from '../../types/game'
 import {
   explorerBlock, explorerCost, expeditionBlock, expeditionSeconds, explorersFree, isExpeditionBack, postBlock,
@@ -147,8 +148,7 @@ export function PostInterior() {
       </View>
 
       <ActionRow
-        icon="person-add"
-        iconColor={colors.building.explorer}
+        figure={roleFigure('explorer')}
         title="Train Explorer"
         subtitle={`${state.explorers}/${cap} trained. Takes a villager; eats 2 food a meal.`}
         right={

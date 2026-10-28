@@ -5,6 +5,7 @@ import { useGame } from '../../context/GameContext'
 import { useHaptics, useSfx } from '../../hooks'
 import { SFX } from '../../data/sfx'
 import { colors } from '../../theme'
+import { roleFigure } from '../../art'
 import {
   formatNumber,
   formatAmount,
@@ -61,6 +62,7 @@ export function SoldierTierRow({ tier, buildingColor }: { tier: SoldierTierDef; 
     <ActionRow
       icon={locked ? 'lock-closed' : undefined}
       iconColor={colors.text.muted}
+      figure={roleFigure(tier.id)}
       title={`${tier.name} (${count})`}
       subtitle={locked ? undefined : `${verb} ${fromName}. ${formatAmount(tier.damage)} damage per volley, eats ${FOOD_CONSUMPTION[tier.id]} a meal`}
       locked={locked}
@@ -123,6 +125,7 @@ export function ForagerTierRow({ tier, buildingColor }: { tier: ForagerTierDef; 
     <ActionRow
       icon={locked ? 'lock-closed' : undefined}
       iconColor={colors.text.muted}
+      figure={roleFigure(tier.id)}
       title={`${tier.name} (${count})`}
       subtitle={locked ? undefined : `${verb} ${fromName}. ${formatAmount(tier.baseRate * FOOD_CHECK_INTERVAL)} food per meal`}
       locked={locked}

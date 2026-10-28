@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { View, Modal, Pressable, StyleSheet } from 'react-native'
 import { GameIcon } from './GameIcon'
+import { STARVING_ICON } from '../art'
 import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { Button } from './Button'
@@ -59,7 +60,7 @@ export function FoodWarningModal({
               ]}
             >
               <GameIcon
-                name={urgent ? 'alert-circle' : 'warning'}
+                name={urgent ? STARVING_ICON : 'warning'}
                 size={26}
                 color={accentColor}
               />

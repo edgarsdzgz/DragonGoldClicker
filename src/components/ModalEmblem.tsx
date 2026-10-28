@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
 import type { StyleProp, ViewStyle } from 'react-native'
-import type { GameIconName } from '../art'
+import type { GameIconName, SpriteId } from '../art'
 import { GameIcon } from './GameIcon'
+import { ArtBanner } from './ArtBanner'
 import { colors, spacing, radius } from '../theme'
 
 interface ModalEmblemProps {
@@ -15,13 +16,29 @@ interface ModalEmblemProps {
   pulse?: Animated.Value | number
   /** Entrance animation for the icon circle (opacity, scale) */
   iconStyle?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>
+  /** The event's picture, drawn in the icon's place (no larger than the emblem's own space) */
+  picture?: SpriteId
 }
 
+/** The emblem's height: a picture is never taller, so a card's size barely changes with one */
+export const EMBLEM_H = 100
+
 /**
- * The top of a modal card: a flat accent bar, then the icon in a ringed circle. The same emblem
- * ConfirmModal draws, shared so every card announces itself the same way: flat colors, no gradients.
+ * The top of a modal card: a flat accent bar, then the icon in a ringed circle, or the event's
+ * picture. The same emblem ConfirmModal and ReportModal draw, shared so every card announces itself
+ * the same way: flat colors, no gradients.
  */
-export function ModalEmblem({ accent, icon, iconElement, pulse = 1, iconStyle }: ModalEmblemProps) {
+export function ModalEmblem({ accent, icon, iconElement, pulse = 1, iconStyle, picture }: ModalEmblemProps) {
+  if (picture) {
+    return (
+      <>
+        <View style={[styles.accentBar, { backgroundColor: accent }]} />
+        <Animated.View style={[styles.pictureContainer, iconStyle]}>
+          <ArtBanner id={picture} maxHeight={EMBLEM_H} />
+        </Animated.View>
+      </>
+    )
+  }
   return (
     <>
       <View style={[styles.accentBar, { backgroundColor: accent }]} />
@@ -47,7 +64,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing[6],
-    height: 100,
+    height: EMBLEM_H,
+  },
+  pictureContainer: {
+    marginTop: spacing[5],
+    paddingHorizontal: spacing[4],
   },
   ringOuter: {
     position: 'absolute',

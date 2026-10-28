@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, Modal, Pressable, StyleSheet } from 'react-native'
-import type { GameIconName } from '../art'
+import type { GameIconName, SpriteId } from '../art'
 import { GameIcon } from './GameIcon'
+import { ArtBanner } from './ArtBanner'
 import { ModalStage } from './ModalStage'
 import { Text } from './Text'
 import { colors, spacing, radius, elevation, dark } from '../theme'
@@ -18,6 +19,8 @@ export interface ReportRow {
 interface ReportModalProps {
   visible: boolean
   icon: IconName
+  /** The event's picture, drawn in the icon's place */
+  picture?: SpriteId
   /** The accent bar, the icon and the rows' default color */
   accent: string
   title: string
@@ -29,8 +32,11 @@ interface ReportModalProps {
   onDismiss: () => void
 }
 
+/** The icon's space; a picture is never taller */
+const ICON_H = 80
+
 /** A card that reports what happened (deaths, losses) as a list of rows, with one dismiss button. */
-export function ReportModal({ visible, icon, accent, title, message, rows, dismissLabel = 'Understood', dismissOnBackdrop = true, onDismiss }: ReportModalProps) {
+export function ReportModal({ visible, icon, picture, accent, title, message, rows, dismissLabel = 'Understood', dismissOnBackdrop = true, onDismiss }: ReportModalProps) {
   return (
     <Modal transparent visible={visible} animationType="fade" onRequestClose={onDismiss} statusBarTranslucent>
       {dismissOnBackdrop ? (
@@ -45,11 +51,17 @@ export function ReportModal({ visible, icon, accent, title, message, rows, dismi
         <View style={styles.card}>
           <View style={[styles.accentBar, { backgroundColor: accent }]} />
 
-          <View style={styles.iconContainer}>
-            <View style={[styles.iconCircle, { borderColor: accent + '80', shadowColor: accent }]}>
-              <GameIcon name={icon} size={26} color={accent} />
+          {picture ? (
+            <View style={styles.pictureContainer}>
+              <ArtBanner id={picture} maxHeight={ICON_H} />
             </View>
-          </View>
+          ) : (
+            <View style={styles.iconContainer}>
+              <View style={[styles.iconCircle, { borderColor: accent + '80', shadowColor: accent }]}>
+                <GameIcon name={icon} size={26} color={accent} />
+              </View>
+            </View>
+          )}
 
           <View style={styles.content}>
             <Text variant="h3" center accessibilityRole="header">{title}</Text>
@@ -105,7 +117,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing[6],
-    height: 80,
+    height: ICON_H,
+  },
+  pictureContainer: {
+    marginTop: spacing[5],
+    paddingHorizontal: spacing[4],
   },
   iconCircle: {
     width: 52,

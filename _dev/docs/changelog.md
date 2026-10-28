@@ -2,6 +2,25 @@
 
 ## [Unreleased] - Siege Defense Redesign
 
+### Every locked picture wired, or set aside with its reason (2026-10-28)
+- The art audit: 237 of the 1,174 locked sprites were never drawn. Batches 6 and 7 (imported
+  2026-10-27) were the gap; they are now in the game (art/events.ts):
+  - Card pictures in the icon's place: Welcome Back (dawn over the wall), the Breach report (the broken
+    gate), Refugees at the Gate, each wanderer group on the road, and the four expedition outcomes (one
+    per title)
+  - The food events' badges (lean, bountiful, raid, more mouths) on the Warfront and Forage badges and
+    their toasts; the red starvation icon on the urgent food warning; the basket and sheaf in the FORAGE orb
+  - The granary in five steps (empty, then each quarter, rounded up)
+  - The roles as figures beside their rows: conscript, footman and knight in the Garrison; gatherer,
+    trapper and ranger in the Lodge; the explorer at the Outpost
+- ArtBanner (was InteriorHeader) draws any picture across a sheet or card; ModalEmblem, ConfirmModal
+  and ReportModal take `picture`; ConfirmModal now uses the shared emblem; ActionRow takes `figure`
+- A guard test (art/__tests__/everySprite.test.ts): every locked sprite is drawn by the game or listed
+  as not drawn with its reason, so new art cannot sit unwired unnoticed. Not drawn, for now: the
+  monsters' idle stills, foundations and scaffolds (building is instant), Housing, the nine townsfolk,
+  the repairer, the chapters 9 to 13 figures, the floating ember, the logo stills, the gate icon and
+  the heartstone
+
 ### Chapters 9 to 13: the new cast arrives (2026-10-28)
 - Five chapters after Dragonsteel, each with its picture, every line and face as approved; the story
   now pauses after chapter 13 (types/story.ts, data/story/newCast.ts)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, ViewStyle } from 'react-native'
-import type { GameIconName } from '../art'
+import type { GameIconName, SpriteId } from '../art'
 import { GameIcon } from './GameIcon'
 import { Text } from './Text'
 import { colors, spacing, radius } from '../theme'
@@ -8,6 +8,8 @@ import { colors, spacing, radius } from '../theme'
 interface ActionRowProps {
   icon?: GameIconName
   iconColor?: string
+  /** A person (or thing) drawn beside the title and subtitle, as tall as both: the role this row trains */
+  figure?: SpriteId
   title: string
   subtitle?: string
   /** Slot for action element (Button, Badge, etc.) on the right side */
@@ -22,6 +24,7 @@ interface ActionRowProps {
 export function ActionRow({
   icon,
   iconColor,
+  figure,
   title,
   subtitle,
   right,
@@ -49,6 +52,7 @@ export function ActionRow({
   return (
     <View style={[styles.container, style]}>
       <View style={styles.mainRow}>
+        {figure && <GameIcon name={figure} size={FIGURE_PTS} style={styles.figure} />}
         <View style={styles.left}>
           <View style={styles.header}>
             {icon && (
@@ -75,6 +79,9 @@ export function ActionRow({
   )
 }
 
+/** A figure's box: as tall as a title and its subtitle */
+const FIGURE_PTS = 36
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.bg.surface2,
@@ -89,6 +96,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  figure: {
+    marginRight: spacing[3],
   },
   left: {
     flex: 1,

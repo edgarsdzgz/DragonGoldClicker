@@ -16,6 +16,7 @@ import { colors, spacing, radius, elevation, gold, dark } from '../theme'
 import { formatNumber } from '../types/game'
 import { useHaptics, useSfx } from '../hooks'
 import { SOUND } from '../data/sounds'
+import { WELCOME_BACK_PICTURE } from '../art'
 
 interface OfflineModalProps {
   visible: boolean
@@ -266,7 +267,7 @@ export function OfflineModal({
         >
           <ModalEmblem
             accent={gold[400]}
-            icon="moon"
+            picture={WELCOME_BACK_PICTURE}
             pulse={glowPulse}
             iconStyle={{ opacity: iconOpacity, transform: [{ scale: iconScale }] }}
           />
