@@ -450,6 +450,19 @@ ASSETS += [(f"story/story_{s}.png", AGENT / f"43-story-scenes/out/story_{s}_v1.p
                         ("rangers-lodge", "The Ranger's Lodge"), ("ink-wing", "The Ink-Wing"), ("dragonsteel", "Dragonsteel"),
                         ("they-come-bigger", "They Come Bigger"), ("ancient-magic", "The Ancient Magic"))]
 
+# Chapters 9 to 13 (52-new-cast-art v1, owner 2026-10-28): a picture per chapter, the newcomers' figures, and
+# Varn on the Warfront wall (perched; rear and breathe)
+NEW_CAST = AGENT / "52-new-cast-art/out"
+ASSETS += [(f"story/story_{s}.png", NEW_CAST / f"story_{s}_v1.png", f"Story: {t} (130x96)", "new cast v1")
+           for s, t in (("small-wings", "A Small Pair of Wings"), ("she-did-not-ask", "She Did Not Ask"),
+                        ("the-exile", "The Exile"), ("the-eldest", "The Eldest"), ("hollow-knight", "The Hollow Knight"))]
+ASSETS += [(f"people/{n}.png", NEW_CAST / f"{n}_v1.png", w, "new cast v1") for n, w in (
+    ("ppl_varn_idle", "Varn, perched on the gatehouse tower"),
+    ("ppl_varn_breath_strip2", "Varn's strike: rear, then breathe fire upward (2 frames)"),
+    ("ppl_varn_flying", "Varn, flying"), ("ppl_sera", "Sera the Shieldmaiden, standing"),
+    ("ppl_thornwick", "Thornwick, standing"), ("ppl_hollow-knight", "The Hollow Knight, standing"),
+    ("ppl_hollow-knight_walk", "The Hollow Knight, walking"), ("ppl_ashara_flying", "Ashara, flying (49x33)"))]
+
 # The bestiary, every pose at each Unmaking tier: 44-bestiary (the rat as its v2, longer cracks and peach in
 # place of pink, approved 2026-10-27), 45-bestiary-regulars, 46-bestiary-elites and 47-bestiary-bosses (the
 # second round; the Lich as v2a, cold gray bone, owner 2026-10-27)

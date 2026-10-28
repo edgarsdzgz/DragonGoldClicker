@@ -615,6 +615,19 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `story/story_dragonsteel.png` | 130x96 | Story: Dragonsteel (130x96) | story scenes v1 |
 | `story/story_they-come-bigger.png` | 130x96 | Story: They Come Bigger (130x96) | story scenes v1 |
 | `story/story_ancient-magic.png` | 130x96 | Story: The Ancient Magic (130x96) | story scenes v1 |
+| `story/story_small-wings.png` | 130x96 | Story: A Small Pair of Wings (130x96) | new cast v1 |
+| `story/story_she-did-not-ask.png` | 130x96 | Story: She Did Not Ask (130x96) | new cast v1 |
+| `story/story_the-exile.png` | 130x96 | Story: The Exile (130x96) | new cast v1 |
+| `story/story_the-eldest.png` | 130x96 | Story: The Eldest (130x96) | new cast v1 |
+| `story/story_hollow-knight.png` | 130x96 | Story: The Hollow Knight (130x96) | new cast v1 |
+| `people/ppl_varn_idle.png` | 13x19 | Varn, perched on the gatehouse tower | new cast v1 |
+| `people/ppl_varn_breath_strip2.png` | 26x19 | Varn's strike: rear, then breathe fire upward (2 frames) | new cast v1 |
+| `people/ppl_varn_flying.png` | 21x14 | Varn, flying | new cast v1 |
+| `people/ppl_sera.png` | 14x20 | Sera the Shieldmaiden, standing | new cast v1 |
+| `people/ppl_thornwick.png` | 14x22 | Thornwick, standing | new cast v1 |
+| `people/ppl_hollow-knight.png` | 12x20 | The Hollow Knight, standing | new cast v1 |
+| `people/ppl_hollow-knight_walk.png` | 12x20 | The Hollow Knight, walking | new cast v1 |
+| `people/ppl_ashara_flying.png` | 49x33 | Ashara, flying (49x33) | new cast v1 |
 | `mobs/mob_rat_idle.png` | 16x15 | Giant Rat: idle | bestiary v1 |
 | `mobs/mob_rat_hit.png` | 16x15 | Giant Rat: hit, the red flash | bestiary v1 |
 | `mobs/mob_rat_hurt.png` | 16x15 | Giant Rat: hurt | bestiary v1 |
