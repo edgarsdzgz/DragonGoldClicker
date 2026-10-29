@@ -59,6 +59,25 @@ Sirocco, Forge-Master of the Inferno, Corrupted Drake, Corrupted Wyvern, Lich.
      University of Pittsburgh texts, a university archive, Britannica), a museum or heritage site, Te Ara
      for Maori lore, Theoi for Greek, or the official SRD / Open5e for tabletop.
    - Wikipedia is fine as a map and as one of the two.
+   - **Modern origin:** if a creature's first known record is modern (a 20th-century book, manga, film or
+     game), rate its license `red` (modern invention) or say "folklore age unverified" in license_note.
+   - If a site refuses you, do not try to get around the block; use another source.
+     - Refused on 2026-10-29: Britannica, sacred-texts.com, and some Ashliman pages.
+     - Project Gutenberg and Wikipedia worked.
+     - Use one of these:
+     - the Project Gutenberg full text of a public-domain collection
+       (`https://www.gutenberg.org/ebooks/search/?query=...`);
+     - sacred-texts.com;
+     - an Internet Archive full text (`archive.org/details/...`);
+     - D. L. Ashliman (`sites.pitt.edu/~dash/`);
+     - Theoi (Greek); Te Ara (Maori);
+     - a national museum or heritage site;
+     - a university page.
+   - Search the creature's name with a collection's title or "folklore" to find its page there.
+   - **Changed 2026-10-29:** many solid sites are blocked for agents. Aim for two read sources, but a row
+     with one source you actually read is acceptable. Mark it "unverified, one source" in
+     sensitivity_note. The owner's picks get their second source checked before any art. Never cite a page
+     whose entry for that creature you did not read.
    - Write descriptions in your own words; no quoted passages beyond a name or a short phrase.
    - Do not invent facts. If unsure, say "unverified" in the notes, or leave the creature out.
 
