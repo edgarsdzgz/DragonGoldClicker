@@ -27,11 +27,18 @@ def monster(mid, name, note):
 
 
 sections = [monster(*m) for m in MONSTERS]
+v1 = HERE / "out_v1"
+sections.insert(0, section("v1 beside v2", "Left, v1 (kept in out_v1/): read as a cat. Right, v2: a narrow head with a "
+                           "long snout and low ears, a long leaning body, a thick tail with a gold tip, an open wind "
+                           "spiral.", [fig(v1 / "mob_kamaitachi_idle.png", 8, "v1 idle"),
+                                       fig(OUT / "mob_kamaitachi_idle.png", 8, "v2 idle"),
+                                       fig(v1 / "mob_kamaitachi_hurt.png", 8, "v1 hurt"),
+                                       fig(OUT / "mob_kamaitachi_hurt.png", 8, "v2 hurt")]))
 sections.append(section("Beside its kin", "Size check against the locked kobold.", [
     fig(OFFICIAL / "mobs" / "mob_kobold_idle.png", 8, "kobold"),
     fig(OUT / "mob_kamaitachi_idle.png", 8, "kamaitachi")]))
 
-out = page("Monsters M1", "Monster batch M1: the pilot",
+out = page("Monsters M1", "Monster batch M1: the pilot, v2",
            "The Kamaitachi at all three Unmaking tiers, built exactly like the bestiary. Approve the look before "
            "the rest of the batch is drawn. &middot; 2026-10-29", sections)
 (HERE / "board.html").write_text(out, encoding="utf-8")
