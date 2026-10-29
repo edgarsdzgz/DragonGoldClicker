@@ -71,4 +71,4 @@ batch: their monsters are all drawn already.
 
 | Batch | Status |
 | --- | --- |
-| M1 | The Kamaitachi locked 2026-10-29 (the pilot, v2; it set the look). Aitvaras, Gargoyle and Wild Hunt Rider next |
+| M1 | Done: all four locked 2026-10-29 (the Kamaitachi as v2, the pilot that set the look; Aitvaras, Gargoyle, Wild Hunt Rider v1) |

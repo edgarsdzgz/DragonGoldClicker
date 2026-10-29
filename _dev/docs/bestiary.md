@@ -135,3 +135,6 @@ before it is drawn (`bestiary-research/verified.md`).
 | Monster | Land | Looks | Status |
 | --- | --- | --- | --- |
 | Kamaitachi | Mistral Peaks (regular) | A storm-teal sickle weasel curling out of an open whirlwind, both steel sickles raised, a gold-tipped tail | Locked 2026-10-29 (`56-monsters-m1`, v2); no wave sends it yet |
+| Aitvaras | Mistral Peaks (regular, flier) | A night-black rooster with spread wings, an orange comb and a long orange and gold meteor tail | Locked 2026-10-29 (`56-monsters-m1`); no wave sends it yet |
+| Gargoyle | Mistral Peaks (regular, flier, shielded) | Horned ash-gray stone, heavy slab wings held forward like a shield. D&D SRD 5.1/5.2 (CC BY 4.0): needs the SRD credit | Locked 2026-10-29 (`56-monsters-m1`); no wave sends it yet |
+| Wild Hunt Rider | Mistral Peaks (regular, rider) | An anonymous antlered huntsman in a tattered purple cloak, a gold horn, on a heavy black ghost horse with a hound at its side | Locked 2026-10-29 (`56-monsters-m1`); no wave sends it yet |

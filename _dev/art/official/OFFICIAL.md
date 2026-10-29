@@ -1253,3 +1253,50 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_kamaitachi-stronger_hurt.png` | 20x19 | Kamaitachi, stronger (the Unmaking's deepest): hurt | monsters M1 v2 |
 | `mobs/mob_kamaitachi-stronger_walk_strip2.png` | 40x19 | Kamaitachi, stronger (the Unmaking's deepest): rides the whirlwind (2 frames, 4 fps) | monsters M1 v2 |
 | `mobs/mob_kamaitachi-stronger_death_strip4.png` | 104x19 | Kamaitachi, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v2 |
+| `mobs/mob_aitvaras_idle.png` | 21x28 | Aitvaras (flier): idle | monsters M1 v1 |
+| `mobs/mob_aitvaras_hit.png` | 21x28 | Aitvaras (flier): hit, the red flash | monsters M1 v1 |
+| `mobs/mob_aitvaras_hurt.png` | 21x28 | Aitvaras (flier): hurt | monsters M1 v1 |
+| `mobs/mob_aitvaras_walk_strip2.png` | 42x28 | Aitvaras (flier): a wingbeat (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_aitvaras_death_strip4.png` | 140x28 | Aitvaras (flier): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_aitvaras-strong_idle.png` | 21x28 | Aitvaras (flier), strong: idle | monsters M1 v1 |
+| `mobs/mob_aitvaras-strong_hit.png` | 21x28 | Aitvaras (flier), strong: hit, the red flash | monsters M1 v1 |
+| `mobs/mob_aitvaras-strong_hurt.png` | 21x28 | Aitvaras (flier), strong: hurt | monsters M1 v1 |
+| `mobs/mob_aitvaras-strong_walk_strip2.png` | 42x28 | Aitvaras (flier), strong: a wingbeat (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_aitvaras-strong_death_strip4.png` | 140x28 | Aitvaras (flier), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_aitvaras-stronger_idle.png` | 21x28 | Aitvaras (flier), stronger (the Unmaking's deepest): idle | monsters M1 v1 |
+| `mobs/mob_aitvaras-stronger_hit.png` | 21x28 | Aitvaras (flier), stronger (the Unmaking's deepest): hit, the red flash | monsters M1 v1 |
+| `mobs/mob_aitvaras-stronger_hurt.png` | 21x28 | Aitvaras (flier), stronger (the Unmaking's deepest): hurt | monsters M1 v1 |
+| `mobs/mob_aitvaras-stronger_walk_strip2.png` | 42x28 | Aitvaras (flier), stronger (the Unmaking's deepest): a wingbeat (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_aitvaras-stronger_death_strip4.png` | 140x28 | Aitvaras (flier), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_gargoyle_idle.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0): idle | monsters M1 v1 |
+| `mobs/mob_gargoyle_hit.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0): hit, the red flash | monsters M1 v1 |
+| `mobs/mob_gargoyle_hurt.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0): hurt | monsters M1 v1 |
+| `mobs/mob_gargoyle_walk_strip2.png` | 42x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0): a wingbeat (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_gargoyle_death_strip4.png` | 108x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_gargoyle-strong_idle.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), strong: idle | monsters M1 v1 |
+| `mobs/mob_gargoyle-strong_hit.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), strong: hit, the red flash | monsters M1 v1 |
+| `mobs/mob_gargoyle-strong_hurt.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), strong: hurt | monsters M1 v1 |
+| `mobs/mob_gargoyle-strong_walk_strip2.png` | 42x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), strong: a wingbeat (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_gargoyle-strong_death_strip4.png` | 108x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_gargoyle-stronger_idle.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), stronger (the Unmaking's deepest): idle | monsters M1 v1 |
+| `mobs/mob_gargoyle-stronger_hit.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), stronger (the Unmaking's deepest): hit, the red flash | monsters M1 v1 |
+| `mobs/mob_gargoyle-stronger_hurt.png` | 21x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), stronger (the Unmaking's deepest): hurt | monsters M1 v1 |
+| `mobs/mob_gargoyle-stronger_walk_strip2.png` | 42x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), stronger (the Unmaking's deepest): a wingbeat (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_gargoyle-stronger_death_strip4.png` | 108x20 | Gargoyle (flier; D&D SRD 5.1/5.2, CC BY 4.0), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider_idle.png` | 24x27 | Wild Hunt Rider: idle | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider_hit.png` | 24x27 | Wild Hunt Rider: hit, the red flash | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider_hurt.png` | 24x27 | Wild Hunt Rider: hurt | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider_walk_strip2.png` | 48x27 | Wild Hunt Rider: walk bob (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider_death_strip4.png` | 136x27 | Wild Hunt Rider: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-strong_idle.png` | 24x27 | Wild Hunt Rider, strong: idle | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-strong_hit.png` | 24x27 | Wild Hunt Rider, strong: hit, the red flash | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-strong_hurt.png` | 24x27 | Wild Hunt Rider, strong: hurt | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-strong_walk_strip2.png` | 48x27 | Wild Hunt Rider, strong: walk bob (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-strong_death_strip4.png` | 136x27 | Wild Hunt Rider, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-stronger_idle.png` | 24x27 | Wild Hunt Rider, stronger (the Unmaking's deepest): idle | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-stronger_hit.png` | 24x27 | Wild Hunt Rider, stronger (the Unmaking's deepest): hit, the red flash | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-stronger_hurt.png` | 24x27 | Wild Hunt Rider, stronger (the Unmaking's deepest): hurt | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-stronger_walk_strip2.png` | 48x27 | Wild Hunt Rider, stronger (the Unmaking's deepest): walk bob (2 frames, 4 fps) | monsters M1 v1 |
+| `mobs/mob_wild-hunt-rider-stronger_death_strip4.png` | 136x27 | Wild Hunt Rider, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
+| `mobs/mob_aitvaras_shadow.png` | 11x3 | Aitvaras: its shadow on the road (draw at half strength, under the lifted flier) | monsters M1 v1 |
+| `mobs/mob_gargoyle_shadow.png` | 11x3 | Gargoyle: its shadow on the road (draw at half strength, under the lifted flier) | monsters M1 v1 |
