@@ -1346,3 +1346,11 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_tempest-lord-stronger_walk_strip2.png` | 52x30 | Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): the storm churns (2 frames, 4 fps) | monsters M2 v1 |
 | `mobs/mob_tempest-lord-stronger_death_strip4.png` | 144x30 | Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v1 |
 | `mobs/mob_impundulu_shadow.png` | 15x3 | Impundulu: its shadow on the road (draw at half strength, under the lifted flier) | monsters M2 v2 |
+| `finds/find_rabbit_idle.png` | 24x24 | Valley Find: a wild hare, idle (faces right; flip for left) | valley finds v1 |
+| `finds/find_rabbit_run_strip4.png` | 96x24 | Valley Find: the hare darts (4 frames, 10 fps) | valley finds v1 |
+| `finds/find_berries_0.png` | 24x24 | Valley Find: berry bush, full | valley finds v1 |
+| `finds/find_berries_1.png` | 24x24 | Valley Find: berry bush, two-thirds | valley finds v1 |
+| `finds/find_berries_2.png` | 24x24 | Valley Find: berry bush, one-third | valley finds v1 |
+| `finds/find_berries_3.png` | 24x24 | Valley Find: berry bush, bare | valley finds v1 |
+| `finds/find_fish_leap_strip4.png` | 96x24 | Valley Find: a fish leaps from the stream (4 frames, 6 fps) | valley finds v1 |
+| `finds/find_honey_strip4.png` | 96x24 | Valley Find: wild honey in a stump, bees circling (4 frames, 8 fps) | valley finds v1 |

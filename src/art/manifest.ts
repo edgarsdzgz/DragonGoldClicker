@@ -1298,6 +1298,14 @@ export const SPRITES = {
   "mob_tempest-lord-stronger_walk_anim": { source: require('../../assets/art/mobs/mob_tempest-lord-stronger_walk_strip2.png'), w: 26, h: 30, frames: 2, fps: 4, label: "Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): the storm churns (2 frames, 4 fps)" },
   "mob_tempest-lord-stronger_death_anim": { source: require('../../assets/art/mobs/mob_tempest-lord-stronger_death_strip4.png'), w: 36, h: 30, frames: 4, fps: 8, label: "Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps)" },
   "mob_impundulu_shadow": { source: require('../../assets/art/mobs/mob_impundulu_shadow.png'), w: 15, h: 3, frames: 1, fps: 0, label: "Impundulu: its shadow on the road (draw at half strength, under the lifted flier)" },
+  "find_rabbit_idle": { source: require('../../assets/art/finds/find_rabbit_idle.png'), w: 24, h: 24, frames: 1, fps: 0, label: "Valley Find: a wild hare, idle (faces right; flip for left)" },
+  "find_rabbit_run_anim": { source: require('../../assets/art/finds/find_rabbit_run_strip4.png'), w: 24, h: 24, frames: 4, fps: 10, label: "Valley Find: the hare darts (4 frames, 10 fps)" },
+  "find_berries_0": { source: require('../../assets/art/finds/find_berries_0.png'), w: 24, h: 24, frames: 1, fps: 0, label: "Valley Find: berry bush, full" },
+  "find_berries_1": { source: require('../../assets/art/finds/find_berries_1.png'), w: 24, h: 24, frames: 1, fps: 0, label: "Valley Find: berry bush, two-thirds" },
+  "find_berries_2": { source: require('../../assets/art/finds/find_berries_2.png'), w: 24, h: 24, frames: 1, fps: 0, label: "Valley Find: berry bush, one-third" },
+  "find_berries_3": { source: require('../../assets/art/finds/find_berries_3.png'), w: 24, h: 24, frames: 1, fps: 0, label: "Valley Find: berry bush, bare" },
+  "find_fish_leap_anim": { source: require('../../assets/art/finds/find_fish_leap_strip4.png'), w: 24, h: 24, frames: 4, fps: 6, label: "Valley Find: a fish leaps from the stream (4 frames, 6 fps)" },
+  "find_honey_anim": { source: require('../../assets/art/finds/find_honey_strip4.png'), w: 24, h: 24, frames: 4, fps: 8, label: "Valley Find: wild honey in a stump, bees circling (4 frames, 8 fps)" },
 } satisfies Record<string, SpriteDef>
 
 export type SpriteId = keyof typeof SPRITES

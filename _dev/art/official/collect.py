@@ -564,6 +564,20 @@ for _dir, _origin, _id, _name, _gait in (
 ASSETS.append(("mobs/mob_impundulu_shadow.png", M2 / "mob_impundulu_shadow.png",
                "Impundulu: its shadow on the road (draw at half strength, under the lifted flier)", "monsters M2 v2"))
 
+# Valley Finds v1 (90-valley-finds, approved 2026-10-29): what foraging stirs up around the FORAGE orb.
+# 24x24 each, base on row 21
+FINDS = AGENT / "90-valley-finds/out"
+ASSETS += [
+    ("finds/find_rabbit_idle.png", FINDS / "find_rabbit_idle.png", "Valley Find: a wild hare, idle (faces right; flip for left)", "valley finds v1"),
+    ("finds/find_rabbit_run_strip4.png", FINDS / "find_rabbit_run_strip4.png", "Valley Find: the hare darts (4 frames, 10 fps)", "valley finds v1"),
+    ("finds/find_berries_0.png", FINDS / "find_berries_0.png", "Valley Find: berry bush, full", "valley finds v1"),
+    ("finds/find_berries_1.png", FINDS / "find_berries_1.png", "Valley Find: berry bush, two-thirds", "valley finds v1"),
+    ("finds/find_berries_2.png", FINDS / "find_berries_2.png", "Valley Find: berry bush, one-third", "valley finds v1"),
+    ("finds/find_berries_3.png", FINDS / "find_berries_3.png", "Valley Find: berry bush, bare", "valley finds v1"),
+    ("finds/find_fish_leap_strip4.png", FINDS / "find_fish_leap_strip4.png", "Valley Find: a fish leaps from the stream (4 frames, 6 fps)", "valley finds v1"),
+    ("finds/find_honey_strip4.png", FINDS / "find_honey_strip4.png", "Valley Find: wild honey in a stump, bees circling (4 frames, 8 fps)", "valley finds v1"),
+]
+
 # The six monsters already in the game, shaded like the busts (44-bestiary v2, owner 2026-10-27): every
 # pose and tier now comes from the shaded set. Same file names and sizes as before.
 _SHADED = ("kobold", "goblin", "crawler", "orc", "raider", "minotaur")
