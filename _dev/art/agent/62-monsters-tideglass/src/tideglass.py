@@ -244,7 +244,7 @@ def fomorian():
     return frames, key, p, cracks, False
 
 
-def siren():
+def siren_v1():
     """Siren: a bird-woman, a pale face with an open singing mouth and long dark hair on a feathered green breast,
     huge green wings in a V (then swept down) with pale tips, taloned legs and a feather fan. Flier."""
     frames = []
@@ -288,7 +288,7 @@ def siren():
     return frames, key, p, cracks, False
 
 
-def nuckelavee():
+def nuckelavee_v1():
     """Nuckelavee (v2): a skinless horse-demon with a man's torso grown from its back, seen in profile facing the gate
     like a centaur. Raw clay-orange muscle striped with pale sinew; a long horse head lowered at the left with one
     gold eye and flared nostrils, finned legs, a rider with a huge head, one great gold eye and arms that reach the
@@ -377,6 +377,94 @@ def kraken():
     cracks = [[(21, 8), (22, 9), (22, 11)], [(33, 8), (32, 10), (33, 12)], [(20, 17), (20, 19), (21, 21)],
               [(34, 16), (35, 18), (34, 20)], [(26, 22), (27, 23)]]
     return frames, key, p, cracks, False
+
+def nuckelavee():
+    """Nuckelavee (v3): front-on, a skinless horse coming at us: a low wide head with ONE great gold eye in the middle
+    of the forehead and a huge open toothed mouth, ears up. Out of its back rises a rider's torso fused to it, with
+    a head too big for the neck that lolls to the left and very long arms reaching past the horse's knees. Raw clay
+    muscle striped with pale sinew. Frames: the arms sway, the head lolls."""
+    frames = []
+    for alt in (False, True):
+        c = Canvas(30, 32)
+        s = 1 if alt else 0
+        c.ell(15, 23, 9.5, 8, "d")                                        # the horse's chest and body
+        c.rect(5, 26, 8, 31, "d")                                        # forelegs
+        c.rect(21, 26, 24, 31, "d")
+        c.rect(4, 30, 9, 31, "t")                                        # hooves
+        c.rect(20, 30, 25, 31, "t")
+        c.rect(10, 8, 20, 16, "m")                                       # the rider's torso, fused to the back
+        for x in (14, 17):
+            c.rect(x, 9, x, 16, "t")                                     # sinew
+        c.rect(8 + s, 6, 13, 9, "m")                                     # the neck, slanting
+        c.ell(8 + s, 5, 5.5, 4.5, "m")                                   # a head too big for it, lolling left
+        c.pts([(6 + s, 4), (10 + s, 4)], "e")
+        c.pts([(5 + s, 3), (6 + s, 3), (9 + s, 3), (10 + s, 3), (11 + s, 3)], "n")
+        c.pts([(7 + s, 7), (8 + s, 7), (9 + s, 7)], "n")
+        c.curve((10, 10), (-1 + s, 14), (2 - s, 30), 2.0, 1.0, "m", 36)   # arms past the knees
+        c.curve((20, 10), (31 - s, 14), (27 + s, 30), 2.0, 1.0, "m", 36)
+        c.pts([(1 - s, 30), (2 - s, 31), (3 - s, 30), (27 + s, 30), (28 + s, 31), (29 + s, 30)], "t")   # claws
+        c.ell(15, 22, 7.5, 6, "m")                                       # the horse's low wide head
+        c.pts([(9, 17), (8, 16), (8, 15), (9, 15), (21, 17), (22, 16), (22, 15), (21, 15)], "m")   # ears
+        c.rect(13, 18, 17, 20, "e")                                      # the one great gold eye
+        c.rect(15, 18, 15, 20, "n")
+        c.pts([(11, 19), (19, 19), (11, 22), (19, 22)], "t")             # sinew on the face
+        c.rect(10, 24, 20, 27, "n")                                      # the huge open mouth
+        for x in range(11, 20, 2):
+            c.px(x, 24, "t")
+            c.px(x, 27, "t")
+        frames.append(c.rows())
+    key = {"m": "clay2", "d": "clay1", "t": "parch3", "e": "gold5", "n": "ink"}
+    p = pz(14, "clay2", "clay1", [(13, 11), (18, 13), (10, 21), (20, 21)])
+    cracks = [[(13, 9), (13, 11), (14, 13)], [(18, 10), (18, 12), (17, 14)], [(11, 21), (12, 22), (12, 23)],
+              [(19, 21), (18, 22)]]
+    return frames, key, p, cracks, False
+
+
+def siren():
+    """Siren (v2): a woman's head and bare shoulders with long flowing cream hair and a mouth open in song, on a
+    feathered emerald bird's body with feathered thighs and big hooked steel talons, huge green wings rising from
+    her shoulders (then swept down). Flier."""
+    frames = []
+    for up in (True, False):
+        c = Canvas(28, 27)
+        if up:
+            for i in range(8):                                           # wings rising from the shoulders
+                c.rect(9 - i, 11 - i, 10 - i, 12 - i, "w", sym=True)
+            for k, (x0, y0) in enumerate(((0, 0), (2, 1), (4, 2), (6, 4))):
+                c.rect(x0, y0, x0, y0 + 7 - k, "w", sym=True)
+                c.px(x0, y0, "W", sym=True)
+            c.rect(3, 2, 9, 11, "w", sym=True)
+        else:
+            for i in range(8):
+                c.rect(9 - i, 11 + i, 10 - i, 12 + i, "w", sym=True)
+            for k, (x0, y0) in enumerate(((0, 25), (2, 23), (4, 22), (6, 20))):
+                c.rect(x0, y0 - 7 + k, x0, y0, "w", sym=True)
+                c.px(x0, y0, "W", sym=True)
+            c.rect(3, 11, 9, 20, "w", sym=True)
+        c.ell(13.5, 14, 4.5, 6, "b")                                     # the feathered body
+        for y in range(13, 20, 2):
+            c.pts([(11, y), (13, y + 1), (15, y)], "W")
+        c.ell(13.5, 6.5, 6.5, 6.5, "H")                                  # long cream hair, flowing
+        c.rect(7, 8, 9, 18, "H")
+        c.rect(18, 8, 20, 18, "H")
+        c.pts([(6, 16), (6, 17), (21, 16), (21, 17), (7, 19), (20, 19)], "H")
+        c.rect(10, 9, 17, 11, "f")                                       # a woman's bare shoulders
+        c.rect(11, 3, 16, 8, "f")                                        # the face
+        c.pts([(12, 5), (15, 5)], "e")
+        c.pts([(11, 4), (12, 4), (15, 4), (16, 4)], "n")
+        c.rect(13, 7, 14, 8, "n")                                        # a mouth open in song
+        c.ell(11, 20, 2.5, 3, "b", sym=True)                             # feathered thighs
+        c.pts([(10, 22), (11, 22), (12, 22)], "W", sym=True)
+        c.rect(10, 23, 11, 24, "T", sym=True)                            # legs
+        c.pts([(9, 25), (8, 25), (8, 26), (9, 26), (10, 26), (11, 26), (12, 25)], "T", sym=True)   # hooked talons
+        c.pts([(7, 24), (7, 25)], "T", sym=True)
+        frames.append(c.rows())
+    key = {"w": "emerald1", "W": "emerald3", "b": "emerald2", "T": "steel4", "H": "parch3", "f": "skin2",
+           "e": "gold5", "n": "ink"}
+    p = pz(9, "emerald2", "emerald1", [(13, 14), (14, 17)], lambda x, y: y <= 10 and (x <= 5 or x >= 22))
+    cracks = [[(12, 12), (12, 14), (13, 16)], [(15, 12), (15, 14), (14, 17)], [(13, 18), (13, 19)]]
+    return frames, key, p, cracks, False
+
 
 
 CREATURES = {"blue-man": blue_man, "funayurei": funayurei, "archelon": archelon, "stymphalian": stymphalian,

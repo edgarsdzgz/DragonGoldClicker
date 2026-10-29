@@ -31,11 +31,11 @@ MONSTERS = [
      "huge arm hauling an anchor, one withered arm, one thick leg and one peg leg, kelp rags. Two sources "
      "(Wikipedia, encyclopedia.com)."),
     ("siren", "Sirens (elite, flier)", True,
-     "Greece. A bird-woman: a pale face with an open singing mouth, long dark hair, a feathered green breast, wide "
-     "green wings, talons. Two sources (theoi.com, Audubon). Flier: a wingbeat walk and a shadow."),
+     "Greece. A bird-woman: v2: a woman's head and shoulders with long cream hair and a mouth open in song, a feathered green body with feathered thighs, "
+     "big hooked talons, wings rising from her shoulders. Two sources (theoi.com, Audubon). Flier: a wingbeat walk and a shadow."),
     ("nuckelavee", "Nuckelavee (mini-boss, level 75)", False,
-     "Orkney. A skinless horse-demon in profile facing the gate with a man's torso on its back: raw clay muscle "
-     "striped with pale sinew, a huge head with one great gold eye, arms to the ground, a lowered horse head. "
+     "Orkney. v2, front-on: a skinless horse coming at us, one great gold eye and a huge open mouth, a rider's torso fused "
+     "to its back with an oversized lolling head and arms past the knees, raw clay muscle with pale sinew. "
      "Two sources (Wikipedia, folklorescotland.com)."),
     ("kraken", "Kraken (boss, level 80)", False,
      "Norway and Iceland. Owner's staging: it rises up a flooded stretch of road. A vast mantle with one great gold "
@@ -67,6 +67,13 @@ def monster(mid, name, flier, note):
 
 
 sections = [monster(*m) for m in MONSTERS]
+V1 = HERE / "out_v1"
+sections.insert(0, section("v1 beside v2", "Left of each pair, v1 (kept in out_v1/); right, v2. The side-on Nuckelavee "
+                           "read as a brown blob or a camel, and the Siren's pale face under dark hair as a nun.", [
+    fig(V1 / "mob_nuckelavee_idle.png", 6, "nuckelavee v1"), fig(OUT / "mob_nuckelavee_idle.png", 6, "nuckelavee v2"),
+    fig(V1 / "mob_nuckelavee_hurt.png", 6, "nuckelavee v1 hurt"), fig(OUT / "mob_nuckelavee_hurt.png", 6, "nuckelavee v2 hurt"),
+    fig(V1 / "mob_siren_idle.png", 6, "siren v1"), fig(OUT / "mob_siren_idle.png", 6, "siren v2"),
+    fig(V1 / "mob_siren_hurt.png", 6, "siren v1 hurt"), fig(OUT / "mob_siren_hurt.png", 6, "siren v2 hurt")]))
 sections.append(section("Size line-up", "Kobold, Kamaitachi, the regulars, the elites, the Basilisk, the Nuckelavee "
                         "and the Kraken, the widest of all.", [
     fig(MOBS / "mob_kobold_idle.png", 6, "kobold (locked)"),
