@@ -85,6 +85,7 @@ function reachable(): Set<string> {
  */
 const NOT_DRAWN: readonly [RegExp, string][] = [
   [/^mob_.+_idle$/, "a monster's walk strip is its idle (art/warfront.ts); the stills are spare"],
+  [/^mob_kamaitachi(-strong|-stronger)?_/, 'the new monsters (monster-batches.md) join the waves Land by Land; none sends them yet'],
   [/^map_(foundation|scaffold)_\d+x\d+(_dusk|_night)?$/, 'building is instant: there is no construction step to show'],
   [/^map_plot-empty_(20x32|24x40|50x82)(_dusk|_night)?$/, 'every plot of these sizes has a ruin, shown until built'],
   [/^bld_forge_lit(_dusk|_night)?$/, 'the lit Forge is its animated strip'],

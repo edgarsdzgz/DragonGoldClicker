@@ -1238,3 +1238,18 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_harpy_shadow.png` | 11x3 | Harpy: its shadow on the road (draw at half strength, under the lifted flier) | bestiary fliers v1 |
 | `mobs/mob_mantair-corsair_shadow.png` | 13x3 | Mantair Corsair: its shadow on the road (draw at half strength, under the lifted flier) | bestiary fliers v1 |
 | `mobs/mob_storm-rider_shadow.png` | 11x3 | Storm Rider: its shadow on the road (draw at half strength, under the lifted flier) | bestiary fliers v1 |
+| `mobs/mob_kamaitachi_idle.png` | 20x19 | Kamaitachi: idle | monsters M1 v2 |
+| `mobs/mob_kamaitachi_hit.png` | 20x19 | Kamaitachi: hit, the red flash | monsters M1 v2 |
+| `mobs/mob_kamaitachi_hurt.png` | 20x19 | Kamaitachi: hurt | monsters M1 v2 |
+| `mobs/mob_kamaitachi_walk_strip2.png` | 40x19 | Kamaitachi: rides the whirlwind (2 frames, 4 fps) | monsters M1 v2 |
+| `mobs/mob_kamaitachi_death_strip4.png` | 104x19 | Kamaitachi: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v2 |
+| `mobs/mob_kamaitachi-strong_idle.png` | 20x19 | Kamaitachi, strong: idle | monsters M1 v2 |
+| `mobs/mob_kamaitachi-strong_hit.png` | 20x19 | Kamaitachi, strong: hit, the red flash | monsters M1 v2 |
+| `mobs/mob_kamaitachi-strong_hurt.png` | 20x19 | Kamaitachi, strong: hurt | monsters M1 v2 |
+| `mobs/mob_kamaitachi-strong_walk_strip2.png` | 40x19 | Kamaitachi, strong: rides the whirlwind (2 frames, 4 fps) | monsters M1 v2 |
+| `mobs/mob_kamaitachi-strong_death_strip4.png` | 104x19 | Kamaitachi, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v2 |
+| `mobs/mob_kamaitachi-stronger_idle.png` | 20x19 | Kamaitachi, stronger (the Unmaking's deepest): idle | monsters M1 v2 |
+| `mobs/mob_kamaitachi-stronger_hit.png` | 20x19 | Kamaitachi, stronger (the Unmaking's deepest): hit, the red flash | monsters M1 v2 |
+| `mobs/mob_kamaitachi-stronger_hurt.png` | 20x19 | Kamaitachi, stronger (the Unmaking's deepest): hurt | monsters M1 v2 |
+| `mobs/mob_kamaitachi-stronger_walk_strip2.png` | 40x19 | Kamaitachi, stronger (the Unmaking's deepest): rides the whirlwind (2 frames, 4 fps) | monsters M1 v2 |
+| `mobs/mob_kamaitachi-stronger_death_strip4.png` | 104x19 | Kamaitachi, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v2 |

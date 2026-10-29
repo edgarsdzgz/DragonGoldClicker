@@ -523,6 +523,20 @@ for _id, _name in (("giant-bat", "Giant Bat"), ("harpy", "Harpy"), ("mantair-cor
     ASSETS.append((f"mobs/mob_{_id}_shadow.png", FLIERS / f"mob_{_id}_shadow.png",
                    f"{_name}: its shadow on the road (draw at half strength, under the lifted flier)", "bestiary fliers v1"))
 
+# The new monsters from the bestiary research, a few per batch (`_dev/docs/monster-batches.md`): M1, Mistral
+# Peaks' regulars (56-monsters-m1; the Kamaitachi as v2, approved 2026-10-29). Its walk rides the whirlwind.
+M1 = AGENT / "56-monsters-m1/out"
+for _dir, _origin, _id, _name, _gait in ((M1, "monsters M1 v2", "kamaitachi", "Kamaitachi", "rides the whirlwind"),):
+    for _tier, _label in (("", ""), ("-strong", ", strong"), ("-stronger", ", stronger (the Unmaking's deepest)")):
+        _n = f"mob_{_id}{_tier}"
+        ASSETS += [
+            (f"mobs/{_n}_idle.png", _dir / f"{_n}_idle.png", f"{_name}{_label}: idle", _origin),
+            (f"mobs/{_n}_hit.png", _dir / f"{_n}_hit.png", f"{_name}{_label}: hit, the red flash", _origin),
+            (f"mobs/{_n}_hurt.png", _dir / f"{_n}_hurt.png", f"{_name}{_label}: hurt", _origin),
+            (f"mobs/{_n}_walk_strip2.png", _dir / f"{_n}_walk_strip2.png", f"{_name}{_label}: {_gait} (2 frames, 4 fps)", _origin),
+            (f"mobs/{_n}_death_strip4.png", _dir / f"{_n}_death_strip4.png", f"{_name}{_label}: death, buckles, falls, lands, unmade (4 frames, 8 fps)", _origin),
+        ]
+
 # The six monsters already in the game, shaded like the busts (44-bestiary v2, owner 2026-10-27): every
 # pose and tier now comes from the shaded set. Same file names and sizes as before.
 _SHADED = ("kobold", "goblin", "crawler", "orc", "raider", "minotaur")

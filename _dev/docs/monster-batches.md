@@ -66,3 +66,9 @@ batch: their monsters are all drawn already.
   other four).
 - **Moving the drawn mini-bosses and bosses to their new levels** (the Spider Queen to 45, the Lich to
   60, and so on, per `rosters.md`). That is a change to `src/types/monsterRoster.ts`, not art.
+
+## Progress
+
+| Batch | Status |
+| --- | --- |
+| M1 | The Kamaitachi locked 2026-10-29 (the pilot, v2; it set the look). Aitvaras, Gargoyle and Wild Hunt Rider next |

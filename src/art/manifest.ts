@@ -1190,6 +1190,21 @@ export const SPRITES = {
   "mob_harpy_shadow": { source: require('../../assets/art/mobs/mob_harpy_shadow.png'), w: 11, h: 3, frames: 1, fps: 0, label: "Harpy: its shadow on the road (draw at half strength, under the lifted flier)" },
   "mob_mantair-corsair_shadow": { source: require('../../assets/art/mobs/mob_mantair-corsair_shadow.png'), w: 13, h: 3, frames: 1, fps: 0, label: "Mantair Corsair: its shadow on the road (draw at half strength, under the lifted flier)" },
   "mob_storm-rider_shadow": { source: require('../../assets/art/mobs/mob_storm-rider_shadow.png'), w: 11, h: 3, frames: 1, fps: 0, label: "Storm Rider: its shadow on the road (draw at half strength, under the lifted flier)" },
+  "mob_kamaitachi_idle": { source: require('../../assets/art/mobs/mob_kamaitachi_idle.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi: idle" },
+  "mob_kamaitachi_hit": { source: require('../../assets/art/mobs/mob_kamaitachi_hit.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi: hit, the red flash" },
+  "mob_kamaitachi_hurt": { source: require('../../assets/art/mobs/mob_kamaitachi_hurt.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi: hurt" },
+  "mob_kamaitachi_walk_anim": { source: require('../../assets/art/mobs/mob_kamaitachi_walk_strip2.png'), w: 20, h: 19, frames: 2, fps: 4, label: "Kamaitachi: rides the whirlwind (2 frames, 4 fps)" },
+  "mob_kamaitachi_death_anim": { source: require('../../assets/art/mobs/mob_kamaitachi_death_strip4.png'), w: 26, h: 19, frames: 4, fps: 8, label: "Kamaitachi: death, buckles, falls, lands, unmade (4 frames, 8 fps)" },
+  "mob_kamaitachi-strong_idle": { source: require('../../assets/art/mobs/mob_kamaitachi-strong_idle.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi, strong: idle" },
+  "mob_kamaitachi-strong_hit": { source: require('../../assets/art/mobs/mob_kamaitachi-strong_hit.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi, strong: hit, the red flash" },
+  "mob_kamaitachi-strong_hurt": { source: require('../../assets/art/mobs/mob_kamaitachi-strong_hurt.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi, strong: hurt" },
+  "mob_kamaitachi-strong_walk_anim": { source: require('../../assets/art/mobs/mob_kamaitachi-strong_walk_strip2.png'), w: 20, h: 19, frames: 2, fps: 4, label: "Kamaitachi, strong: rides the whirlwind (2 frames, 4 fps)" },
+  "mob_kamaitachi-strong_death_anim": { source: require('../../assets/art/mobs/mob_kamaitachi-strong_death_strip4.png'), w: 26, h: 19, frames: 4, fps: 8, label: "Kamaitachi, strong: death, buckles, falls, lands, unmade (4 frames, 8 fps)" },
+  "mob_kamaitachi-stronger_idle": { source: require('../../assets/art/mobs/mob_kamaitachi-stronger_idle.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi, stronger (the Unmaking's deepest): idle" },
+  "mob_kamaitachi-stronger_hit": { source: require('../../assets/art/mobs/mob_kamaitachi-stronger_hit.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi, stronger (the Unmaking's deepest): hit, the red flash" },
+  "mob_kamaitachi-stronger_hurt": { source: require('../../assets/art/mobs/mob_kamaitachi-stronger_hurt.png'), w: 20, h: 19, frames: 1, fps: 0, label: "Kamaitachi, stronger (the Unmaking's deepest): hurt" },
+  "mob_kamaitachi-stronger_walk_anim": { source: require('../../assets/art/mobs/mob_kamaitachi-stronger_walk_strip2.png'), w: 20, h: 19, frames: 2, fps: 4, label: "Kamaitachi, stronger (the Unmaking's deepest): rides the whirlwind (2 frames, 4 fps)" },
+  "mob_kamaitachi-stronger_death_anim": { source: require('../../assets/art/mobs/mob_kamaitachi-stronger_death_strip4.png'), w: 26, h: 19, frames: 4, fps: 8, label: "Kamaitachi, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps)" },
 } satisfies Record<string, SpriteDef>
 
 export type SpriteId = keyof typeof SPRITES

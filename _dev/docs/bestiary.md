@@ -125,3 +125,13 @@ game gets an elite rank is still my call; they are drawn either way.
 
 Not in any batch yet: the final boss, whose failed ritual began the Unmaking (a story decision first),
 and the fliers and riders, which wait on a new battlefield.
+
+## The new monsters, from the research
+
+Started 2026-10-29. Picked from the folklore and D&D research (`bestiary-research/`), placed by Land, and
+drawn a few at a time in the batches of `monster-batches.md`. Each is checked against a second source
+before it is drawn (`bestiary-research/verified.md`).
+
+| Monster | Land | Looks | Status |
+| --- | --- | --- | --- |
+| Kamaitachi | Mistral Peaks (regular) | A storm-teal sickle weasel curling out of an open whirlwind, both steel sickles raised, a gold-tipped tail | Locked 2026-10-29 (`56-monsters-m1`, v2); no wave sends it yet |
