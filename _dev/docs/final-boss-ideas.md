@@ -1,195 +1,110 @@
-# The final boss: Magister Oren Hale (2026-10-29)
+# The final boss: the Rift Boss (2026-10-29)
 
-**On hold (2026-10-29).** This write-up changes the old game's lore, and the owner wants the lore followed.
-In the old lore the Forge-Master is a Pyrean archmage who built the Crucible Engine. The Evil is the
-Human-Wrought Evil, let in by the heroes of the old world. To be reworked to fit that lore. The recurring
-boss in different forms stays the direction.
+Text only. No art until the owner approves. This follows the old Draconia Chronicles lore and only adds to
+it (owner, 2026-10-29). Every point below is marked **[old lore]** with its source, or **[added]**.
 
-Text only. No art until the owner approves this write-up. The direction comes from the owner
-(2026-10-29): the Archmagister (idea B below) with pieces of the other three ideas, and **a recurring boss
-in different forms**. The name is a placeholder.
+An earlier version, Magister Oren Hale, replaced part of the old lore. It is in git history (commit
+`7a27e80`) and is set aside.
 
-It builds on canon in `cast-and-peoples.md` and `bestiary.md`:
-- the Unmaking began with a failed human ritual;
-- the Rift opened at the Academy of Draconia, and only the apprentices survived;
-- the Council sealed itself in the Barrier Spire;
-- Draconia sits on the Cradle Ley, where the First Flame touched the world.
+## What the old lore already says
 
-## Who he was
+- **The source of evil.** [old lore: tome 01] The Human-Wrought Evil is an ancient force that human
+  hubris let loose. It spills into the Dragonlands through dimensional rifts and does not merely destroy:
+  it corrupts and inverts.
+- **The heroes' ritual.** [old lore: compendium, "Omniscient Truth"] Far across the sea, the legendary
+  heroes of the old world tried to seal an ever-growing rift with the combined might of their
+  civilizations. They failed. Their ritual overdrew the world's Arcana and left a mana vacuum, and reality
+  began to unravel outward from the point of failure. That unraveling is the Unmaking.
+- **What Draconia knows.** [old lore: compendium] From Draconia's side it was a sudden apocalypse with no
+  clear source. Most believe it is the collapse of magic itself. The truth is hidden from mortals.
+- **The ending.** [old lore: tome 10] The main story ends in the **Rift Closure**: a final confrontation
+  with **the Rift Boss, the source of evil**. The fight has phases, the Rift Boss summons minions and
+  controls the battlefield, and there can be more than one ending.
+- **What comes after.** [old lore: tome 10] New Game Plus. The player goes around again with
+  **mutators**: Resource Attrition (enemies drain resources), Elemental Embargo (an element is shut off) and
+  Void Corruption. There are also seasonal mutators.
 
-Oren Hale was the human head of the Academy of Draconia, one of the few humans ever to teach dragons. The
-great schools of the old world called the Academy "a museum." He spent his life studying the Cradle Ley. He
-came to believe that dragons only inherit fire, and that a mind brave enough could take it.
+So the final boss is already decided in outline: the Rift Boss, met at the Rift, returning in NG+. What the
+old lore leaves open is who or what the Rift Boss is. The rest of this file fills that gap.
 
-That belief is the villain: a human who would not stay small next to dragons.
+## Who the Rift Boss is [added]
 
-## The ritual
+**The Last Hero.** He was the champion of the old world's heroes. He stood at the heart of the seal when the
+ritual failed. The others died, and he did not. The Evil the heroes meant to seal wears him now. It turned
+their protection into consumption, as it always does. He believes he is still holding the seal shut and
+that Draconia's Cradle Ley is the last strength the seal needs. That pull is why the horde marches on
+Draconia.
 
-He chose commencement morning, with the whole Academy in the great hall above the Ley. Kael's father had
-forged him a dragonsteel focus for the rite. He did not know what it was for, only that the Academy paid in
-dragon-gold.
+**Name:** a placeholder until the owner names him.
 
-Hale meant to draw the First Flame into the focus and prove a human could hold it. It drew too deep and
-folded in on itself, and the Rift opened in the hall:
-- the masters died;
-- the apprentices lived because they were waiting outside to be called in, and Lirae and Varn were among
-  them;
-- the Council fled into the Barrier Spire;
-- the Unmaking spread outward from that room.
+This follows the lore:
+- he is human hubris, made a person;
+- the heroes' ritual is canon;
+- "corrupts and inverts" is canon;
+- the truth stays hidden from Draconia until the Rift Closure reveals it.
 
-## Why the horde comes
+## Where he appears [added, on the Land plan]
 
-Hale did not die. He is inside the Rift, half-unmade and still holding the ritual open. The Ley under
-Draconia is the last fire he has not drawn, and he pulls on it like a rope.
+One Land covers ten horde levels (decided 2026-10-29). Shadowmere, at the Rift's edge, is the last Land:
+levels 91 to 100.
 
-The horde is the Unmaking flowing along that pull. The siege is aimed at Draconia, not random. "They come
-bigger" because he pulls harder every season.
+- **Before the end, no fight, only hints.** Each Land boss says something about "the one across the sea"
+  as it falls. Lirae finds the old border researchers' reports of Arcana drain storms in the Journal (old
+  lore: the Council had those warnings).
+- **The Rift Closure: level 100,** the end of Shadowmere. He is fought in the forms below, one after
+  another, as phases. The fight follows the old Rift Boss design: phases, summoned minions and changes to
+  the battlefield.
+- **After the Closure: NG+.** The horde starts again with a mutator, and at the end of each NG+ run he
+  returns in a new form. That makes him the recurring boss in different forms that the owner asked for.
 
-His followers are already in the bestiary: the Cult Apprentices, Ashen Converts and Ember Prophets. They are
-humans who heard what he tried and believed him. That gives the story's human-refugee tension a face,
-because some refugees inside the walls once listened to him too.
+## His forms [added]
 
-## A recurring boss: why he comes back
-
-Every other boss stays dead once killed, even when a Breach pushes the horde back
-(`src/types/monsterRoster.ts`). **Hale is the exception.** He cannot be killed while the ritual holds, so each
-time he falls he only loses more of himself. He returns in a new form, more unmade and closer to what he
-wanted.
-
-**The hook: the Ancient Magic.** When the wall falls, the elders spend Draconia's Ancient Magic and the player
-pays in renown. That magic comes from the Ley as well. Every use loosens it a little more for Hale. So a
-Breach brings him back sooner. That ties the game's endless loop to the story without the game needing an
-ending.
-
-## His five forms
-
-Every form keeps the bestiary's rules:
+Each form is another of the old world's heroes, taken by the Evil. Each came from a different
+civilization that joined the ritual, and each form carries one of the old NG+ mutators while it lives. Every
+form follows the bestiary's drawing rules:
 - gold eyes;
 - magenta only for the Unmaking's cracks;
-- no crimson hide with gold plates (that is the player's alone);
-- a silhouette no townsperson could be mistaken for.
+- never crimson hide with gold plates;
+- never read as a villager.
 
-Each form also has the three Unmaking tiers like every monster. Sizes are set at the art stage: boss size
-(about 22x28) for the first form, growing larger after.
+1. **The Champion.** A tall knight in the remains of shining plate, a long white cloak gone gray. A broken
+   ring of light hovers behind him, cracked in magenta, and his left side drifts away as luminous dust.
+   He is met first, at the Rift Closure.
+2. **The Archmage.** A robed caster of the old world's greatest school, hung with dead rings of runes.
+   **Elemental Embargo:** one of the player's strengths goes silent while she casts.
+3. **The Provisioner King.** The ruler who fed the ritual with his kingdom's stores, robed in moldering
+   finery. **Resource Attrition:** each monster that falls while he lives drains food or renown.
+4. **The Saint.** A healer whose light now heals the horde. She walks behind the wave, and monsters near
+   her mend.
+5. **The Hollow Seal.** The ritual itself, with no hero left inside: a ring of the heroes' empty armor and
+   robes turning around a dark center. **Void Corruption:** pieces of the screen fade while it lives.
 
-### 1. The Magister
-**Looks.** A gaunt old human in the Academy's ceremonial robes, burned ash-gray. He carries the
-commencement staff, topped with a cracked crystal of magenta light, and wears a scholar's mask like his
-cultists' masks. Cinders fall from his sleeves.
+The first form is the Closure's fight. Each NG+ run ends on the next form. Past the fifth, the forms cycle
+and grow with the horde.
 
-**The fight.**
-1. The procession: he stays at the back behind his cultists, and each one that falls cracks his shield.
-2. The lecture: he talks while he casts, sending slow, heavy blasts against the wall, so repair matters.
-3. The draw: he pulls on the Ley and the screen goes dark. A burst of the player's strikes breaks it.
+**The Rift Closure fight, in three phases:**
+1. **The approach.** He walks up the road with the strongest of every Land's faction before him.
+2. **The seal.** He starts the ritual at the gate and pulls on the Cradle Ley. The Barrier dims and the wall
+   drains, so repair matters.
+3. **The truth.** He comes apart and speaks plainly about what the heroes did. A burst of the player's
+   strikes ends it.
 
-**Lines.**
-- To Lirae: "Little Ink-Wing. You were late that morning. You always were."
-- To the player: "Fire does not belong to lizards."
+**Lines:**
+- "We were trying to save it. I am still trying. Open the gate."
+- "You are guarding a candle while the house burns."
+- At the end: "We were the heroes. Tell them we were the heroes."
 
-### 2. The Ashen Magister
-**Looks.** The fire he took has burned him hollow. His robes and skin are one ash-gray shell with embers
-showing through the cracks. He floats a hand's width above the road, and his mask has fused to his face. The
-staff is gone; the crystal is now in his chest.
+## Endings [the old lore asks for more than one; these are added]
 
-**The fight.** Ember Prophets walk beside him. While any of them stands, he heals. He throws the cinders
-from his sleeves at the wall, light strikes that come fast.
-
-**Lines.** "You think you beat me? You burned away what was holding me back."
-
-### 3. The Hollow Choir
-**Looks.** He has taken the masters who died in the hall. Their masks orbit his head in a ring, each with
-gold eyes, and the robes of five colleges hang from him in layers.
-
-**The fight.** The masks take turns speaking, and each speaker has its own shield. The player must strike
-the mask that is speaking.
-
-**Lines.** It speaks in the voices of the cast, in lines they never said, as in idea D. For example,
-Pyreth's voice: "Rest, Steward. There is nothing left to guard."
-
-### 4. The Drakeborn
-**Looks.** He finally has what he wanted: the shape of a dragon. A human torso grows out of a drake's body of
-cracked obsidian and ash, with wings that are only frames of bone and magenta light. He must never read as
-the player's dragon, so no crimson and no gold plates. It is a horror, not a triumph.
-
-**The fight.** He breathes the stolen fire on the wall in long sweeps. Each sweep leaves the wall burning, and
-the player must mend it before his next breath.
-
-**Lines.**
-- "Look at me. Look. Am I not what you are?"
-- At the end: "I only wanted to be warm."
-
-### 5. The Quiet Hunger
-**Looks.** Almost nothing of him is left. He is the outline of a man in robes, cut out of the world and
-filled with dark starfield and drifting dust. Magenta cracks run along his edges. His outline borrows
-shapes from what he has eaten: a tower's roofline, a wing, a cart wheel.
-
-**The fight.** While he lives, pieces of the screen fade: the quest ribbon's words, building names, the
-music thinning to a drone. The Ancient Magic flares as a weapon. The first time it flares, it costs nothing.
-
-**Lines.** None of his own. He only borrows lines.
-
-## Where he appears
-
-The bestiary already holds a boss every tenth level up to 50, with a mini-boss between each:
-
-| Level | Boss | Mini-boss at the level before |
-| --- | --- | --- |
-| 10 | Khagan of the Sirocco | 5: Minotaur |
-| 20 | Forge-Master of the Inferno | 15: Basilisk |
-| 30 | Corrupted Drake | 25: Spider Queen |
-| 40 | Corrupted Wyvern | 35: Stone Golem |
-| 50 | Lich | 45: Giant Elemental |
-
-**Proposal: lead up to him through the existing bosses, then give him every tenth level after 50.**
-
-- **Level 10, when the cracks glow** (`UNMAKING_DEEPEST_LEVEL`): a story scene with no fight. The cultists
-  in the horde start chanting a name.
-- **Level 20, the Forge-Master, is Kael's father.** He is bound to the empty focus and is already in the
-  bestiary as a boss. Kael's scene comes first, and her line "Who asked you to build it?" leads to Hale.
-- **Levels 30 and 40, the Corrupted Drake and the Corrupted Wyvern,** are dragons Hale has drawn on. Lirae
-  recognizes the Academy's marks on one of them.
-- **Level 50, the Lich,** was a master of the hall, raised by Hale. Its last words: "He is coming for the
-  Ley."
-- **Levels 60, 70, 80, 90 and 100:** Hale's five forms, in order.
-- **Past 100:** he keeps returning every tenth level, cycling through forms 2 to 5 and growing with the
-  horde.
-- **After each Ancient Magic,** his latest form returns at the next tenth level, even if he was already
-  beaten there.
-
-**If level 60 is too late for the first meeting,** the Magister could take level 50, and the Lich could
-move to a mini-boss slot.
-
-## Story beats
-
-- **Hints, from chapter 14.** Lirae finds burned pages in the Journal. Thornwick goes quiet whenever the
-  Academy comes up. His "third fire," the reason he was sent away from the eastern towers, was refusing to
-  help Hale with an early test.
-- **After the Forge-Master falls,** Kael gets her father's hammer.
-- **The name.** Lirae remembers the hall, and Ashara says she felt the Ley pulled while she slept.
-- **The Hollow Knight** guarded the hall doors that morning and gave its name to hold them shut. It could
-  speak for the first time when the Hollow Choir falls.
-- **When the Quiet Hunger falls,** the Barrier Spire could open and the Council could return. That could be
-  a second act.
+- **The Barrier holds.** The Rift's pull on Draconia breaks. The Unmaking does not end; it stops being drawn
+  to the city.
+- **Later, if wanted:** the Council in the Barrier Spire could open its doors, or the heroes' homeland
+  across the sea could become a place to reach. Either could start a second act.
 
 ## Decisions for the owner
 
-1. Is this the end of the story, or the end of the first act? Under this plan the game never ends, and the
-   Spire opening could start act two.
-2. Should Kael's father be the Forge-Master at level 20?
-3. Should Hale's first fight be at level 60, or should he take level 50 from the Lich?
-4. His name: keep "Oren Hale," or choose another?
-
----
-
-## Ideas considered (2026-10-29)
-
-These four were proposed before the owner chose a direction. Hale above takes pieces of each:
-- **A. The Lightbearer:** the old world's hero who will not let the ritual go. Hale took his pull on the
-  Ley, which is why the horde comes.
-- **B. The Archmagister:** the Academy's head who led the ritual. This became Hale.
-- **C. The Forge-Master, Kael's father:** the man who forged the focus. He is now Hale's level 20
-  lieutenant.
-- **D. The Quiet Hunger:** the Unmaking itself. It is now Hale's last form, with the erasing and the
-  borrowed voices.
-
-The full text of the four ideas is in this file's first version (commit `7f98b0b`).
+1. His name: the Last Hero is a title. What is his name?
+2. The five forms: keep them, cut some, or change them?
+3. NG+: in this clicker, is NG+ a full restart after level 100 with a mutator, or should something else
+   carry it?
+4. Should the Land bosses drop hints before the end, as above?
