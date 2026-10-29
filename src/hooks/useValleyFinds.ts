@@ -12,7 +12,7 @@ import { getForageYield } from '../types/foragers'
 import { granaryRoom } from '../types/food'
 import { FLAVOR_H } from '../types/warfrontLayout'
 import {
-  FIND_SIZE, FIRST_FIND_HINT, advanceGap, driftDirection, findDef, findGap, findPay, findShowMs, findSpots,
+  FIRST_FIND_HINT, advanceGap, driftDirection, findDef, findGap, findPay, findShowMs, findSpots,
   isFirstFind, pickFind, pickSpot,
 } from '../types/valleyFinds'
 import type { FindKind } from '../types/valleyFinds'
@@ -25,6 +25,8 @@ export interface ActiveFind {
   kind: FindKind
   x: number
   y: number
+  /** Its size in dp, from its depth in the valley */
+  size: number
   pay: number
   showMs: number
   drift: -1 | 1
@@ -84,6 +86,7 @@ export function useValleyFinds({ width, height, orbDiameter, granaryFull, showHi
       kind: def.kind,
       x: spot.x,
       y: spot.y,
+      size: spot.size,
       pay: findPay(def, l.forageYield),
       showMs: findShowMs(def, l.reduceMotion, l.screenReader),
       drift: driftDirection(spot, l.width),
@@ -106,7 +109,7 @@ export function useValleyFinds({ width, height, orbDiameter, granaryFull, showHi
     catchFind(find.pay)
     playFind()
     haptics.light()
-    numbers.current?.spawn({ x: find.x + FIND_SIZE / 2, y: find.y, text: `+${added}`, color: colors.forage.accent })
+    numbers.current?.spawn({ x: find.x + find.size / 2, y: find.y, text: `+${added}`, color: colors.forage.accent })
   }, [find, catchFind, playFind, haptics, numbers])
 
   const onGone = useCallback(() => setFind(null), [])

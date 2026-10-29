@@ -1,19 +1,22 @@
 import React, { useCallback, useEffect, useRef } from 'react'
-import { Animated, Easing, Pressable, StyleSheet } from 'react-native'
-import { GameIcon } from './GameIcon'
-import type { GameIconName } from '../art'
-import { FIND_DRIFT, FIND_SIZE, findDef, findLabel } from '../types/valleyFinds'
+import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native'
+import { PixelSprite } from './PixelSprite'
+import type { SpriteId } from '../art'
+import { FIND_ART_PX, FIND_DRIFT, findDef, findLabel } from '../types/valleyFinds'
 import type { FindKind } from '../types/valleyFinds'
 
-/** The picture for each kind. Stand-in icons until the Valley Finds art batch is approved: swap them here */
-export const FIND_ICONS: Record<FindKind, GameIconName> = {
-  rabbit: 'icon_food',
-  berries: 'icon_wheat',
-  fish: 'icon_sparkles',
-  honey: 'icon_star',
+/** The official art for each kind (90-valley-finds, locked 2026-10-29); the berry bush empties tap by tap */
+export const FIND_SPRITES: Record<FindKind, SpriteId> = {
+  rabbit: 'find_rabbit_run_anim',
+  berries: 'find_berries_0',
+  fish: 'find_fish_leap_anim',
+  honey: 'find_honey_anim',
 }
+/** The bush's state after each tap taken: full, two-thirds, one-third, bare */
+const BERRY_STATES: readonly SpriteId[] = ['find_berries_0', 'find_berries_1', 'find_berries_2', 'find_berries_3']
+/** A picked bush stays bare this long before it goes */
+const BARE_MS = 400
 
-const ICON_SIZE = 32
 /** The fish leaps this high before it drops back */
 const LEAP_DP = 28
 const PRESSED_SCALE = 0.9
@@ -23,6 +26,8 @@ interface ValleyFindProps {
   /** Top-left corner inside the parent, in dp */
   x: number
   y: number
+  /** Width and height in dp: smaller far up the valley, larger close by (types/valleyFinds findSize) */
+  size: number
   /** Food one tap pays (already scaled by the forage yield) */
   pay: number
   /** How long it shows, in ms (already lengthened for Reduce Motion or a screen reader) */
@@ -39,10 +44,10 @@ interface ValleyFindProps {
 
 /**
  * Something in the valley to tap for bonus food. Goes at its last tap, or when its `showMs` runs
- * out (a multi-tap find must be taken in that time). Needs only taps, no hold or drag, and is a
- * 56 dp touch target.
+ * out (a multi-tap find must be taken in that time). Needs only taps, no hold or drag, and is at
+ * least a 48 dp touch target.
  */
-export function ValleyFind({ kind, x, y, pay, showMs, still = false, drift = 1, onCatch, onGone }: ValleyFindProps) {
+export function ValleyFind({ kind, x, y, size, pay, showMs, still = false, drift = 1, onCatch, onGone }: ValleyFindProps) {
   const def = findDef(kind)
   const tapsLeft = useRef(def.taps)
   const [left, setLeft] = React.useState(def.taps)
@@ -51,9 +56,10 @@ export function ValleyFind({ kind, x, y, pay, showMs, still = false, drift = 1, 
   // Gone when its time is up
   const goneRef = useRef(onGone)
   goneRef.current = onGone
+  const showTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   useEffect(() => {
-    const timer = setTimeout(() => goneRef.current(), showMs)
-    return () => clearTimeout(timer)
+    showTimer.current = setTimeout(() => goneRef.current(), showMs)
+    return () => clearTimeout(showTimer.current)
   }, [showMs])
 
   // The rabbit drifts sideways; the fish leaps up and drops back
@@ -71,18 +77,32 @@ export function ValleyFind({ kind, x, y, pay, showMs, still = false, drift = 1, 
     return () => run?.stop()
   }, [kind, showMs, still, drift, move])
 
+  const bareTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  useEffect(() => () => clearTimeout(bareTimer.current), [])
+
   const handlePress = useCallback(() => {
     if (tapsLeft.current <= 0) return
     tapsLeft.current -= 1
     setLeft(tapsLeft.current)
     onCatch(tapsLeft.current)
-    if (tapsLeft.current === 0) onGone()
-  }, [onCatch, onGone])
+    if (tapsLeft.current > 0) return
+    // The bush shows itself picked bare a moment; everything else goes at once
+    if (kind === 'berries') {
+      clearTimeout(showTimer.current)
+      bareTimer.current = setTimeout(() => goneRef.current(), BARE_MS)
+    }
+    else onGone()
+  }, [kind, onCatch, onGone])
 
+  // A still rabbit sits; a moving one runs. The hare is drawn facing right, so a left drift flips it
+  const sprite = kind === 'berries'
+    ? BERRY_STATES[Math.min(BERRY_STATES.length - 1, def.taps - left)]
+    : kind === 'rabbit' && still ? 'find_rabbit_idle' : FIND_SPRITES[kind]
+  const flip = kind === 'rabbit' && drift < 0
   const horizontal = kind === 'rabbit'
   return (
     <Animated.View
-      style={[styles.spot, { left: x, top: y, transform: [horizontal ? { translateX: move } : { translateY: move }] }]}
+      style={[styles.spot, { left: x, top: y, width: size, height: size, transform: [horizontal ? { translateX: move } : { translateY: move }] }]}
     >
       <Pressable
         onPress={handlePress}
@@ -90,7 +110,9 @@ export function ValleyFind({ kind, x, y, pay, showMs, still = false, drift = 1, 
         accessibilityLabel={findLabel(def, left, pay)}
         style={({ pressed }) => [styles.touch, pressed && { transform: [{ scale: PRESSED_SCALE }] }]}
       >
-        <GameIcon name={FIND_ICONS[kind]} size={ICON_SIZE} />
+        <View style={flip ? styles.flipped : undefined}>
+          <PixelSprite id={sprite} scale={size / FIND_ART_PX} />
+        </View>
       </Pressable>
     </Animated.View>
   )
@@ -99,13 +121,13 @@ export function ValleyFind({ kind, x, y, pay, showMs, still = false, drift = 1, 
 const styles = StyleSheet.create({
   spot: {
     position: 'absolute',
-    width: FIND_SIZE,
-    height: FIND_SIZE,
   },
   touch: {
-    width: FIND_SIZE,
-    height: FIND_SIZE,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  flipped: {
+    transform: [{ scaleX: -1 }],
   },
 })

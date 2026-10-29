@@ -109,10 +109,27 @@ export function applyFind(s: GameState, food: number): GameState {
 export interface FindSpot {
   x: number
   y: number
+  /** Its width and height in dp: smaller far up the valley, larger close by */
+  size: number
 }
 
-/** A find's touch box, in dp (at least the 48 dp target) */
-export const FIND_SIZE = 56
+/** The finds are drawn on a 24x24 art-pixel canvas (90-valley-finds) */
+export const FIND_ART_PX = 24
+/**
+ * Perspective (owner note, 2026-10-29): display points per art pixel for a find at the far edge of
+ * the valley (the top of the area) and close by (the bottom). The far size is the 48 dp tap target.
+ */
+export const FAR_SCALE = 2
+export const NEAR_SCALE = 3
+/** The smallest a find may be: the 48 dp touch target */
+export const MIN_FIND_SIZE = 48
+
+/** A find's size, in dp, at a depth from 0 (far, the top of the area) to 1 (near, the bottom) */
+export function findSize(depth: number): number {
+  const d = Math.min(1, Math.max(0, depth))
+  return Math.max(MIN_FIND_SIZE, Math.round(FIND_ART_PX * (FAR_SCALE + (NEAR_SCALE - FAR_SCALE) * d)))
+}
+
 const SPOT_EDGE = 8
 /** Clear space kept between a find and the orb, so a miss-tap does not land on the other */
 const SPOT_GAP = 12
@@ -124,23 +141,29 @@ function overlaps(a: { x: number; y: number; w: number; h: number }, b: { x: num
 }
 
 /**
- * The spots a find may take in an area (the stack of flavor line and orb, centered). A grid of
- * nine, minus those that touch the orb or the flavor line.
+ * The spots a find may take in an area (the stack of flavor line and orb, centered): three rows of
+ * three, far (small) at the top, beside the orb, and near (large) at the bottom, minus those that
+ * touch the orb or the flavor line.
  */
 export function findSpots(width: number, height: number, orbDiameter: number, flavorHeight: number): FindSpot[] {
   const stackTop = (height - (flavorHeight + orbDiameter)) / 2
   const orb = { x: (width - orbDiameter) / 2 - SPOT_GAP, y: stackTop + flavorHeight - SPOT_GAP, w: orbDiameter + SPOT_GAP * 2, h: orbDiameter + SPOT_GAP * 2 }
   const flavor = { x: 0, y: stackTop, w: width, h: flavorHeight }
-  // The side columns leave room for the rabbit's drift toward the edge
-  const xs = [SPOT_EDGE + FIND_DRIFT, (width - FIND_SIZE) / 2, width - FIND_SIZE - SPOT_EDGE - FIND_DRIFT]
-  const ys = [SPOT_EDGE, orb.y + orb.h / 2 - FIND_SIZE / 2, height - FIND_SIZE - SPOT_EDGE]
+  const rows = [
+    { size: findSize(0), top: () => SPOT_EDGE },
+    { size: findSize(0.5), top: (size: number) => orb.y + orb.h / 2 - size / 2 },
+    { size: findSize(1), top: (size: number) => height - size - SPOT_EDGE },
+  ]
   const spots: FindSpot[] = []
-  for (const y of ys) {
-    for (const x of xs) {
-      const box = { x, y, w: FIND_SIZE, h: FIND_SIZE }
-      if (x < 0 || y < 0 || x + FIND_SIZE > width || y + FIND_SIZE > height) continue
+  for (const row of rows) {
+    const { size } = row
+    const y = row.top(size)
+    // The side columns leave room for the rabbit's drift toward the edge
+    for (const x of [SPOT_EDGE + FIND_DRIFT, (width - size) / 2, width - size - SPOT_EDGE - FIND_DRIFT]) {
+      const box = { x, y, w: size, h: size }
+      if (x < 0 || y < 0 || x + size > width || y + size > height) continue
       if (overlaps(box, orb) || overlaps(box, flavor)) continue
-      spots.push({ x, y })
+      spots.push({ x, y, size })
     }
   }
   return spots
@@ -154,5 +177,5 @@ export function pickSpot(spots: readonly FindSpot[], rand: number): FindSpot | n
 
 /** Which way a drifting find moves from its spot: away from the middle, so never onto the orb */
 export function driftDirection(spot: FindSpot, width: number): -1 | 1 {
-  return spot.x + FIND_SIZE / 2 < width / 2 ? -1 : 1
+  return spot.x + spot.size / 2 < width / 2 ? -1 : 1
 }

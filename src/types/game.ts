@@ -206,7 +206,8 @@ export type { FindKind, FindDef, FindSpot } from './valleyFinds'
 export {
   FIND_KINDS,
   FIRST_FIND_TAP,
-  FIND_SIZE,
+  FIND_ART_PX,
+  findSize,
   applyFind,
   findGap,
   findSpots,

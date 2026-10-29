@@ -2,8 +2,9 @@ import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { GRANARY_CAP } from '../food'
 import {
-  FIND_KINDS, FIND_GAP_MIN, FIND_GAP_MAX, FIRST_FIND_TAP, FIND_SIZE, applyFind, advanceGap, findDef, findGap, findLabel,
+  FIND_KINDS, FIND_GAP_MIN, FIND_GAP_MAX, FIRST_FIND_TAP, applyFind, advanceGap, findDef, findGap, findLabel,
   findPay, findShowMs, findSpots, isFirstFind, pickFind, pickSpot, driftDirection, FIND_DRIFT,
+  findSize, MIN_FIND_SIZE, FIND_ART_PX, FAR_SCALE, NEAR_SCALE,
 } from '../valleyFinds'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
@@ -110,8 +111,8 @@ describe('where a find sits', () => {
   const FLAVOR = 36
   const stackTop = (H - (FLAVOR + ORB)) / 2
   const orb = { x: (W - ORB) / 2, y: stackTop + FLAVOR, w: ORB, h: ORB }
-  const hits = (s: { x: number; y: number }) =>
-    s.x < orb.x + orb.w && orb.x < s.x + FIND_SIZE && s.y < orb.y + orb.h && orb.y < s.y + FIND_SIZE
+  const hits = (s: { x: number; y: number; size: number }) =>
+    s.x < orb.x + orb.w && orb.x < s.x + s.size && s.y < orb.y + orb.h && orb.y < s.y + s.size
 
   it('never overlaps the orb or the flavor line, and stays inside the area', () => {
     const spots = findSpots(W, H, ORB, FLAVOR)
@@ -120,20 +121,20 @@ describe('where a find sits', () => {
       expect(hits(s)).toBe(false)
       expect(s.x).toBeGreaterThanOrEqual(0)
       expect(s.y).toBeGreaterThanOrEqual(0)
-      expect(s.x + FIND_SIZE).toBeLessThanOrEqual(W)
-      expect(s.y + FIND_SIZE).toBeLessThanOrEqual(H)
-      expect(s.y + FIND_SIZE <= stackTop || s.y >= stackTop + FLAVOR).toBe(true)
+      expect(s.x + s.size).toBeLessThanOrEqual(W)
+      expect(s.y + s.size).toBeLessThanOrEqual(H)
+      expect(s.y + s.size <= stackTop || s.y >= stackTop + FLAVOR).toBe(true)
     }
   })
   it("the rabbit's drift never carries it onto the orb or out of the area", () => {
     for (const s of findSpots(W, H, ORB, FLAVOR)) {
-      const drifted = { x: s.x + driftDirection(s, W) * FIND_DRIFT, y: s.y }
+      const drifted = { x: s.x + driftDirection(s, W) * FIND_DRIFT, y: s.y, size: s.size }
       expect(hits(drifted)).toBe(false)
       // Away from the middle, where the orb is
-      const fromMiddle = (x: number) => Math.abs(x + FIND_SIZE / 2 - W / 2)
+      const fromMiddle = (x: number) => Math.abs(x + s.size / 2 - W / 2)
       expect(fromMiddle(drifted.x)).toBeGreaterThan(fromMiddle(s.x))
       expect(drifted.x).toBeGreaterThanOrEqual(0)
-      expect(drifted.x + FIND_SIZE).toBeLessThanOrEqual(W)
+      expect(drifted.x + s.size).toBeLessThanOrEqual(W)
     }
   })
   it('has no spot when the orb fills the area', () => {
@@ -141,9 +142,30 @@ describe('where a find sits', () => {
     expect(pickSpot([], 0.5)).toBeNull()
   })
   it('picks the first and last spot at the ends of the roll', () => {
-    const spots = [{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }]
+    const spots = [{ x: 1, y: 1, size: 48 }, { x: 2, y: 2, size: 48 }, { x: 3, y: 3, size: 48 }]
     expect(pickSpot(spots, 0)).toBe(spots[0])
     expect(pickSpot(spots, JUST_BELOW_ONE)).toBe(spots[2])
     expect(pickSpot(spots, 1)).toBe(spots[2])
+  })
+})
+
+describe('perspective: far finds are smaller, near ones larger (owner note, 2026-10-29)', () => {
+  it('runs from the far scale at the top to the near scale at the bottom', () => {
+    expect(findSize(0)).toBe(FIND_ART_PX * FAR_SCALE)
+    expect(findSize(1)).toBe(FIND_ART_PX * NEAR_SCALE)
+    expect(findSize(0)).toBeLessThan(findSize(0.5))
+    expect(findSize(0.5)).toBeLessThan(findSize(1))
+  })
+
+  it('is never smaller than the 48 dp touch target, even past the ends', () => {
+    expect(findSize(-1)).toBeGreaterThanOrEqual(MIN_FIND_SIZE)
+    expect(findSize(0)).toBeGreaterThanOrEqual(MIN_FIND_SIZE)
+    expect(findSize(2)).toBe(findSize(1))
+  })
+
+  it('a spot lower in the area is never smaller than one above it', () => {
+    const spots = [...findSpots(360, 420, 160, 36)].sort((a, b) => a.y - b.y)
+    expect(new Set(spots.map((s) => s.size)).size).toBeGreaterThan(1)
+    for (let i = 1; i < spots.length; i++) expect(spots[i].size).toBeGreaterThanOrEqual(spots[i - 1].size)
   })
 })

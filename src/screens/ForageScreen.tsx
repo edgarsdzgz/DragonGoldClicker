@@ -133,6 +133,7 @@ export function ForageScreen() {
             kind={valley.find.kind}
             x={valley.find.x}
             y={valley.find.y}
+            size={valley.find.size}
             pay={valley.find.pay}
             showMs={valley.find.showMs}
             still={valley.reduceMotion}
