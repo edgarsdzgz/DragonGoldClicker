@@ -87,6 +87,8 @@ interface GameContextType {
   sharpenClaws: () => void
   /** Clears the last Breach's report once the player has read it (layer 6) */
   dismissBreach: () => void
+  /** Hold the monster's blows on the wall (while a story scene is open), or let them land again */
+  holdWall: (held: boolean) => void
   buildLibrarium: () => void
   completeResearch: (id: string) => void
   /** Raise Thornwick's tower (chapter 11) */
@@ -244,10 +246,13 @@ export function GameProvider({ children, initial }: {
     }, [loaded])
   )
 
-  // The monster at the gate strikes the wall (layer 6; once the Siege system is on)
+  // The monster at the gate strikes the wall (layer 6; once the Siege system is on). Owner ruling
+  // (2026-10-29): it waits while a story scene is open, so reading never costs the wall.
+  const wallHeld = useRef(false)
+  const holdWall = useCallback((held: boolean) => { wallHeld.current = held }, [])
   useGameLoop(
     useCallback(() => {
-      if (!loaded) return
+      if (!loaded || wallHeld.current) return
       setState(stepWall)
     }, [loaded])
   )
@@ -566,6 +571,7 @@ export function GameProvider({ children, initial }: {
         directRepairer,
         sharpenClaws,
         dismissBreach,
+        holdWall,
         buildLibrarium,
         completeResearch,
         buildWizardTower,

@@ -33,7 +33,7 @@ interface EventHostProps {
  */
 export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
   const {
-    state, applyScripted, dismissBreach,
+    state, applyScripted, dismissBreach, holdWall,
     pendingOfflineEarnings, dismissOfflineEarnings,
     pendingFoodWarning, dismissFoodWarning, answerRefugees,
     pendingWanderer, acceptWanderer, rejectWanderer,
@@ -49,6 +49,13 @@ export function EventHost({ onNavigate, onSceneClosed }: EventHostProps) {
   const part = parts[at]
 
   const activeModal = useActiveEvent()
+
+  // The wall takes no blows while a scene is read (owner ruling 2026-10-29)
+  const sceneOpen = activeModal === 'scene'
+  useEffect(() => {
+    holdWall(sceneOpen)
+    return () => holdWall(false)
+  }, [sceneOpen, holdWall])
 
   // Each queued scene closes once, even on a double tap on Skip or the dismiss button
   const closedUids = useRef(new Set<number>())
