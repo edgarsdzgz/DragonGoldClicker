@@ -26,12 +26,9 @@ import { useHaptics, useSfx } from '../hooks'
 import { useReduceMotion } from '../hooks/useReduceMotion'
 import { useScreenReader } from '../hooks/useScreenReader'
 import { SOUND } from '../data/sounds'
-import { dialogPaging, mouthOpen } from '../types/dialogPaging'
+import { dialogPaging, dialogTap, mouthOpen } from '../types/dialogPaging'
 import { lineMood } from '../types/cast'
 import type { CastId, Mood } from '../types/cast'
-
-/** Ignore a second tap this soon after the first */
-const PRESS_GUARD_MS = 250
 
 /** One letter appears this often while a line types itself out */
 const TYPE_MS = 28
@@ -135,11 +132,13 @@ export function NpcDialog({
   // Rodain then Pyreth), it starts on its first line from the first frame
   const [at, setAt] = useState({ lines, page: 0 })
   const page = at.lines === lines ? at.page : 0
-  const lastPress = useRef({ at: 0, page: -1 })
+  const lastPressAt = useRef(0)
+  const openedAt = useRef(0)
   useEffect(() => {
     if (visible) {
       setAt({ lines, page: 0 })
-      lastPress.current = { at: 0, page: -1 }
+      lastPressAt.current = 0
+      openedAt.current = Date.now()
     }
   }, [visible, lines])
   const { pageCount, lastPage, canSkip: skippable } = dialogPaging(lines.length, page, cutscene)
@@ -169,13 +168,20 @@ export function NpcDialog({
     return () => clearInterval(timer)
   }, [line, instant, visible])
 
-  // A double tap must not skip a line (or the whole scene): taps are ignored for a short moment
-  // after each one. While a line is still typing, a tap finishes it instead of moving on.
+  // When the line on screen became whole, for the read guard
+  const wholeAt = useRef<number | null>(null)
+  useEffect(() => {
+    wholeAt.current = typing ? null : Date.now()
+  }, [typing, line])
+
+  // Taps meant for something else never skip a scene: none land just after it opens, a double tap
+  // counts once, and a whole line stays up a moment. While a line types, a tap finishes it.
   const handleTap = () => {
     const now = Date.now()
-    if (now - lastPress.current.at < PRESS_GUARD_MS) return
-    lastPress.current = { at: now, page }
-    if (typing) {
+    const action = dialogTap(now, { openedAt: openedAt.current, lastPressAt: lastPressAt.current, wholeAt: wholeAt.current })
+    if (action === 'ignore') return
+    lastPressAt.current = now
+    if (action === 'finish') {
       setProgress({ line, n: line.length })
       return
     }

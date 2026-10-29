@@ -18,3 +18,35 @@ export const LETTERS_PER_MOUTH = 4
 export function mouthOpen(typed: number, lineLength: number) {
   return typed < lineLength && Math.floor(typed / LETTERS_PER_MOUTH) % 2 === 1
 }
+
+/** Taps closer together than this count once (a double tap never skips a line) */
+export const PRESS_GUARD_MS = 250
+/** A scene ignores taps this long after it opens, so taps meant for the monster never land on it */
+export const OPEN_GUARD_MS = 700
+/** A whole line stays up at least this long before a tap moves on */
+export const READ_GUARD_MS = 500
+
+export interface DialogTapTimes {
+  /** When the scene (or the next speaker's part) opened */
+  openedAt: number
+  /** The last tap that did something; 0 for none */
+  lastPressAt: number
+  /** When the line on screen became whole; null while it types */
+  wholeAt: number | null
+}
+
+/**
+ * What a tap on a scene does: nothing (too soon), finish the line that is typing, or move on.
+ * In the playtest of 2026-10-29, taps on the first kobold went straight through two scenes unread.
+ */
+export function dialogTap(now: number, t: DialogTapTimes): 'ignore' | 'finish' | 'next' {
+  if (tooSoon(now, t.openedAt, OPEN_GUARD_MS)) return 'ignore'
+  if (tooSoon(now, t.lastPressAt, PRESS_GUARD_MS)) return 'ignore'
+  if (t.wholeAt === null) return 'finish'
+  return tooSoon(now, t.wholeAt, READ_GUARD_MS) ? 'ignore' : 'next'
+}
+
+/** Within `gap` after `at`; a clock that stepped backward never counts as too soon */
+function tooSoon(now: number, at: number, gap: number): boolean {
+  return now >= at && now - at < gap
+}

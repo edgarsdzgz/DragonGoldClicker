@@ -1,4 +1,4 @@
-import { dialogPaging, LETTERS_PER_MOUTH, mouthOpen } from '../dialogPaging'
+import { dialogPaging, dialogTap, LETTERS_PER_MOUTH, mouthOpen, OPEN_GUARD_MS, PRESS_GUARD_MS, READ_GUARD_MS } from '../dialogPaging'
 import { SCENES } from '../../data/story/lines'
 
 describe('dialogPaging', () => {
@@ -40,5 +40,50 @@ describe('mouthOpen', () => {
 
   it('rests shut once the line is whole, however long it is', () => {
     for (let length = 0; length < 12; length++) expect(mouthOpen(length, length)).toBe(false)
+  })
+})
+
+describe('dialogTap: taps meant for the monster never skip a scene', () => {
+  const opened = { openedAt: 1000, lastPressAt: 0, wholeAt: null }
+
+  it('ignores taps just after the scene opens', () => {
+    expect(dialogTap(1000 + OPEN_GUARD_MS - 1, opened)).toBe('ignore')
+    expect(dialogTap(1000 + OPEN_GUARD_MS, opened)).toBe('finish')
+  })
+
+  it('a double tap counts once', () => {
+    const t = { openedAt: 0, lastPressAt: 5000, wholeAt: null }
+    expect(dialogTap(5000 + PRESS_GUARD_MS - 1, t)).toBe('ignore')
+    expect(dialogTap(5000 + PRESS_GUARD_MS, t)).toBe('finish')
+  })
+
+  it('a whole line stays up a moment before a tap moves on', () => {
+    const t = { openedAt: 0, lastPressAt: 0, wholeAt: 9000 }
+    expect(dialogTap(9000 + READ_GUARD_MS - 1, t)).toBe('ignore')
+    expect(dialogTap(9000 + READ_GUARD_MS, t)).toBe('next')
+  })
+
+  it('mashing 5 taps a second through a 2-line scene takes several seconds, not 4 taps', () => {
+    // The playtest: taps on the kobold kept coming at 200 ms when "The Elder Approaches" opened.
+    // Here each line is finished by a tap (it types for longer than the taps take).
+    let now = 0
+    const t = { openedAt: 0, lastPressAt: 0, wholeAt: null as number | null }
+    let page = 0
+    let taps = 0
+    while (page < 2) {
+      now += 200
+      taps++
+      const action = dialogTap(now, t)
+      if (action === 'ignore') continue
+      t.lastPressAt = now
+      if (action === 'finish') t.wholeAt = now
+      else { page++; t.wholeAt = null }
+    }
+    expect(taps).toBeGreaterThanOrEqual(10)
+    expect(now).toBeGreaterThanOrEqual(2000)
+  })
+
+  it('a clock that stepped backward never locks the scene', () => {
+    expect(dialogTap(100, { openedAt: 5000, lastPressAt: 5000, wholeAt: 5000 })).toBe('next')
   })
 })
