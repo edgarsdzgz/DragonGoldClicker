@@ -29,6 +29,10 @@ Thornwick, Sera and the Hollow Knight.
 
 ## Not art
 
+- [ ] **The plan after the playtest** (2026-10-29): the crash and fix pass, Valley Finds for the 200 food,
+      the guide and layout fixes, the pacing pass and the features still to build, in order, in
+      `plan-2026-10-29.md`.
+
 - [x] **Sound effects, batch 1** (locked 2026-10-27, `official/sound/`, imported to `assets/sound/`): the
       studio splash beats, a monster's death, the wall struck, the Breach, a building finished, the
       heartstone. Not wired to anything yet.
