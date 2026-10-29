@@ -49,10 +49,10 @@ export function LodgeInterior() {
       {/* Forager tiers */}
       <View style={styles.tiersSection}>
         {unlockedTiers.map((tier) => (
-          <ForagerTierRow key={tier.id} tier={tier} buildingColor={colors.building.lodge} />
+          <ForagerTierRow key={tier.id} tier={tier} />
         ))}
         {lockedTiers.map((tier) => (
-          <ForagerTierRow key={tier.id} tier={tier} buildingColor={colors.building.lodge} />
+          <ForagerTierRow key={tier.id} tier={tier} />
         ))}
       </View>
 
@@ -63,7 +63,6 @@ export function LodgeInterior() {
           icon="arrow-up-circle"
           onPress={buildOrUpgradeLodge}
           disabled={!canUpgrade}
-          accentColor={colors.building.lodge}
           rejectPhrases={REJECT_GOLD}
           fullWidth
         >

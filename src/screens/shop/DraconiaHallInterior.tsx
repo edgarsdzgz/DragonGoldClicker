@@ -102,7 +102,6 @@ function OfflineTierStep({
             iconElement={<InspirationIcon size={8} />}
             onPress={onUpgrade}
             disabled={!canAfford}
-            accentColor={colors.building.draconia}
             rejectPhrases={REJECT_GOLD}
           >
             {formatNumber(cost)}

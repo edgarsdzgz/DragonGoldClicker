@@ -34,7 +34,7 @@ const BLOCK_LABEL: Record<Exclude<RankBlock, null | 'renown'>, string> = {
   nobody: 'NONE',
 }
 
-export function SoldierTierRow({ tier, buildingColor }: { tier: SoldierTierDef; buildingColor?: string }) {
+export function SoldierTierRow({ tier }: { tier: SoldierTierDef }) {
   const { state, makeRank } = useGame()
   const haptics = useHaptics()
   const playPurchase = useSfx(SFX.PURCHASE)
@@ -73,7 +73,6 @@ export function SoldierTierRow({ tier, buildingColor }: { tier: SoldierTierDef; 
             size="xs"
             onPress={handleMake}
             disabled={block !== null}
-            accentColor={buildingColor}
             rejectPhrases={rejectPhrases}
             accessibilityLabel={`${verb} ${fromName} into a ${tier.name.toLowerCase()} for ${formatNumber(cost)} renown`}
           >
@@ -95,7 +94,7 @@ const FORAGER_BLOCK_LABEL: Record<Exclude<ForagerBlock, null | 'renown'>, string
   nobody: 'NONE',
 }
 
-export function ForagerTierRow({ tier, buildingColor }: { tier: ForagerTierDef; buildingColor?: string }) {
+export function ForagerTierRow({ tier }: { tier: ForagerTierDef }) {
   const { state, trainForager } = useGame()
   const haptics = useHaptics()
   const playPurchase = useSfx(SFX.PURCHASE)
@@ -136,7 +135,6 @@ export function ForagerTierRow({ tier, buildingColor }: { tier: ForagerTierDef; 
             size="xs"
             onPress={handleMake}
             disabled={block !== null}
-            accentColor={buildingColor}
             rejectPhrases={rejectPhrases}
             accessibilityLabel={`${verb} ${fromName} into a ${tier.name.toLowerCase()} for ${formatNumber(cost)} renown`}
           >

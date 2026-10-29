@@ -85,7 +85,6 @@ export function ResearchNode({ node, color, onStudy }: { node: ResearchNodeDef; 
             iconElement={<InspirationIcon size={7} />}
             onPress={() => onStudy(node.id)}
             disabled={block !== null}
-            accentColor={color}
             rejectPhrases={REJECT_GOLD}
             accessibilityLabel={`Study ${node.name} for ${formatNumber(node.cost)} renown`}
           >

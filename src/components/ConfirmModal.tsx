@@ -27,7 +27,7 @@ interface ConfirmModalProps {
   destructive?: boolean
   /** Visually dims the confirm button and blocks confirmation */
   confirmDisabled?: boolean
-  /** Override the default gold accent with a building/context color */
+  /** The emblem's color (a building's own); the confirm button stays gold, the one buy color */
   accentColor?: string
   icon?: GameIconName
   /** The event's picture, drawn in the icon's place */
@@ -221,7 +221,7 @@ export function ConfirmModal({
                   ? styles.disabledButton
                   : destructive
                     ? styles.destructiveButton
-                    : { backgroundColor: accentColor },
+                    : { backgroundColor: gold[400] },
                 !confirmDisabled && pressed && (destructive
                   ? styles.destructivePressed
                   : { opacity: 0.85 }),
@@ -330,9 +330,9 @@ const styles = StyleSheet.create({
     backgroundColor: gold[600],
   },
   disabledButton: {
-    backgroundColor: dark[600],
+    backgroundColor: colors.disabled.fill,
     borderWidth: 1,
-    borderColor: dark[500],
+    borderColor: colors.disabled.fillBorder,
   },
   // Absolutely positioned within the card, last child = always on top.
   // Anchored from the bottom so it hovers above the confirm button area.

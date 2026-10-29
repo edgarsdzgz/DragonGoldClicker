@@ -7,7 +7,7 @@ import { REJECT_GOLD } from '../../components/Button'
 import { useGame } from '../../context/GameContext'
 import { useHaptics, useSfx } from '../../hooks'
 import { SFX } from '../../data/sfx'
-import { colors, gold } from '../../theme'
+import { gold } from '../../theme'
 import {
   SOLDIER_TIERS,
   WALL_STRIKE_SEC,
@@ -75,7 +75,6 @@ function GearRow({ gear }: { gear: Gear }) {
           size="xs"
           onPress={handleForge}
           disabled={block !== null}
-          accentColor={colors.building.forge}
           rejectPhrases={block !== null && block !== 'renown' ? BLOCK_PHRASES[block] : REJECT_GOLD}
           accessibilityLabel={`Forge a ${gear} for ${formatNumber(cost)} renown`}
         >

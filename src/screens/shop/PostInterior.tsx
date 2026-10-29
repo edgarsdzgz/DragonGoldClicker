@@ -156,7 +156,6 @@ export function PostInterior() {
         right={
           <Button
             size="xs"
-            accentColor={colors.building.explorer}
             iconElement={trainBlock === null || trainBlock === 'renown' ? <InspirationIcon size={7} /> : undefined}
             onPress={handleTrain}
             disabled={trainBlock !== null}
@@ -208,7 +207,6 @@ export function PostInterior() {
           icon="arrow-up-circle"
           onPress={buildOrUpgradePost}
           disabled={postBlock(state) !== null}
-          accentColor={colors.building.explorer}
           rejectPhrases={REJECT_GOLD}
           fullWidth
         >

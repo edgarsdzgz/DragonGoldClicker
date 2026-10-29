@@ -204,8 +204,8 @@ export function Button({
     switch (variant) {
       case 'primary':
         if (isDisabled) {
-          const accent = accentColor || gold[500]
-          base.push({ backgroundColor: `${accent}30` })
+          // Can't afford (or can't yet): the same gray on every sheet, whatever the accent
+          base.push({ backgroundColor: colors.disabled.fill, borderWidth: 1, borderColor: colors.disabled.fillBorder })
         } else if (accentColor) {
           base.push({ backgroundColor: accentColor })
           if (pressed) base.push({ backgroundColor: accentColor, opacity: 0.85 })
@@ -247,7 +247,8 @@ export function Button({
     }
     switch (variant) {
       case 'primary':
-        return '#ffffff'
+        // Dark on the light fills (gold, and every accent): about 6:1 on gold, where white was 3:1
+        return dark[900]
       case 'secondary':
         return accentColor ?? gold[400]
       case 'ghost':
@@ -300,7 +301,7 @@ export function Button({
 
       {loading ? (
         <ActivityIndicator
-          color={variant === 'primary' ? '#ffffff' : gold[500]}
+          color={variant === 'primary' ? colors.disabled.text : gold[500]}
           size="small"
         />
       ) : (

@@ -4,7 +4,7 @@ import { StatBox, Button } from '../../components'
 import { ArmyReadout } from '../../components/ArmyReadout'
 import { REJECT_GOLD } from '../../components/Button'
 import { useGame } from '../../context/GameContext'
-import { colors, gold } from '../../theme'
+import { gold } from '../../theme'
 import {
   SOLDIER_TIERS,
   getTotalSoldiers,
@@ -50,10 +50,10 @@ export function BarracksInterior() {
       {/* Soldier tiers */}
       <View style={styles.tiersSection}>
         {unlockedTiers.map((tier) => (
-          <SoldierTierRow key={tier.id} tier={tier} buildingColor={colors.building.garrison} />
+          <SoldierTierRow key={tier.id} tier={tier} />
         ))}
         {lockedTiers.map((tier) => (
-          <SoldierTierRow key={tier.id} tier={tier} buildingColor={colors.building.garrison} />
+          <SoldierTierRow key={tier.id} tier={tier} />
         ))}
       </View>
 
@@ -64,7 +64,6 @@ export function BarracksInterior() {
           icon="arrow-up-circle"
           onPress={buildOrUpgradeBarracks}
           disabled={!canUpgrade}
-          accentColor={colors.building.garrison}
           rejectPhrases={REJECT_GOLD}
           fullWidth
         >

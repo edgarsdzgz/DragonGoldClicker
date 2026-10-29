@@ -92,6 +92,10 @@ export const colors = {
     textSubtle: '#80809a',
     /** Border for disabled secondary buttons */
     border: '#252530',
+    /** Fill of a button that can't be used yet (can't afford): one muted gray everywhere (owner ruling 2026-10-29) */
+    fill: dark[600],
+    /** Edge of that fill */
+    fillBorder: dark[500],
   },
 
   building: {
