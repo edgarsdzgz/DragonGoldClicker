@@ -1,5 +1,10 @@
 # The final boss: Magister Oren Hale (2026-10-29)
 
+**On hold (2026-10-29).** This write-up changes the old game's lore, and the owner wants the lore followed.
+In the old lore the Forge-Master is a Pyrean archmage who built the Crucible Engine. The Evil is the
+Human-Wrought Evil, let in by the heroes of the old world. To be reworked to fit that lore. The recurring
+boss in different forms stays the direction.
+
 Text only. No art until the owner approves this write-up. The direction comes from the owner
 (2026-10-29): the Archmagister (idea B below) with pieces of the other three ideas, and **a recurring boss
 in different forms**. The name is a placeholder.
