@@ -1,0 +1,121 @@
+[
+ {
+  "name": "find_rabbit_idle",
+  "file": "find_rabbit_idle.png",
+  "size": [
+   24,
+   24
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": "bottom centre, feet or base on row 21 (outline on 22)",
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 17,10"
+  ],
+  "warning_count": 1
+ },
+ {
+  "name": "find_rabbit_run_strip4",
+  "file": "find_rabbit_run_strip4.png",
+  "size": [
+   24,
+   24
+  ],
+  "frames": 4,
+  "fps": 10,
+  "anchor": "bottom centre, feet or base on row 21 (outline on 22)",
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 18,12",
+   "single-pixel island at 19,10",
+   "single-pixel island at 19,14",
+   "single-pixel island at 17,10"
+  ],
+  "warning_count": 4
+ },
+ {
+  "name": "find_berries_0",
+  "file": "find_berries_0.png",
+  "size": [
+   24,
+   24
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": "bottom centre, feet or base on row 21 (outline on 22)",
+  "errors": [],
+  "warnings": [],
+  "warning_count": 0
+ },
+ {
+  "name": "find_berries_1",
+  "file": "find_berries_1.png",
+  "size": [
+   24,
+   24
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": "bottom centre, feet or base on row 21 (outline on 22)",
+  "errors": [],
+  "warnings": [],
+  "warning_count": 0
+ },
+ {
+  "name": "find_berries_2",
+  "file": "find_berries_2.png",
+  "size": [
+   24,
+   24
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": "bottom centre, feet or base on row 21 (outline on 22)",
+  "errors": [],
+  "warnings": [],
+  "warning_count": 0
+ },
+ {
+  "name": "find_berries_3",
+  "file": "find_berries_3.png",
+  "size": [
+   24,
+   24
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": "bottom centre, feet or base on row 21 (outline on 22)",
+  "errors": [],
+  "warnings": [],
+  "warning_count": 0
+ },
+ {
+  "name": "find_fish_leap_strip4",
+  "file": "find_fish_leap_strip4.png",
+  "size": [
+   24,
+   24
+  ],
+  "frames": 4,
+  "fps": 6,
+  "anchor": "bottom centre, feet or base on row 21 (outline on 22)",
+  "errors": [],
+  "warnings": [],
+  "warning_count": 0
+ },
+ {
+  "name": "find_honey_strip4",
+  "file": "find_honey_strip4.png",
+  "size": [
+   24,
+   24
+  ],
+  "frames": 4,
+  "fps": 8,
+  "anchor": "bottom centre, feet or base on row 21 (outline on 22)",
+  "errors": [],
+  "warnings": [],
+  "warning_count": 0
+ }
+]
