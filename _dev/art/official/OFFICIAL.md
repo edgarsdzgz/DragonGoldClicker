@@ -1300,3 +1300,49 @@ Locked by the owner on 2026-10-26. These are the game's official assets.
 | `mobs/mob_wild-hunt-rider-stronger_death_strip4.png` | 136x27 | Wild Hunt Rider, stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M1 v1 |
 | `mobs/mob_aitvaras_shadow.png` | 11x3 | Aitvaras: its shadow on the road (draw at half strength, under the lifted flier) | monsters M1 v1 |
 | `mobs/mob_gargoyle_shadow.png` | 11x3 | Gargoyle: its shadow on the road (draw at half strength, under the lifted flier) | monsters M1 v1 |
+| `mobs/mob_impundulu_idle.png` | 29x27 | Impundulu (elite, flier): idle | monsters M2 v2 |
+| `mobs/mob_impundulu_hit.png` | 29x27 | Impundulu (elite, flier): hit, the red flash | monsters M2 v2 |
+| `mobs/mob_impundulu_hurt.png` | 29x27 | Impundulu (elite, flier): hurt | monsters M2 v2 |
+| `mobs/mob_impundulu_walk_strip2.png` | 58x27 | Impundulu (elite, flier): a wingbeat (2 frames, 4 fps) | monsters M2 v2 |
+| `mobs/mob_impundulu_death_strip4.png` | 140x27 | Impundulu (elite, flier): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v2 |
+| `mobs/mob_impundulu-strong_idle.png` | 29x27 | Impundulu (elite, flier), strong: idle | monsters M2 v2 |
+| `mobs/mob_impundulu-strong_hit.png` | 29x27 | Impundulu (elite, flier), strong: hit, the red flash | monsters M2 v2 |
+| `mobs/mob_impundulu-strong_hurt.png` | 29x27 | Impundulu (elite, flier), strong: hurt | monsters M2 v2 |
+| `mobs/mob_impundulu-strong_walk_strip2.png` | 58x27 | Impundulu (elite, flier), strong: a wingbeat (2 frames, 4 fps) | monsters M2 v2 |
+| `mobs/mob_impundulu-strong_death_strip4.png` | 140x27 | Impundulu (elite, flier), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v2 |
+| `mobs/mob_impundulu-stronger_idle.png` | 29x27 | Impundulu (elite, flier), stronger (the Unmaking's deepest): idle | monsters M2 v2 |
+| `mobs/mob_impundulu-stronger_hit.png` | 29x27 | Impundulu (elite, flier), stronger (the Unmaking's deepest): hit, the red flash | monsters M2 v2 |
+| `mobs/mob_impundulu-stronger_hurt.png` | 29x27 | Impundulu (elite, flier), stronger (the Unmaking's deepest): hurt | monsters M2 v2 |
+| `mobs/mob_impundulu-stronger_walk_strip2.png` | 58x27 | Impundulu (elite, flier), stronger (the Unmaking's deepest): a wingbeat (2 frames, 4 fps) | monsters M2 v2 |
+| `mobs/mob_impundulu-stronger_death_strip4.png` | 140x27 | Impundulu (elite, flier), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v2 |
+| `mobs/mob_omukade_idle.png` | 19x28 | Omukade (elite): idle | monsters M2 v2 |
+| `mobs/mob_omukade_hit.png` | 19x28 | Omukade (elite): hit, the red flash | monsters M2 v2 |
+| `mobs/mob_omukade_hurt.png` | 19x28 | Omukade (elite): hurt | monsters M2 v2 |
+| `mobs/mob_omukade_walk_strip2.png` | 38x28 | Omukade (elite): its legs ripple (2 frames, 4 fps) | monsters M2 v2 |
+| `mobs/mob_omukade_death_strip4.png` | 140x28 | Omukade (elite): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v2 |
+| `mobs/mob_omukade-strong_idle.png` | 19x28 | Omukade (elite), strong: idle | monsters M2 v2 |
+| `mobs/mob_omukade-strong_hit.png` | 19x28 | Omukade (elite), strong: hit, the red flash | monsters M2 v2 |
+| `mobs/mob_omukade-strong_hurt.png` | 19x28 | Omukade (elite), strong: hurt | monsters M2 v2 |
+| `mobs/mob_omukade-strong_walk_strip2.png` | 38x28 | Omukade (elite), strong: its legs ripple (2 frames, 4 fps) | monsters M2 v2 |
+| `mobs/mob_omukade-strong_death_strip4.png` | 140x28 | Omukade (elite), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v2 |
+| `mobs/mob_omukade-stronger_idle.png` | 19x28 | Omukade (elite), stronger (the Unmaking's deepest): idle | monsters M2 v2 |
+| `mobs/mob_omukade-stronger_hit.png` | 19x28 | Omukade (elite), stronger (the Unmaking's deepest): hit, the red flash | monsters M2 v2 |
+| `mobs/mob_omukade-stronger_hurt.png` | 19x28 | Omukade (elite), stronger (the Unmaking's deepest): hurt | monsters M2 v2 |
+| `mobs/mob_omukade-stronger_walk_strip2.png` | 38x28 | Omukade (elite), stronger (the Unmaking's deepest): its legs ripple (2 frames, 4 fps) | monsters M2 v2 |
+| `mobs/mob_omukade-stronger_death_strip4.png` | 140x28 | Omukade (elite), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v2 |
+| `mobs/mob_tempest-lord_idle.png` | 26x30 | Tempest Lord of the Peaks (boss): idle | monsters M2 v1 |
+| `mobs/mob_tempest-lord_hit.png` | 26x30 | Tempest Lord of the Peaks (boss): hit, the red flash | monsters M2 v1 |
+| `mobs/mob_tempest-lord_hurt.png` | 26x30 | Tempest Lord of the Peaks (boss): hurt | monsters M2 v1 |
+| `mobs/mob_tempest-lord_walk_strip2.png` | 52x30 | Tempest Lord of the Peaks (boss): the storm churns (2 frames, 4 fps) | monsters M2 v1 |
+| `mobs/mob_tempest-lord_death_strip4.png` | 144x30 | Tempest Lord of the Peaks (boss): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v1 |
+| `mobs/mob_tempest-lord-strong_idle.png` | 26x30 | Tempest Lord of the Peaks (boss), strong: idle | monsters M2 v1 |
+| `mobs/mob_tempest-lord-strong_hit.png` | 26x30 | Tempest Lord of the Peaks (boss), strong: hit, the red flash | monsters M2 v1 |
+| `mobs/mob_tempest-lord-strong_hurt.png` | 26x30 | Tempest Lord of the Peaks (boss), strong: hurt | monsters M2 v1 |
+| `mobs/mob_tempest-lord-strong_walk_strip2.png` | 52x30 | Tempest Lord of the Peaks (boss), strong: the storm churns (2 frames, 4 fps) | monsters M2 v1 |
+| `mobs/mob_tempest-lord-strong_death_strip4.png` | 144x30 | Tempest Lord of the Peaks (boss), strong: death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v1 |
+| `mobs/mob_tempest-lord-stronger_idle.png` | 26x30 | Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): idle | monsters M2 v1 |
+| `mobs/mob_tempest-lord-stronger_hit.png` | 26x30 | Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): hit, the red flash | monsters M2 v1 |
+| `mobs/mob_tempest-lord-stronger_hurt.png` | 26x30 | Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): hurt | monsters M2 v1 |
+| `mobs/mob_tempest-lord-stronger_walk_strip2.png` | 52x30 | Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): the storm churns (2 frames, 4 fps) | monsters M2 v1 |
+| `mobs/mob_tempest-lord-stronger_death_strip4.png` | 144x30 | Tempest Lord of the Peaks (boss), stronger (the Unmaking's deepest): death, buckles, falls, lands, unmade (4 frames, 8 fps) | monsters M2 v1 |
+| `mobs/mob_impundulu_shadow.png` | 15x3 | Impundulu: its shadow on the road (draw at half strength, under the lifted flier) | monsters M2 v2 |

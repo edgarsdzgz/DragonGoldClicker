@@ -545,6 +545,25 @@ for _id, _name in (("aitvaras", "Aitvaras"), ("gargoyle", "Gargoyle")):
     ASSETS.append((f"mobs/mob_{_id}_shadow.png", M1 / f"mob_{_id}_shadow.png",
                    f"{_name}: its shadow on the road (draw at half strength, under the lifted flier)", "monsters M1 v1"))
 
+# M2, Mistral Peaks' elites and boss (57-monsters-m2; the Impundulu and Omukade as v2, the Tempest Lord v1,
+# approved 2026-10-29)
+M2 = AGENT / "57-monsters-m2/out"
+for _dir, _origin, _id, _name, _gait in (
+        (M2, "monsters M2 v2", "impundulu", "Impundulu (elite, flier)", "a wingbeat"),
+        (M2, "monsters M2 v2", "omukade", "Omukade (elite)", "its legs ripple"),
+        (M2, "monsters M2 v1", "tempest-lord", "Tempest Lord of the Peaks (boss)", "the storm churns")):
+    for _tier, _label in (("", ""), ("-strong", ", strong"), ("-stronger", ", stronger (the Unmaking's deepest)")):
+        _n = f"mob_{_id}{_tier}"
+        ASSETS += [
+            (f"mobs/{_n}_idle.png", _dir / f"{_n}_idle.png", f"{_name}{_label}: idle", _origin),
+            (f"mobs/{_n}_hit.png", _dir / f"{_n}_hit.png", f"{_name}{_label}: hit, the red flash", _origin),
+            (f"mobs/{_n}_hurt.png", _dir / f"{_n}_hurt.png", f"{_name}{_label}: hurt", _origin),
+            (f"mobs/{_n}_walk_strip2.png", _dir / f"{_n}_walk_strip2.png", f"{_name}{_label}: {_gait} (2 frames, 4 fps)", _origin),
+            (f"mobs/{_n}_death_strip4.png", _dir / f"{_n}_death_strip4.png", f"{_name}{_label}: death, buckles, falls, lands, unmade (4 frames, 8 fps)", _origin),
+        ]
+ASSETS.append(("mobs/mob_impundulu_shadow.png", M2 / "mob_impundulu_shadow.png",
+               "Impundulu: its shadow on the road (draw at half strength, under the lifted flier)", "monsters M2 v2"))
+
 # The six monsters already in the game, shaded like the busts (44-bestiary v2, owner 2026-10-27): every
 # pose and tier now comes from the shaded set. Same file names and sizes as before.
 _SHADED = ("kobold", "goblin", "crawler", "orc", "raider", "minotaur")

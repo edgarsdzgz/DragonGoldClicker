@@ -72,3 +72,4 @@ batch: their monsters are all drawn already.
 | Batch | Status |
 | --- | --- |
 | M1 | Done: all four locked 2026-10-29 (the Kamaitachi as v2, the pilot that set the look; Aitvaras, Gargoyle, Wild Hunt Rider v1) |
+| M2 | Done: all three locked 2026-10-29 (the Impundulu and Omukade as v2, the Tempest Lord v1). Mistral Peaks is complete |
