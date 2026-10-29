@@ -1,0 +1,122 @@
+[
+ {
+  "name": "map_forage_base_a",
+  "file": "map_forage_base_a.png",
+  "size": [
+   130,
+   282
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,20",
+   "single-pixel island at 8,20",
+   "single-pixel island at 12,20",
+   "single-pixel island at 16,20",
+   "single-pixel island at 20,20"
+  ],
+  "warning_count": 1265
+ },
+ {
+  "name": "map_forage_base_a_dusk",
+  "file": "map_forage_base_a_dusk.png",
+  "size": [
+   130,
+   282
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,20",
+   "single-pixel island at 8,20",
+   "single-pixel island at 12,20",
+   "single-pixel island at 16,20",
+   "single-pixel island at 20,20"
+  ],
+  "warning_count": 1265
+ },
+ {
+  "name": "map_forage_base_a_night",
+  "file": "map_forage_base_a_night.png",
+  "size": [
+   130,
+   282
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,20",
+   "single-pixel island at 8,20",
+   "single-pixel island at 12,20",
+   "single-pixel island at 16,20",
+   "single-pixel island at 20,20"
+  ],
+  "warning_count": 748
+ },
+ {
+  "name": "map_forage_base_b",
+  "file": "map_forage_base_b.png",
+  "size": [
+   130,
+   282
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,20",
+   "single-pixel island at 8,20",
+   "single-pixel island at 12,20",
+   "single-pixel island at 16,20",
+   "single-pixel island at 20,20"
+  ],
+  "warning_count": 1364
+ },
+ {
+  "name": "map_forage_base_b_dusk",
+  "file": "map_forage_base_b_dusk.png",
+  "size": [
+   130,
+   282
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,20",
+   "single-pixel island at 8,20",
+   "single-pixel island at 12,20",
+   "single-pixel island at 16,20",
+   "single-pixel island at 20,20"
+  ],
+  "warning_count": 1364
+ },
+ {
+  "name": "map_forage_base_b_night",
+  "file": "map_forage_base_b_night.png",
+  "size": [
+   130,
+   282
+  ],
+  "frames": 1,
+  "fps": null,
+  "anchor": null,
+  "errors": [],
+  "warnings": [
+   "single-pixel island at 4,20",
+   "single-pixel island at 8,20",
+   "single-pixel island at 12,20",
+   "single-pixel island at 16,20",
+   "single-pixel island at 20,20"
+  ],
+  "warning_count": 738
+ }
+]
