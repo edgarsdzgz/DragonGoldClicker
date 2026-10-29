@@ -22,74 +22,83 @@ def wing(c, top, bottom, edge, fill):
 
 
 def impundulu():
-    """Zulu lightning bird: black wings, a white breast, a hammer-shaped crest, pale yellow lightning off the
-    wingtips and talons. Frames: wings up, wings down."""
+    """Zulu lightning bird, v2: a storm bird of prey, body tilted, a dagger beak to one side, a long backward
+    hammer crest, long angular wings raised in a V with feather fingers (white wing bars and a white breast edge),
+    a forked tail, and two long zigzag bolts off the wingtips. Frames: wings raised in a V, wings swept down."""
+    dx = 2                                                               # margin for the bolts
+
+    def P(c, cells, ch, sym=False):
+        c.pts([(x + dx, y) for x, y in cells], ch, sym=sym)
+
     frames = []
     for up in (True, False):
-        c = Canvas(23, 22)
+        c = Canvas(27, 24)
         if up:
-            wing(c, {i: i for i in range(9)}, {0: 3, 1: 6, 2: 7, 3: 8, 4: 9, 5: 10, 6: 11, 7: 12, 8: 12}, "w", "F")
-            c.pts([(0, 4), (0, 5), (1, 7), (0, 8), (1, 9), (0, 10), (2, 8)], "Z", sym=True)           # lightning off the wingtips
+            P(c, [(10, 12), (9, 11), (8, 10), (7, 9), (6, 8), (5, 7), (4, 5), (3, 4), (2, 3), (1, 2), (0, 1)], "W", True)
+            for x0, y0, y1 in ((1, 3, 8), (3, 5, 11), (5, 8, 14), (7, 10, 16), (9, 12, 16)):    # feather fingers
+                P(c, [(x0, y) for y in range(y0, y1 + 1)], "F", True)
+            c.pts([(1, 3), (0, 4), (1, 5), (0, 6), (1, 7), (0, 8), (1, 9), (0, 10), (1, 11), (0, 12), (1, 13),
+                   (0, 14), (1, 15)], "Z", sym=True)                     # a long zigzag bolt past the body
         else:
-            wing(c, {0: 11, 1: 10, 2: 9, 3: 9, 4: 8, 5: 8, 6: 8, 7: 8, 8: 8},
-                 {0: 15, 1: 16, 2: 17, 3: 16, 4: 17, 5: 16, 6: 15, 7: 14, 8: 13}, "w", "F")
-            c.pts([(0, 16), (1, 17), (0, 18), (1, 19), (0, 20), (2, 18)], "Z", sym=True)
-        c.rect(7, 1, 15, 2, "B")                                         # the hammer crest, a bar across the head
-        c.pts([(6, 1), (16, 1), (7, 3), (15, 3)], "B")
-        c.px(11, 0, "B")
-        c.rect(9, 3, 13, 6, "B")                                         # head
-        c.pts([(10, 4), (12, 4)], "e")
-        c.rect(11, 5, 11, 9, "Y")                                        # a long pale beak
-        c.rect(8, 7, 14, 12, "B")                                        # the black shoulders and body
-        c.rect(9, 13, 13, 16, "B")
-        c.rect(9, 8, 13, 12, "W")                                        # the white breast, narrowing
-        c.rect(10, 13, 12, 15, "W")
-        c.pts([(9, 8), (13, 8)], "B")
-        c.rect(10, 17, 12, 18, "B")                                      # short tail
-        c.pts([(9, 17), (9, 18), (9, 19), (13, 17), (13, 18), (13, 19)], "Y")   # long legs
-        c.pts([(8, 20), (10, 20), (12, 20), (14, 20)], "Y")              # talons
-        c.pts([(9, 21), (13, 21), (7, 21), (15, 21)], "Z")               # lightning at the talons
+            P(c, [(10, 12), (9, 13), (8, 14), (7, 14), (6, 15), (5, 16), (4, 16), (3, 17), (2, 18), (1, 18), (0, 19)],
+              "W", True)
+            for x0, y0 in ((1, 19), (3, 17), (5, 16), (7, 14), (9, 13)):
+                P(c, [(x0, y) for y in range(y0 + 1, y0 + 5)], "F", True)
+            c.pts([(0, 20), (1, 21), (0, 22), (1, 23), (0, 23)], "Z", sym=True)
+        P(c, [(10, 6), (9, 6), (8, 5), (7, 5), (6, 4)], "B")             # the long backward crest, a hammer head
+        P(c, [(11, 5), (12, 5)], "B")
+        c.rect(13, 6, 16, 9, "B")                                        # head
+        c.pts([(14, 7), (16, 7)], "e")
+        c.pts([(17, 8), (18, 8), (19, 9), (20, 9), (21, 10), (21, 11)], "Y")     # a long hooked dagger beak
+        c.rect(11, 10, 16, 12, "B")                                      # the tilted body
+        c.rect(12, 13, 17, 15, "B")
+        c.rect(13, 16, 18, 17, "B")
+        c.pts([(12, 10), (12, 11), (12, 12), (13, 13), (13, 14), (14, 15), (14, 16)], "W")   # white breast edge
+        c.pts([(14, 18), (14, 19), (13, 20), (13, 21), (13, 22), (18, 18), (19, 19), (20, 20), (20, 21), (20, 22)],
+              "B")                                                       # a long forked tail
         frames.append(c.rows())
-    key = {"w": "night3", "F": "night1", "B": "night1", "e": "gold5", "Y": "gold3", "W": "steel5", "Z": "gold6"}
-    p = pose(9, "night1", "ink", [(10, 10), (12, 14)], lambda x, y: x <= 3)
-    cracks = [[(11, 2), (11, 3), (10, 5)], [(10, 9), (10, 10), (11, 11), (11, 12)],
-              [(12, 9), (12, 10), (12, 11), (12, 13)], [(8, 9), (8, 10), (9, 11), (9, 13)]]
+    key = {"w": "night3", "F": "night2", "B": "night1", "e": "gold5", "Y": "gold3", "W": "steel5", "Z": "gold6"}
+    p = pose(11, "night1", "ink", [(14, 12), (15, 15)], lambda x, y: x <= 4)
+    cracks = [[(15, 6), (15, 7), (15, 8), (14, 9)], [(13, 10), (13, 11), (14, 12), (14, 13)],
+              [(15, 10), (15, 11), (16, 12), (16, 14)], [(14, 16), (15, 17)]]
     return frames, key, p, cracks, False
 
 
 def omukade():
-    """Japanese giant mountain centipede: a broad armored head, curved mandibles, a segmented body reared up, many
-    legs along the sides. Walk: the legs ripple. Dark bronze shell."""
+    """Japanese giant mountain centipede, v2: a small flat head with hooked forcipules and long antennae over a
+    narrow S-curved column of alternating light and dark plates, each cut off by an ink line and fringed with a
+    pair of thin legs, rising from a coil. Walk: the legs ripple. Dark bronze shell."""
+    def off(y):
+        return round(2 * math.sin(y / 3.2))
+
     frames = []
     for alt in (False, True):
-        c = Canvas(18, 21)
-        c.pts([(5, 0), (4, 0), (3, 0), (2, 1), (12, 0), (13, 0), (14, 0), (15, 1)], "A")      # long antennae
-        c.rect(4, 1, 13, 6, "C")                                         # a broad armored head
-        c.rect(4, 1, 13, 1, "D")                                         # a plate crest
-        c.pts([(5, 3), (12, 3)], "e")
-        c.pts([(8, 3), (9, 3), (8, 5), (9, 5)], "D")
-        c.pts([(4, 7), (3, 8), (3, 9), (4, 10), (5, 10), (5, 9), (6, 9)], "M")   # curved mandibles
-        c.pts([(13, 7), (14, 8), (14, 9), (13, 10), (12, 10), (12, 9), (11, 9)], "M")
-        c.rect(7, 6, 10, 7, "D")                                         # the dark mouth
-        for y in range(8, 18):                                           # the reared body, a gentle S
-            off = round(1.4 * math.sin(y / 2.2))
-            c.rect(6 + off, y, 11 + off, y, "C" if (y - 8) // 2 % 2 == 0 else "D")
-            c.rect(8 + off, y, 9 + off, y, "H")
-        for k in range(5):                                               # legs, rippling
-            y = 8 + 2 * k
-            o = (k + (1 if alt else 0)) % 2
-            off = round(1.4 * math.sin((y + 1) / 2.2))
-            c.pts([(5 + off, y + o), (4 + off, y + o), (3 + off, y + 1 + o), (2 + off, y + 1 + o)], "L")
-            c.pts([(12 + off, y + o), (13 + off, y + o), (14 + off, y + 1 + o), (15 + off, y + 1 + o)], "L")
-        c.rect(4, 18, 13, 19, "C")                                       # the coiled base
-        c.rect(5, 20, 12, 20, "D")
-        c.pts([(14, 18), (15, 17), (15, 16), (14, 15)], "C")             # the tail's curl
-        c.pts([(3, 19), (2, 19), (1, 20), (14, 19), (15, 19), (16, 20)], "L")
+        c = Canvas(17, 25)
+        c.pts([(4, 1), (3, 0), (2, 0), (1, 1), (0, 2), (0, 3)], "A", sym=True)             # long antennae
+        c.rect(5, 1, 11, 3, "C")                                         # a small flat head, square corners
+        c.pts([(6, 2), (10, 2)], "e")
+        c.pts([(5, 4), (4, 5), (4, 6), (5, 7), (6, 7)], "M", sym=True)   # forcipules, hooked inward
+        seg = 0
+        for y0 in range(5, 21, 3):                                       # six plates, each cut off by an ink line
+            plate = "C" if seg % 2 == 0 else "H"
+            for y in (y0, y0 + 1):
+                o = off(y)
+                c.rect(6 + o, y, 10 + o, y, plate)
+                for side, x in ((-1, 6 + o), (1, 10 + o)):               # a pair of thin legs from every plate
+                    tip = y + (1 if (seg + y + (1 if alt else 0)) % 2 == 0 else -1)
+                    c.pts([(x + side, y), (x + 2 * side, y)], "L")
+                    c.px(x + 3 * side, tip, "T")
+            c.rect(6 + off(y0 + 2), y0 + 2, 10 + off(y0 + 2), y0 + 2, "n")
+            seg += 1
+        for y, x0, x1 in ((21, 4, 12), (22, 3, 13), (23, 3, 5), (24, 4, 12)):    # the coil at the base
+            c.rect(x0, y, x1, y, "C" if y % 2 else "H")
+        c.rect(11, 23, 13, 23, "H")
         frames.append(c.rows())
-    key = {"A": "gold2", "C": "gold1", "D": "wood2", "e": "gold5", "M": "gold2", "H": "gold2", "L": "wood3"}
-    p = pose(10, "gold1", "wood2", [(8, 13), (10, 19)], lambda x, y: x >= 14 and y <= 11)
-    cracks = [[(7, 1), (7, 2), (8, 3)], [(7, 9), (7, 10), (7, 11), (7, 12)], [(10, 9), (10, 10), (10, 11), (10, 12)],
-              [(7, 14), (7, 15), (8, 16), (7, 17)], [(9, 18), (9, 19)]]
+    key = {"A": "gold2", "C": "gold1", "H": "gold2", "n": "ink", "e": "gold5", "M": "gold3", "L": "gold2",
+           "T": "parch3"}
+    p = pose(14, "gold1", "wood2", [(8, 14), (8, 20)], lambda x, y: x >= 13 and y <= 10)
+    cracks = [[(8 + off(y), y) for y in range(5, 9)], [(8 + off(y), y) for y in range(9, 14)],
+              [(8 + off(y), y) for y in range(14, 19)], [(8, 1), (8, 2), (8, 3)]]
     return frames, key, p, cracks, False
 
 

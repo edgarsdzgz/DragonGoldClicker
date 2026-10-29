@@ -50,7 +50,15 @@ def monster(mid, name, flier, note):
     return section(name, note, figs)
 
 
+V1 = HERE / "out_v1"
 sections = [monster(*m) for m in MONSTERS]
+sections.insert(0, section("v1 beside v2", "Left of each pair, v1 (kept in out_v1/); right, v2. The Omukade read as a "
+                           "brown bear and the Impundulu as a penguin. The Tempest Lord is unchanged.", [
+    fig(V1 / "mob_omukade_idle.png", 6, "omukade v1"), fig(OUT / "mob_omukade_idle.png", 6, "omukade v2"),
+    fig(V1 / "mob_omukade_hurt.png", 6, "omukade v1 hurt"), fig(OUT / "mob_omukade_hurt.png", 6, "omukade v2 hurt"),
+    fig(V1 / "mob_impundulu_idle.png", 6, "impundulu v1"), fig(OUT / "mob_impundulu_idle.png", 6, "impundulu v2"),
+    fig(V1 / "mob_impundulu_hurt.png", 6, "impundulu v1 hurt"),
+    fig(OUT / "mob_impundulu_hurt.png", 6, "impundulu v2 hurt")]))
 sections.append(section("The Tempest Lord beside the Windcaller and the Storm Rider",
                         "He must read as a different, bigger monster: a storm funnel where the legs should be.", [
     fig(MOBS / "mob_windcaller_idle.png", 6, "windcaller (locked)"),
@@ -62,7 +70,7 @@ sections.append(section("Size line-up", "Kamaitachi (M1), an M1 elite-size refer
     fig(OUT / "mob_impundulu_idle.png", 6, "impundulu"), fig(OUT / "mob_omukade_idle.png", 6, "omukade"),
     fig(MOBS / "mob_basilisk_idle.png", 6, "basilisk"), fig(OUT / "mob_tempest-lord_idle.png", 6, "tempest lord")]))
 
-out = page("Monsters M2", "Monster batch M2: the Impundulu, Omukade and Tempest Lord",
+out = page("Monsters M2", "Monster batch M2, v2: the Impundulu, Omukade and Tempest Lord",
            "Mistral Peaks' two elites and its boss, built like M1: idle, hit, hurt, walk and death at all three "
            "Unmaking tiers. &middot; 2026-10-29", sections)
 (HERE / "board.html").write_text(out, encoding="utf-8")
