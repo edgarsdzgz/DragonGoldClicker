@@ -1,0 +1,241 @@
+<title>Bestiary Picks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+  :root { --bg: #1c1524; --panel: #281e32; --raise: #33283f; --line: #463a5a; --fg: #ecd6aa; --muted: #a58bb5;
+    --gold: #f0c060; --green: #8fcf8a; --yellow: #e8c35a; --steel: #94a3b8; --cut: #d98a8a; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font: 15px/1.55 Nunito, system-ui, sans-serif; margin: 0;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 24px 64px; }
+  main { max-width: 1100px; margin: 0 auto; display: grid; gap: 28px; }
+  h1, h2, h3 { font-family: Cinzel, Georgia, serif; color: var(--gold); margin: 0; text-wrap: balance; }
+  h1 { font-size: 1.7rem; } h2 { font-size: 1.25rem; letter-spacing: .03em; } h3 { font-size: .95rem; }
+  p { margin: 0; max-width: 70ch; }
+  .muted { color: var(--muted); }
+  header.top { display: grid; gap: 8px; }
+  .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+    border-bottom: 1px solid var(--line); padding-block: 10px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+  .bar b { color: var(--gold); }
+  #status[data-kind="warn"] { color: var(--yellow); }
+  nav.lands { display: flex; flex-wrap: wrap; gap: 6px; }
+  nav.lands a { color: var(--fg); text-decoration: none; border: 1px solid var(--line); padding: 2px 10px; border-radius: 999px; font-size: .85rem; }
+  nav.lands a:focus-visible, nav.lands a:hover { border-color: var(--gold); }
+  section.land { display: grid; gap: 12px; min-width: 0; }
+  .meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .9rem; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 12px; }
+  fieldset.slot { margin: 0; min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px; display: grid; gap: 8px; }
+  fieldset.slot[data-status="keep"], fieldset.slot[data-status="swap"] { border-color: var(--green); }
+  fieldset.slot[data-status="cut"] { border-color: var(--cut); opacity: .85; }
+  legend { font-family: Cinzel, Georgia, serif; color: var(--gold); padding: 0 6px; font-size: .9rem; text-transform: capitalize; }
+  .state { font-size: .8rem; color: var(--muted); }
+  .state b { color: var(--fg); }
+  label.opt { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; padding: 8px; border-radius: 6px;
+    background: var(--raise); cursor: pointer; border: 1px solid transparent; }
+  label.opt:has(input:checked) { border-color: var(--gold); }
+  label.opt input { margin: 4px 0 0; width: 20px; height: 20px; accent-color: var(--gold); grid-row: span 3; }
+  .name { font-weight: 700; }
+  .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag { font-size: .72rem; border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; letter-spacing: .02em; }
+  .tag.green { color: var(--green); border-color: var(--green); }
+  .tag.yellow { color: var(--yellow); border-color: var(--yellow); }
+  .tag.credit, .tag.drawn { color: var(--steel); border-color: var(--steel); }
+  .detail { font-size: .85rem; color: var(--muted); grid-column: 2; }
+  .flag { font-size: .82rem; color: var(--yellow); grid-column: 2; }
+  .flag::before { content: "Note: "; font-weight: 700; }
+  label.opt.cutopt { grid-template-columns: auto 1fr; }
+  .note { font-size: .82rem; color: var(--muted); }
+  textarea { width: 100%; min-height: 44px; background: var(--bg); color: var(--fg); border: 1px solid var(--line);
+    border-radius: 6px; padding: 6px 8px; font: inherit; font-size: .88rem; resize: vertical; }
+  textarea:focus-visible, label.opt:has(input:focus-visible) { outline: 2px solid var(--gold); outline-offset: 2px; }
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
+  summary { cursor: pointer; font-family: Cinzel, Georgia, serif; color: var(--gold); }
+  .table-wrap { overflow-x: auto; margin-top: 8px; }
+  table { border-collapse: collapse; font-size: .85rem; min-width: 560px; }
+  th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-top: 1px solid var(--line); }
+  th { color: var(--gold); font-weight: 700; }
+  [disabled] { cursor: not-allowed; }
+</style>
+
+<main>
+  <header class="top">
+    <h1>Bestiary picks</h1>
+    <p class="muted">Every Land's proposed roster, from the folklore research and the D&amp;D SRD. For each slot, keep the
+      proposed pick, swap to an alternate, or cut the slot. Your choice saves as you click; a note saves when you leave the
+      box. Green = folklore widely used; yellow = a living belief, use with care; SRD picks need a credit line.
+      Every pick you keep gets its second source checked before any art.</p>
+  </header>
+  <div class="bar" role="region" aria-label="Progress">
+    <span><b id="done">0</b> of <b id="total">0</b> slots decided</span>
+    <span id="status" aria-live="polite">Connecting...</span>
+    <nav class="lands" id="nav" aria-label="Lands"></nav>
+  </div>
+  <div id="lands"></div>
+  <section class="land" id="seasonal-sec"></section>
+  <details><summary>Excluded: never as enemies (<span id="exn"></span>)</summary>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Name</th><th scope="col">Origin</th><th scope="col">Why</th></tr></thead>
+      <tbody id="excluded"></tbody></table></div></details>
+  <details><summary>Near-duplicates dropped (<span id="dpn"></span>)</summary>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Name</th><th scope="col">Too close to</th></tr></thead>
+      <tbody id="dropped"></tbody></table></div></details>
+</main>
+
+<script>
+const DATA = /*DATA*/null;
+const CUT = "__cut";
+const choices = {};
+let db = null, canWrite = false;
+
+const el = (tag, attrs = {}, kids = []) => {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "text") e.textContent = v; else if (v !== false && v != null) e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of [].concat(kids)) if (k) e.append(k);
+  return e;
+};
+const tags = (o) => {
+  const t = el("span", { class: "tags" });
+  if (o.existing) t.append(el("span", { class: "tag drawn", text: "already drawn" }));
+  else if (o.sens) t.append(el("span", { class: "tag " + o.sens, text: o.sens }));
+  if (o.lic === "green-credit") t.append(el("span", { class: "tag credit", text: "SRD credit" }));
+  return t;
+};
+
+function slotCard(s, landName) {
+  const fs = el("fieldset", { class: "slot", "data-key": s.key });
+  fs.append(el("legend", { text: s.slot === "miniboss" ? "mini-boss" : s.slot }));
+  fs.append(el("div", { class: "state", id: "st-" + s.key }));
+  s.options.forEach((o, i) => {
+    const input = el("input", { type: "radio", name: s.key, value: o.name });
+    input.addEventListener("change", () => save(s, landName, o.name, i === 0));
+    const lab = el("label", { class: "opt" }, [input, el("span", { class: "name", text: o.name + (i === 0 ? "  (proposed)" : "") })]);
+    lab.append(el("span", { class: "detail" }, [el("span", { text: o.origin })]), tags(o));
+    if (o.detail) lab.append(el("span", { class: "detail", text: o.detail }));
+    if (o.flag) lab.append(el("span", { class: "flag", text: o.flag }));
+    fs.append(lab);
+  });
+  const cut = el("input", { type: "radio", name: s.key, value: CUT });
+  cut.addEventListener("change", () => save(s, landName, CUT, false));
+  fs.append(el("label", { class: "opt cutopt" }, [cut, el("span", { class: "name", text: "Cut this slot" })]));
+  if (s.note) fs.append(el("p", { class: "note", text: "Why it was picked: " + s.note }));
+  const ta = el("textarea", { id: "nt-" + s.key, "aria-label": "Your note on this slot", placeholder: "Your note (optional)" });
+  ta.addEventListener("change", () => saveNote(s, landName, ta.value));
+  fs.append(ta);
+  return fs;
+}
+
+function render() {
+  const wrap = document.getElementById("lands"), nav = document.getElementById("nav");
+  for (const L of DATA.lands) {
+    const id = "land-" + L.land.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    nav.append(el("a", { href: "#" + id, text: L.land }));
+    const sec = el("section", { class: "land", id });
+    sec.append(el("h2", { text: L.land }));
+    sec.append(el("div", { class: "meta muted" }, [el("span", { text: "Levels " + L.levels }), el("span", { text: "Element: " + L.element })]));
+    if (L.faction) sec.append(el("p", { class: "muted", text: L.faction }));
+    const grid = el("div", { class: "slots" });
+    L.slots.forEach((s) => grid.append(slotCard(s, L.land)));
+    sec.append(grid);
+    wrap.append(sec);
+  }
+  const ss = document.getElementById("seasonal-sec");
+  nav.append(el("a", { href: "#seasonal-sec", text: "Seasonal" }));
+  ss.append(el("h2", { text: "Seasonal visitors" }), el("p", { class: "muted", text: "Holiday creatures that visit at their season instead of belonging to a Land. Keep or cut each." }));
+  const g = el("div", { class: "slots" });
+  DATA.seasonal.forEach((s) => g.append(slotCard(s, "Seasonal")));
+  ss.append(g);
+  const ex = document.getElementById("excluded");
+  DATA.excluded.forEach((x) => ex.append(el("tr", {}, [el("td", { text: x.name }), el("td", { text: x.origin }), el("td", { text: x.reason })])));
+  document.getElementById("exn").textContent = DATA.excluded.length;
+  const dp = document.getElementById("dropped");
+  DATA.dropped.forEach((x) => dp.append(el("tr", {}, [el("td", { text: x.name }), el("td", { text: x.duplicate_of })])));
+  document.getElementById("dpn").textContent = DATA.dropped.length;
+  document.getElementById("total").textContent = allSlots().length;
+}
+
+const allSlots = () => DATA.lands.flatMap((L) => L.slots).concat(DATA.seasonal);
+
+function paint() {
+  let done = 0;
+  for (const s of allSlots()) {
+    const c = choices[s.key];
+    const fs = document.querySelector(`fieldset[data-key="${s.key}"]`);
+    const st = document.getElementById("st-" + s.key);
+    for (const r of fs.querySelectorAll("input[type=radio]")) {
+      r.checked = !!c && r.value === c.choice;
+      r.disabled = !canWrite;
+    }
+    const ta = document.getElementById("nt-" + s.key);
+    ta.disabled = !canWrite;
+    if (document.activeElement !== ta) ta.value = (c && c.note) || "";
+    fs.dataset.status = c ? c.status : "";
+    st.replaceChildren();
+    if (c && c.choice) {
+      done++;
+      st.append(el("span", { text: "Decided: " }), el("b", { text: c.status === "cut" ? "cut" : c.choice }));
+    } else st.textContent = "Not decided yet";
+  }
+  document.getElementById("done").textContent = done;
+}
+
+function setStatus(text, kind) {
+  const s = document.getElementById("status");
+  s.textContent = text;
+  s.dataset.kind = kind || "";
+}
+
+const writing = {};
+async function write(key, body) {
+  if (!db || !canWrite) return;
+  while (writing[key]) await writing[key];
+  writing[key] = (async () => {
+    try {
+      await db.collection("choices").doc(key).set(body);
+      setStatus("Saved", "");
+    } catch (e) {
+      setStatus(e && e.code === "quota_exceeded" ? "Could not save: the store is full." : "Could not save. Try again in a moment.", "warn");
+    }
+  })();
+  await writing[key];
+  writing[key] = null;
+}
+
+function save(s, land, choice, isPick) {
+  const prev = choices[s.key] || {};
+  const status = choice === CUT ? "cut" : isPick ? "keep" : "swap";
+  const body = { land, slot: s.slot, proposed: s.options[0].name, choice, status, note: prev.note || "", at: new Date().toISOString() };
+  choices[s.key] = body;
+  paint();
+  write(s.key, body);
+}
+
+function saveNote(s, land, note) {
+  const prev = choices[s.key] || { land, slot: s.slot, proposed: s.options[0].name, choice: "", status: "" };
+  const body = { ...prev, note, at: new Date().toISOString() };
+  choices[s.key] = body;
+  write(s.key, body);
+}
+
+render();
+paint();
+
+(async () => {
+  const c = window.claude;
+  if (!c || !c.use) { setStatus("Read only here: choices cannot be saved in this view.", "warn"); return; }
+  const [d, user] = await Promise.all([c.use("db"), c.use("user")]);
+  db = d;
+  if (!db) { setStatus("Read only here: choices cannot be saved in this view.", "warn"); return; }
+  const may = user ? await user.can("data.write") : null;
+  canWrite = may !== false;
+  setStatus(canWrite ? "Connected: choices save as you click." : "Read only: only the owner saves choices.", canWrite ? "" : "warn");
+  db.collection("choices").onSnapshot((snap) => {
+    for (const ch of snap.docChanges()) {
+      if (ch.type === "removed") delete choices[ch.doc.id];
+      else choices[ch.doc.id] = ch.doc.data();
+    }
+    paint();
+  }, () => setStatus("Lost the connection; reload to keep saving.", "warn"));
+})();
+</script>

@@ -1,0 +1,1993 @@
+{
+ "lands": [
+  {
+   "land": "Horizon Steppe",
+   "levels": "1-10",
+   "element": "wind, cold",
+   "faction_note": "Done. Nomads and goblins; not re-rostered.",
+   "slots": [
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Minotaur",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [],
+     "note": "Level 5. Already drawn."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Khagan of the Sirocco",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [],
+     "note": "Level 10. Already drawn."
+    }
+   ]
+  },
+  {
+   "land": "Ember Reaches",
+   "levels": "11-20",
+   "element": "fire",
+   "faction_note": "Done. Fire cultists; not re-rostered.",
+   "slots": [
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Basilisk",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [],
+     "note": "Level 15. Already drawn."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Forge-Master of the Inferno",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [],
+     "note": "Level 20. Already drawn."
+    }
+   ]
+  },
+  {
+   "land": "Mistral Peaks",
+   "levels": "21-30",
+   "element": "lightning, wind",
+   "faction_note": "The Storm-Callers: former mountain weather-priests who became the storms. Creatures here are sky, storm and crag things the Callers command.",
+   "slots": [
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Kamaitachi",
+      "origin": "Japanese folklore, Japan",
+      "catalog": "east-asia",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Swarm of Ravens",
+       "origin": "D&D SRD (SRD 5.1 | SRD 5.2); SRD, credit required",
+       "catalog": "srd",
+       "sensitivity": "green",
+       "license": "green-credit",
+       "existing": false
+      }
+     ],
+     "note": "Swarm: three weasels riding a whirlwind, slashing. Japan."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Wild Hunt Rider",
+      "origin": "Germany, Scandinavia, England and Slavic lands",
+      "catalog": "europe",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Spectral rider on the storm. Close to the existing Storm Rider, so keep only if its silhouette (antlers, hounds) differs. Only spectral storm option in the catalogs."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Aitvaras",
+      "origin": "Lithuania",
+      "catalog": "europe",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Wakwak",
+       "origin": "Philippine folklore, southern regions",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Flier: fiery rooster-dragon. Wakwak is a near match of Giant Bat."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Gargoyle",
+      "origin": "D&D SRD (SRD 5.1 | SRD 5.2); SRD, credit required",
+      "catalog": "srd",
+      "sensitivity": "green",
+      "license": "green-credit",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "SRD, credit required. Shielded stone flier. Fills the shielded gap honestly; no folklore catalog row is shielded."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Impundulu",
+      "origin": "Zulu and Xhosa, South Africa",
+      "catalog": "africa-middle-east",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Tengu",
+       "origin": "Japanese folklore, Japan",
+       "catalog": "east-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Qiongqi",
+       "origin": "Chinese myth, China (Shan Hai Jing)",
+       "catalog": "east-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Lightning bird. South Africa."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Omukade",
+      "origin": "Japanese folklore, Japan (Tawara Toda Monogatari)",
+      "catalog": "east-asia",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Tatzelwurm",
+       "origin": "Alps (Switzerland, Austria, Bavaria)",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Yamauba",
+       "origin": "Japanese folklore, Japan",
+       "catalog": "east-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Chitin giant centipede of the mountain. Japan."
+    },
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Giant Elemental",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [
+      {
+       "name": "Nue",
+       "origin": "Japanese folklore, Japan",
+       "catalog": "east-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Lindworm",
+       "origin": "Sweden, Germany, Alps",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 25. Already drawn and unplaced; an air/lightning giant suits the Peaks."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Tempest Lord of the Peaks",
+      "origin": "Draconia Chronicles lore",
+      "catalog": "lore",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Roc",
+       "origin": "Arabia and Persia (Arabian Nights)",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Vucub Caquix",
+       "origin": "K'iche' Maya, Guatemala",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 30. Named by the lore, so no catalog row. Alternates are fallback sky-titans only if the owner wants a creature instead of a lord. Inkanyamba and Garuda are red."
+    }
+   ]
+  },
+  {
+   "land": "Riverglass Delta",
+   "levels": "31-40",
+   "element": "steam",
+   "faction_note": "Marsh and river things scalded by the steaming delta. No faction in the lore yet; proposed: the Delta Drowned, creatures of the hot reed-water.",
+   "slots": [
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Kappa",
+      "origin": "Japanese folklore, Japan",
+      "catalog": "east-asia",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Tokoloshe",
+       "origin": "Nguni (Zulu, Xhosa), South Africa",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Swarm. Japan."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Kongamato",
+      "origin": "Jiundu swamps, Zambia, Angola, Congo",
+      "catalog": "africa-middle-east",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Stymphalian Birds",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Flier: leathery-winged river raider. Zambia. Stymphalian Birds is rated event, not regular."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Nixie",
+      "origin": "Germany and Scandinavia",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Rusalka",
+       "origin": "Slavic lands",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Ranged water-luring spirit. Germany."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Jenny Greenteeth",
+      "origin": "England, Lancashire and the North (Peg Powler on the Tees)",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Bashe",
+       "origin": "Chinese myth, China (Shan Hai Jing)",
+       "catalog": "east-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Each-uisge",
+       "origin": "Scotland, Highlands and Isles",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Brute lurking in weed. England."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Ahuizotl",
+      "origin": "Aztec (Nahua), Mexico",
+      "catalog": "oceania-americas-greece",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Khwai Thanu",
+       "origin": "Thai folklore, Thailand",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Mukun'ga M'bura (rainbow water monster)",
+       "origin": "Kikuyu, Kenya",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Rusalka",
+       "origin": "Slavic lands",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Water-dog with a hand on its tail. Aztec, yellow (living belief)."
+    },
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Berberoka",
+      "origin": "Philippine folklore, northern Luzon (Apayao, Abra, Ilocos Norte)",
+      "catalog": "south-southeast-asia",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Vodyanoy",
+       "origin": "Slavic lands",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Afanc",
+       "origin": "Wales",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Namazu",
+       "origin": "Japanese folklore, Japan",
+       "catalog": "east-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 35. Drains the pond to catch prey. Philippines."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Lernaean Hydra",
+      "origin": "Ancient Greek myth, Greece",
+      "catalog": "oceania-americas-greece",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Ninki Nanka",
+       "origin": "Mandinka and neighbors, Gambia/West Africa",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Mokele-mbembe",
+       "origin": "Bantu peoples, Congo Basin",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Xiangliu",
+       "origin": "Chinese myth, China (Shan Hai Jing)",
+       "catalog": "east-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 40. Multi-headed marsh serpent. Greek."
+    }
+   ]
+  },
+  {
+   "land": "Elderbough Crown",
+   "levels": "41-50",
+   "element": "mist",
+   "faction_note": "Feral fey of an ancient misty forest. Tricksters and wood-wardens gone savage.",
+   "slots": [
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Amomongo",
+      "origin": "Negros Occidental, Philippines (Mount Kanlaon)",
+      "catalog": "south-southeast-asia",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Wewe Gombel",
+       "origin": "Javanese folklore, Semarang, Indonesia",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Clawed forest brute. Philippines."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Nogitsune",
+      "origin": "Japanese folklore, Japan",
+      "catalog": "east-asia",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Huldra",
+       "origin": "Norway, Sweden, Faroes",
+       "catalog": "europe",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Huli jing",
+       "origin": "Chinese folklore, China",
+       "catalog": "east-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Ranged fox trickster, fox-fire. Japan, yellow."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Swarm of Spiders",
+      "origin": "D&D SRD (SRD 5.1); SRD, credit required",
+      "catalog": "srd",
+      "sensitivity": "green",
+      "license": "green-credit",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Swarm of Wasps",
+       "origin": "D&D SRD (SRD 5.1); SRD, credit required",
+       "catalog": "srd",
+       "sensitivity": "green",
+       "license": "green-credit",
+       "existing": false
+      }
+     ],
+     "note": "SRD 5.1, credit required. Chitin swarm; the Spider Queen's brood."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Kalanoro",
+      "origin": "Malagasy, Madagascar",
+      "catalog": "africa-middle-east",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Small swarm of hairy forest sprites. Madagascar, yellow."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Leshy",
+      "origin": "Slavic lands, Russia",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Puca",
+       "origin": "Ireland (also Wales, Cornwall)",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Huldra",
+       "origin": "Norway, Sweden, Faroes",
+       "catalog": "europe",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Shape-shifting forest warden. Slavic."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Sasabonsam",
+      "origin": "Akan (Ashanti), Ghana",
+      "catalog": "africa-middle-east",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Curupira",
+       "origin": "Tupi-Guarani, Brazil",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Tikbalang",
+       "origin": "Philippine folklore, Tagalog regions",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Kurangaituku",
+       "origin": "Maori (Te Arawa, Raukawa), Aotearoa New Zealand",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Hook-footed tree dweller. Akan, yellow."
+    },
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Spider Queen",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [
+      {
+       "name": "Jorogumo",
+       "origin": "Japanese folklore, Japan",
+       "catalog": "east-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Calydonian Boar",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Irimu",
+       "origin": "Kikuyu, Kenya (kin name among the Chaga, Tanzania)",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 45. Already drawn and unplaced; forest canopy suits her. Jorogumo is a close silhouette."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Humbaba",
+      "origin": "Mesopotamia (Sumer, Babylon)",
+      "catalog": "africa-middle-east",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Baba Yaga",
+       "origin": "Slavic lands",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Colchian Dragon",
+       "origin": "Colchis, Georgia (Greek myth)",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 50. Guardian of the Cedar Forest in Gilgamesh; ancient-forest anchor. Baba Yaga would repeat the Slavic elite."
+    }
+   ]
+  },
+  {
+   "land": "Gloamfen Mire",
+   "levels": "51-60",
+   "element": "void",
+   "faction_note": "The dead and the hollow of a dark fen.",
+   "slots": [
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Jiangshi",
+      "origin": "Chinese folklore, China",
+      "catalog": "east-asia",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Ghoul",
+       "origin": "Arabia and North Africa",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Pocong",
+       "origin": "Javanese and Malay folklore; Indonesia and Malaysia",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Hopping corpse. China. Near the existing Skeleton in role; the hop and the talisman make it distinct."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Adze",
+      "origin": "Ewe, Togo and Ghana",
+      "catalog": "africa-middle-east",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Swarm: firefly that turns to a bloodsucker. Ewe, yellow."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Will-o'-Wisp",
+      "origin": "D&D SRD (SRD 5.1 | SRD 5.2); SRD, credit required",
+      "catalog": "srd",
+      "sensitivity": "green",
+      "license": "green-credit",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Bean Nighe",
+       "origin": "Scotland, Highlands and Isles",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Ekimmu",
+       "origin": "Mesopotamia",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "SRD 5.2, credit required. Spectral fen light. A folk concept that fits the fen; no folklore row."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Kikimora",
+      "origin": "Slavic lands",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Slavic marsh brute."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Draugr",
+      "origin": "Iceland and Norway",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Upior",
+       "origin": "Poland and Slavic lands",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Abhartach",
+       "origin": "Ireland, Co. Derry",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Norse grave-brute. Near Skeleton, but armored and huge."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Empousa",
+      "origin": "Ancient Greek myth, Greece",
+      "catalog": "oceania-americas-greece",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Banshee",
+       "origin": "Ireland and Gaelic Scotland",
+       "catalog": "europe",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Lamia",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Greek one-legged spectral shapeshifter."
+    },
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Dullahan",
+      "origin": "Ireland",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Kishi",
+       "origin": "Ambundu, Angola",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Vetala",
+       "origin": "Hindu folklore; India (Konkan and Goa)",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Jeoseung saja",
+       "origin": "Korean shamanic belief, Korea",
+       "catalog": "east-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 55. Headless rider. Ireland."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Lich",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [
+      {
+       "name": "Gashadokuro",
+       "origin": "Japanese folklore, Japan",
+       "catalog": "east-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Koschei",
+       "origin": "Russian folklore",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 60. Already drawn and unplaced; the dead of the fen."
+    }
+   ]
+  },
+  {
+   "land": "Saffron Dunes",
+   "levels": "61-70",
+   "element": "plasma",
+   "faction_note": "Desert creatures under a cracked sky.",
+   "slots": [
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Serpopard",
+      "origin": "Predynastic Egypt and Uruk Mesopotamia",
+      "catalog": "africa-middle-east",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Ghoul",
+       "origin": "Arabia and North Africa",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Serpent-necked leopard. Egypt."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Nasnas",
+      "origin": "Arabia",
+      "catalog": "africa-middle-east",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Half-bodied hopper. Arabia, yellow."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Mummy",
+      "origin": "D&D SRD (SRD 5.1 | SRD 5.2); SRD, credit required",
+      "catalog": "srd",
+      "sensitivity": "green",
+      "license": "green-credit",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Preta",
+       "origin": "Buddhist cosmology as held in Thailand and India",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "SRD 5.2, credit required. Wrapped desert dead. Fills a shielded/armored gap."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Yara-ma-yha-who",
+      "origin": "Aboriginal Australia (south-east)",
+      "catalog": "oceania-americas-greece",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Yowie",
+       "origin": "Aboriginal Australia (Gamilaraay name, NSW) and colonial reports",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Bungisngis",
+       "origin": "Philippine folklore, Luzon (Bataan, Batangas)",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Tree-dwelling red drainer. Aboriginal Australia, yellow."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Girtablilu",
+      "origin": "Mesopotamia (Babylon) and Iran",
+      "catalog": "africa-middle-east",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Aicha Kandicha",
+       "origin": "Morocco",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Zimwi",
+       "origin": "Bantu peoples of eastern and southern Africa (Zulu, Swahili and kin)",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Scorpion-person of Babylon. Chitin."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Poludnitsa",
+      "origin": "Slavic lands",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Karkadann",
+       "origin": "Persia and the Islamic world",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Brahmarakshasa",
+       "origin": "Hindu folklore; India",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Lamia",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Noonday heat spirit. Slavic."
+    },
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Manticore",
+      "origin": "Persia",
+      "catalog": "africa-middle-east",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Sphinx",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Nemean Lion",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Rakshasa",
+       "origin": "Hindu and Buddhist epics; India and Sri Lanka",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 65. Spine-flinging ranged beast. Persia. Ammit (rated green) is left out: she is an Egyptian deity-demon, so the owner should judge."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Corrupted Drake",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [
+      {
+       "name": "Roc",
+       "origin": "Arabia and Persia (Arabian Nights)",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Ifrit",
+       "origin": "Arabia and the Islamic world",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Div",
+       "origin": "Persia (Iran)",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 70. Already drawn and unplaced; a desert wyrm."
+    }
+   ]
+  },
+  {
+   "land": "Tideglass Coast",
+   "levels": "71-80",
+   "element": "lightning",
+   "faction_note": "Sea raiders on a stormy coast.",
+   "slots": [
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Blue Men of the Minch",
+      "origin": "Scotland, Outer Hebrides (the Minch)",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Swarm of storm-sea men. Scotland."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Funayurei",
+      "origin": "Japanese folklore, Japan",
+      "catalog": "east-asia",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Spectral drowned sailor. Japan."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Archelon",
+      "origin": "D&D SRD (SRD 5.2); SRD, credit required",
+      "catalog": "srd",
+      "sensitivity": "green",
+      "license": "green-credit",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Giant Shark",
+       "origin": "D&D SRD (SRD 5.1 | SRD 5.2); SRD, credit required",
+       "catalog": "srd",
+       "sensitivity": "green",
+       "license": "green-credit",
+       "existing": false
+      }
+     ],
+     "note": "SRD 5.2, credit required. Giant sea turtle: shielded."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Stymphalian Birds",
+      "origin": "Ancient Greek myth, Greece",
+      "catalog": "oceania-americas-greece",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Flier: bronze-feathered flock, rated event in the catalog; rank is a call for the owner."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Fomorian Raider",
+      "origin": "Ireland (Irish myth cycles)",
+      "catalog": "europe",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Adaro",
+       "origin": "Makira, Solomon Islands (Melanesia)",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Each-uisge",
+       "origin": "Scotland, Highlands and Isles",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Nykur",
+       "origin": "Iceland, Faroe Islands, Scandinavia",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Sea-raider brute. Irish myth, yellow."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Sirens",
+      "origin": "Ancient Greek myth, Greece",
+      "catalog": "oceania-americas-greece",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Gegenees",
+       "origin": "Mysia, Anatolia (Greek myth)",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Scylla",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Flier; song luring. Greek."
+    },
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Nuckelavee",
+      "origin": "Scotland, Orkney",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Umibozu",
+       "origin": "Japanese folklore, Japan",
+       "catalog": "east-asia",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Scylla",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 75. Skinless sea-horse rider. Orkney."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Kraken",
+      "origin": "Norway and Iceland",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Caleuche",
+       "origin": "Chiloe, Chile",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 80. Norse. The SRD also has a Kraken, but the folklore version needs no credit. Akkorokamui, Te Wheke-a-Muturangi, Bakunawa and Makara are red."
+    }
+   ]
+  },
+  {
+   "land": "Hollowspire Below",
+   "levels": "81-90",
+   "element": "ice",
+   "faction_note": "Frozen caverns. THIN: ice folklore is scarce and half of it is red or seasonal. Filled partly from SRD.",
+   "slots": [
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Cornish Knocker",
+      "origin": "England, Cornwall",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Swarm of mine spirits. England."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Polar Bear",
+      "origin": "D&D SRD (SRD 5.1 | SRD 5.2); SRD, credit required",
+      "catalog": "srd",
+      "sensitivity": "green",
+      "license": "green-credit",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Winter Wolf",
+       "origin": "D&D SRD (SRD 5.1 | SRD 5.2); SRD, credit required",
+       "catalog": "srd",
+       "sensitivity": "green",
+       "license": "green-credit",
+       "existing": false
+      }
+     ],
+     "note": "SRD 5.2, credit required. Real animal; an honest ice-cavern brute."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Animated Armor",
+      "origin": "D&D SRD (SRD 5.1 | SRD 5.2); SRD, credit required",
+      "catalog": "srd",
+      "sensitivity": "green",
+      "license": "green-credit",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "SRD 5.2, credit required. Shielded construct guarding a frozen hall."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Yuki-onna",
+      "origin": "Japanese folklore, Japan",
+      "catalog": "east-asia",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Oni",
+       "origin": "Japanese folklore and Buddhist hell imagery, Japan",
+       "catalog": "east-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Hiisi",
+       "origin": "Finland and Finnic lore",
+       "catalog": "europe",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Ranged snow woman. Japan."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Camazotz",
+      "origin": "K'iche' Maya, Guatemala",
+      "catalog": "oceania-americas-greece",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Kerit (Nandi bear)",
+       "origin": "Nandi/Kalenjin and Samburu, Kenya",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Bat-lord flier of a cave. Maya (K'iche'), yellow."
+    },
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Stone Golem",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [
+      {
+       "name": "Black Annis",
+       "origin": "England, Leicestershire (Dane Hills)",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Frost Giant",
+       "origin": "Norse and Icelandic myth",
+       "catalog": "europe",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 85. Already drawn and unplaced; cavern guardian."
+    },
+    {
+     "slot": "boss",
+     "pick": {
+      "name": "Corrupted Wyvern",
+      "origin": "Draconia Chronicles bestiary (already drawn)",
+      "catalog": "existing",
+      "sensitivity": "n/a",
+      "license": "n/a",
+      "existing": true
+     },
+     "alternates": [
+      {
+       "name": "Cerberus",
+       "origin": "Ancient Greek myth, Greece",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Koschei",
+       "origin": "Russian folklore",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Grootslang",
+       "origin": "Richtersveld and Orange River, South Africa",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 90. Already drawn and unplaced; Mistral's boss is fixed by lore, so the Wyvern goes here."
+    }
+   ]
+  },
+  {
+   "land": "Shadowmere",
+   "levels": "91-100",
+   "element": "corruption",
+   "faction_note": "Rift-edge wetlands with portals. The Land ends on the Rift Boss, which is not proposed here.",
+   "slots": [
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Boggart",
+      "origin": "England, Lancashire, Cheshire, Derbyshire, Yorkshire",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Household spirit turned brute. England."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Mara",
+      "origin": "Germanic and Scandinavian lands, Poland, Finland",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Alu",
+       "origin": "Mesopotamia",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Spectral nightmare. Germanic."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Keres",
+      "origin": "Ancient Greek myth, Greece",
+      "catalog": "oceania-americas-greece",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Tokoloshe",
+       "origin": "Nguni (Zulu, Xhosa), South Africa",
+       "catalog": "africa-middle-east",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Swarm of death-spirits. Greek."
+    },
+    {
+     "slot": "minion",
+     "pick": {
+      "name": "Sigbin",
+      "origin": "Philippine folklore, Visayas and Mindanao",
+      "catalog": "south-southeast-asia",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [],
+     "note": "Goat-like night stalker. Philippines, yellow."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Puca",
+      "origin": "Ireland (also Wales, Cornwall)",
+      "catalog": "europe",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Hantu Raya",
+       "origin": "Malay folklore",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Kerit (Nandi bear)",
+       "origin": "Nandi/Kalenjin and Samburu, Kenya",
+       "catalog": "africa-middle-east",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Shape-shifting portal trickster. Ireland."
+    },
+    {
+     "slot": "elite",
+     "pick": {
+      "name": "Chemosit",
+      "origin": "Kalenjin (Nandi), Kenya",
+      "catalog": "africa-middle-east",
+      "sensitivity": "yellow",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Likho",
+       "origin": "Slavic lands, Russia and Ukraine",
+       "catalog": "europe",
+       "sensitivity": "green",
+       "license": "green",
+       "existing": false
+      },
+      {
+       "name": "Langsuyar",
+       "origin": "Malay folklore, Malay Peninsula",
+       "catalog": "south-southeast-asia",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Flier; Nandi night-demon. Kenya, yellow."
+    },
+    {
+     "slot": "miniboss",
+     "pick": {
+      "name": "Lamashtu",
+      "origin": "Mesopotamia (Sumer, Akkad, Babylon)",
+      "catalog": "africa-middle-east",
+      "sensitivity": "green",
+      "license": "green",
+      "existing": false
+     },
+     "alternates": [
+      {
+       "name": "Lagahoo",
+       "origin": "Trinidad and Tobago",
+       "catalog": "oceania-americas-greece",
+       "sensitivity": "yellow",
+       "license": "green",
+       "existing": false
+      }
+     ],
+     "note": "Level 95. Mesopotamian demoness (catalog rated green; sacredness is a call for the owner)."
+    },
+    {
+     "slot": "boss",
+     "pick": null,
+     "alternates": [],
+     "note": "Level 100: Rift Boss. No proposal."
+    }
+   ]
+  }
+ ],
+ "seasonal": [
+  {
+   "name": "Nian",
+   "origin": "Chinese folklore, China",
+   "catalog": "east-asia",
+   "sensitivity": "yellow",
+   "license": "green",
+   "existing": false
+  },
+  {
+   "name": "Yule Cat",
+   "origin": "Iceland",
+   "catalog": "europe",
+   "sensitivity": "yellow",
+   "license": "green",
+   "existing": false
+  },
+  {
+   "name": "Gryla",
+   "origin": "Iceland",
+   "catalog": "europe",
+   "sensitivity": "yellow",
+   "license": "green",
+   "existing": false
+  },
+  {
+   "name": "Krampus",
+   "origin": "Austria, Bavaria, Alps",
+   "catalog": "europe",
+   "sensitivity": "yellow",
+   "license": "green",
+   "existing": false
+  }
+ ],
+ "excluded": [
+  {
+   "name": "Popobawa",
+   "origin": "Swahili, Zanzibar and Pemba (Tanzania)",
+   "reason": "sensitivity red: Unverified, one source. Living belief tied to real fear, assault and politics; the most feared attacks are sexual. Not suited to a game enemy; listed so the owner sees it. | license red: First reports are from 1965 (Pemba), peak 1995: modern origin, folklore age unverified."
+  },
+  {
+   "name": "Buda",
+   "origin": "Ethiopia and Eritrea",
+   "reason": "sensitivity red: Unverified, one source. RED: the belief is aimed at real groups (blacksmiths, Beta Israel) and fuels stigma. Never use the name. A generic hyena-man should carry no Ethiopian label."
+  },
+  {
+   "name": "Mamlambo",
+   "origin": "Xhosa/Zulu, South Africa",
+   "reason": "sensitivity red: Unverified, one source. The page calls her a goddess of rivers; living belief with real deaths attached. Listed so the owner sees it. | license red: First dated record is 1997 news: modern origin, folklore age unverified."
+  },
+  {
+   "name": "Inkanyamba",
+   "origin": "Zulu, South Africa",
+   "reason": "sensitivity red: Unverified, one source. RED: the page calls it a deity and says it must be appeased. Do not use as an enemy."
+  },
+  {
+   "name": "Apep",
+   "origin": "Ancient Egypt",
+   "reason": "sensitivity red: Unverified, one source. RED: a god of chaos, a deity."
+  },
+  {
+   "name": "Mushussu",
+   "origin": "Mesopotamia (Babylon)",
+   "reason": "sensitivity red: Unverified, one source. RED: sacred beast of a god (Marduk), though that religion is extinct."
+  },
+  {
+   "name": "Namahage",
+   "origin": "Japanese folklore, Japan (Akita)",
+   "reason": "sensitivity red: A living New Year ritual, considered a visiting toshigami deity; not an enemy. Listed for the owner only. Unverified, one source."
+  },
+  {
+   "name": "Akkorokamui",
+   "origin": "Ainu folklore, Hokkaido",
+   "reason": "sensitivity red: Name includes kamuy (god) and the Ainu are a living culture; the page marks claims of reverence as disputed. Treat as not an enemy until the owner decides. Unverified, one source."
+  },
+  {
+   "name": "Xingtian",
+   "origin": "Chinese myth, China (Shan Hai Jing)",
+   "reason": "sensitivity red: Described as a deity and a symbol of defiance; not an enemy. Listed for the owner only. Unverified, one source."
+  },
+  {
+   "name": "Gonggong",
+   "origin": "Chinese myth, China",
+   "reason": "sensitivity red: A deity (a malevolent water god); never an enemy. Listed for the owner only."
+  },
+  {
+   "name": "Cailleach",
+   "origin": "Ireland, Scotland, Isle of Man",
+   "reason": "sensitivity red: Treated as a deity of weather and land; never an enemy. Listed so the owner sees it. unverified, one source"
+  },
+  {
+   "name": "Domovoy",
+   "origin": "Slavic lands",
+   "reason": "sensitivity red: Household guardian linked to ancestors in living belief; never an enemy. Listed for the owner."
+  },
+  {
+   "name": "Taniwha",
+   "origin": "Maori, Aotearoa New Zealand",
+   "reason": "sensitivity red: Red as an enemy: many iwi regard taniwha as kaitiaki (guardians), and taniwha have shaped modern road and court decisions. The same source shows dangerous stories exist, but Te Ara returned HTTP 403, so I cannot show an iwi-sanctioned monster use. Unverified, one source."
+  },
+  {
+   "name": "Te Wheke-a-Muturangi",
+   "origin": "Maori, Aotearoa New Zealand",
+   "reason": "sensitivity red: Red until the owner decides: it is tied to named ancestors (Kupe, or Tamatea in another iwi's version), so it is an ancestor story with competing iwi versions. Te Ara not readable. Unverified, one source."
+  },
+  {
+   "name": "Rainbow Serpent",
+   "origin": "Aboriginal Australia (many nations)",
+   "reason": "sensitivity red: Red: a creator being worshipped in ritual across many nations. Listed so the owner sees it; do not use. Unverified, one source."
+  },
+  {
+   "name": "Moo",
+   "origin": "Hawaii",
+   "reason": "sensitivity red: Red: revered as aumakua (family guardians), and named moo guard places. Unverified, one source."
+  },
+  {
+   "name": "Tzitzimitl",
+   "origin": "Aztec (Nahua), Mexico",
+   "reason": "sensitivity red: Red: celestial female deities tied to fertility and childbirth; post-conquest writers called them demons. Fits a cracked sky but must not be used. Unverified, one source."
+  },
+  {
+   "name": "Cipactli",
+   "origin": "Aztec (Nahua), Mexico",
+   "reason": "sensitivity red: Red: first day-sign of the sacred count and, in some versions, the earth deity. Unverified, one source."
+  },
+  {
+   "name": "Pishtaco",
+   "origin": "Andes, Peru and Bolivia",
+   "reason": "sensitivity red: Red: scholars read it as a symbol of colonial exploitation, and belief in it caused real killings in 1983 and 1988. Unverified, one source."
+  },
+  {
+   "name": "Trauco",
+   "origin": "Chiloe, Chile",
+   "reason": "sensitivity red: Red: the lore has been used to excuse sexual violence, so I advise against it. Unverified, one source."
+  },
+  {
+   "name": "Wendigo",
+   "origin": "Algonquian peoples (Ojibwe, Cree), North America",
+   "reason": "sensitivity red: Red: belief of living peoples; the source notes a scholar objecting to outsider horror use. Unverified, one source."
+  },
+  {
+   "name": "Skinwalker",
+   "origin": "Navajo, North America",
+   "reason": "sensitivity red: Red: Navajo people are reluctant to share it with outsiders, and a Cherokee scholar says outsiders should not discuss it. Unverified, one source."
+  },
+  {
+   "name": "Mae Nak",
+   "origin": "Thai folklore, Bangkok",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. A real shrine where devotees pray for easy childbirth and leave offerings today; she is treated as a revered figure, not just a monster."
+  },
+  {
+   "name": "Phi Ya Nang",
+   "origin": "Thai folklore, southern Thailand",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. A protective boat spirit honored by southern Buddhist fishermen and the Royal Thai Navy today. Not an enemy."
+  },
+  {
+   "name": "Kapre",
+   "origin": "Philippine folklore, Luzon and Visayas",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. The page says the name and image grew from colonial prejudice against dark-skinned Aeta/Negrito people, so a design risks reading as a stereotype of a real ethnic group. Recommend skipping or a heavy redesign; owner dec"
+  },
+  {
+   "name": "Bakunawa",
+   "origin": "Philippine myth, Visayas and Bicol",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. It figured in babaylan rituals and merged with naga and Rahu; some retellings call it a goddess turned serpent. Communities still make noise at eclipses."
+  },
+  {
+   "name": "Rangda",
+   "origin": "Balinese myth, Bali",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. Her mask is kept in a village death temple and used in sacred dance; a ritual figure, not an enemy."
+  },
+  {
+   "name": "Orang Minyak",
+   "origin": "Malay urban legend; Malaysia and Singapore",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. Most versions make him a sexual predator; not suitable. | license red: Modern origin: first record is a 1957 Singapore newspaper report and a 1958 film, so a modern invention."
+  },
+  {
+   "name": "Sanni Yakku",
+   "origin": "Sinhalese ritual; Sri Lanka",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. A living Sinhalese healing ritual still performed on the south coast; using the masks would borrow a sacred performance. Owner decides."
+  },
+  {
+   "name": "Naga",
+   "origin": "Hindu, Buddhist, Thai, Khmer and Javanese tradition",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. Revered: Thailand made the naga a national symbol in 2022, and many Khmer see themselves as naga descendants. Never an enemy."
+  },
+  {
+   "name": "Garuda",
+   "origin": "Hindu and Buddhist tradition; India, Thailand, Indonesia",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. A sacred mount and the national emblem of Thailand and Indonesia. Not usable as an enemy."
+  },
+  {
+   "name": "Makara",
+   "origin": "Hindu tradition; India and Nepal",
+   "reason": "sensitivity red: unverified, one source (Wikipedia only); second source to be checked before art. A sacred vehicle and temple guardian; most stone taps in Nepal are still carved as makara."
+  }
+ ],
+ "dropped_near_duplicates": [
+  {
+   "name": "Black Shuck",
+   "duplicate_of": "Spectral Hound"
+  },
+  {
+   "name": "Barghest",
+   "duplicate_of": "Spectral Hound"
+  },
+  {
+   "name": "Cwn Annwn",
+   "duplicate_of": "Spectral Hound"
+  },
+  {
+   "name": "Bulgae",
+   "duplicate_of": "Spectral Hound"
+  },
+  {
+   "name": "Krasue",
+   "duplicate_of": "flying-head family (none kept)"
+  },
+  {
+   "name": "Penanggalan",
+   "duplicate_of": "flying-head family"
+  },
+  {
+   "name": "Leyak",
+   "duplicate_of": "flying-head family"
+  },
+  {
+   "name": "Manananggal",
+   "duplicate_of": "flying-head family"
+  },
+  {
+   "name": "Phi Krahang",
+   "duplicate_of": "flying-head family"
+  },
+  {
+   "name": "Rokurokubi",
+   "duplicate_of": "flying-head family"
+  },
+  {
+   "name": "Aswang (shapeshifter)",
+   "duplicate_of": "flying-head family"
+  },
+  {
+   "name": "Soucouyant",
+   "duplicate_of": "flying-head family"
+  },
+  {
+   "name": "Mine Kobold",
+   "duplicate_of": "Kobold"
+  },
+  {
+   "name": "Dokkaebi",
+   "duplicate_of": "Goblin"
+  },
+  {
+   "name": "Hungry ghost",
+   "duplicate_of": "Wraith"
+  },
+  {
+   "name": "Cheonyeo gwisin",
+   "duplicate_of": "Wraith"
+  },
+  {
+   "name": "Jikininki",
+   "duplicate_of": "Wraith"
+  },
+  {
+   "name": "Pocong",
+   "duplicate_of": "Skeleton"
+  },
+  {
+   "name": "Tsuchigumo",
+   "duplicate_of": "Spider Queen / Jorogumo"
+  },
+  {
+   "name": "Shuten-doji",
+   "duplicate_of": "Troll / Ogre"
+  },
+  {
+   "name": "Hiisi",
+   "duplicate_of": "Troll / Ogre (kept only as an alternate)"
+  }
+ ]
+}
