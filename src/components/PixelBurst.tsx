@@ -3,6 +3,8 @@ import { PixelRatio, StyleSheet, View } from 'react-native'
 import { spriteBox, stripMs } from '../art'
 import type { SpriteId } from '../art'
 import { PixelSprite } from './PixelSprite'
+import { placeBurst, clearBurst } from './burstSlots'
+import type { BurstSlot } from './burstSlots'
 
 /** A strip held still (Reduce Motion) still shows this long */
 const MIN_SHOW_MS = 150
@@ -15,8 +17,7 @@ export interface PixelBurstHandle {
   play: (id: SpriteId, x: number, y: number, holdMs?: number, scale?: number) => void
 }
 
-interface Slot {
-  key: number
+interface Burst {
   id: SpriteId
   x: number
   y: number
@@ -35,7 +36,7 @@ interface PixelBurstProps {
  * Each plays its strip once and is gone. Decorative and untouchable.
  */
 export const PixelBurst = forwardRef<PixelBurstHandle, PixelBurstProps>(function PixelBurst({ scale, max = 3 }, ref) {
-  const [slots, setSlots] = useState<(Slot | null)[]>(() => Array(max).fill(null))
+  const [slots, setSlots] = useState<(BurstSlot<Burst> | null)[]>(() => Array(max).fill(null))
   const next = useRef(0)
   const keySeq = useRef(0)
   const timers = useRef<ReturnType<typeof setTimeout>[]>([])
@@ -46,10 +47,10 @@ export const PixelBurst = forwardRef<PixelBurstHandle, PixelBurstProps>(function
     const i = next.current
     next.current = (i + 1) % max
     const key = ++keySeq.current
-    setSlots((prev) => prev.map((s, j) => (j === i ? { key, id, x, y, scale } : s)))
+    setSlots((prev) => placeBurst(prev, i, { key, value: { id, x, y, scale } }))
     clearTimeout(timers.current[i])
     timers.current[i] = setTimeout(() => {
-      setSlots((prev) => prev.map((s, j) => (j === i && s?.key === key ? null : s)))
+      setSlots((prev) => clearBurst(prev, i, key))
     }, Math.max(MIN_SHOW_MS, stripMs(id) + holdMs))
   }, [max])
 
@@ -58,12 +59,13 @@ export const PixelBurst = forwardRef<PixelBurstHandle, PixelBurstProps>(function
   const ratio = PixelRatio.get()
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="none" importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-      {slots.map((s) => {
-        if (!s) return null
+      {slots.map((slot) => {
+        if (!slot) return null
+        const s = slot.value
         const size = s.scale ?? scale
         const box = spriteBox(s.id, size, ratio)
         return (
-          <View key={s.key} style={{ position: 'absolute', left: s.x - box.width / 2, top: s.y - box.height / 2 }}>
+          <View key={slot.key} style={{ position: 'absolute', left: s.x - box.width / 2, top: s.y - box.height / 2 }}>
             <PixelSprite id={s.id} scale={size} loop={false} />
           </View>
         )

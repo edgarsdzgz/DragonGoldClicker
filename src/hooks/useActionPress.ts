@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { AppState } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { useHoldPress } from './useHoldPress'
+import { acceptTap } from './tapBacklog'
 
 /**
  * Owner rulings (2026-10-26): every main button presses the same way, and holding repeats once
@@ -35,7 +36,14 @@ export function useActionPress(action: (kind: PressKind) => void, { repeatOnHold
   const touching = useRef(false)
   const touchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const tap = useCallback(() => action('tap'), [action])
+  // A backlog of queued touches after a stall acts once, not once per touch (hooks/tapBacklog)
+  const lastTap = useRef<number | null>(null)
+  const tap = useCallback(() => {
+    const now = Date.now()
+    if (!acceptTap(now, lastTap.current)) return
+    lastTap.current = now
+    action('tap')
+  }, [action])
   const tick = useCallback(() => action('hold'), [action])
   const hold = useHoldPress(tap, tick, { delayMs: HOLD_REPEAT_MS, intervalMs: HOLD_REPEAT_MS })
   const stopRepeat = hold.onPressOut
