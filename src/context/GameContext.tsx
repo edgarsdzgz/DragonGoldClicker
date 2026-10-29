@@ -28,6 +28,7 @@ import {
 } from '../types/game'
 import { stepFood } from '../types/foodTick'
 import { stepWall } from '../types/wall'
+import { applyFind } from '../types/valleyFinds'
 import { strike, fighterStrike, varnBreath } from '../types/monsters'
 import { VARN_BREATH_SEC, buildWizardTower as buildWizardTowerState, varnOnWall } from '../types/allies'
 import { completeQuests, hasQuestToComplete } from '../types/quests'
@@ -53,6 +54,8 @@ interface GameContextType {
   /** One tap at the Gate; `double` when it rolled a double strike (Weak Points) */
   click: (double?: boolean) => void
   forage: () => void
+  /** Tap on a Valley Find: its food goes to the stores, but it is not a forage trip */
+  catchFind: (food: number) => void
   buildOrUpgradeBarracks: () => void
   buildArmory: () => void
   /** Train a fighter into a conscript, or promote a soldier one rank up (types/army.ts) */
@@ -302,6 +305,10 @@ export function GameProvider({ children, initial }: {
     })
   }, [])
 
+  const catchFind = useCallback((food: number) => {
+    setState((prev) => applyFind(prev, food))
+  }, [])
+
   const rallyFighter = useCallback(() => {
     setState((prev) => {
       if (prev.villagers <= 0) return prev
@@ -542,6 +549,7 @@ export function GameProvider({ children, initial }: {
         state,
         click,
         forage,
+        catchFind,
         buildOrUpgradeBarracks,
         buildArmory,
         makeRank,

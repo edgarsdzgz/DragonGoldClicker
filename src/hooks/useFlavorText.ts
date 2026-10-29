@@ -19,25 +19,32 @@ export function useFlavorText(
   const clicksSinceLastRef = useRef(0)
   const cooldownRef = useRef(randomBetween(min, max))
   const animatingRef = useRef(false)
+  const runningRef = useRef<Animated.CompositeAnimation | null>(null)
 
-  /** Show a line now (if one is not already showing) and restart the tap cooldown */
-  const show = useCallback(() => {
-    if (animatingRef.current) return
+  /**
+   * Show a line now (if one is not already showing) and restart the tap cooldown. A given `only`
+   * line is shown instead of a random one, and cuts in on whatever is showing.
+   */
+  const show = useCallback((only?: string) => {
+    if (only !== undefined) runningRef.current?.stop()
+    else if (animatingRef.current) return
 
-    // Pick a random line
-    const line = lines[Math.floor(Math.random() * lines.length)]
+    const line = only ?? lines[Math.floor(Math.random() * lines.length)]
     setText(line)
     clicksSinceLastRef.current = 0
     cooldownRef.current = randomBetween(min, max)
     animatingRef.current = true
 
     // Fade in -> hold -> fade out
-    Animated.sequence([
+    opacity.setValue(0)
+    const run = Animated.sequence([
       Animated.timing(opacity, { toValue: 1, duration: 300, useNativeDriver: true }),
       Animated.delay(hold),
       Animated.timing(opacity, { toValue: 0, duration: 600, useNativeDriver: true }),
-    ]).start(() => {
-      animatingRef.current = false
+    ])
+    runningRef.current = run
+    run.start(({ finished }) => {
+      if (finished) animatingRef.current = false
     })
   }, [lines, min, max, hold, opacity])
 

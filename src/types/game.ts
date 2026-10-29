@@ -201,3 +201,15 @@ export { findNextBeat, effectiveDwell, TEST_DWELL_CAP_SEC } from './storyDirecto
 
 export type { TutorialStep, TutorialStepId, TutorialUi, TutorialSheet } from './tutorial'
 export { TUTORIAL_STEPS, EMPTY_TUTORIAL_UI, getActiveStep, isStepComplete } from './tutorial'
+
+export type { FindKind, FindDef, FindSpot } from './valleyFinds'
+export {
+  FIND_KINDS,
+  FIRST_FIND_TAP,
+  FIND_SIZE,
+  applyFind,
+  findGap,
+  findSpots,
+  pickFind,
+  pickSpot,
+} from './valleyFinds'

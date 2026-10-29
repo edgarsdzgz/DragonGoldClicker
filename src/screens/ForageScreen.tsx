@@ -1,13 +1,16 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { View, StyleSheet, PixelRatio } from 'react-native'
 import { PixelSprite } from '../components/PixelSprite'
 import { SPRITES, fitScale, granarySprite, FORAGE_ORB_ART } from '../art'
-import { Text, Badge, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge, FoodEventBadge } from '../components'
+import { Text, Badge, ValleyFind, MealCountdown, StoryObjective, CoachTarget, RationSelector, FighterStatusBadge, FoodEventBadge } from '../components'
 import { FlavorText } from '../components/FlavorText'
 import { HarvestOrb } from '../components/HarvestOrb'
 import { ResourceBar } from '../components/ResourceBar'
+import { FloatingNumbers } from '../components/FloatingNumbers'
+import type { FloatingNumbersHandle } from '../components/FloatingNumbers'
 import { useGame } from '../context/GameContext'
 import { useFlavorText } from '../hooks/useFlavorText'
+import { useValleyFinds } from '../hooks/useValleyFinds'
 import { useRandomSfx } from '../hooks/useRandomSfx'
 import { SFX_HARVEST_POOL } from '../data/sfx'
 import { FORAGE_LINES } from '../data/flavorText'
@@ -60,8 +63,12 @@ export function ForageScreen() {
   const granaryFull = state.food >= GRANARY_CAP
 
   // The FORAGE orb is sized to the room it has, so its glow never covers the TRAIN row
-  const [areaHeight, setAreaHeight] = useState(0)
-  const orbDiameter = forageOrbDiameter(areaHeight)
+  const [area, setArea] = useState({ width: 0, height: 0 })
+  const orbDiameter = forageOrbDiameter(area.height)
+
+  // Valley Finds stir in the grass around the orb (types/valleyFinds.ts)
+  const numbers = useRef<FloatingNumbersHandle>(null)
+  const valley = useValleyFinds({ width: area.width, height: area.height, orbDiameter, granaryFull, showHint: flavor.show, numbers })
 
   const explorerCap = getExplorerCap(state.postLevel)
   const canRecruitExplorer = explorerBlock(state) === null
@@ -108,7 +115,7 @@ export function ForageScreen() {
       )}
 
       {/* Battle area: FORAGE dominates center */}
-      <View style={styles.battleArea} onLayout={(e) => setAreaHeight(Math.floor(e.nativeEvent.layout.height))}>
+      <View style={styles.battleArea} onLayout={(e) => setArea({ width: Math.floor(e.nativeEvent.layout.width), height: Math.floor(e.nativeEvent.layout.height) })}>
         <FlavorText text={flavor.text} opacity={flavor.opacity} color={colors.forage.soft} reserveHeight={FLAVOR_H} />
         <HarvestOrb
           onAction={handleForage}
@@ -120,6 +127,21 @@ export function ForageScreen() {
           coachId="forage"
           palette={FORAGE_PALETTE}
         />
+        {valley.find && (
+          <ValleyFind
+            key={valley.find.id}
+            kind={valley.find.kind}
+            x={valley.find.x}
+            y={valley.find.y}
+            pay={valley.find.pay}
+            showMs={valley.find.showMs}
+            still={valley.reduceMotion}
+            drift={valley.find.drift}
+            onCatch={valley.onCatch}
+            onGone={valley.onGone}
+          />
+        )}
+        <FloatingNumbers ref={numbers} />
       </View>
 
       {/* Command row: Train Gatherer + Recruit Explorer, each once it has been introduced */}
