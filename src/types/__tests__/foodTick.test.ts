@@ -1,7 +1,7 @@
 import { DEFAULT_GAME_STATE } from '../state'
 import type { GameState } from '../state'
 import { FOOD_CHECK_INTERVAL } from '../food'
-import { resolveFoodTick, applyFoodTick, stepFood } from '../foodTick'
+import { resolveFoodTick, applyFoodTick, stepFood, outlookText, STORES_ALARM_MINUTES } from '../foodTick'
 
 const make = (over: Partial<GameState>): GameState => ({ ...DEFAULT_GAME_STATE, ...over })
 
@@ -116,5 +116,21 @@ describe('number formats for food', () => {
     expect(formatAmount(18.5)).toBe('18.5')
     expect(formatAmount(29)).toBe('29')
     expect(formatAmount(6.0000001)).toBe('6')
+  })
+})
+
+describe('outlookText: how worried the stores line looks', () => {
+  it('stores that last a long while are a heads-up, not an alarm', () => {
+    expect(outlookText({ kind: 'shrinking', minutes: 20 }).tone).toBe('warn')
+    expect(outlookText({ kind: 'shrinking', minutes: STORES_ALARM_MINUTES }).tone).toBe('warn')
+  })
+
+  it('stores about to run out are an alarm', () => {
+    expect(outlookText({ kind: 'shrinking', minutes: STORES_ALARM_MINUTES - 1 }).tone).toBe('bad')
+    expect(outlookText({ kind: 'emptyNextMeal' }).tone).toBe('bad')
+  })
+
+  it('full or growing stores are good news', () => {
+    expect(outlookText({ kind: 'full' }).tone).toBe('good')
   })
 })

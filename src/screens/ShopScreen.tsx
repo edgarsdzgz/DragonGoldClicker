@@ -34,6 +34,7 @@ import {
   getExplorerCap,
   getPostUpgradeCost,
   getOfflineUpgradeCost,
+  countOf,
 } from '../types/game'
 import type { BuildingId, BuildingInfo, ResourceKey } from './shop/types'
 import { BarracksInterior } from './shop/BarracksInterior'
@@ -220,7 +221,7 @@ export function ShopScreen() {
       hasAction: forgeHasAction,
       resourceKeys: ['inspiration'],
       statusLabel: state.armoryBuilt
-        ? `${state.armoryGear.swords} swords, ${state.armoryGear.shields} shields`
+        ? `${countOf(state.armoryGear.swords, 'sword', 'swords')}, ${countOf(state.armoryGear.shields, 'shield', 'shields')}`
         : undefined,
     },
     lodge: {
@@ -237,7 +238,7 @@ export function ShopScreen() {
       hasAction: lodgeHasAction,
       resourceKeys: ['inspiration', 'villagers'],
       statusLabel: lodgeBuilt
-        ? `Lv${state.lodgeLevel} -- ${foragerTotal}/${foragerCap} rangers`
+        ? `Lv${state.lodgeLevel} -- ${foragerTotal}/${foragerCap} foragers`
         : undefined,
     },
     outpost: {
@@ -342,9 +343,9 @@ export function ShopScreen() {
         case 'inspiration':
           return { icon: 'wallet', iconElement: <InspirationIcon size={10} />, value: state.inspiration, color: gold[400] }
         case 'food':
-          return { icon: 'nutrition', value: state.food, color: state.food === 0 ? colors.status.error : state.food <= 10 ? colors.status.warning : colors.text.secondary }
+          return { icon: 'nutrition', value: state.food, whole: true, color: state.food === 0 ? colors.status.error : state.food <= 10 ? colors.status.warning : colors.text.secondary }
         case 'villagers':
-          return { icon: 'people', value: state.villagers, color: colors.text.secondary, label: 'idle' }
+          return { icon: 'people', value: state.villagers, whole: true, color: colors.text.secondary, label: 'idle' }
       }
     })
 

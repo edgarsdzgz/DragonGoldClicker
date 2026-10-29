@@ -22,8 +22,8 @@ export interface WallAway {
   hpAfter: number
   /** Whether the army kills the toughest monster before it strikes */
   held: boolean
-  /** The toughest monster the horde sends, plural: "orcs" */
-  monsters: string
+  /** Who wore at the wall: "the orcs" (the toughest the horde sends), or "the Minotaur" (one holding the gate) */
+  foe: string
 }
 
 /** The wall after this many seconds away; null before the siege has begun */
@@ -39,7 +39,8 @@ export function wallWhileAway(s: GameState, seconds: number): WallAway | null {
   const change = (repairRateNow(s) - monster.wallStrike * wallBlowShare(s) * strikesPerSec) * seconds
   const floor = Math.min(s.cityHp, AWAY_WALL_FLOOR)
   const hpAfter = Math.min(MAX_CITY_HP, Math.max(floor, s.cityHp + change))
-  return { hpBefore: s.cityHp, hpAfter, held, monsters: monster.plural }
+  const one = monster.rank === 'boss' || monster.rank === 'miniboss'
+  return { hpBefore: s.cityHp, hpAfter, held, foe: `the ${one ? monster.name : monster.plural}` }
 }
 
 /** The line on the Welcome Back card */
@@ -47,6 +48,7 @@ export function wallAwayLine(w: WallAway): string {
   if (w.held) return 'Your army held the Gate.'
   const from = Math.round(w.hpBefore)
   const to = Math.round(w.hpAfter)
-  if (to < from) return `Your army could not stop the ${w.monsters} in time: the wall wore from ${from} to ${to}.`
-  return `Your army could not stop the ${w.monsters} in time, but the repairers kept the wall standing.`
+  const foe = w.foe.charAt(0).toUpperCase() + w.foe.slice(1)
+  if (to < from) return `${foe} wore the wall down from ${from} to ${to} while you were away.`
+  return `${foe} struck at the wall while you were away, but the repairers kept it standing.`
 }

@@ -5,15 +5,12 @@ import { Text } from './Text'
 import { useGame } from '../context/GameContext'
 import { useHaptics } from '../hooks'
 import { RATIONS, isRationAvailable, rationDef } from '../types/rations'
+import { rationEffectText } from '../types/fedState'
 import type { RationDef, RationId } from '../types/rations'
-import { FIGHTER_FOOD_COST, RESEARCH_NODES, formatAmount } from '../types/game'
+import { RESEARCH_NODES } from '../types/game'
 import { colors, spacing, radius, gold } from '../theme'
 
-/** What a ration does, in one line */
-export function rationEffectText(r: RationDef): string {
-  if (r.damage <= 0) return 'Fighters stand down: they eat nothing and do not fight, but still guard the wall.'
-  return `Each fighter eats ${formatAmount(FIGHTER_FOOD_COST * r.upkeep)} per meal and hits at ${Math.round(r.damage * 100)}%.`
-}
+export { rationEffectText } from '../types/fedState'
 
 /**
  * The fighters' rations: five segments from none to double (core-tap layer 3.4). Locked ones

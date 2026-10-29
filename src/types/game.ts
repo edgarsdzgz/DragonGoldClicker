@@ -111,6 +111,7 @@ export {
   formatNumber,
   formatCount,
   formatAmount,
+  countOf,
 } from './state'
 
 export {

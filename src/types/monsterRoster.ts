@@ -11,7 +11,7 @@ export type MonsterRank = 'elite' | 'miniboss' | 'boss'
 export interface MonsterDef {
   id: string
   name: string
-  /** For "could not stop the orcs" (the Welcome Back card) */
+  /** For "The orcs wore the wall down" (the Welcome Back card) */
   plural: string
   hp: number
   /** Inspiration paid when it dies */

@@ -79,7 +79,7 @@ describe('time away follows the army readout', () => {
     const w = wallWhileAway(siege({ fighters: 4 }), HOUR)!
     expect(w.held).toBe(false)
     expect(w.hpAfter).toBe(AWAY_WALL_FLOOR)
-    expect(wallAwayLine(w)).toBe('Your army could not stop the orcs in time: the wall wore from 100 to 50.')
+    expect(wallAwayLine(w)).toBe('The orcs wore the wall down from 100 to 50 while you were away.')
   })
 
   it('a mini-boss holding the gate is what wears the wall while away, harder than the pool', () => {
@@ -87,7 +87,8 @@ describe('time away follows the army readout', () => {
     const atBoss = MONSTERS[minotaur].fromKills
     const pool = wallWhileAway(siege({ fighters: 4, hordeKills: atBoss }), 30)!
     const boss = wallWhileAway(siege({ fighters: 4, hordeKills: atBoss, monsterIndex: minotaur }), 30)!
-    expect(boss.monsters).toBe('minotaurs')
+    expect(boss.foe).toBe('the Minotaur')
+    expect(wallAwayLine(boss)).toMatch(/^The Minotaur wore the wall down from 100 to \d+ while you were away\.$/)
     expect(boss.hpAfter).toBeLessThan(pool.hpAfter)
   })
 
@@ -101,7 +102,7 @@ describe('time away follows the army readout', () => {
     expect(wallWhileAway(siege({ cityHp: 30 }), HOUR)!.hpAfter).toBe(30)
     const mended = wallWhileAway(siege({ cityHp: 30, repairers: 20 }), HOUR)!
     expect(mended.hpAfter).toBe(100)
-    expect(wallAwayLine(mended)).toBe('Your army could not stop the orcs in time, but the repairers kept the wall standing.')
+    expect(wallAwayLine(mended)).toBe('The orcs struck at the wall while you were away, but the repairers kept it standing.')
   })
 })
 

@@ -3,7 +3,7 @@ import { View, Pressable, ScrollView, StyleSheet, Animated, Dimensions } from 'r
 import type { GameIconName } from '../art'
 import { GameIcon } from './GameIcon'
 import { Text } from './Text'
-import { formatNumber } from '../types/game'
+import { formatCount, formatNumber } from '../types/game'
 import { useSfx } from '../hooks/useSfx'
 import { SFX } from '../data/sfx'
 import { colors, spacing, radius, dark, animation } from '../theme'
@@ -17,6 +17,8 @@ export interface ResourceItem {
   value: number
   color: string
   label?: string
+  /** A count (people, food): shown whole, never with renown's two decimals */
+  whole?: boolean
 }
 
 interface BottomSheetProps {
@@ -142,7 +144,7 @@ export function BottomSheet({
                 <View key={i} style={styles.resourceChip}>
                   {r.iconElement ?? <GameIcon name={r.icon} size={12} color={r.color} />}
                   <Text variant="caption" bold style={{ color: r.color }}>
-                    {formatNumber(r.value)}
+                    {r.whole ? formatCount(r.value) : formatNumber(r.value)}
                   </Text>
                   {r.label && (
                     <Text variant="caption" color="muted" style={styles.resourceLabel}>

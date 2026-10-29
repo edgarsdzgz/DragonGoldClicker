@@ -2,6 +2,9 @@ import type { GameState } from './state'
 import { isSystemOn } from './systems'
 import { mealBalance } from './foodTick'
 import { rationDef } from './rations'
+import type { RationDef } from './rations'
+import { FIGHTER_FOOD_COST } from './fighters'
+import { formatAmount } from './state'
 
 // =============================================================================
 // FED STATES (core-tap layer 3.3): how full stores, or empty ones, change the fighters
@@ -60,4 +63,12 @@ export function fighterStatus(s: GameState): FighterStatus | null {
   if (state === 'well_fed') return { text: `Well fed: fighters at ${pct}%`, tone: 'good' }
   if (ration.id !== 'full') return { text: `${ration.label} rations: fighters at ${pct}%`, tone: ration.damage > 1 ? 'good' : 'warn' }
   return null
+}
+
+/** What a ration does, in one line */
+export function rationEffectText(r: RationDef): string {
+  if (r.damage <= 0) return 'Fighters stand down: they eat nothing and do not fight, but still guard the wall.'
+  // Full stores add to the ration (types/fedState.ts), so say both: the badge may read 110%
+  const wellFed = Math.round(r.damage * FED_DAMAGE.well_fed * 100)
+  return `Each fighter eats ${formatAmount(FIGHTER_FOOD_COST * r.upkeep)} per meal and hits at ${Math.round(r.damage * 100)}% (${wellFed}% when well fed).`
 }

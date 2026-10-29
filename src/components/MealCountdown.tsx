@@ -6,21 +6,16 @@ import { ProgressBar } from './ProgressBar'
 import { useGame } from '../context/GameContext'
 import { colors, spacing, radius } from '../theme'
 import { FOOD_CHECK_INTERVAL, isSystemOn, formatAmount } from '../types/game'
-import { mealBalance, storesOutlook } from '../types/foodTick'
-import type { StoresOutlook } from '../types/foodTick'
+import { mealBalance, storesOutlook, outlookText } from '../types/foodTick'
+import type { OutlookTone } from '../types/foodTick'
 
 // Amber for consumption, from the theme (contrasts with green forage / red garrison)
 const meal = colors.meal
 
-/** What the stores are heading for, in words, and whether that is good news */
-export function outlookText(o: StoresOutlook): { text: string; good: boolean } {
-  switch (o.kind) {
-    case 'full': return { text: 'Granary full', good: true }
-    case 'growing': return { text: `Stores grow by ${formatAmount(o.perMeal)} each meal`, good: true }
-    case 'steady': return { text: 'Stores hold steady', good: true }
-    case 'shrinking': return { text: `Stores last about ${o.minutes} min`, good: false }
-    case 'emptyNextMeal': return { text: 'Stores run out at the next meal', good: false }
-  }
+const OUTLOOK_COLOR: Record<OutlookTone, string> = {
+  good: colors.status.success,
+  warn: colors.status.warning,
+  bad: colors.status.error,
 }
 
 /** "1:23" */
@@ -51,7 +46,7 @@ export function MealCountdown({ variant = 'full' }: MealCountdownProps) {
   return (
     <View style={styles.container}>
       {/* The horizon (layer 3): where the stores are heading, not a bar that empties every meal */}
-      <Text variant="label" center style={{ color: outlook.good ? colors.status.success : colors.status.error }}>
+      <Text variant="label" center style={{ color: OUTLOOK_COLOR[outlook.tone] }}>
         {outlook.text}
       </Text>
       {/* Each meal: what the army eats and what foragers bring in meanwhile */}

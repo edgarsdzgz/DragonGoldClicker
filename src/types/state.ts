@@ -316,6 +316,11 @@ export function formatCount(n: number): string {
   return String(Math.floor(n))
 }
 
+/** A count with its word, singular for exactly one: "1 sword", "2 swords", "0 swords" */
+export function countOf(n: number, singular: string, plural: string): string {
+  return `${formatCount(n)} ${Math.floor(n) === 1 ? singular : plural}`
+}
+
 /** An amount that may have a half (18.5): whole numbers stay whole, others get one decimal */
 export function formatAmount(n: number): string {
   const r = Math.round(n * 10) / 10

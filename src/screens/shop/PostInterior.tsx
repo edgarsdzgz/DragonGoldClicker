@@ -108,13 +108,15 @@ export function PostInterior() {
   const trainRejectPhrases = trainBlock === 'full'
     ? (upgradeCost !== null ? ['Upgrade the Outpost for more room', 'The Outpost is full'] : REJECT_MAXED)
     : trainBlock === 'nobody' ? REJECT_NO_POP : REJECT_GOLD
-  const sendLabel = sendBlock === 'nobody' ? 'Everyone is out' : sendBlock === 'food' ? 'Not enough food' : 'Send Expedition'
+  // Nobody free: either none trained yet, or all of them away on a journey
+  const noneFree = state.explorers > 0 ? 'Everyone is out' : 'Train an explorer first'
+  const sendLabel = sendBlock === 'nobody' ? noneFree : sendBlock === 'food' ? 'Not enough food' : 'Send Expedition'
 
   return (
     <View style={styles.interiorContainer}>
       <SummaryBar>
         <StatBox value={`${state.explorers}/${cap}`} label="Explorers" valueColor={colors.building.explorer} />
-        <StatBox value={free} label={free > 0 ? 'At home' : 'All out'} valueColor={free > 0 ? colors.building.explorer : colors.text.muted} />
+        <StatBox value={free} label="At home" valueColor={free > 0 ? colors.building.explorer : colors.text.muted} />
         <StatBox value={state.villagersRescued} label="Brought home" />
       </SummaryBar>
 

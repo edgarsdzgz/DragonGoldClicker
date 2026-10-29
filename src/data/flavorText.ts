@@ -48,7 +48,7 @@ export const COMBAT_LINES: readonly string[] = [
   'A war hound tore into the fray.',
   'Rain darkened armor and blood alike.',
   'Lightning flashed over the battlefield.',
-  'A night raid struck from silent shadows.',
+  'Torchlight caught a blade mid-swing.',
   'Dawn revealed the field of fallen.',
   'Fog rolled thick across the clash.',
   'Sparks flew where blades struck armor.',

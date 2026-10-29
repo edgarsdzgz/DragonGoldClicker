@@ -1,4 +1,5 @@
 import type { GameState } from './state'
+import { formatAmount } from './state'
 import {
   FOOD_CHECK_INTERVAL,
   GRANARY_CAP,
@@ -119,5 +120,21 @@ export function stepFood(prev: GameState): GameState {
     lastFoodWarning: warning,
     // Only pop up when the warning escalates, not on every check
     pendingFoodWarning: warning > 0 && warning !== prev.lastFoodWarning ? warning : next.pendingFoodWarning,
+  }
+}
+
+/** Stores shrinking but lasting at least this long are a heads-up (amber), not an alarm (red) */
+export const STORES_ALARM_MINUTES = 10
+
+export type OutlookTone = 'good' | 'warn' | 'bad'
+
+/** What the stores are heading for, in words, and how worried to be */
+export function outlookText(o: StoresOutlook): { text: string; tone: OutlookTone } {
+  switch (o.kind) {
+    case 'full': return { text: 'Granary full', tone: 'good' }
+    case 'growing': return { text: `Stores grow by ${formatAmount(o.perMeal)} each meal`, tone: 'good' }
+    case 'steady': return { text: 'Stores hold steady', tone: 'good' }
+    case 'shrinking': return { text: `Stores last about ${o.minutes} min`, tone: o.minutes >= STORES_ALARM_MINUTES ? 'warn' : 'bad' }
+    case 'emptyNextMeal': return { text: 'Stores run out at the next meal', tone: 'bad' }
   }
 }
