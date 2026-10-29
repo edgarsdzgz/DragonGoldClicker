@@ -63,7 +63,16 @@ def monster(mid, name, flier, note):
     return section(name, note, figs)
 
 
+V1 = HERE / "out_v1"
 sections = [monster(*m) for m in MONSTERS]
+sections.insert(0, section("v1 beside v2", "Left of each pair, v1 (kept in out_v1/); right, v2. Kikimora: v1 read as a "
+                           "gray funnel, v2 is smaller, thin, with a narrow pale face and a one-line hooked nose. "
+                           "Dullahan: v1's head read as a cream shield, v2 has a round skull head, a dark neck "
+                           "stump and a long horse face.", [
+    fig(V1 / "mob_kikimora_idle.png", 6, "kikimora v1"), fig(OUT / "mob_kikimora_idle.png", 6, "kikimora v2"),
+    fig(V1 / "mob_kikimora_hurt.png", 6, "kikimora v1 hurt"), fig(OUT / "mob_kikimora_hurt.png", 6, "kikimora v2 hurt"),
+    fig(V1 / "mob_dullahan_idle.png", 6, "dullahan v1"), fig(OUT / "mob_dullahan_idle.png", 6, "dullahan v2"),
+    fig(V1 / "mob_dullahan_hurt.png", 6, "dullahan v1 hurt"), fig(OUT / "mob_dullahan_hurt.png", 6, "dullahan v2 hurt")]))
 sections.append(section("Undead beside the locked ones", "The Jiangshi and the Draugr must not read as the "
                         "Skeleton or the Wraith.", [
     fig(MOBS / "mob_skeleton_idle.png", 6, "skeleton (locked)"), fig(MOBS / "mob_wraith_idle.png", 6, "wraith (locked)"),

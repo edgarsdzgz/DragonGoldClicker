@@ -127,7 +127,7 @@ def will_o_wisp():
     return frames, key, p, cracks, False
 
 
-def kikimora():
+def kikimora_v1():
     """Slavic marsh hag: a hunched little crone with wild moss hair, a long sharp nose and chin, thin arms, bare
     feet and a spindle with a ball of wool."""
     spec = [
@@ -257,7 +257,7 @@ def empousa():
     return [c.rows()], key, p, cracks, False
 
 
-def dullahan():
+def dullahan_v1():
     """Irish headless rider, a mini-boss: a hollow-collared cloaked rider seated behind the long black face of a
     huge horse (ghostly mane, gold eyes), his own pale grinning head held out on one arm, a spine for a whip."""
     c = Canvas(28, 32)
@@ -295,6 +295,86 @@ def dullahan():
     p = pose(12, "night1", "ink", [(8, 20), (19, 22), (13, 26)], lambda x, y: x <= 3 and y <= 17)
     cracks = [[(11, 6), (11, 7), (12, 8)], [(16, 7), (16, 8), (15, 9)], [(7, 19), (7, 20), (8, 21)],
               [(20, 20), (19, 21), (19, 22)], [(13, 13), (13, 14)], [(23, 11), (23, 12)]]
+    return [c.rows()], key, p, cracks, False
+
+
+def kikimora():
+    """v2: a small, thin, wild house spirit: a narrow pale face with a long hooked nose drawn as one ink line, a
+    sharp chin, gold eyes, long dark-green hair spilling past the shoulders, a thin body in a ragged brown shift,
+    long bony fingers and a distaff with a tuft of wool."""
+    c = Canvas(14, 18)
+    c.pts([(3, 0), (6, 0), (7, 0), (10, 0)], "M")
+    c.rect(2, 1, 11, 1, "M")
+    c.rect(1, 2, 12, 7, "M")
+    c.rect(1, 8, 3, 12, "M")
+    c.rect(10, 8, 12, 12, "M")
+    c.pts([(1, 13), (2, 14), (12, 13), (11, 14), (3, 13), (10, 13)], "m")
+    c.pts([(2, 4), (3, 6), (11, 5), (10, 7), (2, 9), (12, 10), (1, 11)], "m")
+    c.rect(5, 2, 8, 6, "S")
+    c.pts([(5, 3), (8, 3)], "e")
+    c.pts([(6, 4), (6, 5), (6, 6), (7, 6)], "n")
+    c.pts([(6, 7), (7, 7), (7, 8)], "S")
+    c.rect(4, 9, 9, 10, "D")
+    c.rect(4, 11, 9, 13, "D")
+    c.rect(3, 14, 10, 15, "D")
+    c.pts([(3, 16), (5, 16), (8, 16), (10, 16), (7, 15), (4, 15)], "D")
+    c.pts([(3, 9), (3, 10), (3, 11), (3, 12), (3, 13)], "D")
+    c.pts([(2, 14), (3, 14), (2, 15), (1, 16)], "S")
+    c.pts([(10, 9), (10, 10), (10, 11)], "D")
+    c.pts([(11, 12), (12, 12), (11, 11)], "S")
+    c.rect(12, 3, 12, 17, "P")
+    c.rect(11, 1, 13, 2, "Y")
+    c.pts([(12, 12)], "S")
+    c.pts([(5, 17), (4, 17), (8, 17), (9, 17)], "S")
+    key = {"M": "green1", "m": "green2", "S": "steel4", "n": "ink", "e": "gold5", "D": "wood2", "P": "wood4",
+           "Y": "parch3"}
+    p = pose(8, "wood2", "wood1", [(6, 12), (8, 14)], lambda x, y: x >= 13)
+    cracks = [[(3, 2), (3, 3)], [(7, 3), (7, 4)], [(6, 11), (6, 12), (7, 13)], [(8, 14), (8, 15)]]
+    return [c.rows()], key, p, cracks, False
+
+
+def dullahan():
+    """v2: the rider's shoulders end in a ragged collar around a dark stump (no head); his own small round
+    skull-white head, with gold eyes, a wide toothy grin and strands of dark hair, is held out on one arm; the
+    horse has a long narrow face, tall ears and nostrils at the bottom."""
+    c = Canvas(28, 32)
+    m = 27
+    c.rect(4, 13, 23, 26, "H")
+    _mir(c, 6, 27, 9, 30, "H", m)
+    _mir(c, 5, 31, 10, 31, "o", m)
+    c.rect(10, 2, 17, 4, "C")
+    c.pts([(10, 1), (12, 1), (15, 1), (17, 1), (11, 0), (16, 0)], "C")
+    c.rect(12, 1, 15, 3, "n")
+    c.rect(8, 4, 19, 5, "C")
+    c.rect(9, 6, 18, 9, "C")
+    c.rect(12, 5, 15, 9, "J")
+    c.rect(5, 10, 22, 12, "C")
+    c.pts([(5, 13), (22, 13), (4, 14)], "C")
+    c.pts([(8, 5), (7, 5), (7, 4), (6, 4), (5, 4), (5, 3), (4, 3), (6, 5), (7, 6), (8, 6)], "C")
+    c.rect(2, 2, 3, 3, "F")
+    c.rect(1, 4, 1, 15, "Z")
+    c.pts([(2, 1), (2, 0), (3, 0), (2, 15), (2, 16)], "Z")
+    c.rect(19, 5, 22, 8, "C")
+    c.rect(21, 9, 24, 9, "F")
+    c.rect(20, 10, 25, 13, "F")
+    c.rect(21, 14, 24, 14, "F")
+    c.pts([(21, 8), (23, 8), (24, 7), (22, 7)], "k")
+    c.pts([(21, 11), (24, 11)], "e")
+    c.rect(21, 13, 24, 13, "n")
+    c.pts([(21, 12), (23, 12)], "W")
+    c.pts([(22, 13), (24, 13)], "W")
+    _mir(c, 8, 12, 10, 22, "M", m)
+    c.rect(11, 12, 16, 16, "H")
+    c.rect(12, 17, 15, 19, "H")
+    c.rect(13, 20, 14, 24, "u")
+    c.pts([(11, 11), (11, 10), (11, 9), (16, 11), (16, 10), (16, 9)], "H")
+    c.pts([(12, 14), (15, 14)], "e")
+    c.pts([(13, 23), (14, 23)], "n")
+    key = {"H": "night1", "o": "steel1", "C": "steel1", "J": "night2", "n": "ink", "e": "gold5", "F": "steel4",
+           "Z": "steel4", "W": "steel5", "M": "steel2", "u": "night2", "k": "night2"}
+    p = pose(12, "night1", "ink", [(8, 20), (19, 22), (13, 26)], lambda x, y: x <= 3 and y <= 17)
+    cracks = [[(11, 6), (11, 7), (12, 8)], [(16, 7), (16, 8), (15, 9)], [(7, 19), (7, 20), (8, 21)],
+              [(20, 20), (19, 21), (19, 22)], [(13, 13), (13, 14)], [(22, 10), (22, 11)]]
     return [c.rows()], key, p, cracks, False
 
 
