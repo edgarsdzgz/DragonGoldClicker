@@ -47,7 +47,15 @@ def monster(mid, name, note):
     return section(name, note, figs)
 
 
+V1 = HERE / "out_v1"
 sections = [monster(*m) for m in MONSTERS]
+sections.insert(0, section("v1 beside v2", "Left of each pair, v1 (kept in out_v1/); right, v2. The v1 Nogitsune's tails "
+                           "stood up like raised arms; the v1 Swarm read as brown crumbs.", [
+    fig(V1 / "mob_nogitsune_idle.png", 6, "nogitsune v1"), fig(OUT / "mob_nogitsune_idle.png", 6, "nogitsune v2"),
+    fig(V1 / "mob_nogitsune_hurt.png", 6, "nogitsune v1 hurt"), fig(OUT / "mob_nogitsune_hurt.png", 6, "nogitsune v2 hurt"),
+    fig(V1 / "mob_swarm-of-spiders_idle.png", 6, "swarm v1"), fig(OUT / "mob_swarm-of-spiders_idle.png", 6, "swarm v2"),
+    fig(V1 / "mob_swarm-of-spiders_hurt.png", 6, "swarm v1 hurt"),
+    fig(OUT / "mob_swarm-of-spiders_hurt.png", 6, "swarm v2 hurt")]))
 sections.append(section("The Swarm beside the Spider Queen", "Many small spiders against one big crowned queen.", [
     fig(MOBS / "mob_spider-queen_idle.png", 6, "spider queen (locked)"),
     fig(OUT / "mob_swarm-of-spiders_idle.png", 6, "swarm of spiders")]))

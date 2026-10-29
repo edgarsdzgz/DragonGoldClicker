@@ -47,7 +47,7 @@ def amomongo():
     return [a, b], key, p, cracks, False
 
 
-def nogitsune():
+def nogitsune_v1():
     """Wild fox (v2): tall pointed ears, a narrow white muzzle, a white ruff and chest, and four separate tails fanned
     up and outward behind it, each tipped with teal fox-fire. Walk: the fire flickers and a front paw lifts."""
     frames = []
@@ -97,7 +97,90 @@ def nogitsune():
     return frames, key, p, cracks, False
 
 
-def spider(c, cx, cy, big, alt):
+def _tail(c, base, tip, ch, flame, flick):
+    """A feathery tail: a stroke from the rump to the tip, widening toward the tip, the last steps teal fire."""
+    n = 14
+    for i in range(n + 1):
+        t = i / n
+        x = round(base[0] + (tip[0] - base[0]) * t)
+        y = round(base[1] + (tip[1] - base[1]) * t)
+        half = 2 if 0.3 < t < 0.85 else 1
+        col = flame if t > 0.88 else ch
+        yy = y + (flick if t > 0.8 else 0)
+        c.rect(x - half, yy, x + half, yy + 1, col)
+
+
+def nogitsune():
+    """Wild fox (v2): a long-snouted head with tall pointed ears and a white muzzle on a lean low body, and four wide
+    feathery tails fanned behind and above it from the rump, each tipped with teal fox-fire. The fan is the silhouette.
+    Walk: the fire flickers, the tails sway and a front paw lifts."""
+    frames = []
+    for alt in (False, True):
+        c = Canvas(22, 17)
+        fl = 1 if alt else 0
+        base = (11, 12)
+        tips = ((2, 5 + fl), (6, 1 + fl), (15, 1 + fl), (19, 5 + fl))
+        for i, tip in enumerate(tips):
+            _tail(c, base, tip, "T" if i % 2 == 0 else "E", "f", 0)
+        rows = ["..........................",
+                ]
+        body = [(7, 3, 8, 5), (14, 3, 15, 5)]
+        for x0, y0, x1, y1 in body:                                     # tall pointed ears
+            c.rect(x0, y0, x1, y1, "E")
+        c.pts([(8, 2), (15, 2)], "E")
+        c.rect(7, 6, 15, 9, "E")                                        # head
+        c.rect(6, 8, 16, 9, "W")                                        # cheek ruff
+        c.pts([(8, 7), (14, 7)], "e")
+        c.rect(10, 9, 12, 11, "W")                                      # long white muzzle
+        c.pts([(11, 12)], "n")
+        c.rect(8, 11, 14, 14, "E")                                      # lean body
+        c.rect(10, 12, 12, 14, "W")
+        c.rect(8, 15, 9, 15, "E")
+        c.rect(13, 15 - fl, 14, 15 - fl, "E")
+        c.pts([(8, 16), (9, 16)], "W")
+        if not alt:
+            c.pts([(13, 16), (14, 16)], "W")
+        frames.append(c.rows())
+    key = {"E": "clay3", "T": "clay2", "W": "parch3", "e": "gold5", "n": "ink", "f": "teal4"}
+    p = P(11, "clay3", "clay1", [(9, 12), (13, 13)])
+    cracks = [[(8, 12), (8, 13)], [(14, 12), (14, 13)], [(11, 6), (11, 7)]]
+    return frames, key, p, cracks, False
+
+
+def spider(c, cx, cy, alt):
+    """One spider: a small head with two gold eyes over a round dark body, four thin legs a side bent outward."""
+    c.rect(cx - 1, cy, cx + 1, cy + 1, "H")
+    c.pts([(cx - 1, cy), (cx + 1, cy)], "e")
+    c.rect(cx - 2, cy + 2, cx + 2, cy + 4, "S")
+    c.pts([(cx - 2, cy + 2), (cx + 2, cy + 2)], ".")
+    for i in range(4):
+        r = cy + 1 + i
+        b = -1 if i < 2 else 1
+        for side in (-1, 1):
+            c.px(cx + side * 3, r, "L")
+            c.px(cx + side * 4, max(0, min(c.h - 1, r + b)), "L")
+
+
+SPIDERS = ((5, 0, 1, 1), (15, 0, -1, 1), (10, 5, 1, 0), (5, 10, -1, -1), (15, 10, 1, -1))
+
+
+def swarm():
+    """Five spiders in a loose cluster (v2): each a round gray body with a small head, two gold eyes and thin
+    pale legs, with background between them. Not the Spider Queen (one big purple crowned body). Walk: each spider
+    steps a cell sideways and up or down."""
+    frames = []
+    for alt in (0, 1):
+        c = Canvas(21, 16)
+        for cx, cy, dx, dy in SPIDERS:
+            spider(c, cx + dx * alt, cy + dy * alt, alt)
+        frames.append(c.rows())
+    key = {"S": "wood2", "H": "wood3", "L": "steel4", "e": "gold5"}
+    p = P(8, "ash2", "ash1", [(10, 8), (5, 13), (15, 13)])
+    cracks = [[(cx, cy + 2), (cx, cy + 3)] for cx, cy, dx, dy in SPIDERS]
+    return frames, key, p, cracks, False
+
+
+def spider_v1(c, cx, cy, big, alt):
     if big:
         c.rect(cx - 2, cy, cx + 2, cy + 2, "S")
         c.pts([(cx - 1, cy), (cx + 1, cy)], "e")
@@ -114,15 +197,15 @@ def spider(c, cx, cy, big, alt):
             c.px(cx + side * (reach + 1), max(0, min(13, cy + dy + s)), "L")
 
 
-def swarm():
+def swarm_v1():
     """Many small spiders heaped together, one a little bigger in the middle: brown bodies, gold eyes, bristling
     legs. Not the Spider Queen: no crown, no purple, no single large body. Walk: the legs ripple."""
     frames = []
     for alt in (0, 1):
         c = Canvas(18, 14)
         for cx, cy in ((3, 3), (14, 3), (9, 1), (4, 10), (13, 10)):
-            spider(c, cx, cy, False, alt)
-        spider(c, 9, 6, True, alt)
+            spider_v1(c, cx, cy, False, alt)
+        spider_v1(c, 9, 6, True, alt)
         frames.append(c.rows())
     key = {"S": "wood4", "L": "wood3", "e": "gold5", "M": "gold3"}
     p = P(7, "wood3", "wood1", [(8, 7), (3, 3), (13, 10)])

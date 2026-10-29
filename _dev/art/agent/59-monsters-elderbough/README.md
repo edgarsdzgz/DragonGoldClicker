@@ -31,3 +31,10 @@ Gold eyes everywhere (the brief's red-eyed Kalanoro and bloodshot Sasabonsam eye
   ambusher; Humbaba the creature, never a god.
 - The Nogitsune is the least sure read (cat-like at 1x); the Kalanoro's backward feet are hard to see at 20 px.
 - The Swarm is brown, 6 small bodies, so it cannot be mistaken for the purple crowned Spider Queen.
+
+## v2 (coordinator review)
+The Nogitsune (tails stood up like arms) and the Swarm of Spiders (read as crumbs) were redrawn; the other five are
+unchanged. v1 files are in `out_v1/`, the v1 board in `board_v1.html`, the v1 functions in `src/elderbough.py` as
+`nogitsune_v1` and `swarm_v1`. v2 Nogitsune: four wide tails fanned behind and above the body from the rump, tipped
+with teal fire; v2 Swarm: five gray-brown round-bodied spiders with pale bent legs and gold eyes, spread out, shifting
+position in the walk. The Nogitsune fan still reads somewhat like wings at 1x.
