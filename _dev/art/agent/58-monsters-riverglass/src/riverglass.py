@@ -92,7 +92,7 @@ def kongamato():
     return frames, key, p, cracks, False
 
 
-def nixie():
+def nixie_v1():
     """German water spirit (regular, ranged): a small pale-gray figure with a big head, long wet sea-blue hair and
     a golden harp it plays to lure. Hurt: the harp breaks."""
     frames = []
@@ -250,7 +250,7 @@ def berberoka():
     return frames, key, p, cracks, False
 
 
-def hydra():
+def hydra_v1():
     """Lernaean Hydra (boss): a huge marsh serpent with nine heads on long necks fanned over a low coiled body, a
     parchment belly; the middle head, the deathless one, is pale. Walk: the heads sway. Hurt: one head is cut off."""
     frames = []
@@ -289,7 +289,12 @@ def hydra():
     return frames, key, p, cracks, False
 
 
-CREATURES = {"kappa": kappa, "kongamato": kongamato, "nixie": nixie, "jenny-greenteeth": jenny,
-             "ahuizotl": ahuizotl, "berberoka": berberoka, "hydra": hydra}
+CREATURES = {"kappa": kappa, "kongamato": kongamato, "nixie": nixie_v1, "jenny-greenteeth": jenny,
+             "ahuizotl": ahuizotl, "berberoka": berberoka, "hydra": hydra_v1}
 FLIERS = {"kongamato"}
 RIDERS = {}
+
+
+from riverglass_v2 import hydra, nixie  # noqa: E402  (v2 redraws; the v1 functions stay above)
+CREATURES["nixie"] = nixie
+CREATURES["hydra"] = hydra

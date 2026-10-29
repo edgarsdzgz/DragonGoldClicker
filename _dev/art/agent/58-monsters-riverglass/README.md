@@ -27,4 +27,8 @@ Ahuizotl's tail hand as a cleaver, the Hydra's middle head as a fork).
 | Berberoka | https://filipiknow.net/top-10-terrifying-philippine-mythical-creatures/ | 2026-10-29 | Drains the water until the fish show, drowns the fishermen with it; Abra, Apayao, Ilocos Norte. No body description: the design is mine. Weak: a popular site; treat as unverified. |
 | Lernaean Hydra | https://atlas.perseus.tufts.edu/library/passage/urn:cts:greekLit:tlg0548.tlg001.perseus-eng2:2.5.2-2.5.5 | 2026-10-29 | Apollodorus 2.5.2: nine heads, eight mortal, the middle immortal; two grow for each one smashed; Iolaus burns the stumps. |
 
-Kongamato and Berberoka are marked unverified on the board. The Hydra is an SRD 5.1 monster: it needs the SRD credit.
+Kongamato and Berberoka are marked unverified on the board. The Hydra is drawn from Greek myth (Apollodorus), so it needs no credit.
+
+## v2 (coordinator review)
+
+The Nixie and the Hydra were redrawn in `src/riverglass_v2.py`; the v1 functions stay in `src/riverglass.py` (`nixie_v1`, `hydra_v1`) and v1 files are in `out_v1/` and `board_v1.html`. The Hydra now has five big heads on curving necks that sway in turn; the Nixie is a slender figure waist-deep in a pool with a slanted harp.

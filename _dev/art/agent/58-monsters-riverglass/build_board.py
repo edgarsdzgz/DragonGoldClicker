@@ -22,8 +22,8 @@ MONSTERS = [
      "beak of white teeth. The walk is a wingbeat; it has a shadow. Cryptid." + UNV +
      "second source is only a popular bestiary site (abookofcreatures.com), no scholarly one found."),
     ("nixie", "Nixie (regular, ranged)", False,
-     "German water spirit: a small pale-gray figure with a big head, wet sea-blue hair and a golden harp it plays to "
-     "lure. Hurt: the harp breaks. Two sources in the brief (Dash, Gutenberg)."),
+     "v2: German water spirit, a slender pale blue-green figure waist-deep in a pool, long wet green hair over the "
+     "shoulders, gold eyes, a small golden harp slanted against the chest. Hurt: the harp breaks. Two sources in the brief (Dash, Gutenberg)."),
     ("jenny-greenteeth", "Jenny Greenteeth (elite, brute)", False,
      "English river hag: bright emerald skin, a wild tangle of dark hair hung with duckweed, a grin of green teeth "
      "and long clawed arms reaching from the water she lurks in. Three sources in the brief."),
@@ -37,10 +37,9 @@ MONSTERS = [
      "the second source (FilipiKnow, a popular article) confirms only the drain-and-drown and the region; no source "
      "describes its body, so this design is mine."),
     ("hydra", "Lernaean Hydra (boss)", False,
-     "Nine-headed marsh serpent: green heads on long necks fanned over a low coiled body with a parchment belly; the "
-     "middle, deathless head is pale and horned. In the walk the heads sway. Hurt: one head is cut off. Second "
-     "source: Apollodorus, Library 2.5.2 (Perseus). <b>SRD 5.1 monster (the Hydra): the SRD credit is needed "
-     "when the game ships.</b>"),
+     "v2: a low coiled body under five big heads on long curving necks (two arching out, two curling forward, the huge "
+     "pale-horned deathless head in the middle; the myth names nine, v2 shows five for readability). The necks sway in turn. Hurt: the left arching head is cut off. Second "
+     "source: Apollodorus, Library 2.5.2 (Perseus). Drawn from Greek myth, no credit needed."),
 ]
 
 
@@ -66,7 +65,12 @@ def monster(mid, name, flier, note):
     return section(name, note, figs)
 
 
+V1 = HERE / "out_v1"
 sections = [monster(*m) for m in MONSTERS]
+sections.insert(0, section("v1 beside v2: Nixie and Hydra", "Left of each pair, v1 (kept in out_v1/); right, v2. v1 "
+                           "read as a gray robot with a gold shield (Nixie) and a green glove (Hydra).", [
+    fig(V1 / "mob_nixie_idle.png", 6, "nixie v1"), fig(OUT / "mob_nixie_idle.png", 6, "nixie v2"),
+    fig(V1 / "mob_hydra_idle.png", 6, "hydra v1"), fig(OUT / "mob_hydra_idle.png", 6, "hydra v2")]))
 sections.append(section("Size line-up", "The locked kobold, then the three regulars, the two elites, the mini-boss, "
                         "the locked Basilisk and the boss.", [
     fig(MOBS / "mob_kobold_idle.png", 6, "kobold (locked)"),
