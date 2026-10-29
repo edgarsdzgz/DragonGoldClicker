@@ -30,41 +30,6 @@ def spots(pts):
     return [(x + 1, y + 2) for x, y in pts]
 
 
-def serpopard():
-    """Egyptian serpent-necked leopard: a lean lioness body with a very long, banded S-curve neck, the round-eared
-    head swaying on top, a tufted tail. Teal, so it stands off the sand. Walk: neck sways, legs alternate."""
-    frames = []
-    for alt in (False, True):
-        c = Canvas(24, 22)
-        ph = 1.6 if alt else 0.0
-
-        def off(y):
-            return round(2.2 * math.sin((13 - y) / 2.1 + ph))
-        c.rect(5, 13, 18, 17, "B")                                       # the lean body
-        c.rect(6, 17, 17, 17, "b")                                       # lighter belly
-        for i, lx in enumerate((5, 9, 13, 17)):
-            ext = 1 if (i + alt) % 2 else 0
-            c.rect(lx, 18, lx + 1, 20 + ext, "B")
-            c.rect(lx, 21, lx + 2, 21, "b")
-        c.pts([(19, 14), (20, 13), (21, 12), (21, 11), (21, 10)], "B")    # tail
-        c.rect(20, 7, 22, 9, "T")                                        # the tuft
-        for y in range(5, 14):                                           # the long neck, three wide
-            o = off(y)
-            c.rect(6 + o, y, 8 + o, y, "B" if y % 3 else "N")
-        hx = 7 + off(5)
-        c.rect(hx - 2, 2, hx + 2, 5, "B")                                # round-eared head
-        c.rect(hx + 2, 4, hx + 5, 5, "b")                                # blunt cat muzzle
-        c.pts([(hx - 2, 1), (hx - 1, 1), (hx + 1, 1), (hx + 2, 1)], "B")
-        c.pts([(hx - 2, 0), (hx + 2, 0)], "N")                           # ear tips
-        c.px(hx, 3, "e")
-        c.px(hx + 2, 3, "e")
-        c.px(hx + 5, 4, "n")
-        frames.append(c.rows())
-    key = {"B": "sea2", "b": "sea3", "N": "sea1", "T": "sea1", "e": "gold5", "n": "ink"}
-    p = pose(15, "sea2", "sea1", spots([(8, 15), (13, 15)]))
-    return frames, key, p, [crack_path(frames, 9, 13, 4), crack_path(frames, 14, 13, 4), crack_path(frames, 7, 7, 4)], False
-
-
 def line(c, pts, ch, w=2):
     """Connect the points with a thick line (w x w blocks), so tails and limbs are one unbroken shape."""
     for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
@@ -73,78 +38,6 @@ def line(c, pts, ch, w=2):
             x = round(x0 + (x1 - x0) * i / n)
             y = round(y0 + (y1 - y0) * i / n)
             c.rect(x, y, x + w - 1, y + w - 1, ch)
-
-
-def nasnas():
-    """Arabian half-man: half a head, half a body, one arm, one leg; the cut side is a dark hollow with ragged
-    edges. Gray skin, one big gold eye, a balancing tail. Walk: a crouch and a leap (the leg bends)."""
-    frames = []
-    for alt in (False, True):
-        c = Canvas(18, 23)
-        d = 2 if alt else 0                                              # crouch depth
-        line(c, [(10, 14 + d), (13, 12 + d), (15, 9 + d)], "H", 1)       # a balancing tail
-        c.pts([(2, 2 + d), (3, 0 + d), (4, 2 + d), (5, 0 + d), (6, 2 + d)], "R")   # wild hair spikes
-        c.rect(2, 2 + d, 7, 7 + d, "S")                                  # half a head
-        c.rect(8, 2 + d, 8, 7 + d, "H")                                  # the hollow cut side
-        c.pts([(9, 3 + d), (9, 5 + d), (9, 7 + d)], "H")
-        c.rect(3, 3 + d, 5, 5 + d, "e")                                  # one big eye
-        c.px(4, 4 + d, "n")
-        c.rect(3, 7 + d, 6, 7 + d, "n")                                  # a wide mouth
-        c.rect(3, 8 + d, 7, 14 + d, "S")                                 # half a torso, narrower than the head
-        c.rect(8, 8 + d, 8, 14 + d, "H")
-        c.pts([(9, 9 + d), (9, 12 + d)], "H")
-        c.rect(3, 11 + d, 7, 11 + d, "R")                                # a sash
-        line(c, [(2, 9 + d), (0, 13 + d), (0, 16 + d)], "S", 2)          # the one arm, reaching down and out
-        c.rect(3, 15 + d, 7, 16 + d, "L")                                # a rag skirt
-        if alt:                                                          # the leg bent, foot tucked
-            c.rect(3, 17 + d, 5, 18 + d, "S")
-            c.rect(5, 19, 8, 20, "S")
-            c.rect(2, 21, 7, 21, "S")
-        else:
-            c.rect(3, 17, 5, 20, "S")
-            c.rect(2, 21, 7, 22, "S")
-        frames.append(c.rows())
-    key = {"S": "ash3", "H": "shadow1", "R": "shadow3", "L": "night2", "e": "gold5", "n": "ink"}
-    p = pose(13, "ash3", "ash2", spots([(4, 9), (4, 14)]))
-    return frames, key, p, [crack_path(frames, 4, 8, 4, 2), crack_path(frames, 5, 3, 3, 2)], False
-
-
-def bungisngis():
-    """Philippine one-eyed laughing giant: a huge blue head with ONE big gold eye under a heavy brow, a wide
-    laughing mouth, two white tusks curving up from the jaw, thick arms hanging, a belly and a hide loincloth.
-    Walk: a laughing bob, one fist raised."""
-    frames = []
-    for alt in (False, True):
-        c = Canvas(26, 24)
-        b = 1 if alt else 0                                              # a bob in the laugh
-        c.pts([(8, 1 + b), (10, 0 + b), (12, 1 + b), (14, 0 + b), (16, 1 + b)], "R")     # wild hair
-        c.rect(7, 2 + b, 18, 10 + b, "B")                                # big head
-        c.rect(7, 2 + b, 18, 3 + b, "R")                                 # hair line
-        c.rect(8, 4 + b, 17, 4 + b, "n")                                 # heavy brow
-        c.rect(11, 5 + b, 14, 8 + b, "W")                                # the single eye
-        c.rect(12, 6 + b, 13, 7 + b, "e")
-        c.rect(7, 9 + b, 18, 10 + b, "n")                                # the laughing mouth
-        c.pts([(9, 9 + b), (11, 9 + b), (14, 9 + b), (16, 9 + b)], "W")
-        c.pts([(6, 6 + b), (6, 7 + b), (6, 8 + b), (6, 9 + b), (7, 8 + b)], "W")     # tusks
-        c.pts([(19, 6 + b), (19, 7 + b), (19, 8 + b), (19, 9 + b), (18, 8 + b)], "W")
-        c.rect(5, 11 + b, 20, 19, "B")                                   # barrel body
-        c.rect(9, 13 + b, 16, 17, "b")                                   # belly
-        c.rect(5, 18, 20, 19, "L")                                       # loincloth
-        c.rect(1, 12 + b, 4, 19, "B")                                    # the left arm hangs
-        c.rect(0, 20, 4, 22, "B")                                        # its fist
-        if alt:                                                          # the right fist raised in the laugh
-            c.rect(21, 8, 24, 16, "B")
-            c.rect(21, 5, 25, 7, "B")
-        else:
-            c.rect(21, 12, 24, 19, "B")
-            c.rect(21, 20, 25, 22, "B")
-        c.rect(6, 20, 11, 23, "B")
-        c.rect(14, 20, 19, 23, "B")
-        c.pts([(6, 23), (7, 23), (18, 23), (19, 23)], "n")
-        frames.append(c.rows())
-    key = {"B": "azure2", "b": "azure3", "R": "azure1", "n": "ink", "W": "steel5", "e": "gold5", "L": "wood3"}
-    p = pose(19, "azure2", "azure1", spots([(8, 14), (16, 16)]))
-    return frames, key, p, [crack_path(frames, 9, 11, 5), crack_path(frames, 16, 11, 5), crack_path(frames, 14, 2, 2)], False
 
 
 def girtablilu():
@@ -189,41 +82,178 @@ def girtablilu():
     return frames, key, p, [crack_path(frames, 12, 17, 5), crack_path(frames, 19, 17, 5), crack_path(frames, 14, 8, 4)], False
 
 
-def manticore():
-    """Persian man-eater (mini-boss): a violet lion with a human face in an orange mane, a mouth of three rows of
-    white teeth, and a scorpion tail arching over the back with a gold-tipped sting."""
+def serpopard():
+    """Egyptian serpent-necked leopard, v2, front-on: a leopard's broad chest and two front legs facing us, haunches
+    and hind paws peeking behind, a very long S-curve neck rising from the shoulders to a small cat head, flat spot
+    clusters, a tail curling up at the side. Teal. Walk: the neck sways, the front paws alternate."""
     frames = []
     for alt in (False, True):
-        c = Canvas(36, 31)
-        s = 1 if alt else 0
-        line(c, [(24, 24), (30, 20), (32, 13 - s), (29, 7 - s), (24, 4 - s), (20, 6 - s)], "B", 2)   # the tail arch
-        c.pts([(18, 7 - s), (19, 8 - s), (17, 6 - s), (18, 9 - s)], "S")
-        c.pts([(17, 7 - s), (16, 8 - s)], "Y")
-        c.rect(4, 1, 25, 16, "M")                                        # the mane
-        c.pts([(4, 1), (25, 1), (4, 16), (25, 16)], ".")
-        c.pts([(7, 0), (10, 0), (13, 0), (16, 0), (19, 0), (22, 0), (3, 5), (3, 9), (3, 13), (26, 5), (26, 9), (26, 13)], "M")
-        c.rect(8, 3, 21, 15, "K")                                        # the human face
-        c.rect(8, 3, 21, 4, "H")                                         # hair
-        c.rect(9, 5, 20, 5, "n")                                         # brows
-        c.pts([(11, 6), (12, 6), (17, 6), (18, 6)], "e")
-        c.rect(10, 9, 19, 14, "n")                                       # the open mouth, three rows of teeth
-        for y in (9, 11, 13):
-            for x in range(10, 20):
-                if (x + y // 2) % 2 == 0:
-                    c.px(x, y, "W")
-        c.rect(5, 17, 24, 25, "B")                                       # the lion body, broad chest
-        c.rect(10, 18, 19, 23, "b")
-        c.rect(3, 20, 6, 26, "B")                                        # shoulders and haunches
-        c.rect(23, 20, 26, 26, "B")
-        c.rect(5 + s, 26, 11, 30, "B")
-        c.rect(18, 26, 24 - s, 30, "B")
-        c.rect(4 + s, 30, 11, 30, "b")
-        c.rect(18, 30, 25 - s, 30, "b")
+        c = Canvas(28, 30)
+        ph = 1.8 if alt else 0.0
+
+        def off(y):
+            return round(2.4 * math.sin((17 - y) / 2.6 + ph))
+        line(c, [(22, 22), (25, 20), (26, 15), (24, 11)], "B", 2)        # the tail curling up at the side
+        c.rect(23, 8, 25, 10, "T")                                       # the tuft
+        c.rect(4, 19, 8, 26, "D")                                        # haunches behind
+        c.rect(19, 19, 23, 26, "D")
+        c.rect(4, 26, 7, 27, "b")                                        # hind paws peeking out
+        c.rect(20, 26, 23, 27, "b")
+        c.rect(7, 16, 20, 24, "B")                                       # the broad chest
+        c.pts([(7, 16), (20, 16)], ".")
+        c.rect(11, 20, 16, 24, "b")                                      # pale chest
+        ext = 1 if alt else 0
+        c.rect(7, 24, 10, 27 + ext, "B")                                 # the two front legs
+        c.rect(17, 24, 20, 28 - ext, "B")
+        c.rect(6, 28 + ext - 1, 11, 28 + ext, "b")                       # big front paws
+        c.rect(16, 28 - ext - 1, 21, 28 - ext, "b")
+        for y in range(5, 17):                                           # the long neck, four wide
+            o = off(y)
+            c.rect(11 + o, y, 14 + o, y, "B")
+        hx = 12 + off(5)
+        c.rect(hx - 2, 1, hx + 3, 4, "B")                                # a small cat head
+        c.pts([(hx - 2, 0), (hx - 1, 0), (hx + 2, 0), (hx + 3, 0)], "N")  # ears
+        c.pts([(hx - 1, 2), (hx + 2, 2)], "e")
+        c.pts([(hx, 3), (hx + 1, 3)], "n")
+        c.rect(hx, 5, hx + 1, 5, "b")
+        for sx, sy in ((9, 18), (10, 19), (10, 18), (17, 18), (18, 19), (17, 19), (14, 22), (15, 22)):   # spot clusters
+            c.px(sx, sy, "N")
+        for y in (8, 12):
+            c.pts([(11 + off(y), y), (12 + off(y), y), (13 + off(y), y + 1)], "N")
         frames.append(c.rows())
-    key = {"B": "shadow2", "b": "shadow3", "M": "fire1", "K": "night4", "H": "shadow1", "n": "ink", "W": "steel5",
-           "e": "gold5", "S": "steel5", "Y": "gold5"}
-    p = pose(20, "shadow2", "shadow1", spots([(12, 19), (19, 22)]))
-    return frames, key, p, [crack_path(frames, 11, 17, 6), crack_path(frames, 18, 17, 6), crack_path(frames, 14, 2, 2)], False
+    key = {"B": "sea2", "b": "sea3", "N": "sea1", "D": "sea1", "T": "sea1", "e": "gold5", "n": "ink"}
+    p = pose(20, "sea2", "sea1", spots([(10, 20), (17, 21)]))
+    return frames, key, p, [crack_path(frames, 9, 17, 4), crack_path(frames, 18, 17, 4), crack_path(frames, 12, 8, 4)], False
+
+
+def nasnas():
+    """Arabian half-man, v2: split down the middle. Half a head with one eye, half a torso, one arm, one leg; the
+    right edge is a clean vertical cut with nothing beyond it, so the silhouette itself is half a person. A ragged
+    half-garment in violet-blue. Walk: a hop on the one leg (airborne, then down)."""
+    frames = []
+    for alt in (False, True):
+        c = Canvas(11, 26)
+        y0 = 0 if alt else 3                                             # airborne in frame B, grounded in A
+        c.pts([(3, y0), (5, y0 - 0), (7, y0)], "R")                      # tufts of hair
+        c.rect(3, y0 + 1, 7, y0 + 7, "S")                                # half a head, cut at column 7
+        c.rect(2, y0 + 3, 2, y0 + 6, "S")
+        c.rect(4, y0 + 3, 5, y0 + 5, "e")                                # the one big eye
+        c.px(4, y0 + 4, "n")
+        c.rect(3, y0 + 7, 6, y0 + 7, "n")                                # half a grin
+        c.rect(3, y0 + 8, 7, y0 + 14, "S")                               # half a torso
+        line(c, [(2, y0 + 9), (0, y0 + 13), (0, y0 + 17)], "S", 2)       # the one arm, long, hanging
+        c.rect(3, y0 + 12, 7, y0 + 12, "R")                              # the sash
+        for i, x in enumerate((3, 4, 5, 6, 7)):                          # a ragged half-skirt, torn hem
+            c.rect(x, y0 + 13, x, y0 + 16 + (i % 2) * 2 + (1 if x == 3 else 0), "L")
+        if alt:
+            c.rect(5, y0 + 17, 7, y0 + 20, "S")                          # the leg dangling in the air
+            c.rect(4, y0 + 21, 7, y0 + 22, "S")
+        else:
+            c.rect(5, y0 + 17, 7, y0 + 21, "S")                          # the leg planted
+            c.rect(3, y0 + 22, 7, y0 + 22, "S")
+        frames.append(c.rows())
+    key = {"S": "ash3", "R": "shadow3", "L": "night3", "e": "gold5", "n": "ink"}
+    p = pose(14, "ash3", "ash2", spots([(5, 11), (6, 14)]))
+    return frames, key, p, [crack_path(frames, 5, 11, 4, 2), crack_path(frames, 5, 6, 3, 2)], False
+
+
+def bungisngis():
+    """Philippine one-eyed laughing giant, v2: the tallest regular. A hulking blue body, long arms, big fists and a
+    club, one big gold eye in the middle of the forehead, a wide open laughing mouth with two big bone-white tusks
+    curving up out of it, a belt and a loincloth. Walk: a laughing bob, the club swings."""
+    frames = []
+    for alt in (False, True):
+        c = Canvas(32, 35)
+        b = 1 if alt else 0                                              # a bob in the laugh
+        c.pts([(9, 2 + b), (11, 1 + b), (13, 0 + b), (16, 0 + b), (19, 0 + b), (21, 1 + b), (23, 2 + b)], "R")
+        c.rect(8, 3 + b, 23, 13 + b, "B")                                # big head
+        c.rect(8, 3 + b, 23, 4 + b, "R")
+        c.rect(10, 5 + b, 21, 5 + b, "n")                                # heavy brow
+        c.rect(13, 6 + b, 18, 10 + b, "W")                               # the single eye
+        c.rect(15, 7 + b, 16, 9 + b, "e")
+        c.px(15, 8 + b, "n")
+        c.rect(10, 11 + b, 21, 14 + b, "n")                              # the wide laughing mouth
+        c.rect(12, 11 + b, 19, 11 + b, "W")                              # teeth
+        for x0, tx in ((9, 1), (21, -1)):                                # two big tusks curving up and in
+            for i, y in enumerate(range(14 + b, 5 + b, -1)):
+                x = x0 + (tx if i > 5 else 0)
+                c.rect(x, y, x + 1, y, "T")
+        c.rect(6, 15 + b, 25, 27, "B")                                   # hulking shoulders and chest
+        c.rect(10, 17 + b, 21, 23, "b")                                  # belly
+        c.rect(9, 24, 22, 25, "O")                                       # belt
+        c.rect(9, 26, 22, 30, "L")                                       # loincloth
+        c.rect(1, 16 + b, 5, 30, "B")                                    # long left arm
+        c.rect(0, 31, 6, 34, "B")                                        # big fist
+        c.rect(26, 16 + b, 30, 30, "B")                                  # long right arm
+        c.rect(25, 31, 31, 34, "B")
+        cy = 12 if alt else 15                                           # the club, swinging
+        c.rect(27, cy, 29, 31, "P")
+        c.rect(26, cy - 5, 30, cy + 1, "P")
+        c.pts([(28, cy - 4), (28, cy - 2)], "G")
+        c.rect(9, 31, 14, 34, "B")
+        c.rect(17, 31, 22, 34, "B")
+        c.pts([(9, 34), (10, 34), (21, 34), (22, 34)], "n")
+        frames.append(c.rows())
+    key = {"B": "azure2", "b": "azure3", "R": "azure1", "n": "ink", "W": "steel5", "T": "parch3", "e": "gold5",
+           "O": "gold4", "L": "wood3", "P": "wood2", "G": "steel3"}
+    p = pose(26, "azure2", "azure1", spots([(9, 17), (20, 21)]))
+    return frames, key, p, [crack_path(frames, 10, 15, 5), crack_path(frames, 20, 15, 5), crack_path(frames, 11, 3, 2)], False
+
+
+def manticore():
+    """Persian man-eater, v2: a lion first, front-on: a broad chest, two thick front legs with clawed paws planted
+    wide, haunches behind, a ragged spiky mane ring around a small human face (eyes, nose, beard, a wide mouth of
+    three rows of teeth), and a segmented tail arched high with a spiked ball of spines. Violet with an orange mane."""
+    frames = []
+    for alt in (False, True):
+        c = Canvas(40, 34)
+        s = 1 if alt else 0
+        pts = [(29, 25), (34, 21), (36, 14), (33, 7), (28, 4)]            # the segmented tail
+        cells = []
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            n = max(abs(x1 - x0), abs(y1 - y0))
+            cells += [(round(x0 + (x1 - x0) * i / n), round(y0 + (y1 - y0) * i / n)) for i in range(n)]
+        for i, (x, y) in enumerate(cells):
+            c.rect(x, y - s * (1 if y < 14 else 0), x + 1, y + 1 - s * (1 if y < 14 else 0), "B" if (i // 3) % 2 else "b")
+        by = -s
+        c.rect(25, 1 + by, 29, 6 + by, "S")                              # the spiked ball of spines
+        c.pts([(24, 3 + by), (23, 3 + by), (30, 0 + by), (30, 7 + by), (27, 0 + by), (27, 7 + by), (25, 7 + by),
+               (24, 1 + by)], "S")
+        c.rect(5, 20, 11, 28, "D")                                       # haunches behind
+        c.rect(26, 20, 32, 28, "D")
+        c.rect(5, 28, 10, 29, "b")
+        c.rect(27, 28, 32, 29, "b")
+        for x in range(0, 40):                                           # the ragged mane ring
+            for y in range(0, 26):
+                dx, dy = x - 18, y - 11.5
+                ang = math.atan2(dy, dx)
+                r = math.hypot(dx * 0.92, dy)
+                spike = (int((ang + math.pi) * 11 / math.pi) % 2) * 3 + (int((ang + math.pi) * 11 / math.pi) % 3)
+                if r <= 8.2 + spike * 0.9:
+                    c.px(x, y, "M")
+        c.rect(7, 17, 29, 29, "B")                                       # the broad chest
+        c.rect(12, 20, 24, 27, "b")                                      # pale chest
+        c.pts([(7, 17), (29, 17), (7, 29), (29, 29)], ".")
+        for lx, up in ((6, 0), (23, s)):                                 # two thick front legs, claws, planted wide
+            c.rect(lx + 1, 27 - up, lx + 7, 31 - up, "B")
+            c.rect(lx - 1, 31 - up, lx + 8, 33 - up, "b")
+            c.pts([(lx - 1, 33 - up), (lx + 2, 33 - up), (lx + 5, 33 - up), (lx + 8, 33 - up)], "W")
+        c.rect(14, 6, 22, 16, "K")                                       # the human face
+        c.pts([(14, 6), (22, 6), (14, 16), (22, 16)], ".")
+        c.rect(14, 6, 22, 7, "H")                                        # hair
+        c.pts([(15, 8), (16, 8), (20, 8), (21, 8)], "e")                 # eyes
+        c.pts([(18, 9), (18, 10)], "k")                                  # nose
+        c.rect(15, 11, 21, 14, "n")                                      # the wide mouth
+        for y in (11, 12, 13):                                           # three rows of teeth
+            for x in range(15, 22):
+                if (x + y) % 2 == 0:
+                    c.px(x, y, "W")
+        c.rect(16, 15, 20, 16, "H")                                      # the beard
+        frames.append(c.rows())
+    key = {"B": "shadow2", "b": "shadow3", "D": "shadow1", "M": "fire1", "K": "night4", "H": "shadow1", "n": "ink",
+           "W": "steel5", "e": "gold5", "S": "steel5", "k": "night2"}
+    p = pose(22, "shadow2", "shadow1", spots([(11, 20), (25, 22)]))
+    return frames, key, p, [crack_path(frames, 11, 18, 6), crack_path(frames, 25, 18, 6), crack_path(frames, 18, 1, 3)], False
 
 
 def mummy():

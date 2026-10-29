@@ -24,3 +24,8 @@ with an azure collar; Bungisngis blue (`azure`); Girtablilu green chitin (`emera
 | Manticore | https://theoi.com/Thaumasios/Mantikhoras.html | 2026-10-29 | Human face, lion body, three rows of teeth per jaw, scorpion tail with a sting, man-eater. SRD status not checked. |
 
 No monster ended "unverified" outright. Sensitivity notes kept: the Nasnas has no sectarian dress; the Girtablilu is only the creature.
+
+## v2 (2026-10-29)
+Redrawn: Serpopard (front-on, tall S-neck, spot clusters), Nasnas (clean half-person cut, hop), Bungisngis (tall giant, club,
+tusks, belt), Manticore (lion first, spiky mane ring, segmented tail with a spiked ball). Poludnitsa, Girtablilu and Mummy are
+unchanged. v1 is kept: `out_v1/`, `board_v1.html`, `src/saffron_v1.py`.

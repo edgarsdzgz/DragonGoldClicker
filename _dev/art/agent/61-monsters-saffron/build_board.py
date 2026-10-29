@@ -7,6 +7,8 @@ sys.path.insert(0, str(HERE.parent / "00-foundation"))
 from boardkit import fig, gif_fig, page, section  # noqa: E402
 
 OUT, PREVIEW = HERE / "out", HERE / "preview"
+V1 = HERE / "out_v1"
+REDONE = {"serpopard", "nasnas", "bungisngis", "manticore"}
 MOBS = HERE.parents[1] / "official" / "mobs"
 
 MONSTERS = [
@@ -41,6 +43,9 @@ def monster(mid, name, note):
             fig(OUT / f"{n}_hurt.png", 6, "hurt"), gif_fig(PREVIEW / f"{n}_walk.gif", 1, "walk"),
             gif_fig(PREVIEW / f"{n}_death.gif", 1, "death"),
             fig(OUT / f"{n}-strong_idle.png", 6, "strong"), fig(OUT / f"{n}-stronger_idle.png", 6, "stronger")]
+    if mid in REDONE:
+        figs = [fig(V1 / f"{n}_idle.png", 6, "v1 idle"), fig(V1 / f"{n}_hurt.png", 6, "v1 hurt")] + figs
+        note = "v1 (left, kept in out_v1/) beside v2. " + note
     return section(name, note, figs)
 
 
@@ -54,7 +59,7 @@ sections.append(section("Size line-up", "The locked kobold, the regulars, the el
     fig(MOBS / "mob_basilisk_idle.png", 6, "basilisk (locked)"),
     fig(MOBS / "mob_corrupted-drake_idle.png", 6, "corrupted drake (locked)")]))
 
-out = page("Monsters Saffron Dunes", "Saffron Dunes: seven monsters, round 1",
+out = page("Monsters Saffron Dunes", "Saffron Dunes: seven monsters, v2 (v1 beside v2 for four)",
            "Idle, hit, hurt, walk and death at all three Unmaking tiers. Every folklore monster found a second source (see each note); where only the Wikipedia page backs a detail, the note says so. SRD monster: the Mummy (credit needed). "
            "&middot; 2026-10-29", sections)
 (HERE / "board.html").write_text(out, encoding="utf-8")
