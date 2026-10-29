@@ -21,6 +21,8 @@ Thornwick, Sera and the Hollow Knight.
 - [x] **Chapters 9 to 13** (approved 2026-10-27): a story picture for each of the five new chapters, and a
       small Varn on the Warfront wall (he strikes on his own). Locked 2026-10-28 and in the game, with
       what each newcomer brings (provisional numbers, `src/types/allies.ts`).
+- [ ] **The new monsters:** 59 from the bestiary research, in 17 small batches (M1 to M17), listed in
+      `monster-batches.md`. Each starts once I've made my picks for its Land on the pick board.
 - [ ] **The final boss:** only if I decide I want one (who began the Unmaking is still open).
 - [ ] **The dragon, last**, from the commissioned artist: portrait, perch, victory pose, head token, idle
       loop, fireball attack, the fireball and critical fireball, upgrade looks (claws, fangs, armor, horns).
