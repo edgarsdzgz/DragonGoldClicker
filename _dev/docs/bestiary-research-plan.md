@@ -245,10 +245,12 @@ The catalog lives in `_dev/docs/bestiary-research/catalog.csv`, with one row per
 **Cost:** 7 agents in all (6 Sonnet, 1 Haiku), at most 2 at once. Nothing launches until the owner says
 go.
 
-### 3.5 Questions for the owner
+### 3.5 Decided (owner, 2026-10-29: "Let's do as you recommend")
 
-1. Should one Land cover ten horde levels (Part 1)? If not, how should Lands map to levels?
-2. Who should the Storm-Callers be (Land 3)? The proposal above adds them to the lore; it can change.
-3. Any regions to add, or to leave out?
-4. Should event monsters (the nian, the Yule Cat, the Yule Lads) be seasonal visitors, or only Land
-   monsters?
+1. One Land covers ten horde levels and ends on its boss (Part 1).
+2. The Storm-Callers were mountain weather-priests who tried to calm the Evil's storms and became them.
+3. The regions are as listed in 3.4.
+4. Event monsters (the nian, the Yule Cat, the Yule Lads and any others found) come as seasonal visitors,
+   not as Land monsters.
+
+The research started the same day. The shared brief for the agents is `bestiary-research/BRIEF.md`.
