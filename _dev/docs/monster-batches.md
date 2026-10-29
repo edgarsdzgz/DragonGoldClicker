@@ -73,3 +73,25 @@ batch: their monsters are all drawn already.
 | --- | --- |
 | M1 | Done: all four locked 2026-10-29 (the Kamaitachi as v2, the pilot that set the look; Aitvaras, Gargoyle, Wild Hunt Rider v1) |
 | M2 | Done: all three locked 2026-10-29 (the Impundulu and Omukade as v2, the Tempest Lord v1). Mistral Peaks is complete |
+
+## Changed 2026-10-29: one builder per Land, in two rounds
+
+After M1 and M2 I regrouped the rest: one batch per Land (5 to 8 monsters), each drawn by its own fresh
+builder, five at a time. That costs about the same tokens as small batches and is much faster, and no
+builder grows past the memory where it would need compressing (about 8 monsters). Each builder checks
+its own Land's second sources before drawing. M3 to M17 above are replaced by these:
+
+| Round | Batch folder | Land | Monsters |
+| --- | --- | --- | --- |
+| 1 | `58-monsters-riverglass` | Riverglass Delta | 7 (M3 and M4) |
+| 1 | `59-monsters-elderbough` | Elderbough Crown | 7 (M5 and M6) |
+| 1 | `60-monsters-gloamfen` | Gloamfen Mire | 7 (M7 and M8) |
+| 1 | `61-monsters-saffron` | Saffron Dunes | 7 (M9 and M10) |
+| 1 | `62-monsters-tideglass` | Tideglass Coast | 8 (M11 and M12) |
+| 2 | next free | Shadowmere | 7 (M15 and M16) |
+| 2 | next free | Hollowspire Below | 5 (M13 and M14) |
+| 2 | next free | Seasonal visitors | 4 (M17) |
+
+My rulings for round 1 (2026-10-29): the **Bungisngis** replaces the Yara-ma-yha-who in Saffron Dunes,
+and the **Kraken** rises up a flooded stretch of road, its head and eye out of the water and its
+tentacles reaching ahead. Still open for round 2: Camazotz (Hollowspire) and Lamashtu (Shadowmere).
